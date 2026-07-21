@@ -1997,7 +1997,6 @@ export const userEventTypeEnum = {
 	"team-domain-verification-deleted": "team-domain-verification-deleted",
 	"team-domain-verification-verified": "team-domain-verification-verified",
 	"team-email-domain-update": "team-email-domain-update",
-	"team-emu-account-split": "team-emu-account-split",
 	"team-emu-updated": "team-emu-updated",
 	"team-ended-trial": "team-ended-trial",
 	"team-firewall-config-modified": "team-firewall-config-modified",
@@ -15542,16 +15541,6 @@ export type UserEvent = {
 				  }
 				| {
 						/**
-						 * @type string
-						 */
-						personalAccountId: string;
-						/**
-						 * @type string
-						 */
-						managedAccountId: string;
-				  }
-				| {
-						/**
 						 * @type boolean
 						 */
 						enabled: false | true;
@@ -17735,7 +17724,6 @@ export const listEventTypeNameEnum = {
 	"team-domain-verification-deleted": "team-domain-verification-deleted",
 	"team-domain-verification-verified": "team-domain-verification-verified",
 	"team-email-domain-update": "team-email-domain-update",
-	"team-emu-account-split": "team-emu-account-split",
 	"team-emu-updated": "team-emu-updated",
 	"team-ended-trial": "team-ended-trial",
 	"team-firewall-config-modified": "team-firewall-config-modified",
@@ -18346,7 +18334,6 @@ export const listEventTypeReplacedByEnum = {
 	"team-domain-verification-deleted": "team-domain-verification-deleted",
 	"team-domain-verification-verified": "team-domain-verification-verified",
 	"team-email-domain-update": "team-email-domain-update",
-	"team-emu-account-split": "team-emu-account-split",
 	"team-emu-updated": "team-emu-updated",
 	"team-ended-trial": "team-ended-trial",
 	"team-firewall-config-modified": "team-firewall-config-modified",
@@ -20360,9 +20347,9 @@ export type Snapshot = {
 	/**
 	 * @description The region where the snapshot is stored.
 	 * @example iad1
-	 * @type string
+	 * @type string | undefined
 	 */
-	region: string;
+	region?: string | undefined;
 	/**
 	 * @description The status of the snapshot.
 	 * @example created
@@ -23432,6 +23419,11 @@ export type ReadAccessGroupStatus401 = unknown;
 export type ReadAccessGroupStatus403 = unknown;
 
 /**
+ * @type unknown
+ */
+export type ReadAccessGroupStatus410 = unknown;
+
+/**
  * @type object
  */
 export type ReadAccessGroupRequestConfig = {
@@ -23466,6 +23458,7 @@ export type ReadAccessGroupResponses = {
 	"400": ReadAccessGroupStatus400;
 	"401": ReadAccessGroupStatus401;
 	"403": ReadAccessGroupStatus403;
+	"410": ReadAccessGroupStatus410;
 };
 
 /**
@@ -23475,7 +23468,8 @@ export type ReadAccessGroupResponse =
 	| ReadAccessGroupStatus200
 	| ReadAccessGroupStatus400
 	| ReadAccessGroupStatus401
-	| ReadAccessGroupStatus403;
+	| ReadAccessGroupStatus403
+	| ReadAccessGroupStatus410;
 
 /**
  * @type string
@@ -23517,6 +23511,11 @@ export type UpdateAccessGroupStatus401 = unknown;
 export type UpdateAccessGroupStatus403 = unknown;
 
 /**
+ * @type unknown
+ */
+export type UpdateAccessGroupStatus410 = unknown;
+
+/**
  * @type object
  */
 export type UpdateAccessGroupRequestConfig = {
@@ -23551,6 +23550,7 @@ export type UpdateAccessGroupResponses = {
 	"400": UpdateAccessGroupStatus400;
 	"401": UpdateAccessGroupStatus401;
 	"403": UpdateAccessGroupStatus403;
+	"410": UpdateAccessGroupStatus410;
 };
 
 /**
@@ -23560,7 +23560,8 @@ export type UpdateAccessGroupResponse =
 	| UpdateAccessGroupStatus200
 	| UpdateAccessGroupStatus400
 	| UpdateAccessGroupStatus401
-	| UpdateAccessGroupStatus403;
+	| UpdateAccessGroupStatus403
+	| UpdateAccessGroupStatus410;
 
 /**
  * @type string
@@ -23602,6 +23603,11 @@ export type DeleteAccessGroupStatus401 = unknown;
 export type DeleteAccessGroupStatus403 = unknown;
 
 /**
+ * @type unknown
+ */
+export type DeleteAccessGroupStatus410 = unknown;
+
+/**
  * @type object
  */
 export type DeleteAccessGroupRequestConfig = {
@@ -23636,6 +23642,7 @@ export type DeleteAccessGroupResponses = {
 	"400": DeleteAccessGroupStatus400;
 	"401": DeleteAccessGroupStatus401;
 	"403": DeleteAccessGroupStatus403;
+	"410": DeleteAccessGroupStatus410;
 };
 
 /**
@@ -23645,7 +23652,8 @@ export type DeleteAccessGroupResponse =
 	| DeleteAccessGroupStatus200
 	| DeleteAccessGroupStatus400
 	| DeleteAccessGroupStatus401
-	| DeleteAccessGroupStatus403;
+	| DeleteAccessGroupStatus403
+	| DeleteAccessGroupStatus410;
 
 /**
  * @description The ID or name of the Access Group.
@@ -23710,6 +23718,11 @@ export type ListAccessGroupMembersStatus401 = unknown;
 export type ListAccessGroupMembersStatus403 = unknown;
 
 /**
+ * @type unknown
+ */
+export type ListAccessGroupMembersStatus410 = unknown;
+
+/**
  * @type object
  */
 export type ListAccessGroupMembersRequestConfig = {
@@ -23747,6 +23760,7 @@ export type ListAccessGroupMembersResponses = {
 	"400": ListAccessGroupMembersStatus400;
 	"401": ListAccessGroupMembersStatus401;
 	"403": ListAccessGroupMembersStatus403;
+	"410": ListAccessGroupMembersStatus410;
 };
 
 /**
@@ -23756,7 +23770,8 @@ export type ListAccessGroupMembersResponse =
 	| ListAccessGroupMembersStatus200
 	| ListAccessGroupMembersStatus400
 	| ListAccessGroupMembersStatus401
-	| ListAccessGroupMembersStatus403;
+	| ListAccessGroupMembersStatus403
+	| ListAccessGroupMembersStatus410;
 
 /**
  * @description Filter access groups by project.
@@ -23840,6 +23855,11 @@ export type ListAccessGroupsStatus401 = unknown;
 export type ListAccessGroupsStatus403 = unknown;
 
 /**
+ * @type unknown
+ */
+export type ListAccessGroupsStatus410 = unknown;
+
+/**
  * @type object
  */
 export type ListAccessGroupsRequestConfig = {
@@ -23875,6 +23895,7 @@ export type ListAccessGroupsResponses = {
 	"400": ListAccessGroupsStatus400;
 	"401": ListAccessGroupsStatus401;
 	"403": ListAccessGroupsStatus403;
+	"410": ListAccessGroupsStatus410;
 };
 
 /**
@@ -23884,7 +23905,8 @@ export type ListAccessGroupsResponse =
 	| ListAccessGroupsStatus200
 	| ListAccessGroupsStatus400
 	| ListAccessGroupsStatus401
-	| ListAccessGroupsStatus403;
+	| ListAccessGroupsStatus403
+	| ListAccessGroupsStatus410;
 
 /**
  * @description The Team identifier to perform the request on behalf of.
@@ -23921,6 +23943,11 @@ export type CreateAccessGroupStatus401 = unknown;
 export type CreateAccessGroupStatus403 = unknown;
 
 /**
+ * @type unknown
+ */
+export type CreateAccessGroupStatus410 = unknown;
+
+/**
  * @type object
  */
 export type CreateAccessGroupRequestConfig = {
@@ -23950,6 +23977,7 @@ export type CreateAccessGroupResponses = {
 	"400": CreateAccessGroupStatus400;
 	"401": CreateAccessGroupStatus401;
 	"403": CreateAccessGroupStatus403;
+	"410": CreateAccessGroupStatus410;
 };
 
 /**
@@ -23959,7 +23987,8 @@ export type CreateAccessGroupResponse =
 	| CreateAccessGroupStatus200
 	| CreateAccessGroupStatus400
 	| CreateAccessGroupStatus401
-	| CreateAccessGroupStatus403;
+	| CreateAccessGroupStatus403
+	| CreateAccessGroupStatus410;
 
 /**
  * @description The ID or name of the Access Group.
@@ -24018,6 +24047,11 @@ export type ListAccessGroupProjectsStatus401 = unknown;
 export type ListAccessGroupProjectsStatus403 = unknown;
 
 /**
+ * @type unknown
+ */
+export type ListAccessGroupProjectsStatus410 = unknown;
+
+/**
  * @type object
  */
 export type ListAccessGroupProjectsRequestConfig = {
@@ -24054,6 +24088,7 @@ export type ListAccessGroupProjectsResponses = {
 	"400": ListAccessGroupProjectsStatus400;
 	"401": ListAccessGroupProjectsStatus401;
 	"403": ListAccessGroupProjectsStatus403;
+	"410": ListAccessGroupProjectsStatus410;
 };
 
 /**
@@ -24063,7 +24098,8 @@ export type ListAccessGroupProjectsResponse =
 	| ListAccessGroupProjectsStatus200
 	| ListAccessGroupProjectsStatus400
 	| ListAccessGroupProjectsStatus401
-	| ListAccessGroupProjectsStatus403;
+	| ListAccessGroupProjectsStatus403
+	| ListAccessGroupProjectsStatus410;
 
 /**
  * @type string
@@ -24105,6 +24141,11 @@ export type CreateAccessGroupProjectStatus401 = unknown;
 export type CreateAccessGroupProjectStatus403 = unknown;
 
 /**
+ * @type unknown
+ */
+export type CreateAccessGroupProjectStatus410 = unknown;
+
+/**
  * @type object
  */
 export type CreateAccessGroupProjectRequestConfig = {
@@ -24139,6 +24180,7 @@ export type CreateAccessGroupProjectResponses = {
 	"400": CreateAccessGroupProjectStatus400;
 	"401": CreateAccessGroupProjectStatus401;
 	"403": CreateAccessGroupProjectStatus403;
+	"410": CreateAccessGroupProjectStatus410;
 };
 
 /**
@@ -24148,7 +24190,8 @@ export type CreateAccessGroupProjectResponse =
 	| CreateAccessGroupProjectStatus200
 	| CreateAccessGroupProjectStatus400
 	| CreateAccessGroupProjectStatus401
-	| CreateAccessGroupProjectStatus403;
+	| CreateAccessGroupProjectStatus403
+	| CreateAccessGroupProjectStatus410;
 
 /**
  * @type string
@@ -24195,6 +24238,11 @@ export type ReadAccessGroupProjectStatus401 = unknown;
 export type ReadAccessGroupProjectStatus403 = unknown;
 
 /**
+ * @type unknown
+ */
+export type ReadAccessGroupProjectStatus410 = unknown;
+
+/**
  * @type object
  */
 export type ReadAccessGroupProjectRequestConfig = {
@@ -24230,6 +24278,7 @@ export type ReadAccessGroupProjectResponses = {
 	"400": ReadAccessGroupProjectStatus400;
 	"401": ReadAccessGroupProjectStatus401;
 	"403": ReadAccessGroupProjectStatus403;
+	"410": ReadAccessGroupProjectStatus410;
 };
 
 /**
@@ -24239,7 +24288,8 @@ export type ReadAccessGroupProjectResponse =
 	| ReadAccessGroupProjectStatus200
 	| ReadAccessGroupProjectStatus400
 	| ReadAccessGroupProjectStatus401
-	| ReadAccessGroupProjectStatus403;
+	| ReadAccessGroupProjectStatus403
+	| ReadAccessGroupProjectStatus410;
 
 /**
  * @type string
@@ -24286,6 +24336,11 @@ export type UpdateAccessGroupProjectStatus401 = unknown;
 export type UpdateAccessGroupProjectStatus403 = unknown;
 
 /**
+ * @type unknown
+ */
+export type UpdateAccessGroupProjectStatus410 = unknown;
+
+/**
  * @type object
  */
 export type UpdateAccessGroupProjectRequestConfig = {
@@ -24321,6 +24376,7 @@ export type UpdateAccessGroupProjectResponses = {
 	"400": UpdateAccessGroupProjectStatus400;
 	"401": UpdateAccessGroupProjectStatus401;
 	"403": UpdateAccessGroupProjectStatus403;
+	"410": UpdateAccessGroupProjectStatus410;
 };
 
 /**
@@ -24330,7 +24386,8 @@ export type UpdateAccessGroupProjectResponse =
 	| UpdateAccessGroupProjectStatus200
 	| UpdateAccessGroupProjectStatus400
 	| UpdateAccessGroupProjectStatus401
-	| UpdateAccessGroupProjectStatus403;
+	| UpdateAccessGroupProjectStatus403
+	| UpdateAccessGroupProjectStatus410;
 
 /**
  * @type string
@@ -24377,6 +24434,11 @@ export type DeleteAccessGroupProjectStatus401 = unknown;
 export type DeleteAccessGroupProjectStatus403 = unknown;
 
 /**
+ * @type unknown
+ */
+export type DeleteAccessGroupProjectStatus410 = unknown;
+
+/**
  * @type object
  */
 export type DeleteAccessGroupProjectRequestConfig = {
@@ -24412,6 +24474,7 @@ export type DeleteAccessGroupProjectResponses = {
 	"400": DeleteAccessGroupProjectStatus400;
 	"401": DeleteAccessGroupProjectStatus401;
 	"403": DeleteAccessGroupProjectStatus403;
+	"410": DeleteAccessGroupProjectStatus410;
 };
 
 /**
@@ -24421,7 +24484,8 @@ export type DeleteAccessGroupProjectResponse =
 	| DeleteAccessGroupProjectStatus200
 	| DeleteAccessGroupProjectStatus400
 	| DeleteAccessGroupProjectStatus401
-	| DeleteAccessGroupProjectStatus403;
+	| DeleteAccessGroupProjectStatus403
+	| DeleteAccessGroupProjectStatus410;
 
 /**
  * @description The Team identifier to perform the request on behalf of.
@@ -24465,6 +24529,11 @@ export type CreateAiGatewayRuleStatus409 = unknown;
 /**
  * @type unknown
  */
+export type CreateAiGatewayRuleStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type CreateAiGatewayRuleStatus500 = unknown;
 
 /**
@@ -24498,6 +24567,7 @@ export type CreateAiGatewayRuleResponses = {
 	"401": CreateAiGatewayRuleStatus401;
 	"403": CreateAiGatewayRuleStatus403;
 	"409": CreateAiGatewayRuleStatus409;
+	"410": CreateAiGatewayRuleStatus410;
 	"500": CreateAiGatewayRuleStatus500;
 };
 
@@ -24510,6 +24580,7 @@ export type CreateAiGatewayRuleResponse =
 	| CreateAiGatewayRuleStatus401
 	| CreateAiGatewayRuleStatus403
 	| CreateAiGatewayRuleStatus409
+	| CreateAiGatewayRuleStatus410
 	| CreateAiGatewayRuleStatus500;
 
 /**
@@ -24554,6 +24625,11 @@ export type ListAiGatewayRulesStatus403 = unknown;
 /**
  * @type unknown
  */
+export type ListAiGatewayRulesStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type ListAiGatewayRulesStatus500 = unknown;
 
 /**
@@ -24587,6 +24663,7 @@ export type ListAiGatewayRulesResponses = {
 	"400": ListAiGatewayRulesStatus400;
 	"401": ListAiGatewayRulesStatus401;
 	"403": ListAiGatewayRulesStatus403;
+	"410": ListAiGatewayRulesStatus410;
 	"500": ListAiGatewayRulesStatus500;
 };
 
@@ -24598,6 +24675,7 @@ export type ListAiGatewayRulesResponse =
 	| ListAiGatewayRulesStatus400
 	| ListAiGatewayRulesStatus401
 	| ListAiGatewayRulesStatus403
+	| ListAiGatewayRulesStatus410
 	| ListAiGatewayRulesStatus500;
 
 /**
@@ -24642,6 +24720,11 @@ export type UpdateAiGatewayRuleStatus404 = unknown;
 /**
  * @type unknown
  */
+export type UpdateAiGatewayRuleStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type UpdateAiGatewayRuleStatus500 = unknown;
 
 /**
@@ -24675,6 +24758,7 @@ export type UpdateAiGatewayRuleResponses = {
 	"401": UpdateAiGatewayRuleStatus401;
 	"403": UpdateAiGatewayRuleStatus403;
 	"404": UpdateAiGatewayRuleStatus404;
+	"410": UpdateAiGatewayRuleStatus410;
 	"500": UpdateAiGatewayRuleStatus500;
 };
 
@@ -24687,6 +24771,7 @@ export type UpdateAiGatewayRuleResponse =
 	| UpdateAiGatewayRuleStatus401
 	| UpdateAiGatewayRuleStatus403
 	| UpdateAiGatewayRuleStatus404
+	| UpdateAiGatewayRuleStatus410
 	| UpdateAiGatewayRuleStatus500;
 
 /**
@@ -24736,6 +24821,11 @@ export type DeleteAiGatewayRuleStatus404 = unknown;
 /**
  * @type unknown
  */
+export type DeleteAiGatewayRuleStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type DeleteAiGatewayRuleStatus500 = unknown;
 
 /**
@@ -24770,6 +24860,7 @@ export type DeleteAiGatewayRuleResponses = {
 	"401": DeleteAiGatewayRuleStatus401;
 	"403": DeleteAiGatewayRuleStatus403;
 	"404": DeleteAiGatewayRuleStatus404;
+	"410": DeleteAiGatewayRuleStatus410;
 	"500": DeleteAiGatewayRuleStatus500;
 };
 
@@ -24782,6 +24873,7 @@ export type DeleteAiGatewayRuleResponse =
 	| DeleteAiGatewayRuleStatus401
 	| DeleteAiGatewayRuleStatus403
 	| DeleteAiGatewayRuleStatus404
+	| DeleteAiGatewayRuleStatus410
 	| DeleteAiGatewayRuleStatus500;
 
 /**
@@ -24841,6 +24933,11 @@ export type RecordEventsStatus402 = unknown;
 export type RecordEventsStatus403 = unknown;
 
 /**
+ * @type unknown
+ */
+export type RecordEventsStatus410 = unknown;
+
+/**
  * @type object
  */
 export type RecordEventsRequestConfig = {
@@ -24881,6 +24978,7 @@ export type RecordEventsResponses = {
 	"401": RecordEventsStatus401;
 	"402": RecordEventsStatus402;
 	"403": RecordEventsStatus403;
+	"410": RecordEventsStatus410;
 };
 
 /**
@@ -24891,7 +24989,8 @@ export type RecordEventsResponse =
 	| RecordEventsStatus400
 	| RecordEventsStatus401
 	| RecordEventsStatus402
-	| RecordEventsStatus403;
+	| RecordEventsStatus403
+	| RecordEventsStatus410;
 
 /**
  * @description The Team identifier to perform the request on behalf of.
@@ -24933,6 +25032,11 @@ export type StatusStatus402 = unknown;
 export type StatusStatus403 = unknown;
 
 /**
+ * @type unknown
+ */
+export type StatusStatus410 = unknown;
+
+/**
  * @type object
  */
 export type StatusRequestConfig = {
@@ -24963,6 +25067,7 @@ export type StatusResponses = {
 	"401": StatusStatus401;
 	"402": StatusStatus402;
 	"403": StatusStatus403;
+	"410": StatusStatus410;
 };
 
 /**
@@ -24973,7 +25078,8 @@ export type StatusResponse =
 	| StatusStatus400
 	| StatusStatus401
 	| StatusStatus402
-	| StatusStatus403;
+	| StatusStatus403
+	| StatusStatus410;
 
 /**
  * @description The artifact size in bytes
@@ -25074,6 +25180,11 @@ export type UploadArtifactStatus402 = unknown;
 export type UploadArtifactStatus403 = unknown;
 
 /**
+ * @type unknown
+ */
+export type UploadArtifactStatus410 = unknown;
+
+/**
  * @type object
  */
 export type UploadArtifactRequestConfig = {
@@ -25124,6 +25235,7 @@ export type UploadArtifactResponses = {
 	"401": UploadArtifactStatus401;
 	"402": UploadArtifactStatus402;
 	"403": UploadArtifactStatus403;
+	"410": UploadArtifactStatus410;
 };
 
 /**
@@ -25134,7 +25246,8 @@ export type UploadArtifactResponse =
 	| UploadArtifactStatus400
 	| UploadArtifactStatus401
 	| UploadArtifactStatus402
-	| UploadArtifactStatus403;
+	| UploadArtifactStatus403
+	| UploadArtifactStatus410;
 
 /**
  * @description The continuous integration or delivery environment where this artifact is downloaded.
@@ -25205,6 +25318,11 @@ export type DownloadArtifactStatus403 = unknown;
 export type DownloadArtifactStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type DownloadArtifactStatus410 = unknown;
+
+/**
  * @type object
  */
 export type DownloadArtifactRequestConfig = {
@@ -25251,6 +25369,7 @@ export type DownloadArtifactResponses = {
 	"402": DownloadArtifactStatus402;
 	"403": DownloadArtifactStatus403;
 	"404": DownloadArtifactStatus404;
+	"410": DownloadArtifactStatus410;
 };
 
 /**
@@ -25262,7 +25381,8 @@ export type DownloadArtifactResponse =
 	| DownloadArtifactStatus401
 	| DownloadArtifactStatus402
 	| DownloadArtifactStatus403
-	| DownloadArtifactStatus404;
+	| DownloadArtifactStatus404
+	| DownloadArtifactStatus410;
 
 /**
  * @description The Team identifier to perform the request on behalf of.
@@ -25304,6 +25424,11 @@ export type ArtifactQueryStatus402 = unknown;
 export type ArtifactQueryStatus403 = unknown;
 
 /**
+ * @type unknown
+ */
+export type ArtifactQueryStatus410 = unknown;
+
+/**
  * @type object
  */
 export type ArtifactQueryRequestConfig = {
@@ -25334,6 +25459,7 @@ export type ArtifactQueryResponses = {
 	"401": ArtifactQueryStatus401;
 	"402": ArtifactQueryStatus402;
 	"403": ArtifactQueryStatus403;
+	"410": ArtifactQueryStatus410;
 };
 
 /**
@@ -25344,7 +25470,8 @@ export type ArtifactQueryResponse =
 	| ArtifactQueryStatus400
 	| ArtifactQueryStatus401
 	| ArtifactQueryStatus402
-	| ArtifactQueryStatus403;
+	| ArtifactQueryStatus403
+	| ArtifactQueryStatus410;
 
 /**
  * @description The Team identifier to perform the request on behalf of.
@@ -25381,6 +25508,11 @@ export type DeleteAllArtifactsStatus401 = unknown;
 export type DeleteAllArtifactsStatus403 = unknown;
 
 /**
+ * @type unknown
+ */
+export type DeleteAllArtifactsStatus410 = unknown;
+
+/**
  * @type object
  */
 export type DeleteAllArtifactsRequestConfig = {
@@ -25410,6 +25542,7 @@ export type DeleteAllArtifactsResponses = {
 	"400": DeleteAllArtifactsStatus400;
 	"401": DeleteAllArtifactsStatus401;
 	"403": DeleteAllArtifactsStatus403;
+	"410": DeleteAllArtifactsStatus410;
 };
 
 /**
@@ -25419,7 +25552,8 @@ export type DeleteAllArtifactsResponse =
 	| DeleteAllArtifactsStatus200
 	| DeleteAllArtifactsStatus400
 	| DeleteAllArtifactsStatus401
-	| DeleteAllArtifactsStatus403;
+	| DeleteAllArtifactsStatus403
+	| DeleteAllArtifactsStatus410;
 
 /**
  * @description Inclusive start of the date range as an ISO 8601 date-time string in UTC.
@@ -25477,6 +25611,11 @@ export type ListBillingChargesStatus404 = unknown;
 /**
  * @type unknown
  */
+export type ListBillingChargesStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type ListBillingChargesStatus500 = unknown;
 
 /**
@@ -25517,6 +25656,7 @@ export type ListBillingChargesResponses = {
 	"401": ListBillingChargesStatus401;
 	"403": ListBillingChargesStatus403;
 	"404": ListBillingChargesStatus404;
+	"410": ListBillingChargesStatus410;
 	"500": ListBillingChargesStatus500;
 	"503": ListBillingChargesStatus503;
 };
@@ -25530,6 +25670,7 @@ export type ListBillingChargesResponse =
 	| ListBillingChargesStatus401
 	| ListBillingChargesStatus403
 	| ListBillingChargesStatus404
+	| ListBillingChargesStatus410
 	| ListBillingChargesStatus500
 	| ListBillingChargesStatus503;
 
@@ -25573,6 +25714,11 @@ export type ListContractCommitmentsStatus403 = unknown;
 export type ListContractCommitmentsStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type ListContractCommitmentsStatus410 = unknown;
+
+/**
  * @type object
  */
 export type ListContractCommitmentsRequestConfig = {
@@ -25603,6 +25749,7 @@ export type ListContractCommitmentsResponses = {
 	"401": ListContractCommitmentsStatus401;
 	"403": ListContractCommitmentsStatus403;
 	"404": ListContractCommitmentsStatus404;
+	"410": ListContractCommitmentsStatus410;
 };
 
 /**
@@ -25613,7 +25760,8 @@ export type ListContractCommitmentsResponse =
 	| ListContractCommitmentsStatus400
 	| ListContractCommitmentsStatus401
 	| ListContractCommitmentsStatus403
-	| ListContractCommitmentsStatus404;
+	| ListContractCommitmentsStatus404
+	| ListContractCommitmentsStatus410;
 
 /**
  * @description The source of the purchase request. Defaults to `api` if not specified.
@@ -25668,6 +25816,11 @@ export type BuyCreditsStatus404 = unknown;
 /**
  * @type unknown
  */
+export type BuyCreditsStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type BuyCreditsStatus500 = unknown;
 
 /**
@@ -25703,6 +25856,7 @@ export type BuyCreditsResponses = {
 	"402": BuyCreditsStatus402;
 	"403": BuyCreditsStatus403;
 	"404": BuyCreditsStatus404;
+	"410": BuyCreditsStatus410;
 	"500": BuyCreditsStatus500;
 };
 
@@ -25716,6 +25870,7 @@ export type BuyCreditsResponse =
 	| BuyCreditsStatus402
 	| BuyCreditsStatus403
 	| BuyCreditsStatus404
+	| BuyCreditsStatus410
 	| BuyCreditsStatus500;
 
 /**
@@ -25755,6 +25910,11 @@ export type StageRedirectsStatus403 = unknown;
 /**
  * @type unknown
  */
+export type StageRedirectsStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type StageRedirectsStatus500 = unknown;
 
 /**
@@ -25787,6 +25947,7 @@ export type StageRedirectsResponses = {
 	"400": StageRedirectsStatus400;
 	"401": StageRedirectsStatus401;
 	"403": StageRedirectsStatus403;
+	"410": StageRedirectsStatus410;
 	"500": StageRedirectsStatus500;
 };
 
@@ -25798,6 +25959,7 @@ export type StageRedirectsResponse =
 	| StageRedirectsStatus400
 	| StageRedirectsStatus401
 	| StageRedirectsStatus403
+	| StageRedirectsStatus410
 	| StageRedirectsStatus500;
 
 /**
@@ -25880,6 +26042,11 @@ export type GetRedirectsStatus403 = unknown;
 export type GetRedirectsStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type GetRedirectsStatus410 = unknown;
+
+/**
  * @type object
  */
 export type GetRedirectsRequestConfig = {
@@ -25918,6 +26085,7 @@ export type GetRedirectsResponses = {
 	"401": GetRedirectsStatus401;
 	"403": GetRedirectsStatus403;
 	"404": GetRedirectsStatus404;
+	"410": GetRedirectsStatus410;
 };
 
 /**
@@ -25928,7 +26096,8 @@ export type GetRedirectsResponse =
 	| GetRedirectsStatus400
 	| GetRedirectsStatus401
 	| GetRedirectsStatus403
-	| GetRedirectsStatus404;
+	| GetRedirectsStatus404
+	| GetRedirectsStatus410;
 
 /**
  * @type string
@@ -25977,6 +26146,11 @@ export type DeleteRedirectsStatus404 = unknown;
 /**
  * @type unknown
  */
+export type DeleteRedirectsStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type DeleteRedirectsStatus500 = unknown;
 
 /**
@@ -26011,6 +26185,7 @@ export type DeleteRedirectsResponses = {
 	"401": DeleteRedirectsStatus401;
 	"403": DeleteRedirectsStatus403;
 	"404": DeleteRedirectsStatus404;
+	"410": DeleteRedirectsStatus410;
 	"500": DeleteRedirectsStatus500;
 };
 
@@ -26023,6 +26198,7 @@ export type DeleteRedirectsResponse =
 	| DeleteRedirectsStatus401
 	| DeleteRedirectsStatus403
 	| DeleteRedirectsStatus404
+	| DeleteRedirectsStatus410
 	| DeleteRedirectsStatus500;
 
 /**
@@ -26072,6 +26248,11 @@ export type EditRedirectStatus404 = unknown;
 /**
  * @type unknown
  */
+export type EditRedirectStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type EditRedirectStatus500 = unknown;
 
 /**
@@ -26106,6 +26287,7 @@ export type EditRedirectResponses = {
 	"401": EditRedirectStatus401;
 	"403": EditRedirectStatus403;
 	"404": EditRedirectStatus404;
+	"410": EditRedirectStatus410;
 	"500": EditRedirectStatus500;
 };
 
@@ -26118,6 +26300,7 @@ export type EditRedirectResponse =
 	| EditRedirectStatus401
 	| EditRedirectStatus403
 	| EditRedirectStatus404
+	| EditRedirectStatus410
 	| EditRedirectStatus500;
 
 /**
@@ -26167,6 +26350,11 @@ export type RestoreRedirectsStatus404 = unknown;
 /**
  * @type unknown
  */
+export type RestoreRedirectsStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type RestoreRedirectsStatus500 = unknown;
 
 /**
@@ -26201,6 +26389,7 @@ export type RestoreRedirectsResponses = {
 	"401": RestoreRedirectsStatus401;
 	"403": RestoreRedirectsStatus403;
 	"404": RestoreRedirectsStatus404;
+	"410": RestoreRedirectsStatus410;
 	"500": RestoreRedirectsStatus500;
 };
 
@@ -26213,6 +26402,7 @@ export type RestoreRedirectsResponse =
 	| RestoreRedirectsStatus401
 	| RestoreRedirectsStatus403
 	| RestoreRedirectsStatus404
+	| RestoreRedirectsStatus410
 	| RestoreRedirectsStatus500;
 
 /**
@@ -26257,6 +26447,11 @@ export type GetVersionsStatus403 = unknown;
 /**
  * @type unknown
  */
+export type GetVersionsStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type GetVersionsStatus500 = unknown;
 
 /**
@@ -26290,6 +26485,7 @@ export type GetVersionsResponses = {
 	"400": GetVersionsStatus400;
 	"401": GetVersionsStatus401;
 	"403": GetVersionsStatus403;
+	"410": GetVersionsStatus410;
 	"500": GetVersionsStatus500;
 };
 
@@ -26301,6 +26497,7 @@ export type GetVersionsResponse =
 	| GetVersionsStatus400
 	| GetVersionsStatus401
 	| GetVersionsStatus403
+	| GetVersionsStatus410
 	| GetVersionsStatus500;
 
 /**
@@ -26350,6 +26547,11 @@ export type UpdateVersionStatus404 = unknown;
 /**
  * @type unknown
  */
+export type UpdateVersionStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type UpdateVersionStatus500 = unknown;
 
 /**
@@ -26384,6 +26586,7 @@ export type UpdateVersionResponses = {
 	"401": UpdateVersionStatus401;
 	"403": UpdateVersionStatus403;
 	"404": UpdateVersionStatus404;
+	"410": UpdateVersionStatus410;
 	"500": UpdateVersionStatus500;
 };
 
@@ -26396,6 +26599,7 @@ export type UpdateVersionResponse =
 	| UpdateVersionStatus401
 	| UpdateVersionStatus403
 	| UpdateVersionStatus404
+	| UpdateVersionStatus410
 	| UpdateVersionStatus500;
 
 /**
@@ -26447,6 +26651,11 @@ export type ListProjectChecksStatus403 = unknown;
 /**
  * @type unknown
  */
+export type ListProjectChecksStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type ListProjectChecksStatus500 = unknown;
 
 /**
@@ -26485,6 +26694,7 @@ export type ListProjectChecksResponses = {
 	"400": ListProjectChecksStatus400;
 	"401": ListProjectChecksStatus401;
 	"403": ListProjectChecksStatus403;
+	"410": ListProjectChecksStatus410;
 	"500": ListProjectChecksStatus500;
 };
 
@@ -26496,6 +26706,7 @@ export type ListProjectChecksResponse =
 	| ListProjectChecksStatus400
 	| ListProjectChecksStatus401
 	| ListProjectChecksStatus403
+	| ListProjectChecksStatus410
 	| ListProjectChecksStatus500;
 
 /**
@@ -26540,6 +26751,11 @@ export type CreateProjectCheckStatus403 = unknown;
 /**
  * @type unknown
  */
+export type CreateProjectCheckStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type CreateProjectCheckStatus500 = unknown;
 
 /**
@@ -26577,6 +26793,7 @@ export type CreateProjectCheckResponses = {
 	"400": CreateProjectCheckStatus400;
 	"401": CreateProjectCheckStatus401;
 	"403": CreateProjectCheckStatus403;
+	"410": CreateProjectCheckStatus410;
 	"500": CreateProjectCheckStatus500;
 };
 
@@ -26588,6 +26805,7 @@ export type CreateProjectCheckResponse =
 	| CreateProjectCheckStatus400
 	| CreateProjectCheckStatus401
 	| CreateProjectCheckStatus403
+	| CreateProjectCheckStatus410
 	| CreateProjectCheckStatus500;
 
 /**
@@ -26639,6 +26857,11 @@ export type GetProjectCheckStatus403 = unknown;
 /**
  * @type unknown
  */
+export type GetProjectCheckStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type GetProjectCheckStatus500 = unknown;
 
 /**
@@ -26677,6 +26900,7 @@ export type GetProjectCheckResponses = {
 	"400": GetProjectCheckStatus400;
 	"401": GetProjectCheckStatus401;
 	"403": GetProjectCheckStatus403;
+	"410": GetProjectCheckStatus410;
 	"500": GetProjectCheckStatus500;
 };
 
@@ -26688,6 +26912,7 @@ export type GetProjectCheckResponse =
 	| GetProjectCheckStatus400
 	| GetProjectCheckStatus401
 	| GetProjectCheckStatus403
+	| GetProjectCheckStatus410
 	| GetProjectCheckStatus500;
 
 /**
@@ -26742,6 +26967,11 @@ export type UpdateProjectCheckStatus404 = unknown;
 /**
  * @type unknown
  */
+export type UpdateProjectCheckStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type UpdateProjectCheckStatus500 = unknown;
 
 /**
@@ -26781,6 +27011,7 @@ export type UpdateProjectCheckResponses = {
 	"401": UpdateProjectCheckStatus401;
 	"403": UpdateProjectCheckStatus403;
 	"404": UpdateProjectCheckStatus404;
+	"410": UpdateProjectCheckStatus410;
 	"500": UpdateProjectCheckStatus500;
 };
 
@@ -26793,6 +27024,7 @@ export type UpdateProjectCheckResponse =
 	| UpdateProjectCheckStatus401
 	| UpdateProjectCheckStatus403
 	| UpdateProjectCheckStatus404
+	| UpdateProjectCheckStatus410
 	| UpdateProjectCheckStatus500;
 
 /**
@@ -26847,6 +27079,11 @@ export type DeleteProjectCheckStatus404 = unknown;
 /**
  * @type unknown
  */
+export type DeleteProjectCheckStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type DeleteProjectCheckStatus500 = unknown;
 
 /**
@@ -26886,6 +27123,7 @@ export type DeleteProjectCheckResponses = {
 	"401": DeleteProjectCheckStatus401;
 	"403": DeleteProjectCheckStatus403;
 	"404": DeleteProjectCheckStatus404;
+	"410": DeleteProjectCheckStatus410;
 	"500": DeleteProjectCheckStatus500;
 };
 
@@ -26898,6 +27136,7 @@ export type DeleteProjectCheckResponse =
 	| DeleteProjectCheckStatus401
 	| DeleteProjectCheckStatus403
 	| DeleteProjectCheckStatus404
+	| DeleteProjectCheckStatus410
 	| DeleteProjectCheckStatus500;
 
 /**
@@ -26949,6 +27188,11 @@ export type ListCheckRunsStatus403 = unknown;
 /**
  * @type unknown
  */
+export type ListCheckRunsStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type ListCheckRunsStatus500 = unknown;
 
 /**
@@ -26987,6 +27231,7 @@ export type ListCheckRunsResponses = {
 	"400": ListCheckRunsStatus400;
 	"401": ListCheckRunsStatus401;
 	"403": ListCheckRunsStatus403;
+	"410": ListCheckRunsStatus410;
 	"500": ListCheckRunsStatus500;
 };
 
@@ -26998,6 +27243,7 @@ export type ListCheckRunsResponse =
 	| ListCheckRunsStatus400
 	| ListCheckRunsStatus401
 	| ListCheckRunsStatus403
+	| ListCheckRunsStatus410
 	| ListCheckRunsStatus500;
 
 /**
@@ -27042,6 +27288,11 @@ export type ListDeploymentCheckRunsStatus403 = unknown;
 /**
  * @type unknown
  */
+export type ListDeploymentCheckRunsStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type ListDeploymentCheckRunsStatus500 = unknown;
 
 /**
@@ -27079,6 +27330,7 @@ export type ListDeploymentCheckRunsResponses = {
 	"400": ListDeploymentCheckRunsStatus400;
 	"401": ListDeploymentCheckRunsStatus401;
 	"403": ListDeploymentCheckRunsStatus403;
+	"410": ListDeploymentCheckRunsStatus410;
 	"500": ListDeploymentCheckRunsStatus500;
 };
 
@@ -27090,6 +27342,7 @@ export type ListDeploymentCheckRunsResponse =
 	| ListDeploymentCheckRunsStatus400
 	| ListDeploymentCheckRunsStatus401
 	| ListDeploymentCheckRunsStatus403
+	| ListDeploymentCheckRunsStatus410
 	| ListDeploymentCheckRunsStatus500;
 
 /**
@@ -27139,6 +27392,11 @@ export type CreateDeploymentCheckRunStatus404 = unknown;
 /**
  * @type unknown
  */
+export type CreateDeploymentCheckRunStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type CreateDeploymentCheckRunStatus500 = unknown;
 
 /**
@@ -27177,6 +27435,7 @@ export type CreateDeploymentCheckRunResponses = {
 	"401": CreateDeploymentCheckRunStatus401;
 	"403": CreateDeploymentCheckRunStatus403;
 	"404": CreateDeploymentCheckRunStatus404;
+	"410": CreateDeploymentCheckRunStatus410;
 	"500": CreateDeploymentCheckRunStatus500;
 };
 
@@ -27189,6 +27448,7 @@ export type CreateDeploymentCheckRunResponse =
 	| CreateDeploymentCheckRunStatus401
 	| CreateDeploymentCheckRunStatus403
 	| CreateDeploymentCheckRunStatus404
+	| CreateDeploymentCheckRunStatus410
 	| CreateDeploymentCheckRunStatus500;
 
 /**
@@ -27245,6 +27505,11 @@ export type GetDeploymentCheckRunStatus404 = unknown;
 /**
  * @type unknown
  */
+export type GetDeploymentCheckRunStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type GetDeploymentCheckRunStatus500 = unknown;
 
 /**
@@ -27284,6 +27549,7 @@ export type GetDeploymentCheckRunResponses = {
 	"401": GetDeploymentCheckRunStatus401;
 	"403": GetDeploymentCheckRunStatus403;
 	"404": GetDeploymentCheckRunStatus404;
+	"410": GetDeploymentCheckRunStatus410;
 	"500": GetDeploymentCheckRunStatus500;
 };
 
@@ -27296,6 +27562,7 @@ export type GetDeploymentCheckRunResponse =
 	| GetDeploymentCheckRunStatus401
 	| GetDeploymentCheckRunStatus403
 	| GetDeploymentCheckRunStatus404
+	| GetDeploymentCheckRunStatus410
 	| GetDeploymentCheckRunStatus500;
 
 /**
@@ -27345,6 +27612,11 @@ export type UpdateDeploymentCheckRunStatus403 = unknown;
 /**
  * @type unknown
  */
+export type UpdateDeploymentCheckRunStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type UpdateDeploymentCheckRunStatus413 = unknown;
 
 /**
@@ -27388,6 +27660,7 @@ export type UpdateDeploymentCheckRunResponses = {
 	"400": UpdateDeploymentCheckRunStatus400;
 	"401": UpdateDeploymentCheckRunStatus401;
 	"403": UpdateDeploymentCheckRunStatus403;
+	"410": UpdateDeploymentCheckRunStatus410;
 	"413": UpdateDeploymentCheckRunStatus413;
 	"500": UpdateDeploymentCheckRunStatus500;
 };
@@ -27400,6 +27673,7 @@ export type UpdateDeploymentCheckRunResponse =
 	| UpdateDeploymentCheckRunStatus400
 	| UpdateDeploymentCheckRunStatus401
 	| UpdateDeploymentCheckRunStatus403
+	| UpdateDeploymentCheckRunStatus410
 	| UpdateDeploymentCheckRunStatus413
 	| UpdateDeploymentCheckRunStatus500;
 
@@ -27450,6 +27724,11 @@ export type CreateCheckStatus403 = unknown;
 export type CreateCheckStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type CreateCheckStatus410 = unknown;
+
+/**
  * @deprecated
  * @type object
  */
@@ -27486,6 +27765,7 @@ export type CreateCheckResponses = {
 	"401": CreateCheckStatus401;
 	"403": CreateCheckStatus403;
 	"404": CreateCheckStatus404;
+	"410": CreateCheckStatus410;
 };
 
 /**
@@ -27496,7 +27776,8 @@ export type CreateCheckResponse =
 	| CreateCheckStatus400
 	| CreateCheckStatus401
 	| CreateCheckStatus403
-	| CreateCheckStatus404;
+	| CreateCheckStatus404
+	| CreateCheckStatus410;
 
 /**
  * @description The deployment to get all checks for
@@ -27545,6 +27826,11 @@ export type GetAllChecksStatus403 = unknown;
 export type GetAllChecksStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type GetAllChecksStatus410 = unknown;
+
+/**
  * @deprecated
  * @type object
  */
@@ -27581,6 +27867,7 @@ export type GetAllChecksResponses = {
 	"401": GetAllChecksStatus401;
 	"403": GetAllChecksStatus403;
 	"404": GetAllChecksStatus404;
+	"410": GetAllChecksStatus410;
 };
 
 /**
@@ -27591,7 +27878,8 @@ export type GetAllChecksResponse =
 	| GetAllChecksStatus400
 	| GetAllChecksStatus401
 	| GetAllChecksStatus403
-	| GetAllChecksStatus404;
+	| GetAllChecksStatus404
+	| GetAllChecksStatus410;
 
 /**
  * @description The deployment to get the check for.
@@ -27647,6 +27935,11 @@ export type GetCheckStatus403 = unknown;
 export type GetCheckStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type GetCheckStatus410 = unknown;
+
+/**
  * @deprecated
  * @type object
  */
@@ -27684,6 +27977,7 @@ export type GetCheckResponses = {
 	"401": GetCheckStatus401;
 	"403": GetCheckStatus403;
 	"404": GetCheckStatus404;
+	"410": GetCheckStatus410;
 };
 
 /**
@@ -27694,7 +27988,8 @@ export type GetCheckResponse =
 	| GetCheckStatus400
 	| GetCheckStatus401
 	| GetCheckStatus403
-	| GetCheckStatus404;
+	| GetCheckStatus404
+	| GetCheckStatus410;
 
 /**
  * @description The deployment to update the check for.
@@ -27752,6 +28047,11 @@ export type UpdateCheckStatus404 = unknown;
 /**
  * @type unknown
  */
+export type UpdateCheckStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type UpdateCheckStatus413 = unknown;
 
 /**
@@ -27792,6 +28092,7 @@ export type UpdateCheckResponses = {
 	"401": UpdateCheckStatus401;
 	"403": UpdateCheckStatus403;
 	"404": UpdateCheckStatus404;
+	"410": UpdateCheckStatus410;
 	"413": UpdateCheckStatus413;
 };
 
@@ -27804,6 +28105,7 @@ export type UpdateCheckResponse =
 	| UpdateCheckStatus401
 	| UpdateCheckStatus403
 	| UpdateCheckStatus404
+	| UpdateCheckStatus410
 	| UpdateCheckStatus413;
 
 /**
@@ -27866,6 +28168,11 @@ export type RerequestCheckStatus403 = unknown;
 export type RerequestCheckStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type RerequestCheckStatus410 = unknown;
+
+/**
  * @deprecated
  * @type object
  */
@@ -27904,6 +28211,7 @@ export type RerequestCheckResponses = {
 	"401": RerequestCheckStatus401;
 	"403": RerequestCheckStatus403;
 	"404": RerequestCheckStatus404;
+	"410": RerequestCheckStatus410;
 };
 
 /**
@@ -27914,7 +28222,8 @@ export type RerequestCheckResponse =
 	| RerequestCheckStatus400
 	| RerequestCheckStatus401
 	| RerequestCheckStatus403
-	| RerequestCheckStatus404;
+	| RerequestCheckStatus404
+	| RerequestCheckStatus410;
 
 /**
  * @description Whether to include Hosted Zones in the response
@@ -27979,6 +28288,11 @@ export type ListNetworksStatus401 = unknown;
 export type ListNetworksStatus403 = unknown;
 
 /**
+ * @type unknown
+ */
+export type ListNetworksStatus410 = unknown;
+
+/**
  * @type object
  */
 export type ListNetworksRequestConfig = {
@@ -28012,6 +28326,7 @@ export type ListNetworksResponses = {
 	"400": ListNetworksStatus400;
 	"401": ListNetworksStatus401;
 	"403": ListNetworksStatus403;
+	"410": ListNetworksStatus410;
 };
 
 /**
@@ -28021,7 +28336,8 @@ export type ListNetworksResponse =
 	| ListNetworksStatus200
 	| ListNetworksStatus400
 	| ListNetworksStatus401
-	| ListNetworksStatus403;
+	| ListNetworksStatus403
+	| ListNetworksStatus410;
 
 /**
  * @description The Team identifier to perform the request on behalf of.
@@ -28068,6 +28384,11 @@ export type CreateNetworkStatus403 = unknown;
 export type CreateNetworkStatus409 = unknown;
 
 /**
+ * @type unknown
+ */
+export type CreateNetworkStatus410 = unknown;
+
+/**
  * @type object
  */
 export type CreateNetworkRequestConfig = {
@@ -28099,6 +28420,7 @@ export type CreateNetworkResponses = {
 	"402": CreateNetworkStatus402;
 	"403": CreateNetworkStatus403;
 	"409": CreateNetworkStatus409;
+	"410": CreateNetworkStatus410;
 };
 
 /**
@@ -28110,7 +28432,8 @@ export type CreateNetworkResponse =
 	| CreateNetworkStatus401
 	| CreateNetworkStatus402
 	| CreateNetworkStatus403
-	| CreateNetworkStatus409;
+	| CreateNetworkStatus409
+	| CreateNetworkStatus410;
 
 /**
  * @description The ID of the network to delete
@@ -28164,6 +28487,11 @@ export type DeleteNetworkStatus403 = unknown;
 export type DeleteNetworkStatus409 = unknown;
 
 /**
+ * @type unknown
+ */
+export type DeleteNetworkStatus410 = unknown;
+
+/**
  * @type object
  */
 export type DeleteNetworkRequestConfig = {
@@ -28200,6 +28528,7 @@ export type DeleteNetworkResponses = {
 	"402": DeleteNetworkStatus402;
 	"403": DeleteNetworkStatus403;
 	"409": DeleteNetworkStatus409;
+	"410": DeleteNetworkStatus410;
 };
 
 /**
@@ -28211,7 +28540,8 @@ export type DeleteNetworkResponse =
 	| DeleteNetworkStatus401
 	| DeleteNetworkStatus402
 	| DeleteNetworkStatus403
-	| DeleteNetworkStatus409;
+	| DeleteNetworkStatus409
+	| DeleteNetworkStatus410;
 
 /**
  * @description The unique identifier of the Secure Compute network
@@ -28255,6 +28585,11 @@ export type UpdateNetworkStatus401 = unknown;
 export type UpdateNetworkStatus403 = unknown;
 
 /**
+ * @type unknown
+ */
+export type UpdateNetworkStatus410 = unknown;
+
+/**
  * @type object
  */
 export type UpdateNetworkRequestConfig = {
@@ -28289,6 +28624,7 @@ export type UpdateNetworkResponses = {
 	"400": UpdateNetworkStatus400;
 	"401": UpdateNetworkStatus401;
 	"403": UpdateNetworkStatus403;
+	"410": UpdateNetworkStatus410;
 };
 
 /**
@@ -28298,7 +28634,8 @@ export type UpdateNetworkResponse =
 	| UpdateNetworkStatus200
 	| UpdateNetworkStatus400
 	| UpdateNetworkStatus401
-	| UpdateNetworkStatus403;
+	| UpdateNetworkStatus403
+	| UpdateNetworkStatus410;
 
 /**
  * @description The unique identifier of the Secure Compute network
@@ -28342,6 +28679,11 @@ export type ReadNetworkStatus401 = unknown;
 export type ReadNetworkStatus403 = unknown;
 
 /**
+ * @type unknown
+ */
+export type ReadNetworkStatus410 = unknown;
+
+/**
  * @type object
  */
 export type ReadNetworkRequestConfig = {
@@ -28376,6 +28718,7 @@ export type ReadNetworkResponses = {
 	"400": ReadNetworkStatus400;
 	"401": ReadNetworkStatus401;
 	"403": ReadNetworkStatus403;
+	"410": ReadNetworkStatus410;
 };
 
 /**
@@ -28385,7 +28728,8 @@ export type ReadNetworkResponse =
 	| ReadNetworkStatus200
 	| ReadNetworkStatus400
 	| ReadNetworkStatus401
-	| ReadNetworkStatus403;
+	| ReadNetworkStatus403
+	| ReadNetworkStatus410;
 
 /**
  * @type unknown
@@ -28418,6 +28762,11 @@ export type CreateConnectorStatus404 = unknown;
 export type CreateConnectorStatus409 = unknown;
 
 /**
+ * @type unknown
+ */
+export type CreateConnectorStatus410 = unknown;
+
+/**
  * @type object
  */
 export type CreateConnectorRequestConfig = {
@@ -28441,6 +28790,7 @@ export type CreateConnectorResponses = {
 	"403": CreateConnectorStatus403;
 	"404": CreateConnectorStatus404;
 	"409": CreateConnectorStatus409;
+	"410": CreateConnectorStatus410;
 };
 
 /**
@@ -28452,7 +28802,8 @@ export type CreateConnectorResponse =
 	| CreateConnectorStatus401
 	| CreateConnectorStatus403
 	| CreateConnectorStatus404
-	| CreateConnectorStatus409;
+	| CreateConnectorStatus409
+	| CreateConnectorStatus410;
 
 /**
  * @type string
@@ -28487,17 +28838,17 @@ export type GetConnectorTokenStatus404 = unknown;
 /**
  * @type unknown
  */
+export type GetConnectorTokenStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type GetConnectorTokenStatus422 = unknown;
 
 /**
  * @type unknown
  */
 export type GetConnectorTokenStatus429 = unknown;
-
-/**
- * @type unknown
- */
-export type GetConnectorTokenStatus504 = unknown;
 
 /**
  * @type object
@@ -28527,9 +28878,9 @@ export type GetConnectorTokenResponses = {
 	"401": GetConnectorTokenStatus401;
 	"403": GetConnectorTokenStatus403;
 	"404": GetConnectorTokenStatus404;
+	"410": GetConnectorTokenStatus410;
 	"422": GetConnectorTokenStatus422;
 	"429": GetConnectorTokenStatus429;
-	"504": GetConnectorTokenStatus504;
 };
 
 /**
@@ -28541,9 +28892,9 @@ export type GetConnectorTokenResponse =
 	| GetConnectorTokenStatus401
 	| GetConnectorTokenStatus403
 	| GetConnectorTokenStatus404
+	| GetConnectorTokenStatus410
 	| GetConnectorTokenStatus422
-	| GetConnectorTokenStatus429
-	| GetConnectorTokenStatus504;
+	| GetConnectorTokenStatus429;
 
 /**
  * @type string
@@ -28578,12 +28929,12 @@ export type ImportConnectorTokensStatus404 = unknown;
 /**
  * @type unknown
  */
-export type ImportConnectorTokensStatus422 = unknown;
+export type ImportConnectorTokensStatus410 = unknown;
 
 /**
  * @type unknown
  */
-export type ImportConnectorTokensStatus504 = unknown;
+export type ImportConnectorTokensStatus422 = unknown;
 
 /**
  * @type object
@@ -28613,8 +28964,8 @@ export type ImportConnectorTokensResponses = {
 	"401": ImportConnectorTokensStatus401;
 	"403": ImportConnectorTokensStatus403;
 	"404": ImportConnectorTokensStatus404;
+	"410": ImportConnectorTokensStatus410;
 	"422": ImportConnectorTokensStatus422;
-	"504": ImportConnectorTokensStatus504;
 };
 
 /**
@@ -28626,8 +28977,8 @@ export type ImportConnectorTokensResponse =
 	| ImportConnectorTokensStatus401
 	| ImportConnectorTokensStatus403
 	| ImportConnectorTokensStatus404
-	| ImportConnectorTokensStatus422
-	| ImportConnectorTokensStatus504;
+	| ImportConnectorTokensStatus410
+	| ImportConnectorTokensStatus422;
 
 /**
  * @type string
@@ -28660,6 +29011,11 @@ export type CreateConnectorAuthorizationRequestStatus403 = unknown;
 export type CreateConnectorAuthorizationRequestStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type CreateConnectorAuthorizationRequestStatus410 = unknown;
+
+/**
  * @type object
  */
 export type CreateConnectorAuthorizationRequestRequestConfig = {
@@ -28687,6 +29043,7 @@ export type CreateConnectorAuthorizationRequestResponses = {
 	"401": CreateConnectorAuthorizationRequestStatus401;
 	"403": CreateConnectorAuthorizationRequestStatus403;
 	"404": CreateConnectorAuthorizationRequestStatus404;
+	"410": CreateConnectorAuthorizationRequestStatus410;
 };
 
 /**
@@ -28697,7 +29054,8 @@ export type CreateConnectorAuthorizationRequestResponse =
 	| CreateConnectorAuthorizationRequestStatus400
 	| CreateConnectorAuthorizationRequestStatus401
 	| CreateConnectorAuthorizationRequestStatus403
-	| CreateConnectorAuthorizationRequestStatus404;
+	| CreateConnectorAuthorizationRequestStatus404
+	| CreateConnectorAuthorizationRequestStatus410;
 
 /**
  * @description The unique identifier or hostname of the deployment.
@@ -28804,6 +29162,11 @@ export type GetDeploymentEventsStatus403 = unknown;
 /**
  * @type unknown
  */
+export type GetDeploymentEventsStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type GetDeploymentEventsStatus500 = unknown;
 
 /**
@@ -28850,6 +29213,7 @@ export type GetDeploymentEventsResponses = {
 	"400": GetDeploymentEventsStatus400;
 	"401": GetDeploymentEventsStatus401;
 	"403": GetDeploymentEventsStatus403;
+	"410": GetDeploymentEventsStatus410;
 	"500": GetDeploymentEventsStatus500;
 };
 
@@ -28861,6 +29225,7 @@ export type GetDeploymentEventsResponse =
 	| GetDeploymentEventsStatus400
 	| GetDeploymentEventsStatus401
 	| GetDeploymentEventsStatus403
+	| GetDeploymentEventsStatus410
 	| GetDeploymentEventsStatus500;
 
 /**
@@ -28904,6 +29269,11 @@ export type UpdateIntegrationDeploymentActionStatus401 = unknown;
 export type UpdateIntegrationDeploymentActionStatus403 = unknown;
 
 /**
+ * @type unknown
+ */
+export type UpdateIntegrationDeploymentActionStatus410 = unknown;
+
+/**
  * @type object
  */
 export type UpdateIntegrationDeploymentActionRequestConfig = {
@@ -28933,6 +29303,7 @@ export type UpdateIntegrationDeploymentActionResponses = {
 	"400": UpdateIntegrationDeploymentActionStatus400;
 	"401": UpdateIntegrationDeploymentActionStatus401;
 	"403": UpdateIntegrationDeploymentActionStatus403;
+	"410": UpdateIntegrationDeploymentActionStatus410;
 };
 
 /**
@@ -28942,7 +29313,8 @@ export type UpdateIntegrationDeploymentActionResponse =
 	| UpdateIntegrationDeploymentActionStatus202
 	| UpdateIntegrationDeploymentActionStatus400
 	| UpdateIntegrationDeploymentActionStatus401
-	| UpdateIntegrationDeploymentActionStatus403;
+	| UpdateIntegrationDeploymentActionStatus403
+	| UpdateIntegrationDeploymentActionStatus410;
 
 /**
  * @description The unique identifier or hostname of the deployment.
@@ -28995,6 +29367,11 @@ export type GetDeploymentStatus404 = unknown;
 /**
  * @type unknown
  */
+export type GetDeploymentStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type GetDeploymentStatus429 = unknown;
 
 /**
@@ -29033,6 +29410,7 @@ export type GetDeploymentResponses = {
 	"400": GetDeploymentStatus400;
 	"403": GetDeploymentStatus403;
 	"404": GetDeploymentStatus404;
+	"410": GetDeploymentStatus410;
 	"429": GetDeploymentStatus429;
 };
 
@@ -29044,6 +29422,7 @@ export type GetDeploymentResponse =
 	| GetDeploymentStatus400
 	| GetDeploymentStatus403
 	| GetDeploymentStatus404
+	| GetDeploymentStatus410
 	| GetDeploymentStatus429;
 
 /**
@@ -29110,6 +29489,11 @@ export type CreateDeploymentStatus409 = unknown;
 /**
  * @type unknown
  */
+export type CreateDeploymentStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type CreateDeploymentStatus426 = unknown;
 
 /**
@@ -29164,6 +29548,7 @@ export type CreateDeploymentResponses = {
 	"403": CreateDeploymentStatus403;
 	"404": CreateDeploymentStatus404;
 	"409": CreateDeploymentStatus409;
+	"410": CreateDeploymentStatus410;
 	"426": CreateDeploymentStatus426;
 	"429": CreateDeploymentStatus429;
 	"500": CreateDeploymentStatus500;
@@ -29181,6 +29566,7 @@ export type CreateDeploymentResponse =
 	| CreateDeploymentStatus403
 	| CreateDeploymentStatus404
 	| CreateDeploymentStatus409
+	| CreateDeploymentStatus410
 	| CreateDeploymentStatus426
 	| CreateDeploymentStatus429
 	| CreateDeploymentStatus500
@@ -29233,6 +29619,11 @@ export type CancelDeploymentStatus403 = unknown;
 export type CancelDeploymentStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type CancelDeploymentStatus410 = unknown;
+
+/**
  * @type object
  */
 export type CancelDeploymentRequestConfig = {
@@ -29268,6 +29659,7 @@ export type CancelDeploymentResponses = {
 	"401": CancelDeploymentStatus401;
 	"403": CancelDeploymentStatus403;
 	"404": CancelDeploymentStatus404;
+	"410": CancelDeploymentStatus410;
 };
 
 /**
@@ -29278,7 +29670,8 @@ export type CancelDeploymentResponse =
 	| CancelDeploymentStatus400
 	| CancelDeploymentStatus401
 	| CancelDeploymentStatus403
-	| CancelDeploymentStatus404;
+	| CancelDeploymentStatus404
+	| CancelDeploymentStatus410;
 
 /**
  * @example example.com
@@ -29347,6 +29740,11 @@ export type GetRecordsStatus403 = unknown;
 export type GetRecordsStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type GetRecordsStatus410 = unknown;
+
+/**
  * @type object
  */
 export type GetRecordsRequestConfig = {
@@ -29385,6 +29783,7 @@ export type GetRecordsResponses = {
 	"401": GetRecordsStatus401;
 	"403": GetRecordsStatus403;
 	"404": GetRecordsStatus404;
+	"410": GetRecordsStatus410;
 };
 
 /**
@@ -29395,7 +29794,8 @@ export type GetRecordsResponse =
 	| GetRecordsStatus400
 	| GetRecordsStatus401
 	| GetRecordsStatus403
-	| GetRecordsStatus404;
+	| GetRecordsStatus404
+	| GetRecordsStatus410;
 
 /**
  * @description The domain used to create the DNS record.
@@ -29454,6 +29854,11 @@ export type CreateRecordStatus404 = unknown;
 export type CreateRecordStatus409 = unknown;
 
 /**
+ * @type unknown
+ */
+export type CreateRecordStatus410 = unknown;
+
+/**
  * @type object
  */
 export type CreateRecordRequestConfig = {
@@ -29491,6 +29896,7 @@ export type CreateRecordResponses = {
 	"403": CreateRecordStatus403;
 	"404": CreateRecordStatus404;
 	"409": CreateRecordStatus409;
+	"410": CreateRecordStatus410;
 };
 
 /**
@@ -29503,7 +29909,8 @@ export type CreateRecordResponse =
 	| CreateRecordStatus402
 	| CreateRecordStatus403
 	| CreateRecordStatus404
-	| CreateRecordStatus409;
+	| CreateRecordStatus409
+	| CreateRecordStatus410;
 
 /**
  * @description The id of the DNS record
@@ -29562,6 +29969,11 @@ export type UpdateRecordStatus404 = unknown;
 export type UpdateRecordStatus409 = unknown;
 
 /**
+ * @type unknown
+ */
+export type UpdateRecordStatus410 = unknown;
+
+/**
  * @type object
  */
 export type UpdateRecordRequestConfig = {
@@ -29599,6 +30011,7 @@ export type UpdateRecordResponses = {
 	"403": UpdateRecordStatus403;
 	"404": UpdateRecordStatus404;
 	"409": UpdateRecordStatus409;
+	"410": UpdateRecordStatus410;
 };
 
 /**
@@ -29611,7 +30024,8 @@ export type UpdateRecordResponse =
 	| UpdateRecordStatus402
 	| UpdateRecordStatus403
 	| UpdateRecordStatus404
-	| UpdateRecordStatus409;
+	| UpdateRecordStatus409
+	| UpdateRecordStatus410;
 
 /**
  * @type string
@@ -29651,6 +30065,11 @@ export type ReplaceDomainsByDomainRecordsStatus409 = unknown;
 /**
  * @type unknown
  */
+export type ReplaceDomainsByDomainRecordsStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type ReplaceDomainsByDomainRecordsStatus415 = unknown;
 
 /**
@@ -29682,6 +30101,7 @@ export type ReplaceDomainsByDomainRecordsResponses = {
 	"403": ReplaceDomainsByDomainRecordsStatus403;
 	"404": ReplaceDomainsByDomainRecordsStatus404;
 	"409": ReplaceDomainsByDomainRecordsStatus409;
+	"410": ReplaceDomainsByDomainRecordsStatus410;
 	"415": ReplaceDomainsByDomainRecordsStatus415;
 };
 
@@ -29695,6 +30115,7 @@ export type ReplaceDomainsByDomainRecordsResponse =
 	| ReplaceDomainsByDomainRecordsStatus403
 	| ReplaceDomainsByDomainRecordsStatus404
 	| ReplaceDomainsByDomainRecordsStatus409
+	| ReplaceDomainsByDomainRecordsStatus410
 	| ReplaceDomainsByDomainRecordsStatus415;
 
 /**
@@ -29728,6 +30149,11 @@ export type GetDomainsRecordsByRecordIdStatus403 = unknown;
 export type GetDomainsRecordsByRecordIdStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type GetDomainsRecordsByRecordIdStatus410 = unknown;
+
+/**
  * @type object
  */
 export type GetDomainsRecordsByRecordIdRequestConfig = {
@@ -29755,6 +30181,7 @@ export type GetDomainsRecordsByRecordIdResponses = {
 	"401": GetDomainsRecordsByRecordIdStatus401;
 	"403": GetDomainsRecordsByRecordIdStatus403;
 	"404": GetDomainsRecordsByRecordIdStatus404;
+	"410": GetDomainsRecordsByRecordIdStatus410;
 };
 
 /**
@@ -29765,7 +30192,8 @@ export type GetDomainsRecordsByRecordIdResponse =
 	| GetDomainsRecordsByRecordIdStatus400
 	| GetDomainsRecordsByRecordIdStatus401
 	| GetDomainsRecordsByRecordIdStatus403
-	| GetDomainsRecordsByRecordIdStatus404;
+	| GetDomainsRecordsByRecordIdStatus404
+	| GetDomainsRecordsByRecordIdStatus410;
 
 /**
  * @example example.com
@@ -29819,6 +30247,11 @@ export type RemoveRecordStatus403 = unknown;
 export type RemoveRecordStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type RemoveRecordStatus410 = unknown;
+
+/**
  * @type object
  */
 export type RemoveRecordRequestConfig = {
@@ -29855,6 +30288,7 @@ export type RemoveRecordResponses = {
 	"401": RemoveRecordStatus401;
 	"403": RemoveRecordStatus403;
 	"404": RemoveRecordStatus404;
+	"410": RemoveRecordStatus410;
 };
 
 /**
@@ -29865,7 +30299,8 @@ export type RemoveRecordResponse =
 	| RemoveRecordStatus400
 	| RemoveRecordStatus401
 	| RemoveRecordStatus403
-	| RemoveRecordStatus404;
+	| RemoveRecordStatus404
+	| RemoveRecordStatus410;
 
 /**
  * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
@@ -31498,6 +31933,11 @@ export type GetDomainConfigStatus401 = unknown;
 export type GetDomainConfigStatus403 = unknown;
 
 /**
+ * @type unknown
+ */
+export type GetDomainConfigStatus410 = unknown;
+
+/**
  * @type object
  */
 export type GetDomainConfigRequestConfig = {
@@ -31534,6 +31974,7 @@ export type GetDomainConfigResponses = {
 	"400": GetDomainConfigStatus400;
 	"401": GetDomainConfigStatus401;
 	"403": GetDomainConfigStatus403;
+	"410": GetDomainConfigStatus410;
 };
 
 /**
@@ -31543,7 +31984,8 @@ export type GetDomainConfigResponse =
 	| GetDomainConfigStatus200
 	| GetDomainConfigStatus400
 	| GetDomainConfigStatus401
-	| GetDomainConfigStatus403;
+	| GetDomainConfigStatus403
+	| GetDomainConfigStatus410;
 
 /**
  * @description The domain name to get the verification record for
@@ -31592,6 +32034,11 @@ export type GetDomainVerificationRecordStatus403 = unknown;
 export type GetDomainVerificationRecordStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type GetDomainVerificationRecordStatus410 = unknown;
+
+/**
  * @type object
  */
 export type GetDomainVerificationRecordRequestConfig = {
@@ -31627,6 +32074,7 @@ export type GetDomainVerificationRecordResponses = {
 	"401": GetDomainVerificationRecordStatus401;
 	"403": GetDomainVerificationRecordStatus403;
 	"404": GetDomainVerificationRecordStatus404;
+	"410": GetDomainVerificationRecordStatus410;
 };
 
 /**
@@ -31637,7 +32085,8 @@ export type GetDomainVerificationRecordResponse =
 	| GetDomainVerificationRecordStatus400
 	| GetDomainVerificationRecordStatus401
 	| GetDomainVerificationRecordStatus403
-	| GetDomainVerificationRecordStatus404;
+	| GetDomainVerificationRecordStatus404
+	| GetDomainVerificationRecordStatus410;
 
 /**
  * @description The domain name to claim ownership of
@@ -31686,6 +32135,11 @@ export type ClaimDomainOwnershipStatus403 = unknown;
 export type ClaimDomainOwnershipStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type ClaimDomainOwnershipStatus410 = unknown;
+
+/**
  * @type object
  */
 export type ClaimDomainOwnershipRequestConfig = {
@@ -31721,6 +32175,7 @@ export type ClaimDomainOwnershipResponses = {
 	"401": ClaimDomainOwnershipStatus401;
 	"403": ClaimDomainOwnershipStatus403;
 	"404": ClaimDomainOwnershipStatus404;
+	"410": ClaimDomainOwnershipStatus410;
 };
 
 /**
@@ -31731,7 +32186,8 @@ export type ClaimDomainOwnershipResponse =
 	| ClaimDomainOwnershipStatus400
 	| ClaimDomainOwnershipStatus401
 	| ClaimDomainOwnershipStatus403
-	| ClaimDomainOwnershipStatus404;
+	| ClaimDomainOwnershipStatus404
+	| ClaimDomainOwnershipStatus410;
 
 /**
  * @description The apex domain name.
@@ -31801,6 +32257,11 @@ export type GetDomainProjectDomainsStatus403 = unknown;
 export type GetDomainProjectDomainsStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type GetDomainProjectDomainsStatus410 = unknown;
+
+/**
  * @type object
  */
 export type GetDomainProjectDomainsRequestConfig = {
@@ -31839,6 +32300,7 @@ export type GetDomainProjectDomainsResponses = {
 	"401": GetDomainProjectDomainsStatus401;
 	"403": GetDomainProjectDomainsStatus403;
 	"404": GetDomainProjectDomainsStatus404;
+	"410": GetDomainProjectDomainsStatus410;
 };
 
 /**
@@ -31849,7 +32311,8 @@ export type GetDomainProjectDomainsResponse =
 	| GetDomainProjectDomainsStatus400
 	| GetDomainProjectDomainsStatus401
 	| GetDomainProjectDomainsStatus403
-	| GetDomainProjectDomainsStatus404;
+	| GetDomainProjectDomainsStatus404
+	| GetDomainProjectDomainsStatus410;
 
 /**
  * @description The name of the domain.
@@ -31898,6 +32361,11 @@ export type GetDomainStatus403 = unknown;
 export type GetDomainStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type GetDomainStatus410 = unknown;
+
+/**
  * @type object
  */
 export type GetDomainRequestConfig = {
@@ -31933,6 +32401,7 @@ export type GetDomainResponses = {
 	"401": GetDomainStatus401;
 	"403": GetDomainStatus403;
 	"404": GetDomainStatus404;
+	"410": GetDomainStatus410;
 };
 
 /**
@@ -31943,7 +32412,8 @@ export type GetDomainResponse =
 	| GetDomainStatus400
 	| GetDomainStatus401
 	| GetDomainStatus403
-	| GetDomainStatus404;
+	| GetDomainStatus404
+	| GetDomainStatus410;
 
 /**
  * @description Maximum number of domains to list from a request.
@@ -32006,6 +32476,11 @@ export type GetDomainsStatus403 = unknown;
 export type GetDomainsStatus409 = unknown;
 
 /**
+ * @type unknown
+ */
+export type GetDomainsStatus410 = unknown;
+
+/**
  * @type object
  */
 export type GetDomainsRequestConfig = {
@@ -32039,6 +32514,7 @@ export type GetDomainsResponses = {
 	"401": GetDomainsStatus401;
 	"403": GetDomainsStatus403;
 	"409": GetDomainsStatus409;
+	"410": GetDomainsStatus410;
 };
 
 /**
@@ -32049,7 +32525,8 @@ export type GetDomainsResponse =
 	| GetDomainsStatus400
 	| GetDomainsStatus401
 	| GetDomainsStatus403
-	| GetDomainsStatus409;
+	| GetDomainsStatus409
+	| GetDomainsStatus410;
 
 /**
  * @description The Team identifier to perform the request on behalf of.
@@ -32101,6 +32578,11 @@ export type CreateOrTransferDomainStatus404 = unknown;
 export type CreateOrTransferDomainStatus409 = unknown;
 
 /**
+ * @type unknown
+ */
+export type CreateOrTransferDomainStatus410 = unknown;
+
+/**
  * @type object
  */
 export type CreateOrTransferDomainRequestConfig = {
@@ -32133,6 +32615,7 @@ export type CreateOrTransferDomainResponses = {
 	"403": CreateOrTransferDomainStatus403;
 	"404": CreateOrTransferDomainStatus404;
 	"409": CreateOrTransferDomainStatus409;
+	"410": CreateOrTransferDomainStatus410;
 };
 
 /**
@@ -32145,7 +32628,8 @@ export type CreateOrTransferDomainResponse =
 	| CreateOrTransferDomainStatus402
 	| CreateOrTransferDomainStatus403
 	| CreateOrTransferDomainStatus404
-	| CreateOrTransferDomainStatus409;
+	| CreateOrTransferDomainStatus409
+	| CreateOrTransferDomainStatus410;
 
 /**
  * @type string
@@ -32199,6 +32683,11 @@ export type PatchDomainStatus409 = unknown;
 /**
  * @type unknown
  */
+export type PatchDomainStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type PatchDomainStatus500 = unknown;
 
 /**
@@ -32238,6 +32727,7 @@ export type PatchDomainResponses = {
 	"403": PatchDomainStatus403;
 	"404": PatchDomainStatus404;
 	"409": PatchDomainStatus409;
+	"410": PatchDomainStatus410;
 	"500": PatchDomainStatus500;
 };
 
@@ -32251,6 +32741,7 @@ export type PatchDomainResponse =
 	| PatchDomainStatus403
 	| PatchDomainStatus404
 	| PatchDomainStatus409
+	| PatchDomainStatus410
 	| PatchDomainStatus500;
 
 /**
@@ -32305,6 +32796,11 @@ export type DeleteDomainStatus404 = unknown;
 export type DeleteDomainStatus409 = unknown;
 
 /**
+ * @type unknown
+ */
+export type DeleteDomainStatus410 = unknown;
+
+/**
  * @type object
  */
 export type DeleteDomainRequestConfig = {
@@ -32341,6 +32837,7 @@ export type DeleteDomainResponses = {
 	"403": DeleteDomainStatus403;
 	"404": DeleteDomainStatus404;
 	"409": DeleteDomainStatus409;
+	"410": DeleteDomainStatus410;
 };
 
 /**
@@ -32352,7 +32849,8 @@ export type DeleteDomainResponse =
 	| DeleteDomainStatus401
 	| DeleteDomainStatus403
 	| DeleteDomainStatus404
-	| DeleteDomainStatus409;
+	| DeleteDomainStatus409
+	| DeleteDomainStatus410;
 
 /**
  * @type string
@@ -32399,6 +32897,11 @@ export type GetConfigurableLogDrainStatus403 = unknown;
 export type GetConfigurableLogDrainStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type GetConfigurableLogDrainStatus410 = unknown;
+
+/**
  * @type object
  */
 export type GetConfigurableLogDrainRequestConfig = {
@@ -32434,6 +32937,7 @@ export type GetConfigurableLogDrainResponses = {
 	"401": GetConfigurableLogDrainStatus401;
 	"403": GetConfigurableLogDrainStatus403;
 	"404": GetConfigurableLogDrainStatus404;
+	"410": GetConfigurableLogDrainStatus410;
 };
 
 /**
@@ -32444,7 +32948,8 @@ export type GetConfigurableLogDrainResponse =
 	| GetConfigurableLogDrainStatus400
 	| GetConfigurableLogDrainStatus401
 	| GetConfigurableLogDrainStatus403
-	| GetConfigurableLogDrainStatus404;
+	| GetConfigurableLogDrainStatus404
+	| GetConfigurableLogDrainStatus410;
 
 /**
  * @type string
@@ -32491,6 +32996,11 @@ export type DeleteConfigurableLogDrainStatus403 = unknown;
 export type DeleteConfigurableLogDrainStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type DeleteConfigurableLogDrainStatus410 = unknown;
+
+/**
  * @type object
  */
 export type DeleteConfigurableLogDrainRequestConfig = {
@@ -32526,6 +33036,7 @@ export type DeleteConfigurableLogDrainResponses = {
 	"401": DeleteConfigurableLogDrainStatus401;
 	"403": DeleteConfigurableLogDrainStatus403;
 	"404": DeleteConfigurableLogDrainStatus404;
+	"410": DeleteConfigurableLogDrainStatus410;
 };
 
 /**
@@ -32536,7 +33047,8 @@ export type DeleteConfigurableLogDrainResponse =
 	| DeleteConfigurableLogDrainStatus400
 	| DeleteConfigurableLogDrainStatus401
 	| DeleteConfigurableLogDrainStatus403
-	| DeleteConfigurableLogDrainStatus404;
+	| DeleteConfigurableLogDrainStatus404
+	| DeleteConfigurableLogDrainStatus410;
 
 /**
  * @pattern ^[a-zA-z0-9_]+$
@@ -32595,6 +33107,11 @@ export type GetAllLogDrainsStatus403 = unknown;
 export type GetAllLogDrainsStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type GetAllLogDrainsStatus410 = unknown;
+
+/**
  * @type object
  */
 export type GetAllLogDrainsRequestConfig = {
@@ -32628,6 +33145,7 @@ export type GetAllLogDrainsResponses = {
 	"401": GetAllLogDrainsStatus401;
 	"403": GetAllLogDrainsStatus403;
 	"404": GetAllLogDrainsStatus404;
+	"410": GetAllLogDrainsStatus410;
 };
 
 /**
@@ -32638,7 +33156,8 @@ export type GetAllLogDrainsResponse =
 	| GetAllLogDrainsStatus400
 	| GetAllLogDrainsStatus401
 	| GetAllLogDrainsStatus403
-	| GetAllLogDrainsStatus404;
+	| GetAllLogDrainsStatus404
+	| GetAllLogDrainsStatus410;
 
 /**
  * @description The Team identifier to perform the request on behalf of.
@@ -32675,6 +33194,11 @@ export type CreateConfigurableLogDrainStatus401 = unknown;
 export type CreateConfigurableLogDrainStatus403 = unknown;
 
 /**
+ * @type unknown
+ */
+export type CreateConfigurableLogDrainStatus410 = unknown;
+
+/**
  * @type object
  */
 export type CreateConfigurableLogDrainRequestConfig = {
@@ -32704,6 +33228,7 @@ export type CreateConfigurableLogDrainResponses = {
 	"400": CreateConfigurableLogDrainStatus400;
 	"401": CreateConfigurableLogDrainStatus401;
 	"403": CreateConfigurableLogDrainStatus403;
+	"410": CreateConfigurableLogDrainStatus410;
 };
 
 /**
@@ -32713,7 +33238,8 @@ export type CreateConfigurableLogDrainResponse =
 	| CreateConfigurableLogDrainStatus200
 	| CreateConfigurableLogDrainStatus400
 	| CreateConfigurableLogDrainStatus401
-	| CreateConfigurableLogDrainStatus403;
+	| CreateConfigurableLogDrainStatus403
+	| CreateConfigurableLogDrainStatus410;
 
 /**
  * @description The Team identifier to perform the request on behalf of.
@@ -32755,6 +33281,11 @@ export type CreateDrainStatus402 = unknown;
 export type CreateDrainStatus403 = unknown;
 
 /**
+ * @type unknown
+ */
+export type CreateDrainStatus410 = unknown;
+
+/**
  * @type object
  */
 export type CreateDrainRequestConfig = {
@@ -32785,6 +33316,7 @@ export type CreateDrainResponses = {
 	"401": CreateDrainStatus401;
 	"402": CreateDrainStatus402;
 	"403": CreateDrainStatus403;
+	"410": CreateDrainStatus410;
 };
 
 /**
@@ -32795,7 +33327,8 @@ export type CreateDrainResponse =
 	| CreateDrainStatus400
 	| CreateDrainStatus401
 	| CreateDrainStatus402
-	| CreateDrainStatus403;
+	| CreateDrainStatus403
+	| CreateDrainStatus410;
 
 /**
  * @type string | undefined
@@ -32848,6 +33381,11 @@ export type GetDrainsStatus403 = unknown;
 export type GetDrainsStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type GetDrainsStatus410 = unknown;
+
+/**
  * @type object
  */
 export type GetDrainsRequestConfig = {
@@ -32880,6 +33418,7 @@ export type GetDrainsResponses = {
 	"401": GetDrainsStatus401;
 	"403": GetDrainsStatus403;
 	"404": GetDrainsStatus404;
+	"410": GetDrainsStatus410;
 };
 
 /**
@@ -32890,7 +33429,8 @@ export type GetDrainsResponse =
 	| GetDrainsStatus400
 	| GetDrainsStatus401
 	| GetDrainsStatus403
-	| GetDrainsStatus404;
+	| GetDrainsStatus404
+	| GetDrainsStatus410;
 
 /**
  * @type string
@@ -32937,6 +33477,11 @@ export type DeleteDrainStatus403 = unknown;
 export type DeleteDrainStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type DeleteDrainStatus410 = unknown;
+
+/**
  * @type object
  */
 export type DeleteDrainRequestConfig = {
@@ -32972,6 +33517,7 @@ export type DeleteDrainResponses = {
 	"401": DeleteDrainStatus401;
 	"403": DeleteDrainStatus403;
 	"404": DeleteDrainStatus404;
+	"410": DeleteDrainStatus410;
 };
 
 /**
@@ -32982,7 +33528,8 @@ export type DeleteDrainResponse =
 	| DeleteDrainStatus400
 	| DeleteDrainStatus401
 	| DeleteDrainStatus403
-	| DeleteDrainStatus404;
+	| DeleteDrainStatus404
+	| DeleteDrainStatus410;
 
 /**
  * @type string
@@ -33029,6 +33576,11 @@ export type GetDrainStatus403 = unknown;
 export type GetDrainStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type GetDrainStatus410 = unknown;
+
+/**
  * @type object
  */
 export type GetDrainRequestConfig = {
@@ -33064,6 +33616,7 @@ export type GetDrainResponses = {
 	"401": GetDrainStatus401;
 	"403": GetDrainStatus403;
 	"404": GetDrainStatus404;
+	"410": GetDrainStatus410;
 };
 
 /**
@@ -33074,7 +33627,8 @@ export type GetDrainResponse =
 	| GetDrainStatus400
 	| GetDrainStatus401
 	| GetDrainStatus403
-	| GetDrainStatus404;
+	| GetDrainStatus404
+	| GetDrainStatus410;
 
 /**
  * @type string
@@ -33126,6 +33680,11 @@ export type UpdateDrainStatus403 = unknown;
 export type UpdateDrainStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type UpdateDrainStatus410 = unknown;
+
+/**
  * @type object
  */
 export type UpdateDrainRequestConfig = {
@@ -33162,6 +33721,7 @@ export type UpdateDrainResponses = {
 	"402": UpdateDrainStatus402;
 	"403": UpdateDrainStatus403;
 	"404": UpdateDrainStatus404;
+	"410": UpdateDrainStatus410;
 };
 
 /**
@@ -33173,7 +33733,8 @@ export type UpdateDrainResponse =
 	| UpdateDrainStatus401
 	| UpdateDrainStatus402
 	| UpdateDrainStatus403
-	| UpdateDrainStatus404;
+	| UpdateDrainStatus404
+	| UpdateDrainStatus410;
 
 /**
  * @description The Team identifier to perform the request on behalf of.
@@ -33215,6 +33776,11 @@ export type TestDrainStatus402 = unknown;
 export type TestDrainStatus403 = unknown;
 
 /**
+ * @type unknown
+ */
+export type TestDrainStatus410 = unknown;
+
+/**
  * @type object
  */
 export type TestDrainRequestConfig = {
@@ -33245,6 +33811,7 @@ export type TestDrainResponses = {
 	"401": TestDrainStatus401;
 	"402": TestDrainStatus402;
 	"403": TestDrainStatus403;
+	"410": TestDrainStatus410;
 };
 
 /**
@@ -33255,7 +33822,8 @@ export type TestDrainResponse =
 	| TestDrainStatus400
 	| TestDrainStatus401
 	| TestDrainStatus402
-	| TestDrainStatus403;
+	| TestDrainStatus403
+	| TestDrainStatus410;
 
 /**
  * @type string
@@ -33302,6 +33870,11 @@ export type InvalidateByTagsStatus403 = unknown;
 export type InvalidateByTagsStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type InvalidateByTagsStatus410 = unknown;
+
+/**
  * @type object
  */
 export type InvalidateByTagsRequestConfig = {
@@ -33333,6 +33906,7 @@ export type InvalidateByTagsResponses = {
 	"401": InvalidateByTagsStatus401;
 	"403": InvalidateByTagsStatus403;
 	"404": InvalidateByTagsStatus404;
+	"410": InvalidateByTagsStatus410;
 };
 
 /**
@@ -33343,7 +33917,8 @@ export type InvalidateByTagsResponse =
 	| InvalidateByTagsStatus400
 	| InvalidateByTagsStatus401
 	| InvalidateByTagsStatus403
-	| InvalidateByTagsStatus404;
+	| InvalidateByTagsStatus404
+	| InvalidateByTagsStatus410;
 
 /**
  * @type string
@@ -33390,6 +33965,11 @@ export type DangerouslyDeleteByTagsStatus403 = unknown;
 export type DangerouslyDeleteByTagsStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type DangerouslyDeleteByTagsStatus410 = unknown;
+
+/**
  * @type object
  */
 export type DangerouslyDeleteByTagsRequestConfig = {
@@ -33421,6 +34001,7 @@ export type DangerouslyDeleteByTagsResponses = {
 	"401": DangerouslyDeleteByTagsStatus401;
 	"403": DangerouslyDeleteByTagsStatus403;
 	"404": DangerouslyDeleteByTagsStatus404;
+	"410": DangerouslyDeleteByTagsStatus410;
 };
 
 /**
@@ -33431,7 +34012,8 @@ export type DangerouslyDeleteByTagsResponse =
 	| DangerouslyDeleteByTagsStatus400
 	| DangerouslyDeleteByTagsStatus401
 	| DangerouslyDeleteByTagsStatus403
-	| DangerouslyDeleteByTagsStatus404;
+	| DangerouslyDeleteByTagsStatus404
+	| DangerouslyDeleteByTagsStatus410;
 
 /**
  * @type string
@@ -33483,6 +34065,11 @@ export type InvalidateBySrcImagesStatus403 = unknown;
 export type InvalidateBySrcImagesStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type InvalidateBySrcImagesStatus410 = unknown;
+
+/**
  * @type object
  */
 export type InvalidateBySrcImagesRequestConfig = {
@@ -33515,6 +34102,7 @@ export type InvalidateBySrcImagesResponses = {
 	"402": InvalidateBySrcImagesStatus402;
 	"403": InvalidateBySrcImagesStatus403;
 	"404": InvalidateBySrcImagesStatus404;
+	"410": InvalidateBySrcImagesStatus410;
 };
 
 /**
@@ -33526,7 +34114,8 @@ export type InvalidateBySrcImagesResponse =
 	| InvalidateBySrcImagesStatus401
 	| InvalidateBySrcImagesStatus402
 	| InvalidateBySrcImagesStatus403
-	| InvalidateBySrcImagesStatus404;
+	| InvalidateBySrcImagesStatus404
+	| InvalidateBySrcImagesStatus410;
 
 /**
  * @type string
@@ -33578,6 +34167,11 @@ export type DangerouslyDeleteBySrcImagesStatus403 = unknown;
 export type DangerouslyDeleteBySrcImagesStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type DangerouslyDeleteBySrcImagesStatus410 = unknown;
+
+/**
  * @type object
  */
 export type DangerouslyDeleteBySrcImagesRequestConfig = {
@@ -33610,6 +34204,7 @@ export type DangerouslyDeleteBySrcImagesResponses = {
 	"402": DangerouslyDeleteBySrcImagesStatus402;
 	"403": DangerouslyDeleteBySrcImagesStatus403;
 	"404": DangerouslyDeleteBySrcImagesStatus404;
+	"410": DangerouslyDeleteBySrcImagesStatus410;
 };
 
 /**
@@ -33621,7 +34216,8 @@ export type DangerouslyDeleteBySrcImagesResponse =
 	| DangerouslyDeleteBySrcImagesStatus401
 	| DangerouslyDeleteBySrcImagesStatus402
 	| DangerouslyDeleteBySrcImagesStatus403
-	| DangerouslyDeleteBySrcImagesStatus404;
+	| DangerouslyDeleteBySrcImagesStatus404
+	| DangerouslyDeleteBySrcImagesStatus410;
 
 /**
  * @description The Team identifier to perform the request on behalf of.
@@ -33658,6 +34254,11 @@ export type GetEdgeConfigsStatus401 = unknown;
 export type GetEdgeConfigsStatus403 = unknown;
 
 /**
+ * @type unknown
+ */
+export type GetEdgeConfigsStatus410 = unknown;
+
+/**
  * @type object
  */
 export type GetEdgeConfigsRequestConfig = {
@@ -33687,6 +34288,7 @@ export type GetEdgeConfigsResponses = {
 	"400": GetEdgeConfigsStatus400;
 	"401": GetEdgeConfigsStatus401;
 	"403": GetEdgeConfigsStatus403;
+	"410": GetEdgeConfigsStatus410;
 };
 
 /**
@@ -33696,7 +34298,8 @@ export type GetEdgeConfigsResponse =
 	| GetEdgeConfigsStatus200
 	| GetEdgeConfigsStatus400
 	| GetEdgeConfigsStatus401
-	| GetEdgeConfigsStatus403;
+	| GetEdgeConfigsStatus403
+	| GetEdgeConfigsStatus410;
 
 /**
  * @description The Team identifier to perform the request on behalf of.
@@ -33738,6 +34341,11 @@ export type CreateEdgeConfigStatus402 = unknown;
 export type CreateEdgeConfigStatus403 = unknown;
 
 /**
+ * @type unknown
+ */
+export type CreateEdgeConfigStatus410 = unknown;
+
+/**
  * @type object
  */
 export type CreateEdgeConfigRequestConfig = {
@@ -33768,6 +34376,7 @@ export type CreateEdgeConfigResponses = {
 	"401": CreateEdgeConfigStatus401;
 	"402": CreateEdgeConfigStatus402;
 	"403": CreateEdgeConfigStatus403;
+	"410": CreateEdgeConfigStatus410;
 };
 
 /**
@@ -33778,7 +34387,8 @@ export type CreateEdgeConfigResponse =
 	| CreateEdgeConfigStatus400
 	| CreateEdgeConfigStatus401
 	| CreateEdgeConfigStatus402
-	| CreateEdgeConfigStatus403;
+	| CreateEdgeConfigStatus403
+	| CreateEdgeConfigStatus410;
 
 /**
  * @type string
@@ -33825,6 +34435,11 @@ export type GetEdgeConfigStatus403 = unknown;
 export type GetEdgeConfigStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type GetEdgeConfigStatus410 = unknown;
+
+/**
  * @type object
  */
 export type GetEdgeConfigRequestConfig = {
@@ -33860,6 +34475,7 @@ export type GetEdgeConfigResponses = {
 	"401": GetEdgeConfigStatus401;
 	"403": GetEdgeConfigStatus403;
 	"404": GetEdgeConfigStatus404;
+	"410": GetEdgeConfigStatus410;
 };
 
 /**
@@ -33870,7 +34486,8 @@ export type GetEdgeConfigResponse =
 	| GetEdgeConfigStatus400
 	| GetEdgeConfigStatus401
 	| GetEdgeConfigStatus403
-	| GetEdgeConfigStatus404;
+	| GetEdgeConfigStatus404
+	| GetEdgeConfigStatus410;
 
 /**
  * @type string
@@ -33927,6 +34544,11 @@ export type UpdateEdgeConfigStatus404 = unknown;
 export type UpdateEdgeConfigStatus409 = unknown;
 
 /**
+ * @type unknown
+ */
+export type UpdateEdgeConfigStatus410 = unknown;
+
+/**
  * @type object
  */
 export type UpdateEdgeConfigRequestConfig = {
@@ -33964,6 +34586,7 @@ export type UpdateEdgeConfigResponses = {
 	"403": UpdateEdgeConfigStatus403;
 	"404": UpdateEdgeConfigStatus404;
 	"409": UpdateEdgeConfigStatus409;
+	"410": UpdateEdgeConfigStatus410;
 };
 
 /**
@@ -33976,7 +34599,8 @@ export type UpdateEdgeConfigResponse =
 	| UpdateEdgeConfigStatus402
 	| UpdateEdgeConfigStatus403
 	| UpdateEdgeConfigStatus404
-	| UpdateEdgeConfigStatus409;
+	| UpdateEdgeConfigStatus409
+	| UpdateEdgeConfigStatus410;
 
 /**
  * @type string
@@ -34028,6 +34652,11 @@ export type DeleteEdgeConfigStatus404 = unknown;
 export type DeleteEdgeConfigStatus409 = unknown;
 
 /**
+ * @type unknown
+ */
+export type DeleteEdgeConfigStatus410 = unknown;
+
+/**
  * @type object
  */
 export type DeleteEdgeConfigRequestConfig = {
@@ -34064,6 +34693,7 @@ export type DeleteEdgeConfigResponses = {
 	"403": DeleteEdgeConfigStatus403;
 	"404": DeleteEdgeConfigStatus404;
 	"409": DeleteEdgeConfigStatus409;
+	"410": DeleteEdgeConfigStatus410;
 };
 
 /**
@@ -34075,7 +34705,8 @@ export type DeleteEdgeConfigResponse =
 	| DeleteEdgeConfigStatus401
 	| DeleteEdgeConfigStatus403
 	| DeleteEdgeConfigStatus404
-	| DeleteEdgeConfigStatus409;
+	| DeleteEdgeConfigStatus409
+	| DeleteEdgeConfigStatus410;
 
 /**
  * @pattern ^ecfg_
@@ -34123,6 +34754,11 @@ export type GetEdgeConfigItemsStatus403 = unknown;
 export type GetEdgeConfigItemsStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type GetEdgeConfigItemsStatus410 = unknown;
+
+/**
  * @type object
  */
 export type GetEdgeConfigItemsRequestConfig = {
@@ -34158,6 +34794,7 @@ export type GetEdgeConfigItemsResponses = {
 	"401": GetEdgeConfigItemsStatus401;
 	"403": GetEdgeConfigItemsStatus403;
 	"404": GetEdgeConfigItemsStatus404;
+	"410": GetEdgeConfigItemsStatus410;
 };
 
 /**
@@ -34168,7 +34805,8 @@ export type GetEdgeConfigItemsResponse =
 	| GetEdgeConfigItemsStatus400
 	| GetEdgeConfigItemsStatus401
 	| GetEdgeConfigItemsStatus403
-	| GetEdgeConfigItemsStatus404;
+	| GetEdgeConfigItemsStatus404
+	| GetEdgeConfigItemsStatus410;
 
 /**
  * @pattern ^ecfg_
@@ -34228,6 +34866,11 @@ export type PatchEdgeConfigItemsStatus409 = unknown;
 /**
  * @type unknown
  */
+export type PatchEdgeConfigItemsStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type PatchEdgeConfigItemsStatus412 = unknown;
 
 /**
@@ -34268,6 +34911,7 @@ export type PatchEdgeConfigItemsResponses = {
 	"403": PatchEdgeConfigItemsStatus403;
 	"404": PatchEdgeConfigItemsStatus404;
 	"409": PatchEdgeConfigItemsStatus409;
+	"410": PatchEdgeConfigItemsStatus410;
 	"412": PatchEdgeConfigItemsStatus412;
 };
 
@@ -34282,6 +34926,7 @@ export type PatchEdgeConfigItemsResponse =
 	| PatchEdgeConfigItemsStatus403
 	| PatchEdgeConfigItemsStatus404
 	| PatchEdgeConfigItemsStatus409
+	| PatchEdgeConfigItemsStatus410
 	| PatchEdgeConfigItemsStatus412;
 
 /**
@@ -34329,6 +34974,11 @@ export type GetEdgeConfigSchemaStatus403 = unknown;
 export type GetEdgeConfigSchemaStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type GetEdgeConfigSchemaStatus410 = unknown;
+
+/**
  * @type object
  */
 export type GetEdgeConfigSchemaRequestConfig = {
@@ -34364,6 +35014,7 @@ export type GetEdgeConfigSchemaResponses = {
 	"401": GetEdgeConfigSchemaStatus401;
 	"403": GetEdgeConfigSchemaStatus403;
 	"404": GetEdgeConfigSchemaStatus404;
+	"410": GetEdgeConfigSchemaStatus410;
 };
 
 /**
@@ -34374,7 +35025,8 @@ export type GetEdgeConfigSchemaResponse =
 	| GetEdgeConfigSchemaStatus400
 	| GetEdgeConfigSchemaStatus401
 	| GetEdgeConfigSchemaStatus403
-	| GetEdgeConfigSchemaStatus404;
+	| GetEdgeConfigSchemaStatus404
+	| GetEdgeConfigSchemaStatus410;
 
 /**
  * @type string
@@ -34436,6 +35088,11 @@ export type PatchEdgeConfigSchemaStatus404 = unknown;
 export type PatchEdgeConfigSchemaStatus409 = unknown;
 
 /**
+ * @type unknown
+ */
+export type PatchEdgeConfigSchemaStatus410 = unknown;
+
+/**
  * @type object
  */
 export type PatchEdgeConfigSchemaRequestConfig = {
@@ -34474,6 +35131,7 @@ export type PatchEdgeConfigSchemaResponses = {
 	"403": PatchEdgeConfigSchemaStatus403;
 	"404": PatchEdgeConfigSchemaStatus404;
 	"409": PatchEdgeConfigSchemaStatus409;
+	"410": PatchEdgeConfigSchemaStatus410;
 };
 
 /**
@@ -34486,7 +35144,8 @@ export type PatchEdgeConfigSchemaResponse =
 	| PatchEdgeConfigSchemaStatus402
 	| PatchEdgeConfigSchemaStatus403
 	| PatchEdgeConfigSchemaStatus404
-	| PatchEdgeConfigSchemaStatus409;
+	| PatchEdgeConfigSchemaStatus409
+	| PatchEdgeConfigSchemaStatus410;
 
 /**
  * @type string
@@ -34543,6 +35202,11 @@ export type DeleteEdgeConfigSchemaStatus404 = unknown;
 export type DeleteEdgeConfigSchemaStatus409 = unknown;
 
 /**
+ * @type unknown
+ */
+export type DeleteEdgeConfigSchemaStatus410 = unknown;
+
+/**
  * @type object
  */
 export type DeleteEdgeConfigSchemaRequestConfig = {
@@ -34580,6 +35244,7 @@ export type DeleteEdgeConfigSchemaResponses = {
 	"403": DeleteEdgeConfigSchemaStatus403;
 	"404": DeleteEdgeConfigSchemaStatus404;
 	"409": DeleteEdgeConfigSchemaStatus409;
+	"410": DeleteEdgeConfigSchemaStatus410;
 };
 
 /**
@@ -34592,7 +35257,8 @@ export type DeleteEdgeConfigSchemaResponse =
 	| DeleteEdgeConfigSchemaStatus402
 	| DeleteEdgeConfigSchemaStatus403
 	| DeleteEdgeConfigSchemaStatus404
-	| DeleteEdgeConfigSchemaStatus409;
+	| DeleteEdgeConfigSchemaStatus409
+	| DeleteEdgeConfigSchemaStatus410;
 
 /**
  * @pattern ^ecfg_
@@ -34645,6 +35311,11 @@ export type GetEdgeConfigItemStatus403 = unknown;
 export type GetEdgeConfigItemStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type GetEdgeConfigItemStatus410 = unknown;
+
+/**
  * @type object
  */
 export type GetEdgeConfigItemRequestConfig = {
@@ -34681,6 +35352,7 @@ export type GetEdgeConfigItemResponses = {
 	"401": GetEdgeConfigItemStatus401;
 	"403": GetEdgeConfigItemStatus403;
 	"404": GetEdgeConfigItemStatus404;
+	"410": GetEdgeConfigItemStatus410;
 };
 
 /**
@@ -34691,7 +35363,8 @@ export type GetEdgeConfigItemResponse =
 	| GetEdgeConfigItemStatus400
 	| GetEdgeConfigItemStatus401
 	| GetEdgeConfigItemStatus403
-	| GetEdgeConfigItemStatus404;
+	| GetEdgeConfigItemStatus404
+	| GetEdgeConfigItemStatus410;
 
 /**
  * @type string
@@ -34738,6 +35411,11 @@ export type GetEdgeConfigTokensStatus403 = unknown;
 export type GetEdgeConfigTokensStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type GetEdgeConfigTokensStatus410 = unknown;
+
+/**
  * @type object
  */
 export type GetEdgeConfigTokensRequestConfig = {
@@ -34773,6 +35451,7 @@ export type GetEdgeConfigTokensResponses = {
 	"401": GetEdgeConfigTokensStatus401;
 	"403": GetEdgeConfigTokensStatus403;
 	"404": GetEdgeConfigTokensStatus404;
+	"410": GetEdgeConfigTokensStatus410;
 };
 
 /**
@@ -34783,7 +35462,8 @@ export type GetEdgeConfigTokensResponse =
 	| GetEdgeConfigTokensStatus400
 	| GetEdgeConfigTokensStatus401
 	| GetEdgeConfigTokensStatus403
-	| GetEdgeConfigTokensStatus404;
+	| GetEdgeConfigTokensStatus404
+	| GetEdgeConfigTokensStatus410;
 
 /**
  * @pattern ^ecfg_
@@ -34841,6 +35521,11 @@ export type DeleteEdgeConfigTokensStatus404 = unknown;
 export type DeleteEdgeConfigTokensStatus409 = unknown;
 
 /**
+ * @type unknown
+ */
+export type DeleteEdgeConfigTokensStatus410 = unknown;
+
+/**
  * @type object
  */
 export type DeleteEdgeConfigTokensRequestConfig = {
@@ -34878,6 +35563,7 @@ export type DeleteEdgeConfigTokensResponses = {
 	"403": DeleteEdgeConfigTokensStatus403;
 	"404": DeleteEdgeConfigTokensStatus404;
 	"409": DeleteEdgeConfigTokensStatus409;
+	"410": DeleteEdgeConfigTokensStatus410;
 };
 
 /**
@@ -34890,7 +35576,8 @@ export type DeleteEdgeConfigTokensResponse =
 	| DeleteEdgeConfigTokensStatus402
 	| DeleteEdgeConfigTokensStatus403
 	| DeleteEdgeConfigTokensStatus404
-	| DeleteEdgeConfigTokensStatus409;
+	| DeleteEdgeConfigTokensStatus409
+	| DeleteEdgeConfigTokensStatus410;
 
 /**
  * @type string
@@ -34942,6 +35629,11 @@ export type GetEdgeConfigTokenStatus403 = unknown;
 export type GetEdgeConfigTokenStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type GetEdgeConfigTokenStatus410 = unknown;
+
+/**
  * @type object
  */
 export type GetEdgeConfigTokenRequestConfig = {
@@ -34978,6 +35670,7 @@ export type GetEdgeConfigTokenResponses = {
 	"401": GetEdgeConfigTokenStatus401;
 	"403": GetEdgeConfigTokenStatus403;
 	"404": GetEdgeConfigTokenStatus404;
+	"410": GetEdgeConfigTokenStatus410;
 };
 
 /**
@@ -34988,7 +35681,8 @@ export type GetEdgeConfigTokenResponse =
 	| GetEdgeConfigTokenStatus400
 	| GetEdgeConfigTokenStatus401
 	| GetEdgeConfigTokenStatus403
-	| GetEdgeConfigTokenStatus404;
+	| GetEdgeConfigTokenStatus404
+	| GetEdgeConfigTokenStatus410;
 
 /**
  * @pattern ^ecfg_
@@ -35046,6 +35740,11 @@ export type CreateEdgeConfigTokenStatus404 = unknown;
 export type CreateEdgeConfigTokenStatus409 = unknown;
 
 /**
+ * @type unknown
+ */
+export type CreateEdgeConfigTokenStatus410 = unknown;
+
+/**
  * @type object
  */
 export type CreateEdgeConfigTokenRequestConfig = {
@@ -35083,6 +35782,7 @@ export type CreateEdgeConfigTokenResponses = {
 	"403": CreateEdgeConfigTokenStatus403;
 	"404": CreateEdgeConfigTokenStatus404;
 	"409": CreateEdgeConfigTokenStatus409;
+	"410": CreateEdgeConfigTokenStatus410;
 };
 
 /**
@@ -35095,7 +35795,8 @@ export type CreateEdgeConfigTokenResponse =
 	| CreateEdgeConfigTokenStatus402
 	| CreateEdgeConfigTokenStatus403
 	| CreateEdgeConfigTokenStatus404
-	| CreateEdgeConfigTokenStatus409;
+	| CreateEdgeConfigTokenStatus409
+	| CreateEdgeConfigTokenStatus410;
 
 /**
  * @type string
@@ -35147,6 +35848,11 @@ export type GetEdgeConfigBackupStatus403 = unknown;
 export type GetEdgeConfigBackupStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type GetEdgeConfigBackupStatus410 = unknown;
+
+/**
  * @type object
  */
 export type GetEdgeConfigBackupRequestConfig = {
@@ -35183,6 +35889,7 @@ export type GetEdgeConfigBackupResponses = {
 	"401": GetEdgeConfigBackupStatus401;
 	"403": GetEdgeConfigBackupStatus403;
 	"404": GetEdgeConfigBackupStatus404;
+	"410": GetEdgeConfigBackupStatus410;
 };
 
 /**
@@ -35193,7 +35900,8 @@ export type GetEdgeConfigBackupResponse =
 	| GetEdgeConfigBackupStatus400
 	| GetEdgeConfigBackupStatus401
 	| GetEdgeConfigBackupStatus403
-	| GetEdgeConfigBackupStatus404;
+	| GetEdgeConfigBackupStatus404
+	| GetEdgeConfigBackupStatus410;
 
 /**
  * @pattern ^ecfg_
@@ -35258,6 +35966,11 @@ export type RestoreEdgeConfigBackupStatus409 = unknown;
 /**
  * @type unknown
  */
+export type RestoreEdgeConfigBackupStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type RestoreEdgeConfigBackupStatus412 = unknown;
 
 /**
@@ -35299,6 +36012,7 @@ export type RestoreEdgeConfigBackupResponses = {
 	"403": RestoreEdgeConfigBackupStatus403;
 	"404": RestoreEdgeConfigBackupStatus404;
 	"409": RestoreEdgeConfigBackupStatus409;
+	"410": RestoreEdgeConfigBackupStatus410;
 	"412": RestoreEdgeConfigBackupStatus412;
 };
 
@@ -35313,6 +36027,7 @@ export type RestoreEdgeConfigBackupResponse =
 	| RestoreEdgeConfigBackupStatus403
 	| RestoreEdgeConfigBackupStatus404
 	| RestoreEdgeConfigBackupStatus409
+	| RestoreEdgeConfigBackupStatus410
 	| RestoreEdgeConfigBackupStatus412;
 
 /**
@@ -35377,6 +36092,11 @@ export type GetEdgeConfigBackupsStatus403 = unknown;
 export type GetEdgeConfigBackupsStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type GetEdgeConfigBackupsStatus410 = unknown;
+
+/**
  * @type object
  */
 export type GetEdgeConfigBackupsRequestConfig = {
@@ -35415,6 +36135,7 @@ export type GetEdgeConfigBackupsResponses = {
 	"401": GetEdgeConfigBackupsStatus401;
 	"403": GetEdgeConfigBackupsStatus403;
 	"404": GetEdgeConfigBackupsStatus404;
+	"410": GetEdgeConfigBackupsStatus410;
 };
 
 /**
@@ -35425,7 +36146,8 @@ export type GetEdgeConfigBackupsResponse =
 	| GetEdgeConfigBackupsStatus400
 	| GetEdgeConfigBackupsStatus401
 	| GetEdgeConfigBackupsStatus403
-	| GetEdgeConfigBackupsStatus404;
+	| GetEdgeConfigBackupsStatus404
+	| GetEdgeConfigBackupsStatus410;
 
 /**
  * @description The Team identifier to perform the request on behalf of.
@@ -35467,6 +36189,11 @@ export type CreateSharedEnvVariableStatus402 = unknown;
 export type CreateSharedEnvVariableStatus403 = unknown;
 
 /**
+ * @type unknown
+ */
+export type CreateSharedEnvVariableStatus410 = unknown;
+
+/**
  * @type object
  */
 export type CreateSharedEnvVariableRequestConfig = {
@@ -35497,6 +36224,7 @@ export type CreateSharedEnvVariableResponses = {
 	"401": CreateSharedEnvVariableStatus401;
 	"402": CreateSharedEnvVariableStatus402;
 	"403": CreateSharedEnvVariableStatus403;
+	"410": CreateSharedEnvVariableStatus410;
 };
 
 /**
@@ -35507,7 +36235,8 @@ export type CreateSharedEnvVariableResponse =
 	| CreateSharedEnvVariableStatus400
 	| CreateSharedEnvVariableStatus401
 	| CreateSharedEnvVariableStatus402
-	| CreateSharedEnvVariableStatus403;
+	| CreateSharedEnvVariableStatus403
+	| CreateSharedEnvVariableStatus410;
 
 /**
  * @type string | undefined
@@ -35596,6 +36325,11 @@ export type ListSharedEnvVariableStatus403 = unknown;
 export type ListSharedEnvVariableStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type ListSharedEnvVariableStatus410 = unknown;
+
+/**
  * @type object
  */
 export type ListSharedEnvVariableRequestConfig = {
@@ -35633,6 +36367,7 @@ export type ListSharedEnvVariableResponses = {
 	"401": ListSharedEnvVariableStatus401;
 	"403": ListSharedEnvVariableStatus403;
 	"404": ListSharedEnvVariableStatus404;
+	"410": ListSharedEnvVariableStatus410;
 };
 
 /**
@@ -35643,7 +36378,8 @@ export type ListSharedEnvVariableResponse =
 	| ListSharedEnvVariableStatus400
 	| ListSharedEnvVariableStatus401
 	| ListSharedEnvVariableStatus403
-	| ListSharedEnvVariableStatus404;
+	| ListSharedEnvVariableStatus404
+	| ListSharedEnvVariableStatus410;
 
 /**
  * @description The Team identifier to perform the request on behalf of.
@@ -35685,6 +36421,11 @@ export type UpdateSharedEnvVariableStatus402 = unknown;
 export type UpdateSharedEnvVariableStatus403 = unknown;
 
 /**
+ * @type unknown
+ */
+export type UpdateSharedEnvVariableStatus410 = unknown;
+
+/**
  * @type object
  */
 export type UpdateSharedEnvVariableRequestConfig = {
@@ -35715,6 +36456,7 @@ export type UpdateSharedEnvVariableResponses = {
 	"401": UpdateSharedEnvVariableStatus401;
 	"402": UpdateSharedEnvVariableStatus402;
 	"403": UpdateSharedEnvVariableStatus403;
+	"410": UpdateSharedEnvVariableStatus410;
 };
 
 /**
@@ -35725,7 +36467,8 @@ export type UpdateSharedEnvVariableResponse =
 	| UpdateSharedEnvVariableStatus400
 	| UpdateSharedEnvVariableStatus401
 	| UpdateSharedEnvVariableStatus402
-	| UpdateSharedEnvVariableStatus403;
+	| UpdateSharedEnvVariableStatus403
+	| UpdateSharedEnvVariableStatus410;
 
 /**
  * @description The Team identifier to perform the request on behalf of.
@@ -35767,6 +36510,11 @@ export type DeleteSharedEnvVariableStatus402 = unknown;
 export type DeleteSharedEnvVariableStatus403 = unknown;
 
 /**
+ * @type unknown
+ */
+export type DeleteSharedEnvVariableStatus410 = unknown;
+
+/**
  * @type object
  */
 export type DeleteSharedEnvVariableRequestConfig = {
@@ -35797,6 +36545,7 @@ export type DeleteSharedEnvVariableResponses = {
 	"401": DeleteSharedEnvVariableStatus401;
 	"402": DeleteSharedEnvVariableStatus402;
 	"403": DeleteSharedEnvVariableStatus403;
+	"410": DeleteSharedEnvVariableStatus410;
 };
 
 /**
@@ -35807,7 +36556,8 @@ export type DeleteSharedEnvVariableResponse =
 	| DeleteSharedEnvVariableStatus400
 	| DeleteSharedEnvVariableStatus401
 	| DeleteSharedEnvVariableStatus402
-	| DeleteSharedEnvVariableStatus403;
+	| DeleteSharedEnvVariableStatus403
+	| DeleteSharedEnvVariableStatus410;
 
 /**
  * @description The unique ID for the Shared Environment Variable to get the decrypted value.
@@ -35850,6 +36600,11 @@ export type GetSharedEnvVarStatus401 = unknown;
 export type GetSharedEnvVarStatus403 = unknown;
 
 /**
+ * @type unknown
+ */
+export type GetSharedEnvVarStatus410 = unknown;
+
+/**
  * @type object
  */
 export type GetSharedEnvVarRequestConfig = {
@@ -35884,6 +36639,7 @@ export type GetSharedEnvVarResponses = {
 	"400": GetSharedEnvVarStatus400;
 	"401": GetSharedEnvVarStatus401;
 	"403": GetSharedEnvVarStatus403;
+	"410": GetSharedEnvVarStatus410;
 };
 
 /**
@@ -35893,7 +36649,8 @@ export type GetSharedEnvVarResponse =
 	| GetSharedEnvVarStatus200
 	| GetSharedEnvVarStatus400
 	| GetSharedEnvVarStatus401
-	| GetSharedEnvVarStatus403;
+	| GetSharedEnvVarStatus403
+	| GetSharedEnvVarStatus410;
 
 /**
  * @description The unique ID for the Shared Environment Variable to unlink from the project.
@@ -35941,6 +36698,11 @@ export type UnlinkSharedEnvVariableStatus401 = unknown;
 export type UnlinkSharedEnvVariableStatus403 = unknown;
 
 /**
+ * @type unknown
+ */
+export type UnlinkSharedEnvVariableStatus410 = unknown;
+
+/**
  * @type object
  */
 export type UnlinkSharedEnvVariableRequestConfig = {
@@ -35976,6 +36738,7 @@ export type UnlinkSharedEnvVariableResponses = {
 	"400": UnlinkSharedEnvVariableStatus400;
 	"401": UnlinkSharedEnvVariableStatus401;
 	"403": UnlinkSharedEnvVariableStatus403;
+	"410": UnlinkSharedEnvVariableStatus410;
 };
 
 /**
@@ -35985,7 +36748,8 @@ export type UnlinkSharedEnvVariableResponse =
 	| UnlinkSharedEnvVariableStatus200
 	| UnlinkSharedEnvVariableStatus400
 	| UnlinkSharedEnvVariableStatus401
-	| UnlinkSharedEnvVariableStatus403;
+	| UnlinkSharedEnvVariableStatus403
+	| UnlinkSharedEnvVariableStatus410;
 
 /**
  * @description Maximum number of items which may be returned.
@@ -36078,6 +36842,11 @@ export type ListUserEventsStatus401 = unknown;
 export type ListUserEventsStatus403 = unknown;
 
 /**
+ * @type unknown
+ */
+export type ListUserEventsStatus410 = unknown;
+
+/**
  * @type object
  */
 export type ListUserEventsRequestConfig = {
@@ -36115,6 +36884,7 @@ export type ListUserEventsResponses = {
 	"400": ListUserEventsStatus400;
 	"401": ListUserEventsStatus401;
 	"403": ListUserEventsStatus403;
+	"410": ListUserEventsStatus410;
 };
 
 /**
@@ -36124,7 +36894,8 @@ export type ListUserEventsResponse =
 	| ListUserEventsStatus200
 	| ListUserEventsStatus400
 	| ListUserEventsStatus401
-	| ListUserEventsStatus403;
+	| ListUserEventsStatus403
+	| ListUserEventsStatus410;
 
 /**
  * @description The Team identifier to perform the request on behalf of.
@@ -36161,6 +36932,11 @@ export type ListEventTypesStatus401 = unknown;
 export type ListEventTypesStatus403 = unknown;
 
 /**
+ * @type unknown
+ */
+export type ListEventTypesStatus410 = unknown;
+
+/**
  * @type object
  */
 export type ListEventTypesRequestConfig = {
@@ -36190,6 +36966,7 @@ export type ListEventTypesResponses = {
 	"400": ListEventTypesStatus400;
 	"401": ListEventTypesStatus401;
 	"403": ListEventTypesStatus403;
+	"410": ListEventTypesStatus410;
 };
 
 /**
@@ -36296,6 +37073,11 @@ export type ListFlagsV2Status403 = unknown;
 export type ListFlagsV2Status404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type ListFlagsV2Status410 = unknown;
+
+/**
  * @type object
  */
 export type ListFlagsV2RequestConfig = {
@@ -36340,6 +37122,7 @@ export type ListFlagsV2Responses = {
 	"402": ListFlagsV2Status402;
 	"403": ListFlagsV2Status403;
 	"404": ListFlagsV2Status404;
+	"410": ListFlagsV2Status410;
 };
 
 /**
@@ -36351,7 +37134,8 @@ export type ListFlagsV2Response =
 	| ListFlagsV2Status401
 	| ListFlagsV2Status402
 	| ListFlagsV2Status403
-	| ListFlagsV2Status404;
+	| ListFlagsV2Status404
+	| ListFlagsV2Status410;
 
 /**
  * @description The project id or name
@@ -36444,6 +37228,11 @@ export type ListFlagsStatus403 = unknown;
 export type ListFlagsStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type ListFlagsStatus410 = unknown;
+
+/**
  * @type object
  */
 export type ListFlagsRequestConfig = {
@@ -36486,6 +37275,7 @@ export type ListFlagsResponses = {
 	"402": ListFlagsStatus402;
 	"403": ListFlagsStatus403;
 	"404": ListFlagsStatus404;
+	"410": ListFlagsStatus410;
 };
 
 /**
@@ -36497,7 +37287,8 @@ export type ListFlagsResponse =
 	| ListFlagsStatus401
 	| ListFlagsStatus402
 	| ListFlagsStatus403
-	| ListFlagsStatus404;
+	| ListFlagsStatus404
+	| ListFlagsStatus410;
 
 /**
  * @description The project id or name
@@ -36557,6 +37348,11 @@ export type CreateFlagStatus409 = unknown;
 /**
  * @type unknown
  */
+export type CreateFlagStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type CreateFlagStatus412 = unknown;
 
 /**
@@ -36597,6 +37393,7 @@ export type CreateFlagResponses = {
 	"403": CreateFlagStatus403;
 	"404": CreateFlagStatus404;
 	"409": CreateFlagStatus409;
+	"410": CreateFlagStatus410;
 	"412": CreateFlagStatus412;
 };
 
@@ -36611,6 +37408,7 @@ export type CreateFlagResponse =
 	| CreateFlagStatus403
 	| CreateFlagStatus404
 	| CreateFlagStatus409
+	| CreateFlagStatus410
 	| CreateFlagStatus412;
 
 /**
@@ -36687,6 +37485,11 @@ export type GetFlagStatus403 = unknown;
 export type GetFlagStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type GetFlagStatus410 = unknown;
+
+/**
  * @type object
  */
 export type GetFlagRequestConfig = {
@@ -36727,6 +37530,7 @@ export type GetFlagResponses = {
 	"402": GetFlagStatus402;
 	"403": GetFlagStatus403;
 	"404": GetFlagStatus404;
+	"410": GetFlagStatus410;
 };
 
 /**
@@ -36739,7 +37543,8 @@ export type GetFlagResponse =
 	| GetFlagStatus401
 	| GetFlagStatus402
 	| GetFlagStatus403
-	| GetFlagStatus404;
+	| GetFlagStatus404
+	| GetFlagStatus410;
 
 /**
  * @description The project id or name
@@ -36822,6 +37627,11 @@ export type UpdateFlagStatus409 = unknown;
 /**
  * @type unknown
  */
+export type UpdateFlagStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type UpdateFlagStatus412 = unknown;
 
 /**
@@ -36866,6 +37676,7 @@ export type UpdateFlagResponses = {
 	"403": UpdateFlagStatus403;
 	"404": UpdateFlagStatus404;
 	"409": UpdateFlagStatus409;
+	"410": UpdateFlagStatus410;
 	"412": UpdateFlagStatus412;
 };
 
@@ -36881,6 +37692,7 @@ export type UpdateFlagResponse =
 	| UpdateFlagStatus403
 	| UpdateFlagStatus404
 	| UpdateFlagStatus409
+	| UpdateFlagStatus410
 	| UpdateFlagStatus412;
 
 /**
@@ -36964,6 +37776,11 @@ export type DeleteFlagStatus409 = unknown;
 /**
  * @type unknown
  */
+export type DeleteFlagStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type DeleteFlagStatus412 = unknown;
 
 /**
@@ -37008,6 +37825,7 @@ export type DeleteFlagResponses = {
 	"403": DeleteFlagStatus403;
 	"404": DeleteFlagStatus404;
 	"409": DeleteFlagStatus409;
+	"410": DeleteFlagStatus410;
 	"412": DeleteFlagStatus412;
 };
 
@@ -37023,6 +37841,7 @@ export type DeleteFlagResponse =
 	| DeleteFlagStatus403
 	| DeleteFlagStatus404
 	| DeleteFlagStatus409
+	| DeleteFlagStatus410
 	| DeleteFlagStatus412;
 
 /**
@@ -37112,6 +37931,11 @@ export type ListFlagVersionsStatus403 = unknown;
 export type ListFlagVersionsStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type ListFlagVersionsStatus410 = unknown;
+
+/**
  * @type object
  */
 export type ListFlagVersionsRequestConfig = {
@@ -37154,6 +37978,7 @@ export type ListFlagVersionsResponses = {
 	"402": ListFlagVersionsStatus402;
 	"403": ListFlagVersionsStatus403;
 	"404": ListFlagVersionsStatus404;
+	"410": ListFlagVersionsStatus410;
 };
 
 /**
@@ -37166,7 +37991,8 @@ export type ListFlagVersionsResponse =
 	| ListFlagVersionsStatus401
 	| ListFlagVersionsStatus402
 	| ListFlagVersionsStatus403
-	| ListFlagVersionsStatus404;
+	| ListFlagVersionsStatus404
+	| ListFlagVersionsStatus410;
 
 /**
  * @description The project id or name
@@ -37219,6 +38045,11 @@ export type GetFlagSettingsStatus403 = unknown;
 export type GetFlagSettingsStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type GetFlagSettingsStatus410 = unknown;
+
+/**
  * @type object
  */
 export type GetFlagSettingsRequestConfig = {
@@ -37255,6 +38086,7 @@ export type GetFlagSettingsResponses = {
 	"402": GetFlagSettingsStatus402;
 	"403": GetFlagSettingsStatus403;
 	"404": GetFlagSettingsStatus404;
+	"410": GetFlagSettingsStatus410;
 };
 
 /**
@@ -37266,7 +38098,8 @@ export type GetFlagSettingsResponse =
 	| GetFlagSettingsStatus401
 	| GetFlagSettingsStatus402
 	| GetFlagSettingsStatus403
-	| GetFlagSettingsStatus404;
+	| GetFlagSettingsStatus404
+	| GetFlagSettingsStatus410;
 
 /**
  * @description The project id or name
@@ -37331,6 +38164,11 @@ export type UpdateFlagSettingsStatus409 = unknown;
 /**
  * @type unknown
  */
+export type UpdateFlagSettingsStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type UpdateFlagSettingsStatus412 = unknown;
 
 /**
@@ -37372,6 +38210,7 @@ export type UpdateFlagSettingsResponses = {
 	"403": UpdateFlagSettingsStatus403;
 	"404": UpdateFlagSettingsStatus404;
 	"409": UpdateFlagSettingsStatus409;
+	"410": UpdateFlagSettingsStatus410;
 	"412": UpdateFlagSettingsStatus412;
 };
 
@@ -37387,6 +38226,7 @@ export type UpdateFlagSettingsResponse =
 	| UpdateFlagSettingsStatus403
 	| UpdateFlagSettingsStatus404
 	| UpdateFlagSettingsStatus409
+	| UpdateFlagSettingsStatus410
 	| UpdateFlagSettingsStatus412;
 
 /**
@@ -37439,6 +38279,11 @@ export type ListTeamFlagSettingsStatus401 = unknown;
 export type ListTeamFlagSettingsStatus403 = unknown;
 
 /**
+ * @type unknown
+ */
+export type ListTeamFlagSettingsStatus410 = unknown;
+
+/**
  * @type object
  */
 export type ListTeamFlagSettingsRequestConfig = {
@@ -37474,6 +38319,7 @@ export type ListTeamFlagSettingsResponses = {
 	"400": ListTeamFlagSettingsStatus400;
 	"401": ListTeamFlagSettingsStatus401;
 	"403": ListTeamFlagSettingsStatus403;
+	"410": ListTeamFlagSettingsStatus410;
 };
 
 /**
@@ -37483,7 +38329,8 @@ export type ListTeamFlagSettingsResponse =
 	| ListTeamFlagSettingsStatus200
 	| ListTeamFlagSettingsStatus400
 	| ListTeamFlagSettingsStatus401
-	| ListTeamFlagSettingsStatus403;
+	| ListTeamFlagSettingsStatus403
+	| ListTeamFlagSettingsStatus410;
 
 /**
  * @description The state of the flags to retrieve. Defaults to `active`.
@@ -37579,6 +38426,11 @@ export type ListTeamFlagsV2Status401 = unknown;
 export type ListTeamFlagsV2Status403 = unknown;
 
 /**
+ * @type unknown
+ */
+export type ListTeamFlagsV2Status410 = unknown;
+
+/**
  * @type object
  */
 export type ListTeamFlagsV2RequestConfig = {
@@ -37621,6 +38473,7 @@ export type ListTeamFlagsV2Responses = {
 	"400": ListTeamFlagsV2Status400;
 	"401": ListTeamFlagsV2Status401;
 	"403": ListTeamFlagsV2Status403;
+	"410": ListTeamFlagsV2Status410;
 };
 
 /**
@@ -37630,7 +38483,8 @@ export type ListTeamFlagsV2Response =
 	| ListTeamFlagsV2Status200
 	| ListTeamFlagsV2Status400
 	| ListTeamFlagsV2Status401
-	| ListTeamFlagsV2Status403;
+	| ListTeamFlagsV2Status403
+	| ListTeamFlagsV2Status410;
 
 /**
  * @description The state of the flags to retrieve. Defaults to `active`.
@@ -37714,6 +38568,11 @@ export type ListTeamFlagsStatus401 = unknown;
 export type ListTeamFlagsStatus403 = unknown;
 
 /**
+ * @type unknown
+ */
+export type ListTeamFlagsStatus410 = unknown;
+
+/**
  * @type object
  */
 export type ListTeamFlagsRequestConfig = {
@@ -37754,6 +38613,7 @@ export type ListTeamFlagsResponses = {
 	"400": ListTeamFlagsStatus400;
 	"401": ListTeamFlagsStatus401;
 	"403": ListTeamFlagsStatus403;
+	"410": ListTeamFlagsStatus410;
 };
 
 /**
@@ -37763,7 +38623,8 @@ export type ListTeamFlagsResponse =
 	| ListTeamFlagsStatus200
 	| ListTeamFlagsStatus400
 	| ListTeamFlagsStatus401
-	| ListTeamFlagsStatus403;
+	| ListTeamFlagsStatus403
+	| ListTeamFlagsStatus410;
 
 /**
  * @description The project id or name
@@ -37823,6 +38684,11 @@ export type CreateFlagSegmentStatus409 = unknown;
 /**
  * @type unknown
  */
+export type CreateFlagSegmentStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type CreateFlagSegmentStatus412 = unknown;
 
 /**
@@ -37863,6 +38729,7 @@ export type CreateFlagSegmentResponses = {
 	"403": CreateFlagSegmentStatus403;
 	"404": CreateFlagSegmentStatus404;
 	"409": CreateFlagSegmentStatus409;
+	"410": CreateFlagSegmentStatus410;
 	"412": CreateFlagSegmentStatus412;
 };
 
@@ -37877,6 +38744,7 @@ export type CreateFlagSegmentResponse =
 	| CreateFlagSegmentStatus403
 	| CreateFlagSegmentStatus404
 	| CreateFlagSegmentStatus409
+	| CreateFlagSegmentStatus410
 	| CreateFlagSegmentStatus412;
 
 /**
@@ -37937,6 +38805,11 @@ export type ListFlagSegmentsStatus403 = unknown;
 export type ListFlagSegmentsStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type ListFlagSegmentsStatus410 = unknown;
+
+/**
  * @type object
  */
 export type ListFlagSegmentsRequestConfig = {
@@ -37974,6 +38847,7 @@ export type ListFlagSegmentsResponses = {
 	"402": ListFlagSegmentsStatus402;
 	"403": ListFlagSegmentsStatus403;
 	"404": ListFlagSegmentsStatus404;
+	"410": ListFlagSegmentsStatus410;
 };
 
 /**
@@ -37985,7 +38859,8 @@ export type ListFlagSegmentsResponse =
 	| ListFlagSegmentsStatus401
 	| ListFlagSegmentsStatus402
 	| ListFlagSegmentsStatus403
-	| ListFlagSegmentsStatus404;
+	| ListFlagSegmentsStatus404
+	| ListFlagSegmentsStatus410;
 
 /**
  * @description The project id or name
@@ -38051,6 +38926,11 @@ export type GetFlagSegmentStatus403 = unknown;
 export type GetFlagSegmentStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type GetFlagSegmentStatus410 = unknown;
+
+/**
  * @type object
  */
 export type GetFlagSegmentRequestConfig = {
@@ -38089,6 +38969,7 @@ export type GetFlagSegmentResponses = {
 	"402": GetFlagSegmentStatus402;
 	"403": GetFlagSegmentStatus403;
 	"404": GetFlagSegmentStatus404;
+	"410": GetFlagSegmentStatus410;
 };
 
 /**
@@ -38100,7 +38981,8 @@ export type GetFlagSegmentResponse =
 	| GetFlagSegmentStatus401
 	| GetFlagSegmentStatus402
 	| GetFlagSegmentStatus403
-	| GetFlagSegmentStatus404;
+	| GetFlagSegmentStatus404
+	| GetFlagSegmentStatus410;
 
 /**
  * @description The project id or name
@@ -38178,6 +39060,11 @@ export type DeleteFlagSegmentStatus409 = unknown;
 /**
  * @type unknown
  */
+export type DeleteFlagSegmentStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type DeleteFlagSegmentStatus412 = unknown;
 
 /**
@@ -38221,6 +39108,7 @@ export type DeleteFlagSegmentResponses = {
 	"403": DeleteFlagSegmentStatus403;
 	"404": DeleteFlagSegmentStatus404;
 	"409": DeleteFlagSegmentStatus409;
+	"410": DeleteFlagSegmentStatus410;
 	"412": DeleteFlagSegmentStatus412;
 };
 
@@ -38236,6 +39124,7 @@ export type DeleteFlagSegmentResponse =
 	| DeleteFlagSegmentStatus403
 	| DeleteFlagSegmentStatus404
 	| DeleteFlagSegmentStatus409
+	| DeleteFlagSegmentStatus410
 	| DeleteFlagSegmentStatus412;
 
 /**
@@ -38309,6 +39198,11 @@ export type UpdateFlagSegmentStatus409 = unknown;
 /**
  * @type unknown
  */
+export type UpdateFlagSegmentStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type UpdateFlagSegmentStatus412 = unknown;
 
 /**
@@ -38351,6 +39245,7 @@ export type UpdateFlagSegmentResponses = {
 	"403": UpdateFlagSegmentStatus403;
 	"404": UpdateFlagSegmentStatus404;
 	"409": UpdateFlagSegmentStatus409;
+	"410": UpdateFlagSegmentStatus410;
 	"412": UpdateFlagSegmentStatus412;
 };
 
@@ -38365,6 +39260,7 @@ export type UpdateFlagSegmentResponse =
 	| UpdateFlagSegmentStatus403
 	| UpdateFlagSegmentStatus404
 	| UpdateFlagSegmentStatus409
+	| UpdateFlagSegmentStatus410
 	| UpdateFlagSegmentStatus412;
 
 /**
@@ -38412,6 +39308,11 @@ export type GetDeploymentFeatureFlagsStatus403 = unknown;
 export type GetDeploymentFeatureFlagsStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type GetDeploymentFeatureFlagsStatus410 = unknown;
+
+/**
  * @type object
  */
 export type GetDeploymentFeatureFlagsRequestConfig = {
@@ -38447,6 +39348,7 @@ export type GetDeploymentFeatureFlagsResponses = {
 	"401": GetDeploymentFeatureFlagsStatus401;
 	"403": GetDeploymentFeatureFlagsStatus403;
 	"404": GetDeploymentFeatureFlagsStatus404;
+	"410": GetDeploymentFeatureFlagsStatus410;
 };
 
 /**
@@ -38457,7 +39359,8 @@ export type GetDeploymentFeatureFlagsResponse =
 	| GetDeploymentFeatureFlagsStatus400
 	| GetDeploymentFeatureFlagsStatus401
 	| GetDeploymentFeatureFlagsStatus403
-	| GetDeploymentFeatureFlagsStatus404;
+	| GetDeploymentFeatureFlagsStatus404
+	| GetDeploymentFeatureFlagsStatus410;
 
 /**
  * @description The project id or name
@@ -38510,6 +39413,11 @@ export type GetSdkKeysStatus403 = unknown;
 export type GetSdkKeysStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type GetSdkKeysStatus410 = unknown;
+
+/**
  * @type object
  */
 export type GetSdkKeysRequestConfig = {
@@ -38546,6 +39454,7 @@ export type GetSdkKeysResponses = {
 	"402": GetSdkKeysStatus402;
 	"403": GetSdkKeysStatus403;
 	"404": GetSdkKeysStatus404;
+	"410": GetSdkKeysStatus410;
 };
 
 /**
@@ -38557,7 +39466,8 @@ export type GetSdkKeysResponse =
 	| GetSdkKeysStatus401
 	| GetSdkKeysStatus402
 	| GetSdkKeysStatus403
-	| GetSdkKeysStatus404;
+	| GetSdkKeysStatus404
+	| GetSdkKeysStatus410;
 
 /**
  * @description The project id or name
@@ -38615,6 +39525,11 @@ export type CreateSdkKeyStatus404 = unknown;
 export type CreateSdkKeyStatus409 = unknown;
 
 /**
+ * @type unknown
+ */
+export type CreateSdkKeyStatus410 = unknown;
+
+/**
  * @type object
  */
 export type CreateSdkKeyRequestConfig = {
@@ -38652,6 +39567,7 @@ export type CreateSdkKeyResponses = {
 	"403": CreateSdkKeyStatus403;
 	"404": CreateSdkKeyStatus404;
 	"409": CreateSdkKeyStatus409;
+	"410": CreateSdkKeyStatus410;
 };
 
 /**
@@ -38664,7 +39580,8 @@ export type CreateSdkKeyResponse =
 	| CreateSdkKeyStatus402
 	| CreateSdkKeyStatus403
 	| CreateSdkKeyStatus404
-	| CreateSdkKeyStatus409;
+	| CreateSdkKeyStatus409
+	| CreateSdkKeyStatus410;
 
 /**
  * @description The project id or name
@@ -38728,6 +39645,11 @@ export type DeleteSdkKeyStatus404 = unknown;
 export type DeleteSdkKeyStatus409 = unknown;
 
 /**
+ * @type unknown
+ */
+export type DeleteSdkKeyStatus410 = unknown;
+
+/**
  * @type object
  */
 export type DeleteSdkKeyRequestConfig = {
@@ -38766,6 +39688,7 @@ export type DeleteSdkKeyResponses = {
 	"403": DeleteSdkKeyStatus403;
 	"404": DeleteSdkKeyStatus404;
 	"409": DeleteSdkKeyStatus409;
+	"410": DeleteSdkKeyStatus410;
 };
 
 /**
@@ -38778,7 +39701,8 @@ export type DeleteSdkKeyResponse =
 	| DeleteSdkKeyStatus402
 	| DeleteSdkKeyStatus403
 	| DeleteSdkKeyStatus404
-	| DeleteSdkKeyStatus409;
+	| DeleteSdkKeyStatus409
+	| DeleteSdkKeyStatus410;
 
 /**
  * @description The custom Git host if using a custom Git provider, like GitHub Enterprise Server
@@ -38828,6 +39752,11 @@ export type GitNamespacesStatus404 = unknown;
 /**
  * @type unknown
  */
+export type GitNamespacesStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type GitNamespacesStatus429 = unknown;
 
 /**
@@ -38867,6 +39796,7 @@ export type GitNamespacesResponses = {
 	"401": GitNamespacesStatus401;
 	"403": GitNamespacesStatus403;
 	"404": GitNamespacesStatus404;
+	"410": GitNamespacesStatus410;
 	"429": GitNamespacesStatus429;
 	"500": GitNamespacesStatus500;
 };
@@ -38880,6 +39810,7 @@ export type GitNamespacesResponse =
 	| GitNamespacesStatus401
 	| GitNamespacesStatus403
 	| GitNamespacesStatus404
+	| GitNamespacesStatus410
 	| GitNamespacesStatus429
 	| GitNamespacesStatus500;
 
@@ -38951,6 +39882,11 @@ export type SearchRepoStatus404 = unknown;
 /**
  * @type unknown
  */
+export type SearchRepoStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type SearchRepoStatus429 = unknown;
 
 /**
@@ -38994,6 +39930,7 @@ export type SearchRepoResponses = {
 	"401": SearchRepoStatus401;
 	"403": SearchRepoStatus403;
 	"404": SearchRepoStatus404;
+	"410": SearchRepoStatus410;
 	"429": SearchRepoStatus429;
 	"500": SearchRepoStatus500;
 };
@@ -39007,6 +39944,7 @@ export type SearchRepoResponse =
 	| SearchRepoStatus401
 	| SearchRepoStatus403
 	| SearchRepoStatus404
+	| SearchRepoStatus410
 	| SearchRepoStatus429
 	| SearchRepoStatus500;
 
@@ -39086,6 +40024,11 @@ export type GetBillingPlansStatus403 = unknown;
 export type GetBillingPlansStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type GetBillingPlansStatus410 = unknown;
+
+/**
  * @type object
  */
 export type GetBillingPlansRequestConfig = {
@@ -39125,6 +40068,7 @@ export type GetBillingPlansResponses = {
 	"401": GetBillingPlansStatus401;
 	"403": GetBillingPlansStatus403;
 	"404": GetBillingPlansStatus404;
+	"410": GetBillingPlansStatus410;
 };
 
 /**
@@ -39135,7 +40079,8 @@ export type GetBillingPlansResponse =
 	| GetBillingPlansStatus400
 	| GetBillingPlansStatus401
 	| GetBillingPlansStatus403
-	| GetBillingPlansStatus404;
+	| GetBillingPlansStatus404
+	| GetBillingPlansStatus410;
 
 /**
  * @type string
@@ -39187,6 +40132,11 @@ export type ConnectIntegrationResourceToProjectStatus403 = unknown;
 export type ConnectIntegrationResourceToProjectStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type ConnectIntegrationResourceToProjectStatus410 = unknown;
+
+/**
  * @type object
  */
 export type ConnectIntegrationResourceToProjectRequestConfig = {
@@ -39223,6 +40173,7 @@ export type ConnectIntegrationResourceToProjectResponses = {
 	"401": ConnectIntegrationResourceToProjectStatus401;
 	"403": ConnectIntegrationResourceToProjectStatus403;
 	"404": ConnectIntegrationResourceToProjectStatus404;
+	"410": ConnectIntegrationResourceToProjectStatus410;
 };
 
 /**
@@ -39233,7 +40184,8 @@ export type ConnectIntegrationResourceToProjectResponse =
 	| ConnectIntegrationResourceToProjectStatus400
 	| ConnectIntegrationResourceToProjectStatus401
 	| ConnectIntegrationResourceToProjectStatus403
-	| ConnectIntegrationResourceToProjectStatus404;
+	| ConnectIntegrationResourceToProjectStatus404
+	| ConnectIntegrationResourceToProjectStatus410;
 
 /**
  * @type string
@@ -39266,6 +40218,11 @@ export type UpdateInstallationStatus403 = unknown;
 export type UpdateInstallationStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type UpdateInstallationStatus410 = unknown;
+
+/**
  * @type object
  */
 export type UpdateInstallationRequestConfig = {
@@ -39293,6 +40250,7 @@ export type UpdateInstallationResponses = {
 	"401": UpdateInstallationStatus401;
 	"403": UpdateInstallationStatus403;
 	"404": UpdateInstallationStatus404;
+	"410": UpdateInstallationStatus410;
 };
 
 /**
@@ -39303,7 +40261,8 @@ export type UpdateInstallationResponse =
 	| UpdateInstallationStatus400
 	| UpdateInstallationStatus401
 	| UpdateInstallationStatus403
-	| UpdateInstallationStatus404;
+	| UpdateInstallationStatus404
+	| UpdateInstallationStatus410;
 
 /**
  * @type string
@@ -39336,6 +40295,11 @@ export type GetAccountInfoStatus403 = unknown;
 export type GetAccountInfoStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type GetAccountInfoStatus410 = unknown;
+
+/**
  * @type object
  */
 export type GetAccountInfoRequestConfig = {
@@ -39363,6 +40327,7 @@ export type GetAccountInfoResponses = {
 	"401": GetAccountInfoStatus401;
 	"403": GetAccountInfoStatus403;
 	"404": GetAccountInfoStatus404;
+	"410": GetAccountInfoStatus410;
 };
 
 /**
@@ -39373,7 +40338,8 @@ export type GetAccountInfoResponse =
 	| GetAccountInfoStatus400
 	| GetAccountInfoStatus401
 	| GetAccountInfoStatus403
-	| GetAccountInfoStatus404;
+	| GetAccountInfoStatus404
+	| GetAccountInfoStatus410;
 
 /**
  * @type string
@@ -39411,6 +40377,11 @@ export type GetMemberStatus403 = unknown;
 export type GetMemberStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type GetMemberStatus410 = unknown;
+
+/**
  * @type object
  */
 export type GetMemberRequestConfig = {
@@ -39439,6 +40410,7 @@ export type GetMemberResponses = {
 	"401": GetMemberStatus401;
 	"403": GetMemberStatus403;
 	"404": GetMemberStatus404;
+	"410": GetMemberStatus410;
 };
 
 /**
@@ -39449,7 +40421,8 @@ export type GetMemberResponse =
 	| GetMemberStatus400
 	| GetMemberStatus401
 	| GetMemberStatus403
-	| GetMemberStatus404;
+	| GetMemberStatus404
+	| GetMemberStatus410;
 
 /**
  * @type string
@@ -39482,6 +40455,11 @@ export type CreateEventStatus403 = unknown;
 export type CreateEventStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type CreateEventStatus410 = unknown;
+
+/**
  * @type object
  */
 export type CreateEventRequestConfig = {
@@ -39509,6 +40487,7 @@ export type CreateEventResponses = {
 	"401": CreateEventStatus401;
 	"403": CreateEventStatus403;
 	"404": CreateEventStatus404;
+	"410": CreateEventStatus410;
 };
 
 /**
@@ -39519,7 +40498,8 @@ export type CreateEventResponse =
 	| CreateEventStatus400
 	| CreateEventStatus401
 	| CreateEventStatus403
-	| CreateEventStatus404;
+	| CreateEventStatus404
+	| CreateEventStatus410;
 
 /**
  * @type string
@@ -39552,6 +40532,11 @@ export type GetIntegrationResourcesStatus403 = unknown;
 export type GetIntegrationResourcesStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type GetIntegrationResourcesStatus410 = unknown;
+
+/**
  * @type object
  */
 export type GetIntegrationResourcesRequestConfig = {
@@ -39579,6 +40564,7 @@ export type GetIntegrationResourcesResponses = {
 	"401": GetIntegrationResourcesStatus401;
 	"403": GetIntegrationResourcesStatus403;
 	"404": GetIntegrationResourcesStatus404;
+	"410": GetIntegrationResourcesStatus410;
 };
 
 /**
@@ -39589,7 +40575,8 @@ export type GetIntegrationResourcesResponse =
 	| GetIntegrationResourcesStatus400
 	| GetIntegrationResourcesStatus401
 	| GetIntegrationResourcesStatus403
-	| GetIntegrationResourcesStatus404;
+	| GetIntegrationResourcesStatus404
+	| GetIntegrationResourcesStatus410;
 
 /**
  * @description The ID of the integration configuration (installation) the resource belongs to
@@ -39629,6 +40616,11 @@ export type GetIntegrationResourceStatus403 = unknown;
 export type GetIntegrationResourceStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type GetIntegrationResourceStatus410 = unknown;
+
+/**
  * @type object
  */
 export type GetIntegrationResourceRequestConfig = {
@@ -39657,6 +40649,7 @@ export type GetIntegrationResourceResponses = {
 	"401": GetIntegrationResourceStatus401;
 	"403": GetIntegrationResourceStatus403;
 	"404": GetIntegrationResourceStatus404;
+	"410": GetIntegrationResourceStatus410;
 };
 
 /**
@@ -39667,7 +40660,8 @@ export type GetIntegrationResourceResponse =
 	| GetIntegrationResourceStatus400
 	| GetIntegrationResourceStatus401
 	| GetIntegrationResourceStatus403
-	| GetIntegrationResourceStatus404;
+	| GetIntegrationResourceStatus404
+	| GetIntegrationResourceStatus410;
 
 /**
  * @type string
@@ -39705,6 +40699,11 @@ export type DeleteIntegrationResourceStatus403 = unknown;
 export type DeleteIntegrationResourceStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type DeleteIntegrationResourceStatus410 = unknown;
+
+/**
  * @type object
  */
 export type DeleteIntegrationResourceRequestConfig = {
@@ -39733,6 +40732,7 @@ export type DeleteIntegrationResourceResponses = {
 	"401": DeleteIntegrationResourceStatus401;
 	"403": DeleteIntegrationResourceStatus403;
 	"404": DeleteIntegrationResourceStatus404;
+	"410": DeleteIntegrationResourceStatus410;
 };
 
 /**
@@ -39743,7 +40743,8 @@ export type DeleteIntegrationResourceResponse =
 	| DeleteIntegrationResourceStatus400
 	| DeleteIntegrationResourceStatus401
 	| DeleteIntegrationResourceStatus403
-	| DeleteIntegrationResourceStatus404;
+	| DeleteIntegrationResourceStatus404
+	| DeleteIntegrationResourceStatus410;
 
 /**
  * @type string
@@ -39788,6 +40789,11 @@ export type ImportResourceStatus409 = unknown;
 /**
  * @type unknown
  */
+export type ImportResourceStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type ImportResourceStatus422 = unknown;
 
 /**
@@ -39825,6 +40831,7 @@ export type ImportResourceResponses = {
 	"403": ImportResourceStatus403;
 	"404": ImportResourceStatus404;
 	"409": ImportResourceStatus409;
+	"410": ImportResourceStatus410;
 	"422": ImportResourceStatus422;
 	"429": ImportResourceStatus429;
 };
@@ -39839,6 +40846,7 @@ export type ImportResourceResponse =
 	| ImportResourceStatus403
 	| ImportResourceStatus404
 	| ImportResourceStatus409
+	| ImportResourceStatus410
 	| ImportResourceStatus422
 	| ImportResourceStatus429;
 
@@ -39885,6 +40893,11 @@ export type UpdateResourceStatus409 = unknown;
 /**
  * @type unknown
  */
+export type UpdateResourceStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type UpdateResourceStatus422 = unknown;
 
 /**
@@ -39917,6 +40930,7 @@ export type UpdateResourceResponses = {
 	"403": UpdateResourceStatus403;
 	"404": UpdateResourceStatus404;
 	"409": UpdateResourceStatus409;
+	"410": UpdateResourceStatus410;
 	"422": UpdateResourceStatus422;
 };
 
@@ -39930,6 +40944,7 @@ export type UpdateResourceResponse =
 	| UpdateResourceStatus403
 	| UpdateResourceStatus404
 	| UpdateResourceStatus409
+	| UpdateResourceStatus410
 	| UpdateResourceStatus422;
 
 /**
@@ -39963,6 +40978,11 @@ export type SubmitBillingDataStatus403 = unknown;
 export type SubmitBillingDataStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type SubmitBillingDataStatus410 = unknown;
+
+/**
  * @type object
  */
 export type SubmitBillingDataRequestConfig = {
@@ -39990,6 +41010,7 @@ export type SubmitBillingDataResponses = {
 	"401": SubmitBillingDataStatus401;
 	"403": SubmitBillingDataStatus403;
 	"404": SubmitBillingDataStatus404;
+	"410": SubmitBillingDataStatus410;
 };
 
 /**
@@ -40000,7 +41021,8 @@ export type SubmitBillingDataResponse =
 	| SubmitBillingDataStatus400
 	| SubmitBillingDataStatus401
 	| SubmitBillingDataStatus403
-	| SubmitBillingDataStatus404;
+	| SubmitBillingDataStatus404
+	| SubmitBillingDataStatus410;
 
 /**
  * @type string
@@ -40038,6 +41060,11 @@ export type SubmitInvoiceStatus404 = unknown;
 export type SubmitInvoiceStatus409 = unknown;
 
 /**
+ * @type unknown
+ */
+export type SubmitInvoiceStatus410 = unknown;
+
+/**
  * @type object
  */
 export type SubmitInvoiceRequestConfig = {
@@ -40066,6 +41093,7 @@ export type SubmitInvoiceResponses = {
 	"403": SubmitInvoiceStatus403;
 	"404": SubmitInvoiceStatus404;
 	"409": SubmitInvoiceStatus409;
+	"410": SubmitInvoiceStatus410;
 };
 
 /**
@@ -40077,7 +41105,8 @@ export type SubmitInvoiceResponse =
 	| SubmitInvoiceStatus401
 	| SubmitInvoiceStatus403
 	| SubmitInvoiceStatus404
-	| SubmitInvoiceStatus409;
+	| SubmitInvoiceStatus409
+	| SubmitInvoiceStatus410;
 
 /**
  * @type string
@@ -40110,6 +41139,11 @@ export type FinalizeInstallationStatus403 = unknown;
 export type FinalizeInstallationStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type FinalizeInstallationStatus410 = unknown;
+
+/**
  * @type object
  */
 export type FinalizeInstallationRequestConfig = {
@@ -40137,6 +41171,7 @@ export type FinalizeInstallationResponses = {
 	"401": FinalizeInstallationStatus401;
 	"403": FinalizeInstallationStatus403;
 	"404": FinalizeInstallationStatus404;
+	"410": FinalizeInstallationStatus410;
 };
 
 /**
@@ -40147,7 +41182,8 @@ export type FinalizeInstallationResponse =
 	| FinalizeInstallationStatus400
 	| FinalizeInstallationStatus401
 	| FinalizeInstallationStatus403
-	| FinalizeInstallationStatus404;
+	| FinalizeInstallationStatus404
+	| FinalizeInstallationStatus410;
 
 /**
  * @type string
@@ -40185,6 +41221,11 @@ export type GetInvoiceStatus403 = unknown;
 export type GetInvoiceStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type GetInvoiceStatus410 = unknown;
+
+/**
  * @type object
  */
 export type GetInvoiceRequestConfig = {
@@ -40213,6 +41254,7 @@ export type GetInvoiceResponses = {
 	"401": GetInvoiceStatus401;
 	"403": GetInvoiceStatus403;
 	"404": GetInvoiceStatus404;
+	"410": GetInvoiceStatus410;
 };
 
 /**
@@ -40223,7 +41265,8 @@ export type GetInvoiceResponse =
 	| GetInvoiceStatus400
 	| GetInvoiceStatus401
 	| GetInvoiceStatus403
-	| GetInvoiceStatus404;
+	| GetInvoiceStatus404
+	| GetInvoiceStatus410;
 
 /**
  * @type string
@@ -40266,6 +41309,11 @@ export type UpdateInvoiceStatus404 = unknown;
 export type UpdateInvoiceStatus409 = unknown;
 
 /**
+ * @type unknown
+ */
+export type UpdateInvoiceStatus410 = unknown;
+
+/**
  * @type object
  */
 export type UpdateInvoiceRequestConfig = {
@@ -40295,6 +41343,7 @@ export type UpdateInvoiceResponses = {
 	"403": UpdateInvoiceStatus403;
 	"404": UpdateInvoiceStatus404;
 	"409": UpdateInvoiceStatus409;
+	"410": UpdateInvoiceStatus410;
 };
 
 /**
@@ -40306,7 +41355,8 @@ export type UpdateInvoiceResponse =
 	| UpdateInvoiceStatus401
 	| UpdateInvoiceStatus403
 	| UpdateInvoiceStatus404
-	| UpdateInvoiceStatus409;
+	| UpdateInvoiceStatus409
+	| UpdateInvoiceStatus410;
 
 /**
  * @type string
@@ -40339,6 +41389,11 @@ export type SubmitPrepaymentBalancesStatus403 = unknown;
 export type SubmitPrepaymentBalancesStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type SubmitPrepaymentBalancesStatus410 = unknown;
+
+/**
  * @type object
  */
 export type SubmitPrepaymentBalancesRequestConfig = {
@@ -40366,6 +41421,7 @@ export type SubmitPrepaymentBalancesResponses = {
 	"401": SubmitPrepaymentBalancesStatus401;
 	"403": SubmitPrepaymentBalancesStatus403;
 	"404": SubmitPrepaymentBalancesStatus404;
+	"410": SubmitPrepaymentBalancesStatus410;
 };
 
 /**
@@ -40376,7 +41432,8 @@ export type SubmitPrepaymentBalancesResponse =
 	| SubmitPrepaymentBalancesStatus400
 	| SubmitPrepaymentBalancesStatus401
 	| SubmitPrepaymentBalancesStatus403
-	| SubmitPrepaymentBalancesStatus404;
+	| SubmitPrepaymentBalancesStatus404
+	| SubmitPrepaymentBalancesStatus410;
 
 /**
  * @type string
@@ -40426,6 +41483,11 @@ export type UpdateResourceSecretsStatus409 = unknown;
 /**
  * @type unknown
  */
+export type UpdateResourceSecretsStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type UpdateResourceSecretsStatus422 = unknown;
 
 /**
@@ -40460,6 +41522,7 @@ export type UpdateResourceSecretsResponses = {
 	"403": UpdateResourceSecretsStatus403;
 	"404": UpdateResourceSecretsStatus404;
 	"409": UpdateResourceSecretsStatus409;
+	"410": UpdateResourceSecretsStatus410;
 	"422": UpdateResourceSecretsStatus422;
 };
 
@@ -40473,6 +41536,7 @@ export type UpdateResourceSecretsResponse =
 	| UpdateResourceSecretsStatus403
 	| UpdateResourceSecretsStatus404
 	| UpdateResourceSecretsStatus409
+	| UpdateResourceSecretsStatus410
 	| UpdateResourceSecretsStatus422;
 
 /**
@@ -40518,6 +41582,11 @@ export type UpdateResourceSecretsByIdStatus409 = unknown;
 /**
  * @type unknown
  */
+export type UpdateResourceSecretsByIdStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type UpdateResourceSecretsByIdStatus422 = unknown;
 
 /**
@@ -40550,6 +41619,7 @@ export type UpdateResourceSecretsByIdResponses = {
 	"403": UpdateResourceSecretsByIdStatus403;
 	"404": UpdateResourceSecretsByIdStatus404;
 	"409": UpdateResourceSecretsByIdStatus409;
+	"410": UpdateResourceSecretsByIdStatus410;
 	"422": UpdateResourceSecretsByIdStatus422;
 };
 
@@ -40563,6 +41633,7 @@ export type UpdateResourceSecretsByIdResponse =
 	| UpdateResourceSecretsByIdStatus403
 	| UpdateResourceSecretsByIdStatus404
 	| UpdateResourceSecretsByIdStatus409
+	| UpdateResourceSecretsByIdStatus410
 	| UpdateResourceSecretsByIdStatus422;
 
 /**
@@ -40618,6 +41689,11 @@ export type GetConfigurationsStatus401 = unknown;
 export type GetConfigurationsStatus403 = unknown;
 
 /**
+ * @type unknown
+ */
+export type GetConfigurationsStatus410 = unknown;
+
+/**
  * @type object
  */
 export type GetConfigurationsRequestConfig = {
@@ -40650,6 +41726,7 @@ export type GetConfigurationsResponses = {
 	"400": GetConfigurationsStatus400;
 	"401": GetConfigurationsStatus401;
 	"403": GetConfigurationsStatus403;
+	"410": GetConfigurationsStatus410;
 };
 
 /**
@@ -40659,7 +41736,8 @@ export type GetConfigurationsResponse =
 	| GetConfigurationsStatus200
 	| GetConfigurationsStatus400
 	| GetConfigurationsStatus401
-	| GetConfigurationsStatus403;
+	| GetConfigurationsStatus403
+	| GetConfigurationsStatus410;
 
 /**
  * @description ID of the configuration to check
@@ -40708,6 +41786,11 @@ export type GetConfigurationStatus403 = unknown;
 export type GetConfigurationStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type GetConfigurationStatus410 = unknown;
+
+/**
  * @type object
  */
 export type GetConfigurationRequestConfig = {
@@ -40743,6 +41826,7 @@ export type GetConfigurationResponses = {
 	"401": GetConfigurationStatus401;
 	"403": GetConfigurationStatus403;
 	"404": GetConfigurationStatus404;
+	"410": GetConfigurationStatus410;
 };
 
 /**
@@ -40753,7 +41837,8 @@ export type GetConfigurationResponse =
 	| GetConfigurationStatus400
 	| GetConfigurationStatus401
 	| GetConfigurationStatus403
-	| GetConfigurationStatus404;
+	| GetConfigurationStatus404
+	| GetConfigurationStatus410;
 
 /**
  * @type string
@@ -40800,6 +41885,11 @@ export type DeleteConfigurationStatus403 = unknown;
 export type DeleteConfigurationStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type DeleteConfigurationStatus410 = unknown;
+
+/**
  * @type object
  */
 export type DeleteConfigurationRequestConfig = {
@@ -40835,6 +41925,7 @@ export type DeleteConfigurationResponses = {
 	"401": DeleteConfigurationStatus401;
 	"403": DeleteConfigurationStatus403;
 	"404": DeleteConfigurationStatus404;
+	"410": DeleteConfigurationStatus410;
 };
 
 /**
@@ -40845,7 +41936,8 @@ export type DeleteConfigurationResponse =
 	| DeleteConfigurationStatus400
 	| DeleteConfigurationStatus401
 	| DeleteConfigurationStatus403
-	| DeleteConfigurationStatus404;
+	| DeleteConfigurationStatus404
+	| DeleteConfigurationStatus410;
 
 /**
  * @description ID of the integration configuration
@@ -40896,6 +41988,11 @@ export type GetConfigurationProductsStatus404 = unknown;
 /**
  * @type unknown
  */
+export type GetConfigurationProductsStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type GetConfigurationProductsStatus500 = unknown;
 
 /**
@@ -40934,6 +42031,7 @@ export type GetConfigurationProductsResponses = {
 	"401": GetConfigurationProductsStatus401;
 	"403": GetConfigurationProductsStatus403;
 	"404": GetConfigurationProductsStatus404;
+	"410": GetConfigurationProductsStatus410;
 	"500": GetConfigurationProductsStatus500;
 };
 
@@ -40946,6 +42044,7 @@ export type GetConfigurationProductsResponse =
 	| GetConfigurationProductsStatus401
 	| GetConfigurationProductsStatus403
 	| GetConfigurationProductsStatus404
+	| GetConfigurationProductsStatus410
 	| GetConfigurationProductsStatus500;
 
 /**
@@ -41036,6 +42135,11 @@ export type GetIntegrationLogDrainsStatus401 = unknown;
 export type GetIntegrationLogDrainsStatus403 = unknown;
 
 /**
+ * @type unknown
+ */
+export type GetIntegrationLogDrainsStatus410 = unknown;
+
+/**
  * @type object
  */
 export type GetIntegrationLogDrainsRequestConfig = {
@@ -41065,6 +42169,7 @@ export type GetIntegrationLogDrainsResponses = {
 	"400": GetIntegrationLogDrainsStatus400;
 	"401": GetIntegrationLogDrainsStatus401;
 	"403": GetIntegrationLogDrainsStatus403;
+	"410": GetIntegrationLogDrainsStatus410;
 };
 
 /**
@@ -41074,7 +42179,8 @@ export type GetIntegrationLogDrainsResponse =
 	| GetIntegrationLogDrainsStatus200
 	| GetIntegrationLogDrainsStatus400
 	| GetIntegrationLogDrainsStatus401
-	| GetIntegrationLogDrainsStatus403;
+	| GetIntegrationLogDrainsStatus403
+	| GetIntegrationLogDrainsStatus410;
 
 /**
  * @description The Team identifier to perform the request on behalf of.
@@ -41111,6 +42217,11 @@ export type CreateLogDrainStatus401 = unknown;
 export type CreateLogDrainStatus403 = unknown;
 
 /**
+ * @type unknown
+ */
+export type CreateLogDrainStatus410 = unknown;
+
+/**
  * @type object
  */
 export type CreateLogDrainRequestConfig = {
@@ -41140,6 +42251,7 @@ export type CreateLogDrainResponses = {
 	"400": CreateLogDrainStatus400;
 	"401": CreateLogDrainStatus401;
 	"403": CreateLogDrainStatus403;
+	"410": CreateLogDrainStatus410;
 };
 
 /**
@@ -41149,7 +42261,8 @@ export type CreateLogDrainResponse =
 	| CreateLogDrainStatus200
 	| CreateLogDrainStatus400
 	| CreateLogDrainStatus401
-	| CreateLogDrainStatus403;
+	| CreateLogDrainStatus403
+	| CreateLogDrainStatus410;
 
 /**
  * @description ID of the log drain to be deleted
@@ -41197,6 +42310,11 @@ export type DeleteIntegrationLogDrainStatus403 = unknown;
 export type DeleteIntegrationLogDrainStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type DeleteIntegrationLogDrainStatus410 = unknown;
+
+/**
  * @type object
  */
 export type DeleteIntegrationLogDrainRequestConfig = {
@@ -41232,6 +42350,7 @@ export type DeleteIntegrationLogDrainResponses = {
 	"401": DeleteIntegrationLogDrainStatus401;
 	"403": DeleteIntegrationLogDrainStatus403;
 	"404": DeleteIntegrationLogDrainStatus404;
+	"410": DeleteIntegrationLogDrainStatus410;
 };
 
 /**
@@ -41242,7 +42361,8 @@ export type DeleteIntegrationLogDrainResponse =
 	| DeleteIntegrationLogDrainStatus400
 	| DeleteIntegrationLogDrainStatus401
 	| DeleteIntegrationLogDrainStatus403
-	| DeleteIntegrationLogDrainStatus404;
+	| DeleteIntegrationLogDrainStatus404
+	| DeleteIntegrationLogDrainStatus410;
 
 /**
  * @type unknown
@@ -41268,6 +42388,11 @@ export type CreateApiKeysStatus403 = unknown;
  * @type unknown
  */
 export type CreateApiKeysStatus409 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateApiKeysStatus410 = unknown;
 
 /**
  * @type unknown
@@ -41302,6 +42427,7 @@ export type CreateApiKeysResponses = {
 	"401": CreateApiKeysStatus401;
 	"403": CreateApiKeysStatus403;
 	"409": CreateApiKeysStatus409;
+	"410": CreateApiKeysStatus410;
 	"429": CreateApiKeysStatus429;
 	"500": CreateApiKeysStatus500;
 };
@@ -41315,6 +42441,7 @@ export type CreateApiKeysResponse =
 	| CreateApiKeysStatus401
 	| CreateApiKeysStatus403
 	| CreateApiKeysStatus409
+	| CreateApiKeysStatus410
 	| CreateApiKeysStatus429
 	| CreateApiKeysStatus500;
 
@@ -41363,6 +42490,11 @@ export type GetRuntimeLogsStatus401 = unknown;
 export type GetRuntimeLogsStatus403 = unknown;
 
 /**
+ * @type unknown
+ */
+export type GetRuntimeLogsStatus410 = unknown;
+
+/**
  * @type object
  */
 export type GetRuntimeLogsRequestConfig = {
@@ -41398,6 +42530,7 @@ export type GetRuntimeLogsResponses = {
 	"400": GetRuntimeLogsStatus400;
 	"401": GetRuntimeLogsStatus401;
 	"403": GetRuntimeLogsStatus403;
+	"410": GetRuntimeLogsStatus410;
 };
 
 /**
@@ -41407,7 +42540,8 @@ export type GetRuntimeLogsResponse =
 	| GetRuntimeLogsStatus200
 	| GetRuntimeLogsStatus400
 	| GetRuntimeLogsStatus401
-	| GetRuntimeLogsStatus403;
+	| GetRuntimeLogsStatus403
+	| GetRuntimeLogsStatus410;
 
 /**
  * @type string
@@ -41452,6 +42586,12 @@ export type CreateInstallationsByIntegrationConfigurationIdResourcesByResourceId
 	unknown;
 
 /**
+ * @type unknown
+ */
+export type CreateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsStatus410 =
+	unknown;
+
+/**
  * @type object
  */
 export type CreateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsRequestConfig =
@@ -41482,6 +42622,7 @@ export type CreateInstallationsByIntegrationConfigurationIdResourcesByResourceId
 		"401": CreateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsStatus401;
 		"403": CreateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsStatus403;
 		"404": CreateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsStatus404;
+		"410": CreateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsStatus410;
 	};
 
 /**
@@ -41492,7 +42633,8 @@ export type CreateInstallationsByIntegrationConfigurationIdResourcesByResourceId
 	| CreateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsStatus400
 	| CreateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsStatus401
 	| CreateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsStatus403
-	| CreateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsStatus404;
+	| CreateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsStatus404
+	| CreateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsStatus410;
 
 /**
  * @type string
@@ -41543,6 +42685,12 @@ export type UpdateInstallationsByIntegrationConfigurationIdResourcesByResourceId
 	unknown;
 
 /**
+ * @type unknown
+ */
+export type UpdateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdStatus410 =
+	unknown;
+
+/**
  * @type object
  */
 export type UpdateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdRequestConfig =
@@ -41574,6 +42722,7 @@ export type UpdateInstallationsByIntegrationConfigurationIdResourcesByResourceId
 		"401": UpdateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdStatus401;
 		"403": UpdateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdStatus403;
 		"404": UpdateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdStatus404;
+		"410": UpdateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdStatus410;
 	};
 
 /**
@@ -41584,7 +42733,8 @@ export type UpdateInstallationsByIntegrationConfigurationIdResourcesByResourceId
 	| UpdateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdStatus400
 	| UpdateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdStatus401
 	| UpdateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdStatus403
-	| UpdateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdStatus404;
+	| UpdateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdStatus404
+	| UpdateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdStatus410;
 
 /**
  * @type string
@@ -41635,6 +42785,12 @@ export type DeleteInstallationsByIntegrationConfigurationIdResourcesByResourceId
 	unknown;
 
 /**
+ * @type unknown
+ */
+export type DeleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdStatus410 =
+	unknown;
+
+/**
  * @type object
  */
 export type DeleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdRequestConfig =
@@ -41666,6 +42822,7 @@ export type DeleteInstallationsByIntegrationConfigurationIdResourcesByResourceId
 		"401": DeleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdStatus401;
 		"403": DeleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdStatus403;
 		"404": DeleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdStatus404;
+		"410": DeleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdStatus410;
 	};
 
 /**
@@ -41676,7 +42833,8 @@ export type DeleteInstallationsByIntegrationConfigurationIdResourcesByResourceId
 	| DeleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdStatus400
 	| DeleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdStatus401
 	| DeleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdStatus403
-	| DeleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdStatus404;
+	| DeleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdStatus404
+	| DeleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdStatus410;
 
 /**
  * @type string
@@ -41727,6 +42885,12 @@ export type GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExp
 	unknown;
 
 /**
+ * @type unknown
+ */
+export type GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus410 =
+	unknown;
+
+/**
  * @type object
  */
 export type GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigRequestConfig =
@@ -41758,6 +42922,7 @@ export type GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExp
 		"401": GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus401;
 		"403": GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus403;
 		"404": GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus404;
+		"410": GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus410;
 	};
 
 /**
@@ -41769,7 +42934,8 @@ export type GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExp
 	| GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus400
 	| GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus401
 	| GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus403
-	| GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus404;
+	| GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus404
+	| GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus410;
 
 /**
  * @type string
@@ -41822,6 +42988,12 @@ export type ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceI
 /**
  * @type unknown
  */
+export type ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus410 =
+	unknown;
+
+/**
+ * @type unknown
+ */
 export type ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus412 =
 	unknown;
 
@@ -41857,6 +43029,7 @@ export type ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceI
 		"403": ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus403;
 		"404": ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus404;
 		"409": ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus409;
+		"410": ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus410;
 		"412": ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus412;
 	};
 
@@ -41870,6 +43043,7 @@ export type ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceI
 	| ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus403
 	| ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus404
 	| ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus409
+	| ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus410
 	| ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus412;
 
 /**
@@ -41909,6 +43083,11 @@ export type GetMicrofrontendsGroupsStatus403 = unknown;
 /**
  * @type unknown
  */
+export type GetMicrofrontendsGroupsStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type GetMicrofrontendsGroupsStatus500 = unknown;
 
 /**
@@ -41941,6 +43120,7 @@ export type GetMicrofrontendsGroupsResponses = {
 	"400": GetMicrofrontendsGroupsStatus400;
 	"401": GetMicrofrontendsGroupsStatus401;
 	"403": GetMicrofrontendsGroupsStatus403;
+	"410": GetMicrofrontendsGroupsStatus410;
 	"500": GetMicrofrontendsGroupsStatus500;
 };
 
@@ -41952,6 +43132,7 @@ export type GetMicrofrontendsGroupsResponse =
 	| GetMicrofrontendsGroupsStatus400
 	| GetMicrofrontendsGroupsStatus401
 	| GetMicrofrontendsGroupsStatus403
+	| GetMicrofrontendsGroupsStatus410
 	| GetMicrofrontendsGroupsStatus500;
 
 /**
@@ -41994,6 +43175,11 @@ export type GetMicrofrontendsInGroupStatus401 = unknown;
 export type GetMicrofrontendsInGroupStatus403 = unknown;
 
 /**
+ * @type unknown
+ */
+export type GetMicrofrontendsInGroupStatus410 = unknown;
+
+/**
  * @type object
  */
 export type GetMicrofrontendsInGroupRequestConfig = {
@@ -42028,6 +43214,7 @@ export type GetMicrofrontendsInGroupResponses = {
 	"400": GetMicrofrontendsInGroupStatus400;
 	"401": GetMicrofrontendsInGroupStatus401;
 	"403": GetMicrofrontendsInGroupStatus403;
+	"410": GetMicrofrontendsInGroupStatus410;
 };
 
 /**
@@ -42037,7 +43224,8 @@ export type GetMicrofrontendsInGroupResponse =
 	| GetMicrofrontendsInGroupStatus200
 	| GetMicrofrontendsInGroupStatus400
 	| GetMicrofrontendsInGroupStatus401
-	| GetMicrofrontendsInGroupStatus403;
+	| GetMicrofrontendsInGroupStatus403
+	| GetMicrofrontendsInGroupStatus410;
 
 /**
  * @description The unique deployment identifier
@@ -42087,6 +43275,11 @@ export type GetMicrofrontendsConfigStatus404 = unknown;
 /**
  * @type unknown
  */
+export type GetMicrofrontendsConfigStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type GetMicrofrontendsConfigStatus500 = unknown;
 
 /**
@@ -42125,6 +43318,7 @@ export type GetMicrofrontendsConfigResponses = {
 	"401": GetMicrofrontendsConfigStatus401;
 	"403": GetMicrofrontendsConfigStatus403;
 	"404": GetMicrofrontendsConfigStatus404;
+	"410": GetMicrofrontendsConfigStatus410;
 	"500": GetMicrofrontendsConfigStatus500;
 };
 
@@ -42137,6 +43331,7 @@ export type GetMicrofrontendsConfigResponse =
 	| GetMicrofrontendsConfigStatus401
 	| GetMicrofrontendsConfigStatus403
 	| GetMicrofrontendsConfigStatus404
+	| GetMicrofrontendsConfigStatus410
 	| GetMicrofrontendsConfigStatus500;
 
 /**
@@ -42187,6 +43382,11 @@ export type GetMicrofrontendsConfigForProjectStatus404 = unknown;
 /**
  * @type unknown
  */
+export type GetMicrofrontendsConfigForProjectStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type GetMicrofrontendsConfigForProjectStatus500 = unknown;
 
 /**
@@ -42225,6 +43425,7 @@ export type GetMicrofrontendsConfigForProjectResponses = {
 	"401": GetMicrofrontendsConfigForProjectStatus401;
 	"403": GetMicrofrontendsConfigForProjectStatus403;
 	"404": GetMicrofrontendsConfigForProjectStatus404;
+	"410": GetMicrofrontendsConfigForProjectStatus410;
 	"500": GetMicrofrontendsConfigForProjectStatus500;
 };
 
@@ -42237,6 +43438,7 @@ export type GetMicrofrontendsConfigForProjectResponse =
 	| GetMicrofrontendsConfigForProjectStatus401
 	| GetMicrofrontendsConfigForProjectStatus403
 	| GetMicrofrontendsConfigForProjectStatus404
+	| GetMicrofrontendsConfigForProjectStatus410
 	| GetMicrofrontendsConfigForProjectStatus500;
 
 /**
@@ -42276,6 +43478,11 @@ export type CreateMicrofrontendsGroupWithApplicationsStatus403 = unknown;
 /**
  * @type unknown
  */
+export type CreateMicrofrontendsGroupWithApplicationsStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type CreateMicrofrontendsGroupWithApplicationsStatus500 = unknown;
 
 /**
@@ -42308,6 +43515,7 @@ export type CreateMicrofrontendsGroupWithApplicationsResponses = {
 	"400": CreateMicrofrontendsGroupWithApplicationsStatus400;
 	"401": CreateMicrofrontendsGroupWithApplicationsStatus401;
 	"403": CreateMicrofrontendsGroupWithApplicationsStatus403;
+	"410": CreateMicrofrontendsGroupWithApplicationsStatus410;
 	"500": CreateMicrofrontendsGroupWithApplicationsStatus500;
 };
 
@@ -42319,6 +43527,7 @@ export type CreateMicrofrontendsGroupWithApplicationsResponse =
 	| CreateMicrofrontendsGroupWithApplicationsStatus400
 	| CreateMicrofrontendsGroupWithApplicationsStatus401
 	| CreateMicrofrontendsGroupWithApplicationsStatus403
+	| CreateMicrofrontendsGroupWithApplicationsStatus410
 	| CreateMicrofrontendsGroupWithApplicationsStatus500;
 
 /**
@@ -42361,6 +43570,11 @@ export type GetObservabilityConfigurationProjectsStatus403 = unknown;
 export type GetObservabilityConfigurationProjectsStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type GetObservabilityConfigurationProjectsStatus410 = unknown;
+
+/**
  * @type object
  */
 export type GetObservabilityConfigurationProjectsRequestConfig = {
@@ -42391,6 +43605,7 @@ export type GetObservabilityConfigurationProjectsResponses = {
 	"401": GetObservabilityConfigurationProjectsStatus401;
 	"403": GetObservabilityConfigurationProjectsStatus403;
 	"404": GetObservabilityConfigurationProjectsStatus404;
+	"410": GetObservabilityConfigurationProjectsStatus410;
 };
 
 /**
@@ -42401,7 +43616,8 @@ export type GetObservabilityConfigurationProjectsResponse =
 	| GetObservabilityConfigurationProjectsStatus400
 	| GetObservabilityConfigurationProjectsStatus401
 	| GetObservabilityConfigurationProjectsStatus403
-	| GetObservabilityConfigurationProjectsStatus404;
+	| GetObservabilityConfigurationProjectsStatus404
+	| GetObservabilityConfigurationProjectsStatus410;
 
 /**
  * @description The ID or name of the project to update
@@ -42451,6 +43667,11 @@ export type UpdateObservabilityConfigurationProjectStatus404 = unknown;
 /**
  * @type unknown
  */
+export type UpdateObservabilityConfigurationProjectStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type UpdateObservabilityConfigurationProjectStatus429 = unknown;
 
 /**
@@ -42489,6 +43710,7 @@ export type UpdateObservabilityConfigurationProjectResponses = {
 	"401": UpdateObservabilityConfigurationProjectStatus401;
 	"403": UpdateObservabilityConfigurationProjectStatus403;
 	"404": UpdateObservabilityConfigurationProjectStatus404;
+	"410": UpdateObservabilityConfigurationProjectStatus410;
 	"429": UpdateObservabilityConfigurationProjectStatus429;
 };
 
@@ -42501,6 +43723,7 @@ export type UpdateObservabilityConfigurationProjectResponse =
 	| UpdateObservabilityConfigurationProjectStatus401
 	| UpdateObservabilityConfigurationProjectStatus403
 	| UpdateObservabilityConfigurationProjectStatus404
+	| UpdateObservabilityConfigurationProjectStatus410
 	| UpdateObservabilityConfigurationProjectStatus429;
 
 /**
@@ -42534,6 +43757,11 @@ export type CreateObservabilityQueryStatus403 = unknown;
 export type CreateObservabilityQueryStatus408 = unknown;
 
 /**
+ * @type unknown
+ */
+export type CreateObservabilityQueryStatus410 = unknown;
+
+/**
  * @type object
  */
 export type CreateObservabilityQueryRequestConfig = {
@@ -42557,6 +43785,7 @@ export type CreateObservabilityQueryResponses = {
 	"402": CreateObservabilityQueryStatus402;
 	"403": CreateObservabilityQueryStatus403;
 	"408": CreateObservabilityQueryStatus408;
+	"410": CreateObservabilityQueryStatus410;
 };
 
 /**
@@ -42568,7 +43797,8 @@ export type CreateObservabilityQueryResponse =
 	| CreateObservabilityQueryStatus401
 	| CreateObservabilityQueryStatus402
 	| CreateObservabilityQueryStatus403
-	| CreateObservabilityQueryStatus408;
+	| CreateObservabilityQueryStatus408
+	| CreateObservabilityQueryStatus410;
 
 /**
  * @type unknown
@@ -42589,6 +43819,11 @@ export type GetObservabilitySchemaStatus401 = unknown;
  * @type unknown
  */
 export type GetObservabilitySchemaStatus403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetObservabilitySchemaStatus410 = unknown;
 
 /**
  * @type object
@@ -42612,6 +43847,7 @@ export type GetObservabilitySchemaResponses = {
 	"400": GetObservabilitySchemaStatus400;
 	"401": GetObservabilitySchemaStatus401;
 	"403": GetObservabilitySchemaStatus403;
+	"410": GetObservabilitySchemaStatus410;
 };
 
 /**
@@ -42621,7 +43857,8 @@ export type GetObservabilitySchemaResponse =
 	| GetObservabilitySchemaStatus200
 	| GetObservabilitySchemaStatus400
 	| GetObservabilitySchemaStatus401
-	| GetObservabilitySchemaStatus403;
+	| GetObservabilitySchemaStatus403
+	| GetObservabilitySchemaStatus410;
 
 /**
  * @type string
@@ -42647,6 +43884,11 @@ export type GetObservabilitySchemaByMetricIdStatus401 = unknown;
  * @type unknown
  */
 export type GetObservabilitySchemaByMetricIdStatus403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetObservabilitySchemaByMetricIdStatus410 = unknown;
 
 /**
  * @type object
@@ -42675,6 +43917,7 @@ export type GetObservabilitySchemaByMetricIdResponses = {
 	"400": GetObservabilitySchemaByMetricIdStatus400;
 	"401": GetObservabilitySchemaByMetricIdStatus401;
 	"403": GetObservabilitySchemaByMetricIdStatus403;
+	"410": GetObservabilitySchemaByMetricIdStatus410;
 };
 
 /**
@@ -42684,7 +43927,8 @@ export type GetObservabilitySchemaByMetricIdResponse =
 	| GetObservabilitySchemaByMetricIdStatus200
 	| GetObservabilitySchemaByMetricIdStatus400
 	| GetObservabilitySchemaByMetricIdStatus401
-	| GetObservabilitySchemaByMetricIdStatus403;
+	| GetObservabilitySchemaByMetricIdStatus403
+	| GetObservabilitySchemaByMetricIdStatus410;
 
 /**
  * @description The ID or name of the Project.
@@ -42757,6 +44001,11 @@ export type GetProjectMembersStatus401 = unknown;
 export type GetProjectMembersStatus403 = unknown;
 
 /**
+ * @type unknown
+ */
+export type GetProjectMembersStatus410 = unknown;
+
+/**
  * @type object
  */
 export type GetProjectMembersRequestConfig = {
@@ -42795,6 +44044,7 @@ export type GetProjectMembersResponses = {
 	"400": GetProjectMembersStatus400;
 	"401": GetProjectMembersStatus401;
 	"403": GetProjectMembersStatus403;
+	"410": GetProjectMembersStatus410;
 };
 
 /**
@@ -42804,7 +44054,8 @@ export type GetProjectMembersResponse =
 	| GetProjectMembersStatus200
 	| GetProjectMembersStatus400
 	| GetProjectMembersStatus401
-	| GetProjectMembersStatus403;
+	| GetProjectMembersStatus403
+	| GetProjectMembersStatus410;
 
 /**
  * @description The ID or name of the Project.
@@ -42850,6 +44101,11 @@ export type AddProjectMemberStatus403 = unknown;
 /**
  * @type unknown
  */
+export type AddProjectMemberStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type AddProjectMemberStatus500 = unknown;
 
 /**
@@ -42887,6 +44143,7 @@ export type AddProjectMemberResponses = {
 	"400": AddProjectMemberStatus400;
 	"401": AddProjectMemberStatus401;
 	"403": AddProjectMemberStatus403;
+	"410": AddProjectMemberStatus410;
 	"500": AddProjectMemberStatus500;
 };
 
@@ -42898,6 +44155,7 @@ export type AddProjectMemberResponse =
 	| AddProjectMemberStatus400
 	| AddProjectMemberStatus401
 	| AddProjectMemberStatus403
+	| AddProjectMemberStatus410
 	| AddProjectMemberStatus500;
 
 /**
@@ -42949,6 +44207,11 @@ export type RemoveProjectMemberStatus401 = unknown;
 export type RemoveProjectMemberStatus403 = unknown;
 
 /**
+ * @type unknown
+ */
+export type RemoveProjectMemberStatus410 = unknown;
+
+/**
  * @type object
  */
 export type RemoveProjectMemberRequestConfig = {
@@ -42984,6 +44247,7 @@ export type RemoveProjectMemberResponses = {
 	"400": RemoveProjectMemberStatus400;
 	"401": RemoveProjectMemberStatus401;
 	"403": RemoveProjectMemberStatus403;
+	"410": RemoveProjectMemberStatus410;
 };
 
 /**
@@ -42993,7 +44257,8 @@ export type RemoveProjectMemberResponse =
 	| RemoveProjectMemberStatus200
 	| RemoveProjectMemberStatus400
 	| RemoveProjectMemberStatus401
-	| RemoveProjectMemberStatus403;
+	| RemoveProjectMemberStatus403
+	| RemoveProjectMemberStatus410;
 
 /**
  * @type string
@@ -43059,6 +44324,11 @@ export type GetRoutesStatus403 = unknown;
 export type GetRoutesStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type GetRoutesStatus410 = unknown;
+
+/**
  * @type object
  */
 export type GetRoutesRequestConfig = {
@@ -43098,6 +44368,7 @@ export type GetRoutesResponses = {
 	"401": GetRoutesStatus401;
 	"403": GetRoutesStatus403;
 	"404": GetRoutesStatus404;
+	"410": GetRoutesStatus410;
 };
 
 /**
@@ -43108,7 +44379,8 @@ export type GetRoutesResponse =
 	| GetRoutesStatus400
 	| GetRoutesStatus401
 	| GetRoutesStatus403
-	| GetRoutesStatus404;
+	| GetRoutesStatus404
+	| GetRoutesStatus410;
 
 /**
  * @type string
@@ -43157,6 +44429,11 @@ export type StageRoutesStatus409 = unknown;
 /**
  * @type unknown
  */
+export type StageRoutesStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type StageRoutesStatus500 = unknown;
 
 /**
@@ -43195,6 +44472,7 @@ export type StageRoutesResponses = {
 	"401": StageRoutesStatus401;
 	"403": StageRoutesStatus403;
 	"409": StageRoutesStatus409;
+	"410": StageRoutesStatus410;
 	"500": StageRoutesStatus500;
 };
 
@@ -43207,6 +44485,7 @@ export type StageRoutesResponse =
 	| StageRoutesStatus401
 	| StageRoutesStatus403
 	| StageRoutesStatus409
+	| StageRoutesStatus410
 	| StageRoutesStatus500;
 
 /**
@@ -43256,6 +44535,11 @@ export type AddRouteStatus409 = unknown;
 /**
  * @type unknown
  */
+export type AddRouteStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type AddRouteStatus500 = unknown;
 
 /**
@@ -43294,6 +44578,7 @@ export type AddRouteResponses = {
 	"401": AddRouteStatus401;
 	"403": AddRouteStatus403;
 	"409": AddRouteStatus409;
+	"410": AddRouteStatus410;
 	"500": AddRouteStatus500;
 };
 
@@ -43306,6 +44591,7 @@ export type AddRouteResponse =
 	| AddRouteStatus401
 	| AddRouteStatus403
 	| AddRouteStatus409
+	| AddRouteStatus410
 	| AddRouteStatus500;
 
 /**
@@ -43353,6 +44639,11 @@ export type DeleteRoutesStatus403 = unknown;
 export type DeleteRoutesStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type DeleteRoutesStatus410 = unknown;
+
+/**
  * @type object
  */
 export type DeleteRoutesRequestConfig = {
@@ -43388,6 +44679,7 @@ export type DeleteRoutesResponses = {
 	"401": DeleteRoutesStatus401;
 	"403": DeleteRoutesStatus403;
 	"404": DeleteRoutesStatus404;
+	"410": DeleteRoutesStatus410;
 };
 
 /**
@@ -43398,7 +44690,8 @@ export type DeleteRoutesResponse =
 	| DeleteRoutesStatus400
 	| DeleteRoutesStatus401
 	| DeleteRoutesStatus403
-	| DeleteRoutesStatus404;
+	| DeleteRoutesStatus404
+	| DeleteRoutesStatus410;
 
 /**
  * @type string
@@ -43457,6 +44750,11 @@ export type EditRouteStatus409 = unknown;
 /**
  * @type unknown
  */
+export type EditRouteStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type EditRouteStatus500 = unknown;
 
 /**
@@ -43497,6 +44795,7 @@ export type EditRouteResponses = {
 	"403": EditRouteStatus403;
 	"404": EditRouteStatus404;
 	"409": EditRouteStatus409;
+	"410": EditRouteStatus410;
 	"500": EditRouteStatus500;
 };
 
@@ -43510,6 +44809,7 @@ export type EditRouteResponse =
 	| EditRouteStatus403
 	| EditRouteStatus404
 	| EditRouteStatus409
+	| EditRouteStatus410
 	| EditRouteStatus500;
 
 /**
@@ -43559,6 +44859,11 @@ export type GenerateRouteStatus408 = unknown;
 /**
  * @type unknown
  */
+export type GenerateRouteStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type GenerateRouteStatus500 = unknown;
 
 /**
@@ -43597,6 +44902,7 @@ export type GenerateRouteResponses = {
 	"401": GenerateRouteStatus401;
 	"403": GenerateRouteStatus403;
 	"408": GenerateRouteStatus408;
+	"410": GenerateRouteStatus410;
 	"500": GenerateRouteStatus500;
 };
 
@@ -43609,6 +44915,7 @@ export type GenerateRouteResponse =
 	| GenerateRouteStatus401
 	| GenerateRouteStatus403
 	| GenerateRouteStatus408
+	| GenerateRouteStatus410
 	| GenerateRouteStatus500;
 
 /**
@@ -43651,6 +44958,11 @@ export type GetRouteVersionsStatus401 = unknown;
 export type GetRouteVersionsStatus403 = unknown;
 
 /**
+ * @type unknown
+ */
+export type GetRouteVersionsStatus410 = unknown;
+
+/**
  * @type object
  */
 export type GetRouteVersionsRequestConfig = {
@@ -43685,6 +44997,7 @@ export type GetRouteVersionsResponses = {
 	"400": GetRouteVersionsStatus400;
 	"401": GetRouteVersionsStatus401;
 	"403": GetRouteVersionsStatus403;
+	"410": GetRouteVersionsStatus410;
 };
 
 /**
@@ -43694,7 +45007,8 @@ export type GetRouteVersionsResponse =
 	| GetRouteVersionsStatus200
 	| GetRouteVersionsStatus400
 	| GetRouteVersionsStatus401
-	| GetRouteVersionsStatus403;
+	| GetRouteVersionsStatus403
+	| GetRouteVersionsStatus410;
 
 /**
  * @type string
@@ -43748,6 +45062,11 @@ export type UpdateRouteVersionsStatus409 = unknown;
 /**
  * @type unknown
  */
+export type UpdateRouteVersionsStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type UpdateRouteVersionsStatus500 = unknown;
 
 /**
@@ -43787,6 +45106,7 @@ export type UpdateRouteVersionsResponses = {
 	"403": UpdateRouteVersionsStatus403;
 	"404": UpdateRouteVersionsStatus404;
 	"409": UpdateRouteVersionsStatus409;
+	"410": UpdateRouteVersionsStatus410;
 	"500": UpdateRouteVersionsStatus500;
 };
 
@@ -43800,6 +45120,7 @@ export type UpdateRouteVersionsResponse =
 	| UpdateRouteVersionsStatus403
 	| UpdateRouteVersionsStatus404
 	| UpdateRouteVersionsStatus409
+	| UpdateRouteVersionsStatus410
 	| UpdateRouteVersionsStatus500;
 
 /**
@@ -43935,6 +45256,11 @@ export type GetProjectsStatus401 = unknown;
 export type GetProjectsStatus403 = unknown;
 
 /**
+ * @type unknown
+ */
+export type GetProjectsStatus410 = unknown;
+
+/**
  * @type object
  */
 export type GetProjectsRequestConfig = {
@@ -43979,6 +45305,7 @@ export type GetProjectsResponses = {
 	"400": GetProjectsStatus400;
 	"401": GetProjectsStatus401;
 	"403": GetProjectsStatus403;
+	"410": GetProjectsStatus410;
 };
 
 /**
@@ -43988,7 +45315,8 @@ export type GetProjectsResponse =
 	| GetProjectsStatus200
 	| GetProjectsStatus400
 	| GetProjectsStatus401
-	| GetProjectsStatus403;
+	| GetProjectsStatus403
+	| GetProjectsStatus410;
 
 /**
  * @description The project ID
@@ -44041,6 +45369,11 @@ export type GetProjectTraceStatus401 = unknown;
 export type GetProjectTraceStatus403 = unknown;
 
 /**
+ * @type unknown
+ */
+export type GetProjectTraceStatus410 = unknown;
+
+/**
  * @type object
  */
 export type GetProjectTraceRequestConfig = {
@@ -44072,6 +45405,7 @@ export type GetProjectTraceResponses = {
 	"400": GetProjectTraceStatus400;
 	"401": GetProjectTraceStatus401;
 	"403": GetProjectTraceStatus403;
+	"410": GetProjectTraceStatus410;
 };
 
 /**
@@ -44081,7 +45415,8 @@ export type GetProjectTraceResponse =
 	| GetProjectTraceStatus200
 	| GetProjectTraceStatus400
 	| GetProjectTraceStatus401
-	| GetProjectTraceStatus403;
+	| GetProjectTraceStatus403
+	| GetProjectTraceStatus410;
 
 /**
  * @description The Team identifier to perform the request on behalf of.
@@ -44135,6 +45470,11 @@ export type CreateProjectStatus409 = unknown;
 /**
  * @type unknown
  */
+export type CreateProjectStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type CreateProjectStatus428 = unknown;
 
 /**
@@ -44180,6 +45520,7 @@ export type CreateProjectResponses = {
 	"403": CreateProjectStatus403;
 	"404": CreateProjectStatus404;
 	"409": CreateProjectStatus409;
+	"410": CreateProjectStatus410;
 	"428": CreateProjectStatus428;
 	"429": CreateProjectStatus429;
 	"500": CreateProjectStatus500;
@@ -44196,6 +45537,7 @@ export type CreateProjectResponse =
 	| CreateProjectStatus403
 	| CreateProjectStatus404
 	| CreateProjectStatus409
+	| CreateProjectStatus410
 	| CreateProjectStatus428
 	| CreateProjectStatus429
 	| CreateProjectStatus500;
@@ -44248,6 +45590,11 @@ export type GetProjectTokenStatus403 = unknown;
 export type GetProjectTokenStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type GetProjectTokenStatus410 = unknown;
+
+/**
  * @type object
  */
 export type GetProjectTokenRequestConfig = {
@@ -44283,6 +45630,7 @@ export type GetProjectTokenResponses = {
 	"401": GetProjectTokenStatus401;
 	"403": GetProjectTokenStatus403;
 	"404": GetProjectTokenStatus404;
+	"410": GetProjectTokenStatus410;
 };
 
 /**
@@ -44293,7 +45641,8 @@ export type GetProjectTokenResponse =
 	| GetProjectTokenStatus400
 	| GetProjectTokenStatus401
 	| GetProjectTokenStatus403
-	| GetProjectTokenStatus404;
+	| GetProjectTokenStatus404
+	| GetProjectTokenStatus410;
 
 /**
  * @description The Team identifier to perform the request on behalf of.
@@ -44332,6 +45681,11 @@ export type CreateTraceSessionStatus403 = unknown;
 /**
  * @type unknown
  */
+export type CreateTraceSessionStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type CreateTraceSessionStatus422 = unknown;
 
 /**
@@ -44364,6 +45718,7 @@ export type CreateTraceSessionResponses = {
 	"400": CreateTraceSessionStatus400;
 	"401": CreateTraceSessionStatus401;
 	"403": CreateTraceSessionStatus403;
+	"410": CreateTraceSessionStatus410;
 	"422": CreateTraceSessionStatus422;
 };
 
@@ -44375,6 +45730,7 @@ export type CreateTraceSessionResponse =
 	| CreateTraceSessionStatus400
 	| CreateTraceSessionStatus401
 	| CreateTraceSessionStatus403
+	| CreateTraceSessionStatus410
 	| CreateTraceSessionStatus422;
 
 /**
@@ -44419,6 +45775,11 @@ export type GetProjectStatus401 = unknown;
 export type GetProjectStatus403 = unknown;
 
 /**
+ * @type unknown
+ */
+export type GetProjectStatus410 = unknown;
+
+/**
  * @type object
  */
 export type GetProjectRequestConfig = {
@@ -44453,6 +45814,7 @@ export type GetProjectResponses = {
 	"400": GetProjectStatus400;
 	"401": GetProjectStatus401;
 	"403": GetProjectStatus403;
+	"410": GetProjectStatus410;
 };
 
 /**
@@ -44462,7 +45824,8 @@ export type GetProjectResponse =
 	| GetProjectStatus200
 	| GetProjectStatus400
 	| GetProjectStatus401
-	| GetProjectStatus403;
+	| GetProjectStatus403
+	| GetProjectStatus410;
 
 /**
  * @description The unique project identifier or the project name
@@ -44523,6 +45886,11 @@ export type UpdateProjectStatus409 = unknown;
 /**
  * @type unknown
  */
+export type UpdateProjectStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type UpdateProjectStatus428 = unknown;
 
 /**
@@ -44568,6 +45936,7 @@ export type UpdateProjectResponses = {
 	"403": UpdateProjectStatus403;
 	"404": UpdateProjectStatus404;
 	"409": UpdateProjectStatus409;
+	"410": UpdateProjectStatus410;
 	"428": UpdateProjectStatus428;
 	"500": UpdateProjectStatus500;
 };
@@ -44583,6 +45952,7 @@ export type UpdateProjectResponse =
 	| UpdateProjectStatus403
 	| UpdateProjectStatus404
 	| UpdateProjectStatus409
+	| UpdateProjectStatus410
 	| UpdateProjectStatus428
 	| UpdateProjectStatus500;
 
@@ -44633,6 +46003,11 @@ export type DeleteProjectStatus403 = unknown;
 export type DeleteProjectStatus409 = unknown;
 
 /**
+ * @type unknown
+ */
+export type DeleteProjectStatus410 = unknown;
+
+/**
  * @type object
  */
 export type DeleteProjectRequestConfig = {
@@ -44668,6 +46043,7 @@ export type DeleteProjectResponses = {
 	"401": DeleteProjectStatus401;
 	"403": DeleteProjectStatus403;
 	"409": DeleteProjectStatus409;
+	"410": DeleteProjectStatus410;
 };
 
 /**
@@ -44678,7 +46054,8 @@ export type DeleteProjectResponse =
 	| DeleteProjectStatus400
 	| DeleteProjectStatus401
 	| DeleteProjectStatus403
-	| DeleteProjectStatus409;
+	| DeleteProjectStatus409
+	| DeleteProjectStatus410;
 
 /**
  * @description The unique project identifier or the project name.
@@ -44719,6 +46096,11 @@ export type UploadProjectAvatarStatus401 = unknown;
  * @type unknown
  */
 export type UploadProjectAvatarStatus403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type UploadProjectAvatarStatus410 = unknown;
 
 /**
  * @type unknown
@@ -44765,6 +46147,7 @@ export type UploadProjectAvatarResponses = {
 	"400": UploadProjectAvatarStatus400;
 	"401": UploadProjectAvatarStatus401;
 	"403": UploadProjectAvatarStatus403;
+	"410": UploadProjectAvatarStatus410;
 	"413": UploadProjectAvatarStatus413;
 	"415": UploadProjectAvatarStatus415;
 };
@@ -44777,6 +46160,7 @@ export type UploadProjectAvatarResponse =
 	| UploadProjectAvatarStatus400
 	| UploadProjectAvatarStatus401
 	| UploadProjectAvatarStatus403
+	| UploadProjectAvatarStatus410
 	| UploadProjectAvatarStatus413
 	| UploadProjectAvatarStatus415;
 
@@ -44838,6 +46222,11 @@ export type UpdateStaticIpsStatus409 = unknown;
 /**
  * @type unknown
  */
+export type UpdateStaticIpsStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type UpdateStaticIpsStatus500 = unknown;
 
 /**
@@ -44878,6 +46267,7 @@ export type UpdateStaticIpsResponses = {
 	"403": UpdateStaticIpsStatus403;
 	"404": UpdateStaticIpsStatus404;
 	"409": UpdateStaticIpsStatus409;
+	"410": UpdateStaticIpsStatus410;
 	"500": UpdateStaticIpsStatus500;
 };
 
@@ -44892,6 +46282,7 @@ export type UpdateStaticIpsResponse =
 	| UpdateStaticIpsStatus403
 	| UpdateStaticIpsStatus404
 	| UpdateStaticIpsStatus409
+	| UpdateStaticIpsStatus410
 	| UpdateStaticIpsStatus500;
 
 /**
@@ -44942,6 +46333,11 @@ export type CreateCustomEnvironmentStatus403 = unknown;
 /**
  * @type unknown
  */
+export type CreateCustomEnvironmentStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type CreateCustomEnvironmentStatus500 = unknown;
 
 /**
@@ -44980,6 +46376,7 @@ export type CreateCustomEnvironmentResponses = {
 	"401": CreateCustomEnvironmentStatus401;
 	"402": CreateCustomEnvironmentStatus402;
 	"403": CreateCustomEnvironmentStatus403;
+	"410": CreateCustomEnvironmentStatus410;
 	"500": CreateCustomEnvironmentStatus500;
 };
 
@@ -44992,6 +46389,7 @@ export type CreateCustomEnvironmentResponse =
 	| CreateCustomEnvironmentStatus401
 	| CreateCustomEnvironmentStatus402
 	| CreateCustomEnvironmentStatus403
+	| CreateCustomEnvironmentStatus410
 	| CreateCustomEnvironmentStatus500;
 
 /**
@@ -45041,6 +46439,11 @@ export type GetProjectsByIdOrNameCustomEnvironmentsStatus401 = unknown;
 export type GetProjectsByIdOrNameCustomEnvironmentsStatus403 = unknown;
 
 /**
+ * @type unknown
+ */
+export type GetProjectsByIdOrNameCustomEnvironmentsStatus410 = unknown;
+
+/**
  * @type object
  */
 export type GetProjectsByIdOrNameCustomEnvironmentsRequestConfig = {
@@ -45076,6 +46479,7 @@ export type GetProjectsByIdOrNameCustomEnvironmentsResponses = {
 	"400": GetProjectsByIdOrNameCustomEnvironmentsStatus400;
 	"401": GetProjectsByIdOrNameCustomEnvironmentsStatus401;
 	"403": GetProjectsByIdOrNameCustomEnvironmentsStatus403;
+	"410": GetProjectsByIdOrNameCustomEnvironmentsStatus410;
 };
 
 /**
@@ -45085,7 +46489,8 @@ export type GetProjectsByIdOrNameCustomEnvironmentsResponse =
 	| GetProjectsByIdOrNameCustomEnvironmentsStatus200
 	| GetProjectsByIdOrNameCustomEnvironmentsStatus400
 	| GetProjectsByIdOrNameCustomEnvironmentsStatus401
-	| GetProjectsByIdOrNameCustomEnvironmentsStatus403;
+	| GetProjectsByIdOrNameCustomEnvironmentsStatus403
+	| GetProjectsByIdOrNameCustomEnvironmentsStatus410;
 
 /**
  * @description The unique project identifier or the project name
@@ -45139,6 +46544,11 @@ export type GetCustomEnvironmentStatus403 = unknown;
 export type GetCustomEnvironmentStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type GetCustomEnvironmentStatus410 = unknown;
+
+/**
  * @type object
  */
 export type GetCustomEnvironmentRequestConfig = {
@@ -45175,6 +46585,7 @@ export type GetCustomEnvironmentResponses = {
 	"401": GetCustomEnvironmentStatus401;
 	"403": GetCustomEnvironmentStatus403;
 	"404": GetCustomEnvironmentStatus404;
+	"410": GetCustomEnvironmentStatus410;
 };
 
 /**
@@ -45185,7 +46596,8 @@ export type GetCustomEnvironmentResponse =
 	| GetCustomEnvironmentStatus400
 	| GetCustomEnvironmentStatus401
 	| GetCustomEnvironmentStatus403
-	| GetCustomEnvironmentStatus404;
+	| GetCustomEnvironmentStatus404
+	| GetCustomEnvironmentStatus410;
 
 /**
  * @description The unique project identifier or the project name
@@ -45241,6 +46653,11 @@ export type UpdateCustomEnvironmentStatus403 = unknown;
 /**
  * @type unknown
  */
+export type UpdateCustomEnvironmentStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type UpdateCustomEnvironmentStatus500 = unknown;
 
 /**
@@ -45280,6 +46697,7 @@ export type UpdateCustomEnvironmentResponses = {
 	"401": UpdateCustomEnvironmentStatus401;
 	"402": UpdateCustomEnvironmentStatus402;
 	"403": UpdateCustomEnvironmentStatus403;
+	"410": UpdateCustomEnvironmentStatus410;
 	"500": UpdateCustomEnvironmentStatus500;
 };
 
@@ -45292,6 +46710,7 @@ export type UpdateCustomEnvironmentResponse =
 	| UpdateCustomEnvironmentStatus401
 	| UpdateCustomEnvironmentStatus402
 	| UpdateCustomEnvironmentStatus403
+	| UpdateCustomEnvironmentStatus410
 	| UpdateCustomEnvironmentStatus500;
 
 /**
@@ -45341,6 +46760,11 @@ export type RemoveCustomEnvironmentStatus401 = unknown;
 export type RemoveCustomEnvironmentStatus403 = unknown;
 
 /**
+ * @type unknown
+ */
+export type RemoveCustomEnvironmentStatus410 = unknown;
+
+/**
  * @type object
  */
 export type RemoveCustomEnvironmentRequestConfig = {
@@ -45376,6 +46800,7 @@ export type RemoveCustomEnvironmentResponses = {
 	"400": RemoveCustomEnvironmentStatus400;
 	"401": RemoveCustomEnvironmentStatus401;
 	"403": RemoveCustomEnvironmentStatus403;
+	"410": RemoveCustomEnvironmentStatus410;
 };
 
 /**
@@ -45385,7 +46810,8 @@ export type RemoveCustomEnvironmentResponse =
 	| RemoveCustomEnvironmentStatus200
 	| RemoveCustomEnvironmentStatus400
 	| RemoveCustomEnvironmentStatus401
-	| RemoveCustomEnvironmentStatus403;
+	| RemoveCustomEnvironmentStatus403
+	| RemoveCustomEnvironmentStatus410;
 
 /**
  * @description The unique project identifier or the project name
@@ -45501,6 +46927,11 @@ export type GetProjectDomainsStatus401 = unknown;
 export type GetProjectDomainsStatus403 = unknown;
 
 /**
+ * @type unknown
+ */
+export type GetProjectDomainsStatus410 = unknown;
+
+/**
  * @type object
  */
 export type GetProjectDomainsRequestConfig = {
@@ -45546,6 +46977,7 @@ export type GetProjectDomainsResponses = {
 	"400": GetProjectDomainsStatus400;
 	"401": GetProjectDomainsStatus401;
 	"403": GetProjectDomainsStatus403;
+	"410": GetProjectDomainsStatus410;
 };
 
 /**
@@ -45555,7 +46987,8 @@ export type GetProjectDomainsResponse =
 	| GetProjectDomainsStatus200
 	| GetProjectDomainsStatus400
 	| GetProjectDomainsStatus401
-	| GetProjectDomainsStatus403;
+	| GetProjectDomainsStatus403
+	| GetProjectDomainsStatus410;
 
 /**
  * @description The unique project identifier or the project name
@@ -45605,6 +47038,11 @@ export type GetProjectDomainStatus401 = unknown;
 export type GetProjectDomainStatus403 = unknown;
 
 /**
+ * @type unknown
+ */
+export type GetProjectDomainStatus410 = unknown;
+
+/**
  * @type object
  */
 export type GetProjectDomainRequestConfig = {
@@ -45640,6 +47078,7 @@ export type GetProjectDomainResponses = {
 	"400": GetProjectDomainStatus400;
 	"401": GetProjectDomainStatus401;
 	"403": GetProjectDomainStatus403;
+	"410": GetProjectDomainStatus410;
 };
 
 /**
@@ -45649,7 +47088,8 @@ export type GetProjectDomainResponse =
 	| GetProjectDomainStatus200
 	| GetProjectDomainStatus400
 	| GetProjectDomainStatus401
-	| GetProjectDomainStatus403;
+	| GetProjectDomainStatus403
+	| GetProjectDomainStatus410;
 
 /**
  * @description The unique project identifier or the project name
@@ -45704,6 +47144,11 @@ export type UpdateProjectDomainStatus403 = unknown;
 export type UpdateProjectDomainStatus409 = unknown;
 
 /**
+ * @type unknown
+ */
+export type UpdateProjectDomainStatus410 = unknown;
+
+/**
  * @type object
  */
 export type UpdateProjectDomainRequestConfig = {
@@ -45740,6 +47185,7 @@ export type UpdateProjectDomainResponses = {
 	"401": UpdateProjectDomainStatus401;
 	"403": UpdateProjectDomainStatus403;
 	"409": UpdateProjectDomainStatus409;
+	"410": UpdateProjectDomainStatus410;
 };
 
 /**
@@ -45750,7 +47196,8 @@ export type UpdateProjectDomainResponse =
 	| UpdateProjectDomainStatus400
 	| UpdateProjectDomainStatus401
 	| UpdateProjectDomainStatus403
-	| UpdateProjectDomainStatus409;
+	| UpdateProjectDomainStatus409
+	| UpdateProjectDomainStatus410;
 
 /**
  * @description The unique project identifier or the project name
@@ -45810,6 +47257,11 @@ export type RemoveProjectDomainStatus404 = unknown;
 export type RemoveProjectDomainStatus409 = unknown;
 
 /**
+ * @type unknown
+ */
+export type RemoveProjectDomainStatus410 = unknown;
+
+/**
  * @type object
  */
 export type RemoveProjectDomainRequestConfig = {
@@ -45847,6 +47299,7 @@ export type RemoveProjectDomainResponses = {
 	"403": RemoveProjectDomainStatus403;
 	"404": RemoveProjectDomainStatus404;
 	"409": RemoveProjectDomainStatus409;
+	"410": RemoveProjectDomainStatus410;
 };
 
 /**
@@ -45858,7 +47311,8 @@ export type RemoveProjectDomainResponse =
 	| RemoveProjectDomainStatus401
 	| RemoveProjectDomainStatus403
 	| RemoveProjectDomainStatus404
-	| RemoveProjectDomainStatus409;
+	| RemoveProjectDomainStatus409
+	| RemoveProjectDomainStatus410;
 
 /**
  * @description The unique project identifier or the project name
@@ -45911,6 +47365,11 @@ export type AddProjectDomainStatus403 = unknown;
 export type AddProjectDomainStatus409 = unknown;
 
 /**
+ * @type unknown
+ */
+export type AddProjectDomainStatus410 = unknown;
+
+/**
  * @type object
  */
 export type AddProjectDomainRequestConfig = {
@@ -45947,6 +47406,7 @@ export type AddProjectDomainResponses = {
 	"402": AddProjectDomainStatus402;
 	"403": AddProjectDomainStatus403;
 	"409": AddProjectDomainStatus409;
+	"410": AddProjectDomainStatus410;
 };
 
 /**
@@ -45958,7 +47418,8 @@ export type AddProjectDomainResponse =
 	| AddProjectDomainStatus401
 	| AddProjectDomainStatus402
 	| AddProjectDomainStatus403
-	| AddProjectDomainStatus409;
+	| AddProjectDomainStatus409
+	| AddProjectDomainStatus410;
 
 /**
  * @description The unique project identifier or the project name
@@ -46013,6 +47474,11 @@ export type MoveProjectDomainStatus403 = unknown;
 export type MoveProjectDomainStatus409 = unknown;
 
 /**
+ * @type unknown
+ */
+export type MoveProjectDomainStatus410 = unknown;
+
+/**
  * @type object
  */
 export type MoveProjectDomainRequestConfig = {
@@ -46049,6 +47515,7 @@ export type MoveProjectDomainResponses = {
 	"401": MoveProjectDomainStatus401;
 	"403": MoveProjectDomainStatus403;
 	"409": MoveProjectDomainStatus409;
+	"410": MoveProjectDomainStatus410;
 };
 
 /**
@@ -46059,7 +47526,8 @@ export type MoveProjectDomainResponse =
 	| MoveProjectDomainStatus400
 	| MoveProjectDomainStatus401
 	| MoveProjectDomainStatus403
-	| MoveProjectDomainStatus409;
+	| MoveProjectDomainStatus409
+	| MoveProjectDomainStatus410;
 
 /**
  * @description The unique project identifier or the project name
@@ -46110,6 +47578,11 @@ export type VerifyProjectDomainStatus401 = unknown;
 export type VerifyProjectDomainStatus403 = unknown;
 
 /**
+ * @type unknown
+ */
+export type VerifyProjectDomainStatus410 = unknown;
+
+/**
  * @type object
  */
 export type VerifyProjectDomainRequestConfig = {
@@ -46145,6 +47618,7 @@ export type VerifyProjectDomainResponses = {
 	"400": VerifyProjectDomainStatus400;
 	"401": VerifyProjectDomainStatus401;
 	"403": VerifyProjectDomainStatus403;
+	"410": VerifyProjectDomainStatus410;
 };
 
 /**
@@ -46154,7 +47628,8 @@ export type VerifyProjectDomainResponse =
 	| VerifyProjectDomainStatus200
 	| VerifyProjectDomainStatus400
 	| VerifyProjectDomainStatus401
-	| VerifyProjectDomainStatus403;
+	| VerifyProjectDomainStatus403
+	| VerifyProjectDomainStatus410;
 
 /**
  * @description The unique project identifier or the project name
@@ -46235,6 +47710,11 @@ export type FilterProjectEnvsStatus401 = unknown;
 export type FilterProjectEnvsStatus403 = unknown;
 
 /**
+ * @type unknown
+ */
+export type FilterProjectEnvsStatus410 = unknown;
+
+/**
  * @type object
  */
 export type FilterProjectEnvsRequestConfig = {
@@ -46274,6 +47754,7 @@ export type FilterProjectEnvsResponses = {
 	"400": FilterProjectEnvsStatus400;
 	"401": FilterProjectEnvsStatus401;
 	"403": FilterProjectEnvsStatus403;
+	"410": FilterProjectEnvsStatus410;
 };
 
 /**
@@ -46283,7 +47764,8 @@ export type FilterProjectEnvsResponse =
 	| FilterProjectEnvsStatus200
 	| FilterProjectEnvsStatus400
 	| FilterProjectEnvsStatus401
-	| FilterProjectEnvsStatus403;
+	| FilterProjectEnvsStatus403
+	| FilterProjectEnvsStatus410;
 
 /**
  * @description The unique project identifier or the project name
@@ -46351,6 +47833,11 @@ export type CreateProjectEnvStatus409 = unknown;
 /**
  * @type unknown
  */
+export type CreateProjectEnvStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type CreateProjectEnvStatus429 = unknown;
 
 /**
@@ -46397,6 +47884,7 @@ export type CreateProjectEnvResponses = {
 	"403": CreateProjectEnvStatus403;
 	"404": CreateProjectEnvStatus404;
 	"409": CreateProjectEnvStatus409;
+	"410": CreateProjectEnvStatus410;
 	"429": CreateProjectEnvStatus429;
 	"500": CreateProjectEnvStatus500;
 };
@@ -46412,6 +47900,7 @@ export type CreateProjectEnvResponse =
 	| CreateProjectEnvStatus403
 	| CreateProjectEnvStatus404
 	| CreateProjectEnvStatus409
+	| CreateProjectEnvStatus410
 	| CreateProjectEnvStatus429
 	| CreateProjectEnvStatus500;
 
@@ -46463,6 +47952,11 @@ export type GetProjectEnvStatus401 = unknown;
 export type GetProjectEnvStatus403 = unknown;
 
 /**
+ * @type unknown
+ */
+export type GetProjectEnvStatus410 = unknown;
+
+/**
  * @type object
  */
 export type GetProjectEnvRequestConfig = {
@@ -46498,6 +47992,7 @@ export type GetProjectEnvResponses = {
 	"400": GetProjectEnvStatus400;
 	"401": GetProjectEnvStatus401;
 	"403": GetProjectEnvStatus403;
+	"410": GetProjectEnvStatus410;
 };
 
 /**
@@ -46507,7 +48002,8 @@ export type GetProjectEnvResponse =
 	| GetProjectEnvStatus200
 	| GetProjectEnvStatus400
 	| GetProjectEnvStatus401
-	| GetProjectEnvStatus403;
+	| GetProjectEnvStatus403
+	| GetProjectEnvStatus410;
 
 /**
  * @description The unique project identifier or the project name
@@ -46575,6 +48071,11 @@ export type RemoveProjectEnvStatus404 = unknown;
 export type RemoveProjectEnvStatus409 = unknown;
 
 /**
+ * @type unknown
+ */
+export type RemoveProjectEnvStatus410 = unknown;
+
+/**
  * @type object
  */
 export type RemoveProjectEnvRequestConfig = {
@@ -46613,6 +48114,7 @@ export type RemoveProjectEnvResponses = {
 	"403": RemoveProjectEnvStatus403;
 	"404": RemoveProjectEnvStatus404;
 	"409": RemoveProjectEnvStatus409;
+	"410": RemoveProjectEnvStatus410;
 };
 
 /**
@@ -46624,7 +48126,8 @@ export type RemoveProjectEnvResponse =
 	| RemoveProjectEnvStatus401
 	| RemoveProjectEnvStatus403
 	| RemoveProjectEnvStatus404
-	| RemoveProjectEnvStatus409;
+	| RemoveProjectEnvStatus409
+	| RemoveProjectEnvStatus410;
 
 /**
  * @description The unique project identifier or the project name
@@ -46687,6 +48190,11 @@ export type EditProjectEnvStatus409 = unknown;
 /**
  * @type unknown
  */
+export type EditProjectEnvStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type EditProjectEnvStatus429 = unknown;
 
 /**
@@ -46732,6 +48240,7 @@ export type EditProjectEnvResponses = {
 	"403": EditProjectEnvStatus403;
 	"404": EditProjectEnvStatus404;
 	"409": EditProjectEnvStatus409;
+	"410": EditProjectEnvStatus410;
 	"429": EditProjectEnvStatus429;
 	"500": EditProjectEnvStatus500;
 };
@@ -46746,6 +48255,7 @@ export type EditProjectEnvResponse =
 	| EditProjectEnvStatus403
 	| EditProjectEnvStatus404
 	| EditProjectEnvStatus409
+	| EditProjectEnvStatus410
 	| EditProjectEnvStatus429
 	| EditProjectEnvStatus500;
 
@@ -46801,6 +48311,11 @@ export type BatchRemoveProjectEnvStatus404 = unknown;
 export type BatchRemoveProjectEnvStatus409 = unknown;
 
 /**
+ * @type unknown
+ */
+export type BatchRemoveProjectEnvStatus410 = unknown;
+
+/**
  * @type object
  */
 export type BatchRemoveProjectEnvRequestConfig = {
@@ -46837,6 +48352,7 @@ export type BatchRemoveProjectEnvResponses = {
 	"403": BatchRemoveProjectEnvStatus403;
 	"404": BatchRemoveProjectEnvStatus404;
 	"409": BatchRemoveProjectEnvStatus409;
+	"410": BatchRemoveProjectEnvStatus410;
 };
 
 /**
@@ -46848,7 +48364,8 @@ export type BatchRemoveProjectEnvResponse =
 	| BatchRemoveProjectEnvStatus401
 	| BatchRemoveProjectEnvStatus403
 	| BatchRemoveProjectEnvStatus404
-	| BatchRemoveProjectEnvStatus409;
+	| BatchRemoveProjectEnvStatus409
+	| BatchRemoveProjectEnvStatus410;
 
 /**
  * @description Project ID or project name (URL-encoded)
@@ -46896,6 +48413,11 @@ export type GetRollingReleaseBillingStatusStatus403 = unknown;
 export type GetRollingReleaseBillingStatusStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type GetRollingReleaseBillingStatusStatus410 = unknown;
+
+/**
  * @type object
  */
 export type GetRollingReleaseBillingStatusRequestConfig = {
@@ -46931,6 +48453,7 @@ export type GetRollingReleaseBillingStatusResponses = {
 	"401": GetRollingReleaseBillingStatusStatus401;
 	"403": GetRollingReleaseBillingStatusStatus403;
 	"404": GetRollingReleaseBillingStatusStatus404;
+	"410": GetRollingReleaseBillingStatusStatus410;
 };
 
 /**
@@ -46941,7 +48464,8 @@ export type GetRollingReleaseBillingStatusResponse =
 	| GetRollingReleaseBillingStatusStatus400
 	| GetRollingReleaseBillingStatusStatus401
 	| GetRollingReleaseBillingStatusStatus403
-	| GetRollingReleaseBillingStatusStatus404;
+	| GetRollingReleaseBillingStatusStatus404
+	| GetRollingReleaseBillingStatusStatus410;
 
 /**
  * @description Project ID or project name (URL-encoded)
@@ -46989,6 +48513,11 @@ export type GetRollingReleaseConfigStatus403 = unknown;
 export type GetRollingReleaseConfigStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type GetRollingReleaseConfigStatus410 = unknown;
+
+/**
  * @type object
  */
 export type GetRollingReleaseConfigRequestConfig = {
@@ -47024,6 +48553,7 @@ export type GetRollingReleaseConfigResponses = {
 	"401": GetRollingReleaseConfigStatus401;
 	"403": GetRollingReleaseConfigStatus403;
 	"404": GetRollingReleaseConfigStatus404;
+	"410": GetRollingReleaseConfigStatus410;
 };
 
 /**
@@ -47034,7 +48564,8 @@ export type GetRollingReleaseConfigResponse =
 	| GetRollingReleaseConfigStatus400
 	| GetRollingReleaseConfigStatus401
 	| GetRollingReleaseConfigStatus403
-	| GetRollingReleaseConfigStatus404;
+	| GetRollingReleaseConfigStatus404
+	| GetRollingReleaseConfigStatus410;
 
 /**
  * @description Project ID or project name (URL-encoded)
@@ -47082,6 +48613,11 @@ export type DeleteRollingReleaseConfigStatus403 = unknown;
 export type DeleteRollingReleaseConfigStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type DeleteRollingReleaseConfigStatus410 = unknown;
+
+/**
  * @type object
  */
 export type DeleteRollingReleaseConfigRequestConfig = {
@@ -47117,6 +48653,7 @@ export type DeleteRollingReleaseConfigResponses = {
 	"401": DeleteRollingReleaseConfigStatus401;
 	"403": DeleteRollingReleaseConfigStatus403;
 	"404": DeleteRollingReleaseConfigStatus404;
+	"410": DeleteRollingReleaseConfigStatus410;
 };
 
 /**
@@ -47127,7 +48664,8 @@ export type DeleteRollingReleaseConfigResponse =
 	| DeleteRollingReleaseConfigStatus400
 	| DeleteRollingReleaseConfigStatus401
 	| DeleteRollingReleaseConfigStatus403
-	| DeleteRollingReleaseConfigStatus404;
+	| DeleteRollingReleaseConfigStatus404
+	| DeleteRollingReleaseConfigStatus410;
 
 /**
  * @description Project ID or project name (URL-encoded)
@@ -47175,6 +48713,11 @@ export type UpdateRollingReleaseConfigStatus403 = unknown;
 export type UpdateRollingReleaseConfigStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type UpdateRollingReleaseConfigStatus410 = unknown;
+
+/**
  * @type object
  */
 export type UpdateRollingReleaseConfigRequestConfig = {
@@ -47210,6 +48753,7 @@ export type UpdateRollingReleaseConfigResponses = {
 	"401": UpdateRollingReleaseConfigStatus401;
 	"403": UpdateRollingReleaseConfigStatus403;
 	"404": UpdateRollingReleaseConfigStatus404;
+	"410": UpdateRollingReleaseConfigStatus410;
 };
 
 /**
@@ -47220,7 +48764,8 @@ export type UpdateRollingReleaseConfigResponse =
 	| UpdateRollingReleaseConfigStatus400
 	| UpdateRollingReleaseConfigStatus401
 	| UpdateRollingReleaseConfigStatus403
-	| UpdateRollingReleaseConfigStatus404;
+	| UpdateRollingReleaseConfigStatus404
+	| UpdateRollingReleaseConfigStatus410;
 
 /**
  * @description Project ID or project name (URL-encoded)
@@ -47274,6 +48819,11 @@ export type GetRollingReleaseStatus403 = unknown;
 export type GetRollingReleaseStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type GetRollingReleaseStatus410 = unknown;
+
+/**
  * @type object
  */
 export type GetRollingReleaseRequestConfig = {
@@ -47310,6 +48860,7 @@ export type GetRollingReleaseResponses = {
 	"401": GetRollingReleaseStatus401;
 	"403": GetRollingReleaseStatus403;
 	"404": GetRollingReleaseStatus404;
+	"410": GetRollingReleaseStatus410;
 };
 
 /**
@@ -47320,7 +48871,8 @@ export type GetRollingReleaseResponse =
 	| GetRollingReleaseStatus400
 	| GetRollingReleaseStatus401
 	| GetRollingReleaseStatus403
-	| GetRollingReleaseStatus404;
+	| GetRollingReleaseStatus404
+	| GetRollingReleaseStatus410;
 
 /**
  * @description Project ID or project name (URL-encoded)
@@ -47370,6 +48922,11 @@ export type ApproveRollingReleaseStageStatus404 = unknown;
 /**
  * @type unknown
  */
+export type ApproveRollingReleaseStageStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type ApproveRollingReleaseStageStatus500 = unknown;
 
 /**
@@ -47408,6 +48965,7 @@ export type ApproveRollingReleaseStageResponses = {
 	"401": ApproveRollingReleaseStageStatus401;
 	"403": ApproveRollingReleaseStageStatus403;
 	"404": ApproveRollingReleaseStageStatus404;
+	"410": ApproveRollingReleaseStageStatus410;
 	"500": ApproveRollingReleaseStageStatus500;
 };
 
@@ -47420,6 +48978,7 @@ export type ApproveRollingReleaseStageResponse =
 	| ApproveRollingReleaseStageStatus401
 	| ApproveRollingReleaseStageStatus403
 	| ApproveRollingReleaseStageStatus404
+	| ApproveRollingReleaseStageStatus410
 	| ApproveRollingReleaseStageStatus500;
 
 /**
@@ -47475,6 +49034,11 @@ export type StartRollingReleaseStatus409 = unknown;
 /**
  * @type unknown
  */
+export type StartRollingReleaseStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type StartRollingReleaseStatus422 = unknown;
 
 /**
@@ -47514,6 +49078,7 @@ export type StartRollingReleaseResponses = {
 	"403": StartRollingReleaseStatus403;
 	"404": StartRollingReleaseStatus404;
 	"409": StartRollingReleaseStatus409;
+	"410": StartRollingReleaseStatus410;
 	"422": StartRollingReleaseStatus422;
 };
 
@@ -47527,6 +49092,7 @@ export type StartRollingReleaseResponse =
 	| StartRollingReleaseStatus403
 	| StartRollingReleaseStatus404
 	| StartRollingReleaseStatus409
+	| StartRollingReleaseStatus410
 	| StartRollingReleaseStatus422;
 
 /**
@@ -47575,6 +49141,11 @@ export type CompleteRollingReleaseStatus403 = unknown;
 export type CompleteRollingReleaseStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type CompleteRollingReleaseStatus410 = unknown;
+
+/**
  * @type object
  */
 export type CompleteRollingReleaseRequestConfig = {
@@ -47610,6 +49181,7 @@ export type CompleteRollingReleaseResponses = {
 	"401": CompleteRollingReleaseStatus401;
 	"403": CompleteRollingReleaseStatus403;
 	"404": CompleteRollingReleaseStatus404;
+	"410": CompleteRollingReleaseStatus410;
 };
 
 /**
@@ -47620,7 +49192,8 @@ export type CompleteRollingReleaseResponse =
 	| CompleteRollingReleaseStatus400
 	| CompleteRollingReleaseStatus401
 	| CompleteRollingReleaseStatus403
-	| CompleteRollingReleaseStatus404;
+	| CompleteRollingReleaseStatus404
+	| CompleteRollingReleaseStatus410;
 
 /**
  * @description The ID or name of the project to transfer.
@@ -47663,6 +49236,11 @@ export type CreateProjectTransferRequestStatus401 = unknown;
 export type CreateProjectTransferRequestStatus403 = unknown;
 
 /**
+ * @type unknown
+ */
+export type CreateProjectTransferRequestStatus410 = unknown;
+
+/**
  * @type object
  */
 export type CreateProjectTransferRequestRequestConfig = {
@@ -47697,6 +49275,7 @@ export type CreateProjectTransferRequestResponses = {
 	"400": CreateProjectTransferRequestStatus400;
 	"401": CreateProjectTransferRequestStatus401;
 	"403": CreateProjectTransferRequestStatus403;
+	"410": CreateProjectTransferRequestStatus410;
 };
 
 /**
@@ -47706,7 +49285,8 @@ export type CreateProjectTransferRequestResponse =
 	| CreateProjectTransferRequestStatus200
 	| CreateProjectTransferRequestStatus400
 	| CreateProjectTransferRequestStatus401
-	| CreateProjectTransferRequestStatus403;
+	| CreateProjectTransferRequestStatus403
+	| CreateProjectTransferRequestStatus410;
 
 /**
  * @description The code of the project transfer request.
@@ -47756,6 +49336,11 @@ export type AcceptProjectTransferRequestStatus404 = unknown;
 /**
  * @type unknown
  */
+export type AcceptProjectTransferRequestStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type AcceptProjectTransferRequestStatus422 = unknown;
 
 /**
@@ -47794,6 +49379,7 @@ export type AcceptProjectTransferRequestResponses = {
 	"401": AcceptProjectTransferRequestStatus401;
 	"403": AcceptProjectTransferRequestStatus403;
 	"404": AcceptProjectTransferRequestStatus404;
+	"410": AcceptProjectTransferRequestStatus410;
 	"422": AcceptProjectTransferRequestStatus422;
 };
 
@@ -47806,6 +49392,7 @@ export type AcceptProjectTransferRequestResponse =
 	| AcceptProjectTransferRequestStatus401
 	| AcceptProjectTransferRequestStatus403
 	| AcceptProjectTransferRequestStatus404
+	| AcceptProjectTransferRequestStatus410
 	| AcceptProjectTransferRequestStatus422;
 
 /**
@@ -47859,6 +49446,11 @@ export type UpdateProjectProtectionBypassStatus404 = unknown;
 export type UpdateProjectProtectionBypassStatus409 = unknown;
 
 /**
+ * @type unknown
+ */
+export type UpdateProjectProtectionBypassStatus410 = unknown;
+
+/**
  * @type object
  */
 export type UpdateProjectProtectionBypassRequestConfig = {
@@ -47895,6 +49487,7 @@ export type UpdateProjectProtectionBypassResponses = {
 	"403": UpdateProjectProtectionBypassStatus403;
 	"404": UpdateProjectProtectionBypassStatus404;
 	"409": UpdateProjectProtectionBypassStatus409;
+	"410": UpdateProjectProtectionBypassStatus410;
 };
 
 /**
@@ -47906,7 +49499,8 @@ export type UpdateProjectProtectionBypassResponse =
 	| UpdateProjectProtectionBypassStatus401
 	| UpdateProjectProtectionBypassStatus403
 	| UpdateProjectProtectionBypassStatus404
-	| UpdateProjectProtectionBypassStatus409;
+	| UpdateProjectProtectionBypassStatus409
+	| UpdateProjectProtectionBypassStatus410;
 
 /**
  * @type string
@@ -47972,6 +49566,11 @@ export type RequestRollbackStatus409 = unknown;
 /**
  * @type unknown
  */
+export type RequestRollbackStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type RequestRollbackStatus422 = unknown;
 
 /**
@@ -48013,6 +49612,7 @@ export type RequestRollbackResponses = {
 	"402": RequestRollbackStatus402;
 	"403": RequestRollbackStatus403;
 	"409": RequestRollbackStatus409;
+	"410": RequestRollbackStatus410;
 	"422": RequestRollbackStatus422;
 };
 
@@ -48026,6 +49626,7 @@ export type RequestRollbackResponse =
 	| RequestRollbackStatus402
 	| RequestRollbackStatus403
 	| RequestRollbackStatus409
+	| RequestRollbackStatus410
 	| RequestRollbackStatus422;
 
 /**
@@ -48067,6 +49668,11 @@ export type UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionStat
 /**
  * @type unknown
  */
+export type UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionStatus422 = unknown;
 
 /**
@@ -48098,6 +49704,7 @@ export type UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionResp
 	"401": UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionStatus401;
 	"403": UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionStatus403;
 	"409": UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionStatus409;
+	"410": UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionStatus410;
 	"422": UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionStatus422;
 };
 
@@ -48110,6 +49717,7 @@ export type UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionResp
 	| UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionStatus401
 	| UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionStatus403
 	| UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionStatus409
+	| UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionStatus410
 	| UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionStatus422;
 
 /**
@@ -48161,6 +49769,11 @@ export type UpdateMicrofrontendsStatus409 = unknown;
 /**
  * @type unknown
  */
+export type UpdateMicrofrontendsStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type UpdateMicrofrontendsStatus500 = unknown;
 
 /**
@@ -48199,6 +49812,7 @@ export type UpdateMicrofrontendsResponses = {
 	"401": UpdateMicrofrontendsStatus401;
 	"403": UpdateMicrofrontendsStatus403;
 	"409": UpdateMicrofrontendsStatus409;
+	"410": UpdateMicrofrontendsStatus410;
 	"500": UpdateMicrofrontendsStatus500;
 };
 
@@ -48211,6 +49825,7 @@ export type UpdateMicrofrontendsResponse =
 	| UpdateMicrofrontendsStatus401
 	| UpdateMicrofrontendsStatus403
 	| UpdateMicrofrontendsStatus409
+	| UpdateMicrofrontendsStatus410
 	| UpdateMicrofrontendsStatus500;
 
 /**
@@ -48268,6 +49883,11 @@ export type RequestPromoteStatus403 = unknown;
 export type RequestPromoteStatus409 = unknown;
 
 /**
+ * @type unknown
+ */
+export type RequestPromoteStatus410 = unknown;
+
+/**
  * @type object
  */
 export type RequestPromoteRequestConfig = {
@@ -48305,6 +49925,7 @@ export type RequestPromoteResponses = {
 	"401": RequestPromoteStatus401;
 	"403": RequestPromoteStatus403;
 	"409": RequestPromoteStatus409;
+	"410": RequestPromoteStatus410;
 };
 
 /**
@@ -48316,7 +49937,8 @@ export type RequestPromoteResponse =
 	| RequestPromoteStatus400
 	| RequestPromoteStatus401
 	| RequestPromoteStatus403
-	| RequestPromoteStatus409;
+	| RequestPromoteStatus409
+	| RequestPromoteStatus410;
 
 /**
  * @type string
@@ -48391,6 +50013,11 @@ export type ListPromoteAliasesStatus403 = unknown;
 export type ListPromoteAliasesStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type ListPromoteAliasesStatus410 = unknown;
+
+/**
  * @type object
  */
 export type ListPromoteAliasesRequestConfig = {
@@ -48430,6 +50057,7 @@ export type ListPromoteAliasesResponses = {
 	"401": ListPromoteAliasesStatus401;
 	"403": ListPromoteAliasesStatus403;
 	"404": ListPromoteAliasesStatus404;
+	"410": ListPromoteAliasesStatus410;
 };
 
 /**
@@ -48440,7 +50068,8 @@ export type ListPromoteAliasesResponse =
 	| ListPromoteAliasesStatus400
 	| ListPromoteAliasesStatus401
 	| ListPromoteAliasesStatus403
-	| ListPromoteAliasesStatus404;
+	| ListPromoteAliasesStatus404
+	| ListPromoteAliasesStatus410;
 
 /**
  * @description The unique project identifier
@@ -48485,6 +50114,11 @@ export type PauseProjectStatus403 = unknown;
 /**
  * @type unknown
  */
+export type PauseProjectStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type PauseProjectStatus500 = unknown;
 
 /**
@@ -48522,6 +50156,7 @@ export type PauseProjectResponses = {
 	"400": PauseProjectStatus400;
 	"401": PauseProjectStatus401;
 	"403": PauseProjectStatus403;
+	"410": PauseProjectStatus410;
 	"500": PauseProjectStatus500;
 };
 
@@ -48533,6 +50168,7 @@ export type PauseProjectResponse =
 	| PauseProjectStatus400
 	| PauseProjectStatus401
 	| PauseProjectStatus403
+	| PauseProjectStatus410
 	| PauseProjectStatus500;
 
 /**
@@ -48578,6 +50214,11 @@ export type UnpauseProjectStatus403 = unknown;
 /**
  * @type unknown
  */
+export type UnpauseProjectStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type UnpauseProjectStatus500 = unknown;
 
 /**
@@ -48615,6 +50256,7 @@ export type UnpauseProjectResponses = {
 	"400": UnpauseProjectStatus400;
 	"401": UnpauseProjectStatus401;
 	"403": UnpauseProjectStatus403;
+	"410": UnpauseProjectStatus410;
 	"500": UnpauseProjectStatus500;
 };
 
@@ -48626,6 +50268,7 @@ export type UnpauseProjectResponse =
 	| UnpauseProjectStatus400
 	| UnpauseProjectStatus401
 	| UnpauseProjectStatus403
+	| UnpauseProjectStatus410
 	| UnpauseProjectStatus500;
 
 /**
@@ -48726,6 +50369,11 @@ export type ListSandboxesStatus404 = unknown;
 /**
  * @type unknown
  */
+export type ListSandboxesStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type ListSandboxesStatus429 = unknown;
 
 /**
@@ -48767,6 +50415,7 @@ export type ListSandboxesResponses = {
 	"401": ListSandboxesStatus401;
 	"403": ListSandboxesStatus403;
 	"404": ListSandboxesStatus404;
+	"410": ListSandboxesStatus410;
 	"429": ListSandboxesStatus429;
 };
 
@@ -48779,6 +50428,7 @@ export type ListSandboxesResponse =
 	| ListSandboxesStatus401
 	| ListSandboxesStatus403
 	| ListSandboxesStatus404
+	| ListSandboxesStatus410
 	| ListSandboxesStatus429;
 
 /**
@@ -48990,6 +50640,11 @@ export type ListDrivesStatus404 = unknown;
 /**
  * @type unknown
  */
+export type ListDrivesStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type ListDrivesStatus429 = unknown;
 
 /**
@@ -49029,6 +50684,7 @@ export type ListDrivesResponses = {
 	"401": ListDrivesStatus401;
 	"403": ListDrivesStatus403;
 	"404": ListDrivesStatus404;
+	"410": ListDrivesStatus410;
 	"429": ListDrivesStatus429;
 };
 
@@ -49041,6 +50697,7 @@ export type ListDrivesResponse =
 	| ListDrivesStatus401
 	| ListDrivesStatus403
 	| ListDrivesStatus404
+	| ListDrivesStatus410
 	| ListDrivesStatus429;
 
 /**
@@ -49109,6 +50766,11 @@ export type GetOrCreateDriveStatus409 = unknown;
 /**
  * @type unknown
  */
+export type GetOrCreateDriveStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type GetOrCreateDriveStatus429 = unknown;
 
 /**
@@ -49150,6 +50812,7 @@ export type GetOrCreateDriveResponses = {
 	"403": GetOrCreateDriveStatus403;
 	"404": GetOrCreateDriveStatus404;
 	"409": GetOrCreateDriveStatus409;
+	"410": GetOrCreateDriveStatus410;
 	"429": GetOrCreateDriveStatus429;
 };
 
@@ -49165,6 +50828,7 @@ export type GetOrCreateDriveResponse =
 	| GetOrCreateDriveStatus403
 	| GetOrCreateDriveStatus404
 	| GetOrCreateDriveStatus409
+	| GetOrCreateDriveStatus410
 	| GetOrCreateDriveStatus429;
 
 /**
@@ -49230,6 +50894,11 @@ export type DeleteDriveStatus409 = unknown;
 /**
  * @type unknown
  */
+export type DeleteDriveStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type DeleteDriveStatus429 = unknown;
 
 /**
@@ -49270,6 +50939,7 @@ export type DeleteDriveResponses = {
 	"403": DeleteDriveStatus403;
 	"404": DeleteDriveStatus404;
 	"409": DeleteDriveStatus409;
+	"410": DeleteDriveStatus410;
 	"429": DeleteDriveStatus429;
 };
 
@@ -49283,6 +50953,7 @@ export type DeleteDriveResponse =
 	| DeleteDriveStatus403
 	| DeleteDriveStatus404
 	| DeleteDriveStatus409
+	| DeleteDriveStatus410
 	| DeleteDriveStatus429;
 
 /**
@@ -49366,6 +51037,11 @@ export type ListSessionSnapshotsStatus404 = unknown;
 /**
  * @type unknown
  */
+export type ListSessionSnapshotsStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type ListSessionSnapshotsStatus429 = unknown;
 
 /**
@@ -49404,6 +51080,7 @@ export type ListSessionSnapshotsResponses = {
 	"401": ListSessionSnapshotsStatus401;
 	"403": ListSessionSnapshotsStatus403;
 	"404": ListSessionSnapshotsStatus404;
+	"410": ListSessionSnapshotsStatus410;
 	"429": ListSessionSnapshotsStatus429;
 };
 
@@ -49416,6 +51093,7 @@ export type ListSessionSnapshotsResponse =
 	| ListSessionSnapshotsStatus401
 	| ListSessionSnapshotsStatus403
 	| ListSessionSnapshotsStatus404
+	| ListSessionSnapshotsStatus410
 	| ListSessionSnapshotsStatus429;
 
 /**
@@ -49467,6 +51145,11 @@ export type GetSessionSnapshotStatus404 = unknown;
 /**
  * @type unknown
  */
+export type GetSessionSnapshotStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type GetSessionSnapshotStatus429 = unknown;
 
 /**
@@ -49505,6 +51188,7 @@ export type GetSessionSnapshotResponses = {
 	"401": GetSessionSnapshotStatus401;
 	"403": GetSessionSnapshotStatus403;
 	"404": GetSessionSnapshotStatus404;
+	"410": GetSessionSnapshotStatus410;
 	"429": GetSessionSnapshotStatus429;
 };
 
@@ -49517,6 +51201,7 @@ export type GetSessionSnapshotResponse =
 	| GetSessionSnapshotStatus401
 	| GetSessionSnapshotStatus403
 	| GetSessionSnapshotStatus404
+	| GetSessionSnapshotStatus410
 	| GetSessionSnapshotStatus429;
 
 /**
@@ -49568,6 +51253,11 @@ export type DeleteSessionSnapshotStatus404 = unknown;
 /**
  * @type unknown
  */
+export type DeleteSessionSnapshotStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type DeleteSessionSnapshotStatus429 = unknown;
 
 /**
@@ -49606,6 +51296,7 @@ export type DeleteSessionSnapshotResponses = {
 	"401": DeleteSessionSnapshotStatus401;
 	"403": DeleteSessionSnapshotStatus403;
 	"404": DeleteSessionSnapshotStatus404;
+	"410": DeleteSessionSnapshotStatus410;
 	"429": DeleteSessionSnapshotStatus429;
 };
 
@@ -49618,6 +51309,7 @@ export type DeleteSessionSnapshotResponse =
 	| DeleteSessionSnapshotStatus401
 	| DeleteSessionSnapshotStatus403
 	| DeleteSessionSnapshotStatus404
+	| DeleteSessionSnapshotStatus410
 	| DeleteSessionSnapshotStatus429;
 
 /**
@@ -49701,6 +51393,11 @@ export type ListSessionsStatus404 = unknown;
 /**
  * @type unknown
  */
+export type ListSessionsStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type ListSessionsStatus429 = unknown;
 
 /**
@@ -49744,6 +51441,7 @@ export type ListSessionsResponses = {
 	"401": ListSessionsStatus401;
 	"403": ListSessionsStatus403;
 	"404": ListSessionsStatus404;
+	"410": ListSessionsStatus410;
 	"429": ListSessionsStatus429;
 	"500": ListSessionsStatus500;
 };
@@ -49757,6 +51455,7 @@ export type ListSessionsResponse =
 	| ListSessionsStatus401
 	| ListSessionsStatus403
 	| ListSessionsStatus404
+	| ListSessionsStatus410
 	| ListSessionsStatus429
 	| ListSessionsStatus500;
 
@@ -49809,6 +51508,11 @@ export type GetSessionStatus404 = unknown;
 /**
  * @type unknown
  */
+export type GetSessionStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type GetSessionStatus429 = unknown;
 
 /**
@@ -49852,6 +51556,7 @@ export type GetSessionResponses = {
 	"401": GetSessionStatus401;
 	"403": GetSessionStatus403;
 	"404": GetSessionStatus404;
+	"410": GetSessionStatus410;
 	"429": GetSessionStatus429;
 	"500": GetSessionStatus500;
 };
@@ -49865,6 +51570,7 @@ export type GetSessionResponse =
 	| GetSessionStatus401
 	| GetSessionStatus403
 	| GetSessionStatus404
+	| GetSessionStatus410
 	| GetSessionStatus429
 	| GetSessionStatus500;
 
@@ -50227,6 +51933,11 @@ export type DeleteSandboxStatus404 = unknown;
 /**
  * @type unknown
  */
+export type DeleteSandboxStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type DeleteSandboxStatus429 = unknown;
 
 /**
@@ -50266,6 +51977,7 @@ export type DeleteSandboxResponses = {
 	"401": DeleteSandboxStatus401;
 	"403": DeleteSandboxStatus403;
 	"404": DeleteSandboxStatus404;
+	"410": DeleteSandboxStatus410;
 	"429": DeleteSandboxStatus429;
 };
 
@@ -50278,6 +51990,7 @@ export type DeleteSandboxResponse =
 	| DeleteSandboxStatus401
 	| DeleteSandboxStatus403
 	| DeleteSandboxStatus404
+	| DeleteSandboxStatus410
 	| DeleteSandboxStatus429;
 
 /**
@@ -50329,6 +52042,11 @@ export type ListSessionCommandsStatus404 = unknown;
 /**
  * @type unknown
  */
+export type ListSessionCommandsStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type ListSessionCommandsStatus429 = unknown;
 
 /**
@@ -50367,6 +52085,7 @@ export type ListSessionCommandsResponses = {
 	"401": ListSessionCommandsStatus401;
 	"403": ListSessionCommandsStatus403;
 	"404": ListSessionCommandsStatus404;
+	"410": ListSessionCommandsStatus410;
 	"429": ListSessionCommandsStatus429;
 };
 
@@ -50379,6 +52098,7 @@ export type ListSessionCommandsResponse =
 	| ListSessionCommandsStatus401
 	| ListSessionCommandsStatus403
 	| ListSessionCommandsStatus404
+	| ListSessionCommandsStatus410
 	| ListSessionCommandsStatus429;
 
 /**
@@ -51831,6 +53551,11 @@ export type UpdateAttackChallengeModeStatus403 = unknown;
 export type UpdateAttackChallengeModeStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type UpdateAttackChallengeModeStatus410 = unknown;
+
+/**
  * @type object
  */
 export type UpdateAttackChallengeModeRequestConfig = {
@@ -51861,6 +53586,7 @@ export type UpdateAttackChallengeModeResponses = {
 	"401": UpdateAttackChallengeModeStatus401;
 	"403": UpdateAttackChallengeModeStatus403;
 	"404": UpdateAttackChallengeModeStatus404;
+	"410": UpdateAttackChallengeModeStatus410;
 };
 
 /**
@@ -51871,7 +53597,8 @@ export type UpdateAttackChallengeModeResponse =
 	| UpdateAttackChallengeModeStatus400
 	| UpdateAttackChallengeModeStatus401
 	| UpdateAttackChallengeModeStatus403
-	| UpdateAttackChallengeModeStatus404;
+	| UpdateAttackChallengeModeStatus404
+	| UpdateAttackChallengeModeStatus410;
 
 /**
  * @type unknown
@@ -51899,6 +53626,11 @@ export type GetSecurityFirewallConfigStatus403 = unknown;
 export type GetSecurityFirewallConfigStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type GetSecurityFirewallConfigStatus410 = unknown;
+
+/**
  * @type object
  */
 export type GetSecurityFirewallConfigRequestConfig = {
@@ -51921,6 +53653,7 @@ export type GetSecurityFirewallConfigResponses = {
 	"401": GetSecurityFirewallConfigStatus401;
 	"403": GetSecurityFirewallConfigStatus403;
 	"404": GetSecurityFirewallConfigStatus404;
+	"410": GetSecurityFirewallConfigStatus410;
 };
 
 /**
@@ -51931,7 +53664,8 @@ export type GetSecurityFirewallConfigResponse =
 	| GetSecurityFirewallConfigStatus400
 	| GetSecurityFirewallConfigStatus401
 	| GetSecurityFirewallConfigStatus403
-	| GetSecurityFirewallConfigStatus404;
+	| GetSecurityFirewallConfigStatus404
+	| GetSecurityFirewallConfigStatus410;
 
 /**
  * @type string
@@ -51985,6 +53719,11 @@ export type PutFirewallConfigStatus404 = unknown;
 /**
  * @type unknown
  */
+export type PutFirewallConfigStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type PutFirewallConfigStatus500 = unknown;
 
 /**
@@ -52020,6 +53759,7 @@ export type PutFirewallConfigResponses = {
 	"402": PutFirewallConfigStatus402;
 	"403": PutFirewallConfigStatus403;
 	"404": PutFirewallConfigStatus404;
+	"410": PutFirewallConfigStatus410;
 	"500": PutFirewallConfigStatus500;
 };
 
@@ -52033,6 +53773,7 @@ export type PutFirewallConfigResponse =
 	| PutFirewallConfigStatus402
 	| PutFirewallConfigStatus403
 	| PutFirewallConfigStatus404
+	| PutFirewallConfigStatus410
 	| PutFirewallConfigStatus500;
 
 /**
@@ -52087,6 +53828,11 @@ export type UpdateFirewallConfigStatus404 = unknown;
 /**
  * @type unknown
  */
+export type UpdateFirewallConfigStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type UpdateFirewallConfigStatus500 = unknown;
 
 /**
@@ -52122,6 +53868,7 @@ export type UpdateFirewallConfigResponses = {
 	"402": UpdateFirewallConfigStatus402;
 	"403": UpdateFirewallConfigStatus403;
 	"404": UpdateFirewallConfigStatus404;
+	"410": UpdateFirewallConfigStatus410;
 	"500": UpdateFirewallConfigStatus500;
 };
 
@@ -52135,6 +53882,7 @@ export type UpdateFirewallConfigResponse =
 	| UpdateFirewallConfigStatus402
 	| UpdateFirewallConfigStatus403
 	| UpdateFirewallConfigStatus404
+	| UpdateFirewallConfigStatus410
 	| UpdateFirewallConfigStatus500;
 
 /**
@@ -52188,6 +53936,11 @@ export type GetFirewallConfigStatus403 = unknown;
 export type GetFirewallConfigStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type GetFirewallConfigStatus410 = unknown;
+
+/**
  * @type object
  */
 export type GetFirewallConfigRequestConfig = {
@@ -52224,6 +53977,7 @@ export type GetFirewallConfigResponses = {
 	"401": GetFirewallConfigStatus401;
 	"403": GetFirewallConfigStatus403;
 	"404": GetFirewallConfigStatus404;
+	"410": GetFirewallConfigStatus410;
 };
 
 /**
@@ -52234,7 +53988,8 @@ export type GetFirewallConfigResponse =
 	| GetFirewallConfigStatus400
 	| GetFirewallConfigStatus401
 	| GetFirewallConfigStatus403
-	| GetFirewallConfigStatus404;
+	| GetFirewallConfigStatus404
+	| GetFirewallConfigStatus410;
 
 /**
  * @type string
@@ -52269,6 +54024,11 @@ export type DeleteSecurityFirewallConfigByConfigVersionStatus404 = unknown;
 /**
  * @type unknown
  */
+export type DeleteSecurityFirewallConfigByConfigVersionStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type DeleteSecurityFirewallConfigByConfigVersionStatus500 = unknown;
 
 /**
@@ -52299,6 +54059,7 @@ export type DeleteSecurityFirewallConfigByConfigVersionResponses = {
 	"401": DeleteSecurityFirewallConfigByConfigVersionStatus401;
 	"403": DeleteSecurityFirewallConfigByConfigVersionStatus403;
 	"404": DeleteSecurityFirewallConfigByConfigVersionStatus404;
+	"410": DeleteSecurityFirewallConfigByConfigVersionStatus410;
 	"500": DeleteSecurityFirewallConfigByConfigVersionStatus500;
 };
 
@@ -52311,6 +54072,7 @@ export type DeleteSecurityFirewallConfigByConfigVersionResponse =
 	| DeleteSecurityFirewallConfigByConfigVersionStatus401
 	| DeleteSecurityFirewallConfigByConfigVersionStatus403
 	| DeleteSecurityFirewallConfigByConfigVersionStatus404
+	| DeleteSecurityFirewallConfigByConfigVersionStatus410
 	| DeleteSecurityFirewallConfigByConfigVersionStatus500;
 
 /**
@@ -52351,6 +54113,11 @@ export type CreateSecurityFirewallConfigByConfigVersionActivateStatus404 = unkno
 /**
  * @type unknown
  */
+export type CreateSecurityFirewallConfigByConfigVersionActivateStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type CreateSecurityFirewallConfigByConfigVersionActivateStatus500 = unknown;
 
 /**
@@ -52382,6 +54149,7 @@ export type CreateSecurityFirewallConfigByConfigVersionActivateResponses = {
 	"402": CreateSecurityFirewallConfigByConfigVersionActivateStatus402;
 	"403": CreateSecurityFirewallConfigByConfigVersionActivateStatus403;
 	"404": CreateSecurityFirewallConfigByConfigVersionActivateStatus404;
+	"410": CreateSecurityFirewallConfigByConfigVersionActivateStatus410;
 	"500": CreateSecurityFirewallConfigByConfigVersionActivateStatus500;
 };
 
@@ -52395,6 +54163,7 @@ export type CreateSecurityFirewallConfigByConfigVersionActivateResponse =
 	| CreateSecurityFirewallConfigByConfigVersionActivateStatus402
 	| CreateSecurityFirewallConfigByConfigVersionActivateStatus403
 	| CreateSecurityFirewallConfigByConfigVersionActivateStatus404
+	| CreateSecurityFirewallConfigByConfigVersionActivateStatus410
 	| CreateSecurityFirewallConfigByConfigVersionActivateStatus500;
 
 /**
@@ -52448,6 +54217,11 @@ export type GetActiveAttackStatusStatus403 = unknown;
 export type GetActiveAttackStatusStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type GetActiveAttackStatusStatus410 = unknown;
+
+/**
  * @type object
  */
 export type GetActiveAttackStatusRequestConfig = {
@@ -52480,6 +54254,7 @@ export type GetActiveAttackStatusResponses = {
 	"401": GetActiveAttackStatusStatus401;
 	"403": GetActiveAttackStatusStatus403;
 	"404": GetActiveAttackStatusStatus404;
+	"410": GetActiveAttackStatusStatus410;
 };
 
 /**
@@ -52490,7 +54265,8 @@ export type GetActiveAttackStatusResponse =
 	| GetActiveAttackStatusStatus400
 	| GetActiveAttackStatusStatus401
 	| GetActiveAttackStatusStatus403
-	| GetActiveAttackStatusStatus404;
+	| GetActiveAttackStatusStatus404
+	| GetActiveAttackStatusStatus410;
 
 /**
  * @type string
@@ -52574,6 +54350,11 @@ export type GetBypassIpStatus404 = unknown;
 /**
  * @type unknown
  */
+export type GetBypassIpStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type GetBypassIpStatus500 = unknown;
 
 /**
@@ -52613,6 +54394,7 @@ export type GetBypassIpResponses = {
 	"401": GetBypassIpStatus401;
 	"403": GetBypassIpStatus403;
 	"404": GetBypassIpStatus404;
+	"410": GetBypassIpStatus410;
 	"500": GetBypassIpStatus500;
 };
 
@@ -52625,6 +54407,7 @@ export type GetBypassIpResponse =
 	| GetBypassIpStatus401
 	| GetBypassIpStatus403
 	| GetBypassIpStatus404
+	| GetBypassIpStatus410
 	| GetBypassIpStatus500;
 
 /**
@@ -52674,6 +54457,11 @@ export type AddBypassIpStatus404 = unknown;
 /**
  * @type unknown
  */
+export type AddBypassIpStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type AddBypassIpStatus500 = unknown;
 
 /**
@@ -52708,6 +54496,7 @@ export type AddBypassIpResponses = {
 	"401": AddBypassIpStatus401;
 	"403": AddBypassIpStatus403;
 	"404": AddBypassIpStatus404;
+	"410": AddBypassIpStatus410;
 	"500": AddBypassIpStatus500;
 };
 
@@ -52720,6 +54509,7 @@ export type AddBypassIpResponse =
 	| AddBypassIpStatus401
 	| AddBypassIpStatus403
 	| AddBypassIpStatus404
+	| AddBypassIpStatus410
 	| AddBypassIpStatus500;
 
 /**
@@ -52769,6 +54559,11 @@ export type RemoveBypassIpStatus404 = unknown;
 /**
  * @type unknown
  */
+export type RemoveBypassIpStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type RemoveBypassIpStatus500 = unknown;
 
 /**
@@ -52803,6 +54598,7 @@ export type RemoveBypassIpResponses = {
 	"401": RemoveBypassIpStatus401;
 	"403": RemoveBypassIpStatus403;
 	"404": RemoveBypassIpStatus404;
+	"410": RemoveBypassIpStatus410;
 	"500": RemoveBypassIpStatus500;
 };
 
@@ -52815,6 +54611,7 @@ export type RemoveBypassIpResponse =
 	| RemoveBypassIpStatus401
 	| RemoveBypassIpStatus403
 	| RemoveBypassIpStatus404
+	| RemoveBypassIpStatus410
 	| RemoveBypassIpStatus500;
 
 /**
@@ -52865,6 +54662,11 @@ export type GetSecurityFirewallEventsStatus404 = unknown;
 /**
  * @type unknown
  */
+export type GetSecurityFirewallEventsStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type GetSecurityFirewallEventsStatus500 = unknown;
 
 /**
@@ -52900,6 +54702,7 @@ export type GetSecurityFirewallEventsResponses = {
 	"401": GetSecurityFirewallEventsStatus401;
 	"403": GetSecurityFirewallEventsStatus403;
 	"404": GetSecurityFirewallEventsStatus404;
+	"410": GetSecurityFirewallEventsStatus410;
 	"500": GetSecurityFirewallEventsStatus500;
 };
 
@@ -52912,6 +54715,7 @@ export type GetSecurityFirewallEventsResponse =
 	| GetSecurityFirewallEventsStatus401
 	| GetSecurityFirewallEventsStatus403
 	| GetSecurityFirewallEventsStatus404
+	| GetSecurityFirewallEventsStatus410
 	| GetSecurityFirewallEventsStatus500;
 
 /**
@@ -52966,6 +54770,11 @@ export type GenerateFirewallRuleStatus408 = unknown;
 /**
  * @type unknown
  */
+export type GenerateFirewallRuleStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type GenerateFirewallRuleStatus500 = unknown;
 
 /**
@@ -53001,6 +54810,7 @@ export type GenerateFirewallRuleResponses = {
 	"403": GenerateFirewallRuleStatus403;
 	"404": GenerateFirewallRuleStatus404;
 	"408": GenerateFirewallRuleStatus408;
+	"410": GenerateFirewallRuleStatus410;
 	"500": GenerateFirewallRuleStatus500;
 };
 
@@ -53014,6 +54824,7 @@ export type GenerateFirewallRuleResponse =
 	| GenerateFirewallRuleStatus403
 	| GenerateFirewallRuleStatus404
 	| GenerateFirewallRuleStatus408
+	| GenerateFirewallRuleStatus410
 	| GenerateFirewallRuleStatus500;
 
 /**
@@ -53047,6 +54858,11 @@ export type CreateSpeedInsightsToggleStatus402 = unknown;
 export type CreateSpeedInsightsToggleStatus403 = unknown;
 
 /**
+ * @type unknown
+ */
+export type CreateSpeedInsightsToggleStatus410 = unknown;
+
+/**
  * @type object
  */
 export type CreateSpeedInsightsToggleRequestConfig = {
@@ -53076,6 +54892,7 @@ export type CreateSpeedInsightsToggleResponses = {
 	"401": CreateSpeedInsightsToggleStatus401;
 	"402": CreateSpeedInsightsToggleStatus402;
 	"403": CreateSpeedInsightsToggleStatus403;
+	"410": CreateSpeedInsightsToggleStatus410;
 };
 
 /**
@@ -53086,7 +54903,8 @@ export type CreateSpeedInsightsToggleResponse =
 	| CreateSpeedInsightsToggleStatus400
 	| CreateSpeedInsightsToggleStatus401
 	| CreateSpeedInsightsToggleStatus402
-	| CreateSpeedInsightsToggleStatus403;
+	| CreateSpeedInsightsToggleStatus403
+	| CreateSpeedInsightsToggleStatus410;
 
 /**
  * @type string
@@ -53129,6 +54947,11 @@ export type GetStorageStoresByIdStatus403 = unknown;
 export type GetStorageStoresByIdStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type GetStorageStoresByIdStatus410 = unknown;
+
+/**
  * @type object
  */
 export type GetStorageStoresByIdRequestConfig = {
@@ -53164,6 +54987,7 @@ export type GetStorageStoresByIdResponses = {
 	"401": GetStorageStoresByIdStatus401;
 	"403": GetStorageStoresByIdStatus403;
 	"404": GetStorageStoresByIdStatus404;
+	"410": GetStorageStoresByIdStatus410;
 };
 
 /**
@@ -53174,7 +54998,8 @@ export type GetStorageStoresByIdResponse =
 	| GetStorageStoresByIdStatus400
 	| GetStorageStoresByIdStatus401
 	| GetStorageStoresByIdStatus403
-	| GetStorageStoresByIdStatus404;
+	| GetStorageStoresByIdStatus404
+	| GetStorageStoresByIdStatus410;
 
 /**
  * @type unknown
@@ -53214,6 +55039,11 @@ export type CreateStorageStoresBlobStatus409 = unknown;
 /**
  * @type unknown
  */
+export type CreateStorageStoresBlobStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type CreateStorageStoresBlobStatus429 = unknown;
 
 /**
@@ -53241,6 +55071,7 @@ export type CreateStorageStoresBlobResponses = {
 	"403": CreateStorageStoresBlobStatus403;
 	"404": CreateStorageStoresBlobStatus404;
 	"409": CreateStorageStoresBlobStatus409;
+	"410": CreateStorageStoresBlobStatus410;
 	"429": CreateStorageStoresBlobStatus429;
 };
 
@@ -53255,6 +55086,7 @@ export type CreateStorageStoresBlobResponse =
 	| CreateStorageStoresBlobStatus403
 	| CreateStorageStoresBlobStatus404
 	| CreateStorageStoresBlobStatus409
+	| CreateStorageStoresBlobStatus410
 	| CreateStorageStoresBlobStatus429;
 
 /**
@@ -53293,6 +55125,11 @@ export type DeleteStorageStoresBlobByIdStatus404 = unknown;
 export type DeleteStorageStoresBlobByIdStatus409 = unknown;
 
 /**
+ * @type unknown
+ */
+export type DeleteStorageStoresBlobByIdStatus410 = unknown;
+
+/**
  * @type object
  */
 export type DeleteStorageStoresBlobByIdRequestConfig = {
@@ -53321,6 +55158,7 @@ export type DeleteStorageStoresBlobByIdResponses = {
 	"403": DeleteStorageStoresBlobByIdStatus403;
 	"404": DeleteStorageStoresBlobByIdStatus404;
 	"409": DeleteStorageStoresBlobByIdStatus409;
+	"410": DeleteStorageStoresBlobByIdStatus410;
 };
 
 /**
@@ -53332,7 +55170,8 @@ export type DeleteStorageStoresBlobByIdResponse =
 	| DeleteStorageStoresBlobByIdStatus401
 	| DeleteStorageStoresBlobByIdStatus403
 	| DeleteStorageStoresBlobByIdStatus404
-	| DeleteStorageStoresBlobByIdStatus409;
+	| DeleteStorageStoresBlobByIdStatus409
+	| DeleteStorageStoresBlobByIdStatus410;
 
 /**
  * @description The Team identifier to perform the request on behalf of.
@@ -53386,6 +55225,11 @@ export type CreateIntegrationStoreDirectStatus409 = unknown;
 /**
  * @type unknown
  */
+export type CreateIntegrationStoreDirectStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type CreateIntegrationStoreDirectStatus429 = unknown;
 
 /**
@@ -53426,6 +55270,7 @@ export type CreateIntegrationStoreDirectResponses = {
 	"403": CreateIntegrationStoreDirectStatus403;
 	"404": CreateIntegrationStoreDirectStatus404;
 	"409": CreateIntegrationStoreDirectStatus409;
+	"410": CreateIntegrationStoreDirectStatus410;
 	"429": CreateIntegrationStoreDirectStatus429;
 	"500": CreateIntegrationStoreDirectStatus500;
 };
@@ -53441,6 +55286,7 @@ export type CreateIntegrationStoreDirectResponse =
 	| CreateIntegrationStoreDirectStatus403
 	| CreateIntegrationStoreDirectStatus404
 	| CreateIntegrationStoreDirectStatus409
+	| CreateIntegrationStoreDirectStatus410
 	| CreateIntegrationStoreDirectStatus429
 	| CreateIntegrationStoreDirectStatus500;
 
@@ -53542,6 +55388,11 @@ export type GetTeamMembersStatus403 = unknown;
 export type GetTeamMembersStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type GetTeamMembersStatus410 = unknown;
+
+/**
  * @type object
  */
 export type GetTeamMembersRequestConfig = {
@@ -53583,6 +55434,7 @@ export type GetTeamMembersResponses = {
 	"401": GetTeamMembersStatus401;
 	"403": GetTeamMembersStatus403;
 	"404": GetTeamMembersStatus404;
+	"410": GetTeamMembersStatus410;
 };
 
 /**
@@ -53593,7 +55445,8 @@ export type GetTeamMembersResponse =
 	| GetTeamMembersStatus400
 	| GetTeamMembersStatus401
 	| GetTeamMembersStatus403
-	| GetTeamMembersStatus404;
+	| GetTeamMembersStatus404
+	| GetTeamMembersStatus410;
 
 /**
  * @description The Team identifier to perform the request on behalf of.
@@ -53628,6 +55481,11 @@ export type InviteUserToTeamStatus401 = unknown;
  * @type unknown
  */
 export type InviteUserToTeamStatus403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type InviteUserToTeamStatus410 = unknown;
 
 /**
  * @type unknown
@@ -53668,6 +55526,7 @@ export type InviteUserToTeamResponses = {
 	"400": InviteUserToTeamStatus400;
 	"401": InviteUserToTeamStatus401;
 	"403": InviteUserToTeamStatus403;
+	"410": InviteUserToTeamStatus410;
 	"503": InviteUserToTeamStatus503;
 };
 
@@ -53679,6 +55538,7 @@ export type InviteUserToTeamResponse =
 	| InviteUserToTeamStatus400
 	| InviteUserToTeamStatus401
 	| InviteUserToTeamStatus403
+	| InviteUserToTeamStatus410
 	| InviteUserToTeamStatus503;
 
 /**
@@ -53712,6 +55572,11 @@ export type RequestAccessToTeamStatus403 = unknown;
  * @type unknown
  */
 export type RequestAccessToTeamStatus404 = unknown;
+
+/**
+ * @type unknown
+ */
+export type RequestAccessToTeamStatus410 = unknown;
 
 /**
  * @type unknown
@@ -53751,6 +55616,7 @@ export type RequestAccessToTeamResponses = {
 	"401": RequestAccessToTeamStatus401;
 	"403": RequestAccessToTeamStatus403;
 	"404": RequestAccessToTeamStatus404;
+	"410": RequestAccessToTeamStatus410;
 	"429": RequestAccessToTeamStatus429;
 	"503": RequestAccessToTeamStatus503;
 };
@@ -53764,6 +55630,7 @@ export type RequestAccessToTeamResponse =
 	| RequestAccessToTeamStatus401
 	| RequestAccessToTeamStatus403
 	| RequestAccessToTeamStatus404
+	| RequestAccessToTeamStatus410
 	| RequestAccessToTeamStatus429
 	| RequestAccessToTeamStatus503;
 
@@ -53806,6 +55673,11 @@ export type GetTeamAccessRequestStatus403 = unknown;
 export type GetTeamAccessRequestStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type GetTeamAccessRequestStatus410 = unknown;
+
+/**
  * @type object
  */
 export type GetTeamAccessRequestRequestConfig = {
@@ -53834,6 +55706,7 @@ export type GetTeamAccessRequestResponses = {
 	"401": GetTeamAccessRequestStatus401;
 	"403": GetTeamAccessRequestStatus403;
 	"404": GetTeamAccessRequestStatus404;
+	"410": GetTeamAccessRequestStatus410;
 };
 
 /**
@@ -53844,7 +55717,8 @@ export type GetTeamAccessRequestResponse =
 	| GetTeamAccessRequestStatus400
 	| GetTeamAccessRequestStatus401
 	| GetTeamAccessRequestStatus403
-	| GetTeamAccessRequestStatus404;
+	| GetTeamAccessRequestStatus404
+	| GetTeamAccessRequestStatus410;
 
 /**
  * @description The unique team identifier
@@ -53886,6 +55760,11 @@ export type JoinTeamStatus404 = unknown;
 /**
  * @type unknown
  */
+export type JoinTeamStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type JoinTeamStatus503 = unknown;
 
 /**
@@ -53917,6 +55796,7 @@ export type JoinTeamResponses = {
 	"402": JoinTeamStatus402;
 	"403": JoinTeamStatus403;
 	"404": JoinTeamStatus404;
+	"410": JoinTeamStatus410;
 	"503": JoinTeamStatus503;
 };
 
@@ -53930,6 +55810,7 @@ export type JoinTeamResponse =
 	| JoinTeamStatus402
 	| JoinTeamStatus403
 	| JoinTeamStatus404
+	| JoinTeamStatus410
 	| JoinTeamStatus503;
 
 /**
@@ -53984,6 +55865,11 @@ export type UpdateTeamMemberStatus409 = unknown;
 /**
  * @type unknown
  */
+export type UpdateTeamMemberStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type UpdateTeamMemberStatus500 = unknown;
 
 /**
@@ -54017,6 +55903,7 @@ export type UpdateTeamMemberResponses = {
 	"403": UpdateTeamMemberStatus403;
 	"404": UpdateTeamMemberStatus404;
 	"409": UpdateTeamMemberStatus409;
+	"410": UpdateTeamMemberStatus410;
 	"500": UpdateTeamMemberStatus500;
 };
 
@@ -54031,6 +55918,7 @@ export type UpdateTeamMemberResponse =
 	| UpdateTeamMemberStatus403
 	| UpdateTeamMemberStatus404
 	| UpdateTeamMemberStatus409
+	| UpdateTeamMemberStatus410
 	| UpdateTeamMemberStatus500;
 
 /**
@@ -54082,6 +55970,11 @@ export type RemoveTeamMemberStatus404 = unknown;
 /**
  * @type unknown
  */
+export type RemoveTeamMemberStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type RemoveTeamMemberStatus503 = unknown;
 
 /**
@@ -54120,6 +56013,7 @@ export type RemoveTeamMemberResponses = {
 	"401": RemoveTeamMemberStatus401;
 	"403": RemoveTeamMemberStatus403;
 	"404": RemoveTeamMemberStatus404;
+	"410": RemoveTeamMemberStatus410;
 	"503": RemoveTeamMemberStatus503;
 };
 
@@ -54132,6 +56026,7 @@ export type RemoveTeamMemberResponse =
 	| RemoveTeamMemberStatus401
 	| RemoveTeamMemberStatus403
 	| RemoveTeamMemberStatus404
+	| RemoveTeamMemberStatus410
 	| RemoveTeamMemberStatus503;
 
 /**
@@ -54173,6 +56068,11 @@ export type GetTeamStatus403 = unknown;
 export type GetTeamStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type GetTeamStatus410 = unknown;
+
+/**
  * @type object
  */
 export type GetTeamRequestConfig = {
@@ -54207,6 +56107,7 @@ export type GetTeamResponses = {
 	"401": GetTeamStatus401;
 	"403": GetTeamStatus403;
 	"404": GetTeamStatus404;
+	"410": GetTeamStatus410;
 };
 
 /**
@@ -54217,7 +56118,8 @@ export type GetTeamResponse =
 	| GetTeamStatus400
 	| GetTeamStatus401
 	| GetTeamStatus403
-	| GetTeamStatus404;
+	| GetTeamStatus404
+	| GetTeamStatus410;
 
 /**
  * @description The Team identifier to perform the request on behalf of.
@@ -54261,6 +56163,11 @@ export type PatchTeamStatus403 = unknown;
 /**
  * @type unknown
  */
+export type PatchTeamStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type PatchTeamStatus428 = unknown;
 
 /**
@@ -54298,6 +56205,7 @@ export type PatchTeamResponses = {
 	"401": PatchTeamStatus401;
 	"402": PatchTeamStatus402;
 	"403": PatchTeamStatus403;
+	"410": PatchTeamStatus410;
 	"428": PatchTeamStatus428;
 };
 
@@ -54310,6 +56218,7 @@ export type PatchTeamResponse =
 	| PatchTeamStatus401
 	| PatchTeamStatus402
 	| PatchTeamStatus403
+	| PatchTeamStatus410
 	| PatchTeamStatus428;
 
 /**
@@ -54356,6 +56265,11 @@ export type GetTeamsStatus403 = unknown;
 /**
  * @type unknown
  */
+export type GetTeamsStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type GetTeamsStatus500 = unknown;
 
 /**
@@ -54389,6 +56303,7 @@ export type GetTeamsResponses = {
 	"400": GetTeamsStatus400;
 	"401": GetTeamsStatus401;
 	"403": GetTeamsStatus403;
+	"410": GetTeamsStatus410;
 	"500": GetTeamsStatus500;
 };
 
@@ -54400,6 +56315,7 @@ export type GetTeamsResponse =
 	| GetTeamsStatus400
 	| GetTeamsStatus401
 	| GetTeamsStatus403
+	| GetTeamsStatus410
 	| GetTeamsStatus500;
 
 /**
@@ -54433,6 +56349,11 @@ export type CreateTeamStatus404 = unknown;
 export type CreateTeamStatus409 = unknown;
 
 /**
+ * @type unknown
+ */
+export type CreateTeamStatus410 = unknown;
+
+/**
  * @type object
  */
 export type CreateTeamRequestConfig = {
@@ -54456,6 +56377,7 @@ export type CreateTeamResponses = {
 	"403": CreateTeamStatus403;
 	"404": CreateTeamStatus404;
 	"409": CreateTeamStatus409;
+	"410": CreateTeamStatus410;
 };
 
 /**
@@ -54467,7 +56389,8 @@ export type CreateTeamResponse =
 	| CreateTeamStatus401
 	| CreateTeamStatus403
 	| CreateTeamStatus404
-	| CreateTeamStatus409;
+	| CreateTeamStatus409
+	| CreateTeamStatus410;
 
 /**
  * @description The Team identifier to perform the request on behalf of.
@@ -54504,6 +56427,11 @@ export type PostTeamDsyncRolesStatus401 = unknown;
 export type PostTeamDsyncRolesStatus403 = unknown;
 
 /**
+ * @type unknown
+ */
+export type PostTeamDsyncRolesStatus410 = unknown;
+
+/**
  * @type object
  */
 export type PostTeamDsyncRolesRequestConfig = {
@@ -54537,6 +56465,7 @@ export type PostTeamDsyncRolesResponses = {
 	"400": PostTeamDsyncRolesStatus400;
 	"401": PostTeamDsyncRolesStatus401;
 	"403": PostTeamDsyncRolesStatus403;
+	"410": PostTeamDsyncRolesStatus410;
 };
 
 /**
@@ -54546,7 +56475,8 @@ export type PostTeamDsyncRolesResponse =
 	| PostTeamDsyncRolesStatus200
 	| PostTeamDsyncRolesStatus400
 	| PostTeamDsyncRolesStatus401
-	| PostTeamDsyncRolesStatus403;
+	| PostTeamDsyncRolesStatus403
+	| PostTeamDsyncRolesStatus410;
 
 /**
  * @description Id of the team to be set as the new default team
@@ -54600,6 +56530,11 @@ export type DeleteTeamStatus403 = unknown;
 export type DeleteTeamStatus409 = unknown;
 
 /**
+ * @type unknown
+ */
+export type DeleteTeamStatus410 = unknown;
+
+/**
  * @type object
  */
 export type DeleteTeamRequestConfig = {
@@ -54636,6 +56571,7 @@ export type DeleteTeamResponses = {
 	"402": DeleteTeamStatus402;
 	"403": DeleteTeamStatus403;
 	"409": DeleteTeamStatus409;
+	"410": DeleteTeamStatus410;
 };
 
 /**
@@ -54647,7 +56583,8 @@ export type DeleteTeamResponse =
 	| DeleteTeamStatus401
 	| DeleteTeamStatus402
 	| DeleteTeamStatus403
-	| DeleteTeamStatus409;
+	| DeleteTeamStatus409
+	| DeleteTeamStatus410;
 
 /**
  * @description The Team invite code ID.
@@ -54689,6 +56626,11 @@ export type DeleteTeamInviteCodeStatus403 = unknown;
 export type DeleteTeamInviteCodeStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type DeleteTeamInviteCodeStatus410 = unknown;
+
+/**
  * @type object
  */
 export type DeleteTeamInviteCodeRequestConfig = {
@@ -54717,6 +56659,7 @@ export type DeleteTeamInviteCodeResponses = {
 	"401": DeleteTeamInviteCodeStatus401;
 	"403": DeleteTeamInviteCodeStatus403;
 	"404": DeleteTeamInviteCodeStatus404;
+	"410": DeleteTeamInviteCodeStatus410;
 };
 
 /**
@@ -54727,7 +56670,8 @@ export type DeleteTeamInviteCodeResponse =
 	| DeleteTeamInviteCodeStatus400
 	| DeleteTeamInviteCodeStatus401
 	| DeleteTeamInviteCodeStatus403
-	| DeleteTeamInviteCodeStatus404;
+	| DeleteTeamInviteCodeStatus404
+	| DeleteTeamInviteCodeStatus410;
 
 /**
  * @type string
@@ -54774,6 +56718,11 @@ export type UpdateMicrofrontendsGroupStatus403 = unknown;
 export type UpdateMicrofrontendsGroupStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type UpdateMicrofrontendsGroupStatus410 = unknown;
+
+/**
  * @type object
  */
 export type UpdateMicrofrontendsGroupRequestConfig = {
@@ -54809,6 +56758,7 @@ export type UpdateMicrofrontendsGroupResponses = {
 	"401": UpdateMicrofrontendsGroupStatus401;
 	"403": UpdateMicrofrontendsGroupStatus403;
 	"404": UpdateMicrofrontendsGroupStatus404;
+	"410": UpdateMicrofrontendsGroupStatus410;
 };
 
 /**
@@ -54819,7 +56769,8 @@ export type UpdateMicrofrontendsGroupResponse =
 	| UpdateMicrofrontendsGroupStatus400
 	| UpdateMicrofrontendsGroupStatus401
 	| UpdateMicrofrontendsGroupStatus403
-	| UpdateMicrofrontendsGroupStatus404;
+	| UpdateMicrofrontendsGroupStatus404
+	| UpdateMicrofrontendsGroupStatus410;
 
 /**
  * @description The microfrontend group ID to delete.
@@ -54870,6 +56821,11 @@ export type DeleteMicrofrontendsGroupStatus404 = unknown;
 /**
  * @type unknown
  */
+export type DeleteMicrofrontendsGroupStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type DeleteMicrofrontendsGroupStatus500 = unknown;
 
 /**
@@ -54908,6 +56864,7 @@ export type DeleteMicrofrontendsGroupResponses = {
 	"401": DeleteMicrofrontendsGroupStatus401;
 	"403": DeleteMicrofrontendsGroupStatus403;
 	"404": DeleteMicrofrontendsGroupStatus404;
+	"410": DeleteMicrofrontendsGroupStatus410;
 	"500": DeleteMicrofrontendsGroupStatus500;
 };
 
@@ -54920,6 +56877,7 @@ export type DeleteMicrofrontendsGroupResponse =
 	| DeleteMicrofrontendsGroupStatus401
 	| DeleteMicrofrontendsGroupStatus403
 	| DeleteMicrofrontendsGroupStatus404
+	| DeleteMicrofrontendsGroupStatus410
 	| DeleteMicrofrontendsGroupStatus500;
 
 /**
@@ -54987,6 +56945,11 @@ export type UploadFileStatus403 = unknown;
 /**
  * @type unknown
  */
+export type UploadFileStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type UploadFileStatus426 = unknown;
 
 /**
@@ -55029,6 +56992,7 @@ export type UploadFileResponses = {
 	"400": UploadFileStatus400;
 	"401": UploadFileStatus401;
 	"403": UploadFileStatus403;
+	"410": UploadFileStatus410;
 	"426": UploadFileStatus426;
 };
 
@@ -55040,6 +57004,7 @@ export type UploadFileResponse =
 	| UploadFileStatus400
 	| UploadFileStatus401
 	| UploadFileStatus403
+	| UploadFileStatus410
 	| UploadFileStatus426;
 
 /**
@@ -55063,6 +57028,11 @@ export type ListAuthTokensStatus401 = unknown;
 export type ListAuthTokensStatus403 = unknown;
 
 /**
+ * @type unknown
+ */
+export type ListAuthTokensStatus410 = unknown;
+
+/**
  * @type object
  */
 export type ListAuthTokensRequestConfig = {
@@ -55084,6 +57054,7 @@ export type ListAuthTokensResponses = {
 	"400": ListAuthTokensStatus400;
 	"401": ListAuthTokensStatus401;
 	"403": ListAuthTokensStatus403;
+	"410": ListAuthTokensStatus410;
 };
 
 /**
@@ -55093,7 +57064,8 @@ export type ListAuthTokensResponse =
 	| ListAuthTokensStatus200
 	| ListAuthTokensStatus400
 	| ListAuthTokensStatus401
-	| ListAuthTokensStatus403;
+	| ListAuthTokensStatus403
+	| ListAuthTokensStatus410;
 
 /**
  * @description The Team identifier to perform the request on behalf of.
@@ -55135,6 +57107,11 @@ export type CreateAuthTokenStatus403 = unknown;
 export type CreateAuthTokenStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type CreateAuthTokenStatus410 = unknown;
+
+/**
  * @type object
  */
 export type CreateAuthTokenRequestConfig = {
@@ -55165,6 +57142,7 @@ export type CreateAuthTokenResponses = {
 	"401": CreateAuthTokenStatus401;
 	"403": CreateAuthTokenStatus403;
 	"404": CreateAuthTokenStatus404;
+	"410": CreateAuthTokenStatus410;
 };
 
 /**
@@ -55175,7 +57153,8 @@ export type CreateAuthTokenResponse =
 	| CreateAuthTokenStatus400
 	| CreateAuthTokenStatus401
 	| CreateAuthTokenStatus403
-	| CreateAuthTokenStatus404;
+	| CreateAuthTokenStatus404
+	| CreateAuthTokenStatus410;
 
 /**
  * @description The identifier of the token to retrieve. The special value \"current\" may be supplied, which returns the metadata for the token that the current HTTP request is authenticated with.
@@ -55210,6 +57189,11 @@ export type GetAuthTokenStatus403 = unknown;
 export type GetAuthTokenStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type GetAuthTokenStatus410 = unknown;
+
+/**
  * @type object
  */
 export type GetAuthTokenRequestConfig = {
@@ -55237,6 +57221,7 @@ export type GetAuthTokenResponses = {
 	"401": GetAuthTokenStatus401;
 	"403": GetAuthTokenStatus403;
 	"404": GetAuthTokenStatus404;
+	"410": GetAuthTokenStatus410;
 };
 
 /**
@@ -55247,7 +57232,8 @@ export type GetAuthTokenResponse =
 	| GetAuthTokenStatus400
 	| GetAuthTokenStatus401
 	| GetAuthTokenStatus403
-	| GetAuthTokenStatus404;
+	| GetAuthTokenStatus404
+	| GetAuthTokenStatus410;
 
 /**
  * @description The identifier of the token to invalidate. The special value \"current\" may be supplied, which invalidates the token that the HTTP request was authenticated with.
@@ -55282,6 +57268,11 @@ export type DeleteAuthTokenStatus403 = unknown;
 export type DeleteAuthTokenStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type DeleteAuthTokenStatus410 = unknown;
+
+/**
  * @type object
  */
 export type DeleteAuthTokenRequestConfig = {
@@ -55309,6 +57300,7 @@ export type DeleteAuthTokenResponses = {
 	"401": DeleteAuthTokenStatus401;
 	"403": DeleteAuthTokenStatus403;
 	"404": DeleteAuthTokenStatus404;
+	"410": DeleteAuthTokenStatus410;
 };
 
 /**
@@ -55319,7 +57311,8 @@ export type DeleteAuthTokenResponse =
 	| DeleteAuthTokenStatus400
 	| DeleteAuthTokenStatus401
 	| DeleteAuthTokenStatus403
-	| DeleteAuthTokenStatus404;
+	| DeleteAuthTokenStatus404
+	| DeleteAuthTokenStatus410;
 
 /**
  * @type unknown
@@ -55352,6 +57345,11 @@ export type GetAuthUserStatus403 = unknown;
 export type GetAuthUserStatus409 = unknown;
 
 /**
+ * @type unknown
+ */
+export type GetAuthUserStatus410 = unknown;
+
+/**
  * @type object
  */
 export type GetAuthUserRequestConfig = {
@@ -55375,6 +57373,7 @@ export type GetAuthUserResponses = {
 	"401": GetAuthUserStatus401;
 	"403": GetAuthUserStatus403;
 	"409": GetAuthUserStatus409;
+	"410": GetAuthUserStatus410;
 };
 
 /**
@@ -55386,7 +57385,8 @@ export type GetAuthUserResponse =
 	| GetAuthUserStatus400
 	| GetAuthUserStatus401
 	| GetAuthUserStatus403
-	| GetAuthUserStatus409;
+	| GetAuthUserStatus409
+	| GetAuthUserStatus410;
 
 /**
  * @type unknown
@@ -55414,6 +57414,11 @@ export type RequestDeleteStatus402 = unknown;
 export type RequestDeleteStatus403 = unknown;
 
 /**
+ * @type unknown
+ */
+export type RequestDeleteStatus410 = unknown;
+
+/**
  * @type object
  */
 export type RequestDeleteRequestConfig = {
@@ -55436,6 +57441,7 @@ export type RequestDeleteResponses = {
 	"401": RequestDeleteStatus401;
 	"402": RequestDeleteStatus402;
 	"403": RequestDeleteStatus403;
+	"410": RequestDeleteStatus410;
 };
 
 /**
@@ -55446,7 +57452,8 @@ export type RequestDeleteResponse =
 	| RequestDeleteStatus400
 	| RequestDeleteStatus401
 	| RequestDeleteStatus402
-	| RequestDeleteStatus403;
+	| RequestDeleteStatus403
+	| RequestDeleteStatus410;
 
 /**
  * @description The Team identifier to perform the request on behalf of.
@@ -55498,6 +57505,11 @@ export type CreateRepositoryStatus404 = unknown;
 export type CreateRepositoryStatus409 = unknown;
 
 /**
+ * @type unknown
+ */
+export type CreateRepositoryStatus410 = unknown;
+
+/**
  * @type object
  */
 export type CreateRepositoryRequestConfig = {
@@ -55530,6 +57542,7 @@ export type CreateRepositoryResponses = {
 	"403": CreateRepositoryStatus403;
 	"404": CreateRepositoryStatus404;
 	"409": CreateRepositoryStatus409;
+	"410": CreateRepositoryStatus410;
 };
 
 /**
@@ -55542,7 +57555,8 @@ export type CreateRepositoryResponse =
 	| CreateRepositoryStatus402
 	| CreateRepositoryStatus403
 	| CreateRepositoryStatus404
-	| CreateRepositoryStatus409;
+	| CreateRepositoryStatus409
+	| CreateRepositoryStatus410;
 
 /**
  * @type string
@@ -55603,6 +57617,11 @@ export type ListRepositoriesStatus403 = unknown;
 export type ListRepositoriesStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type ListRepositoriesStatus410 = unknown;
+
+/**
  * @type object
  */
 export type ListRepositoriesRequestConfig = {
@@ -55636,6 +57655,7 @@ export type ListRepositoriesResponses = {
 	"401": ListRepositoriesStatus401;
 	"403": ListRepositoriesStatus403;
 	"404": ListRepositoriesStatus404;
+	"410": ListRepositoriesStatus410;
 };
 
 /**
@@ -55646,7 +57666,8 @@ export type ListRepositoriesResponse =
 	| ListRepositoriesStatus400
 	| ListRepositoriesStatus401
 	| ListRepositoriesStatus403
-	| ListRepositoriesStatus404;
+	| ListRepositoriesStatus404
+	| ListRepositoriesStatus410;
 
 /**
  * @type string
@@ -55699,6 +57720,11 @@ export type GetRepositoryStatus403 = unknown;
 export type GetRepositoryStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type GetRepositoryStatus410 = unknown;
+
+/**
  * @type object
  */
 export type GetRepositoryRequestConfig = {
@@ -55735,6 +57761,7 @@ export type GetRepositoryResponses = {
 	"401": GetRepositoryStatus401;
 	"403": GetRepositoryStatus403;
 	"404": GetRepositoryStatus404;
+	"410": GetRepositoryStatus410;
 };
 
 /**
@@ -55745,7 +57772,8 @@ export type GetRepositoryResponse =
 	| GetRepositoryStatus400
 	| GetRepositoryStatus401
 	| GetRepositoryStatus403
-	| GetRepositoryStatus404;
+	| GetRepositoryStatus404
+	| GetRepositoryStatus410;
 
 /**
  * @type string
@@ -55798,6 +57826,11 @@ export type DeleteRepositoryStatus403 = unknown;
 export type DeleteRepositoryStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type DeleteRepositoryStatus410 = unknown;
+
+/**
  * @type object
  */
 export type DeleteRepositoryRequestConfig = {
@@ -55834,6 +57867,7 @@ export type DeleteRepositoryResponses = {
 	"401": DeleteRepositoryStatus401;
 	"403": DeleteRepositoryStatus403;
 	"404": DeleteRepositoryStatus404;
+	"410": DeleteRepositoryStatus410;
 };
 
 /**
@@ -55844,7 +57878,8 @@ export type DeleteRepositoryResponse =
 	| DeleteRepositoryStatus400
 	| DeleteRepositoryStatus401
 	| DeleteRepositoryStatus403
-	| DeleteRepositoryStatus404;
+	| DeleteRepositoryStatus404
+	| DeleteRepositoryStatus410;
 
 /**
  * @type string
@@ -55916,6 +57951,11 @@ export type ListRepositoryImagesStatus403 = unknown;
 export type ListRepositoryImagesStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type ListRepositoryImagesStatus410 = unknown;
+
+/**
  * @type object
  */
 export type ListRepositoryImagesRequestConfig = {
@@ -55955,6 +57995,7 @@ export type ListRepositoryImagesResponses = {
 	"401": ListRepositoryImagesStatus401;
 	"403": ListRepositoryImagesStatus403;
 	"404": ListRepositoryImagesStatus404;
+	"410": ListRepositoryImagesStatus410;
 };
 
 /**
@@ -55965,7 +58006,8 @@ export type ListRepositoryImagesResponse =
 	| ListRepositoryImagesStatus400
 	| ListRepositoryImagesStatus401
 	| ListRepositoryImagesStatus403
-	| ListRepositoryImagesStatus404;
+	| ListRepositoryImagesStatus404
+	| ListRepositoryImagesStatus410;
 
 /**
  * @type string
@@ -56044,6 +58086,11 @@ export type ListRepositoryTagsStatus403 = unknown;
 export type ListRepositoryTagsStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type ListRepositoryTagsStatus410 = unknown;
+
+/**
  * @type object
  */
 export type ListRepositoryTagsRequestConfig = {
@@ -56084,6 +58131,7 @@ export type ListRepositoryTagsResponses = {
 	"401": ListRepositoryTagsStatus401;
 	"403": ListRepositoryTagsStatus403;
 	"404": ListRepositoryTagsStatus404;
+	"410": ListRepositoryTagsStatus410;
 };
 
 /**
@@ -56094,7 +58142,8 @@ export type ListRepositoryTagsResponse =
 	| ListRepositoryTagsStatus400
 	| ListRepositoryTagsStatus401
 	| ListRepositoryTagsStatus403
-	| ListRepositoryTagsStatus404;
+	| ListRepositoryTagsStatus404
+	| ListRepositoryTagsStatus410;
 
 /**
  * @type string
@@ -56153,6 +58202,11 @@ export type GetRepositoryTagStatus403 = unknown;
 export type GetRepositoryTagStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type GetRepositoryTagStatus410 = unknown;
+
+/**
  * @type object
  */
 export type GetRepositoryTagRequestConfig = {
@@ -56190,6 +58244,7 @@ export type GetRepositoryTagResponses = {
 	"401": GetRepositoryTagStatus401;
 	"403": GetRepositoryTagStatus403;
 	"404": GetRepositoryTagStatus404;
+	"410": GetRepositoryTagStatus410;
 };
 
 /**
@@ -56200,7 +58255,8 @@ export type GetRepositoryTagResponse =
 	| GetRepositoryTagStatus400
 	| GetRepositoryTagStatus401
 	| GetRepositoryTagStatus403
-	| GetRepositoryTagStatus404;
+	| GetRepositoryTagStatus404
+	| GetRepositoryTagStatus410;
 
 /**
  * @type string
@@ -56260,6 +58316,11 @@ export type GetRepositoryImageStatus403 = unknown;
 export type GetRepositoryImageStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type GetRepositoryImageStatus410 = unknown;
+
+/**
  * @type object
  */
 export type GetRepositoryImageRequestConfig = {
@@ -56297,6 +58358,7 @@ export type GetRepositoryImageResponses = {
 	"401": GetRepositoryImageStatus401;
 	"403": GetRepositoryImageStatus403;
 	"404": GetRepositoryImageStatus404;
+	"410": GetRepositoryImageStatus410;
 };
 
 /**
@@ -56307,7 +58369,8 @@ export type GetRepositoryImageResponse =
 	| GetRepositoryImageStatus400
 	| GetRepositoryImageStatus401
 	| GetRepositoryImageStatus403
-	| GetRepositoryImageStatus404;
+	| GetRepositoryImageStatus404
+	| GetRepositoryImageStatus410;
 
 /**
  * @type string
@@ -56366,6 +58429,11 @@ export type DeleteRepositoryImageStatus403 = unknown;
 export type DeleteRepositoryImageStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type DeleteRepositoryImageStatus410 = unknown;
+
+/**
  * @type object
  */
 export type DeleteRepositoryImageRequestConfig = {
@@ -56403,6 +58471,7 @@ export type DeleteRepositoryImageResponses = {
 	"401": DeleteRepositoryImageStatus401;
 	"403": DeleteRepositoryImageStatus403;
 	"404": DeleteRepositoryImageStatus404;
+	"410": DeleteRepositoryImageStatus410;
 };
 
 /**
@@ -56413,7 +58482,8 @@ export type DeleteRepositoryImageResponse =
 	| DeleteRepositoryImageStatus400
 	| DeleteRepositoryImageStatus401
 	| DeleteRepositoryImageStatus403
-	| DeleteRepositoryImageStatus404;
+	| DeleteRepositoryImageStatus404
+	| DeleteRepositoryImageStatus410;
 
 /**
  * @type string
@@ -56439,6 +58509,11 @@ export type CreateWebInsightsToggleStatus401 = unknown;
  * @type unknown
  */
 export type CreateWebInsightsToggleStatus403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateWebInsightsToggleStatus410 = unknown;
 
 /**
  * @type object
@@ -56469,6 +58544,7 @@ export type CreateWebInsightsToggleResponses = {
 	"400": CreateWebInsightsToggleStatus400;
 	"401": CreateWebInsightsToggleStatus401;
 	"403": CreateWebInsightsToggleStatus403;
+	"410": CreateWebInsightsToggleStatus410;
 };
 
 /**
@@ -56478,7 +58554,8 @@ export type CreateWebInsightsToggleResponse =
 	| CreateWebInsightsToggleStatus200
 	| CreateWebInsightsToggleStatus400
 	| CreateWebInsightsToggleStatus401
-	| CreateWebInsightsToggleStatus403;
+	| CreateWebInsightsToggleStatus403
+	| CreateWebInsightsToggleStatus410;
 
 /**
  * @description The project identifier or the project name
@@ -56563,6 +58640,11 @@ export type AggregatePageviewsStatus402 = unknown;
 export type AggregatePageviewsStatus403 = unknown;
 
 /**
+ * @type unknown
+ */
+export type AggregatePageviewsStatus410 = unknown;
+
+/**
  * @type object
  */
 export type AggregatePageviewsRequestConfig = {
@@ -56599,6 +58681,7 @@ export type AggregatePageviewsResponses = {
 	"401": AggregatePageviewsStatus401;
 	"402": AggregatePageviewsStatus402;
 	"403": AggregatePageviewsStatus403;
+	"410": AggregatePageviewsStatus410;
 };
 
 /**
@@ -56609,7 +58692,8 @@ export type AggregatePageviewsResponse =
 	| AggregatePageviewsStatus400
 	| AggregatePageviewsStatus401
 	| AggregatePageviewsStatus402
-	| AggregatePageviewsStatus403;
+	| AggregatePageviewsStatus403
+	| AggregatePageviewsStatus410;
 
 /**
  * @description The project identifier or the project name
@@ -56694,6 +58778,11 @@ export type AggregateEventsStatus402 = unknown;
 export type AggregateEventsStatus403 = unknown;
 
 /**
+ * @type unknown
+ */
+export type AggregateEventsStatus410 = unknown;
+
+/**
  * @type object
  */
 export type AggregateEventsRequestConfig = {
@@ -56730,6 +58819,7 @@ export type AggregateEventsResponses = {
 	"401": AggregateEventsStatus401;
 	"402": AggregateEventsStatus402;
 	"403": AggregateEventsStatus403;
+	"410": AggregateEventsStatus410;
 };
 
 /**
@@ -56740,7 +58830,8 @@ export type AggregateEventsResponse =
 	| AggregateEventsStatus400
 	| AggregateEventsStatus401
 	| AggregateEventsStatus402
-	| AggregateEventsStatus403;
+	| AggregateEventsStatus403
+	| AggregateEventsStatus410;
 
 /**
  * @description The project identifier or the project name
@@ -56808,6 +58899,11 @@ export type CountPageviewsStatus402 = unknown;
 export type CountPageviewsStatus403 = unknown;
 
 /**
+ * @type unknown
+ */
+export type CountPageviewsStatus410 = unknown;
+
+/**
  * @type object
  */
 export type CountPageviewsRequestConfig = {
@@ -56842,6 +58938,7 @@ export type CountPageviewsResponses = {
 	"401": CountPageviewsStatus401;
 	"402": CountPageviewsStatus402;
 	"403": CountPageviewsStatus403;
+	"410": CountPageviewsStatus410;
 };
 
 /**
@@ -56852,7 +58949,8 @@ export type CountPageviewsResponse =
 	| CountPageviewsStatus400
 	| CountPageviewsStatus401
 	| CountPageviewsStatus402
-	| CountPageviewsStatus403;
+	| CountPageviewsStatus403
+	| CountPageviewsStatus410;
 
 /**
  * @description The project identifier or the project name
@@ -56920,6 +59018,11 @@ export type CountEventsStatus402 = unknown;
 export type CountEventsStatus403 = unknown;
 
 /**
+ * @type unknown
+ */
+export type CountEventsStatus410 = unknown;
+
+/**
  * @type object
  */
 export type CountEventsRequestConfig = {
@@ -56954,6 +59057,7 @@ export type CountEventsResponses = {
 	"401": CountEventsStatus401;
 	"402": CountEventsStatus402;
 	"403": CountEventsStatus403;
+	"410": CountEventsStatus410;
 };
 
 /**
@@ -56964,7 +59068,8 @@ export type CountEventsResponse =
 	| CountEventsStatus400
 	| CountEventsStatus401
 	| CountEventsStatus402
-	| CountEventsStatus403;
+	| CountEventsStatus403
+	| CountEventsStatus410;
 
 /**
  * @description The Team identifier to perform the request on behalf of.
@@ -57001,6 +59106,11 @@ export type CreateWebhookStatus401 = unknown;
 export type CreateWebhookStatus403 = unknown;
 
 /**
+ * @type unknown
+ */
+export type CreateWebhookStatus410 = unknown;
+
+/**
  * @type object
  */
 export type CreateWebhookRequestConfig = {
@@ -57030,6 +59140,7 @@ export type CreateWebhookResponses = {
 	"400": CreateWebhookStatus400;
 	"401": CreateWebhookStatus401;
 	"403": CreateWebhookStatus403;
+	"410": CreateWebhookStatus410;
 };
 
 /**
@@ -57039,7 +59150,8 @@ export type CreateWebhookResponse =
 	| CreateWebhookStatus200
 	| CreateWebhookStatus400
 	| CreateWebhookStatus401
-	| CreateWebhookStatus403;
+	| CreateWebhookStatus403
+	| CreateWebhookStatus410;
 
 /**
  * @pattern ^[a-zA-z0-9_]+$
@@ -57082,6 +59194,11 @@ export type GetWebhooksStatus401 = unknown;
 export type GetWebhooksStatus403 = unknown;
 
 /**
+ * @type unknown
+ */
+export type GetWebhooksStatus410 = unknown;
+
+/**
  * @type object
  */
 export type GetWebhooksRequestConfig = {
@@ -57112,6 +59229,7 @@ export type GetWebhooksResponses = {
 	"400": GetWebhooksStatus400;
 	"401": GetWebhooksStatus401;
 	"403": GetWebhooksStatus403;
+	"410": GetWebhooksStatus410;
 };
 
 /**
@@ -57121,7 +59239,8 @@ export type GetWebhooksResponse =
 	| GetWebhooksStatus200
 	| GetWebhooksStatus400
 	| GetWebhooksStatus401
-	| GetWebhooksStatus403;
+	| GetWebhooksStatus403
+	| GetWebhooksStatus410;
 
 /**
  * @type string
@@ -57163,6 +59282,11 @@ export type GetWebhookStatus401 = unknown;
 export type GetWebhookStatus403 = unknown;
 
 /**
+ * @type unknown
+ */
+export type GetWebhookStatus410 = unknown;
+
+/**
  * @type object
  */
 export type GetWebhookRequestConfig = {
@@ -57197,6 +59321,7 @@ export type GetWebhookResponses = {
 	"400": GetWebhookStatus400;
 	"401": GetWebhookStatus401;
 	"403": GetWebhookStatus403;
+	"410": GetWebhookStatus410;
 };
 
 /**
@@ -57206,7 +59331,8 @@ export type GetWebhookResponse =
 	| GetWebhookStatus200
 	| GetWebhookStatus400
 	| GetWebhookStatus401
-	| GetWebhookStatus403;
+	| GetWebhookStatus403
+	| GetWebhookStatus410;
 
 /**
  * @type string
@@ -57248,6 +59374,11 @@ export type DeleteWebhookStatus401 = unknown;
 export type DeleteWebhookStatus403 = unknown;
 
 /**
+ * @type unknown
+ */
+export type DeleteWebhookStatus410 = unknown;
+
+/**
  * @type object
  */
 export type DeleteWebhookRequestConfig = {
@@ -57282,6 +59413,7 @@ export type DeleteWebhookResponses = {
 	"400": DeleteWebhookStatus400;
 	"401": DeleteWebhookStatus401;
 	"403": DeleteWebhookStatus403;
+	"410": DeleteWebhookStatus410;
 };
 
 /**
@@ -57291,7 +59423,8 @@ export type DeleteWebhookResponse =
 	| DeleteWebhookStatus204
 	| DeleteWebhookStatus400
 	| DeleteWebhookStatus401
-	| DeleteWebhookStatus403;
+	| DeleteWebhookStatus403
+	| DeleteWebhookStatus410;
 
 /**
  * @description The ID of the deployment the aliases should be listed for
@@ -57340,6 +59473,11 @@ export type ListDeploymentAliasesStatus403 = unknown;
 export type ListDeploymentAliasesStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type ListDeploymentAliasesStatus410 = unknown;
+
+/**
  * @type object
  */
 export type ListDeploymentAliasesRequestConfig = {
@@ -57375,6 +59513,7 @@ export type ListDeploymentAliasesResponses = {
 	"401": ListDeploymentAliasesStatus401;
 	"403": ListDeploymentAliasesStatus403;
 	"404": ListDeploymentAliasesStatus404;
+	"410": ListDeploymentAliasesStatus410;
 };
 
 /**
@@ -57385,7 +59524,8 @@ export type ListDeploymentAliasesResponse =
 	| ListDeploymentAliasesStatus400
 	| ListDeploymentAliasesStatus401
 	| ListDeploymentAliasesStatus403
-	| ListDeploymentAliasesStatus404;
+	| ListDeploymentAliasesStatus404
+	| ListDeploymentAliasesStatus410;
 
 /**
  * @description The deployment or alias ID or URL to assign from
@@ -57443,6 +59583,11 @@ export type AssignAliasStatus404 = unknown;
 export type AssignAliasStatus409 = unknown;
 
 /**
+ * @type unknown
+ */
+export type AssignAliasStatus410 = unknown;
+
+/**
  * @type object
  */
 export type AssignAliasRequestConfig = {
@@ -57480,6 +59625,7 @@ export type AssignAliasResponses = {
 	"403": AssignAliasStatus403;
 	"404": AssignAliasStatus404;
 	"409": AssignAliasStatus409;
+	"410": AssignAliasStatus410;
 };
 
 /**
@@ -57492,7 +59638,8 @@ export type AssignAliasResponse =
 	| AssignAliasStatus402
 	| AssignAliasStatus403
 	| AssignAliasStatus404
-	| AssignAliasStatus409;
+	| AssignAliasStatus409
+	| AssignAliasStatus410;
 
 /**
  * @description Get only aliases of the given domain name
@@ -57583,6 +59730,11 @@ export type ListAliasesStatus403 = unknown;
 export type ListAliasesStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type ListAliasesStatus410 = unknown;
+
+/**
  * @type object
  */
 export type ListAliasesRequestConfig = {
@@ -57620,6 +59772,7 @@ export type ListAliasesResponses = {
 	"401": ListAliasesStatus401;
 	"403": ListAliasesStatus403;
 	"404": ListAliasesStatus404;
+	"410": ListAliasesStatus410;
 };
 
 /**
@@ -57630,7 +59783,8 @@ export type ListAliasesResponse =
 	| ListAliasesStatus400
 	| ListAliasesStatus401
 	| ListAliasesStatus403
-	| ListAliasesStatus404;
+	| ListAliasesStatus404
+	| ListAliasesStatus410;
 
 /**
  * @description Get the alias only if it was created after the provided timestamp
@@ -57708,6 +59862,11 @@ export type GetAliasStatus403 = unknown;
 export type GetAliasStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type GetAliasStatus410 = unknown;
+
+/**
  * @type object
  */
 export type GetAliasRequestConfig = {
@@ -57747,6 +59906,7 @@ export type GetAliasResponses = {
 	"401": GetAliasStatus401;
 	"403": GetAliasStatus403;
 	"404": GetAliasStatus404;
+	"410": GetAliasStatus410;
 };
 
 /**
@@ -57757,7 +59917,8 @@ export type GetAliasResponse =
 	| GetAliasStatus400
 	| GetAliasStatus401
 	| GetAliasStatus403
-	| GetAliasStatus404;
+	| GetAliasStatus404
+	| GetAliasStatus410;
 
 /**
  * @description The ID or alias that will be removed
@@ -57805,6 +59966,11 @@ export type DeleteAliasStatus403 = unknown;
 export type DeleteAliasStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type DeleteAliasStatus410 = unknown;
+
+/**
  * @type object
  */
 export type DeleteAliasRequestConfig = {
@@ -57840,6 +60006,7 @@ export type DeleteAliasResponses = {
 	"401": DeleteAliasStatus401;
 	"403": DeleteAliasStatus403;
 	"404": DeleteAliasStatus404;
+	"410": DeleteAliasStatus410;
 };
 
 /**
@@ -57850,7 +60017,8 @@ export type DeleteAliasResponse =
 	| DeleteAliasStatus400
 	| DeleteAliasStatus401
 	| DeleteAliasStatus403
-	| DeleteAliasStatus404;
+	| DeleteAliasStatus404
+	| DeleteAliasStatus410;
 
 /**
  * @description The alias or deployment ID
@@ -57905,6 +60073,11 @@ export type PatchUrlProtectionBypassStatus409 = unknown;
 /**
  * @type unknown
  */
+export type PatchUrlProtectionBypassStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type PatchUrlProtectionBypassStatus428 = unknown;
 
 /**
@@ -57944,6 +60117,7 @@ export type PatchUrlProtectionBypassResponses = {
 	"403": PatchUrlProtectionBypassStatus403;
 	"404": PatchUrlProtectionBypassStatus404;
 	"409": PatchUrlProtectionBypassStatus409;
+	"410": PatchUrlProtectionBypassStatus410;
 	"428": PatchUrlProtectionBypassStatus428;
 };
 
@@ -57957,6 +60131,7 @@ export type PatchUrlProtectionBypassResponse =
 	| PatchUrlProtectionBypassStatus403
 	| PatchUrlProtectionBypassStatus404
 	| PatchUrlProtectionBypassStatus409
+	| PatchUrlProtectionBypassStatus410
 	| PatchUrlProtectionBypassStatus428;
 
 /**
@@ -58005,6 +60180,11 @@ export type GetCertByIdStatus403 = unknown;
 export type GetCertByIdStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type GetCertByIdStatus410 = unknown;
+
+/**
  * @type object
  */
 export type GetCertByIdRequestConfig = {
@@ -58040,6 +60220,7 @@ export type GetCertByIdResponses = {
 	"401": GetCertByIdStatus401;
 	"403": GetCertByIdStatus403;
 	"404": GetCertByIdStatus404;
+	"410": GetCertByIdStatus410;
 };
 
 /**
@@ -58050,7 +60231,8 @@ export type GetCertByIdResponse =
 	| GetCertByIdStatus400
 	| GetCertByIdStatus401
 	| GetCertByIdStatus403
-	| GetCertByIdStatus404;
+	| GetCertByIdStatus404
+	| GetCertByIdStatus410;
 
 /**
  * @description The cert id to remove
@@ -58098,6 +60280,11 @@ export type RemoveCertStatus403 = unknown;
 export type RemoveCertStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type RemoveCertStatus410 = unknown;
+
+/**
  * @type object
  */
 export type RemoveCertRequestConfig = {
@@ -58133,6 +60320,7 @@ export type RemoveCertResponses = {
 	"401": RemoveCertStatus401;
 	"403": RemoveCertStatus403;
 	"404": RemoveCertStatus404;
+	"410": RemoveCertStatus410;
 };
 
 /**
@@ -58143,7 +60331,8 @@ export type RemoveCertResponse =
 	| RemoveCertStatus400
 	| RemoveCertStatus401
 	| RemoveCertStatus403
-	| RemoveCertStatus404;
+	| RemoveCertStatus404
+	| RemoveCertStatus410;
 
 /**
  * @description The Team identifier to perform the request on behalf of.
@@ -58180,6 +60369,11 @@ export type GetCertsStatus401 = unknown;
 export type GetCertsStatus403 = unknown;
 
 /**
+ * @type unknown
+ */
+export type GetCertsStatus410 = unknown;
+
+/**
  * @type object
  */
 export type GetCertsRequestConfig = {
@@ -58209,6 +60403,7 @@ export type GetCertsResponses = {
 	"400": GetCertsStatus400;
 	"401": GetCertsStatus401;
 	"403": GetCertsStatus403;
+	"410": GetCertsStatus410;
 };
 
 /**
@@ -58218,7 +60413,8 @@ export type GetCertsResponse =
 	| GetCertsStatus200
 	| GetCertsStatus400
 	| GetCertsStatus401
-	| GetCertsStatus403;
+	| GetCertsStatus403
+	| GetCertsStatus410;
 
 /**
  * @description The Team identifier to perform the request on behalf of.
@@ -58267,6 +60463,11 @@ export type IssueCertStatus404 = unknown;
 /**
  * @type unknown
  */
+export type IssueCertStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type IssueCertStatus449 = unknown;
 
 /**
@@ -58306,6 +60507,7 @@ export type IssueCertResponses = {
 	"402": IssueCertStatus402;
 	"403": IssueCertStatus403;
 	"404": IssueCertStatus404;
+	"410": IssueCertStatus410;
 	"449": IssueCertStatus449;
 	"500": IssueCertStatus500;
 };
@@ -58320,6 +60522,7 @@ export type IssueCertResponse =
 	| IssueCertStatus402
 	| IssueCertStatus403
 	| IssueCertStatus404
+	| IssueCertStatus410
 	| IssueCertStatus449
 	| IssueCertStatus500;
 
@@ -58363,6 +60566,11 @@ export type UploadCertStatus402 = unknown;
 export type UploadCertStatus403 = unknown;
 
 /**
+ * @type unknown
+ */
+export type UploadCertStatus410 = unknown;
+
+/**
  * @type object
  */
 export type UploadCertRequestConfig = {
@@ -58393,6 +60601,7 @@ export type UploadCertResponses = {
 	"401": UploadCertStatus401;
 	"402": UploadCertStatus402;
 	"403": UploadCertStatus403;
+	"410": UploadCertStatus410;
 };
 
 /**
@@ -58403,7 +60612,8 @@ export type UploadCertResponse =
 	| UploadCertStatus400
 	| UploadCertStatus401
 	| UploadCertStatus402
-	| UploadCertStatus403;
+	| UploadCertStatus403
+	| UploadCertStatus410;
 
 /**
  * @description The unique deployment identifier
@@ -58451,6 +60661,11 @@ export type ListDeploymentFilesStatus403 = unknown;
 export type ListDeploymentFilesStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type ListDeploymentFilesStatus410 = unknown;
+
+/**
  * @type object
  */
 export type ListDeploymentFilesRequestConfig = {
@@ -58486,6 +60701,7 @@ export type ListDeploymentFilesResponses = {
 	"401": ListDeploymentFilesStatus401;
 	"403": ListDeploymentFilesStatus403;
 	"404": ListDeploymentFilesStatus404;
+	"410": ListDeploymentFilesStatus410;
 };
 
 /**
@@ -58496,7 +60712,8 @@ export type ListDeploymentFilesResponse =
 	| ListDeploymentFilesStatus400
 	| ListDeploymentFilesStatus401
 	| ListDeploymentFilesStatus403
-	| ListDeploymentFilesStatus404;
+	| ListDeploymentFilesStatus404
+	| ListDeploymentFilesStatus410;
 
 /**
  * @description The unique deployment identifier
@@ -58744,6 +60961,11 @@ export type GetDeploymentsStatus404 = unknown;
 /**
  * @type unknown
  */
+export type GetDeploymentsStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
 export type GetDeploymentsStatus422 = unknown;
 
 /**
@@ -58791,6 +61013,7 @@ export type GetDeploymentsResponses = {
 	"401": GetDeploymentsStatus401;
 	"403": GetDeploymentsStatus403;
 	"404": GetDeploymentsStatus404;
+	"410": GetDeploymentsStatus410;
 	"422": GetDeploymentsStatus422;
 };
 
@@ -58803,6 +61026,7 @@ export type GetDeploymentsResponse =
 	| GetDeploymentsStatus401
 	| GetDeploymentsStatus403
 	| GetDeploymentsStatus404
+	| GetDeploymentsStatus410
 	| GetDeploymentsStatus422;
 
 /**
@@ -58859,6 +61083,11 @@ export type DeleteDeploymentStatus403 = unknown;
 export type DeleteDeploymentStatus404 = unknown;
 
 /**
+ * @type unknown
+ */
+export type DeleteDeploymentStatus410 = unknown;
+
+/**
  * @type object
  */
 export type DeleteDeploymentRequestConfig = {
@@ -58895,6 +61124,7 @@ export type DeleteDeploymentResponses = {
 	"401": DeleteDeploymentStatus401;
 	"403": DeleteDeploymentStatus403;
 	"404": DeleteDeploymentStatus404;
+	"410": DeleteDeploymentStatus410;
 };
 
 /**
@@ -58905,4 +61135,5 @@ export type DeleteDeploymentResponse =
 	| DeleteDeploymentStatus400
 	| DeleteDeploymentStatus401
 	| DeleteDeploymentStatus403
-	| DeleteDeploymentStatus404;
+	| DeleteDeploymentStatus404
+	| DeleteDeploymentStatus410;
