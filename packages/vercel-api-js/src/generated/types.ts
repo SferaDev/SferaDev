@@ -9020,21 +9020,36 @@ export type UserEvent = {
 								  }
 								| undefined;
 							/**
-							 * @description User | Team resource limits
+							 * @description User | Team resource limits. Each entry overrides either a token-bucket rate limit or a ramp admission limit, never both.
 							 * @type object | undefined
 							 */
 							resourceLimits?:
 								| {
-										[key: string]: {
-											/**
-											 * @type number
-											 */
-											max: number;
-											/**
-											 * @type number
-											 */
-											duration: number;
-										};
+										[key: string]:
+											| {
+													/**
+													 * @type number
+													 */
+													max: number;
+													/**
+													 * @type number
+													 */
+													duration: number;
+											  }
+											| {
+													/**
+													 * @type number | undefined
+													 */
+													minRate?: number | undefined;
+													/**
+													 * @type number | undefined
+													 */
+													maxRate?: number | undefined;
+													/**
+													 * @type number | undefined
+													 */
+													stepPerMinute?: number | undefined;
+											  };
 								  }
 								| undefined;
 							/**
