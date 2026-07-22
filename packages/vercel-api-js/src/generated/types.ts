@@ -1583,6 +1583,7 @@ export const userEventTypeEnum = {
 	"cert-renew": "cert-renew",
 	"cert-replace": "cert-replace",
 	"cert-system-create": "cert-system-create",
+	"code-owners-config-updated": "code-owners-config-updated",
 	"compliance-document-downloaded": "compliance-document-downloaded",
 	"concurrent-builds-update": "concurrent-builds-update",
 	"connect-attach-project": "connect-attach-project",
@@ -4853,6 +4854,42 @@ export type UserEvent = {
 						 * @type array | undefined
 						 */
 						cns?: string[] | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						gitOwnerName: string;
+						/**
+						 * @type string
+						 */
+						gitRepositoryName: string;
+						/**
+						 * @type object
+						 */
+						previous: {
+							/**
+							 * @type boolean
+							 */
+							enabled: false | true;
+							/**
+							 * @type boolean
+							 */
+							autoAddReviewers: false | true;
+						};
+						/**
+						 * @type object
+						 */
+						next: {
+							/**
+							 * @type boolean
+							 */
+							enabled: false | true;
+							/**
+							 * @type boolean
+							 */
+							autoAddReviewers: false | true;
+						};
 				  }
 				| {
 						/**
@@ -10606,7 +10643,7 @@ export type UserEvent = {
 													 */
 													timestamp: number | null;
 													/**
-													 * @description Method used for the state change - \'totp\': User set up TOTP authenticator - \'passkey\': User registered a passkey - \'user_disabled\': User disabled their own MFA - \'admin_removal\': Admin removed MFA via backoffice - \'unknown\': Method unknown (for pre-tracking events)
+													 * @description Method used for the state change - \'totp\': User set up TOTP authenticator - \'passkey\': User registered a passkey - \'user_disabled\': User disabled their own MFA - \'admin_removal\': Admin removed MFA via backoffice - \'self_serve_recovery\': User disabled their own MFA through the self-serve MFA disable recovery flow (a \"Locked Out User\" with only a passkey) - \'unknown\': Method unknown (for pre-tracking events)
 													 * @type string
 													 */
 													method: MethodEnumKey;
@@ -17337,6 +17374,7 @@ export const listEventTypeNameEnum = {
 	"cert-renew": "cert-renew",
 	"cert-replace": "cert-replace",
 	"cert-system-create": "cert-system-create",
+	"code-owners-config-updated": "code-owners-config-updated",
 	"compliance-document-downloaded": "compliance-document-downloaded",
 	"concurrent-builds-update": "concurrent-builds-update",
 	"connect-attach-project": "connect-attach-project",
@@ -17949,6 +17987,7 @@ export const listEventTypeReplacedByEnum = {
 	"cert-renew": "cert-renew",
 	"cert-replace": "cert-replace",
 	"cert-system-create": "cert-system-create",
+	"code-owners-config-updated": "code-owners-config-updated",
 	"compliance-document-downloaded": "compliance-document-downloaded",
 	"concurrent-builds-update": "concurrent-builds-update",
 	"connect-attach-project": "connect-attach-project",

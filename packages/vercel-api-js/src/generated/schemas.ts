@@ -681,6 +681,7 @@ export const userEventSchema = z
 				"cert-renew",
 				"cert-replace",
 				"cert-system-create",
+				"code-owners-config-updated",
 				"compliance-document-downloaded",
 				"concurrent-builds-update",
 				"connect-attach-project",
@@ -2383,6 +2384,20 @@ export const userEventSchema = z
 					.object({
 						cn: z.string().optional(),
 						cns: z.array(z.string()).optional(),
+					})
+					.strict(),
+				z
+					.object({
+						gitOwnerName: z.string(),
+						gitRepositoryName: z.string(),
+						previous: z.object({
+							enabled: z.union([z.literal(false), z.literal(true)]),
+							autoAddReviewers: z.union([z.literal(false), z.literal(true)]),
+						}),
+						next: z.object({
+							enabled: z.union([z.literal(false), z.literal(true)]),
+							autoAddReviewers: z.union([z.literal(false), z.literal(true)]),
+						}),
 					})
 					.strict(),
 				z
@@ -5348,9 +5363,16 @@ export const userEventSchema = z
 															"Unix timestamp (milliseconds) when the change occurred. May be null for events that occurred before history tracking was implemented.",
 														),
 													method: z
-														.enum(["admin_removal", "passkey", "totp", "unknown", "user_disabled"])
+														.enum([
+															"admin_removal",
+															"passkey",
+															"self_serve_recovery",
+															"totp",
+															"unknown",
+															"user_disabled",
+														])
 														.describe(
-															"Method used for the state change - 'totp': User set up TOTP authenticator - 'passkey': User registered a passkey - 'user_disabled': User disabled their own MFA - 'admin_removal': Admin removed MFA via backoffice - 'unknown': Method unknown (for pre-tracking events)",
+															"Method used for the state change - 'totp': User set up TOTP authenticator - 'passkey': User registered a passkey - 'user_disabled': User disabled their own MFA - 'admin_removal': Admin removed MFA via backoffice - 'self_serve_recovery': User disabled their own MFA through the self-serve MFA disable recovery flow (a \"Locked Out User\" with only a passkey) - 'unknown': Method unknown (for pre-tracking events)",
 														),
 													actorId: z
 														.string()
@@ -8950,6 +8972,7 @@ export const listEventTypeSchema = z
 				"cert-renew",
 				"cert-replace",
 				"cert-system-create",
+				"code-owners-config-updated",
 				"compliance-document-downloaded",
 				"concurrent-builds-update",
 				"connect-attach-project",
@@ -9555,6 +9578,7 @@ export const listEventTypeSchema = z
 					"cert-renew",
 					"cert-replace",
 					"cert-system-create",
+					"code-owners-config-updated",
 					"compliance-document-downloaded",
 					"concurrent-builds-update",
 					"connect-attach-project",
