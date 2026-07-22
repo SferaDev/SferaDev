@@ -4464,13 +4464,26 @@ export const userEventSchema = z
 								resourceLimits: z
 									.object({})
 									.catchall(
-										z.object({
-											max: z.number(),
-											duration: z.number(),
-										}),
+										z.union([
+											z
+												.object({
+													max: z.number(),
+													duration: z.number(),
+												})
+												.strict(),
+											z
+												.object({
+													minRate: z.number().optional(),
+													maxRate: z.number().optional(),
+													stepPerMinute: z.number().optional(),
+												})
+												.strict(),
+										]),
 									)
 									.optional()
-									.describe("User | Team resource limits"),
+									.describe(
+										"User | Team resource limits. Each entry overrides either a token-bucket rate limit or a ramp admission limit, never both.",
+									),
 								activeDashboardViews: z
 									.array(
 										z.object({
