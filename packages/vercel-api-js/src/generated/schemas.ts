@@ -1121,6 +1121,8 @@ export const userEventSchema = z
 				"team-saml-roles",
 				"team-slug-update",
 				"team-tokens-invalidated",
+				"tracing-configured",
+				"tracing-disabled",
 				"unlink-login-connection",
 				"user-delete",
 				"user-emu-account-archived",
@@ -8331,6 +8333,22 @@ export const userEventSchema = z
 					.strict(),
 				z
 					.object({
+						projectId: z.string(),
+						projectName: z.string(),
+						sampling: z
+							.array(
+								z.object({
+									type: z.enum(["head_sampling"]),
+									rate: z.number(),
+									env: z.enum(["preview", "production"]).optional(),
+									requestPath: z.string().optional(),
+								}),
+							)
+							.optional(),
+					})
+					.strict(),
+				z
+					.object({
 						provider: z.enum([
 							"apple",
 							"bitbucket",
@@ -8765,6 +8783,10 @@ export const userEventSchema = z
 							.optional()
 							.describe("Present when `scope` is `'team'` or `'project'`."),
 						projectId: z.string().optional().describe("Present when `scope` is `'project'`."),
+						projectScope: z
+							.enum(["account", "project-only"])
+							.optional()
+							.describe("Present when `scope` is `'project'`."),
 						expiresAt: z
 							.number()
 							.optional()
@@ -9425,6 +9447,8 @@ export const listEventTypeSchema = z
 				"team-saml-roles",
 				"team-slug-update",
 				"team-tokens-invalidated",
+				"tracing-configured",
+				"tracing-disabled",
 				"unlink-login-connection",
 				"user-delete",
 				"user-emu-account-archived",
@@ -10031,6 +10055,8 @@ export const listEventTypeSchema = z
 					"team-saml-roles",
 					"team-slug-update",
 					"team-tokens-invalidated",
+					"tracing-configured",
+					"tracing-disabled",
 					"unlink-login-connection",
 					"user-delete",
 					"user-emu-account-archived",
