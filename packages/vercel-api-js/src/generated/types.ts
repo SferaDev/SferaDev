@@ -5219,6 +5219,10 @@ export type UserEvent = {
 						 */
 						fields?: string[] | undefined;
 						/**
+						 * @type array | undefined
+						 */
+						environments?: string[] | undefined;
+						/**
 						 * @type number | undefined
 						 */
 						triggerDestinationCount?: number | undefined;

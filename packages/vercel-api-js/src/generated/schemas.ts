@@ -2536,6 +2536,7 @@ export const userEventSchema = z
 						installationId: z.string().optional(),
 						subjectType: z.enum(["app", "user"]).optional(),
 						fields: z.array(z.string()).optional(),
+						environments: z.array(z.string()).optional(),
 						triggerDestinationCount: z.number().optional(),
 						tokenCount: z.number().optional(),
 						acceptedTokenCount: z.number().optional(),
