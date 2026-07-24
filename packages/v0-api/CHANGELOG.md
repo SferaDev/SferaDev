@@ -1,5 +1,11 @@
 # v0-api
 
+## 0.1.3
+
+### Patch Changes
+
+- 1cf6572: Add deprecation notice for `v0-auto` in model description, specifying fallback to `v0-pro`.
+
 ## 0.1.2
 
 ### Patch Changes

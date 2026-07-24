@@ -1,5 +1,41 @@
 # vercel-api-js
 
+## 1.6.0
+
+### Minor Changes
+
+- cba2834: Introduce envEnum and ProjectScopeEnumKey types and export them from the API.
+- cba2834: Extend UserEvent type to support project tracing configuration properties, including sampling, env, and requestPath fields.
+- cba2834: Add new event types 'tracing-configured' and 'tracing-disabled' to user events and event type enums.
+- ea20a7a: Removed the 'team-emu-account-split' event from userEvent and event types.
+- ea20a7a: Added support for HTTP 410 Gone error responses across all API endpoints, updating types, schemas, and error unions accordingly.
+- cba2834: Add projectScope property to relevant UserEvent objects to indicate scope of a project.
+
+### Patch Changes
+
+- 99d8505: Updated documentation for userEventSchema.resourceLimits to clarify override behavior.
+- 0bbdb96: Added support for the 'vcr-repository-permission-added' event type in schemas and types.
+- 048039f: Added a new event data structure for 'edge-cache-dangerously-delete-immutable-static' with projectId, projectName, and path fields to the user event type.
+- cd19b05: Renamed 'packs' to 'purchasedAmount' and 'prevPacks' to 'prevPurchasedAmount' in UserEvent type and schema.
+- 710c19f: Add support for `vcr-repository-permission-removed` event type in user event schemas and types.
+- 99d8505: Expanded userEventSchema.resourceLimits to support both token-bucket and ramp admission limit overrides.
+- c608b55: Added the 'code-owners-config-updated' event type to user event and event type schemas.
+- 710c19f: Update getRepositoryImage parameter from `imageId` to `imageIdOrDigest` throughout the API.
+- b188c4b: Added support for user events 'page-integrity-script-approval-rule-created' and 'page-integrity-script-approval-rule-deleted' to schemas and types.
+- cd19b05: Added support for 429 response in getInvoice related types and response schemas.
+- b188c4b: Added new object shape for user event details related to script approval rule creation and deletion, including projectId, projectName, pattern, and justification.
+- 0bbdb96: Extended UserEvent type with a new structure for repository permission sharing details.
+- cd19b05: Added GetInvoiceStatus429 type and schema for 429 responses on getInvoice endpoint.
+- 710c19f: Allow fetching a repository image by either internal id or manifest digest in getRepositoryImage function.
+- 46cbc1d: Added support for the 'vcr-repository-permissions-cleared' event type to schemas and type definitions.
+- ea20a7a: Allowed the 'region' field in the Snapshot type to be optional instead of required.
+- c608b55: Added detailed payload for 'code-owners-config-updated' user event including previous and next config states.
+- d58fd00: Added optional 'environments' array field to userEventSchema and UserEvent type.
+- 710c19f: Update API route from `/images/{imageId}` to `/images/{imageIdOrDigest}` for getRepositoryImage.
+- cd19b05: Added optional configChangeCount and configChanges properties to UserEvent variants in type and schema.
+- c608b55: Added 'self_serve_recovery' as a new method for MFA state change events.
+- 048039f: Added support for the 'edge-cache-dangerously-delete-immutable-static' event type to the user event and event listing schemas and types.
+
 ## 1.5.0
 
 ### Minor Changes
