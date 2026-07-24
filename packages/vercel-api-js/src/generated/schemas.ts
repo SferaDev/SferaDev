@@ -7318,6 +7318,7 @@ export const userEventSchema = z
 								id: z.string().optional(),
 								staticIps: z.object({
 									builds: z.union([z.literal(false), z.literal(true)]).optional(),
+									buildRegion: z.string().optional(),
 									enabled: z.union([z.literal(false), z.literal(true)]),
 									regions: z.array(z.string()).optional(),
 								}),
@@ -7328,6 +7329,7 @@ export const userEventSchema = z
 								id: z.string().optional(),
 								staticIps: z.object({
 									builds: z.union([z.literal(false), z.literal(true)]).optional(),
+									buildRegion: z.string().optional(),
 									enabled: z.union([z.literal(false), z.literal(true)]),
 									regions: z.array(z.string()).optional(),
 								}),
@@ -23704,6 +23706,66 @@ export const createSessionSnapshotResponseSchema = z.union([
 	createSessionSnapshotStatus422Schema,
 	createSessionSnapshotStatus429Schema,
 	createSessionSnapshotStatus500Schema,
+]);
+
+export const createSandboxesByNameForkPathNameSchema = z
+	.string()
+	.max(128)
+	.regex(/^[a-zA-Z0-9_-]+$/)
+	.describe("Name of the source sandbox to fork.");
+
+export const createSandboxesByNameForkQueryProjectIdSchema = z
+	.string()
+	.max(128)
+	.optional()
+	.describe(
+		"The ID of the project the source sandbox belongs to. Required unless authenticating with an OIDC token.",
+	);
+
+export const createSandboxesByNameForkQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe("The Team identifier to perform the request on behalf of.");
+
+export const createSandboxesByNameForkQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.");
+
+export const createSandboxesByNameForkStatus200Schema = z.unknown();
+
+export const createSandboxesByNameForkStatus400Schema = z.unknown();
+
+export const createSandboxesByNameForkStatus401Schema = z.unknown();
+
+export const createSandboxesByNameForkStatus402Schema = z.unknown();
+
+export const createSandboxesByNameForkStatus403Schema = z.unknown();
+
+export const createSandboxesByNameForkStatus404Schema = z.unknown();
+
+export const createSandboxesByNameForkStatus409Schema = z.unknown();
+
+export const createSandboxesByNameForkStatus410Schema = z.unknown();
+
+export const createSandboxesByNameForkStatus422Schema = z.unknown();
+
+export const createSandboxesByNameForkStatus429Schema = z.unknown();
+
+export const createSandboxesByNameForkStatus500Schema = z.unknown();
+
+export const createSandboxesByNameForkResponseSchema = z.union([
+	createSandboxesByNameForkStatus200Schema,
+	createSandboxesByNameForkStatus400Schema,
+	createSandboxesByNameForkStatus401Schema,
+	createSandboxesByNameForkStatus402Schema,
+	createSandboxesByNameForkStatus403Schema,
+	createSandboxesByNameForkStatus404Schema,
+	createSandboxesByNameForkStatus409Schema,
+	createSandboxesByNameForkStatus410Schema,
+	createSandboxesByNameForkStatus422Schema,
+	createSandboxesByNameForkStatus429Schema,
+	createSandboxesByNameForkStatus500Schema,
 ]);
 
 export const updateAttackChallengeModeQueryTeamIdSchema = z

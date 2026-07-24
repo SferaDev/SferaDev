@@ -14408,6 +14408,10 @@ export type UserEvent = {
 									 */
 									builds?: (false | true) | undefined;
 									/**
+									 * @type string | undefined
+									 */
+									buildRegion?: string | undefined;
+									/**
 									 * @type boolean
 									 */
 									enabled: false | true;
@@ -14438,6 +14442,10 @@ export type UserEvent = {
 									 * @type boolean | undefined
 									 */
 									builds?: (false | true) | undefined;
+									/**
+									 * @type string | undefined
+									 */
+									buildRegion?: string | undefined;
 									/**
 									 * @type boolean
 									 */
@@ -53664,6 +53672,151 @@ export type CreateSessionSnapshotResponse =
 	| CreateSessionSnapshotStatus422
 	| CreateSessionSnapshotStatus429
 	| CreateSessionSnapshotStatus500;
+
+/**
+ * @description Name of the source sandbox to fork.
+ * @maxLength 128
+ * @pattern ^[a-zA-Z0-9_-]+$
+ * @type string
+ */
+export type CreateSandboxesByNameForkPathName = string;
+
+/**
+ * @description The ID of the project the source sandbox belongs to. Required unless authenticating with an OIDC token.
+ * @maxLength 128
+ * @type string | undefined
+ */
+export type CreateSandboxesByNameForkQueryProjectId = string | undefined;
+
+/**
+ * @description The Team identifier to perform the request on behalf of.
+ * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+ * @type string | undefined
+ */
+export type CreateSandboxesByNameForkQueryTeamId = string | undefined;
+
+/**
+ * @description The Team slug to perform the request on behalf of.
+ * @example my-team-url-slug
+ * @type string | undefined
+ */
+export type CreateSandboxesByNameForkQuerySlug = string | undefined;
+
+/**
+ * @type unknown
+ */
+export type CreateSandboxesByNameForkStatus200 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateSandboxesByNameForkStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateSandboxesByNameForkStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateSandboxesByNameForkStatus402 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateSandboxesByNameForkStatus403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateSandboxesByNameForkStatus404 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateSandboxesByNameForkStatus409 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateSandboxesByNameForkStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateSandboxesByNameForkStatus422 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateSandboxesByNameForkStatus429 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateSandboxesByNameForkStatus500 = unknown;
+
+/**
+ * @type object
+ */
+export type CreateSandboxesByNameForkRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		name: CreateSandboxesByNameForkPathName;
+	};
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				projectId?: CreateSandboxesByNameForkQueryProjectId | undefined;
+				teamId?: CreateSandboxesByNameForkQueryTeamId | undefined;
+				slug?: CreateSandboxesByNameForkQuerySlug | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/v2/sandboxes/${string}/fork`;
+};
+
+/**
+ * @type object
+ */
+export type CreateSandboxesByNameForkResponses = {
+	"200": CreateSandboxesByNameForkStatus200;
+	"400": CreateSandboxesByNameForkStatus400;
+	"401": CreateSandboxesByNameForkStatus401;
+	"402": CreateSandboxesByNameForkStatus402;
+	"403": CreateSandboxesByNameForkStatus403;
+	"404": CreateSandboxesByNameForkStatus404;
+	"409": CreateSandboxesByNameForkStatus409;
+	"410": CreateSandboxesByNameForkStatus410;
+	"422": CreateSandboxesByNameForkStatus422;
+	"429": CreateSandboxesByNameForkStatus429;
+	"500": CreateSandboxesByNameForkStatus500;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type CreateSandboxesByNameForkResponse =
+	| CreateSandboxesByNameForkStatus200
+	| CreateSandboxesByNameForkStatus400
+	| CreateSandboxesByNameForkStatus401
+	| CreateSandboxesByNameForkStatus402
+	| CreateSandboxesByNameForkStatus403
+	| CreateSandboxesByNameForkStatus404
+	| CreateSandboxesByNameForkStatus409
+	| CreateSandboxesByNameForkStatus410
+	| CreateSandboxesByNameForkStatus422
+	| CreateSandboxesByNameForkStatus429
+	| CreateSandboxesByNameForkStatus500;
 
 /**
  * @description The Team identifier to perform the request on behalf of.

@@ -358,6 +358,17 @@ import type {
 	CreateRepositoryStatus404,
 	CreateRepositoryStatus409,
 	CreateRepositoryStatus410,
+	CreateSandboxesByNameForkResponse,
+	CreateSandboxesByNameForkStatus400,
+	CreateSandboxesByNameForkStatus401,
+	CreateSandboxesByNameForkStatus402,
+	CreateSandboxesByNameForkStatus403,
+	CreateSandboxesByNameForkStatus404,
+	CreateSandboxesByNameForkStatus409,
+	CreateSandboxesByNameForkStatus410,
+	CreateSandboxesByNameForkStatus422,
+	CreateSandboxesByNameForkStatus429,
+	CreateSandboxesByNameForkStatus500,
 	CreateSandboxesResponse,
 	CreateSandboxesStatus400,
 	CreateSandboxesStatus401,
@@ -15548,6 +15559,56 @@ export async function createSessionSnapshot(
 }
 
 /**
+ * @summary Fork a named sandbox
+ * @description Forks a named sandbox, creating a new named sandbox from the source's configuration. Resources, timeout, ports, tags, network policy, mounts, Connect network, image, persistence, snapshot settings and — unlike the SDK-side fork — environment variables are copied from the source automatically (`interactive` is not). When the source has a snapshot the fork starts from it; otherwise it starts from the source's runtime/image. Any field provided in the request body overrides the value copied from the source.
+ * @link /v2/sandboxes/{name}/fork
+ */
+export async function createSandboxesByNameFork(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { name: string };
+		queryParams?: { projectId?: string; teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.name) {
+		throw new Error(`Missing required path parameter: name`);
+	}
+	const data = await request<
+		CreateSandboxesByNameForkResponse,
+		ErrorWrapper<
+			| CreateSandboxesByNameForkStatus400
+			| CreateSandboxesByNameForkStatus401
+			| CreateSandboxesByNameForkStatus402
+			| CreateSandboxesByNameForkStatus403
+			| CreateSandboxesByNameForkStatus404
+			| CreateSandboxesByNameForkStatus409
+			| CreateSandboxesByNameForkStatus410
+			| CreateSandboxesByNameForkStatus422
+			| CreateSandboxesByNameForkStatus429
+			| CreateSandboxesByNameForkStatus500
+		>,
+		null,
+		Record<string, string>,
+		{ projectId?: string; teamId?: string; slug?: string },
+		{ name: string }
+	>({
+		method: "POST",
+		url: `/v2/sandboxes/${pathParams.name}/fork`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
  * @summary Update Attack Challenge mode
  * @description Update the setting for determining if the project has Attack Challenge mode enabled.
  * @link /v1/security/attack-mode
@@ -19226,6 +19287,7 @@ export const operationsByPath = {
 	"POST /v2/sandboxes/sessions/{sessionId}/fs/mkdir": createSessionDirectory,
 	"POST /v2/sandboxes/sessions/{sessionId}/fs/write": writeSessionFiles,
 	"POST /v2/sandboxes/sessions/{sessionId}/snapshot": createSessionSnapshot,
+	"POST /v2/sandboxes/{name}/fork": createSandboxesByNameFork,
 	"POST /v1/security/attack-mode": updateAttackChallengeMode,
 	"GET /v1/security/firewall/config": getSecurityFirewallConfig,
 	"PUT /v1/security/firewall/config": putFirewallConfig,
@@ -19658,6 +19720,7 @@ export const operationsByTag = {
 		createSessionDirectory,
 		writeSessionFiles,
 		createSessionSnapshot,
+		createSandboxesByNameFork,
 	},
 	security: {
 		updateAttackChallengeMode,
@@ -20082,6 +20145,7 @@ export const tagDictionary = {
 			"createSessionDirectory",
 			"writeSessionFiles",
 			"createSessionSnapshot",
+			"createSandboxesByNameFork",
 		],
 		DELETE: ["deleteDrive", "deleteSessionSnapshot", "deleteSandbox"],
 		PATCH: ["updateSandbox"],
