@@ -75,7 +75,18 @@ bot bumping past a pin and leaving the comment behind).
 
 ### 4. Review the bumps
 
-Skim the `pnpm-workspace.yaml` catalog diff and triage by blast radius:
+Before the catalog diff, run the two checks that catch silent damage — both have fired for real:
+
+```bash
+# 1. security overrides must not shrink
+echo -n "main: "; git show origin/main:pnpm-workspace.yaml | yq '.overrides | keys | length'
+echo -n "PR:   "; yq '.overrides | keys | length' pnpm-workspace.yaml
+
+# 2. no package may quietly leave the catalog
+git diff origin/main -- '*/package.json' | grep -E '^\-.*"catalog:"'
+```
+
+Then skim the `pnpm-workspace.yaml` catalog diff and triage by blast radius:
 
 - **Majors first**, then runtime-facing libraries (next, react, ai/@ai-sdk, better-auth, drizzle,
   effect, kubb, tailwind), then patch/minor.
@@ -99,8 +110,14 @@ pnpm turbo run build --filter="./packages/*" --force
 `pnpm check` and `pnpm test` are exactly what CI gates on. The forced build is not in CI but
 catches real breakage cheaply.
 
-Known-noisy locally: `ai-gateway-proxy`'s integration test needs `AI_GATEWAY_API_KEY` and fails on
-`main` too — CI has the secret. Confirm a failure reproduces on `main` before blaming the bump.
+`ai-gateway-proxy`'s integration tests are gated on `AI_GATEWAY_API_KEY`
+(`describe.skipIf(!hasApiKey)`). **The repo has no such secret, so in CI they silently skip** —
+the log shows `13 skipped`, and the job still goes green. Locally they run only if you have the
+key in your environment, and fail with `GatewayAuthenticationError` if it is not a valid one.
+
+This matters most exactly when it matters most: an `ai` / `@ai-sdk/*` major has **no** automated
+runtime coverage in this repo. Treat a green CI on such a bump as "it compiles", nothing more, and
+say so in the review comment.
 
 The bot adds no changeset. There is no changeset gate in CI, so only add one if a bump genuinely
 changes published behaviour of a package in `packages/*`.

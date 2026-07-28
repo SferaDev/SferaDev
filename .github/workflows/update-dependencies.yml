@@ -21,7 +21,7 @@ jobs:
       GITHUB_TOKEN: ${{ github.token }}
     steps:
       - name: Checkout Repo
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           # Always base the update against the default branch so create-pull-request
           # has a valid `origin/main` to reset onto, even on a manual dispatch from
@@ -92,7 +92,12 @@ jobs:
           # generated override can't be resolved (e.g. a patched version not yet published to
           # npm), drop the generated ones so the update PR still opens; they regenerate once
           # the fix lands. The hand-written pins are kept, as above.
-          pnpm audit --fix || true
+          #
+          # `--fix` takes a value on pnpm 11 ("override" or "update"); the bare flag is a usage
+          # error. Because this is followed by `|| true`, getting that wrong fails silently and
+          # the PR ships with the overrides cleared and never regenerated — every security
+          # override dropped, with nothing red to show for it. Report it instead of swallowing.
+          pnpm audit --fix override || echo "::warning::pnpm audit --fix failed; security overrides may be missing from this PR"
           with_allow_builds pnpm install --no-frozen-lockfile || {
             echo "::warning::install failed after audit --fix; clearing generated overrides and retrying"
             yq -i '.overrides |= with_entries(select(.key == "@kubb/renderer-jsx"))' pnpm-workspace.yaml

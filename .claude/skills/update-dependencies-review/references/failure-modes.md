@@ -28,6 +28,24 @@ the peer ranges to `catalog:`, which would publish an exact peer pin to consumer
 Confirmed on pnpm 10.26 → 10.30 → 11.12: intentional behaviour, not a version bug. Named catalogs
 do not help — the strict check only ever validates against the default catalog.
 
+### `ERR_PNPM_OUTDATED_LOCKFILE` — "not up to date with `<pkg>/package.json`"
+
+*Seen 2026-07 on `packages/openapi-utils`.*
+
+A `"catalog:"` reference was rewritten to a literal version, and `cleanupUnusedCatalogs: true` then
+deleted the orphaned catalog entry — so the package quietly stopped being catalog-managed.
+
+The trigger is a **catalog entry and an override disagreeing about the same package**. Under the
+`catalogMode: manual` window the workflow opens for the bump, pnpm resolves that contradiction by
+writing the literal into the manifest. Check for it directly:
+
+```bash
+git diff origin/main -- '*/package.json' | grep -E '^\-.*"catalog:"'
+```
+
+Fix by making the catalog and the override agree, then restoring the `catalog:` reference. Do not
+"fix" it by accepting the literal — that silently drops the package out of the catalog.
+
 ### `ERR_PNPM_IGNORED_BUILDS` — "Ignored build scripts: …"
 
 *Seen 2026-07 when `mise up --bump` moved pnpm 10 → 11. Migration completed the same week; kept
@@ -72,18 +90,36 @@ confirmation. Remove `node_modules` and re-install.
 CI does not hit this because the `node_modules` cache key includes `mise.lock`, which changes with
 the pnpm version — so a pnpm bump always lands on a cache miss. Keep it that way.
 
-### `pnpm audit --fix` fails with HTTP 410
+### The PR has *fewer* overrides than `main` — check this every single time
 
-The npm quick-audit endpoint was retired. The workflow tolerates it (`|| true`) and the fallback
-clears generated overrides if the install then fails. Not fatal; do not "fix" by pinning an old
-npm.
+*Seen 2026-07: a PR arrived with 24 of 25 security overrides silently gone.*
 
-### Install fails only after `audit --fix`
+**The single highest-value check in this review.** The workflow clears the generated overrides and
+relies on `pnpm audit --fix` to rebuild them. If that command fails, `|| true` swallows it and the
+PR ships with the overrides deleted and never regenerated — no error, nothing red, just a lockfile
+with every security patch quietly removed.
 
-`pnpm audit --fix` can generate an override for a patched version that is not published yet. The
-workflow retries once with `pnpm.overrides` cleared and emits a `::warning::`. If you see that
-warning in the log, the PR is missing its security overrides for the week — say so in the review
-comment rather than letting it pass silently.
+Always compare against `main`:
+
+```bash
+echo -n "main: "; git show origin/main:pnpm-workspace.yaml | yq '.overrides | keys | length'
+echo -n "PR:   "; yq '.overrides | keys | length' pnpm-workspace.yaml
+```
+
+A drop is a blocker. Root cause seen so far: pnpm 11 requires a *value* for `--fix`
+(`override` or `update`), so the bare `pnpm audit --fix` is a usage error. The workflow now uses
+`--fix override` and warns instead of swallowing, but any future failure of that command has the
+same silent shape.
+
+### `ERR_PNPM_NO_MATCHING_VERSION` after `audit --fix`
+
+`pnpm audit --fix` is not publish-aware: it will generate an override pointing at a version the
+advisory recommends but that was never released. Seen with `esbuild@<=0.24.2` → `^0.24.3`, where
+0.24.2 is the last 0.24.x.
+
+Fix the single offending entry rather than clearing the block — check what `main` used for the
+same advisory (`>=0.25.0` here). The workflow's fallback clears *all* generated overrides, so if
+it fires you have hit the previous entry's problem as well.
 
 ---
 
