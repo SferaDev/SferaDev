@@ -24,7 +24,7 @@
 		"@kubb/plugin-client": "catalog:",
 		"@kubb/plugin-ts": "catalog:",
 		"@kubb/plugin-zod": "catalog:",
-		"@kubb/renderer-jsx": "catalog:",
+		"@kubb/renderer-jsx": "5.0.0-beta.35",
 		"case": "catalog:",
 		"openapi3-ts": "catalog:"
 	},
