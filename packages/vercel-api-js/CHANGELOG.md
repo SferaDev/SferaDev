@@ -1,5 +1,21 @@
 # vercel-api-js
 
+## 1.7.0
+
+### Minor Changes
+
+- b6c66b0: Updated and added values to event type enums, including new event types such as integration-resource-redis-command-executed, kms-issuer-key-activated, kms-issuer-key-created, and team-collaboration-settings-updated.
+- b6c66b0: Added new requestKindEnum and approvalScopeEnum types.
+- b6c66b0: Added createConnectorInstallationRequest API endpoint for creating connector installation requests.
+
+### Patch Changes
+
+- b6c66b0: Added support for a 502 error response in createConnector endpoint.
+- b6c66b0: Added updatedBy field to Flag type.
+- b6c66b0: Added new fields and refined descriptions to Team and TeamLimited types, such as orgRootTeamId and improved parentId description.
+- b6c66b0: Removed status 412 responses from flag and flag segment related endpoints (create, update, delete).
+- b6c66b0: Added egressCidrBlock property to Network objects.
+
 ## 1.6.0
 
 ### Minor Changes
