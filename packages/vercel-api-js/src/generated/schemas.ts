@@ -14870,6 +14870,8 @@ export const createConnectorStatus409Schema = z.unknown();
 
 export const createConnectorStatus410Schema = z.unknown();
 
+export const createConnectorStatus422Schema = z.unknown();
+
 export const createConnectorStatus502Schema = z.unknown();
 
 export const createConnectorResponseSchema = z.union([
@@ -14880,6 +14882,7 @@ export const createConnectorResponseSchema = z.union([
 	createConnectorStatus404Schema,
 	createConnectorStatus409Schema,
 	createConnectorStatus410Schema,
+	createConnectorStatus422Schema,
 	createConnectorStatus502Schema,
 ]);
 
