@@ -110,8 +110,14 @@ pnpm turbo run build --filter="./packages/*" --force
 `pnpm check` and `pnpm test` are exactly what CI gates on. The forced build is not in CI but
 catches real breakage cheaply.
 
-Known-noisy locally: `ai-gateway-proxy`'s integration test needs `AI_GATEWAY_API_KEY` and fails on
-`main` too — CI has the secret. Confirm a failure reproduces on `main` before blaming the bump.
+`ai-gateway-proxy`'s integration tests are gated on `AI_GATEWAY_API_KEY`
+(`describe.skipIf(!hasApiKey)`). **The repo has no such secret, so in CI they silently skip** —
+the log shows `13 skipped`, and the job still goes green. Locally they run only if you have the
+key in your environment, and fail with `GatewayAuthenticationError` if it is not a valid one.
+
+This matters most exactly when it matters most: an `ai` / `@ai-sdk/*` major has **no** automated
+runtime coverage in this repo. Treat a green CI on such a bump as "it compiles", nothing more, and
+say so in the review comment.
 
 The bot adds no changeset. There is no changeset gate in CI, so only add one if a bump genuinely
 changes published behaviour of a package in `packages/*`.
