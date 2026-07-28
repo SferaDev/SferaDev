@@ -60,28 +60,46 @@ override. Assume the next major has an equivalent silent change.
 
 ---
 
-## The `@kubb/renderer-jsx` override
+## Keep-backs in the catalog
 
-`pnpm-workspace.yaml`:
+Catalog entries held *below* latest, each with a comment saying why. `pnpm update --latest` bumps
+straight past them and leaves the comment behind, still reading as if the hold were in force — so
+**re-pin them every review**:
 
-```yaml
-overrides:
-  '@kubb/renderer-jsx': 5.0.0-beta.10
+```bash
+grep -n "KEEP-BACK" -A5 pnpm-workspace.yaml
 ```
 
-A **manual** override forcing a single version, because `@kubb/adapter-oas` pins
-`@kubb/core@5.0.0-beta.10` which wants exactly `@kubb/renderer-jsx@5.0.0-beta.10`, while the
-catalog carries a newer beta. Without it, the peer set is unsatisfiable.
+Current holds (2026-07 — verify against the file, not this list):
 
-Two things to know:
+- **`typescript`** at 6.x. TypeScript 7 dropped the JavaScript compiler API `bunchee` uses to emit
+  declarations, so every package build fails with *"Detected TypeScript 7.0.2 … install
+  `@typescript/typescript6`"*. Note bunchee's peer range already advertises `^7.0`, so the peer
+  range is not evidence — build a package before releasing this hold.
+- **`@kubb/renderer-jsx`** must track the other `@kubb/*` entries rather than its own latest; kubb
+  publishes it ahead of `adapter-oas`/`core`, and `@kubb/core` peer-requires the exact matching
+  version.
+- **`@types/vscode`** — see the section below; it is coupled to `engines.vscode`.
 
-- `pnpm audit --fix` will never regenerate it. Anything that clears `overrides` wholesale
-  destroys it permanently.
-- It lives in `pnpm-workspace.yaml`, while *security* overrides live in `package.json`
-  `pnpm.overrides`. That split is deliberate: the workflow clears only the latter. Keep it.
+## The `@kubb/renderer-jsx` override (released 2026-07)
 
-**To release it:** when the catalog's `@kubb/*` packages all sit on one version again, drop the
-override and confirm `pnpm install` reports no unmet `@kubb` peer.
+There used to be a manual override forcing `@kubb/renderer-jsx` to `5.0.0-beta.10` while the
+catalog carried a newer beta. **It has been removed** — and how it failed is the lesson.
+
+An override that contradicts a catalog entry for the same package is not a stable arrangement. In
+the `catalogMode: manual` window the workflow opens for the bump, pnpm resolves the contradiction
+by writing a literal version into the consuming manifest; `cleanupUnusedCatalogs` then deletes the
+orphaned catalog entry, and the package silently stops being catalog-managed. See
+`ERR_PNPM_OUTDATED_LOCKFILE` in `failure-modes.md`.
+
+The fix was to make the catalog agree with the override (`beta.10`, matching every other `@kubb/*`
+entry) rather than have the two fight. The override then became redundant — verified by removing
+it and confirming a single `@kubb/renderer-jsx@5.0.0-beta.10` still resolves with no unmet peer.
+Aligning them also removed a duplicate copy from the tree.
+
+**Rule of thumb:** if you are tempted to add an override for a package that also has a catalog
+entry, change the catalog entry instead. Reach for an override only for something you do not
+control directly — a transitive dependency.
 
 ---
 
@@ -95,8 +113,16 @@ The workflow relaxes it to `manual` for the bump and restores `strict` immediate
 diff leaves `catalogMode: manual` committed, that is a bug in the run — restore it.
 
 `cleanupUnusedCatalogs: true` means a catalog entry disappears as soon as its last `catalog:`
-reference does. Expect that when a package moves to a literal version, and do not treat it as an
-accidental deletion.
+reference does. That is fine when *you* deliberately moved a package to a literal version (as
+`@types/vscode` had to be, for `vsce`).
+
+It is **not** fine when the bot does it. A disappearing catalog entry in a bot PR usually means a
+`catalog:` reference was rewritten to a literal during the bump — a package silently leaving the
+catalog. Check before accepting any catalog deletion:
+
+```bash
+git diff origin/main -- '*/package.json' | grep -E '^\-.*"catalog:"'
+```
 
 ---
 

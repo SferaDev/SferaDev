@@ -75,7 +75,18 @@ bot bumping past a pin and leaving the comment behind).
 
 ### 4. Review the bumps
 
-Skim the `pnpm-workspace.yaml` catalog diff and triage by blast radius:
+Before the catalog diff, run the two checks that catch silent damage — both have fired for real:
+
+```bash
+# 1. security overrides must not shrink
+echo -n "main: "; git show origin/main:pnpm-workspace.yaml | yq '.overrides | keys | length'
+echo -n "PR:   "; yq '.overrides | keys | length' pnpm-workspace.yaml
+
+# 2. no package may quietly leave the catalog
+git diff origin/main -- '*/package.json' | grep -E '^\-.*"catalog:"'
+```
+
+Then skim the `pnpm-workspace.yaml` catalog diff and triage by blast radius:
 
 - **Majors first**, then runtime-facing libraries (next, react, ai/@ai-sdk, better-auth, drizzle,
   effect, kubb, tailwind), then patch/minor.
