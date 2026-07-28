@@ -1,10 +1,16 @@
 # Toolchain pinned for CI and local development. Bumped automatically each week by
-# the "Update Dependencies" workflow (`mise up --bump`) so upgrades land in a
-# reviewed PR. pnpm is held at the version in package.json `packageManager`; keep
-# the two in sync (the update workflow mirrors it).
+# the "Update Dependencies" workflow so upgrades land in a reviewed PR. The pnpm
+# version is mirrored into package.json `packageManager`; keep the two in sync (the
+# update workflow does that automatically).
+#
+# pnpm is deliberately tracked on the 10.x line rather than pinned exactly, so the
+# weekly job picks up 10.x releases but not pnpm 11. Moving to 11 is a migration, not
+# a bump: it stops reading `pnpm.overrides` from package.json (which would silently
+# drop every security override), replaces `onlyBuiltDependencies` with `allowBuilds`,
+# and fails installs on ignored build scripts (`strictDepBuilds` now defaults to true).
 [tools]
 node = "24.18.0"
-pnpm = "10.26.2"
+pnpm = "10"
 yq = "4.53.3"
 "aqua:suzuki-shunsuke/pinact" = "4.1.0"
 
