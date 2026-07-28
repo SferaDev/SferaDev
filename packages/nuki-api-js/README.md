@@ -1,6 +1,6 @@
 # nuki-api-js
 
-Auto-generated, fully typed client for the [Nuki Web API](https://developer.nuki.io/page/nuki-web-api/).
+Auto-generated, fully typed client for the [Nuki Web API](https://api.nuki.io/).
 
 ## Features
 
