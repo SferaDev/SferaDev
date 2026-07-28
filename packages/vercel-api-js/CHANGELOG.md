@@ -1,5 +1,12 @@
 # vercel-api-js
 
+## 1.7.1
+
+### Patch Changes
+
+- 23a3891: Added new event type 'project-sandbox-config-updated' to userEventSchema and related type enums.
+- 23a3891: Added support for 'project-sandbox-config-updated' event with projectId, projectName, optional region, and optional failoverRegions fields in UserEvent type.
+
 ## 1.7.0
 
 ### Minor Changes
