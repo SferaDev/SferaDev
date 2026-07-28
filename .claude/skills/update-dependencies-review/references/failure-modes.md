@@ -30,26 +30,37 @@ do not help — the strict check only ever validates against the default catalog
 
 ### `ERR_PNPM_IGNORED_BUILDS` — "Ignored build scripts: …"
 
-*Seen 2026-07 when `mise up --bump` moved pnpm 10 → 11.*
+*Seen 2026-07 when `mise up --bump` moved pnpm 10 → 11. Migration completed the same week; kept
+as the worked example of what a pnpm major costs.*
 
-pnpm 11 changes three things at once:
+pnpm 11 changed three things at once:
 
-1. `strictDepBuilds` defaults to `true` — ignoring any dependency build script now **fails** the
+1. `strictDepBuilds` defaults to `true` — ignoring any dependency build script **fails** the
    install instead of warning.
-2. `onlyBuiltDependencies` is replaced by `allowBuilds`, so the existing allow-entry stops
-   applying (which is why `lefthook` appears in its own ignored list).
-3. **The `pnpm` field in package.json is no longer read** — `pnpm.overrides`, where all our
-   security overrides live, is silently ignored:
+2. `onlyBuiltDependencies` is replaced by `allowBuilds`, so the existing allow-entry stopped
+   applying — which is why `lefthook` appeared in its own ignored list.
+3. **The `pnpm` field in package.json is no longer read** — `pnpm.overrides`, where all the
+   security overrides lived, was silently ignored:
    ```
    [WARN] The "pnpm" field in package.json is no longer read by pnpm.
           The following keys were ignored: "pnpm.overrides".
    ```
 
-pnpm is therefore held on the 10.x line (see `pin-governance.md`). If you are deliberately doing
-the pnpm 11 migration, it means: relocate overrides to `pnpm-workspace.yaml`, convert
-`onlyBuiltDependencies` to `allowBuilds`, decide the workflow's override-clearing step cannot just
-`del(.overrides)` (that would drop the manual `@kubb/renderer-jsx` pin too), and prove the
-security overrides still resolve afterwards.
+The third is the one to remember: it emitted a warning, not an error, and would have shipped a
+lockfile with every security override missing. **When a package manager crosses a major, ask what
+it stopped reading, not just what it renamed.**
+
+Now resolved — overrides live in `pnpm-workspace.yaml`, `allowBuilds` carries an explicit decision
+per package. If you see this error again it means a package with build scripts was added and needs
+a `true`/`false` decision; pnpm writes a `set this to true or false` placeholder for it.
+
+### `ERR_PNPM_ABORTED_REMOVE_MODULES_DIR_NO_TTY`
+
+pnpm wants to replace a `node_modules` written by a different pnpm major and cannot prompt for
+confirmation. Remove `node_modules` and re-install.
+
+CI does not hit this because the `node_modules` cache key includes `mise.lock`, which changes with
+the pnpm version — so a pnpm bump always lands on a cache miss. Keep it that way.
 
 ### `pnpm audit --fix` fails with HTTP 410
 

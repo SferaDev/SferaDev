@@ -17,8 +17,8 @@ grep -n '"@types/vscode"\|"vscode":' apps/vscode-ai-gateway/package.json
 
 ## The pnpm major hold
 
-`mise.toml` tracks pnpm as `"10"` — a major line, not an exact pin — and the workflow updates it
-with `mise up pnpm` while every other tool gets `mise up --bump`:
+`mise.toml` tracks pnpm as a **major line** (`"11"` as of 2026-07), not an exact pin, and the
+workflow updates it with `mise up pnpm` while every other tool gets `mise up --bump`:
 
 ```bash
 bumpable=$(yq -p toml -oy -r '.tools | keys | .[] | select(. != "pnpm")' mise.toml | tr '\n' ' ')
@@ -26,30 +26,37 @@ mise up --bump $bumpable
 mise up pnpm
 ```
 
-So pnpm still receives 10.x releases weekly; only the major is held.
+So pnpm still receives releases within the major every week; only the major crossing is held.
 
-**Why:** pnpm 11 fails installs on ignored build scripts, renames `onlyBuiltDependencies` to
-`allowBuilds`, and — the reason this is a hold rather than a quick fix — stops reading the `pnpm`
-field in package.json, silently dropping every security override.
+**Why:** a pnpm major is a migration, not a bump. v10 → v11 moved `overrides` out of package.json,
+renamed `onlyBuiltDependencies` to `allowBuilds`, and made ignored build scripts fail the install.
+The first of those produced no error at all — it would simply have stopped applying every security
+override. Assume the next major has an equivalent silent change.
 
-**To release it** (a deliberate PR, never a weekly bump):
+**Crossing the next major** (a deliberate PR, never a weekly bump). What v11 needed, as a template:
 
-1. Move `pnpm.overrides` from `package.json` into `pnpm-workspace.yaml` `overrides`, merging with
-   the manual `@kubb/renderer-jsx` pin already there.
-2. Convert `onlyBuiltDependencies` to `allowBuilds`, deciding explicitly per package. Letting pnpm
-   write it for you (it records ignored builds on the failing install) is a reasonable start, but
-   read what it wrote.
-3. Rework the workflow's override-clearing step. It currently clears `package.json` overrides with
-   `jq`; a naive `yq 'del(.overrides)'` on `pnpm-workspace.yaml` would also delete the manual
-   `@kubb` pin, which `audit --fix` will never regenerate. Clear only the generated entries.
-4. **Prove the security overrides still apply** afterwards — that is the whole point:
+1. Relocate any config the new major stopped reading. For v11 that was
+   `package.json` `pnpm.overrides` → `pnpm-workspace.yaml` `overrides`, merged with the manual
+   `@kubb/renderer-jsx` pin already living there.
+2. Convert renamed settings, deciding explicitly rather than accepting defaults. For v11,
+   `onlyBuiltDependencies` → `allowBuilds`; pnpm writes `set this to true or false` placeholders
+   for every undecided package, and the install keeps failing until each is resolved. Encode the
+   *existing* behaviour unless you mean to change it.
+3. Check the weekly workflow's assumptions still hold. Its override-clearing step targeted
+   package.json, which v11 made a no-op. Note a blanket `yq 'del(.overrides)'` would delete the
+   manual `@kubb` pin, which `audit --fix` never regenerates — clear only generated entries.
+4. **Prove the security overrides still apply.** This is the whole point:
    ```bash
-   grep -oE 'hono@[0-9.]+|lodash@[0-9.]+' pnpm-lock.yaml | sort -u
+   yq '.overrides | keys | length' pnpm-lock.yaml     # expect the full count, 25 in 2026-07
+   grep -oE '^  hono@[0-9.]+|^  lodash@[0-9.]+' pnpm-lock.yaml | sort -u
    ```
-5. Check `mise.lock` still has all 7 platform entries (CI runs `linux-x64`).
-
-Do not release this hold just because pnpm 11 has been out a while. Release it when steps 1–4 are
-done and verified.
+   The strongest signal is `pnpm-lock.yaml` coming out **unchanged**: config moved, resolutions
+   did not.
+5. Regenerate `mise.lock` and confirm all platform entries survive (CI runs `linux-x64`).
+6. Wipe `node_modules` before testing locally — pnpm aborts with
+   `ERR_PNPM_ABORTED_REMOVE_MODULES_DIR_NO_TTY` when it wants to replace a store written by a
+   different major and has no TTY. CI is safe because the `node_modules` cache key includes
+   `mise.lock`, which changes with the pnpm version.
 
 ---
 

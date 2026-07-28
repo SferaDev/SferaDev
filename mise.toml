@@ -3,14 +3,15 @@
 # version is mirrored into package.json `packageManager`; keep the two in sync (the
 # update workflow does that automatically).
 #
-# pnpm is deliberately tracked on the 10.x line rather than pinned exactly, so the
-# weekly job picks up 10.x releases but not pnpm 11. Moving to 11 is a migration, not
-# a bump: it stops reading `pnpm.overrides` from package.json (which would silently
-# drop every security override), replaces `onlyBuiltDependencies` with `allowBuilds`,
-# and fails installs on ignored build scripts (`strictDepBuilds` now defaults to true).
+# pnpm is deliberately tracked on a major line rather than pinned exactly, so the weekly
+# job picks up releases within the major but never crosses one on its own. A pnpm major
+# is a migration: v11 alone moved `overrides` out of package.json (silently dropping
+# every security override if you don't relocate them), replaced `onlyBuiltDependencies`
+# with `allowBuilds`, and made ignored build scripts fail the install rather than warn.
+# Cross the next major by hand, with the security overrides re-verified afterwards.
 [tools]
 node = "24.18.0"
-pnpm = "10"
+pnpm = "11"
 yq = "4.53.3"
 "aqua:suzuki-shunsuke/pinact" = "4.1.0"
 
