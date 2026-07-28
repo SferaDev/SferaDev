@@ -50,17 +50,21 @@ jobs:
           mise up pnpm
           mise install
 
-          # pnpm refuses to install when a dependency ships build scripts and `allowBuilds`
-          # has no decision for it, recording a `set this to true or false` placeholder. An
-          # update that pulls in such a package would therefore fail the whole job (this is
-          # how @scarf/scarf broke it). Default new entries to false — never execute an
-          # install script we have not opted into — and retry. The additions show up in the
-          # PR diff, so a reviewer can flip one to true if a build really is required.
-          install_deps() {
-            pnpm install --no-frozen-lockfile && return 0
+          # pnpm fails any command that resolves a dependency shipping build scripts when
+          # `allowBuilds` has no decision for it, recording a `set this to true or false`
+          # placeholder. An update pulling in such a package therefore fails the whole job
+          # (this is how @scarf/scarf broke it). Wrap the commands that resolve dependencies:
+          # default new entries to false — never execute an install script we have not opted
+          # into — and retry. The additions show up in the PR diff, so a reviewer can flip one
+          # to true if a build really is required.
+          #
+          # `pnpm update` installs as part of its work, so it needs this as much as `pnpm
+          # install` does.
+          with_allow_builds() {
+            "$@" && return 0
             echo "::warning::new dependencies ship build scripts; defaulting them to allowBuilds: false"
             yq -i '.allowBuilds |= with_entries(.value = (.value == true))' pnpm-workspace.yaml
-            pnpm install --no-frozen-lockfile
+            "$@"
           }
 
           # Mirror the pnpm version into `packageManager`, which turbo and Vercel read.
@@ -71,7 +75,7 @@ jobs:
           # a peer conflict together and audit will never re-add it, so a blanket
           # `del(.overrides)` would drop it permanently.
           yq -i '.overrides |= with_entries(select(.key == "@kubb/renderer-jsx"))' pnpm-workspace.yaml
-          install_deps
+          with_allow_builds pnpm install --no-frozen-lockfile
 
           # Update dependencies.
           # `catalogMode: strict` (pnpm-workspace.yaml) makes `pnpm update --latest` abort
@@ -81,7 +85,7 @@ jobs:
           # Relax to `manual` for the bump — catalog entries still update and the peer ranges
           # are left untouched — then restore `strict`.
           sed -i 's/^catalogMode: strict/catalogMode: manual/' pnpm-workspace.yaml
-          pnpm update --recursive --latest
+          with_allow_builds pnpm update --recursive --latest
           sed -i 's/^catalogMode: manual/catalogMode: strict/' pnpm-workspace.yaml
 
           # Patch vulnerabilities (regenerates the overrides in pnpm-workspace.yaml). If a
@@ -89,10 +93,10 @@ jobs:
           # npm), drop the generated ones so the update PR still opens; they regenerate once
           # the fix lands. The hand-written pins are kept, as above.
           pnpm audit --fix || true
-          install_deps || {
+          with_allow_builds pnpm install --no-frozen-lockfile || {
             echo "::warning::install failed after audit --fix; clearing generated overrides and retrying"
             yq -i '.overrides |= with_entries(select(.key == "@kubb/renderer-jsx"))' pnpm-workspace.yaml
-            install_deps
+            with_allow_builds pnpm install --no-frozen-lockfile
           }
 
           # Update biome config, then fix formatting and linting issues
