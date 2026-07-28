@@ -50,6 +50,19 @@ jobs:
           mise up pnpm
           mise install
 
+          # pnpm refuses to install when a dependency ships build scripts and `allowBuilds`
+          # has no decision for it, recording a `set this to true or false` placeholder. An
+          # update that pulls in such a package would therefore fail the whole job (this is
+          # how @scarf/scarf broke it). Default new entries to false — never execute an
+          # install script we have not opted into — and retry. The additions show up in the
+          # PR diff, so a reviewer can flip one to true if a build really is required.
+          install_deps() {
+            pnpm install --no-frozen-lockfile && return 0
+            echo "::warning::new dependencies ship build scripts; defaulting them to allowBuilds: false"
+            yq -i '.allowBuilds |= with_entries(.value = (.value == true))' pnpm-workspace.yaml
+            pnpm install --no-frozen-lockfile
+          }
+
           # Mirror the pnpm version into `packageManager`, which turbo and Vercel read.
           jq --arg v "pnpm@$(mise current pnpm)" '.packageManager = $v' package.json > package.tmp && mv package.tmp package.json
 
@@ -58,7 +71,7 @@ jobs:
           # a peer conflict together and audit will never re-add it, so a blanket
           # `del(.overrides)` would drop it permanently.
           yq -i '.overrides |= with_entries(select(.key == "@kubb/renderer-jsx"))' pnpm-workspace.yaml
-          pnpm install --no-frozen-lockfile
+          install_deps
 
           # Update dependencies.
           # `catalogMode: strict` (pnpm-workspace.yaml) makes `pnpm update --latest` abort
@@ -76,10 +89,10 @@ jobs:
           # npm), drop the generated ones so the update PR still opens; they regenerate once
           # the fix lands. The hand-written pins are kept, as above.
           pnpm audit --fix || true
-          pnpm install --no-frozen-lockfile || {
+          install_deps || {
             echo "::warning::install failed after audit --fix; clearing generated overrides and retrying"
             yq -i '.overrides |= with_entries(select(.key == "@kubb/renderer-jsx"))' pnpm-workspace.yaml
-            pnpm install --no-frozen-lockfile
+            install_deps
           }
 
           # Update biome config, then fix formatting and linting issues

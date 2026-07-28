@@ -51,8 +51,18 @@ lockfile with every security override missing. **When a package manager crosses 
 it stopped reading, not just what it renamed.**
 
 Now resolved — overrides live in `pnpm-workspace.yaml`, `allowBuilds` carries an explicit decision
-per package. If you see this error again it means a package with build scripts was added and needs
-a `true`/`false` decision; pnpm writes a `set this to true or false` placeholder for it.
+per package.
+
+**The recurrence to expect:** any update that pulls in a *new* package with build scripts fails
+the same way — first seen with `@scarf/scarf@1.4.0`, a telemetry postinstall arriving as a
+transitive dependency. The workflow now absorbs this: on install failure it defaults the new
+placeholders to `false` (never run an install script we did not opt into), retries, and emits a
+`::warning::`.
+
+So when reviewing, **read the `allowBuilds` additions in the diff**. Each new `false` is a package
+that started shipping an install script. Usually correct to leave; flip to `true` only if the
+package genuinely needs to build (native module the code actually loads at runtime), and say why
+in the review comment.
 
 ### `ERR_PNPM_ABORTED_REMOVE_MODULES_DIR_NO_TTY`
 
