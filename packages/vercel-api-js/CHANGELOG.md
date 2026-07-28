@@ -1,5 +1,11 @@
 # vercel-api-js
 
+## 1.7.2
+
+### Patch Changes
+
+- 5a7383e: Added support for 422 Unprocessable Entity response to the createConnector endpoint and related schemas/types.
+
 ## 1.7.1
 
 ### Patch Changes
