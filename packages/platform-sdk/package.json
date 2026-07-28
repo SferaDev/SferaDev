@@ -1,6 +1,7 @@
 {
 	"name": "@sferadev/platform-sdk",
 	"version": "0.0.1",
+	"private": true,
 	"type": "module",
 	"sideEffects": false,
 	"license": "MIT",
