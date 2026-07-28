@@ -16,7 +16,7 @@
 		"build": {
 			"inputs": ["$TURBO_DEFAULT$", ".env*"],
 			"outputs": ["dist/**", ".next/**", "!.next/cache/**", "out/**"],
-			"dependsOn": ["^build", "^generate", "generate"]
+			"dependsOn": ["^build"]
 		},
 		"@sferadev/openapi-website#build": {
 			"dependsOn": ["vercel-api-js#build"],
