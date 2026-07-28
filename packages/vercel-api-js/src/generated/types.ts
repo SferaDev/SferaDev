@@ -29185,6 +29185,11 @@ export type CreateConnectorStatus410 = unknown;
 /**
  * @type unknown
  */
+export type CreateConnectorStatus422 = unknown;
+
+/**
+ * @type unknown
+ */
 export type CreateConnectorStatus502 = unknown;
 
 /**
@@ -29212,6 +29217,7 @@ export type CreateConnectorResponses = {
 	"404": CreateConnectorStatus404;
 	"409": CreateConnectorStatus409;
 	"410": CreateConnectorStatus410;
+	"422": CreateConnectorStatus422;
 	"502": CreateConnectorStatus502;
 };
 
@@ -29226,6 +29232,7 @@ export type CreateConnectorResponse =
 	| CreateConnectorStatus404
 	| CreateConnectorStatus409
 	| CreateConnectorStatus410
+	| CreateConnectorStatus422
 	| CreateConnectorStatus502;
 
 /**
