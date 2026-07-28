@@ -20,10 +20,14 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
 
-      # This job publishes to npm, so it stays on setup-node rather than the mise
-      # composite: `registry-url` provisions the ~/.npmrc that npm provenance / OIDC
-      # publishing (permissions.id-token: write) relies on. pnpm still comes from the
-      # `packageManager` field, so the version matches mise.toml.
+      # This job publishes to npm via OIDC trusted publishing (permissions.id-token:
+      # write), so it stays on setup-node rather than the mise composite. We deliberately
+      # do NOT set `registry-url`: setup-node would then write an ~/.npmrc containing
+      # `_authToken=${NODE_AUTH_TOKEN}`, and since we pass no token that resolves to an
+      # empty credential which npm sends instead of performing the OIDC token exchange —
+      # the publish then 404s. With no token in .npmrc, npm (>= 11.5, from Node 24) uses
+      # the Trusted Publisher configured for each package on npmjs.org (GitHub Actions →
+      # SferaDev/SferaDev → release.yml). pnpm still comes from the `packageManager` field.
       - name: Install pnpm
         uses: pnpm/action-setup@0ebf47130e4866e96fce0953f49152a61190b271 # v6.0.9
 
@@ -31,7 +35,6 @@ jobs:
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version: 24
-          registry-url: "https://registry.npmjs.org"
 
       - name: Install Dependencies
         run: pnpm i
