@@ -119,6 +119,16 @@ This matters most exactly when it matters most: an `ai` / `@ai-sdk/*` major has 
 runtime coverage in this repo. Treat a green CI on such a bump as "it compiles", nothing more, and
 say so in the review comment.
 
+**Not adding the secret to CI is a deliberate decision** (2026-07) — do not propose it again. The
+gateway costs money per call and the key would be exposed to every workflow run. So for an
+`ai`/`@ai-sdk` major, get the evidence another way:
+
+- exercise a generation request against a deploy preview, or run the integration tests locally
+  with a key in your environment (`AI_GATEWAY_API_KEY=… pnpm --filter ai-gateway-proxy test`)
+- if neither happened, **say so plainly in the review comment** rather than implying the bump was
+  verified. An unverified AI SDK major is an acceptable risk the maintainer can choose to take; an
+  unverified one described as tested is not.
+
 The bot adds no changeset. There is no changeset gate in CI, so only add one if a bump genuinely
 changes published behaviour of a package in `packages/*`.
 
