@@ -668,7 +668,7 @@ export async function chatsInit(
 
 /**
  * @summary Delete Chat
- * @description Deletes a specific chat based on the provided chatId. This operation is irreversible and permanently removes the chat and its contents.
+ * @description Deletes a specific chat based on the provided chatId. The chat and its contents are moved to trash and stop being retrievable immediately, then retained for 30 days before being permanently removed.
  * @link /chats/{chatId}
  */
 export async function chatsDelete(
