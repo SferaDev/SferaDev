@@ -1,5 +1,12 @@
 # v0-api
 
+## 0.1.3
+
+### Patch Changes
+
+- a41e2d8: Updated the description of the Delete Chat endpoint to clarify that chats are moved to trash for 30 days before permanent removal.
+- 1cf6572: Add deprecation notice for `v0-auto` in model description, specifying fallback to `v0-pro`.
+
 ## 0.1.2
 
 ### Patch Changes
