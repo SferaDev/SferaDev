@@ -1011,6 +1011,7 @@ export const userEventSchema = z
 				"project-root-directory-updated",
 				"project-routes-version-promoted",
 				"project-routes-version-restored",
+				"project-sandbox-config-updated",
 				"project-sandbox-url-protection-updated",
 				"project-skew-protection-allowed-domains-updated",
 				"project-skew-protection-max-age-updated",
@@ -7204,6 +7205,14 @@ export const userEventSchema = z
 					.object({
 						projectId: z.string(),
 						projectName: z.string(),
+						region: z.string().optional(),
+						failoverRegions: z.array(z.string()).optional(),
+					})
+					.strict(),
+				z
+					.object({
+						projectId: z.string(),
+						projectName: z.string(),
 						previous: z.object({
 							issuerMode: z.enum(["global", "team"]).optional(),
 						}),
@@ -9411,6 +9420,7 @@ export const listEventTypeSchema = z
 				"project-root-directory-updated",
 				"project-routes-version-promoted",
 				"project-routes-version-restored",
+				"project-sandbox-config-updated",
 				"project-sandbox-url-protection-updated",
 				"project-skew-protection-allowed-domains-updated",
 				"project-skew-protection-max-age-updated",
@@ -10023,6 +10033,7 @@ export const listEventTypeSchema = z
 					"project-root-directory-updated",
 					"project-routes-version-promoted",
 					"project-routes-version-restored",
+					"project-sandbox-config-updated",
 					"project-sandbox-url-protection-updated",
 					"project-skew-protection-allowed-domains-updated",
 					"project-skew-protection-max-age-updated",

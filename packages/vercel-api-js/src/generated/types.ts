@@ -1922,6 +1922,7 @@ export const userEventTypeEnum = {
 	"project-root-directory-updated": "project-root-directory-updated",
 	"project-routes-version-promoted": "project-routes-version-promoted",
 	"project-routes-version-restored": "project-routes-version-restored",
+	"project-sandbox-config-updated": "project-sandbox-config-updated",
 	"project-sandbox-url-protection-updated": "project-sandbox-url-protection-updated",
 	"project-skew-protection-allowed-domains-updated":
 		"project-skew-protection-allowed-domains-updated",
@@ -14294,6 +14295,24 @@ export type UserEvent = {
 						 */
 						projectName: string;
 						/**
+						 * @type string | undefined
+						 */
+						region?: string | undefined;
+						/**
+						 * @type array | undefined
+						 */
+						failoverRegions?: string[] | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
 						 * @type object
 						 */
 						previous: {
@@ -18009,6 +18028,7 @@ export const listEventTypeNameEnum = {
 	"project-root-directory-updated": "project-root-directory-updated",
 	"project-routes-version-promoted": "project-routes-version-promoted",
 	"project-routes-version-restored": "project-routes-version-restored",
+	"project-sandbox-config-updated": "project-sandbox-config-updated",
 	"project-sandbox-url-protection-updated": "project-sandbox-url-protection-updated",
 	"project-skew-protection-allowed-domains-updated":
 		"project-skew-protection-allowed-domains-updated",
@@ -18628,6 +18648,7 @@ export const listEventTypeReplacedByEnum = {
 	"project-root-directory-updated": "project-root-directory-updated",
 	"project-routes-version-promoted": "project-routes-version-promoted",
 	"project-routes-version-restored": "project-routes-version-restored",
+	"project-sandbox-config-updated": "project-sandbox-config-updated",
 	"project-sandbox-url-protection-updated": "project-sandbox-url-protection-updated",
 	"project-skew-protection-allowed-domains-updated":
 		"project-skew-protection-allowed-domains-updated",
