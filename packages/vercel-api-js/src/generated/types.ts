@@ -137,6 +137,11 @@ export type Network = {
 	 */
 	egressIpAddresses?: string[] | undefined;
 	/**
+	 * @description The single contiguous CIDR block from which all egress (NAT gateway) IP addresses are allocated. Present only for networks created with the egress CIDR block feature enabled. Customers can allowlist this range instead of individual egress IPs so it keeps working when AZs are added.
+	 * @type string | undefined
+	 */
+	egressCidrBlock?: string | undefined;
+	/**
 	 * @description Metadata about any AWS Route53 Hosted Zones associated with the Network.
 	 * @type object | undefined
 	 */
@@ -1736,12 +1741,15 @@ export const userEventTypeEnum = {
 	"integration-installation-completed": "integration-installation-completed",
 	"integration-installation-permission-updated": "integration-installation-permission-updated",
 	"integration-installation-removed": "integration-installation-removed",
+	"integration-resource-redis-command-executed": "integration-resource-redis-command-executed",
 	"integration-resource-sql-query-executed": "integration-resource-sql-query-executed",
 	"integration-scope-changed": "integration-scope-changed",
 	"invoice-modified": "invoice-modified",
 	"invoice-refunded": "invoice-refunded",
 	"kms-issuer-created": "kms-issuer-created",
 	"kms-issuer-deleted": "kms-issuer-deleted",
+	"kms-issuer-key-activated": "kms-issuer-key-activated",
+	"kms-issuer-key-created": "kms-issuer-key-created",
 	"kms-issuer-key-rotated": "kms-issuer-key-rotated",
 	"kms-issuer-policy-created": "kms-issuer-policy-created",
 	"kms-issuer-policy-deleted": "kms-issuer-policy-deleted",
@@ -1992,6 +2000,7 @@ export const userEventTypeEnum = {
 	"subscription-updated": "subscription-updated",
 	team: "team",
 	"team-avatar-update": "team-avatar-update",
+	"team-collaboration-settings-updated": "team-collaboration-settings-updated",
 	"team-default-build-machine-updated": "team-default-build-machine-updated",
 	"team-default-passport-updated": "team-default-passport-updated",
 	"team-delete": "team-delete",
@@ -2516,6 +2525,12 @@ export const queryTypeEnum = {
 
 export type QueryTypeEnumKey = (typeof queryTypeEnum)[keyof typeof queryTypeEnum];
 
+export const requestKindEnum = {
+	get_key_data: "get_key_data",
+} as const;
+
+export type RequestKindEnumKey = (typeof requestKindEnum)[keyof typeof requestKindEnum];
+
 export const billingPlanEnum = {
 	enterprise: "enterprise",
 	platform: "platform",
@@ -2538,6 +2553,13 @@ export const newResourceBlockingPolicyEnum = {
 
 export type NewResourceBlockingPolicyEnumKey =
 	(typeof newResourceBlockingPolicyEnum)[keyof typeof newResourceBlockingPolicyEnum];
+
+export const approvalScopeEnum = {
+	all: "all",
+	preview: "preview",
+} as const;
+
+export type ApprovalScopeEnumKey = (typeof approvalScopeEnum)[keyof typeof approvalScopeEnum];
 
 export const kindEnum = {
 	connectSrc: "connectSrc",
@@ -10966,6 +10988,154 @@ export type UserEvent = {
 						/**
 						 * @type string
 						 */
+						resourceId: string;
+						/**
+						 * @type string
+						 */
+						integrationId: string;
+						/**
+						 * @type string
+						 */
+						integrationSlug: string;
+						/**
+						 * @type string
+						 */
+						integrationProductSlug: string;
+						/**
+						 * @type string
+						 */
+						configurationId: string;
+						/**
+						 * @type string | undefined
+						 */
+						error?: string | undefined;
+						/**
+						 * @type string
+						 */
+						requestKind: RequestKindEnumKey;
+						/**
+						 * @type boolean
+						 */
+						readonly: false | true;
+						/**
+						 * @type array
+						 */
+						commands: string[];
+						/**
+						 * @type number | undefined
+						 */
+						failedIndex?: number | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						resourceId: string;
+						/**
+						 * @type string
+						 */
+						integrationId: string;
+						/**
+						 * @type string
+						 */
+						integrationSlug: string;
+						/**
+						 * @type string
+						 */
+						integrationProductSlug: string;
+						/**
+						 * @type string
+						 */
+						configurationId: string;
+						/**
+						 * @type string | undefined
+						 */
+						error?: string | undefined;
+						/**
+						 * @type string
+						 */
+						requestKind: RequestKindEnumKey;
+						/**
+						 * @type string | undefined
+						 */
+						pattern?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						type?: string | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						resourceId: string;
+						/**
+						 * @type string
+						 */
+						integrationId: string;
+						/**
+						 * @type string
+						 */
+						integrationSlug: string;
+						/**
+						 * @type string
+						 */
+						integrationProductSlug: string;
+						/**
+						 * @type string
+						 */
+						configurationId: string;
+						/**
+						 * @type string | undefined
+						 */
+						error?: string | undefined;
+						/**
+						 * @type string
+						 */
+						requestKind: RequestKindEnumKey;
+						/**
+						 * @type array
+						 */
+						keys: string[];
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						resourceId: string;
+						/**
+						 * @type string
+						 */
+						integrationId: string;
+						/**
+						 * @type string
+						 */
+						integrationSlug: string;
+						/**
+						 * @type string
+						 */
+						integrationProductSlug: string;
+						/**
+						 * @type string
+						 */
+						configurationId: string;
+						/**
+						 * @type string | undefined
+						 */
+						error?: string | undefined;
+						/**
+						 * @type string
+						 */
+						requestKind: RequestKindEnumKey;
+						/**
+						 * @type string
+						 */
+						key: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
 						integrationId: string;
 						/**
 						 * @type string
@@ -11774,6 +11944,22 @@ export type UserEvent = {
 							 * @type boolean | undefined
 							 */
 							omitScriptNonce?: (false | true) | undefined;
+							/**
+							 * @type string | undefined
+							 */
+							computedScriptSrc?: string | undefined;
+							/**
+							 * @type string | undefined
+							 */
+							computedScriptSrcPreview?: string | undefined;
+							/**
+							 * @type string | undefined
+							 */
+							computedConnectSrc?: string | undefined;
+							/**
+							 * @type string | undefined
+							 */
+							computedConnectSrcPreview?: string | undefined;
 						} | null;
 						/**
 						 * @type object
@@ -11807,6 +11993,22 @@ export type UserEvent = {
 							 * @type boolean | undefined
 							 */
 							omitScriptNonce?: (false | true) | undefined;
+							/**
+							 * @type string | undefined
+							 */
+							computedScriptSrc?: string | undefined;
+							/**
+							 * @type string | undefined
+							 */
+							computedScriptSrcPreview?: string | undefined;
+							/**
+							 * @type string | undefined
+							 */
+							computedConnectSrc?: string | undefined;
+							/**
+							 * @type string | undefined
+							 */
+							computedConnectSrcPreview?: string | undefined;
 						};
 				  }
 				| {
@@ -11900,6 +12102,10 @@ export type UserEvent = {
 						 * @type string
 						 */
 						justification: string;
+						/**
+						 * @type string | undefined
+						 */
+						approvalScope?: ApprovalScopeEnumKey | undefined;
 						/**
 						 * @type string | undefined
 						 */
@@ -15566,6 +15772,20 @@ export type UserEvent = {
 				  }
 				| {
 						/**
+						 * @type string
+						 */
+						previous: PreviousEnumKey | null;
+						/**
+						 * @type string
+						 */
+						next: NextEnumKey | null;
+						/**
+						 * @type string | undefined
+						 */
+						teamSlug?: string | undefined;
+				  }
+				| {
+						/**
 						 * @type string | undefined
 						 */
 						previous?: PreviousEnumKey | undefined;
@@ -17608,12 +17828,15 @@ export const listEventTypeNameEnum = {
 	"integration-installation-completed": "integration-installation-completed",
 	"integration-installation-permission-updated": "integration-installation-permission-updated",
 	"integration-installation-removed": "integration-installation-removed",
+	"integration-resource-redis-command-executed": "integration-resource-redis-command-executed",
 	"integration-resource-sql-query-executed": "integration-resource-sql-query-executed",
 	"integration-scope-changed": "integration-scope-changed",
 	"invoice-modified": "invoice-modified",
 	"invoice-refunded": "invoice-refunded",
 	"kms-issuer-created": "kms-issuer-created",
 	"kms-issuer-deleted": "kms-issuer-deleted",
+	"kms-issuer-key-activated": "kms-issuer-key-activated",
+	"kms-issuer-key-created": "kms-issuer-key-created",
 	"kms-issuer-key-rotated": "kms-issuer-key-rotated",
 	"kms-issuer-policy-created": "kms-issuer-policy-created",
 	"kms-issuer-policy-deleted": "kms-issuer-policy-deleted",
@@ -17864,6 +18087,7 @@ export const listEventTypeNameEnum = {
 	"subscription-updated": "subscription-updated",
 	team: "team",
 	"team-avatar-update": "team-avatar-update",
+	"team-collaboration-settings-updated": "team-collaboration-settings-updated",
 	"team-default-build-machine-updated": "team-default-build-machine-updated",
 	"team-default-passport-updated": "team-default-passport-updated",
 	"team-delete": "team-delete",
@@ -18223,12 +18447,15 @@ export const listEventTypeReplacedByEnum = {
 	"integration-installation-completed": "integration-installation-completed",
 	"integration-installation-permission-updated": "integration-installation-permission-updated",
 	"integration-installation-removed": "integration-installation-removed",
+	"integration-resource-redis-command-executed": "integration-resource-redis-command-executed",
 	"integration-resource-sql-query-executed": "integration-resource-sql-query-executed",
 	"integration-scope-changed": "integration-scope-changed",
 	"invoice-modified": "invoice-modified",
 	"invoice-refunded": "invoice-refunded",
 	"kms-issuer-created": "kms-issuer-created",
 	"kms-issuer-deleted": "kms-issuer-deleted",
+	"kms-issuer-key-activated": "kms-issuer-key-activated",
+	"kms-issuer-key-created": "kms-issuer-key-created",
 	"kms-issuer-key-rotated": "kms-issuer-key-rotated",
 	"kms-issuer-policy-created": "kms-issuer-policy-created",
 	"kms-issuer-policy-deleted": "kms-issuer-policy-deleted",
@@ -18479,6 +18706,7 @@ export const listEventTypeReplacedByEnum = {
 	"subscription-updated": "subscription-updated",
 	team: "team",
 	"team-avatar-update": "team-avatar-update",
+	"team-collaboration-settings-updated": "team-collaboration-settings-updated",
 	"team-default-build-machine-updated": "team-default-build-machine-updated",
 	"team-default-passport-updated": "team-default-passport-updated",
 	"team-delete": "team-delete",
@@ -18897,6 +19125,10 @@ export type Flag = {
 				status: FlagExperimentStatusEnumKey;
 		  }
 		| undefined;
+	/**
+	 * @type string | undefined
+	 */
+	updatedBy?: string | undefined;
 	/**
 	 * @type array
 	 */
@@ -20961,12 +21193,6 @@ export type Team = {
 				connection?:
 					| {
 							/**
-							 * @description Current status of the connection.
-							 * @example linked
-							 * @type string
-							 */
-							status: string;
-							/**
 							 * @description The Identity Provider \"type\", for example Okta.
 							 * @example OktaSAML
 							 * @type string
@@ -21001,6 +21227,10 @@ export type Team = {
 							 * @type string | undefined
 							 */
 							syncState?: TeamSamlConnectionSyncStateEnumKey | undefined;
+							/**
+							 * @type string
+							 */
+							status: string;
 					  }
 					| undefined;
 				/**
@@ -21737,11 +21967,17 @@ export type Team = {
 	 */
 	createdAt: number;
 	/**
-	 * @description The organizationId for child teams created under an organization.
+	 * @description The organizationId for teams that belong to an organization (set on both the organization\'s root team and its child teams).
 	 * @example org_nllPyCtREAqxxdyFKbbMDlxd
 	 * @type string | undefined
 	 */
 	parentId?: string | undefined;
+	/**
+	 * @description Best-effort ID of the organization’s root billing team. When present, compare `orgRootTeamId === id` to identify the root team. It may be omitted even when `parentId` is set if organization resolution fails or the referenced organization is missing. Always omitted for non-organization teams.
+	 * @example team_nllPyCtREAqxxdyFKbbMDlxd
+	 * @type string | undefined
+	 */
+	orgRootTeamId?: string | undefined;
 	[key: string]: unknown;
 };
 
@@ -21871,12 +22107,6 @@ export type TeamLimited = {
 				connection?:
 					| {
 							/**
-							 * @description Current status of the connection.
-							 * @example linked
-							 * @type string
-							 */
-							status: string;
-							/**
 							 * @description The Identity Provider \"type\", for example Okta.
 							 * @example OktaSAML
 							 * @type string
@@ -21911,6 +22141,10 @@ export type TeamLimited = {
 							 * @type string | undefined
 							 */
 							syncState?: TeamLimitedSamlConnectionSyncStateEnumKey | undefined;
+							/**
+							 * @type string
+							 */
+							status: string;
 					  }
 					| undefined;
 				/**
@@ -22097,11 +22331,17 @@ export type TeamLimited = {
 	 */
 	createdAt: number;
 	/**
-	 * @description The organizationId for child teams created under an organization.
+	 * @description The organizationId for teams that belong to an organization (set on both the organization\'s root team and its child teams).
 	 * @example org_nllPyCtREAqxxdyFKbbMDlxd
 	 * @type string | undefined
 	 */
 	parentId?: string | undefined;
+	/**
+	 * @description Best-effort ID of the organization’s root billing team. When present, compare `orgRootTeamId === id` to identify the root team. It may be omitted even when `parentId` is set if organization resolution fails or the referenced organization is missing. Always omitted for non-organization teams.
+	 * @example team_nllPyCtREAqxxdyFKbbMDlxd
+	 * @type string | undefined
+	 */
+	orgRootTeamId?: string | undefined;
 };
 
 /**
@@ -28922,6 +29162,11 @@ export type CreateConnectorStatus409 = unknown;
 export type CreateConnectorStatus410 = unknown;
 
 /**
+ * @type unknown
+ */
+export type CreateConnectorStatus502 = unknown;
+
+/**
  * @type object
  */
 export type CreateConnectorRequestConfig = {
@@ -28946,6 +29191,7 @@ export type CreateConnectorResponses = {
 	"404": CreateConnectorStatus404;
 	"409": CreateConnectorStatus409;
 	"410": CreateConnectorStatus410;
+	"502": CreateConnectorStatus502;
 };
 
 /**
@@ -28958,7 +29204,8 @@ export type CreateConnectorResponse =
 	| CreateConnectorStatus403
 	| CreateConnectorStatus404
 	| CreateConnectorStatus409
-	| CreateConnectorStatus410;
+	| CreateConnectorStatus410
+	| CreateConnectorStatus502;
 
 /**
  * @type string
@@ -29211,6 +29458,90 @@ export type CreateConnectorAuthorizationRequestResponse =
 	| CreateConnectorAuthorizationRequestStatus403
 	| CreateConnectorAuthorizationRequestStatus404
 	| CreateConnectorAuthorizationRequestStatus410;
+
+/**
+ * @type string
+ */
+export type CreateConnectorInstallationRequestPathConnector = string;
+
+/**
+ * @type unknown
+ */
+export type CreateConnectorInstallationRequestStatus200 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateConnectorInstallationRequestStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateConnectorInstallationRequestStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateConnectorInstallationRequestStatus403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateConnectorInstallationRequestStatus404 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateConnectorInstallationRequestStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateConnectorInstallationRequestStatus422 = unknown;
+
+/**
+ * @type object
+ */
+export type CreateConnectorInstallationRequestRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		connector: CreateConnectorInstallationRequestPathConnector;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/v1/connect/install/${string}`;
+};
+
+/**
+ * @type object
+ */
+export type CreateConnectorInstallationRequestResponses = {
+	"200": CreateConnectorInstallationRequestStatus200;
+	"400": CreateConnectorInstallationRequestStatus400;
+	"401": CreateConnectorInstallationRequestStatus401;
+	"403": CreateConnectorInstallationRequestStatus403;
+	"404": CreateConnectorInstallationRequestStatus404;
+	"410": CreateConnectorInstallationRequestStatus410;
+	"422": CreateConnectorInstallationRequestStatus422;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type CreateConnectorInstallationRequestResponse =
+	| CreateConnectorInstallationRequestStatus200
+	| CreateConnectorInstallationRequestStatus400
+	| CreateConnectorInstallationRequestStatus401
+	| CreateConnectorInstallationRequestStatus403
+	| CreateConnectorInstallationRequestStatus404
+	| CreateConnectorInstallationRequestStatus410
+	| CreateConnectorInstallationRequestStatus422;
 
 /**
  * @description The unique identifier or hostname of the deployment.
@@ -30183,6 +30514,8 @@ export type UpdateRecordResponse =
 	| UpdateRecordStatus410;
 
 /**
+ * @description The domain name
+ * @example example.com
  * @type string
  */
 export type ReplaceDomainsByDomainRecordsPathDomain = string;
@@ -30274,6 +30607,7 @@ export type ReplaceDomainsByDomainRecordsResponse =
 	| ReplaceDomainsByDomainRecordsStatus415;
 
 /**
+ * @description The unique ID of the DNS record
  * @type string
  */
 export type GetDomainsRecordsByRecordIdPathRecordId = string;
@@ -37506,11 +37840,6 @@ export type CreateFlagStatus409 = unknown;
 export type CreateFlagStatus410 = unknown;
 
 /**
- * @type unknown
- */
-export type CreateFlagStatus412 = unknown;
-
-/**
  * @type object
  */
 export type CreateFlagRequestConfig = {
@@ -37549,7 +37878,6 @@ export type CreateFlagResponses = {
 	"404": CreateFlagStatus404;
 	"409": CreateFlagStatus409;
 	"410": CreateFlagStatus410;
-	"412": CreateFlagStatus412;
 };
 
 /**
@@ -37563,8 +37891,7 @@ export type CreateFlagResponse =
 	| CreateFlagStatus403
 	| CreateFlagStatus404
 	| CreateFlagStatus409
-	| CreateFlagStatus410
-	| CreateFlagStatus412;
+	| CreateFlagStatus410;
 
 /**
  * @description The project id or name
@@ -37785,11 +38112,6 @@ export type UpdateFlagStatus409 = unknown;
 export type UpdateFlagStatus410 = unknown;
 
 /**
- * @type unknown
- */
-export type UpdateFlagStatus412 = unknown;
-
-/**
  * @type object
  */
 export type UpdateFlagRequestConfig = {
@@ -37832,7 +38154,6 @@ export type UpdateFlagResponses = {
 	"404": UpdateFlagStatus404;
 	"409": UpdateFlagStatus409;
 	"410": UpdateFlagStatus410;
-	"412": UpdateFlagStatus412;
 };
 
 /**
@@ -37847,8 +38168,7 @@ export type UpdateFlagResponse =
 	| UpdateFlagStatus403
 	| UpdateFlagStatus404
 	| UpdateFlagStatus409
-	| UpdateFlagStatus410
-	| UpdateFlagStatus412;
+	| UpdateFlagStatus410;
 
 /**
  * @description The project id or name
@@ -37934,11 +38254,6 @@ export type DeleteFlagStatus409 = unknown;
 export type DeleteFlagStatus410 = unknown;
 
 /**
- * @type unknown
- */
-export type DeleteFlagStatus412 = unknown;
-
-/**
  * @type object
  */
 export type DeleteFlagRequestConfig = {
@@ -37981,7 +38296,6 @@ export type DeleteFlagResponses = {
 	"404": DeleteFlagStatus404;
 	"409": DeleteFlagStatus409;
 	"410": DeleteFlagStatus410;
-	"412": DeleteFlagStatus412;
 };
 
 /**
@@ -37996,8 +38310,7 @@ export type DeleteFlagResponse =
 	| DeleteFlagStatus403
 	| DeleteFlagStatus404
 	| DeleteFlagStatus409
-	| DeleteFlagStatus410
-	| DeleteFlagStatus412;
+	| DeleteFlagStatus410;
 
 /**
  * @type string
@@ -38322,11 +38635,6 @@ export type UpdateFlagSettingsStatus409 = unknown;
 export type UpdateFlagSettingsStatus410 = unknown;
 
 /**
- * @type unknown
- */
-export type UpdateFlagSettingsStatus412 = unknown;
-
-/**
  * @type object
  */
 export type UpdateFlagSettingsRequestConfig = {
@@ -38366,7 +38674,6 @@ export type UpdateFlagSettingsResponses = {
 	"404": UpdateFlagSettingsStatus404;
 	"409": UpdateFlagSettingsStatus409;
 	"410": UpdateFlagSettingsStatus410;
-	"412": UpdateFlagSettingsStatus412;
 };
 
 /**
@@ -38381,8 +38688,7 @@ export type UpdateFlagSettingsResponse =
 	| UpdateFlagSettingsStatus403
 	| UpdateFlagSettingsStatus404
 	| UpdateFlagSettingsStatus409
-	| UpdateFlagSettingsStatus410
-	| UpdateFlagSettingsStatus412;
+	| UpdateFlagSettingsStatus410;
 
 /**
  * @description Maximum number of settings to return.
@@ -38842,11 +39148,6 @@ export type CreateFlagSegmentStatus409 = unknown;
 export type CreateFlagSegmentStatus410 = unknown;
 
 /**
- * @type unknown
- */
-export type CreateFlagSegmentStatus412 = unknown;
-
-/**
  * @type object
  */
 export type CreateFlagSegmentRequestConfig = {
@@ -38885,7 +39186,6 @@ export type CreateFlagSegmentResponses = {
 	"404": CreateFlagSegmentStatus404;
 	"409": CreateFlagSegmentStatus409;
 	"410": CreateFlagSegmentStatus410;
-	"412": CreateFlagSegmentStatus412;
 };
 
 /**
@@ -38899,8 +39199,7 @@ export type CreateFlagSegmentResponse =
 	| CreateFlagSegmentStatus403
 	| CreateFlagSegmentStatus404
 	| CreateFlagSegmentStatus409
-	| CreateFlagSegmentStatus410
-	| CreateFlagSegmentStatus412;
+	| CreateFlagSegmentStatus410;
 
 /**
  * @description The project id or name
@@ -39218,11 +39517,6 @@ export type DeleteFlagSegmentStatus409 = unknown;
 export type DeleteFlagSegmentStatus410 = unknown;
 
 /**
- * @type unknown
- */
-export type DeleteFlagSegmentStatus412 = unknown;
-
-/**
  * @type object
  */
 export type DeleteFlagSegmentRequestConfig = {
@@ -39264,7 +39558,6 @@ export type DeleteFlagSegmentResponses = {
 	"404": DeleteFlagSegmentStatus404;
 	"409": DeleteFlagSegmentStatus409;
 	"410": DeleteFlagSegmentStatus410;
-	"412": DeleteFlagSegmentStatus412;
 };
 
 /**
@@ -39279,8 +39572,7 @@ export type DeleteFlagSegmentResponse =
 	| DeleteFlagSegmentStatus403
 	| DeleteFlagSegmentStatus404
 	| DeleteFlagSegmentStatus409
-	| DeleteFlagSegmentStatus410
-	| DeleteFlagSegmentStatus412;
+	| DeleteFlagSegmentStatus410;
 
 /**
  * @description The project id or name
@@ -39356,11 +39648,6 @@ export type UpdateFlagSegmentStatus409 = unknown;
 export type UpdateFlagSegmentStatus410 = unknown;
 
 /**
- * @type unknown
- */
-export type UpdateFlagSegmentStatus412 = unknown;
-
-/**
  * @type object
  */
 export type UpdateFlagSegmentRequestConfig = {
@@ -39401,7 +39688,6 @@ export type UpdateFlagSegmentResponses = {
 	"404": UpdateFlagSegmentStatus404;
 	"409": UpdateFlagSegmentStatus409;
 	"410": UpdateFlagSegmentStatus410;
-	"412": UpdateFlagSegmentStatus412;
 };
 
 /**
@@ -39415,8 +39701,7 @@ export type UpdateFlagSegmentResponse =
 	| UpdateFlagSegmentStatus403
 	| UpdateFlagSegmentStatus404
 	| UpdateFlagSegmentStatus409
-	| UpdateFlagSegmentStatus410
-	| UpdateFlagSegmentStatus412;
+	| UpdateFlagSegmentStatus410;
 
 /**
  * @type string
@@ -54299,6 +54584,7 @@ export type GetFirewallConfigResponse =
 	| GetFirewallConfigStatus410;
 
 /**
+ * @description The deployed configVersion for the firewall configuration
  * @type string
  */
 export type DeleteSecurityFirewallConfigByConfigVersionPathConfigVersion = string;
@@ -54383,6 +54669,7 @@ export type DeleteSecurityFirewallConfigByConfigVersionResponse =
 	| DeleteSecurityFirewallConfigByConfigVersionStatus500;
 
 /**
+ * @description The deployed configVersion for the firewall configuration
  * @type string
  */
 export type CreateSecurityFirewallConfigByConfigVersionActivatePathConfigVersion = string;

@@ -50,6 +50,12 @@ export const networkSchema = z.object({
 			"The date at which the Network was created, represented as a UNIX timestamp since EPOCH.",
 		),
 	egressIpAddresses: z.array(z.string()).optional(),
+	egressCidrBlock: z
+		.string()
+		.optional()
+		.describe(
+			"The single contiguous CIDR block from which all egress (NAT gateway) IP addresses are allocated. Present only for networks created with the egress CIDR block feature enabled. Customers can allowlist this range instead of individual egress IPs so it keeps working when AZs are added.",
+		),
 	hostedZones: z
 		.object({
 			count: z
@@ -831,12 +837,15 @@ export const userEventSchema = z
 				"integration-installation-completed",
 				"integration-installation-permission-updated",
 				"integration-installation-removed",
+				"integration-resource-redis-command-executed",
 				"integration-resource-sql-query-executed",
 				"integration-scope-changed",
 				"invoice-modified",
 				"invoice-refunded",
 				"kms-issuer-created",
 				"kms-issuer-deleted",
+				"kms-issuer-key-activated",
+				"kms-issuer-key-created",
 				"kms-issuer-key-rotated",
 				"kms-issuer-policy-created",
 				"kms-issuer-policy-deleted",
@@ -1078,6 +1087,7 @@ export const userEventSchema = z
 				"subscription-updated",
 				"team",
 				"team-avatar-update",
+				"team-collaboration-settings-updated",
 				"team-default-build-machine-updated",
 				"team-default-passport-updated",
 				"team-delete",
@@ -5525,6 +5535,57 @@ export const userEventSchema = z
 					.strict(),
 				z
 					.object({
+						resourceId: z.string(),
+						integrationId: z.string(),
+						integrationSlug: z.string(),
+						integrationProductSlug: z.string(),
+						configurationId: z.string(),
+						error: z.string().optional(),
+						requestKind: z.enum(["raw_commands"]),
+						readonly: z.union([z.literal(false), z.literal(true)]),
+						commands: z.array(z.string()),
+						failedIndex: z.number().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						resourceId: z.string(),
+						integrationId: z.string(),
+						integrationSlug: z.string(),
+						integrationProductSlug: z.string(),
+						configurationId: z.string(),
+						error: z.string().optional(),
+						requestKind: z.enum(["list_keys"]),
+						pattern: z.string().optional(),
+						type: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						resourceId: z.string(),
+						integrationId: z.string(),
+						integrationSlug: z.string(),
+						integrationProductSlug: z.string(),
+						configurationId: z.string(),
+						error: z.string().optional(),
+						requestKind: z.enum(["get_keys_metadata"]),
+						keys: z.array(z.string()),
+					})
+					.strict(),
+				z
+					.object({
+						resourceId: z.string(),
+						integrationId: z.string(),
+						integrationSlug: z.string(),
+						integrationProductSlug: z.string(),
+						configurationId: z.string(),
+						error: z.string().optional(),
+						requestKind: z.enum(["get_key_data"]),
+						key: z.string(),
+					})
+					.strict(),
+				z
+					.object({
 						integrationId: z.string(),
 						integrationSlug: z.string(),
 						integrationName: z.string(),
@@ -6014,6 +6075,10 @@ export const userEventSchema = z
 								newResourceBlockingPolicy: z.enum(["allow", "block"]),
 								allowUnsafeScriptSrcKeywords: z.union([z.literal(false), z.literal(true)]),
 								omitScriptNonce: z.union([z.literal(false), z.literal(true)]).optional(),
+								computedScriptSrc: z.string().optional(),
+								computedScriptSrcPreview: z.string().optional(),
+								computedConnectSrc: z.string().optional(),
+								computedConnectSrcPreview: z.string().optional(),
 							})
 							.nullable(),
 						next: z.object({
@@ -6024,6 +6089,10 @@ export const userEventSchema = z
 							newResourceBlockingPolicy: z.enum(["allow", "block"]),
 							allowUnsafeScriptSrcKeywords: z.union([z.literal(false), z.literal(true)]),
 							omitScriptNonce: z.union([z.literal(false), z.literal(true)]).optional(),
+							computedScriptSrc: z.string().optional(),
+							computedScriptSrcPreview: z.string().optional(),
+							computedConnectSrc: z.string().optional(),
+							computedConnectSrcPreview: z.string().optional(),
 						}),
 					})
 					.strict(),
@@ -6064,6 +6133,7 @@ export const userEventSchema = z
 						url: z.string(),
 						previousStatus: z.string(),
 						justification: z.string(),
+						approvalScope: z.enum(["all", "preview"]).optional(),
 						kind: z.enum(["connectSrc", "script"]).optional(),
 					})
 					.strict(),
@@ -7913,6 +7983,13 @@ export const userEventSchema = z
 					.strict(),
 				z
 					.object({
+						previous: z.enum(["auto-approval", "block", "manual-approval"]).nullable(),
+						next: z.enum(["auto-approval", "block", "manual-approval"]).nullable(),
+						teamSlug: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
 						previous: z.enum(["elastic", "enhanced", "standard", "turbo"]).optional(),
 						next: z.enum(["elastic", "enhanced", "standard", "turbo"]).optional(),
 					})
@@ -9160,12 +9237,15 @@ export const listEventTypeSchema = z
 				"integration-installation-completed",
 				"integration-installation-permission-updated",
 				"integration-installation-removed",
+				"integration-resource-redis-command-executed",
 				"integration-resource-sql-query-executed",
 				"integration-scope-changed",
 				"invoice-modified",
 				"invoice-refunded",
 				"kms-issuer-created",
 				"kms-issuer-deleted",
+				"kms-issuer-key-activated",
+				"kms-issuer-key-created",
 				"kms-issuer-key-rotated",
 				"kms-issuer-policy-created",
 				"kms-issuer-policy-deleted",
@@ -9407,6 +9487,7 @@ export const listEventTypeSchema = z
 				"subscription-updated",
 				"team",
 				"team-avatar-update",
+				"team-collaboration-settings-updated",
 				"team-default-build-machine-updated",
 				"team-default-passport-updated",
 				"team-delete",
@@ -9768,12 +9849,15 @@ export const listEventTypeSchema = z
 					"integration-installation-completed",
 					"integration-installation-permission-updated",
 					"integration-installation-removed",
+					"integration-resource-redis-command-executed",
 					"integration-resource-sql-query-executed",
 					"integration-scope-changed",
 					"invoice-modified",
 					"invoice-refunded",
 					"kms-issuer-created",
 					"kms-issuer-deleted",
+					"kms-issuer-key-activated",
+					"kms-issuer-key-created",
 					"kms-issuer-key-rotated",
 					"kms-issuer-policy-created",
 					"kms-issuer-policy-deleted",
@@ -10015,6 +10099,7 @@ export const listEventTypeSchema = z
 					"subscription-updated",
 					"team",
 					"team-avatar-update",
+					"team-collaboration-settings-updated",
 					"team-default-build-machine-updated",
 					"team-default-passport-updated",
 					"team-delete",
@@ -10199,6 +10284,7 @@ export const flagSchema = z.object({
 			status: z.enum(["closed", "draft", "paused", "running"]),
 		})
 		.optional(),
+	updatedBy: z.string().optional(),
 	variants: z.array(z.object({})),
 	id: z.string(),
 	environments: z.object({}).catchall(
@@ -11089,7 +11175,6 @@ export const teamSchema = z
 			.object({
 				connection: z
 					.object({
-						status: z.string().describe("Current status of the connection."),
 						type: z.string().describe('The Identity Provider "type", for example Okta.'),
 						state: z.string().describe("Current state of the connection."),
 						connectedAt: z
@@ -11113,6 +11198,7 @@ export const teamSchema = z
 							.describe(
 								"Controls whether directory sync events are processed. - 'SETUP': Directory connected but role mappings not yet configured. Events are acknowledged but not processed. - 'ACTIVE': Fully configured. Events are processed normally. - undefined: Legacy directory (pre-feature), treat as 'ACTIVE' for backwards compatibility.",
 							),
+						status: z.string(),
 					})
 					.optional()
 					.describe("Information for the SAML Single Sign-On configuration."),
@@ -11680,7 +11766,15 @@ export const teamSchema = z
 		parentId: z
 			.string()
 			.optional()
-			.describe("The organizationId for child teams created under an organization."),
+			.describe(
+				"The organizationId for teams that belong to an organization (set on both the organization's root team and its child teams).",
+			),
+		orgRootTeamId: z
+			.string()
+			.optional()
+			.describe(
+				"Best-effort ID of the organization’s root billing team. When present, compare `orgRootTeamId === id` to identify the root team. It may be omitted even when `parentId` is set if organization resolution fails or the referenced organization is missing. Always omitted for non-organization teams.",
+			),
 	})
 	.catchall(z.unknown())
 	.describe("Data representing a Team.");
@@ -11697,7 +11791,6 @@ export const teamLimitedSchema = z
 			.object({
 				connection: z
 					.object({
-						status: z.string().describe("Current status of the connection."),
 						type: z.string().describe('The Identity Provider "type", for example Okta.'),
 						state: z.string().describe("Current state of the connection."),
 						connectedAt: z
@@ -11721,6 +11814,7 @@ export const teamLimitedSchema = z
 							.describe(
 								"Controls whether directory sync events are processed. - 'SETUP': Directory connected but role mappings not yet configured. Events are acknowledged but not processed. - 'ACTIVE': Fully configured. Events are processed normally. - undefined: Legacy directory (pre-feature), treat as 'ACTIVE' for backwards compatibility.",
 							),
+						status: z.string(),
 					})
 					.optional()
 					.describe("Information for the SAML Single Sign-On configuration."),
@@ -11871,7 +11965,15 @@ export const teamLimitedSchema = z
 		parentId: z
 			.string()
 			.optional()
-			.describe("The organizationId for child teams created under an organization."),
+			.describe(
+				"The organizationId for teams that belong to an organization (set on both the organization's root team and its child teams).",
+			),
+		orgRootTeamId: z
+			.string()
+			.optional()
+			.describe(
+				"Best-effort ID of the organization’s root billing team. When present, compare `orgRootTeamId === id` to identify the root team. It may be omitted even when `parentId` is set if organization resolution fails or the referenced organization is missing. Always omitted for non-organization teams.",
+			),
 	})
 	.describe(
 		"A limited form of data representing a Team, due to the authentication token missing privileges to read the full Team data.",
@@ -14757,6 +14859,8 @@ export const createConnectorStatus409Schema = z.unknown();
 
 export const createConnectorStatus410Schema = z.unknown();
 
+export const createConnectorStatus502Schema = z.unknown();
+
 export const createConnectorResponseSchema = z.union([
 	createConnectorStatus201Schema,
 	createConnectorStatus400Schema,
@@ -14765,6 +14869,7 @@ export const createConnectorResponseSchema = z.union([
 	createConnectorStatus404Schema,
 	createConnectorStatus409Schema,
 	createConnectorStatus410Schema,
+	createConnectorStatus502Schema,
 ]);
 
 export const getConnectorTokenPathConnectorSchema = z.string();
@@ -14843,6 +14948,32 @@ export const createConnectorAuthorizationRequestResponseSchema = z.union([
 	createConnectorAuthorizationRequestStatus403Schema,
 	createConnectorAuthorizationRequestStatus404Schema,
 	createConnectorAuthorizationRequestStatus410Schema,
+]);
+
+export const createConnectorInstallationRequestPathConnectorSchema = z.string();
+
+export const createConnectorInstallationRequestStatus200Schema = z.unknown();
+
+export const createConnectorInstallationRequestStatus400Schema = z.unknown();
+
+export const createConnectorInstallationRequestStatus401Schema = z.unknown();
+
+export const createConnectorInstallationRequestStatus403Schema = z.unknown();
+
+export const createConnectorInstallationRequestStatus404Schema = z.unknown();
+
+export const createConnectorInstallationRequestStatus410Schema = z.unknown();
+
+export const createConnectorInstallationRequestStatus422Schema = z.unknown();
+
+export const createConnectorInstallationRequestResponseSchema = z.union([
+	createConnectorInstallationRequestStatus200Schema,
+	createConnectorInstallationRequestStatus400Schema,
+	createConnectorInstallationRequestStatus401Schema,
+	createConnectorInstallationRequestStatus403Schema,
+	createConnectorInstallationRequestStatus404Schema,
+	createConnectorInstallationRequestStatus410Schema,
+	createConnectorInstallationRequestStatus422Schema,
 ]);
 
 export const getDeploymentEventsPathIdOrUrlSchema = z
@@ -15218,7 +15349,7 @@ export const updateRecordResponseSchema = z.union([
 	updateRecordStatus410Schema,
 ]);
 
-export const replaceDomainsByDomainRecordsPathDomainSchema = z.string();
+export const replaceDomainsByDomainRecordsPathDomainSchema = z.string().describe("The domain name");
 
 export const replaceDomainsByDomainRecordsStatus200Schema = z.unknown();
 
@@ -15247,7 +15378,9 @@ export const replaceDomainsByDomainRecordsResponseSchema = z.union([
 	replaceDomainsByDomainRecordsStatus415Schema,
 ]);
 
-export const getDomainsRecordsByRecordIdPathRecordIdSchema = z.string();
+export const getDomainsRecordsByRecordIdPathRecordIdSchema = z
+	.string()
+	.describe("The unique ID of the DNS record");
 
 export const getDomainsRecordsByRecordIdStatus200Schema = z.unknown();
 
@@ -17742,8 +17875,6 @@ export const createFlagStatus409Schema = z.unknown();
 
 export const createFlagStatus410Schema = z.unknown();
 
-export const createFlagStatus412Schema = z.unknown();
-
 export const createFlagResponseSchema = z.union([
 	createFlagStatus201Schema,
 	createFlagStatus400Schema,
@@ -17753,7 +17884,6 @@ export const createFlagResponseSchema = z.union([
 	createFlagStatus404Schema,
 	createFlagStatus409Schema,
 	createFlagStatus410Schema,
-	createFlagStatus412Schema,
 ]);
 
 export const getFlagPathProjectIdOrNameSchema = z.string().describe("The project id or name");
@@ -17849,8 +17979,6 @@ export const updateFlagStatus409Schema = z.unknown();
 
 export const updateFlagStatus410Schema = z.unknown();
 
-export const updateFlagStatus412Schema = z.unknown();
-
 export const updateFlagResponseSchema = z.union([
 	updateFlagStatus200Schema,
 	updateFlagStatus304Schema,
@@ -17861,7 +17989,6 @@ export const updateFlagResponseSchema = z.union([
 	updateFlagStatus404Schema,
 	updateFlagStatus409Schema,
 	updateFlagStatus410Schema,
-	updateFlagStatus412Schema,
 ]);
 
 export const deleteFlagPathProjectIdOrNameSchema = z.string().describe("The project id or name");
@@ -17906,8 +18033,6 @@ export const deleteFlagStatus409Schema = z.unknown();
 
 export const deleteFlagStatus410Schema = z.unknown();
 
-export const deleteFlagStatus412Schema = z.unknown();
-
 export const deleteFlagResponseSchema = z.union([
 	deleteFlagStatus204Schema,
 	deleteFlagStatus304Schema,
@@ -17918,7 +18043,6 @@ export const deleteFlagResponseSchema = z.union([
 	deleteFlagStatus404Schema,
 	deleteFlagStatus409Schema,
 	deleteFlagStatus410Schema,
-	deleteFlagStatus412Schema,
 ]);
 
 export const listFlagVersionsPathProjectIdOrNameSchema = z.string();
@@ -18050,8 +18174,6 @@ export const updateFlagSettingsStatus409Schema = z.unknown();
 
 export const updateFlagSettingsStatus410Schema = z.unknown();
 
-export const updateFlagSettingsStatus412Schema = z.unknown();
-
 export const updateFlagSettingsResponseSchema = z.union([
 	updateFlagSettingsStatus200Schema,
 	updateFlagSettingsStatus201Schema,
@@ -18062,7 +18184,6 @@ export const updateFlagSettingsResponseSchema = z.union([
 	updateFlagSettingsStatus404Schema,
 	updateFlagSettingsStatus409Schema,
 	updateFlagSettingsStatus410Schema,
-	updateFlagSettingsStatus412Schema,
 ]);
 
 export const listTeamFlagSettingsQueryLimitSchema = z
@@ -18285,8 +18406,6 @@ export const createFlagSegmentStatus409Schema = z.unknown();
 
 export const createFlagSegmentStatus410Schema = z.unknown();
 
-export const createFlagSegmentStatus412Schema = z.unknown();
-
 export const createFlagSegmentResponseSchema = z.union([
 	createFlagSegmentStatus201Schema,
 	createFlagSegmentStatus400Schema,
@@ -18296,7 +18415,6 @@ export const createFlagSegmentResponseSchema = z.union([
 	createFlagSegmentStatus404Schema,
 	createFlagSegmentStatus409Schema,
 	createFlagSegmentStatus410Schema,
-	createFlagSegmentStatus412Schema,
 ]);
 
 export const listFlagSegmentsPathProjectIdOrNameSchema = z
@@ -18429,8 +18547,6 @@ export const deleteFlagSegmentStatus409Schema = z.unknown();
 
 export const deleteFlagSegmentStatus410Schema = z.unknown();
 
-export const deleteFlagSegmentStatus412Schema = z.unknown();
-
 export const deleteFlagSegmentResponseSchema = z.union([
 	deleteFlagSegmentStatus204Schema,
 	deleteFlagSegmentStatus304Schema,
@@ -18441,7 +18557,6 @@ export const deleteFlagSegmentResponseSchema = z.union([
 	deleteFlagSegmentStatus404Schema,
 	deleteFlagSegmentStatus409Schema,
 	deleteFlagSegmentStatus410Schema,
-	deleteFlagSegmentStatus412Schema,
 ]);
 
 export const updateFlagSegmentPathProjectIdOrNameSchema = z
@@ -18482,8 +18597,6 @@ export const updateFlagSegmentStatus409Schema = z.unknown();
 
 export const updateFlagSegmentStatus410Schema = z.unknown();
 
-export const updateFlagSegmentStatus412Schema = z.unknown();
-
 export const updateFlagSegmentResponseSchema = z.union([
 	updateFlagSegmentStatus200Schema,
 	updateFlagSegmentStatus400Schema,
@@ -18493,7 +18606,6 @@ export const updateFlagSegmentResponseSchema = z.union([
 	updateFlagSegmentStatus404Schema,
 	updateFlagSegmentStatus409Schema,
 	updateFlagSegmentStatus410Schema,
-	updateFlagSegmentStatus412Schema,
 ]);
 
 export const getDeploymentFeatureFlagsPathDeploymentIdSchema = z.string();
@@ -23935,7 +24047,9 @@ export const getFirewallConfigResponseSchema = z.union([
 	getFirewallConfigStatus410Schema,
 ]);
 
-export const deleteSecurityFirewallConfigByConfigVersionPathConfigVersionSchema = z.string();
+export const deleteSecurityFirewallConfigByConfigVersionPathConfigVersionSchema = z
+	.string()
+	.describe("The deployed configVersion for the firewall configuration");
 
 export const deleteSecurityFirewallConfigByConfigVersionStatus204Schema = z.unknown();
 
@@ -23961,8 +24075,9 @@ export const deleteSecurityFirewallConfigByConfigVersionResponseSchema = z.union
 	deleteSecurityFirewallConfigByConfigVersionStatus500Schema,
 ]);
 
-export const createSecurityFirewallConfigByConfigVersionActivatePathConfigVersionSchema =
-	z.string();
+export const createSecurityFirewallConfigByConfigVersionActivatePathConfigVersionSchema = z
+	.string()
+	.describe("The deployed configVersion for the firewall configuration");
 
 export const createSecurityFirewallConfigByConfigVersionActivateStatus200Schema = z.unknown();
 

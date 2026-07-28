@@ -184,6 +184,13 @@ import type {
 	CreateConnectorAuthorizationRequestStatus403,
 	CreateConnectorAuthorizationRequestStatus404,
 	CreateConnectorAuthorizationRequestStatus410,
+	CreateConnectorInstallationRequestResponse,
+	CreateConnectorInstallationRequestStatus400,
+	CreateConnectorInstallationRequestStatus401,
+	CreateConnectorInstallationRequestStatus403,
+	CreateConnectorInstallationRequestStatus404,
+	CreateConnectorInstallationRequestStatus410,
+	CreateConnectorInstallationRequestStatus422,
 	CreateConnectorResponse,
 	CreateConnectorStatus400,
 	CreateConnectorStatus401,
@@ -191,6 +198,7 @@ import type {
 	CreateConnectorStatus404,
 	CreateConnectorStatus409,
 	CreateConnectorStatus410,
+	CreateConnectorStatus502,
 	CreateCustomEnvironmentResponse,
 	CreateCustomEnvironmentStatus400,
 	CreateCustomEnvironmentStatus401,
@@ -252,7 +260,6 @@ import type {
 	CreateFlagSegmentStatus404,
 	CreateFlagSegmentStatus409,
 	CreateFlagSegmentStatus410,
-	CreateFlagSegmentStatus412,
 	CreateFlagStatus400,
 	CreateFlagStatus401,
 	CreateFlagStatus402,
@@ -260,7 +267,6 @@ import type {
 	CreateFlagStatus404,
 	CreateFlagStatus409,
 	CreateFlagStatus410,
-	CreateFlagStatus412,
 	CreateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsResponse,
 	CreateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsStatus400,
 	CreateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsStatus401,
@@ -577,7 +583,6 @@ import type {
 	DeleteFlagSegmentStatus404,
 	DeleteFlagSegmentStatus409,
 	DeleteFlagSegmentStatus410,
-	DeleteFlagSegmentStatus412,
 	DeleteFlagStatus400,
 	DeleteFlagStatus401,
 	DeleteFlagStatus402,
@@ -585,7 +590,6 @@ import type {
 	DeleteFlagStatus404,
 	DeleteFlagStatus409,
 	DeleteFlagStatus410,
-	DeleteFlagStatus412,
 	DeleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdResponse,
 	DeleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdStatus400,
 	DeleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdStatus401,
@@ -2127,7 +2131,6 @@ import type {
 	UpdateFlagSegmentStatus404,
 	UpdateFlagSegmentStatus409,
 	UpdateFlagSegmentStatus410,
-	UpdateFlagSegmentStatus412,
 	UpdateFlagSettingsResponse,
 	UpdateFlagSettingsStatus400,
 	UpdateFlagSettingsStatus401,
@@ -2136,7 +2139,6 @@ import type {
 	UpdateFlagSettingsStatus404,
 	UpdateFlagSettingsStatus409,
 	UpdateFlagSettingsStatus410,
-	UpdateFlagSettingsStatus412,
 	UpdateFlagStatus400,
 	UpdateFlagStatus401,
 	UpdateFlagStatus402,
@@ -2144,7 +2146,6 @@ import type {
 	UpdateFlagStatus404,
 	UpdateFlagStatus409,
 	UpdateFlagStatus410,
-	UpdateFlagStatus412,
 	UpdateInstallationResponse,
 	UpdateInstallationStatus400,
 	UpdateInstallationStatus401,
@@ -4722,6 +4723,7 @@ export async function createConnector(
 			| CreateConnectorStatus404
 			| CreateConnectorStatus409
 			| CreateConnectorStatus410
+			| CreateConnectorStatus502
 		>,
 		null,
 		Record<string, string>,
@@ -4859,6 +4861,49 @@ export async function createConnectorAuthorizationRequest(
 	>({
 		method: "POST",
 		url: `/v1/connect/authorize/${pathParams.connector}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Create a Connect installation request
+ * @description Create an installation request for a connector and return the URL and verifier details needed to complete the flow.
+ * @link /v1/connect/install/{connector}
+ */
+export async function createConnectorInstallationRequest(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { connector: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.connector) {
+		throw new Error(`Missing required path parameter: connector`);
+	}
+	const data = await request<
+		CreateConnectorInstallationRequestResponse,
+		ErrorWrapper<
+			| CreateConnectorInstallationRequestStatus400
+			| CreateConnectorInstallationRequestStatus401
+			| CreateConnectorInstallationRequestStatus403
+			| CreateConnectorInstallationRequestStatus404
+			| CreateConnectorInstallationRequestStatus410
+			| CreateConnectorInstallationRequestStatus422
+		>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		{ connector: string }
+	>({
+		method: "POST",
+		url: `/v1/connect/install/${pathParams.connector}`,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
 	});
@@ -8553,7 +8598,6 @@ export async function createFlag(
 			| CreateFlagStatus404
 			| CreateFlagStatus409
 			| CreateFlagStatus410
-			| CreateFlagStatus412
 		>,
 		null,
 		Record<string, string>,
@@ -8655,7 +8699,6 @@ export async function updateFlag(
 			| UpdateFlagStatus404
 			| UpdateFlagStatus409
 			| UpdateFlagStatus410
-			| UpdateFlagStatus412
 		>,
 		null,
 		Record<string, string>,
@@ -8707,7 +8750,6 @@ export async function deleteFlag(
 			| DeleteFlagStatus404
 			| DeleteFlagStatus409
 			| DeleteFlagStatus410
-			| DeleteFlagStatus412
 		>,
 		null,
 		Record<string, string>,
@@ -8865,7 +8907,6 @@ export async function updateFlagSettings(
 			| UpdateFlagSettingsStatus404
 			| UpdateFlagSettingsStatus409
 			| UpdateFlagSettingsStatus410
-			| UpdateFlagSettingsStatus412
 		>,
 		null,
 		Record<string, string>,
@@ -9085,7 +9126,6 @@ export async function createFlagSegment(
 			| CreateFlagSegmentStatus404
 			| CreateFlagSegmentStatus409
 			| CreateFlagSegmentStatus410
-			| CreateFlagSegmentStatus412
 		>,
 		null,
 		Record<string, string>,
@@ -9233,7 +9273,6 @@ export async function deleteFlagSegment(
 			| DeleteFlagSegmentStatus404
 			| DeleteFlagSegmentStatus409
 			| DeleteFlagSegmentStatus410
-			| DeleteFlagSegmentStatus412
 		>,
 		null,
 		Record<string, string>,
@@ -9285,7 +9324,6 @@ export async function updateFlagSegment(
 			| UpdateFlagSegmentStatus404
 			| UpdateFlagSegmentStatus409
 			| UpdateFlagSegmentStatus410
-			| UpdateFlagSegmentStatus412
 		>,
 		null,
 		Record<string, string>,
@@ -19039,6 +19077,7 @@ export const operationsByPath = {
 	"POST /v1/connect/token/{connector}": getConnectorToken,
 	"POST /v1/connect/token/{connector}/import": importConnectorTokens,
 	"POST /v1/connect/authorize/{connector}": createConnectorAuthorizationRequest,
+	"POST /v1/connect/install/{connector}": createConnectorInstallationRequest,
 	"GET /v3/deployments/{idOrUrl}/events": getDeploymentEvents,
 	"PATCH /v1/deployments/{deploymentId}/integrations/{integrationConfigurationId}/resources/{resourceId}/actions/{action}":
 		updateIntegrationDeploymentAction,
@@ -19440,6 +19479,7 @@ export const operationsByTag = {
 		getConnectorToken,
 		importConnectorTokens,
 		createConnectorAuthorizationRequest,
+		createConnectorInstallationRequest,
 	},
 	deployments: {
 		getDeploymentEvents,
@@ -19864,6 +19904,7 @@ export const tagDictionary = {
 			"getConnectorToken",
 			"importConnectorTokens",
 			"createConnectorAuthorizationRequest",
+			"createConnectorInstallationRequest",
 		],
 	},
 	deployments: {
