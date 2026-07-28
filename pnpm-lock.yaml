@@ -126,9 +126,6 @@ catalogs:
     '@types/react-dom':
       specifier: 19.2.3
       version: 19.2.3
-    '@types/vscode':
-      specifier: 1.120.0
-      version: 1.120.0
     '@vercel/analytics':
       specifier: 2.0.1
       version: 2.0.1
@@ -786,7 +783,7 @@ importers:
         specifier: 'catalog:'
         version: 25.9.2
       '@types/vscode':
-        specifier: 'catalog:'
+        specifier: 1.120.0
         version: 1.120.0
       '@vscode/vsce':
         specifier: 'catalog:'
@@ -1107,7 +1104,7 @@ importers:
     dependencies:
       '@kubb/adapter-oas':
         specifier: 'catalog:'
-        version: 5.0.0-beta.10(@kubb/renderer-jsx@5.0.0-beta.10)
+        version: 5.0.0-beta.10(@kubb/renderer-jsx@5.0.0-beta.35)
       '@kubb/core':
         specifier: 'catalog:'
         version: 5.0.0-beta.10(@kubb/renderer-jsx@5.0.0-beta.10)
@@ -11772,20 +11769,9 @@ snapshots:
     dependencies:
       jsep: 1.4.0
 
-  '@kubb/adapter-oas@5.0.0-beta.10(@kubb/renderer-jsx@5.0.0-beta.10)':
-    dependencies:
-      '@kubb/core': 5.0.0-beta.10(@kubb/renderer-jsx@5.0.0-beta.10)
-      '@redocly/openapi-core': 2.31.6
-      oas: 32.1.18
-      oas-normalize: 16.0.5
-      swagger2openapi: 7.0.8
-    transitivePeerDependencies:
-      - '@kubb/renderer-jsx'
-      - encoding
-
   '@kubb/adapter-oas@5.0.0-beta.10(@kubb/renderer-jsx@5.0.0-beta.35)':
     dependencies:
-      '@kubb/core': 5.0.0-beta.10(@kubb/renderer-jsx@5.0.0-beta.35)
+      '@kubb/core': 5.0.0-beta.10(@kubb/renderer-jsx@5.0.0-beta.10)
       '@redocly/openapi-core': 2.31.6
       oas: 32.1.18
       oas-normalize: 16.0.5
