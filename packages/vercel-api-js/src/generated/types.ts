@@ -1444,7 +1444,7 @@ export type EdgeConfigItemValue =
 	| null;
 
 /**
- * @description The EdgeConfig.
+ * @description The Global Config.
  * @type object
  */
 export type EdgeConfigItem = {
@@ -1475,7 +1475,7 @@ export type EdgeConfigItem = {
 };
 
 /**
- * @description The EdgeConfig.
+ * @description The Global Config.
  * @type object
  */
 export type EdgeConfigToken = {
@@ -1527,6 +1527,7 @@ export const userEventTypeEnum = {
 	"ai-gateway-api-key-created": "ai-gateway-api-key-created",
 	"ai-gateway-api-key-deleted": "ai-gateway-api-key-deleted",
 	"ai-gateway-api-key-quota-updated": "ai-gateway-api-key-quota-updated",
+	"ai-gateway-budget-default-updated": "ai-gateway-budget-default-updated",
 	"ai-gateway-byok-credential-created": "ai-gateway-byok-credential-created",
 	"ai-gateway-byok-credential-deleted": "ai-gateway-byok-credential-deleted",
 	"ai-gateway-byok-credential-updated": "ai-gateway-byok-credential-updated",
@@ -1545,6 +1546,7 @@ export const userEventTypeEnum = {
 	"ai-gateway-rule-created": "ai-gateway-rule-created",
 	"ai-gateway-rule-deleted": "ai-gateway-rule-deleted",
 	"ai-gateway-rule-updated": "ai-gateway-rule-updated",
+	"ai-gateway-scope-budget-updated": "ai-gateway-scope-budget-updated",
 	"ai-gateway-virtual-model-config-archived": "ai-gateway-virtual-model-config-archived",
 	"ai-gateway-virtual-model-config-created": "ai-gateway-virtual-model-config-created",
 	"ai-gateway-virtual-model-config-restored": "ai-gateway-virtual-model-config-restored",
@@ -1590,6 +1592,7 @@ export const userEventTypeEnum = {
 	"cert-system-create": "cert-system-create",
 	"code-owners-config-updated": "code-owners-config-updated",
 	"compliance-document-downloaded": "compliance-document-downloaded",
+	"compliance-documents-bulk-downloaded": "compliance-documents-bulk-downloaded",
 	"concurrent-builds-update": "concurrent-builds-update",
 	"connect-attach-project": "connect-attach-project",
 	"connect-bitbucket": "connect-bitbucket",
@@ -2000,6 +2003,7 @@ export const userEventTypeEnum = {
 	"subscription-product-removed": "subscription-product-removed",
 	"subscription-updated": "subscription-updated",
 	team: "team",
+	"team-agent-billing-migration-decision-changed": "team-agent-billing-migration-decision-changed",
 	"team-avatar-update": "team-avatar-update",
 	"team-collaboration-settings-updated": "team-collaboration-settings-updated",
 	"team-default-build-machine-updated": "team-default-build-machine-updated",
@@ -2179,6 +2183,13 @@ export const changeEnum = {
 
 export type ChangeEnumKey = (typeof changeEnum)[keyof typeof changeEnum];
 
+export const scopeTypeEnum = {
+	project: "project",
+	team: "team",
+} as const;
+
+export type ScopeTypeEnumKey = (typeof scopeTypeEnum)[keyof typeof scopeTypeEnum];
+
 export const nextRoleEnum = {
 	ADMIN: "ADMIN",
 	PROJECT_DEVELOPER: "PROJECT_DEVELOPER",
@@ -2232,6 +2243,7 @@ export const reasonEnum = {
 	ENTERPRISE_UNPAID_INVOICE: "ENTERPRISE_UNPAID_INVOICE",
 	EXPOSURE_CAP_EXCEEDED: "EXPOSURE_CAP_EXCEEDED",
 	FAIR_USE_LIMITS_EXCEEDED: "FAIR_USE_LIMITS_EXCEEDED",
+	HOBBY_ALLOCATION_PAUSED: "HOBBY_ALLOCATION_PAUSED",
 	SUBSCRIPTION_CANCELED: "SUBSCRIPTION_CANCELED",
 	SUBSCRIPTION_EXPIRED: "SUBSCRIPTION_EXPIRED",
 	UNPAID_INVOICE: "UNPAID_INVOICE",
@@ -2386,6 +2398,50 @@ export const blockedDueToOverageTypeEnum = {
 
 export type BlockedDueToOverageTypeEnumKey =
 	(typeof blockedDueToOverageTypeEnum)[keyof typeof blockedDueToOverageTypeEnum];
+
+export const allocationEnum = {
+	analyticsUsage: "analyticsUsage",
+	artifacts: "artifacts",
+	bandwidth: "bandwidth",
+	blobDataTransfer: "blobDataTransfer",
+	blobTotalAdvancedRequests: "blobTotalAdvancedRequests",
+	blobTotalAvgSizeInBytes: "blobTotalAvgSizeInBytes",
+	blobTotalGetResponseObjectSizeInBytes: "blobTotalGetResponseObjectSizeInBytes",
+	blobTotalSimpleRequests: "blobTotalSimpleRequests",
+	connectDataTransfer: "connectDataTransfer",
+	dataCacheRead: "dataCacheRead",
+	dataCacheWrite: "dataCacheWrite",
+	edgeConfigRead: "edgeConfigRead",
+	edgeConfigWrite: "edgeConfigWrite",
+	edgeFunctionExecutionUnits: "edgeFunctionExecutionUnits",
+	edgeMiddlewareInvocations: "edgeMiddlewareInvocations",
+	edgeRequest: "edgeRequest",
+	edgeRequestAdditionalCpuDuration: "edgeRequestAdditionalCpuDuration",
+	elasticConcurrencyBuildSlots: "elasticConcurrencyBuildSlots",
+	fastDataTransfer: "fastDataTransfer",
+	fastOriginTransfer: "fastOriginTransfer",
+	fluidCpuDuration: "fluidCpuDuration",
+	fluidDuration: "fluidDuration",
+	functionDuration: "functionDuration",
+	functionInvocation: "functionInvocation",
+	imageOptimizationCacheRead: "imageOptimizationCacheRead",
+	imageOptimizationCacheWrite: "imageOptimizationCacheWrite",
+	imageOptimizationTransformation: "imageOptimizationTransformation",
+	logDrainsVolume: "logDrainsVolume",
+	monitoringMetric: "monitoringMetric",
+	observabilityEvent: "observabilityEvent",
+	onDemandConcurrencyMinutes: "onDemandConcurrencyMinutes",
+	runtimeCacheRead: "runtimeCacheRead",
+	runtimeCacheWrite: "runtimeCacheWrite",
+	serverlessFunctionExecution: "serverlessFunctionExecution",
+	sourceImages: "sourceImages",
+	wafOwaspExcessBytes: "wafOwaspExcessBytes",
+	wafOwaspRequests: "wafOwaspRequests",
+	wafRateLimitRequest: "wafRateLimitRequest",
+	webAnalyticsEvent: "webAnalyticsEvent",
+} as const;
+
+export type AllocationEnumKey = (typeof allocationEnum)[keyof typeof allocationEnum];
 
 export const roleEnum = {
 	BILLING: "BILLING",
@@ -2777,6 +2833,13 @@ export const sourceEnum = {
 } as const;
 
 export type SourceEnumKey = (typeof sourceEnum)[keyof typeof sourceEnum];
+
+export const decisionEnum = {
+	keep_on: "keep_on",
+	turn_off: "turn_off",
+} as const;
+
+export type DecisionEnumKey = (typeof decisionEnum)[keyof typeof decisionEnum];
 
 export const envEnum = {
 	preview: "preview",
@@ -3391,6 +3454,69 @@ export type UserEvent = {
 							 */
 							name: string;
 						};
+						/**
+						 * @description Spend budget on an AI Gateway API key, as surfaced in activity messages. Defined locally (rather than imported from `@api/pubsub-types`) because `@api/pubsub-types` already depends on `@api/events`; importing it here would create a circular dependency. Must stay structurally aligned with `APIKeyBudget` in `@api/pubsub-types/event-payloads/api-keys`.
+						 * @type object
+						 */
+						budget?:
+							| ({
+									/**
+									 * @description Spend cap, in dollars.
+									 * @type number
+									 */
+									limitAmount: number;
+									/**
+									 * @type string
+									 */
+									refreshPeriod: RefreshPeriodEnumKey;
+							  } | null)
+							| undefined;
+						/**
+						 * @type string
+						 */
+						change: ChangeEnumKey;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						scopeType: ScopeTypeEnumKey;
+						/**
+						 * @description Spend budget on an AI Gateway API key, as surfaced in activity messages. Defined locally (rather than imported from `@api/pubsub-types`) because `@api/pubsub-types` already depends on `@api/events`; importing it here would create a circular dependency. Must stay structurally aligned with `APIKeyBudget` in `@api/pubsub-types/event-payloads/api-keys`.
+						 * @type object
+						 */
+						budget?:
+							| ({
+									/**
+									 * @description Spend cap, in dollars.
+									 * @type number
+									 */
+									limitAmount: number;
+									/**
+									 * @type string
+									 */
+									refreshPeriod: RefreshPeriodEnumKey;
+							  } | null)
+							| undefined;
+						/**
+						 * @type string
+						 */
+						change: ChangeEnumKey;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						scopeType: ScopeTypeEnumKey;
+						/**
+						 * @description Associates the event with a project for filtering; not rendered.
+						 * @type string | undefined
+						 */
+						projectId?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						projectName?: string | undefined;
 						/**
 						 * @description Spend budget on an AI Gateway API key, as surfaced in activity messages. Defined locally (rather than imported from `@api/pubsub-types`) because `@api/pubsub-types` already depends on `@api/events`; importing it here would create a circular dependency. Must stay structurally aligned with `APIKeyBudget` in `@api/pubsub-types/event-payloads/api-keys`.
 						 * @type object
@@ -4947,6 +5073,33 @@ export type UserEvent = {
 						 * @type string
 						 */
 						fingerprint: string;
+				  }
+				| {
+						/**
+						 * @type number
+						 */
+						count: number;
+						/**
+						 * @type array
+						 */
+						documents: {
+							/**
+							 * @type string
+							 */
+							slug: string;
+							/**
+							 * @type string
+							 */
+							documentId: string;
+							/**
+							 * @type string
+							 */
+							title: string;
+							/**
+							 * @type string
+							 */
+							fingerprint: string;
+						}[];
 				  }
 				| {
 						/**
@@ -9219,6 +9372,45 @@ export type UserEvent = {
 										 * @type string | undefined
 										 */
 										blockedDueToOverageType?: BlockedDueToOverageTypeEnumKey | undefined;
+										/**
+										 * @description Present only when `reason` is `HOBBY_ALLOCATION_PAUSED`. Makes the pause self-describing for support without a separate lookup.
+										 * @type object | undefined
+										 */
+										hobbyAllocationPause?:
+											| {
+													/**
+													 * @description Unix ms timestamp at which the pause is eligible to end. This is the single source of truth for when the pause ends. Never re-derive it by re-checking usage — usage keeps moving while a team is paused, and the pause duration is a fixed experiment parameter.
+													 * @type number
+													 */
+													pausedUntil: number;
+													/**
+													 * @description Unix ms timestamp of when the pause was applied.
+													 * @type number
+													 */
+													pausedAt: number;
+													/**
+													 * @description Allocations that were at or over 100% when the pause was applied.
+													 * @type array
+													 */
+													triggers: {
+														/**
+														 * @description Metered allocation whose included amount was fully consumed.
+														 * @type string
+														 */
+														allocation: AllocationEnumKey;
+														/**
+														 * @description Usage recorded for that allocation when the pause was applied.
+														 * @type number
+														 */
+														usage: number;
+													}[];
+													/**
+													 * @description Experiment cohort the owner was assigned to when the pause fired. Free-form so cohort naming stays owned by the assignment path.
+													 * @type string
+													 */
+													cohort: string;
+											  }
+											| undefined;
 								  } | null)
 								| undefined;
 							/**
@@ -16409,6 +16601,16 @@ export type UserEvent = {
 						/**
 						 * @type string
 						 */
+						decision: DecisionEnumKey;
+						/**
+						 * @type string
+						 */
+						version: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
 						consent: ConsentEnumKey;
 				  }
 				| {
@@ -17633,6 +17835,7 @@ export const listEventTypeNameEnum = {
 	"ai-gateway-api-key-created": "ai-gateway-api-key-created",
 	"ai-gateway-api-key-deleted": "ai-gateway-api-key-deleted",
 	"ai-gateway-api-key-quota-updated": "ai-gateway-api-key-quota-updated",
+	"ai-gateway-budget-default-updated": "ai-gateway-budget-default-updated",
 	"ai-gateway-byok-credential-created": "ai-gateway-byok-credential-created",
 	"ai-gateway-byok-credential-deleted": "ai-gateway-byok-credential-deleted",
 	"ai-gateway-byok-credential-updated": "ai-gateway-byok-credential-updated",
@@ -17651,6 +17854,7 @@ export const listEventTypeNameEnum = {
 	"ai-gateway-rule-created": "ai-gateway-rule-created",
 	"ai-gateway-rule-deleted": "ai-gateway-rule-deleted",
 	"ai-gateway-rule-updated": "ai-gateway-rule-updated",
+	"ai-gateway-scope-budget-updated": "ai-gateway-scope-budget-updated",
 	"ai-gateway-virtual-model-config-archived": "ai-gateway-virtual-model-config-archived",
 	"ai-gateway-virtual-model-config-created": "ai-gateway-virtual-model-config-created",
 	"ai-gateway-virtual-model-config-restored": "ai-gateway-virtual-model-config-restored",
@@ -17696,6 +17900,7 @@ export const listEventTypeNameEnum = {
 	"cert-system-create": "cert-system-create",
 	"code-owners-config-updated": "code-owners-config-updated",
 	"compliance-document-downloaded": "compliance-document-downloaded",
+	"compliance-documents-bulk-downloaded": "compliance-documents-bulk-downloaded",
 	"concurrent-builds-update": "concurrent-builds-update",
 	"connect-attach-project": "connect-attach-project",
 	"connect-bitbucket": "connect-bitbucket",
@@ -18106,6 +18311,7 @@ export const listEventTypeNameEnum = {
 	"subscription-product-removed": "subscription-product-removed",
 	"subscription-updated": "subscription-updated",
 	team: "team",
+	"team-agent-billing-migration-decision-changed": "team-agent-billing-migration-decision-changed",
 	"team-avatar-update": "team-avatar-update",
 	"team-collaboration-settings-updated": "team-collaboration-settings-updated",
 	"team-default-build-machine-updated": "team-default-build-machine-updated",
@@ -18253,6 +18459,7 @@ export const listEventTypeReplacedByEnum = {
 	"ai-gateway-api-key-created": "ai-gateway-api-key-created",
 	"ai-gateway-api-key-deleted": "ai-gateway-api-key-deleted",
 	"ai-gateway-api-key-quota-updated": "ai-gateway-api-key-quota-updated",
+	"ai-gateway-budget-default-updated": "ai-gateway-budget-default-updated",
 	"ai-gateway-byok-credential-created": "ai-gateway-byok-credential-created",
 	"ai-gateway-byok-credential-deleted": "ai-gateway-byok-credential-deleted",
 	"ai-gateway-byok-credential-updated": "ai-gateway-byok-credential-updated",
@@ -18271,6 +18478,7 @@ export const listEventTypeReplacedByEnum = {
 	"ai-gateway-rule-created": "ai-gateway-rule-created",
 	"ai-gateway-rule-deleted": "ai-gateway-rule-deleted",
 	"ai-gateway-rule-updated": "ai-gateway-rule-updated",
+	"ai-gateway-scope-budget-updated": "ai-gateway-scope-budget-updated",
 	"ai-gateway-virtual-model-config-archived": "ai-gateway-virtual-model-config-archived",
 	"ai-gateway-virtual-model-config-created": "ai-gateway-virtual-model-config-created",
 	"ai-gateway-virtual-model-config-restored": "ai-gateway-virtual-model-config-restored",
@@ -18316,6 +18524,7 @@ export const listEventTypeReplacedByEnum = {
 	"cert-system-create": "cert-system-create",
 	"code-owners-config-updated": "code-owners-config-updated",
 	"compliance-document-downloaded": "compliance-document-downloaded",
+	"compliance-documents-bulk-downloaded": "compliance-documents-bulk-downloaded",
 	"concurrent-builds-update": "concurrent-builds-update",
 	"connect-attach-project": "connect-attach-project",
 	"connect-bitbucket": "connect-bitbucket",
@@ -18726,6 +18935,7 @@ export const listEventTypeReplacedByEnum = {
 	"subscription-product-removed": "subscription-product-removed",
 	"subscription-updated": "subscription-updated",
 	team: "team",
+	"team-agent-billing-migration-decision-changed": "team-agent-billing-migration-decision-changed",
 	"team-avatar-update": "team-avatar-update",
 	"team-collaboration-settings-updated": "team-collaboration-settings-updated",
 	"team-default-build-machine-updated": "team-default-build-machine-updated",
@@ -22517,6 +22727,7 @@ export const authUserSoftBlockReasonEnum = {
 	ENTERPRISE_UNPAID_INVOICE: "ENTERPRISE_UNPAID_INVOICE",
 	EXPOSURE_CAP_EXCEEDED: "EXPOSURE_CAP_EXCEEDED",
 	FAIR_USE_LIMITS_EXCEEDED: "FAIR_USE_LIMITS_EXCEEDED",
+	HOBBY_ALLOCATION_PAUSED: "HOBBY_ALLOCATION_PAUSED",
 	SUBSCRIPTION_CANCELED: "SUBSCRIPTION_CANCELED",
 	SUBSCRIPTION_EXPIRED: "SUBSCRIPTION_EXPIRED",
 	UNPAID_INVOICE: "UNPAID_INVOICE",
@@ -22618,6 +22829,45 @@ export type AuthUser = {
 		 * @type string | undefined
 		 */
 		blockedDueToOverageType?: AuthUserSoftBlockBlockedDueToOverageTypeEnumKey | undefined;
+		/**
+		 * @description Present only when `reason` is `HOBBY_ALLOCATION_PAUSED`. Makes the pause self-describing for support without a separate lookup.
+		 * @type object | undefined
+		 */
+		hobbyAllocationPause?:
+			| {
+					/**
+					 * @description Unix ms timestamp at which the pause is eligible to end. This is the single source of truth for when the pause ends. Never re-derive it by re-checking usage — usage keeps moving while a team is paused, and the pause duration is a fixed experiment parameter.
+					 * @type number
+					 */
+					pausedUntil: number;
+					/**
+					 * @description Unix ms timestamp of when the pause was applied.
+					 * @type number
+					 */
+					pausedAt: number;
+					/**
+					 * @description Allocations that were at or over 100% when the pause was applied.
+					 * @type array
+					 */
+					triggers: {
+						/**
+						 * @description Metered allocation whose included amount was fully consumed.
+						 * @type string
+						 */
+						allocation: AllocationEnumKey;
+						/**
+						 * @description Usage recorded for that allocation when the pause was applied.
+						 * @type number
+						 */
+						usage: number;
+					}[];
+					/**
+					 * @description Experiment cohort the owner was assigned to when the pause fired. Free-form so cohort naming stays owned by the assignment path.
+					 * @type string
+					 */
+					cohort: string;
+			  }
+			| undefined;
 	} | null;
 	/**
 	 * @description An object containing billing infomation associated with the User account.
@@ -34794,7 +35044,7 @@ export type GetEdgeConfigsRequestConfig = {
 	/**
 	 * @type string
 	 */
-	url: "/v1/edge-config";
+	url: "/v1/global-config";
 };
 
 /**
@@ -34881,7 +35131,7 @@ export type CreateEdgeConfigRequestConfig = {
 	/**
 	 * @type string
 	 */
-	url: "/v1/edge-config";
+	url: "/v1/global-config";
 };
 
 /**
@@ -34980,7 +35230,7 @@ export type GetEdgeConfigRequestConfig = {
 	/**
 	 * @type string
 	 */
-	url: `/v1/edge-config/${string}`;
+	url: `/v1/global-config/${string}`;
 };
 
 /**
@@ -35089,7 +35339,7 @@ export type UpdateEdgeConfigRequestConfig = {
 	/**
 	 * @type string
 	 */
-	url: `/v1/edge-config/${string}`;
+	url: `/v1/global-config/${string}`;
 };
 
 /**
@@ -35197,7 +35447,7 @@ export type DeleteEdgeConfigRequestConfig = {
 	/**
 	 * @type string
 	 */
-	url: `/v1/edge-config/${string}`;
+	url: `/v1/global-config/${string}`;
 };
 
 /**
@@ -35299,7 +35549,7 @@ export type GetEdgeConfigItemsRequestConfig = {
 	/**
 	 * @type string
 	 */
-	url: `/v1/edge-config/${string}/items`;
+	url: `/v1/global-config/${string}/items`;
 };
 
 /**
@@ -35414,7 +35664,7 @@ export type PatchEdgeConfigItemsRequestConfig = {
 	/**
 	 * @type string
 	 */
-	url: `/v1/edge-config/${string}/items`;
+	url: `/v1/global-config/${string}/items`;
 };
 
 /**
@@ -35519,7 +35769,7 @@ export type GetEdgeConfigSchemaRequestConfig = {
 	/**
 	 * @type string
 	 */
-	url: `/v1/edge-config/${string}/schema`;
+	url: `/v1/global-config/${string}/schema`;
 };
 
 /**
@@ -35634,7 +35884,7 @@ export type PatchEdgeConfigSchemaRequestConfig = {
 	/**
 	 * @type string
 	 */
-	url: `/v1/edge-config/${string}/schema`;
+	url: `/v1/global-config/${string}/schema`;
 };
 
 /**
@@ -35747,7 +35997,7 @@ export type DeleteEdgeConfigSchemaRequestConfig = {
 	/**
 	 * @type string
 	 */
-	url: `/v1/edge-config/${string}/schema`;
+	url: `/v1/global-config/${string}/schema`;
 };
 
 /**
@@ -35857,7 +36107,7 @@ export type GetEdgeConfigItemRequestConfig = {
 	/**
 	 * @type string
 	 */
-	url: `/v1/edge-config/${string}/item/${string}`;
+	url: `/v1/global-config/${string}/item/${string}`;
 };
 
 /**
@@ -35956,7 +36206,7 @@ export type GetEdgeConfigTokensRequestConfig = {
 	/**
 	 * @type string
 	 */
-	url: `/v1/edge-config/${string}/tokens`;
+	url: `/v1/global-config/${string}/tokens`;
 };
 
 /**
@@ -36066,7 +36316,7 @@ export type DeleteEdgeConfigTokensRequestConfig = {
 	/**
 	 * @type string
 	 */
-	url: `/v1/edge-config/${string}/tokens`;
+	url: `/v1/global-config/${string}/tokens`;
 };
 
 /**
@@ -36175,7 +36425,7 @@ export type GetEdgeConfigTokenRequestConfig = {
 	/**
 	 * @type string
 	 */
-	url: `/v1/edge-config/${string}/token/${string}`;
+	url: `/v1/global-config/${string}/token/${string}`;
 };
 
 /**
@@ -36285,7 +36535,7 @@ export type CreateEdgeConfigTokenRequestConfig = {
 	/**
 	 * @type string
 	 */
-	url: `/v1/edge-config/${string}/token`;
+	url: `/v1/global-config/${string}/token`;
 };
 
 /**
@@ -36394,7 +36644,7 @@ export type GetEdgeConfigBackupRequestConfig = {
 	/**
 	 * @type string
 	 */
-	url: `/v1/edge-config/${string}/backups/${string}`;
+	url: `/v1/global-config/${string}/backups/${string}`;
 };
 
 /**
@@ -36515,7 +36765,7 @@ export type RestoreEdgeConfigBackupRequestConfig = {
 	/**
 	 * @type string
 	 */
-	url: `/v1/edge-config/${string}/backups/${string}/restore`;
+	url: `/v1/global-config/${string}/backups/${string}/restore`;
 };
 
 /**
@@ -36640,7 +36890,7 @@ export type GetEdgeConfigBackupsRequestConfig = {
 	/**
 	 * @type string
 	 */
-	url: `/v1/edge-config/${string}/backups`;
+	url: `/v1/global-config/${string}/backups`;
 };
 
 /**
@@ -43314,212 +43564,212 @@ export type DeleteInstallationsByIntegrationConfigurationIdResourcesByResourceId
 /**
  * @type string
  */
-export type GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigPathIntegrationConfigurationId =
+export type GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigPathIntegrationConfigurationId =
 	string;
 
 /**
  * @type string
  */
-export type GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigPathResourceId =
+export type GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigPathResourceId =
 	string;
 
 /**
  * @type unknown
  */
-export type GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus200 =
+export type GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus200 =
 	unknown;
 
 /**
  * @type unknown
  */
-export type GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus304 =
+export type GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus304 =
 	unknown;
 
 /**
  * @type unknown
  */
-export type GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus400 =
+export type GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus400 =
 	unknown;
 
 /**
  * @type unknown
  */
-export type GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus401 =
+export type GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus401 =
 	unknown;
 
 /**
  * @type unknown
  */
-export type GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus403 =
+export type GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus403 =
 	unknown;
 
 /**
  * @type unknown
  */
-export type GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus404 =
+export type GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus404 =
 	unknown;
 
 /**
  * @type unknown
  */
-export type GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus410 =
+export type GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus410 =
 	unknown;
 
 /**
  * @type object
  */
-export type GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigRequestConfig =
+export type GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigRequestConfig =
 	{
 		data?: never | undefined;
 		/**
 		 * @type object
 		 */
 		pathParams: {
-			integrationConfigurationId: GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigPathIntegrationConfigurationId;
-			resourceId: GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigPathResourceId;
+			integrationConfigurationId: GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigPathIntegrationConfigurationId;
+			resourceId: GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigPathResourceId;
 		};
 		queryParams?: never | undefined;
 		headerParams?: never | undefined;
 		/**
 		 * @type string
 		 */
-		url: `/v1/installations/${string}/resources/${string}/experimentation/edge-config`;
+		url: `/v1/installations/${string}/resources/${string}/experimentation/global-config`;
 	};
 
 /**
  * @type object
  */
-export type GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigResponses =
+export type GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigResponses =
 	{
-		"200": GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus200;
-		"304": GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus304;
-		"400": GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus400;
-		"401": GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus401;
-		"403": GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus403;
-		"404": GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus404;
-		"410": GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus410;
+		"200": GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus200;
+		"304": GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus304;
+		"400": GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus400;
+		"401": GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus401;
+		"403": GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus403;
+		"404": GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus404;
+		"410": GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus410;
 	};
 
 /**
  * @description Union of all possible responses
  */
-export type GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigResponse =
-	| GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus200
-	| GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus304
-	| GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus400
-	| GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus401
-	| GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus403
-	| GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus404
-	| GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus410;
+export type GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigResponse =
+	| GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus200
+	| GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus304
+	| GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus400
+	| GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus401
+	| GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus403
+	| GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus404
+	| GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus410;
 
 /**
  * @type string
  */
-export type ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigPathIntegrationConfigurationId =
+export type ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigPathIntegrationConfigurationId =
 	string;
 
 /**
  * @type string
  */
-export type ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigPathResourceId =
+export type ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigPathResourceId =
 	string;
 
 /**
  * @type unknown
  */
-export type ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus200 =
+export type ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus200 =
 	unknown;
 
 /**
  * @type unknown
  */
-export type ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus400 =
+export type ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus400 =
 	unknown;
 
 /**
  * @type unknown
  */
-export type ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus401 =
+export type ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus401 =
 	unknown;
 
 /**
  * @type unknown
  */
-export type ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus403 =
+export type ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus403 =
 	unknown;
 
 /**
  * @type unknown
  */
-export type ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus404 =
+export type ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus404 =
 	unknown;
 
 /**
  * @type unknown
  */
-export type ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus409 =
+export type ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus409 =
 	unknown;
 
 /**
  * @type unknown
  */
-export type ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus410 =
+export type ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus410 =
 	unknown;
 
 /**
  * @type unknown
  */
-export type ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus412 =
+export type ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus412 =
 	unknown;
 
 /**
  * @type object
  */
-export type ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigRequestConfig =
+export type ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigRequestConfig =
 	{
 		data?: never | undefined;
 		/**
 		 * @type object
 		 */
 		pathParams: {
-			integrationConfigurationId: ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigPathIntegrationConfigurationId;
-			resourceId: ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigPathResourceId;
+			integrationConfigurationId: ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigPathIntegrationConfigurationId;
+			resourceId: ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigPathResourceId;
 		};
 		queryParams?: never | undefined;
 		headerParams?: never | undefined;
 		/**
 		 * @type string
 		 */
-		url: `/v1/installations/${string}/resources/${string}/experimentation/edge-config`;
+		url: `/v1/installations/${string}/resources/${string}/experimentation/global-config`;
 	};
 
 /**
  * @type object
  */
-export type ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigResponses =
+export type ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigResponses =
 	{
-		"200": ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus200;
-		"400": ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus400;
-		"401": ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus401;
-		"403": ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus403;
-		"404": ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus404;
-		"409": ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus409;
-		"410": ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus410;
-		"412": ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus412;
+		"200": ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus200;
+		"400": ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus400;
+		"401": ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus401;
+		"403": ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus403;
+		"404": ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus404;
+		"409": ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus409;
+		"410": ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus410;
+		"412": ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus412;
 	};
 
 /**
  * @description Union of all possible responses
  */
-export type ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigResponse =
-	| ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus200
-	| ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus400
-	| ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus401
-	| ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus403
-	| ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus404
-	| ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus409
-	| ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus410
-	| ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus412;
+export type ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigResponse =
+	| ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus200
+	| ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus400
+	| ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus401
+	| ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus403
+	| ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus404
+	| ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus409
+	| ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus410
+	| ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus412;
 
 /**
  * @description The Team identifier to perform the request on behalf of.
@@ -55341,9 +55591,9 @@ export type GetSecurityFirewallEventsResponse =
 	| GetSecurityFirewallEventsStatus500;
 
 /**
- * @type string
+ * @type string | undefined
  */
-export type GenerateFirewallRuleQueryProjectId = string;
+export type GenerateFirewallRuleQueryProjectId = string | undefined;
 
 /**
  * @description The Team identifier to perform the request on behalf of.
@@ -55410,7 +55660,7 @@ export type GenerateFirewallRuleRequestConfig = {
 	 */
 	queryParams?:
 		| {
-				projectId: GenerateFirewallRuleQueryProjectId;
+				projectId?: GenerateFirewallRuleQueryProjectId | undefined;
 				teamId?: GenerateFirewallRuleQueryTeamId | undefined;
 				slug?: GenerateFirewallRuleQuerySlug | undefined;
 		  }
