@@ -1119,12 +1119,12 @@ import type {
 	GetFlagStatus403,
 	GetFlagStatus404,
 	GetFlagStatus410,
-	GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigResponse,
-	GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus400,
-	GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus401,
-	GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus403,
-	GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus404,
-	GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus410,
+	GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigResponse,
+	GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus400,
+	GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus401,
+	GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus403,
+	GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus404,
+	GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus410,
 	GetIntegrationLogDrainsResponse,
 	GetIntegrationLogDrainsStatus400,
 	GetIntegrationLogDrainsStatus401,
@@ -1889,14 +1889,14 @@ import type {
 	ReplaceDomainsByDomainRecordsStatus409,
 	ReplaceDomainsByDomainRecordsStatus410,
 	ReplaceDomainsByDomainRecordsStatus415,
-	ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigResponse,
-	ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus400,
-	ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus401,
-	ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus403,
-	ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus404,
-	ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus409,
-	ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus410,
-	ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus412,
+	ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigResponse,
+	ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus400,
+	ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus401,
+	ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus403,
+	ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus404,
+	ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus409,
+	ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus410,
+	ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus412,
 	RequestAccessToTeamResponse,
 	RequestAccessToTeamStatus400,
 	RequestAccessToTeamStatus401,
@@ -7228,9 +7228,9 @@ export async function dangerouslyDeleteBySrcImages(
 }
 
 /**
- * @summary Get Edge Configs
- * @description Returns all Edge Configs.
- * @link /v1/edge-config
+ * @summary Get Global Configs
+ * @description Returns all Global Configs.
+ * @link /v1/global-config
  */
 export async function getEdgeConfigs(
 	{
@@ -7257,7 +7257,7 @@ export async function getEdgeConfigs(
 		Record<string, string>
 	>({
 		method: "GET",
-		url: `/v1/edge-config`,
+		url: `/v1/global-config`,
 		queryParams,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
@@ -7267,9 +7267,9 @@ export async function getEdgeConfigs(
 }
 
 /**
- * @summary Create an Edge Config
- * @description Creates an Edge Config.
- * @link /v1/edge-config
+ * @summary Create a Global Config
+ * @description Creates a Global Config.
+ * @link /v1/global-config
  */
 export async function createEdgeConfig(
 	{
@@ -7297,7 +7297,7 @@ export async function createEdgeConfig(
 		Record<string, string>
 	>({
 		method: "POST",
-		url: `/v1/edge-config`,
+		url: `/v1/global-config`,
 		queryParams,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
@@ -7307,9 +7307,9 @@ export async function createEdgeConfig(
 }
 
 /**
- * @summary Get an Edge Config
- * @description Returns an Edge Config.
- * @link /v1/edge-config/{edgeConfigId}
+ * @summary Get a Global Config
+ * @description Returns a Global Config.
+ * @link /v1/global-config/{edgeConfigId}
  */
 export async function getEdgeConfig(
 	{
@@ -7342,7 +7342,7 @@ export async function getEdgeConfig(
 		{ edgeConfigId: string }
 	>({
 		method: "GET",
-		url: `/v1/edge-config/${pathParams.edgeConfigId}`,
+		url: `/v1/global-config/${pathParams.edgeConfigId}`,
 		queryParams,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
@@ -7352,9 +7352,9 @@ export async function getEdgeConfig(
 }
 
 /**
- * @summary Update an Edge Config
- * @description Updates an Edge Config.
- * @link /v1/edge-config/{edgeConfigId}
+ * @summary Update a Global Config
+ * @description Updates a Global Config.
+ * @link /v1/global-config/{edgeConfigId}
  */
 export async function updateEdgeConfig(
 	{
@@ -7389,7 +7389,7 @@ export async function updateEdgeConfig(
 		{ edgeConfigId: string }
 	>({
 		method: "PUT",
-		url: `/v1/edge-config/${pathParams.edgeConfigId}`,
+		url: `/v1/global-config/${pathParams.edgeConfigId}`,
 		queryParams,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
@@ -7399,9 +7399,9 @@ export async function updateEdgeConfig(
 }
 
 /**
- * @summary Delete an Edge Config
- * @description Delete an Edge Config by id.
- * @link /v1/edge-config/{edgeConfigId}
+ * @summary Delete a Global Config
+ * @description Delete a Global Config by id.
+ * @link /v1/global-config/{edgeConfigId}
  */
 export async function deleteEdgeConfig(
 	{
@@ -7435,7 +7435,7 @@ export async function deleteEdgeConfig(
 		{ edgeConfigId: string }
 	>({
 		method: "DELETE",
-		url: `/v1/edge-config/${pathParams.edgeConfigId}`,
+		url: `/v1/global-config/${pathParams.edgeConfigId}`,
 		queryParams,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
@@ -7445,9 +7445,9 @@ export async function deleteEdgeConfig(
 }
 
 /**
- * @summary Get Edge Config items
- * @description Returns all items of an Edge Config.
- * @link /v1/edge-config/{edgeConfigId}/items
+ * @summary Get Global Config items
+ * @description Returns all items of a Global Config.
+ * @link /v1/global-config/{edgeConfigId}/items
  */
 export async function getEdgeConfigItems(
 	{
@@ -7480,7 +7480,7 @@ export async function getEdgeConfigItems(
 		{ edgeConfigId: string }
 	>({
 		method: "GET",
-		url: `/v1/edge-config/${pathParams.edgeConfigId}/items`,
+		url: `/v1/global-config/${pathParams.edgeConfigId}/items`,
 		queryParams,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
@@ -7490,9 +7490,9 @@ export async function getEdgeConfigItems(
 }
 
 /**
- * @summary Update Edge Config items in batch
- * @description Update multiple Edge Config Items in batch.
- * @link /v1/edge-config/{edgeConfigId}/items
+ * @summary Update Global Config items in batch
+ * @description Update multiple Global Config Items in batch.
+ * @link /v1/global-config/{edgeConfigId}/items
  */
 export async function patchEdgeConfigItems(
 	{
@@ -7528,7 +7528,7 @@ export async function patchEdgeConfigItems(
 		{ edgeConfigId: string }
 	>({
 		method: "PATCH",
-		url: `/v1/edge-config/${pathParams.edgeConfigId}/items`,
+		url: `/v1/global-config/${pathParams.edgeConfigId}/items`,
 		queryParams,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
@@ -7538,9 +7538,9 @@ export async function patchEdgeConfigItems(
 }
 
 /**
- * @summary Get Edge Config schema
- * @description Returns the schema of an Edge Config.
- * @link /v1/edge-config/{edgeConfigId}/schema
+ * @summary Get Global Config schema
+ * @description Returns the schema of a Global Config.
+ * @link /v1/global-config/{edgeConfigId}/schema
  */
 export async function getEdgeConfigSchema(
 	{
@@ -7573,7 +7573,7 @@ export async function getEdgeConfigSchema(
 		{ edgeConfigId: string }
 	>({
 		method: "GET",
-		url: `/v1/edge-config/${pathParams.edgeConfigId}/schema`,
+		url: `/v1/global-config/${pathParams.edgeConfigId}/schema`,
 		queryParams,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
@@ -7583,9 +7583,9 @@ export async function getEdgeConfigSchema(
 }
 
 /**
- * @summary Update Edge Config schema
- * @description Update an Edge Config's schema.
- * @link /v1/edge-config/{edgeConfigId}/schema
+ * @summary Update Global Config schema
+ * @description Update a Global Config's schema.
+ * @link /v1/global-config/{edgeConfigId}/schema
  */
 export async function patchEdgeConfigSchema(
 	{
@@ -7620,7 +7620,7 @@ export async function patchEdgeConfigSchema(
 		{ edgeConfigId: string }
 	>({
 		method: "POST",
-		url: `/v1/edge-config/${pathParams.edgeConfigId}/schema`,
+		url: `/v1/global-config/${pathParams.edgeConfigId}/schema`,
 		queryParams,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
@@ -7630,9 +7630,9 @@ export async function patchEdgeConfigSchema(
 }
 
 /**
- * @summary Delete an Edge Config's schema
- * @description Deletes the schema of existing Edge Config.
- * @link /v1/edge-config/{edgeConfigId}/schema
+ * @summary Delete a Global Config's schema
+ * @description Deletes the schema of existing Global Config.
+ * @link /v1/global-config/{edgeConfigId}/schema
  */
 export async function deleteEdgeConfigSchema(
 	{
@@ -7667,7 +7667,7 @@ export async function deleteEdgeConfigSchema(
 		{ edgeConfigId: string }
 	>({
 		method: "DELETE",
-		url: `/v1/edge-config/${pathParams.edgeConfigId}/schema`,
+		url: `/v1/global-config/${pathParams.edgeConfigId}/schema`,
 		queryParams,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
@@ -7677,9 +7677,9 @@ export async function deleteEdgeConfigSchema(
 }
 
 /**
- * @summary Get an Edge Config item
- * @description Returns a specific Edge Config Item.
- * @link /v1/edge-config/{edgeConfigId}/item/{edgeConfigItemKey}
+ * @summary Get a Global Config item
+ * @description Returns a specific Global Config Item.
+ * @link /v1/global-config/{edgeConfigId}/item/{edgeConfigItemKey}
  */
 export async function getEdgeConfigItem(
 	{
@@ -7716,7 +7716,7 @@ export async function getEdgeConfigItem(
 		{ edgeConfigId: string; edgeConfigItemKey: string }
 	>({
 		method: "GET",
-		url: `/v1/edge-config/${pathParams.edgeConfigId}/item/${pathParams.edgeConfigItemKey}`,
+		url: `/v1/global-config/${pathParams.edgeConfigId}/item/${pathParams.edgeConfigItemKey}`,
 		queryParams,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
@@ -7726,9 +7726,9 @@ export async function getEdgeConfigItem(
 }
 
 /**
- * @summary Get all tokens of an Edge Config
- * @description Returns all tokens of an Edge Config.
- * @link /v1/edge-config/{edgeConfigId}/tokens
+ * @summary Get all tokens of a Global Config
+ * @description Returns all tokens of a Global Config.
+ * @link /v1/global-config/{edgeConfigId}/tokens
  */
 export async function getEdgeConfigTokens(
 	{
@@ -7761,7 +7761,7 @@ export async function getEdgeConfigTokens(
 		{ edgeConfigId: string }
 	>({
 		method: "GET",
-		url: `/v1/edge-config/${pathParams.edgeConfigId}/tokens`,
+		url: `/v1/global-config/${pathParams.edgeConfigId}/tokens`,
 		queryParams,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
@@ -7771,9 +7771,9 @@ export async function getEdgeConfigTokens(
 }
 
 /**
- * @summary Delete one or more Edge Config tokens
- * @description Deletes one or more tokens of an existing Edge Config.
- * @link /v1/edge-config/{edgeConfigId}/tokens
+ * @summary Delete one or more Global Config tokens
+ * @description Deletes one or more tokens of an existing Global Config.
+ * @link /v1/global-config/{edgeConfigId}/tokens
  */
 export async function deleteEdgeConfigTokens(
 	{
@@ -7808,7 +7808,7 @@ export async function deleteEdgeConfigTokens(
 		{ edgeConfigId: string }
 	>({
 		method: "DELETE",
-		url: `/v1/edge-config/${pathParams.edgeConfigId}/tokens`,
+		url: `/v1/global-config/${pathParams.edgeConfigId}/tokens`,
 		queryParams,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
@@ -7818,9 +7818,9 @@ export async function deleteEdgeConfigTokens(
 }
 
 /**
- * @summary Get Edge Config token meta data
- * @description Return meta data about an Edge Config token.
- * @link /v1/edge-config/{edgeConfigId}/token/{token}
+ * @summary Get Global Config token meta data
+ * @description Return meta data about a Global Config token.
+ * @link /v1/global-config/{edgeConfigId}/token/{token}
  */
 export async function getEdgeConfigToken(
 	{
@@ -7857,7 +7857,7 @@ export async function getEdgeConfigToken(
 		{ edgeConfigId: string; token: string }
 	>({
 		method: "GET",
-		url: `/v1/edge-config/${pathParams.edgeConfigId}/token/${pathParams.token}`,
+		url: `/v1/global-config/${pathParams.edgeConfigId}/token/${pathParams.token}`,
 		queryParams,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
@@ -7867,9 +7867,9 @@ export async function getEdgeConfigToken(
 }
 
 /**
- * @summary Create an Edge Config token
- * @description Adds a token to an existing Edge Config.
- * @link /v1/edge-config/{edgeConfigId}/token
+ * @summary Create a Global Config token
+ * @description Adds a token to an existing Global Config.
+ * @link /v1/global-config/{edgeConfigId}/token
  */
 export async function createEdgeConfigToken(
 	{
@@ -7904,7 +7904,7 @@ export async function createEdgeConfigToken(
 		{ edgeConfigId: string }
 	>({
 		method: "POST",
-		url: `/v1/edge-config/${pathParams.edgeConfigId}/token`,
+		url: `/v1/global-config/${pathParams.edgeConfigId}/token`,
 		queryParams,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
@@ -7914,9 +7914,9 @@ export async function createEdgeConfigToken(
 }
 
 /**
- * @summary Get Edge Config backup
- * @description Retrieves a specific version of an Edge Config from backup storage.
- * @link /v1/edge-config/{edgeConfigId}/backups/{edgeConfigBackupVersionId}
+ * @summary Get Global Config backup
+ * @description Retrieves a specific version of a Global Config from backup storage.
+ * @link /v1/global-config/{edgeConfigId}/backups/{edgeConfigBackupVersionId}
  */
 export async function getEdgeConfigBackup(
 	{
@@ -7953,7 +7953,7 @@ export async function getEdgeConfigBackup(
 		{ edgeConfigId: string; edgeConfigBackupVersionId: string }
 	>({
 		method: "GET",
-		url: `/v1/edge-config/${pathParams.edgeConfigId}/backups/${pathParams.edgeConfigBackupVersionId}`,
+		url: `/v1/global-config/${pathParams.edgeConfigId}/backups/${pathParams.edgeConfigBackupVersionId}`,
 		queryParams,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
@@ -7963,9 +7963,9 @@ export async function getEdgeConfigBackup(
 }
 
 /**
- * @summary Restore Edge Config backup
- * @description Restores an Edge Config backup.
- * @link /v1/edge-config/{edgeConfigId}/backups/{edgeConfigBackupVersionId}/restore
+ * @summary Restore Global Config backup
+ * @description Restores a Global Config backup.
+ * @link /v1/global-config/{edgeConfigId}/backups/{edgeConfigBackupVersionId}/restore
  */
 export async function restoreEdgeConfigBackup(
 	{
@@ -8005,7 +8005,7 @@ export async function restoreEdgeConfigBackup(
 		{ edgeConfigId: string; edgeConfigBackupVersionId: string }
 	>({
 		method: "POST",
-		url: `/v1/edge-config/${pathParams.edgeConfigId}/backups/${pathParams.edgeConfigBackupVersionId}/restore`,
+		url: `/v1/global-config/${pathParams.edgeConfigId}/backups/${pathParams.edgeConfigBackupVersionId}/restore`,
 		queryParams,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
@@ -8015,9 +8015,9 @@ export async function restoreEdgeConfigBackup(
 }
 
 /**
- * @summary Get Edge Config backups
- * @description Returns backups of an Edge Config.
- * @link /v1/edge-config/{edgeConfigId}/backups
+ * @summary Get Global Config backups
+ * @description Returns backups of a Global Config.
+ * @link /v1/global-config/{edgeConfigId}/backups
  */
 export async function getEdgeConfigBackups(
 	{
@@ -8056,7 +8056,7 @@ export async function getEdgeConfigBackups(
 		{ edgeConfigId: string }
 	>({
 		method: "GET",
-		url: `/v1/edge-config/${pathParams.edgeConfigId}/backups`,
+		url: `/v1/global-config/${pathParams.edgeConfigId}/backups`,
 		queryParams,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
@@ -11101,11 +11101,11 @@ export async function deleteInstallationsByIntegrationConfigurationIdResourcesBy
 }
 
 /**
- * @summary Get the data of a user-provided Edge Config
- * @description When the user enabled Edge Config syncing, then this endpoint can be used by the partner to fetch the contents of the Edge Config.
- * @link /v1/installations/{integrationConfigurationId}/resources/{resourceId}/experimentation/edge-config
+ * @summary Get the data of a user-provided Global Config
+ * @description When the user enabled Global Config syncing, then this endpoint can be used by the partner to fetch the contents of the Global Config.
+ * @link /v1/installations/{integrationConfigurationId}/resources/{resourceId}/experimentation/global-config
  */
-export async function getInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig(
+export async function getInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfig(
 	{
 		pathParams,
 		config,
@@ -11124,13 +11124,13 @@ export async function getInstallationsByIntegrationConfigurationIdResourcesByRes
 		throw new Error(`Missing required path parameter: resourceId`);
 	}
 	const data = await request<
-		GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigResponse,
+		GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigResponse,
 		ErrorWrapper<
-			| GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus400
-			| GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus401
-			| GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus403
-			| GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus404
-			| GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus410
+			| GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus400
+			| GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus401
+			| GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus403
+			| GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus404
+			| GetInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -11138,7 +11138,7 @@ export async function getInstallationsByIntegrationConfigurationIdResourcesByRes
 		{ integrationConfigurationId: string; resourceId: string }
 	>({
 		method: "GET",
-		url: `/v1/installations/${pathParams.integrationConfigurationId}/resources/${pathParams.resourceId}/experimentation/edge-config`,
+		url: `/v1/installations/${pathParams.integrationConfigurationId}/resources/${pathParams.resourceId}/experimentation/global-config`,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
 	});
@@ -11147,11 +11147,11 @@ export async function getInstallationsByIntegrationConfigurationIdResourcesByRes
 }
 
 /**
- * @summary Push data into a user-provided Edge Config
- * @description When the user enabled Edge Config syncing, then this endpoint can be used by the partner to push their configuration data into the relevant Edge Config.
- * @link /v1/installations/{integrationConfigurationId}/resources/{resourceId}/experimentation/edge-config
+ * @summary Push data into a user-provided Global Config
+ * @description When the user enabled Global Config syncing, then this endpoint can be used by the partner to push their configuration data into the relevant Global Config.
+ * @link /v1/installations/{integrationConfigurationId}/resources/{resourceId}/experimentation/global-config
  */
-export async function replaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig(
+export async function replaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfig(
 	{
 		pathParams,
 		config,
@@ -11170,15 +11170,15 @@ export async function replaceInstallationsByIntegrationConfigurationIdResourcesB
 		throw new Error(`Missing required path parameter: resourceId`);
 	}
 	const data = await request<
-		ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigResponse,
+		ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigResponse,
 		ErrorWrapper<
-			| ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus400
-			| ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus401
-			| ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus403
-			| ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus404
-			| ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus409
-			| ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus410
-			| ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus412
+			| ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus400
+			| ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus401
+			| ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus403
+			| ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus404
+			| ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus409
+			| ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus410
+			| ReplaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus412
 		>,
 		null,
 		Record<string, string>,
@@ -11186,7 +11186,7 @@ export async function replaceInstallationsByIntegrationConfigurationIdResourcesB
 		{ integrationConfigurationId: string; resourceId: string }
 	>({
 		method: "PUT",
-		url: `/v1/installations/${pathParams.integrationConfigurationId}/resources/${pathParams.resourceId}/experimentation/edge-config`,
+		url: `/v1/installations/${pathParams.integrationConfigurationId}/resources/${pathParams.resourceId}/experimentation/global-config`,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
 	});
@@ -19132,25 +19132,25 @@ export const operationsByPath = {
 	"POST /v1/edge-cache/dangerously-delete-by-tags": dangerouslyDeleteByTags,
 	"POST /v1/edge-cache/invalidate-by-src-images": invalidateBySrcImages,
 	"POST /v1/edge-cache/dangerously-delete-by-src-images": dangerouslyDeleteBySrcImages,
-	"GET /v1/edge-config": getEdgeConfigs,
-	"POST /v1/edge-config": createEdgeConfig,
-	"GET /v1/edge-config/{edgeConfigId}": getEdgeConfig,
-	"PUT /v1/edge-config/{edgeConfigId}": updateEdgeConfig,
-	"DELETE /v1/edge-config/{edgeConfigId}": deleteEdgeConfig,
-	"GET /v1/edge-config/{edgeConfigId}/items": getEdgeConfigItems,
-	"PATCH /v1/edge-config/{edgeConfigId}/items": patchEdgeConfigItems,
-	"GET /v1/edge-config/{edgeConfigId}/schema": getEdgeConfigSchema,
-	"POST /v1/edge-config/{edgeConfigId}/schema": patchEdgeConfigSchema,
-	"DELETE /v1/edge-config/{edgeConfigId}/schema": deleteEdgeConfigSchema,
-	"GET /v1/edge-config/{edgeConfigId}/item/{edgeConfigItemKey}": getEdgeConfigItem,
-	"GET /v1/edge-config/{edgeConfigId}/tokens": getEdgeConfigTokens,
-	"DELETE /v1/edge-config/{edgeConfigId}/tokens": deleteEdgeConfigTokens,
-	"GET /v1/edge-config/{edgeConfigId}/token/{token}": getEdgeConfigToken,
-	"POST /v1/edge-config/{edgeConfigId}/token": createEdgeConfigToken,
-	"GET /v1/edge-config/{edgeConfigId}/backups/{edgeConfigBackupVersionId}": getEdgeConfigBackup,
-	"POST /v1/edge-config/{edgeConfigId}/backups/{edgeConfigBackupVersionId}/restore":
+	"GET /v1/global-config": getEdgeConfigs,
+	"POST /v1/global-config": createEdgeConfig,
+	"GET /v1/global-config/{edgeConfigId}": getEdgeConfig,
+	"PUT /v1/global-config/{edgeConfigId}": updateEdgeConfig,
+	"DELETE /v1/global-config/{edgeConfigId}": deleteEdgeConfig,
+	"GET /v1/global-config/{edgeConfigId}/items": getEdgeConfigItems,
+	"PATCH /v1/global-config/{edgeConfigId}/items": patchEdgeConfigItems,
+	"GET /v1/global-config/{edgeConfigId}/schema": getEdgeConfigSchema,
+	"POST /v1/global-config/{edgeConfigId}/schema": patchEdgeConfigSchema,
+	"DELETE /v1/global-config/{edgeConfigId}/schema": deleteEdgeConfigSchema,
+	"GET /v1/global-config/{edgeConfigId}/item/{edgeConfigItemKey}": getEdgeConfigItem,
+	"GET /v1/global-config/{edgeConfigId}/tokens": getEdgeConfigTokens,
+	"DELETE /v1/global-config/{edgeConfigId}/tokens": deleteEdgeConfigTokens,
+	"GET /v1/global-config/{edgeConfigId}/token/{token}": getEdgeConfigToken,
+	"POST /v1/global-config/{edgeConfigId}/token": createEdgeConfigToken,
+	"GET /v1/global-config/{edgeConfigId}/backups/{edgeConfigBackupVersionId}": getEdgeConfigBackup,
+	"POST /v1/global-config/{edgeConfigId}/backups/{edgeConfigBackupVersionId}/restore":
 		restoreEdgeConfigBackup,
-	"GET /v1/edge-config/{edgeConfigId}/backups": getEdgeConfigBackups,
+	"GET /v1/global-config/{edgeConfigId}/backups": getEdgeConfigBackups,
 	"POST /v1/env": createSharedEnvVariable,
 	"GET /v1/env": listSharedEnvVariable,
 	"PATCH /v1/env": updateSharedEnvVariable,
@@ -19227,10 +19227,10 @@ export const operationsByPath = {
 		updateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId,
 	"DELETE /v1/installations/{integrationConfigurationId}/resources/{resourceId}/experimentation/items/{itemId}":
 		deleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId,
-	"GET /v1/installations/{integrationConfigurationId}/resources/{resourceId}/experimentation/edge-config":
-		getInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig,
-	"PUT /v1/installations/{integrationConfigurationId}/resources/{resourceId}/experimentation/edge-config":
-		replaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig,
+	"GET /v1/installations/{integrationConfigurationId}/resources/{resourceId}/experimentation/global-config":
+		getInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfig,
+	"PUT /v1/installations/{integrationConfigurationId}/resources/{resourceId}/experimentation/global-config":
+		replaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfig,
 	"GET /v1/microfrontends/groups": getMicrofrontendsGroups,
 	"GET /v1/microfrontends/groups/{groupId}/projects": getMicrofrontendsInGroup,
 	"GET /v1/microfrontends/{deploymentId}/config": getMicrofrontendsConfig,
@@ -19421,7 +19421,7 @@ export const operationsByTag = {
 		updateAccessGroupProject,
 		deleteAccessGroupProject,
 	},
-	apiAiGateway: {
+	aiGateway: {
 		createAiGatewayRule,
 		listAiGatewayRules,
 		updateAiGatewayRule,
@@ -19566,7 +19566,7 @@ export const operationsByTag = {
 		invalidateBySrcImages,
 		dangerouslyDeleteBySrcImages,
 	},
-	edgeConfig: {
+	globalConfig: {
 		getEdgeConfigs,
 		createEdgeConfig,
 		getEdgeConfig,
@@ -19650,8 +19650,8 @@ export const operationsByTag = {
 		createInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItems,
 		updateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId,
 		deleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId,
-		getInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig,
-		replaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig,
+		getInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfig,
+		replaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfig,
 	},
 	authentication: {
 		exchangeSsoToken,
@@ -19670,7 +19670,7 @@ export const operationsByTag = {
 		getMicrofrontendsConfigForProject,
 		createMicrofrontendsGroupWithApplications,
 	},
-	apiObservability: {
+	observability: {
 		getObservabilityConfigurationProjects,
 		updateObservabilityConfigurationProject,
 	},
@@ -19766,21 +19766,17 @@ export const operationsByTag = {
 	},
 	security: {
 		updateAttackChallengeMode,
+		getSecurityFirewallConfig,
 		putFirewallConfig,
 		updateFirewallConfig,
 		getFirewallConfig,
+		deleteSecurityFirewallConfigByConfigVersion,
+		createSecurityFirewallConfigByConfigVersionActivate,
 		getActiveAttackStatus,
 		getBypassIp,
 		addBypassIp,
 		removeBypassIp,
 		getSecurityFirewallEvents,
-	},
-	apiSecurity: {
-		getSecurityFirewallConfig,
-		deleteSecurityFirewallConfigByConfigVersion,
-		createSecurityFirewallConfigByConfigVersionActivate,
-	},
-	firewall: {
 		generateFirewallRule,
 	},
 	teams: {
@@ -19854,7 +19850,7 @@ export const tagDictionary = {
 		DELETE: ["deleteAccessGroup", "deleteAccessGroupProject"],
 		PATCH: ["updateAccessGroupProject"],
 	},
-	apiAiGateway: {
+	aiGateway: {
 		POST: ["createAiGatewayRule"],
 		GET: ["listAiGatewayRules"],
 		PATCH: ["updateAiGatewayRule"],
@@ -19993,7 +19989,7 @@ export const tagDictionary = {
 			"dangerouslyDeleteBySrcImages",
 		],
 	},
-	edgeConfig: {
+	globalConfig: {
 		GET: [
 			"getEdgeConfigs",
 			"getEdgeConfig",
@@ -20061,7 +20057,7 @@ export const tagDictionary = {
 			"getIntegrationResources",
 			"getIntegrationResource",
 			"getInvoice",
-			"getInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig",
+			"getInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfig",
 		],
 		POST: [
 			"createEvent",
@@ -20081,7 +20077,7 @@ export const tagDictionary = {
 			"importResource",
 			"updateResourceSecrets",
 			"updateResourceSecretsById",
-			"replaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfig",
+			"replaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfig",
 		],
 	},
 	authentication: {
@@ -20101,7 +20097,7 @@ export const tagDictionary = {
 		],
 		POST: ["createMicrofrontendsGroupWithApplications"],
 	},
-	apiObservability: {
+	observability: {
 		GET: ["getObservabilityConfigurationProjects"],
 		PUT: ["updateObservabilityConfigurationProject"],
 	},
@@ -20194,19 +20190,22 @@ export const tagDictionary = {
 		PATCH: ["updateSandbox"],
 	},
 	security: {
-		POST: ["updateAttackChallengeMode", "addBypassIp"],
+		POST: [
+			"updateAttackChallengeMode",
+			"createSecurityFirewallConfigByConfigVersionActivate",
+			"addBypassIp",
+			"generateFirewallRule",
+		],
+		GET: [
+			"getSecurityFirewallConfig",
+			"getFirewallConfig",
+			"getActiveAttackStatus",
+			"getBypassIp",
+			"getSecurityFirewallEvents",
+		],
 		PUT: ["putFirewallConfig"],
 		PATCH: ["updateFirewallConfig"],
-		GET: ["getFirewallConfig", "getActiveAttackStatus", "getBypassIp", "getSecurityFirewallEvents"],
-		DELETE: ["removeBypassIp"],
-	},
-	apiSecurity: {
-		GET: ["getSecurityFirewallConfig"],
-		DELETE: ["deleteSecurityFirewallConfigByConfigVersion"],
-		POST: ["createSecurityFirewallConfigByConfigVersionActivate"],
-	},
-	firewall: {
-		POST: ["generateFirewallRule"],
+		DELETE: ["deleteSecurityFirewallConfigByConfigVersion", "removeBypassIp"],
 	},
 	teams: {
 		GET: ["getTeamMembers", "getTeamAccessRequest", "getTeam", "getTeams"],

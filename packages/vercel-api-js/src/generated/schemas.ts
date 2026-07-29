@@ -538,7 +538,7 @@ export const edgeConfigItemSchema = z
 		createdAt: z.number(),
 		updatedAt: z.number(),
 	})
-	.describe("The EdgeConfig.");
+	.describe("The Global Config.");
 
 export const edgeConfigTokenSchema = z
 	.object({
@@ -560,7 +560,7 @@ export const edgeConfigTokenSchema = z
 				"Deprecated: the full, plaintext token. - Returned once by `POST /v1/edge-config/:edgeConfigId/token` (create). - Still returned by `GET /v1/edge-config/:edgeConfigId/token/:token` (detail) for backwards compatibility, but scheduled for removal. - **Not** returned by `GET /v1/edge-config/:edgeConfigId/tokens` (list); use `partialToken` for display and `id` to reference tokens. Do not rely on this field being present on read operations. Prefer `partialToken` for display and `id` for references.",
 			),
 	})
-	.describe("The EdgeConfig.");
+	.describe("The Global Config.");
 
 export const userEventSchema = z
 	.object({
@@ -627,6 +627,7 @@ export const userEventSchema = z
 				"ai-gateway-api-key-created",
 				"ai-gateway-api-key-deleted",
 				"ai-gateway-api-key-quota-updated",
+				"ai-gateway-budget-default-updated",
 				"ai-gateway-byok-credential-created",
 				"ai-gateway-byok-credential-deleted",
 				"ai-gateway-byok-credential-updated",
@@ -644,6 +645,7 @@ export const userEventSchema = z
 				"ai-gateway-rule-created",
 				"ai-gateway-rule-deleted",
 				"ai-gateway-rule-updated",
+				"ai-gateway-scope-budget-updated",
 				"ai-gateway-virtual-model-config-archived",
 				"ai-gateway-virtual-model-config-created",
 				"ai-gateway-virtual-model-config-restored",
@@ -689,6 +691,7 @@ export const userEventSchema = z
 				"cert-system-create",
 				"code-owners-config-updated",
 				"compliance-document-downloaded",
+				"compliance-documents-bulk-downloaded",
 				"concurrent-builds-update",
 				"connect-attach-project",
 				"connect-bitbucket",
@@ -1087,6 +1090,7 @@ export const userEventSchema = z
 				"subscription-product-removed",
 				"subscription-updated",
 				"team",
+				"team-agent-billing-migration-decision-changed",
 				"team-avatar-update",
 				"team-collaboration-settings-updated",
 				"team-default-build-machine-updated",
@@ -1504,6 +1508,41 @@ export const userEventSchema = z
 							id: z.string(),
 							name: z.string(),
 						}),
+						budget: z
+							.object({
+								limitAmount: z.number().describe("Spend cap, in dollars."),
+								refreshPeriod: z.enum(["daily", "monthly", "none", "weekly"]),
+							})
+							.nullish()
+							.describe(
+								"Spend budget on an AI Gateway API key, as surfaced in activity messages. Defined locally (rather than imported from `@api/pubsub-types`) because `@api/pubsub-types` already depends on `@api/events`; importing it here would create a circular dependency. Must stay structurally aligned with `APIKeyBudget` in `@api/pubsub-types/event-payloads/api-keys`.",
+							),
+						change: z.enum(["disable", "enable", "remove", "set"]),
+					})
+					.strict(),
+				z
+					.object({
+						scopeType: z.enum(["api-key", "project", "team"]),
+						budget: z
+							.object({
+								limitAmount: z.number().describe("Spend cap, in dollars."),
+								refreshPeriod: z.enum(["daily", "monthly", "none", "weekly"]),
+							})
+							.nullish()
+							.describe(
+								"Spend budget on an AI Gateway API key, as surfaced in activity messages. Defined locally (rather than imported from `@api/pubsub-types`) because `@api/pubsub-types` already depends on `@api/events`; importing it here would create a circular dependency. Must stay structurally aligned with `APIKeyBudget` in `@api/pubsub-types/event-payloads/api-keys`.",
+							),
+						change: z.enum(["disable", "enable", "remove", "set"]),
+					})
+					.strict(),
+				z
+					.object({
+						scopeType: z.enum(["project", "team"]),
+						projectId: z
+							.string()
+							.optional()
+							.describe("Associates the event with a project for filtering; not rendered."),
+						projectName: z.string().optional(),
 						budget: z
 							.object({
 								limitAmount: z.number().describe("Spend cap, in dollars."),
@@ -2419,6 +2458,19 @@ export const userEventSchema = z
 						documentId: z.string(),
 						title: z.string(),
 						fingerprint: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						count: z.number(),
+						documents: z.array(
+							z.object({
+								slug: z.string(),
+								documentId: z.string(),
+								title: z.string(),
+								fingerprint: z.string(),
+							}),
+						),
 					})
 					.strict(),
 				z
@@ -4560,6 +4612,7 @@ export const userEventSchema = z
 											"ENTERPRISE_UNPAID_INVOICE",
 											"EXPOSURE_CAP_EXCEEDED",
 											"FAIR_USE_LIMITS_EXCEEDED",
+											"HOBBY_ALLOCATION_PAUSED",
 											"SUBSCRIPTION_CANCELED",
 											"SUBSCRIPTION_EXPIRED",
 											"UNPAID_INVOICE",
@@ -4607,6 +4660,84 @@ export const userEventSchema = z
 												"webAnalyticsEvent",
 											])
 											.optional(),
+										hobbyAllocationPause: z
+											.object({
+												pausedUntil: z
+													.number()
+													.describe(
+														"Unix ms timestamp at which the pause is eligible to end. This is the single source of truth for when the pause ends. Never re-derive it by re-checking usage — usage keeps moving while a team is paused, and the pause duration is a fixed experiment parameter.",
+													),
+												pausedAt: z
+													.number()
+													.describe("Unix ms timestamp of when the pause was applied."),
+												triggers: z
+													.array(
+														z.object({
+															allocation: z
+																.enum([
+																	"analyticsUsage",
+																	"artifacts",
+																	"bandwidth",
+																	"blobDataTransfer",
+																	"blobTotalAdvancedRequests",
+																	"blobTotalAvgSizeInBytes",
+																	"blobTotalGetResponseObjectSizeInBytes",
+																	"blobTotalSimpleRequests",
+																	"connectDataTransfer",
+																	"dataCacheRead",
+																	"dataCacheWrite",
+																	"edgeConfigRead",
+																	"edgeConfigWrite",
+																	"edgeFunctionExecutionUnits",
+																	"edgeMiddlewareInvocations",
+																	"edgeRequest",
+																	"edgeRequestAdditionalCpuDuration",
+																	"elasticConcurrencyBuildSlots",
+																	"fastDataTransfer",
+																	"fastOriginTransfer",
+																	"fluidCpuDuration",
+																	"fluidDuration",
+																	"functionDuration",
+																	"functionInvocation",
+																	"imageOptimizationCacheRead",
+																	"imageOptimizationCacheWrite",
+																	"imageOptimizationTransformation",
+																	"logDrainsVolume",
+																	"monitoringMetric",
+																	"observabilityEvent",
+																	"onDemandConcurrencyMinutes",
+																	"runtimeCacheRead",
+																	"runtimeCacheWrite",
+																	"serverlessFunctionExecution",
+																	"sourceImages",
+																	"wafOwaspExcessBytes",
+																	"wafOwaspRequests",
+																	"wafRateLimitRequest",
+																	"webAnalyticsEvent",
+																])
+																.describe(
+																	"Metered allocation whose included amount was fully consumed.",
+																),
+															usage: z
+																.number()
+																.describe(
+																	"Usage recorded for that allocation when the pause was applied.",
+																),
+														}),
+													)
+													.describe(
+														"Allocations that were at or over 100% when the pause was applied.",
+													),
+												cohort: z
+													.string()
+													.describe(
+														"Experiment cohort the owner was assigned to when the pause fired. Free-form so cohort naming stays owned by the assignment path.",
+													),
+											})
+											.optional()
+											.describe(
+												"Present only when `reason` is `HOBBY_ALLOCATION_PAUSED`. Makes the pause self-describing for support without a separate lookup.",
+											),
 									})
 									.nullish(),
 								stagingPrefix: z.string(),
@@ -8314,6 +8445,12 @@ export const userEventSchema = z
 					.strict(),
 				z
 					.object({
+						decision: z.enum(["keep_on", "turn_off"]),
+						version: z.string(),
+					})
+					.strict(),
+				z
+					.object({
 						consent: z.enum(["granted", "refused"]),
 					})
 					.strict(),
@@ -9036,6 +9173,7 @@ export const listEventTypeSchema = z
 				"ai-gateway-api-key-created",
 				"ai-gateway-api-key-deleted",
 				"ai-gateway-api-key-quota-updated",
+				"ai-gateway-budget-default-updated",
 				"ai-gateway-byok-credential-created",
 				"ai-gateway-byok-credential-deleted",
 				"ai-gateway-byok-credential-updated",
@@ -9053,6 +9191,7 @@ export const listEventTypeSchema = z
 				"ai-gateway-rule-created",
 				"ai-gateway-rule-deleted",
 				"ai-gateway-rule-updated",
+				"ai-gateway-scope-budget-updated",
 				"ai-gateway-virtual-model-config-archived",
 				"ai-gateway-virtual-model-config-created",
 				"ai-gateway-virtual-model-config-restored",
@@ -9098,6 +9237,7 @@ export const listEventTypeSchema = z
 				"cert-system-create",
 				"code-owners-config-updated",
 				"compliance-document-downloaded",
+				"compliance-documents-bulk-downloaded",
 				"concurrent-builds-update",
 				"connect-attach-project",
 				"connect-bitbucket",
@@ -9496,6 +9636,7 @@ export const listEventTypeSchema = z
 				"subscription-product-removed",
 				"subscription-updated",
 				"team",
+				"team-agent-billing-migration-decision-changed",
 				"team-avatar-update",
 				"team-collaboration-settings-updated",
 				"team-default-build-machine-updated",
@@ -9649,6 +9790,7 @@ export const listEventTypeSchema = z
 					"ai-gateway-api-key-created",
 					"ai-gateway-api-key-deleted",
 					"ai-gateway-api-key-quota-updated",
+					"ai-gateway-budget-default-updated",
 					"ai-gateway-byok-credential-created",
 					"ai-gateway-byok-credential-deleted",
 					"ai-gateway-byok-credential-updated",
@@ -9666,6 +9808,7 @@ export const listEventTypeSchema = z
 					"ai-gateway-rule-created",
 					"ai-gateway-rule-deleted",
 					"ai-gateway-rule-updated",
+					"ai-gateway-scope-budget-updated",
 					"ai-gateway-virtual-model-config-archived",
 					"ai-gateway-virtual-model-config-created",
 					"ai-gateway-virtual-model-config-restored",
@@ -9711,6 +9854,7 @@ export const listEventTypeSchema = z
 					"cert-system-create",
 					"code-owners-config-updated",
 					"compliance-document-downloaded",
+					"compliance-documents-bulk-downloaded",
 					"concurrent-builds-update",
 					"connect-attach-project",
 					"connect-bitbucket",
@@ -10109,6 +10253,7 @@ export const listEventTypeSchema = z
 					"subscription-product-removed",
 					"subscription-updated",
 					"team",
+					"team-agent-billing-migration-decision-changed",
 					"team-avatar-update",
 					"team-collaboration-settings-updated",
 					"team-default-build-machine-updated",
@@ -12109,6 +12254,7 @@ export const authUserSchema = z
 					"ENTERPRISE_UNPAID_INVOICE",
 					"EXPOSURE_CAP_EXCEEDED",
 					"FAIR_USE_LIMITS_EXCEEDED",
+					"HOBBY_ALLOCATION_PAUSED",
 					"SUBSCRIPTION_CANCELED",
 					"SUBSCRIPTION_EXPIRED",
 					"UNPAID_INVOICE",
@@ -12156,6 +12302,76 @@ export const authUserSchema = z
 						"webAnalyticsEvent",
 					])
 					.optional(),
+				hobbyAllocationPause: z
+					.object({
+						pausedUntil: z
+							.number()
+							.describe(
+								"Unix ms timestamp at which the pause is eligible to end. This is the single source of truth for when the pause ends. Never re-derive it by re-checking usage — usage keeps moving while a team is paused, and the pause duration is a fixed experiment parameter.",
+							),
+						pausedAt: z.number().describe("Unix ms timestamp of when the pause was applied."),
+						triggers: z
+							.array(
+								z.object({
+									allocation: z
+										.enum([
+											"analyticsUsage",
+											"artifacts",
+											"bandwidth",
+											"blobDataTransfer",
+											"blobTotalAdvancedRequests",
+											"blobTotalAvgSizeInBytes",
+											"blobTotalGetResponseObjectSizeInBytes",
+											"blobTotalSimpleRequests",
+											"connectDataTransfer",
+											"dataCacheRead",
+											"dataCacheWrite",
+											"edgeConfigRead",
+											"edgeConfigWrite",
+											"edgeFunctionExecutionUnits",
+											"edgeMiddlewareInvocations",
+											"edgeRequest",
+											"edgeRequestAdditionalCpuDuration",
+											"elasticConcurrencyBuildSlots",
+											"fastDataTransfer",
+											"fastOriginTransfer",
+											"fluidCpuDuration",
+											"fluidDuration",
+											"functionDuration",
+											"functionInvocation",
+											"imageOptimizationCacheRead",
+											"imageOptimizationCacheWrite",
+											"imageOptimizationTransformation",
+											"logDrainsVolume",
+											"monitoringMetric",
+											"observabilityEvent",
+											"onDemandConcurrencyMinutes",
+											"runtimeCacheRead",
+											"runtimeCacheWrite",
+											"serverlessFunctionExecution",
+											"sourceImages",
+											"wafOwaspExcessBytes",
+											"wafOwaspRequests",
+											"wafRateLimitRequest",
+											"webAnalyticsEvent",
+										])
+										.describe("Metered allocation whose included amount was fully consumed."),
+									usage: z
+										.number()
+										.describe("Usage recorded for that allocation when the pause was applied."),
+								}),
+							)
+							.describe("Allocations that were at or over 100% when the pause was applied."),
+						cohort: z
+							.string()
+							.describe(
+								"Experiment cohort the owner was assigned to when the pause fired. Free-form so cohort naming stays owned by the assignment path.",
+							),
+					})
+					.optional()
+					.describe(
+						"Present only when `reason` is `HOBBY_ALLOCATION_PAUSED`. Makes the pause self-describing for support without a separate lookup.",
+					),
 			})
 			.nullable()
 			.describe(
@@ -19818,84 +20034,84 @@ export const deleteInstallationsByIntegrationConfigurationIdResourcesByResourceI
 		deleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemIdStatus410Schema,
 	]);
 
-export const getInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigPathIntegrationConfigurationIdSchema =
+export const getInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigPathIntegrationConfigurationIdSchema =
 	z.string();
 
-export const getInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigPathResourceIdSchema =
+export const getInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigPathResourceIdSchema =
 	z.string();
 
-export const getInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus200Schema =
+export const getInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus200Schema =
 	z.unknown();
 
-export const getInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus304Schema =
+export const getInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus304Schema =
 	z.unknown();
 
-export const getInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus400Schema =
+export const getInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus400Schema =
 	z.unknown();
 
-export const getInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus401Schema =
+export const getInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus401Schema =
 	z.unknown();
 
-export const getInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus403Schema =
+export const getInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus403Schema =
 	z.unknown();
 
-export const getInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus404Schema =
+export const getInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus404Schema =
 	z.unknown();
 
-export const getInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus410Schema =
+export const getInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus410Schema =
 	z.unknown();
 
-export const getInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigResponseSchema =
+export const getInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigResponseSchema =
 	z.union([
-		getInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus200Schema,
-		getInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus304Schema,
-		getInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus400Schema,
-		getInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus401Schema,
-		getInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus403Schema,
-		getInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus404Schema,
-		getInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus410Schema,
+		getInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus200Schema,
+		getInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus304Schema,
+		getInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus400Schema,
+		getInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus401Schema,
+		getInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus403Schema,
+		getInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus404Schema,
+		getInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus410Schema,
 	]);
 
-export const replaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigPathIntegrationConfigurationIdSchema =
+export const replaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigPathIntegrationConfigurationIdSchema =
 	z.string();
 
-export const replaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigPathResourceIdSchema =
+export const replaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigPathResourceIdSchema =
 	z.string();
 
-export const replaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus200Schema =
+export const replaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus200Schema =
 	z.unknown();
 
-export const replaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus400Schema =
+export const replaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus400Schema =
 	z.unknown();
 
-export const replaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus401Schema =
+export const replaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus401Schema =
 	z.unknown();
 
-export const replaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus403Schema =
+export const replaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus403Schema =
 	z.unknown();
 
-export const replaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus404Schema =
+export const replaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus404Schema =
 	z.unknown();
 
-export const replaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus409Schema =
+export const replaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus409Schema =
 	z.unknown();
 
-export const replaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus410Schema =
+export const replaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus410Schema =
 	z.unknown();
 
-export const replaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus412Schema =
+export const replaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus412Schema =
 	z.unknown();
 
-export const replaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigResponseSchema =
+export const replaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigResponseSchema =
 	z.union([
-		replaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus200Schema,
-		replaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus400Schema,
-		replaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus401Schema,
-		replaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus403Schema,
-		replaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus404Schema,
-		replaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus409Schema,
-		replaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus410Schema,
-		replaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationEdgeConfigStatus412Schema,
+		replaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus200Schema,
+		replaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus400Schema,
+		replaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus401Schema,
+		replaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus403Schema,
+		replaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus404Schema,
+		replaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus409Schema,
+		replaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus410Schema,
+		replaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfigStatus412Schema,
 	]);
 
 export const getMicrofrontendsGroupsQueryTeamIdSchema = z
@@ -24321,7 +24537,7 @@ export const getSecurityFirewallEventsResponseSchema = z.union([
 	getSecurityFirewallEventsStatus500Schema,
 ]);
 
-export const generateFirewallRuleQueryProjectIdSchema = z.string();
+export const generateFirewallRuleQueryProjectIdSchema = z.string().optional();
 
 export const generateFirewallRuleQueryTeamIdSchema = z
 	.string()
