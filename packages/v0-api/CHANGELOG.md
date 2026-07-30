@@ -1,5 +1,11 @@
 # v0-api
 
+## 0.1.4
+
+### Patch Changes
+
+- fb6be6d: Updated the description for the Fork Chat endpoint to clarify usage based on chat version and API.
+
 ## 0.1.3
 
 ### Patch Changes

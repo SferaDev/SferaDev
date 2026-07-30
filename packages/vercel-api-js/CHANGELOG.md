@@ -1,5 +1,19 @@
 # vercel-api-js
 
+## 1.8.0
+
+### Minor Changes
+
+- 71ed713: [BREAKING] Renamed Edge Config endpoints, types, and schemas to Global Config throughout the API.
+
+### Patch Changes
+
+- 71ed713: Added support for new AI Gateway user event types and related enums such as ai-gateway-budget-default-updated and ai-gateway-scope-budget-updated.
+- 71ed713: Added scopeTypeEnum, allocationEnum, and decisionEnum to better model allocation and decision settings in API types.
+- 71ed713: Made the projectId parameter in generateFirewallRule endpoint optional.
+- 71ed713: Added support for handling the HOBBY_ALLOCATION_PAUSED reason in user blocking and soft-block reasons, including associated metadata about the pause.
+- 71ed713: Added new user event types related to compliance document downloads and team agent billing migration decisions.
+
 ## 1.7.2
 
 ### Patch Changes
