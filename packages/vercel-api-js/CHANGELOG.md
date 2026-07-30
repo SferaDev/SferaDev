@@ -1,5 +1,18 @@
 # vercel-api-js
 
+## 1.8.1
+
+### Patch Changes
+
+- 1c0896c: Added support for new possible data shapes in UserEvent for project widget preferences and OIDC policy lifecycle events.
+- 1c0896c: Added new user event types related to MFA: 'user-mfa-challenge-failed' and 'user-mfa-change-failed'.
+- 1c0896c: Added 'basic' option to the build machine enums (defaultEnum, previousEnum, nextEnum, teamResourceConfigBuildMachineDefaultEnum).
+- 1c0896c: Added 'projectCardWidgetPreferences' property to UserEvent data.
+- 1c0896c: Added new widgetEnum and corresponding type WidgetEnumKey.
+- 1c0896c: Added additional actions to actionEnum for passkey and TOTP management.
+- 1c0896c: Added support for new user event type: 'project-card-widget-preference-updated'.
+- 1c0896c: Added new user event types for OIDC policy lifecycle: 'oidc-policy-created', 'oidc-policy-deleted', 'oidc-policy-updated', and 'oidc-policy-used-to-obtain-app-token'.
+
 ## 1.8.0
 
 ### Minor Changes
