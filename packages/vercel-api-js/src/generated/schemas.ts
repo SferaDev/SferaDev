@@ -883,6 +883,10 @@ export const userEventSchema = z
 				"observability-enabled",
 				"observability-plus-project-disabled",
 				"observability-plus-project-enabled",
+				"oidc-policy-created",
+				"oidc-policy-deleted",
+				"oidc-policy-updated",
+				"oidc-policy-used-to-obtain-app-token",
 				"organization-create",
 				"organization-delete",
 				"organization-slug-update",
@@ -931,6 +935,7 @@ export const userEventSchema = z
 				"project-build-command-updated",
 				"project-build-logs-and-source-protection-updated",
 				"project-build-machine-updated",
+				"project-card-widget-preference-updated",
 				"project-client-cert-delete",
 				"project-client-cert-upload",
 				"project-connect-configurations",
@@ -1143,7 +1148,9 @@ export const userEventSchema = z
 				"user-emu-account-archived",
 				"user-emu-account-deleted",
 				"user-emu-account-recovered",
+				"user-mfa-challenge-failed",
 				"user-mfa-challenge-verified",
+				"user-mfa-change-failed",
 				"user-mfa-configuration-updated",
 				"user-mfa-recovery-codes-regenerated",
 				"user-mfa-removed",
@@ -4447,6 +4454,20 @@ export const userEventSchema = z
 									.describe(
 										"Overrides our DEFAULT project domains limit per account or per project.",
 									),
+								projectCardWidgetPreferences: z
+									.array(
+										z.object({
+											projectId: z.string(),
+											widget: z.enum([
+												"alert",
+												"firewall-allowed",
+												"firewall-denied",
+												"online",
+												"res",
+											]),
+										}),
+									)
+									.optional(),
 								remoteCaching: z
 									.object({
 										enabled: z.union([z.literal(false), z.literal(true)]).optional(),
@@ -4515,7 +4536,7 @@ export const userEventSchema = z
 										buildMachine: z
 											.object({
 												default: z
-													.enum(["elastic", "enhanced", "standard", "turbo"])
+													.enum(["basic", "elastic", "enhanced", "standard", "turbo"])
 													.optional()
 													.describe(
 														'Default build machine type for new deployments. This must be used in combination with the buildEntitlements field. It is respected over Vercel\'s notion of the default build machine, and was originally implemented to allow Teams to "downgrade". - Hobby customers cannot set this, because they only have access to one machine type - Pro customers get Turbo machines by default, so this field is effectively for downgrading - ENT customers cannot set this (yet), because their default is based on their contract. https://linear.app/vercel/project/self-serve-build-machines-for-enterprise-customers-0cbc357e26d2/overview',
@@ -6662,6 +6683,15 @@ export const userEventSchema = z
 					.strict(),
 				z
 					.object({
+						projectId: z.string(),
+						projectName: z.string(),
+						widget: z
+							.enum(["alert", "firewall-allowed", "firewall-denied", "online", "res"])
+							.nullable(),
+					})
+					.strict(),
+				z
+					.object({
 						projectId: z.string().optional(),
 						projectName: z.string().optional(),
 						certId: z.string().optional(),
@@ -8130,8 +8160,8 @@ export const userEventSchema = z
 					.strict(),
 				z
 					.object({
-						previous: z.enum(["elastic", "enhanced", "standard", "turbo"]).optional(),
-						next: z.enum(["elastic", "enhanced", "standard", "turbo"]).optional(),
+						previous: z.enum(["basic", "elastic", "enhanced", "standard", "turbo"]).optional(),
+						next: z.enum(["basic", "elastic", "enhanced", "standard", "turbo"]).optional(),
 					})
 					.strict(),
 				z
@@ -8610,6 +8640,26 @@ export const userEventSchema = z
 					.strict(),
 				z
 					.object({
+						method: z.enum(["email-otp", "recovery-code", "totp", "webauthn"]),
+						reason: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						action: z.enum([
+							"add-passkey",
+							"add-totp",
+							"admin-remove",
+							"disable",
+							"enable",
+							"regenerate-recovery-codes",
+							"remove-passkey",
+						]),
+						reason: z.string(),
+					})
+					.strict(),
+				z
+					.object({
 						previous: z.object({
 							enabled: z.union([z.literal(false), z.literal(true)]),
 							totpVerified: z.union([z.literal(false), z.literal(true)]),
@@ -8963,6 +9013,130 @@ export const userEventSchema = z
 							.describe(
 								"`sub` claim of the OIDC token. Present for OIDC-authenticated flows (see {@link issuerUrl}).",
 							),
+					})
+					.strict(),
+				z
+					.object({
+						policy: z
+							.object({
+								policyId: z.string(),
+								clientId: z.string(),
+								issuerUrl: z.string(),
+								teamId: z.string(),
+								name: z
+									.string()
+									.nullable()
+									.describe("Human-readable policy name, or `null` when unnamed."),
+								claims: z
+									.array(
+										z.object({
+											name: z.string(),
+											values: z.array(
+												z.object({
+													value: z.string(),
+													wildcards: z.union([z.literal(false), z.literal(true)]),
+												}),
+											),
+										}),
+									)
+									.describe("Claim matchers an OIDC token must satisfy to use the policy."),
+								permissions: z
+									.array(z.string())
+									.describe("Permission boundary (`['*']` = the app's full declared permissions)."),
+								resources: z
+									.object({
+										projectIds: z.array(z.string()),
+									})
+									.nullable()
+									.describe("Resource boundary, or `null` when the policy has none."),
+								createdAt: z.number().describe("Creation time (epoch ms)."),
+								updatedAt: z.number().describe("Last-update time (epoch ms)."),
+							})
+							.describe(
+								"A full point-in-time snapshot of an OIDC exchange policy, captured on every lifecycle event so the audit trail records exactly what the policy looked like. Mirrors the management endpoints' public response shape.",
+							),
+						appName: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						before: z
+							.object({
+								policyId: z.string(),
+								clientId: z.string(),
+								issuerUrl: z.string(),
+								teamId: z.string(),
+								name: z
+									.string()
+									.nullable()
+									.describe("Human-readable policy name, or `null` when unnamed."),
+								claims: z
+									.array(
+										z.object({
+											name: z.string(),
+											values: z.array(
+												z.object({
+													value: z.string(),
+													wildcards: z.union([z.literal(false), z.literal(true)]),
+												}),
+											),
+										}),
+									)
+									.describe("Claim matchers an OIDC token must satisfy to use the policy."),
+								permissions: z
+									.array(z.string())
+									.describe("Permission boundary (`['*']` = the app's full declared permissions)."),
+								resources: z
+									.object({
+										projectIds: z.array(z.string()),
+									})
+									.nullable()
+									.describe("Resource boundary, or `null` when the policy has none."),
+								createdAt: z.number().describe("Creation time (epoch ms)."),
+								updatedAt: z.number().describe("Last-update time (epoch ms)."),
+							})
+							.describe(
+								"A full point-in-time snapshot of an OIDC exchange policy, captured on every lifecycle event so the audit trail records exactly what the policy looked like. Mirrors the management endpoints' public response shape.",
+							),
+						after: z
+							.object({
+								policyId: z.string(),
+								clientId: z.string(),
+								issuerUrl: z.string(),
+								teamId: z.string(),
+								name: z
+									.string()
+									.nullable()
+									.describe("Human-readable policy name, or `null` when unnamed."),
+								claims: z
+									.array(
+										z.object({
+											name: z.string(),
+											values: z.array(
+												z.object({
+													value: z.string(),
+													wildcards: z.union([z.literal(false), z.literal(true)]),
+												}),
+											),
+										}),
+									)
+									.describe("Claim matchers an OIDC token must satisfy to use the policy."),
+								permissions: z
+									.array(z.string())
+									.describe("Permission boundary (`['*']` = the app's full declared permissions)."),
+								resources: z
+									.object({
+										projectIds: z.array(z.string()),
+									})
+									.nullable()
+									.describe("Resource boundary, or `null` when the policy has none."),
+								createdAt: z.number().describe("Creation time (epoch ms)."),
+								updatedAt: z.number().describe("Last-update time (epoch ms)."),
+							})
+							.describe(
+								"A full point-in-time snapshot of an OIDC exchange policy, captured on every lifecycle event so the audit trail records exactly what the policy looked like. Mirrors the management endpoints' public response shape.",
+							),
+						appName: z.string().optional(),
 					})
 					.strict(),
 				z
@@ -9429,6 +9603,10 @@ export const listEventTypeSchema = z
 				"observability-enabled",
 				"observability-plus-project-disabled",
 				"observability-plus-project-enabled",
+				"oidc-policy-created",
+				"oidc-policy-deleted",
+				"oidc-policy-updated",
+				"oidc-policy-used-to-obtain-app-token",
 				"organization-create",
 				"organization-delete",
 				"organization-slug-update",
@@ -9477,6 +9655,7 @@ export const listEventTypeSchema = z
 				"project-build-command-updated",
 				"project-build-logs-and-source-protection-updated",
 				"project-build-machine-updated",
+				"project-card-widget-preference-updated",
 				"project-client-cert-delete",
 				"project-client-cert-upload",
 				"project-connect-configurations",
@@ -9689,7 +9868,9 @@ export const listEventTypeSchema = z
 				"user-emu-account-archived",
 				"user-emu-account-deleted",
 				"user-emu-account-recovered",
+				"user-mfa-challenge-failed",
 				"user-mfa-challenge-verified",
+				"user-mfa-change-failed",
 				"user-mfa-configuration-updated",
 				"user-mfa-recovery-codes-regenerated",
 				"user-mfa-removed",
@@ -10046,6 +10227,10 @@ export const listEventTypeSchema = z
 					"observability-enabled",
 					"observability-plus-project-disabled",
 					"observability-plus-project-enabled",
+					"oidc-policy-created",
+					"oidc-policy-deleted",
+					"oidc-policy-updated",
+					"oidc-policy-used-to-obtain-app-token",
 					"organization-create",
 					"organization-delete",
 					"organization-slug-update",
@@ -10094,6 +10279,7 @@ export const listEventTypeSchema = z
 					"project-build-command-updated",
 					"project-build-logs-and-source-protection-updated",
 					"project-build-machine-updated",
+					"project-card-widget-preference-updated",
 					"project-client-cert-delete",
 					"project-client-cert-upload",
 					"project-connect-configurations",
@@ -10306,7 +10492,9 @@ export const listEventTypeSchema = z
 					"user-emu-account-archived",
 					"user-emu-account-deleted",
 					"user-emu-account-recovered",
+					"user-mfa-challenge-failed",
 					"user-mfa-challenge-verified",
+					"user-mfa-change-failed",
 					"user-mfa-configuration-updated",
 					"user-mfa-recovery-codes-regenerated",
 					"user-mfa-removed",
@@ -11523,7 +11711,7 @@ export const teamSchema = z
 				buildMachine: z
 					.object({
 						default: z
-							.enum(["elastic", "enhanced", "standard", "turbo"])
+							.enum(["basic", "elastic", "enhanced", "standard", "turbo"])
 							.optional()
 							.describe("Default build machine type for new builds"),
 					})

@@ -1787,6 +1787,10 @@ export const userEventTypeEnum = {
 	"observability-enabled": "observability-enabled",
 	"observability-plus-project-disabled": "observability-plus-project-disabled",
 	"observability-plus-project-enabled": "observability-plus-project-enabled",
+	"oidc-policy-created": "oidc-policy-created",
+	"oidc-policy-deleted": "oidc-policy-deleted",
+	"oidc-policy-updated": "oidc-policy-updated",
+	"oidc-policy-used-to-obtain-app-token": "oidc-policy-used-to-obtain-app-token",
 	"organization-create": "organization-create",
 	"organization-delete": "organization-delete",
 	"organization-slug-update": "organization-slug-update",
@@ -1837,6 +1841,7 @@ export const userEventTypeEnum = {
 	"project-build-logs-and-source-protection-updated":
 		"project-build-logs-and-source-protection-updated",
 	"project-build-machine-updated": "project-build-machine-updated",
+	"project-card-widget-preference-updated": "project-card-widget-preference-updated",
 	"project-client-cert-delete": "project-client-cert-delete",
 	"project-client-cert-upload": "project-client-cert-upload",
 	"project-connect-configurations": "project-connect-configurations",
@@ -2056,7 +2061,9 @@ export const userEventTypeEnum = {
 	"user-emu-account-archived": "user-emu-account-archived",
 	"user-emu-account-deleted": "user-emu-account-deleted",
 	"user-emu-account-recovered": "user-emu-account-recovered",
+	"user-mfa-challenge-failed": "user-mfa-challenge-failed",
 	"user-mfa-challenge-verified": "user-mfa-challenge-verified",
+	"user-mfa-change-failed": "user-mfa-change-failed",
 	"user-mfa-configuration-updated": "user-mfa-configuration-updated",
 	"user-mfa-recovery-codes-regenerated": "user-mfa-recovery-codes-regenerated",
 	"user-mfa-removed": "user-mfa-removed",
@@ -2132,8 +2139,13 @@ export type UserEventCategoriesEnumKey =
 	(typeof userEventCategoriesEnum)[keyof typeof userEventCategoriesEnum];
 
 export const actionEnum = {
-	disabled: "disabled",
-	enabled: "enabled",
+	"add-passkey": "add-passkey",
+	"add-totp": "add-totp",
+	"admin-remove": "admin-remove",
+	disable: "disable",
+	enable: "enable",
+	"regenerate-recovery-codes": "regenerate-recovery-codes",
+	"remove-passkey": "remove-passkey",
 } as const;
 
 export type ActionEnumKey = (typeof actionEnum)[keyof typeof actionEnum];
@@ -2309,6 +2321,16 @@ export const importFlowGitProviderEnum = {
 export type ImportFlowGitProviderEnumKey =
 	(typeof importFlowGitProviderEnum)[keyof typeof importFlowGitProviderEnum];
 
+export const widgetEnum = {
+	alert: "alert",
+	"firewall-allowed": "firewall-allowed",
+	"firewall-denied": "firewall-denied",
+	online: "online",
+	res: "res",
+} as const;
+
+export type WidgetEnumKey = (typeof widgetEnum)[keyof typeof widgetEnum];
+
 export const configurationEnum = {
 	SKIP_NAMESPACE_QUEUE: "SKIP_NAMESPACE_QUEUE",
 	WAIT_FOR_NAMESPACE_QUEUE: "WAIT_FOR_NAMESPACE_QUEUE",
@@ -2317,6 +2339,7 @@ export const configurationEnum = {
 export type ConfigurationEnumKey = (typeof configurationEnum)[keyof typeof configurationEnum];
 
 export const defaultEnum = {
+	basic: "basic",
 	elastic: "elastic",
 	enhanced: "enhanced",
 	standard: "standard",
@@ -2762,6 +2785,7 @@ export const scopeEnum = {
 export type ScopeEnumKey = (typeof scopeEnum)[keyof typeof scopeEnum];
 
 export const previousEnum = {
+	basic: "basic",
 	elastic: "elastic",
 	enhanced: "enhanced",
 	standard: "standard",
@@ -2771,6 +2795,7 @@ export const previousEnum = {
 export type PreviousEnumKey = (typeof previousEnum)[keyof typeof previousEnum];
 
 export const nextEnum = {
+	basic: "basic",
 	elastic: "elastic",
 	enhanced: "enhanced",
 	standard: "standard",
@@ -9007,6 +9032,21 @@ export type UserEvent = {
 							 */
 							projectDomainsLimit?: number | undefined;
 							/**
+							 * @type array | undefined
+							 */
+							projectCardWidgetPreferences?:
+								| {
+										/**
+										 * @type string
+										 */
+										projectId: string;
+										/**
+										 * @type string
+										 */
+										widget: WidgetEnumKey;
+								  }[]
+								| undefined;
+							/**
 							 * @description Represents configuration for remote caching
 							 * @type object | undefined
 							 */
@@ -13115,6 +13155,20 @@ export type UserEvent = {
 				  }
 				| {
 						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type string
+						 */
+						widget: WidgetEnumKey | null;
+				  }
+				| {
+						/**
 						 * @type string | undefined
 						 */
 						projectId?: string | undefined;
@@ -16828,6 +16882,26 @@ export type UserEvent = {
 				  }
 				| {
 						/**
+						 * @type string
+						 */
+						method: MethodEnumKey;
+						/**
+						 * @type string
+						 */
+						reason: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						action: ActionEnumKey;
+						/**
+						 * @type string
+						 */
+						reason: string;
+				  }
+				| {
+						/**
 						 * @type object
 						 */
 						previous: {
@@ -17483,6 +17557,243 @@ export type UserEvent = {
 				  }
 				| {
 						/**
+						 * @description A full point-in-time snapshot of an OIDC exchange policy, captured on every lifecycle event so the audit trail records exactly what the policy looked like. Mirrors the management endpoints\' public response shape.
+						 * @type object
+						 */
+						policy: {
+							/**
+							 * @type string
+							 */
+							policyId: string;
+							/**
+							 * @type string
+							 */
+							clientId: string;
+							/**
+							 * @type string
+							 */
+							issuerUrl: string;
+							/**
+							 * @type string
+							 */
+							teamId: string;
+							/**
+							 * @description Human-readable policy name, or `null` when unnamed.
+							 * @type string
+							 */
+							name: string | null;
+							/**
+							 * @description Claim matchers an OIDC token must satisfy to use the policy.
+							 * @type array
+							 */
+							claims: {
+								/**
+								 * @type string
+								 */
+								name: string;
+								/**
+								 * @type array
+								 */
+								values: {
+									/**
+									 * @type string
+									 */
+									value: string;
+									/**
+									 * @type boolean
+									 */
+									wildcards: false | true;
+								}[];
+							}[];
+							/**
+							 * @description Permission boundary (`[\'*\']` = the app\'s full declared permissions).
+							 * @type array
+							 */
+							permissions: string[];
+							/**
+							 * @description Resource boundary, or `null` when the policy has none.
+							 * @type object
+							 */
+							resources: {
+								/**
+								 * @type array
+								 */
+								projectIds: string[];
+							} | null;
+							/**
+							 * @description Creation time (epoch ms).
+							 * @type number
+							 */
+							createdAt: number;
+							/**
+							 * @description Last-update time (epoch ms).
+							 * @type number
+							 */
+							updatedAt: number;
+						};
+						/**
+						 * @type string | undefined
+						 */
+						appName?: string | undefined;
+				  }
+				| {
+						/**
+						 * @description A full point-in-time snapshot of an OIDC exchange policy, captured on every lifecycle event so the audit trail records exactly what the policy looked like. Mirrors the management endpoints\' public response shape.
+						 * @type object
+						 */
+						before: {
+							/**
+							 * @type string
+							 */
+							policyId: string;
+							/**
+							 * @type string
+							 */
+							clientId: string;
+							/**
+							 * @type string
+							 */
+							issuerUrl: string;
+							/**
+							 * @type string
+							 */
+							teamId: string;
+							/**
+							 * @description Human-readable policy name, or `null` when unnamed.
+							 * @type string
+							 */
+							name: string | null;
+							/**
+							 * @description Claim matchers an OIDC token must satisfy to use the policy.
+							 * @type array
+							 */
+							claims: {
+								/**
+								 * @type string
+								 */
+								name: string;
+								/**
+								 * @type array
+								 */
+								values: {
+									/**
+									 * @type string
+									 */
+									value: string;
+									/**
+									 * @type boolean
+									 */
+									wildcards: false | true;
+								}[];
+							}[];
+							/**
+							 * @description Permission boundary (`[\'*\']` = the app\'s full declared permissions).
+							 * @type array
+							 */
+							permissions: string[];
+							/**
+							 * @description Resource boundary, or `null` when the policy has none.
+							 * @type object
+							 */
+							resources: {
+								/**
+								 * @type array
+								 */
+								projectIds: string[];
+							} | null;
+							/**
+							 * @description Creation time (epoch ms).
+							 * @type number
+							 */
+							createdAt: number;
+							/**
+							 * @description Last-update time (epoch ms).
+							 * @type number
+							 */
+							updatedAt: number;
+						};
+						/**
+						 * @description A full point-in-time snapshot of an OIDC exchange policy, captured on every lifecycle event so the audit trail records exactly what the policy looked like. Mirrors the management endpoints\' public response shape.
+						 * @type object
+						 */
+						after: {
+							/**
+							 * @type string
+							 */
+							policyId: string;
+							/**
+							 * @type string
+							 */
+							clientId: string;
+							/**
+							 * @type string
+							 */
+							issuerUrl: string;
+							/**
+							 * @type string
+							 */
+							teamId: string;
+							/**
+							 * @description Human-readable policy name, or `null` when unnamed.
+							 * @type string
+							 */
+							name: string | null;
+							/**
+							 * @description Claim matchers an OIDC token must satisfy to use the policy.
+							 * @type array
+							 */
+							claims: {
+								/**
+								 * @type string
+								 */
+								name: string;
+								/**
+								 * @type array
+								 */
+								values: {
+									/**
+									 * @type string
+									 */
+									value: string;
+									/**
+									 * @type boolean
+									 */
+									wildcards: false | true;
+								}[];
+							}[];
+							/**
+							 * @description Permission boundary (`[\'*\']` = the app\'s full declared permissions).
+							 * @type array
+							 */
+							permissions: string[];
+							/**
+							 * @description Resource boundary, or `null` when the policy has none.
+							 * @type object
+							 */
+							resources: {
+								/**
+								 * @type array
+								 */
+								projectIds: string[];
+							} | null;
+							/**
+							 * @description Creation time (epoch ms).
+							 * @type number
+							 */
+							createdAt: number;
+							/**
+							 * @description Last-update time (epoch ms).
+							 * @type number
+							 */
+							updatedAt: number;
+						};
+						/**
+						 * @type string | undefined
+						 */
+						appName?: string | undefined;
+				  }
+				| {
+						/**
 						 * @description The token\'s public ID.
 						 * @type string
 						 */
@@ -18095,6 +18406,10 @@ export const listEventTypeNameEnum = {
 	"observability-enabled": "observability-enabled",
 	"observability-plus-project-disabled": "observability-plus-project-disabled",
 	"observability-plus-project-enabled": "observability-plus-project-enabled",
+	"oidc-policy-created": "oidc-policy-created",
+	"oidc-policy-deleted": "oidc-policy-deleted",
+	"oidc-policy-updated": "oidc-policy-updated",
+	"oidc-policy-used-to-obtain-app-token": "oidc-policy-used-to-obtain-app-token",
 	"organization-create": "organization-create",
 	"organization-delete": "organization-delete",
 	"organization-slug-update": "organization-slug-update",
@@ -18145,6 +18460,7 @@ export const listEventTypeNameEnum = {
 	"project-build-logs-and-source-protection-updated":
 		"project-build-logs-and-source-protection-updated",
 	"project-build-machine-updated": "project-build-machine-updated",
+	"project-card-widget-preference-updated": "project-card-widget-preference-updated",
 	"project-client-cert-delete": "project-client-cert-delete",
 	"project-client-cert-upload": "project-client-cert-upload",
 	"project-connect-configurations": "project-connect-configurations",
@@ -18364,7 +18680,9 @@ export const listEventTypeNameEnum = {
 	"user-emu-account-archived": "user-emu-account-archived",
 	"user-emu-account-deleted": "user-emu-account-deleted",
 	"user-emu-account-recovered": "user-emu-account-recovered",
+	"user-mfa-challenge-failed": "user-mfa-challenge-failed",
 	"user-mfa-challenge-verified": "user-mfa-challenge-verified",
+	"user-mfa-change-failed": "user-mfa-change-failed",
 	"user-mfa-configuration-updated": "user-mfa-configuration-updated",
 	"user-mfa-recovery-codes-regenerated": "user-mfa-recovery-codes-regenerated",
 	"user-mfa-removed": "user-mfa-removed",
@@ -18719,6 +19037,10 @@ export const listEventTypeReplacedByEnum = {
 	"observability-enabled": "observability-enabled",
 	"observability-plus-project-disabled": "observability-plus-project-disabled",
 	"observability-plus-project-enabled": "observability-plus-project-enabled",
+	"oidc-policy-created": "oidc-policy-created",
+	"oidc-policy-deleted": "oidc-policy-deleted",
+	"oidc-policy-updated": "oidc-policy-updated",
+	"oidc-policy-used-to-obtain-app-token": "oidc-policy-used-to-obtain-app-token",
 	"organization-create": "organization-create",
 	"organization-delete": "organization-delete",
 	"organization-slug-update": "organization-slug-update",
@@ -18769,6 +19091,7 @@ export const listEventTypeReplacedByEnum = {
 	"project-build-logs-and-source-protection-updated":
 		"project-build-logs-and-source-protection-updated",
 	"project-build-machine-updated": "project-build-machine-updated",
+	"project-card-widget-preference-updated": "project-card-widget-preference-updated",
 	"project-client-cert-delete": "project-client-cert-delete",
 	"project-client-cert-upload": "project-client-cert-upload",
 	"project-connect-configurations": "project-connect-configurations",
@@ -18988,7 +19311,9 @@ export const listEventTypeReplacedByEnum = {
 	"user-emu-account-archived": "user-emu-account-archived",
 	"user-emu-account-deleted": "user-emu-account-deleted",
 	"user-emu-account-recovered": "user-emu-account-recovered",
+	"user-mfa-challenge-failed": "user-mfa-challenge-failed",
 	"user-mfa-challenge-verified": "user-mfa-challenge-verified",
+	"user-mfa-change-failed": "user-mfa-change-failed",
 	"user-mfa-configuration-updated": "user-mfa-configuration-updated",
 	"user-mfa-recovery-codes-regenerated": "user-mfa-recovery-codes-regenerated",
 	"user-mfa-removed": "user-mfa-removed",
@@ -21226,6 +21551,7 @@ export type TeamDefaultRolesTeamPermissionsEnumKey =
 	(typeof teamDefaultRolesTeamPermissionsEnum)[keyof typeof teamDefaultRolesTeamPermissionsEnum];
 
 export const teamResourceConfigBuildMachineDefaultEnum = {
+	basic: "basic",
 	elastic: "elastic",
 	enhanced: "enhanced",
 	standard: "standard",

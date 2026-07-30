@@ -9380,6 +9380,7 @@ export type {
 	VerifyProjectDomainStatus410,
 	VersionEnumKey,
 	ViewPreferenceEnumKey,
+	WidgetEnumKey,
 	WriteSessionFilesHeaderxCwd,
 	WriteSessionFilesPathSessionId,
 	WriteSessionFilesQuerySlug,
@@ -9595,4 +9596,5 @@ export {
 	vcrTagStatusEnum,
 	versionEnum,
 	viewPreferenceEnum,
+	widgetEnum,
 } from "./types";
