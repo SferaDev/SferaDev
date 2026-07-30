@@ -848,7 +848,7 @@ export async function chatsFavorite(
 
 /**
  * @summary Fork Chat
- * @description Creates a new chat fork (duplicate) from a specific version within an existing chat. Useful for branching off alternate directions without modifying the original conversation.
+ * @description Creates a new chat fork (duplicate) from a specific version within a chat created through Platform API v1. To duplicate chats created in v0 web or Platform API v2, use POST /v2/chats/{chatId}/duplicate.
  * @link /chats/{chatId}/fork
  */
 export async function chatsFork(
