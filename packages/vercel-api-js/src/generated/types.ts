@@ -12178,6 +12178,10 @@ export type UserEvent = {
 							 */
 							omitScriptNonce?: (false | true) | undefined;
 							/**
+							 * @type boolean | undefined
+							 */
+							connectSrcNotificationsEnabled?: (false | true) | undefined;
+							/**
 							 * @type string | undefined
 							 */
 							computedScriptSrc?: string | undefined;
@@ -12226,6 +12230,10 @@ export type UserEvent = {
 							 * @type boolean | undefined
 							 */
 							omitScriptNonce?: (false | true) | undefined;
+							/**
+							 * @type boolean | undefined
+							 */
+							connectSrcNotificationsEnabled?: (false | true) | undefined;
 							/**
 							 * @type string | undefined
 							 */
