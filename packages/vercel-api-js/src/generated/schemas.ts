@@ -4513,6 +4513,7 @@ export const userEventSchema = z
 										edgeConfigSize: z.number().optional(),
 										edgeFunctionMaxSizeBytes: z.number().optional(),
 										edgeFunctionExecutionTimeoutMs: z.number().optional(),
+										serverlessFunctionMaxDuration: z.number().optional(),
 										serverlessFunctionMaxMemorySize: z.number().optional(),
 										kvDatabases: z.number().optional(),
 										postgresDatabases: z.number().optional(),
@@ -11168,7 +11169,12 @@ export const namedSandboxSchema = z
 		persistent: z
 			.union([z.literal(false), z.literal(true)])
 			.describe("Whether the sandbox persists its state across restarts via automatic snapshots."),
-		region: z.string().optional().describe("The region the sandbox runs in."),
+		region: z
+			.string()
+			.optional()
+			.describe(
+				"The region the sandbox is configured to run in: the region set on the sandbox, otherwise the project-level default, then the platform default. Where a running session actually landed is reported by `session.region`.",
+			),
 		vcpus: z.number().optional().describe("Number of virtual CPUs allocated."),
 		memory: z.number().optional().describe("Memory allocated in MB."),
 		runtime: z.string().optional().describe("Runtime identifier."),
@@ -12687,6 +12693,12 @@ export const authUserSchema = z
 						"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
 					),
 				edgeFunctionExecutionTimeoutMs: z
+					.number()
+					.optional()
+					.describe(
+						"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
+					),
+				serverlessFunctionMaxDuration: z
 					.number()
 					.optional()
 					.describe(
