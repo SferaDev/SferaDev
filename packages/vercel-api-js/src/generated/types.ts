@@ -1764,6 +1764,7 @@ export const userEventTypeEnum = {
 	"log-drain-enabled": "log-drain-enabled",
 	login: "login",
 	"manual-deployment-promotion-created": "manual-deployment-promotion-created",
+	"marketplace-flex-commit-opt-in": "marketplace-flex-commit-opt-in",
 	"marketplace-integration-allowlist-updated": "marketplace-integration-allowlist-updated",
 	"microfrontend-group-added": "microfrontend-group-added",
 	"microfrontend-group-deleted": "microfrontend-group-deleted",
@@ -2057,6 +2058,7 @@ export const userEventTypeEnum = {
 	"tracing-configured": "tracing-configured",
 	"tracing-disabled": "tracing-disabled",
 	"unlink-login-connection": "unlink-login-connection",
+	"update-account-flow-triggered": "update-account-flow-triggered",
 	"user-delete": "user-delete",
 	"user-emu-account-archived": "user-emu-account-archived",
 	"user-emu-account-deleted": "user-emu-account-deleted",
@@ -11676,6 +11678,29 @@ export type UserEvent = {
 				  }
 				| {
 						/**
+						 * @type array
+						 */
+						periods: {
+							/**
+							 * @type number
+							 */
+							periodNumber: number;
+							/**
+							 * @type string
+							 */
+							percent: string;
+							/**
+							 * @type string
+							 */
+							startDate: string;
+							/**
+							 * @type string
+							 */
+							endDate: string;
+						}[];
+				  }
+				| {
+						/**
 						 * @type boolean
 						 */
 						enabled: false | true;
@@ -16852,6 +16877,12 @@ export type UserEvent = {
 				  }
 				| {
 						/**
+						 * @type string | undefined
+						 */
+						teamName?: string | undefined;
+				  }
+				| {
+						/**
 						 * @type boolean
 						 */
 						totp: false | true;
@@ -18391,6 +18422,7 @@ export const listEventTypeNameEnum = {
 	"log-drain-enabled": "log-drain-enabled",
 	login: "login",
 	"manual-deployment-promotion-created": "manual-deployment-promotion-created",
+	"marketplace-flex-commit-opt-in": "marketplace-flex-commit-opt-in",
 	"marketplace-integration-allowlist-updated": "marketplace-integration-allowlist-updated",
 	"microfrontend-group-added": "microfrontend-group-added",
 	"microfrontend-group-deleted": "microfrontend-group-deleted",
@@ -18684,6 +18716,7 @@ export const listEventTypeNameEnum = {
 	"tracing-configured": "tracing-configured",
 	"tracing-disabled": "tracing-disabled",
 	"unlink-login-connection": "unlink-login-connection",
+	"update-account-flow-triggered": "update-account-flow-triggered",
 	"user-delete": "user-delete",
 	"user-emu-account-archived": "user-emu-account-archived",
 	"user-emu-account-deleted": "user-emu-account-deleted",
@@ -19022,6 +19055,7 @@ export const listEventTypeReplacedByEnum = {
 	"log-drain-enabled": "log-drain-enabled",
 	login: "login",
 	"manual-deployment-promotion-created": "manual-deployment-promotion-created",
+	"marketplace-flex-commit-opt-in": "marketplace-flex-commit-opt-in",
 	"marketplace-integration-allowlist-updated": "marketplace-integration-allowlist-updated",
 	"microfrontend-group-added": "microfrontend-group-added",
 	"microfrontend-group-deleted": "microfrontend-group-deleted",
@@ -19315,6 +19349,7 @@ export const listEventTypeReplacedByEnum = {
 	"tracing-configured": "tracing-configured",
 	"tracing-disabled": "tracing-disabled",
 	"unlink-login-connection": "unlink-login-connection",
+	"update-account-flow-triggered": "update-account-flow-triggered",
 	"user-delete": "user-delete",
 	"user-emu-account-archived": "user-emu-account-archived",
 	"user-emu-account-deleted": "user-emu-account-deleted",
@@ -20787,7 +20822,7 @@ export type NamedSandbox = {
 	 */
 	persistent: false | true;
 	/**
-	 * @description The region the sandbox is configured to run in: the region set on the sandbox, otherwise the project-level default, then the platform default. Where a running session actually landed is reported by `session.region`.
+	 * @description The region the sandbox runs in.
 	 * @example iad1
 	 * @type string | undefined
 	 */

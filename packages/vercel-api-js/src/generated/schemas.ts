@@ -860,6 +860,7 @@ export const userEventSchema = z
 				"log-drain-enabled",
 				"login",
 				"manual-deployment-promotion-created",
+				"marketplace-flex-commit-opt-in",
 				"marketplace-integration-allowlist-updated",
 				"microfrontend-group-added",
 				"microfrontend-group-deleted",
@@ -1144,6 +1145,7 @@ export const userEventSchema = z
 				"tracing-configured",
 				"tracing-disabled",
 				"unlink-login-connection",
+				"update-account-flow-triggered",
 				"user-delete",
 				"user-emu-account-archived",
 				"user-emu-account-deleted",
@@ -5914,6 +5916,18 @@ export const userEventSchema = z
 					.strict(),
 				z
 					.object({
+						periods: z.array(
+							z.object({
+								periodNumber: z.number(),
+								percent: z.string(),
+								startDate: z.string(),
+								endDate: z.string(),
+							}),
+						),
+					})
+					.strict(),
+				z
+					.object({
 						enabled: z.union([z.literal(false), z.literal(true)]),
 						allowedIntegrationCount: z.number().optional(),
 						allowedIntegrationIds: z.array(z.string()).optional(),
@@ -8626,6 +8640,11 @@ export const userEventSchema = z
 					.strict(),
 				z
 					.object({
+						teamName: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
 						totp: z.union([z.literal(false), z.literal(true)]),
 						recoveryCodes: z.number(),
 						actorId: z.string().optional(),
@@ -9586,6 +9605,7 @@ export const listEventTypeSchema = z
 				"log-drain-enabled",
 				"login",
 				"manual-deployment-promotion-created",
+				"marketplace-flex-commit-opt-in",
 				"marketplace-integration-allowlist-updated",
 				"microfrontend-group-added",
 				"microfrontend-group-deleted",
@@ -9870,6 +9890,7 @@ export const listEventTypeSchema = z
 				"tracing-configured",
 				"tracing-disabled",
 				"unlink-login-connection",
+				"update-account-flow-triggered",
 				"user-delete",
 				"user-emu-account-archived",
 				"user-emu-account-deleted",
@@ -10210,6 +10231,7 @@ export const listEventTypeSchema = z
 					"log-drain-enabled",
 					"login",
 					"manual-deployment-promotion-created",
+					"marketplace-flex-commit-opt-in",
 					"marketplace-integration-allowlist-updated",
 					"microfrontend-group-added",
 					"microfrontend-group-deleted",
@@ -10494,6 +10516,7 @@ export const listEventTypeSchema = z
 					"tracing-configured",
 					"tracing-disabled",
 					"unlink-login-connection",
+					"update-account-flow-triggered",
 					"user-delete",
 					"user-emu-account-archived",
 					"user-emu-account-deleted",
@@ -11145,12 +11168,7 @@ export const namedSandboxSchema = z
 		persistent: z
 			.union([z.literal(false), z.literal(true)])
 			.describe("Whether the sandbox persists its state across restarts via automatic snapshots."),
-		region: z
-			.string()
-			.optional()
-			.describe(
-				"The region the sandbox is configured to run in: the region set on the sandbox, otherwise the project-level default, then the platform default. Where a running session actually landed is reported by `session.region`.",
-			),
+		region: z.string().optional().describe("The region the sandbox runs in."),
 		vcpus: z.number().optional().describe("Number of virtual CPUs allocated."),
 		memory: z.number().optional().describe("Memory allocated in MB."),
 		runtime: z.string().optional().describe("Runtime identifier."),
