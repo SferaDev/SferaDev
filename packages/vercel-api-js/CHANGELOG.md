@@ -1,5 +1,11 @@
 # vercel-api-js
 
+## 1.8.2
+
+### Patch Changes
+
+- ddaee23: Added the optional field connectSrcNotificationsEnabled to relevant types and schemas.
+
 ## 1.8.1
 
 ### Patch Changes
