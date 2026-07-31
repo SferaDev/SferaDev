@@ -9174,6 +9174,10 @@ export type UserEvent = {
 										/**
 										 * @type number | undefined
 										 */
+										serverlessFunctionMaxDuration?: number | undefined;
+										/**
+										 * @type number | undefined
+										 */
 										serverlessFunctionMaxMemorySize?: number | undefined;
 										/**
 										 * @type number | undefined
@@ -20822,7 +20826,7 @@ export type NamedSandbox = {
 	 */
 	persistent: false | true;
 	/**
-	 * @description The region the sandbox runs in.
+	 * @description The region the sandbox is configured to run in: the region set on the sandbox, otherwise the project-level default, then the platform default. Where a running session actually landed is reported by `session.region`.
 	 * @example iad1
 	 * @type string | undefined
 	 */
@@ -23329,6 +23333,11 @@ export type AuthUser = {
 		 * @type number | undefined
 		 */
 		edgeFunctionExecutionTimeoutMs?: number | undefined;
+		/**
+		 * @description An object containing infomation related to the amount of platform resources may be allocated to the User account.
+		 * @type number | undefined
+		 */
+		serverlessFunctionMaxDuration?: number | undefined;
 		/**
 		 * @description An object containing infomation related to the amount of platform resources may be allocated to the User account.
 		 * @type number | undefined
