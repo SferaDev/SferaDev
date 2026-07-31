@@ -6228,6 +6228,9 @@ export const userEventSchema = z
 								newResourceBlockingPolicy: z.enum(["allow", "block"]),
 								allowUnsafeScriptSrcKeywords: z.union([z.literal(false), z.literal(true)]),
 								omitScriptNonce: z.union([z.literal(false), z.literal(true)]).optional(),
+								connectSrcNotificationsEnabled: z
+									.union([z.literal(false), z.literal(true)])
+									.optional(),
 								computedScriptSrc: z.string().optional(),
 								computedScriptSrcPreview: z.string().optional(),
 								computedConnectSrc: z.string().optional(),
@@ -6242,6 +6245,9 @@ export const userEventSchema = z
 							newResourceBlockingPolicy: z.enum(["allow", "block"]),
 							allowUnsafeScriptSrcKeywords: z.union([z.literal(false), z.literal(true)]),
 							omitScriptNonce: z.union([z.literal(false), z.literal(true)]).optional(),
+							connectSrcNotificationsEnabled: z
+								.union([z.literal(false), z.literal(true)])
+								.optional(),
 							computedScriptSrc: z.string().optional(),
 							computedScriptSrcPreview: z.string().optional(),
 							computedConnectSrc: z.string().optional(),
