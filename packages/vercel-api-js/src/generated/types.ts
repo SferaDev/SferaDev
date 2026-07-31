@@ -20787,7 +20787,7 @@ export type NamedSandbox = {
 	 */
 	persistent: false | true;
 	/**
-	 * @description The region the sandbox runs in.
+	 * @description The region the sandbox is configured to run in: the region set on the sandbox, otherwise the project-level default, then the platform default. Where a running session actually landed is reported by `session.region`.
 	 * @example iad1
 	 * @type string | undefined
 	 */
