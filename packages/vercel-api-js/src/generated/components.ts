@@ -199,6 +199,7 @@ import type {
 	CreateConnectorStatus409,
 	CreateConnectorStatus410,
 	CreateConnectorStatus422,
+	CreateConnectorStatus500,
 	CreateConnectorStatus502,
 	CreateCustomEnvironmentResponse,
 	CreateCustomEnvironmentStatus400,
@@ -4725,6 +4726,7 @@ export async function createConnector(
 			| CreateConnectorStatus409
 			| CreateConnectorStatus410
 			| CreateConnectorStatus422
+			| CreateConnectorStatus500
 			| CreateConnectorStatus502
 		>,
 		null,
