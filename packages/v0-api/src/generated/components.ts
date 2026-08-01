@@ -591,6 +591,7 @@ export async function chatsFind(
 			isFavorite?: "true" | "false";
 			vercelProjectId?: string;
 			branch?: string;
+			metadata?: unknown;
 		};
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
@@ -617,6 +618,7 @@ export async function chatsFind(
 			isFavorite?: "true" | "false";
 			vercelProjectId?: string;
 			branch?: string;
+			metadata?: unknown;
 		},
 		Record<string, string>
 	>({
