@@ -228,6 +228,13 @@ export type ChatDetail = {
 		  }
 		| undefined;
 	/**
+	 * @description Arbitrary key-value data associated with this chat.
+	 * @type object
+	 */
+	metadata: {
+		[key: string]: string;
+	};
+	/**
 	 * @description The canonical URL to access this chat.
 	 * @deprecated
 	 * @type string
@@ -642,13 +649,6 @@ export type ChatDetail = {
 		 */
 		write: boolean;
 	};
-	/**
-	 * @description Arbitrary key-value data associated with this chat.
-	 * @type object
-	 */
-	metadata: {
-		[key: string]: string;
-	};
 };
 
 export const chatSummaryObjectEnum = {
@@ -804,6 +804,13 @@ export type ChatSummary = {
 				updatedAt?: string | undefined;
 		  }
 		| undefined;
+	/**
+	 * @description Arbitrary key-value data associated with this chat.
+	 * @type object
+	 */
+	metadata: {
+		[key: string]: string;
+	};
 };
 
 export const deploymentDetailObjectEnum = {
@@ -3191,6 +3198,13 @@ export type ProjectDetail = {
 					updatedAt?: string | undefined;
 			  }
 			| undefined;
+		/**
+		 * @description Arbitrary key-value data associated with this chat.
+		 * @type object
+		 */
+		metadata: {
+			[key: string]: string;
+		};
 	}[];
 };
 
@@ -4150,6 +4164,16 @@ export type ChatsFindQueryVercelProjectId = string | undefined;
 export type ChatsFindQueryBranch = string | undefined;
 
 /**
+ * @description Filters chats by metadata. Returns chats matching every supplied key-value pair.
+ * @type object | undefined
+ */
+export type ChatsFindQueryMetadata =
+	| {
+			[key: string]: string;
+	  }
+	| undefined;
+
+/**
  * @type unknown
  */
 export type ChatsFindStatus200 = unknown;
@@ -4210,6 +4234,7 @@ export type ChatsFindRequestConfig = {
 				isFavorite?: ChatsFindQueryIsFavorite | undefined;
 				vercelProjectId?: ChatsFindQueryVercelProjectId | undefined;
 				branch?: ChatsFindQueryBranch | undefined;
+				metadata?: ChatsFindQueryMetadata | undefined;
 		  }
 		| undefined;
 	headerParams?: never | undefined;

@@ -73,6 +73,10 @@ export const chatDetailSchema = z
 			.strict()
 			.optional()
 			.describe("Full details of the most recent generated version, if available."),
+		metadata: z
+			.object({})
+			.catchall(z.string())
+			.describe("Arbitrary key-value data associated with this chat."),
 		url: z.string().describe("The canonical URL to access this chat."),
 		messages: z
 			.array(
@@ -295,10 +299,6 @@ export const chatDetailSchema = z
 				write: z.boolean().describe("If true, the user has write access to the chat."),
 			})
 			.strict(),
-		metadata: z
-			.object({})
-			.catchall(z.string())
-			.describe("Arbitrary key-value data associated with this chat."),
 	})
 	.strict()
 	.describe(
@@ -360,6 +360,10 @@ export const chatSummarySchema = z
 			.strict()
 			.optional()
 			.describe("The most recent generated version of the chat, if available."),
+		metadata: z
+			.object({})
+			.catchall(z.string())
+			.describe("Arbitrary key-value data associated with this chat."),
 	})
 	.strict()
 	.describe(
@@ -1306,6 +1310,10 @@ export const projectDetailSchema = z
 							.strict()
 							.optional()
 							.describe("The most recent generated version of the chat, if available."),
+						metadata: z
+							.object({})
+							.catchall(z.string())
+							.describe("Arbitrary key-value data associated with this chat."),
 					})
 					.strict(),
 			)
@@ -1755,6 +1763,12 @@ export const chatsFindQueryBranchSchema = z
 	.describe(
 		"Filters chats by the Git branch name. Only returns chats that have an active Git connection with the specified branch as the head.",
 	);
+
+export const chatsFindQueryMetadataSchema = z
+	.object({})
+	.catchall(z.string().max(500))
+	.optional()
+	.describe("Filters chats by metadata. Returns chats matching every supplied key-value pair.");
 
 export const chatsFindStatus200Schema = z.unknown();
 
