@@ -1,5 +1,15 @@
 # v0-api
 
+## 0.2.0
+
+### Minor Changes
+
+- b6dbfa9: Add support for filtering chats by metadata key-value pairs in chatsFind API endpoint.
+
+### Patch Changes
+
+- b6dbfa9: Add metadata field to ChatDetail, ChatSummary, and ProjectDetail types and schemas.
+
 ## 0.1.4
 
 ### Patch Changes

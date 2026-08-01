@@ -1,5 +1,19 @@
 # vercel-api-js
 
+## 1.8.3
+
+### Patch Changes
+
+- a00e971: Added support for user event objects containing 'periods' array with details about periodNumber, percent, startDate, and endDate.
+- 90c675f: Updated description for region field in namedSandboxSchema and associated types for clarity regarding configuration and session reporting.
+- 1bad2e6: Added support for 500 Internal Server Error response to createConnector API and related types.
+- a00e971: Added new event type 'update-account-flow-triggered' to user events and event types.
+- a00e971: Added support for user event objects containing an optional 'teamName' property.
+- 90c675f: Added serverlessFunctionMaxDuration field to userEventSchema, authUserSchema, and related types.
+- a00e971: Updated description for NamedSandbox 'region' property for improved clarity.
+- a00e971: Added new event type 'marketplace-flex-commit-opt-in' to user events and event types.
+- 6119db5: Updated the description for the NamedSandbox.region field to clarify how the region is determined and to note reporting via session.region.
+
 ## 1.8.2
 
 ### Patch Changes
