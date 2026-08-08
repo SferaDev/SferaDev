@@ -1547,6 +1547,11 @@ export const userEventTypeEnum = {
 	"ai-gateway-rule-deleted": "ai-gateway-rule-deleted",
 	"ai-gateway-rule-updated": "ai-gateway-rule-updated",
 	"ai-gateway-scope-budget-updated": "ai-gateway-scope-budget-updated",
+	"ai-gateway-transcripts-default-disabled": "ai-gateway-transcripts-default-disabled",
+	"ai-gateway-transcripts-default-enabled": "ai-gateway-transcripts-default-enabled",
+	"ai-gateway-transcripts-disabled": "ai-gateway-transcripts-disabled",
+	"ai-gateway-transcripts-enabled": "ai-gateway-transcripts-enabled",
+	"ai-gateway-transcripts-retention-updated": "ai-gateway-transcripts-retention-updated",
 	"ai-gateway-virtual-model-config-archived": "ai-gateway-virtual-model-config-archived",
 	"ai-gateway-virtual-model-config-created": "ai-gateway-virtual-model-config-created",
 	"ai-gateway-virtual-model-config-restored": "ai-gateway-virtual-model-config-restored",
@@ -1592,6 +1597,7 @@ export const userEventTypeEnum = {
 	"cert-system-create": "cert-system-create",
 	"code-owners-config-updated": "code-owners-config-updated",
 	"compliance-document-downloaded": "compliance-document-downloaded",
+	"compliance-document-previewed": "compliance-document-previewed",
 	"compliance-documents-bulk-downloaded": "compliance-documents-bulk-downloaded",
 	"concurrent-builds-update": "concurrent-builds-update",
 	"connect-attach-project": "connect-attach-project",
@@ -1731,6 +1737,7 @@ export const userEventTypeEnum = {
 	"flags-segment": "flags-segment",
 	"flags-settings": "flags-settings",
 	"flags-transferred": "flags-transferred",
+	"git-integration-repo-push": "git-integration-repo-push",
 	git_account_integration_link_added: "git_account_integration_link_added",
 	"instant-rollback-created": "instant-rollback-created",
 	"integration-configuration-owner-changed": "integration-configuration-owner-changed",
@@ -1753,6 +1760,7 @@ export const userEventTypeEnum = {
 	"kms-issuer-deleted": "kms-issuer-deleted",
 	"kms-issuer-key-activated": "kms-issuer-key-activated",
 	"kms-issuer-key-created": "kms-issuer-key-created",
+	"kms-issuer-key-revoked": "kms-issuer-key-revoked",
 	"kms-issuer-key-rotated": "kms-issuer-key-rotated",
 	"kms-issuer-policy-created": "kms-issuer-policy-created",
 	"kms-issuer-policy-deleted": "kms-issuer-policy-deleted",
@@ -1763,6 +1771,8 @@ export const userEventTypeEnum = {
 	"log-drain-disabled": "log-drain-disabled",
 	"log-drain-enabled": "log-drain-enabled",
 	login: "login",
+	"login-connection-linked": "login-connection-linked",
+	"login-connection-unlinked": "login-connection-unlinked",
 	"manual-deployment-promotion-created": "manual-deployment-promotion-created",
 	"marketplace-flex-commit-opt-in": "marketplace-flex-commit-opt-in",
 	"marketplace-integration-allowlist-updated": "marketplace-integration-allowlist-updated",
@@ -1794,6 +1804,8 @@ export const userEventTypeEnum = {
 	"oidc-policy-used-to-obtain-app-token": "oidc-policy-used-to-obtain-app-token",
 	"organization-create": "organization-create",
 	"organization-delete": "organization-delete",
+	"organization-dsync-group-delete": "organization-dsync-group-delete",
+	"organization-dsync-group-upsert": "organization-dsync-group-upsert",
 	"organization-slug-update": "organization-slug-update",
 	"organization-team-add": "organization-team-add",
 	"organization-team-create": "organization-team-create",
@@ -1951,8 +1963,11 @@ export const userEventTypeEnum = {
 	"protected-git-scope-added": "protected-git-scope-added",
 	"protected-git-scope-removed": "protected-git-scope-removed",
 	"runtime-cache-purge-all": "runtime-cache-purge-all",
+	"saml-connection-created": "saml-connection-created",
+	"saml-connection-deleted": "saml-connection-deleted",
 	"sandbox-alias-assigned": "sandbox-alias-assigned",
 	"sandbox-alias-delete": "sandbox-alias-delete",
+	"sandbox-snapshot-regions-updated": "sandbox-snapshot-regions-updated",
 	scale: "scale",
 	"scale-auto": "scale-auto",
 	"secondary-email-added": "secondary-email-added",
@@ -1982,6 +1997,7 @@ export const userEventTypeEnum = {
 	"spend-created": "spend-created",
 	"spend-deleted": "spend-deleted",
 	"spend-updated": "spend-updated",
+	"sso-login": "sso-login",
 	"storage-accept-tos": "storage-accept-tos",
 	"storage-access-token-set": "storage-access-token-set",
 	"storage-accessed-data-browser": "storage-accessed-data-browser",
@@ -2008,6 +2024,7 @@ export const userEventTypeEnum = {
 	"subscription-product-added": "subscription-product-added",
 	"subscription-product-removed": "subscription-product-removed",
 	"subscription-updated": "subscription-updated",
+	"support-session-created": "support-session-created",
 	team: "team",
 	"team-agent-billing-migration-decision-changed": "team-agent-billing-migration-decision-changed",
 	"team-avatar-update": "team-avatar-update",
@@ -2058,24 +2075,36 @@ export const userEventTypeEnum = {
 	"tracing-configured": "tracing-configured",
 	"tracing-disabled": "tracing-disabled",
 	"unlink-login-connection": "unlink-login-connection",
+	"update-account-flow-dismissed": "update-account-flow-dismissed",
 	"update-account-flow-triggered": "update-account-flow-triggered",
+	"user-auto-block-configured": "user-auto-block-configured",
+	"user-blocked": "user-blocked",
 	"user-delete": "user-delete",
+	"user-delete-requested": "user-delete-requested",
 	"user-emu-account-archived": "user-emu-account-archived",
 	"user-emu-account-deleted": "user-emu-account-deleted",
 	"user-emu-account-recovered": "user-emu-account-recovered",
+	"user-emu-recovery-email-sent": "user-emu-recovery-email-sent",
+	"user-emu-recovery-initiated": "user-emu-recovery-initiated",
+	"user-emu-toggled": "user-emu-toggled",
 	"user-mfa-challenge-failed": "user-mfa-challenge-failed",
 	"user-mfa-challenge-verified": "user-mfa-challenge-verified",
 	"user-mfa-change-failed": "user-mfa-change-failed",
 	"user-mfa-configuration-updated": "user-mfa-configuration-updated",
+	"user-mfa-recovery-code-used": "user-mfa-recovery-code-used",
 	"user-mfa-recovery-codes-regenerated": "user-mfa-recovery-codes-regenerated",
 	"user-mfa-removed": "user-mfa-removed",
 	"user-mfa-setup-skipped": "user-mfa-setup-skipped",
 	"user-mfa-totp-verification-started": "user-mfa-totp-verification-started",
 	"user-mfa-totp-verified": "user-mfa-totp-verified",
+	"user-phone-removed": "user-phone-removed",
+	"user-phone-updated": "user-phone-updated",
 	"user-primary-email-updated": "user-primary-email-updated",
+	"user-sudo-mode-removed": "user-sudo-mode-removed",
 	"user-token-created": "user-token-created",
 	"user-token-deleted": "user-token-deleted",
 	"user-tokens-deleted": "user-tokens-deleted",
+	"user-unblocked": "user-unblocked",
 	username: "username",
 	"v0-chat-ai-usage": "v0-chat-ai-usage",
 	"v0-chat-created": "v0-chat-created",
@@ -2087,6 +2116,7 @@ export const userEventTypeEnum = {
 	"vcr-repository-permission-added": "vcr-repository-permission-added",
 	"vcr-repository-permission-removed": "vcr-repository-permission-removed",
 	"vcr-repository-permissions-cleared": "vcr-repository-permissions-cleared",
+	"vcr-repository-visibility-changed": "vcr-repository-visibility-changed",
 	"vercel-agent-elevated-permissions-approved": "vercel-agent-elevated-permissions-approved",
 	"vercel-agent-elevated-permissions-requested": "vercel-agent-elevated-permissions-requested",
 	"vercel-agent-session-created": "vercel-agent-session-created",
@@ -2117,6 +2147,7 @@ export const userEventCategoriesEnum = {
 	ai: "ai",
 	"ai-gateway": "ai-gateway",
 	billing: "billing",
+	connect: "connect",
 	deployment: "deployment",
 	domain: "domain",
 	edge: "edge",
@@ -2161,6 +2192,7 @@ export const providerEnum = {
 	"github-limited": "github-limited",
 	gitlab: "gitlab",
 	google: "google",
+	saml: "saml",
 } as const;
 
 export type ProviderEnumKey = (typeof providerEnum)[keyof typeof providerEnum];
@@ -2203,6 +2235,20 @@ export const scopeTypeEnum = {
 } as const;
 
 export type ScopeTypeEnumKey = (typeof scopeTypeEnum)[keyof typeof scopeTypeEnum];
+
+export const defaultModeEnum = {
+	days: "days",
+	"until-requested": "until-requested",
+} as const;
+
+export type DefaultModeEnumKey = (typeof defaultModeEnum)[keyof typeof defaultModeEnum];
+
+export const ceilingModeEnum = {
+	days: "days",
+	"until-requested": "until-requested",
+} as const;
+
+export type CeilingModeEnumKey = (typeof ceilingModeEnum)[keyof typeof ceilingModeEnum];
 
 export const nextRoleEnum = {
 	ADMIN: "ADMIN",
@@ -2272,6 +2318,13 @@ export const subjectTypeEnum = {
 
 export type SubjectTypeEnumKey = (typeof subjectTypeEnum)[keyof typeof subjectTypeEnum];
 
+export const gitCredentialSourceEnum = {
+	"external-token": "external-token",
+} as const;
+
+export type GitCredentialSourceEnumKey =
+	(typeof gitCredentialSourceEnum)[keyof typeof gitCredentialSourceEnum];
+
 export const commitVerificationEnum = {
 	unknown: "unknown",
 	unverified: "unverified",
@@ -2303,6 +2356,22 @@ export const initiatorEnum = {
 
 export type InitiatorEnumKey = (typeof initiatorEnum)[keyof typeof initiatorEnum];
 
+export const outcomeEnum = {
+	failure: "failure",
+	success: "success",
+} as const;
+
+export type OutcomeEnumKey = (typeof outcomeEnum)[keyof typeof outcomeEnum];
+
+export const failureStageEnum = {
+	authorization: "authorization",
+	push: "push",
+	unexpected: "unexpected",
+	unknown: "unknown",
+} as const;
+
+export type FailureStageEnumKey = (typeof failureStageEnum)[keyof typeof failureStageEnum];
+
 export const planEnum = {
 	enterprise: "enterprise",
 	hobby: "hobby",
@@ -2313,6 +2382,7 @@ export type PlanEnumKey = (typeof planEnum)[keyof typeof planEnum];
 
 export const importFlowGitProviderEnum = {
 	bitbucket: "bitbucket",
+	"cursor-origin": "cursor-origin",
 	github: "github",
 	"github-custom-host": "github-custom-host",
 	"github-limited": "github-limited",
@@ -2325,10 +2395,20 @@ export type ImportFlowGitProviderEnumKey =
 
 export const widgetEnum = {
 	alert: "alert",
+	"analytics-online": "analytics-online",
+	"analytics-page-views": "analytics-page-views",
+	"analytics-visitors": "analytics-visitors",
 	"firewall-allowed": "firewall-allowed",
 	"firewall-denied": "firewall-denied",
+	"observability-alert": "observability-alert",
+	"observability-edge-requests": "observability-edge-requests",
+	"observability-error-rate": "observability-error-rate",
+	"observability-function-invocations": "observability-function-invocations",
 	online: "online",
 	res: "res",
+	"speed-insights-cls": "speed-insights-cls",
+	"speed-insights-lcp": "speed-insights-lcp",
+	"speed-insights-res": "speed-insights-res",
 } as const;
 
 export type WidgetEnumKey = (typeof widgetEnum)[keyof typeof widgetEnum];
@@ -2341,11 +2421,14 @@ export const configurationEnum = {
 export type ConfigurationEnumKey = (typeof configurationEnum)[keyof typeof configurationEnum];
 
 export const defaultEnum = {
-	basic: "basic",
-	elastic: "elastic",
-	enhanced: "enhanced",
-	standard: "standard",
-	turbo: "turbo",
+	BILLING: "BILLING",
+	CONTRIBUTOR: "CONTRIBUTOR",
+	DEVELOPER: "DEVELOPER",
+	MEMBER: "MEMBER",
+	OWNER: "OWNER",
+	SECURITY: "SECURITY",
+	VIEWER: "VIEWER",
+	VIEWER_FOR_PLUS: "VIEWER_FOR_PLUS",
 } as const;
 
 export type DefaultEnumKey = (typeof defaultEnum)[keyof typeof defaultEnum];
@@ -2593,7 +2676,6 @@ export type MethodEnumKey = (typeof methodEnum)[keyof typeof methodEnum];
 
 export const actorTypeEnum = {
 	admin: "admin",
-	user: "user",
 } as const;
 
 export type ActorTypeEnumKey = (typeof actorTypeEnum)[keyof typeof actorTypeEnum];
@@ -2677,6 +2759,7 @@ export type OldBuildQueueConfigurationEnumKey =
 
 export const gitProviderEnum = {
 	bitbucket: "bitbucket",
+	"cursor-origin": "cursor-origin",
 	github: "github",
 	"github-custom-host": "github-custom-host",
 	"github-limited": "github-limited",
@@ -3451,6 +3534,11 @@ export type UserEvent = {
 									refreshPeriod: RefreshPeriodEnumKey;
 							  } | null)
 							| undefined;
+						/**
+						 * @description True when the key was created with a ZDR exemption.
+						 * @type boolean | undefined
+						 */
+						zdrExemption?: (false | true) | undefined;
 				  }
 				| {
 						/**
@@ -3673,6 +3761,29 @@ export type UserEvent = {
 						/**
 						 * @type object
 						 */
+						retention: {
+							/**
+							 * @type string
+							 */
+							defaultMode: DefaultModeEnumKey;
+							/**
+							 * @type number | undefined
+							 */
+							defaultDays?: number | undefined;
+							/**
+							 * @type string
+							 */
+							ceilingMode: CeilingModeEnumKey;
+							/**
+							 * @type number | undefined
+							 */
+							ceilingDays?: number | undefined;
+						};
+				  }
+				| {
+						/**
+						 * @type object
+						 */
 						rule: {
 							/**
 							 * @type string
@@ -3748,9 +3859,9 @@ export type UserEvent = {
 							 */
 							displayName?: string | undefined;
 							/**
-							 * @type string
+							 * @type string | undefined
 							 */
-							modelSlug: string;
+							modelSlug?: string | undefined;
 						};
 				  }
 				| {
@@ -4234,6 +4345,7 @@ export type UserEvent = {
 									| "read-write:ai-gateway-guardrails"
 									| "read-write:ai-gateway-private-models"
 									| "read-write:ai-gateway-rules"
+									| "read-write:ai-gateway-virtual-model-configs"
 									| "read-write:alerts"
 									| "read-write:billing"
 									| "read-write:blob"
@@ -4257,10 +4369,12 @@ export type UserEvent = {
 									| "read-write:remote-cache"
 									| "read-write:sandbox"
 									| "read-write:team-members"
+									| "read-write:vcr"
 									| "read:access-group"
 									| "read:ai-gateway-guardrails"
 									| "read:ai-gateway-private-models"
 									| "read:ai-gateway-rules"
+									| "read:ai-gateway-virtual-model-configs"
 									| "read:alerts"
 									| "read:billing"
 									| "read:deployment"
@@ -4280,6 +4394,7 @@ export type UserEvent = {
 									| "read:speed-insights"
 									| "read:team"
 									| "read:user"
+									| "read:vcr"
 									| "read:web-analytics"
 									| "use:ai-gateway"
 							  )[]
@@ -4319,6 +4434,7 @@ export type UserEvent = {
 									| "read-write:ai-gateway-guardrails"
 									| "read-write:ai-gateway-private-models"
 									| "read-write:ai-gateway-rules"
+									| "read-write:ai-gateway-virtual-model-configs"
 									| "read-write:alerts"
 									| "read-write:billing"
 									| "read-write:blob"
@@ -4342,10 +4458,12 @@ export type UserEvent = {
 									| "read-write:remote-cache"
 									| "read-write:sandbox"
 									| "read-write:team-members"
+									| "read-write:vcr"
 									| "read:access-group"
 									| "read:ai-gateway-guardrails"
 									| "read:ai-gateway-private-models"
 									| "read:ai-gateway-rules"
+									| "read:ai-gateway-virtual-model-configs"
 									| "read:alerts"
 									| "read:billing"
 									| "read:deployment"
@@ -4365,6 +4483,7 @@ export type UserEvent = {
 									| "read:speed-insights"
 									| "read:team"
 									| "read:user"
+									| "read:vcr"
 									| "read:web-analytics"
 									| "use:ai-gateway"
 							  )[]
@@ -4429,6 +4548,7 @@ export type UserEvent = {
 												| "read-write:ai-gateway-guardrails"
 												| "read-write:ai-gateway-private-models"
 												| "read-write:ai-gateway-rules"
+												| "read-write:ai-gateway-virtual-model-configs"
 												| "read-write:alerts"
 												| "read-write:billing"
 												| "read-write:blob"
@@ -4452,10 +4572,12 @@ export type UserEvent = {
 												| "read-write:remote-cache"
 												| "read-write:sandbox"
 												| "read-write:team-members"
+												| "read-write:vcr"
 												| "read:access-group"
 												| "read:ai-gateway-guardrails"
 												| "read:ai-gateway-private-models"
 												| "read:ai-gateway-rules"
+												| "read:ai-gateway-virtual-model-configs"
 												| "read:alerts"
 												| "read:billing"
 												| "read:deployment"
@@ -4474,6 +4596,7 @@ export type UserEvent = {
 												| "read:sandbox"
 												| "read:speed-insights"
 												| "read:team"
+												| "read:vcr"
 												| "read:web-analytics"
 												| "use:ai-gateway"
 										  )[]
@@ -4526,6 +4649,7 @@ export type UserEvent = {
 												| "read-write:ai-gateway-guardrails"
 												| "read-write:ai-gateway-private-models"
 												| "read-write:ai-gateway-rules"
+												| "read-write:ai-gateway-virtual-model-configs"
 												| "read-write:alerts"
 												| "read-write:billing"
 												| "read-write:blob"
@@ -4549,10 +4673,12 @@ export type UserEvent = {
 												| "read-write:remote-cache"
 												| "read-write:sandbox"
 												| "read-write:team-members"
+												| "read-write:vcr"
 												| "read:access-group"
 												| "read:ai-gateway-guardrails"
 												| "read:ai-gateway-private-models"
 												| "read:ai-gateway-rules"
+												| "read:ai-gateway-virtual-model-configs"
 												| "read:alerts"
 												| "read:billing"
 												| "read:deployment"
@@ -4571,6 +4697,7 @@ export type UserEvent = {
 												| "read:sandbox"
 												| "read:speed-insights"
 												| "read:team"
+												| "read:vcr"
 												| "read:web-analytics"
 												| "use:ai-gateway"
 										  )[]
@@ -4628,6 +4755,7 @@ export type UserEvent = {
 									| "read-write:ai-gateway-guardrails"
 									| "read-write:ai-gateway-private-models"
 									| "read-write:ai-gateway-rules"
+									| "read-write:ai-gateway-virtual-model-configs"
 									| "read-write:alerts"
 									| "read-write:billing"
 									| "read-write:blob"
@@ -4651,10 +4779,12 @@ export type UserEvent = {
 									| "read-write:remote-cache"
 									| "read-write:sandbox"
 									| "read-write:team-members"
+									| "read-write:vcr"
 									| "read:access-group"
 									| "read:ai-gateway-guardrails"
 									| "read:ai-gateway-private-models"
 									| "read:ai-gateway-rules"
+									| "read:ai-gateway-virtual-model-configs"
 									| "read:alerts"
 									| "read:billing"
 									| "read:deployment"
@@ -4673,6 +4803,7 @@ export type UserEvent = {
 									| "read:sandbox"
 									| "read:speed-insights"
 									| "read:team"
+									| "read:vcr"
 									| "read:web-analytics"
 									| "use:ai-gateway"
 							  )[]
@@ -5629,6 +5760,10 @@ export type UserEvent = {
 						 * @type boolean | undefined
 						 */
 						forced?: (false | true) | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						gitCredentialSource?: GitCredentialSourceEnumKey | undefined;
 						/**
 						 * @type string | undefined
 						 */
@@ -7147,6 +7282,234 @@ export type UserEvent = {
 									 * @type number
 									 */
 									prId?: (number | null) | undefined;
+							  }
+							| {
+									/**
+									 * @type string
+									 */
+									type: TypeEnumKey;
+									/**
+									 * @type string
+									 */
+									ref: string;
+									/**
+									 * @type string
+									 */
+									sha: string;
+									/**
+									 * @type string | undefined
+									 */
+									beforeSha?: string | undefined;
+									/**
+									 * @type string | undefined
+									 */
+									defaultBranch?: string | undefined;
+									/**
+									 * @type boolean | undefined
+									 */
+									forced?: (false | true) | undefined;
+									/**
+									 * @type number
+									 */
+									repoPushedAt?: (number | null) | undefined;
+									/**
+									 * @type object | undefined
+									 */
+									deployHook?:
+										| {
+												/**
+												 * @type number
+												 */
+												createdAt: number;
+												/**
+												 * @type string
+												 */
+												id: string;
+												/**
+												 * @type string
+												 */
+												name: string;
+												/**
+												 * @type string
+												 */
+												ref: string;
+										  }
+										| undefined;
+									/**
+									 * @type string | undefined
+									 */
+									url?: string | undefined;
+									/**
+									 * @type string
+									 */
+									target?: (string | null) | undefined;
+									/**
+									 * @type string | undefined
+									 */
+									deploymentId?: string | undefined;
+									/**
+									 * @type string | undefined
+									 */
+									linkedProjectId?: string | undefined;
+									/**
+									 * @type string | undefined
+									 */
+									projectId?: string | undefined;
+									/**
+									 * @type number | undefined
+									 */
+									createdAt?: number | undefined;
+									/**
+									 * @type boolean | undefined
+									 */
+									eventful?: (false | true) | undefined;
+									/**
+									 * @type boolean | undefined
+									 */
+									forceNew?: (false | true) | undefined;
+									/**
+									 * @type boolean | undefined
+									 */
+									authorized?: (false | true) | undefined;
+									/**
+									 * @type string | undefined
+									 */
+									authorizedBy?: string | undefined;
+									/**
+									 * @description Since December 2022 All project ids associated to this job. Think monorepo. This job will be for one of these project.
+									 * @type array | undefined
+									 */
+									jobProjectIds?: string[] | undefined;
+									/**
+									 * @description Since December 2022 Pairs of projects and owner ids to build for this build request.
+									 * @type array | undefined
+									 */
+									jobPairs?: (string | string)[][] | undefined;
+									/**
+									 * @description Since June 2024 Pairs of projects and owner ids to immediately finish (without building) because we want to create them in a skipped state.
+									 * @type array | undefined
+									 */
+									skippedJobPairs?: (string | string)[][] | undefined;
+									/**
+									 * @description Since February 2022 All the hashtag-vercel tags found in the commit message triggering the deploy. For example, #VERCEL_DO_SOMETHING
+									 * @type array | undefined
+									 */
+									gitHashtagVercel?: string[] | undefined;
+									/**
+									 * @description Since April 2023 Cached count of how many projects are connected to the repo. Saves a few Cosmos queries down the road in the main flow.
+									 * @type number | undefined
+									 */
+									connectedProjectCount?: number | undefined;
+									/**
+									 * @description Since April 2023 If set then it is a cached result of asking the remote for the PR ID the commit that triggered this Job. Or zero if it was not a PR. This prevents a few git round trips by the git updater.
+									 * @type number | undefined
+									 */
+									prIdOrZero?: number | undefined;
+									/**
+									 * @description Since June 2023 Determines if comments should be posted to the git host. Replaces `github.silent` in the vercel.json.
+									 * @type object | undefined
+									 */
+									gitComments?:
+										| {
+												/**
+												 * @type boolean
+												 */
+												onPullRequest: false | true;
+												/**
+												 * @type boolean
+												 */
+												onCommit: false | true;
+										  }
+										| undefined;
+									/**
+									 * @description Since 28 Feb 2024 If set to true, identifies that the git job was created for a manual git deployment
+									 * @type boolean | undefined
+									 */
+									isManualGitDeploy?: (false | true) | undefined;
+									/**
+									 * @description Since 6 Nov 2025 The verification status of the commit. - \'verified\' if the commit is verified - \'unverified\' if the commit is not verified - \'unknown\' if the commit verification status is unknown or not supported
+									 * @type string | undefined
+									 */
+									commitVerification?: CommitVerificationEnumKey | undefined;
+									/**
+									 * @description Since March 2026 Records a successful NSNB auto-add result so later GitHub PR comments can deterministically explain why this SHA was allowed to deploy.
+									 * @type object | undefined
+									 */
+									nsnbSideEffect?:
+										| {
+												/**
+												 * @type string
+												 */
+												action: ActionEnumKey;
+												/**
+												 * @type string
+												 */
+												gitUserLogin: string;
+										  }
+										| undefined;
+									/**
+									 * @description Cursor Origin
+									 * @type object
+									 */
+									headInfo: {
+										/**
+										 * @description Owner (namespace) slug, e.g. `acme`.
+										 * @type string
+										 */
+										owner: string;
+										/**
+										 * @description Origin namespace id (`ns_…`).
+										 * @type string
+										 */
+										ownerId: string;
+										/**
+										 * @type string
+										 */
+										ref: string;
+										/**
+										 * @description Repository name, e.g. `api`.
+										 * @type string
+										 */
+										repo: string;
+										/**
+										 * @description Origin repository id.
+										 * @type string
+										 */
+										repoId: string;
+										/**
+										 * @type string
+										 */
+										sha: string;
+									};
+									/**
+									 * @description Origin installation id (`i_…`) used to resolve the credential.
+									 * @type string
+									 */
+									installationId: string;
+									/**
+									 * @type string
+									 */
+									owner: string;
+									/**
+									 * @type string
+									 */
+									repo: string;
+									/**
+									 * @type string
+									 */
+									repoId: string;
+									/**
+									 * @type string
+									 */
+									provider: ProviderEnumKey;
+									/**
+									 * @type string
+									 */
+									customEnvId?: (string | null) | undefined;
+									/**
+									 * @type number
+									 */
+									prId?: (number | null) | undefined;
 							  };
 				  }
 				| {
@@ -8637,6 +9000,68 @@ export type UserEvent = {
 						/**
 						 * @type string
 						 */
+						provider: ProviderEnumKey;
+						/**
+						 * @description Display name only. Logins are mutable; join on `actorAccountId`.
+						 * @type string
+						 */
+						actorLogin: string | null;
+						/**
+						 * @description Stable account id on `provider`.
+						 * @type string
+						 */
+						actorAccountId: string | null;
+						/**
+						 * @description Set only when an App installation token was minted (GitHub only).
+						 * @type string
+						 */
+						installationId: string | null;
+						/**
+						 * @type boolean
+						 */
+						usedAppToken: false | true;
+						/**
+						 * @description Source repository, \"owner/name\".
+						 * @type string
+						 */
+						sourceRepo: string;
+						/**
+						 * @type string
+						 */
+						sourceCommitSha: string | null;
+						/**
+						 * @description \"owner/name\", or the raw request value if blocked before it resolved.
+						 * @type string
+						 */
+						destinationRepo: string;
+						/**
+						 * @description Branch actually pushed to, or the requested one if blocked.
+						 * @type string
+						 */
+						destinationBranch: string | null;
+						/**
+						 * @type string
+						 */
+						resultCommitSha: string | null;
+						/**
+						 * @type string
+						 */
+						outcome: OutcomeEnumKey;
+						/**
+						 * @description Mirrors `PushFailureStage` in `@api/git-push-repo`.
+						 * @type string | undefined
+						 */
+						failureStage?: FailureStageEnumKey | undefined;
+						/**
+						 * @description Sanitized code, never a raw error message.
+						 * @type string | undefined
+						 */
+						failureCode?: string | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
 						projectId: string;
 						/**
 						 * @type string
@@ -9521,6 +9946,7 @@ export type UserEvent = {
 													| "AiGatewayBudgetManager"
 													| "AiGatewayCredits"
 													| "AiGatewaySettings"
+													| "ConnectorManager"
 													| "CreateProject"
 													| "EnvVariableManager"
 													| "EnvironmentManager"
@@ -11501,6 +11927,22 @@ export type UserEvent = {
 				  }
 				| {
 						/**
+						 * @type string
+						 */
+						provider: ProviderEnumKey;
+						/**
+						 * @type string
+						 */
+						login: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						provider: ProviderEnumKey;
+				  }
+				| {
+						/**
 						 * @type string | undefined
 						 */
 						userAgent?: string | undefined;
@@ -12065,6 +12507,61 @@ export type UserEvent = {
 						 * @type string
 						 */
 						name: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						directoryGroupId: string;
+						/**
+						 * @type string
+						 */
+						directoryId: string;
+						/**
+						 * @type string
+						 */
+						groupName: string;
+						/**
+						 * @type object
+						 */
+						next: {
+							/**
+							 * @type string | undefined
+							 */
+							default?: DefaultEnumKey | undefined;
+							/**
+							 * @type object
+							 */
+							roles: {
+								[key: string]:
+									| "BILLING"
+									| "CONTRIBUTOR"
+									| "DEVELOPER"
+									| "MEMBER"
+									| "OWNER"
+									| "SECURITY"
+									| "VIEWER"
+									| "VIEWER_FOR_PLUS";
+							};
+						};
+						/**
+						 * @type string
+						 */
+						organizationId: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						directoryGroupId: string;
+						/**
+						 * @type string
+						 */
+						directoryId: string;
+						/**
+						 * @type string
+						 */
+						organizationId: string;
 				  }
 				| {
 						/**
@@ -15128,6 +15625,16 @@ export type UserEvent = {
 						/**
 						 * @type string
 						 */
+						connectionId: string;
+						/**
+						 * @type string
+						 */
+						connectionType: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
 						alias: string;
 						/**
 						 * @type string
@@ -15141,6 +15648,24 @@ export type UserEvent = {
 						 * @type string | undefined
 						 */
 						projectId?: string | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type string
+						 */
+						snapshotId: string;
+						/**
+						 * @type array
+						 */
+						targetRegions: string[];
 				  }
 				| {
 						/**
@@ -15903,6 +16428,28 @@ export type UserEvent = {
 						 * @type boolean
 						 */
 						locked: false | true;
+				  }
+				| {
+						/**
+						 * @type string | undefined
+						 */
+						actorId?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						actorType?: ActorTypeEnumKey | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						reason?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						caseNumber?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						client?: string | undefined;
 				  }
 				| {
 						/**
@@ -16871,16 +17418,6 @@ export type UserEvent = {
 				  }
 				| {
 						/**
-						 * @type string
-						 */
-						provider: ProviderEnumKey;
-						/**
-						 * @type string
-						 */
-						login: string;
-				  }
-				| {
-						/**
 						 * @type string | undefined
 						 */
 						teamName?: string | undefined;
@@ -16922,6 +17459,66 @@ export type UserEvent = {
 						 * @type string
 						 */
 						username: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						actorId: string;
+						/**
+						 * @type string
+						 */
+						actorType: ActorTypeEnumKey;
+						/**
+						 * @type string | undefined
+						 */
+						reason?: string | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						actorId: string;
+						/**
+						 * @type string
+						 */
+						actorType: ActorTypeEnumKey;
+				  }
+				| {
+						/**
+						 * @type boolean
+						 */
+						enabled: false | true;
+						/**
+						 * @type string
+						 */
+						actorId: string;
+						/**
+						 * @type string
+						 */
+						actorType: ActorTypeEnumKey;
+				  }
+				| {
+						/**
+						 * @type boolean
+						 */
+						autoBlockPrevented: false | true;
+						/**
+						 * @type number | undefined
+						 */
+						preventUntil?: number | undefined;
+						/**
+						 * @type string
+						 */
+						actorId: string;
+						/**
+						 * @type string
+						 */
+						actorType: ActorTypeEnumKey;
+						/**
+						 * @type string | undefined
+						 */
+						reason?: string | undefined;
 				  }
 				| {
 						/**
@@ -16970,6 +17567,12 @@ export type UserEvent = {
 							 */
 							totpVerified: false | true;
 						};
+				  }
+				| {
+						/**
+						 * @type number
+						 */
+						remaining: number;
 				  }
 				| {
 						/**
@@ -17105,6 +17708,24 @@ export type UserEvent = {
 						 * @type string
 						 */
 						sharedWithTeamId: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type string
+						 */
+						repositoryName: string;
+						/**
+						 * @type boolean
+						 */
+						public: false | true;
 				  }
 				| {
 						/**
@@ -18209,6 +18830,11 @@ export const listEventTypeNameEnum = {
 	"ai-gateway-rule-deleted": "ai-gateway-rule-deleted",
 	"ai-gateway-rule-updated": "ai-gateway-rule-updated",
 	"ai-gateway-scope-budget-updated": "ai-gateway-scope-budget-updated",
+	"ai-gateway-transcripts-default-disabled": "ai-gateway-transcripts-default-disabled",
+	"ai-gateway-transcripts-default-enabled": "ai-gateway-transcripts-default-enabled",
+	"ai-gateway-transcripts-disabled": "ai-gateway-transcripts-disabled",
+	"ai-gateway-transcripts-enabled": "ai-gateway-transcripts-enabled",
+	"ai-gateway-transcripts-retention-updated": "ai-gateway-transcripts-retention-updated",
 	"ai-gateway-virtual-model-config-archived": "ai-gateway-virtual-model-config-archived",
 	"ai-gateway-virtual-model-config-created": "ai-gateway-virtual-model-config-created",
 	"ai-gateway-virtual-model-config-restored": "ai-gateway-virtual-model-config-restored",
@@ -18254,6 +18880,7 @@ export const listEventTypeNameEnum = {
 	"cert-system-create": "cert-system-create",
 	"code-owners-config-updated": "code-owners-config-updated",
 	"compliance-document-downloaded": "compliance-document-downloaded",
+	"compliance-document-previewed": "compliance-document-previewed",
 	"compliance-documents-bulk-downloaded": "compliance-documents-bulk-downloaded",
 	"concurrent-builds-update": "concurrent-builds-update",
 	"connect-attach-project": "connect-attach-project",
@@ -18393,6 +19020,7 @@ export const listEventTypeNameEnum = {
 	"flags-segment": "flags-segment",
 	"flags-settings": "flags-settings",
 	"flags-transferred": "flags-transferred",
+	"git-integration-repo-push": "git-integration-repo-push",
 	git_account_integration_link_added: "git_account_integration_link_added",
 	"instant-rollback-created": "instant-rollback-created",
 	"integration-configuration-owner-changed": "integration-configuration-owner-changed",
@@ -18415,6 +19043,7 @@ export const listEventTypeNameEnum = {
 	"kms-issuer-deleted": "kms-issuer-deleted",
 	"kms-issuer-key-activated": "kms-issuer-key-activated",
 	"kms-issuer-key-created": "kms-issuer-key-created",
+	"kms-issuer-key-revoked": "kms-issuer-key-revoked",
 	"kms-issuer-key-rotated": "kms-issuer-key-rotated",
 	"kms-issuer-policy-created": "kms-issuer-policy-created",
 	"kms-issuer-policy-deleted": "kms-issuer-policy-deleted",
@@ -18425,6 +19054,8 @@ export const listEventTypeNameEnum = {
 	"log-drain-disabled": "log-drain-disabled",
 	"log-drain-enabled": "log-drain-enabled",
 	login: "login",
+	"login-connection-linked": "login-connection-linked",
+	"login-connection-unlinked": "login-connection-unlinked",
 	"manual-deployment-promotion-created": "manual-deployment-promotion-created",
 	"marketplace-flex-commit-opt-in": "marketplace-flex-commit-opt-in",
 	"marketplace-integration-allowlist-updated": "marketplace-integration-allowlist-updated",
@@ -18456,6 +19087,8 @@ export const listEventTypeNameEnum = {
 	"oidc-policy-used-to-obtain-app-token": "oidc-policy-used-to-obtain-app-token",
 	"organization-create": "organization-create",
 	"organization-delete": "organization-delete",
+	"organization-dsync-group-delete": "organization-dsync-group-delete",
+	"organization-dsync-group-upsert": "organization-dsync-group-upsert",
 	"organization-slug-update": "organization-slug-update",
 	"organization-team-add": "organization-team-add",
 	"organization-team-create": "organization-team-create",
@@ -18613,8 +19246,11 @@ export const listEventTypeNameEnum = {
 	"protected-git-scope-added": "protected-git-scope-added",
 	"protected-git-scope-removed": "protected-git-scope-removed",
 	"runtime-cache-purge-all": "runtime-cache-purge-all",
+	"saml-connection-created": "saml-connection-created",
+	"saml-connection-deleted": "saml-connection-deleted",
 	"sandbox-alias-assigned": "sandbox-alias-assigned",
 	"sandbox-alias-delete": "sandbox-alias-delete",
+	"sandbox-snapshot-regions-updated": "sandbox-snapshot-regions-updated",
 	scale: "scale",
 	"scale-auto": "scale-auto",
 	"secondary-email-added": "secondary-email-added",
@@ -18644,6 +19280,7 @@ export const listEventTypeNameEnum = {
 	"spend-created": "spend-created",
 	"spend-deleted": "spend-deleted",
 	"spend-updated": "spend-updated",
+	"sso-login": "sso-login",
 	"storage-accept-tos": "storage-accept-tos",
 	"storage-access-token-set": "storage-access-token-set",
 	"storage-accessed-data-browser": "storage-accessed-data-browser",
@@ -18670,6 +19307,7 @@ export const listEventTypeNameEnum = {
 	"subscription-product-added": "subscription-product-added",
 	"subscription-product-removed": "subscription-product-removed",
 	"subscription-updated": "subscription-updated",
+	"support-session-created": "support-session-created",
 	team: "team",
 	"team-agent-billing-migration-decision-changed": "team-agent-billing-migration-decision-changed",
 	"team-avatar-update": "team-avatar-update",
@@ -18720,24 +19358,36 @@ export const listEventTypeNameEnum = {
 	"tracing-configured": "tracing-configured",
 	"tracing-disabled": "tracing-disabled",
 	"unlink-login-connection": "unlink-login-connection",
+	"update-account-flow-dismissed": "update-account-flow-dismissed",
 	"update-account-flow-triggered": "update-account-flow-triggered",
+	"user-auto-block-configured": "user-auto-block-configured",
+	"user-blocked": "user-blocked",
 	"user-delete": "user-delete",
+	"user-delete-requested": "user-delete-requested",
 	"user-emu-account-archived": "user-emu-account-archived",
 	"user-emu-account-deleted": "user-emu-account-deleted",
 	"user-emu-account-recovered": "user-emu-account-recovered",
+	"user-emu-recovery-email-sent": "user-emu-recovery-email-sent",
+	"user-emu-recovery-initiated": "user-emu-recovery-initiated",
+	"user-emu-toggled": "user-emu-toggled",
 	"user-mfa-challenge-failed": "user-mfa-challenge-failed",
 	"user-mfa-challenge-verified": "user-mfa-challenge-verified",
 	"user-mfa-change-failed": "user-mfa-change-failed",
 	"user-mfa-configuration-updated": "user-mfa-configuration-updated",
+	"user-mfa-recovery-code-used": "user-mfa-recovery-code-used",
 	"user-mfa-recovery-codes-regenerated": "user-mfa-recovery-codes-regenerated",
 	"user-mfa-removed": "user-mfa-removed",
 	"user-mfa-setup-skipped": "user-mfa-setup-skipped",
 	"user-mfa-totp-verification-started": "user-mfa-totp-verification-started",
 	"user-mfa-totp-verified": "user-mfa-totp-verified",
+	"user-phone-removed": "user-phone-removed",
+	"user-phone-updated": "user-phone-updated",
 	"user-primary-email-updated": "user-primary-email-updated",
+	"user-sudo-mode-removed": "user-sudo-mode-removed",
 	"user-token-created": "user-token-created",
 	"user-token-deleted": "user-token-deleted",
 	"user-tokens-deleted": "user-tokens-deleted",
+	"user-unblocked": "user-unblocked",
 	username: "username",
 	"v0-chat-ai-usage": "v0-chat-ai-usage",
 	"v0-chat-created": "v0-chat-created",
@@ -18749,6 +19399,7 @@ export const listEventTypeNameEnum = {
 	"vcr-repository-permission-added": "vcr-repository-permission-added",
 	"vcr-repository-permission-removed": "vcr-repository-permission-removed",
 	"vcr-repository-permissions-cleared": "vcr-repository-permissions-cleared",
+	"vcr-repository-visibility-changed": "vcr-repository-visibility-changed",
 	"vercel-agent-elevated-permissions-approved": "vercel-agent-elevated-permissions-approved",
 	"vercel-agent-elevated-permissions-requested": "vercel-agent-elevated-permissions-requested",
 	"vercel-agent-session-created": "vercel-agent-session-created",
@@ -18780,6 +19431,7 @@ export const listEventTypeCategoriesEnum = {
 	ai: "ai",
 	"ai-gateway": "ai-gateway",
 	billing: "billing",
+	connect: "connect",
 	deployment: "deployment",
 	domain: "domain",
 	edge: "edge",
@@ -18842,6 +19494,11 @@ export const listEventTypeReplacedByEnum = {
 	"ai-gateway-rule-deleted": "ai-gateway-rule-deleted",
 	"ai-gateway-rule-updated": "ai-gateway-rule-updated",
 	"ai-gateway-scope-budget-updated": "ai-gateway-scope-budget-updated",
+	"ai-gateway-transcripts-default-disabled": "ai-gateway-transcripts-default-disabled",
+	"ai-gateway-transcripts-default-enabled": "ai-gateway-transcripts-default-enabled",
+	"ai-gateway-transcripts-disabled": "ai-gateway-transcripts-disabled",
+	"ai-gateway-transcripts-enabled": "ai-gateway-transcripts-enabled",
+	"ai-gateway-transcripts-retention-updated": "ai-gateway-transcripts-retention-updated",
 	"ai-gateway-virtual-model-config-archived": "ai-gateway-virtual-model-config-archived",
 	"ai-gateway-virtual-model-config-created": "ai-gateway-virtual-model-config-created",
 	"ai-gateway-virtual-model-config-restored": "ai-gateway-virtual-model-config-restored",
@@ -18887,6 +19544,7 @@ export const listEventTypeReplacedByEnum = {
 	"cert-system-create": "cert-system-create",
 	"code-owners-config-updated": "code-owners-config-updated",
 	"compliance-document-downloaded": "compliance-document-downloaded",
+	"compliance-document-previewed": "compliance-document-previewed",
 	"compliance-documents-bulk-downloaded": "compliance-documents-bulk-downloaded",
 	"concurrent-builds-update": "concurrent-builds-update",
 	"connect-attach-project": "connect-attach-project",
@@ -19026,6 +19684,7 @@ export const listEventTypeReplacedByEnum = {
 	"flags-segment": "flags-segment",
 	"flags-settings": "flags-settings",
 	"flags-transferred": "flags-transferred",
+	"git-integration-repo-push": "git-integration-repo-push",
 	git_account_integration_link_added: "git_account_integration_link_added",
 	"instant-rollback-created": "instant-rollback-created",
 	"integration-configuration-owner-changed": "integration-configuration-owner-changed",
@@ -19048,6 +19707,7 @@ export const listEventTypeReplacedByEnum = {
 	"kms-issuer-deleted": "kms-issuer-deleted",
 	"kms-issuer-key-activated": "kms-issuer-key-activated",
 	"kms-issuer-key-created": "kms-issuer-key-created",
+	"kms-issuer-key-revoked": "kms-issuer-key-revoked",
 	"kms-issuer-key-rotated": "kms-issuer-key-rotated",
 	"kms-issuer-policy-created": "kms-issuer-policy-created",
 	"kms-issuer-policy-deleted": "kms-issuer-policy-deleted",
@@ -19058,6 +19718,8 @@ export const listEventTypeReplacedByEnum = {
 	"log-drain-disabled": "log-drain-disabled",
 	"log-drain-enabled": "log-drain-enabled",
 	login: "login",
+	"login-connection-linked": "login-connection-linked",
+	"login-connection-unlinked": "login-connection-unlinked",
 	"manual-deployment-promotion-created": "manual-deployment-promotion-created",
 	"marketplace-flex-commit-opt-in": "marketplace-flex-commit-opt-in",
 	"marketplace-integration-allowlist-updated": "marketplace-integration-allowlist-updated",
@@ -19089,6 +19751,8 @@ export const listEventTypeReplacedByEnum = {
 	"oidc-policy-used-to-obtain-app-token": "oidc-policy-used-to-obtain-app-token",
 	"organization-create": "organization-create",
 	"organization-delete": "organization-delete",
+	"organization-dsync-group-delete": "organization-dsync-group-delete",
+	"organization-dsync-group-upsert": "organization-dsync-group-upsert",
 	"organization-slug-update": "organization-slug-update",
 	"organization-team-add": "organization-team-add",
 	"organization-team-create": "organization-team-create",
@@ -19246,8 +19910,11 @@ export const listEventTypeReplacedByEnum = {
 	"protected-git-scope-added": "protected-git-scope-added",
 	"protected-git-scope-removed": "protected-git-scope-removed",
 	"runtime-cache-purge-all": "runtime-cache-purge-all",
+	"saml-connection-created": "saml-connection-created",
+	"saml-connection-deleted": "saml-connection-deleted",
 	"sandbox-alias-assigned": "sandbox-alias-assigned",
 	"sandbox-alias-delete": "sandbox-alias-delete",
+	"sandbox-snapshot-regions-updated": "sandbox-snapshot-regions-updated",
 	scale: "scale",
 	"scale-auto": "scale-auto",
 	"secondary-email-added": "secondary-email-added",
@@ -19277,6 +19944,7 @@ export const listEventTypeReplacedByEnum = {
 	"spend-created": "spend-created",
 	"spend-deleted": "spend-deleted",
 	"spend-updated": "spend-updated",
+	"sso-login": "sso-login",
 	"storage-accept-tos": "storage-accept-tos",
 	"storage-access-token-set": "storage-access-token-set",
 	"storage-accessed-data-browser": "storage-accessed-data-browser",
@@ -19303,6 +19971,7 @@ export const listEventTypeReplacedByEnum = {
 	"subscription-product-added": "subscription-product-added",
 	"subscription-product-removed": "subscription-product-removed",
 	"subscription-updated": "subscription-updated",
+	"support-session-created": "support-session-created",
 	team: "team",
 	"team-agent-billing-migration-decision-changed": "team-agent-billing-migration-decision-changed",
 	"team-avatar-update": "team-avatar-update",
@@ -19353,24 +20022,36 @@ export const listEventTypeReplacedByEnum = {
 	"tracing-configured": "tracing-configured",
 	"tracing-disabled": "tracing-disabled",
 	"unlink-login-connection": "unlink-login-connection",
+	"update-account-flow-dismissed": "update-account-flow-dismissed",
 	"update-account-flow-triggered": "update-account-flow-triggered",
+	"user-auto-block-configured": "user-auto-block-configured",
+	"user-blocked": "user-blocked",
 	"user-delete": "user-delete",
+	"user-delete-requested": "user-delete-requested",
 	"user-emu-account-archived": "user-emu-account-archived",
 	"user-emu-account-deleted": "user-emu-account-deleted",
 	"user-emu-account-recovered": "user-emu-account-recovered",
+	"user-emu-recovery-email-sent": "user-emu-recovery-email-sent",
+	"user-emu-recovery-initiated": "user-emu-recovery-initiated",
+	"user-emu-toggled": "user-emu-toggled",
 	"user-mfa-challenge-failed": "user-mfa-challenge-failed",
 	"user-mfa-challenge-verified": "user-mfa-challenge-verified",
 	"user-mfa-change-failed": "user-mfa-change-failed",
 	"user-mfa-configuration-updated": "user-mfa-configuration-updated",
+	"user-mfa-recovery-code-used": "user-mfa-recovery-code-used",
 	"user-mfa-recovery-codes-regenerated": "user-mfa-recovery-codes-regenerated",
 	"user-mfa-removed": "user-mfa-removed",
 	"user-mfa-setup-skipped": "user-mfa-setup-skipped",
 	"user-mfa-totp-verification-started": "user-mfa-totp-verification-started",
 	"user-mfa-totp-verified": "user-mfa-totp-verified",
+	"user-phone-removed": "user-phone-removed",
+	"user-phone-updated": "user-phone-updated",
 	"user-primary-email-updated": "user-primary-email-updated",
+	"user-sudo-mode-removed": "user-sudo-mode-removed",
 	"user-token-created": "user-token-created",
 	"user-token-deleted": "user-token-deleted",
 	"user-tokens-deleted": "user-tokens-deleted",
+	"user-unblocked": "user-unblocked",
 	username: "username",
 	"v0-chat-ai-usage": "v0-chat-ai-usage",
 	"v0-chat-created": "v0-chat-created",
@@ -19382,6 +20063,7 @@ export const listEventTypeReplacedByEnum = {
 	"vcr-repository-permission-added": "vcr-repository-permission-added",
 	"vcr-repository-permission-removed": "vcr-repository-permission-removed",
 	"vcr-repository-permissions-cleared": "vcr-repository-permissions-cleared",
+	"vcr-repository-visibility-changed": "vcr-repository-visibility-changed",
 	"vercel-agent-elevated-permissions-approved": "vercel-agent-elevated-permissions-approved",
 	"vercel-agent-elevated-permissions-requested": "vercel-agent-elevated-permissions-requested",
 	"vercel-agent-session-created": "vercel-agent-session-created",
@@ -20686,6 +21368,15 @@ export type APIKey = {
 	 * @type unknown | undefined
 	 */
 	quota?: unknown | undefined;
+	/**
+	 * @description Generic metadata attached to the API key.\n\nThe accepted shape depends on the key\'s `purpose` and is validated when the key is created. For `ai-gateway` keys this carries `environment` and `spendAttribution`.
+	 * @type object | undefined
+	 */
+	metadata?:
+		| {
+				[key: string]: unknown;
+		  }
+		| undefined;
 };
 
 /**
@@ -21478,6 +22169,7 @@ export const invitedTeamMemberTeamPermissionsEnum = {
 	AiGatewayBudgetManager: "AiGatewayBudgetManager",
 	AiGatewayCredits: "AiGatewayCredits",
 	AiGatewaySettings: "AiGatewaySettings",
+	ConnectorManager: "ConnectorManager",
 	CreateProject: "CreateProject",
 	EnvVariableManager: "EnvVariableManager",
 	EnvironmentManager: "EnvironmentManager",
@@ -21562,6 +22254,14 @@ export const teamSamlDefaultRedirectUriEnum = {
 export type TeamSamlDefaultRedirectUriEnumKey =
 	(typeof teamSamlDefaultRedirectUriEnum)[keyof typeof teamSamlDefaultRedirectUriEnum];
 
+export const teamBillingPlanEnum = {
+	enterprise: "enterprise",
+	hobby: "hobby",
+	pro: "pro",
+} as const;
+
+export type TeamBillingPlanEnumKey = (typeof teamBillingPlanEnum)[keyof typeof teamBillingPlanEnum];
+
 export const teamDefaultRolesTeamRolesEnum = {
 	BILLING: "BILLING",
 	CONTRIBUTOR: "CONTRIBUTOR",
@@ -21581,6 +22281,7 @@ export const teamDefaultRolesTeamPermissionsEnum = {
 	AiGatewayBudgetManager: "AiGatewayBudgetManager",
 	AiGatewayCredits: "AiGatewayCredits",
 	AiGatewaySettings: "AiGatewaySettings",
+	ConnectorManager: "ConnectorManager",
 	CreateProject: "CreateProject",
 	EnvVariableManager: "EnvVariableManager",
 	EnvironmentManager: "EnvironmentManager",
@@ -21709,6 +22410,7 @@ export const teamMembershipTeamPermissionsEnum = {
 	AiGatewayBudgetManager: "AiGatewayBudgetManager",
 	AiGatewayCredits: "AiGatewayCredits",
 	AiGatewaySettings: "AiGatewaySettings",
+	ConnectorManager: "ConnectorManager",
 	CreateProject: "CreateProject",
 	EnvVariableManager: "EnvVariableManager",
 	EnvironmentManager: "EnvironmentManager",
@@ -21923,6 +22625,16 @@ export type Team = {
 	 * @type string | undefined
 	 */
 	inviteCode?: string | undefined;
+	/**
+	 * @description The team\'s billing plan.
+	 * @type object
+	 */
+	billing: {
+		/**
+		 * @type string
+		 */
+		plan: TeamBillingPlanEnumKey;
+	} | null;
 	/**
 	 * @description A short description of the Team.
 	 * @example Our mission is to make cloud computing accessible to everyone.
@@ -22643,6 +23355,7 @@ export const teamLimitedMembershipTeamPermissionsEnum = {
 	AiGatewayBudgetManager: "AiGatewayBudgetManager",
 	AiGatewayCredits: "AiGatewayCredits",
 	AiGatewaySettings: "AiGatewaySettings",
+	ConnectorManager: "ConnectorManager",
 	CreateProject: "CreateProject",
 	EnvVariableManager: "EnvVariableManager",
 	EnvironmentManager: "EnvironmentManager",
@@ -23164,6 +23877,7 @@ export type AuthUserResourceConfigBuildQueueConfigurationEnumKey =
 
 export const authUserImportFlowGitProviderEnum = {
 	bitbucket: "bitbucket",
+	"cursor-origin": "cursor-origin",
 	github: "github",
 	"github-custom-host": "github-custom-host",
 	"github-limited": "github-limited",
@@ -23621,7 +24335,15 @@ export type AuthUser = {
 					 * @type string
 					 */
 					avatar: string | null;
+					/**
+					 * @type string
+					 */
+					workEmail: string;
 				}[];
+				/**
+				 * @type array
+				 */
+				verifiedEmuDomains: string[];
 		  }
 		| undefined;
 	/**
@@ -23751,6 +24473,12 @@ export type VcrRepository = {
 	 * @type string
 	 */
 	name: string;
+	/**
+	 * @description Whether the repository is public. Images in public repositories can be pulled by anyone. Defaults to `false` (private).
+	 * @example false
+	 * @type boolean
+	 */
+	public: false | true;
 	/**
 	 * @description ISO 8601 timestamp of when the repository was created.
 	 * @example 2026-06-30T10:00:00.000Z
@@ -23917,6 +24645,37 @@ export type VcrImageList = {
 	 * @type string | undefined
 	 */
 	nextCursor?: string | undefined;
+};
+
+/**
+ * @description A team\'s access grant to a Vercel Container Registry repository.
+ * @type object
+ */
+export type VcrRepositoryPermission = {
+	/**
+	 * @description Identifier of the repository the permission grants access to.
+	 * @example repo_a1b2c3d4e5f6
+	 * @type string
+	 */
+	repositoryId: string;
+	/**
+	 * @description Identifier of the team that is granted access to the repository.
+	 * @example team_a1b2c3d4e5f6
+	 * @type string
+	 */
+	teamId: string;
+	/**
+	 * @description Slug of the team that is granted access to the repository.
+	 * @example my-team
+	 * @type string
+	 */
+	teamSlug: string;
+	/**
+	 * @description ISO 8601 timestamp of when the permission was created.
+	 * @example 2026-06-30T10:00:00.000Z
+	 * @type string
+	 */
+	createdAt: string;
 };
 
 export const vcrTagKindEnum = {
@@ -24269,6 +25028,22 @@ export type VcrImageDetail = {
 	 * @type string
 	 */
 	createdAt: string;
+};
+
+/**
+ * @description A paginated list of Vercel Container Registry repository permissions.
+ * @type object
+ */
+export type VcrRepositoryPermissionList = {
+	/**
+	 * @type array
+	 */
+	permissions: unknown[];
+	/**
+	 * @description Cursor to fetch the next page of results, when more are available.
+	 * @type string | undefined
+	 */
+	nextCursor?: string | undefined;
 };
 
 export const fileTreeTypeEnum = {
@@ -37953,6 +38728,13 @@ export type ListUserEventsQueryPrincipalId = string | undefined;
 export type ListUserEventsQueryProjectIds = string | undefined;
 
 /**
+ * @description Filters events to those associated with a specific entity (matched against `payload.id`). For example, a connector ID.
+ * @example scl_123
+ * @type string | undefined
+ */
+export type ListUserEventsQueryEntityId = string | undefined;
+
+/**
  * @description When set to `true`, the response will include the `payload` field for each event.
  * @example true
  * @type string | undefined
@@ -38016,6 +38798,7 @@ export type ListUserEventsRequestConfig = {
 				userId?: ListUserEventsQueryUserId | undefined;
 				principalId?: ListUserEventsQueryPrincipalId | undefined;
 				projectIds?: ListUserEventsQueryProjectIds | undefined;
+				entityId?: ListUserEventsQueryEntityId | undefined;
 				withPayload?: ListUserEventsQueryWithPayload | undefined;
 				teamId?: ListUserEventsQueryTeamId | undefined;
 				slug?: ListUserEventsQuerySlug | undefined;
@@ -40928,7 +41711,7 @@ export type SearchRepoQueryNamespaceId = ((string | number) | null) | undefined;
  * @type string | undefined
  */
 export type SearchRepoQueryProvider =
-	| ("github" | "github-limited" | "github-custom-host" | "gitlab" | "bitbucket")
+	| ("github" | "github-limited" | "github-custom-host" | "gitlab" | "bitbucket" | "cursor-origin")
 	| undefined;
 
 /**
@@ -40998,6 +41781,11 @@ export type SearchRepoStatus429 = unknown;
 export type SearchRepoStatus500 = unknown;
 
 /**
+ * @type unknown
+ */
+export type SearchRepoStatus502 = unknown;
+
+/**
  * @type object
  */
 export type SearchRepoRequestConfig = {
@@ -41036,6 +41824,7 @@ export type SearchRepoResponses = {
 	"410": SearchRepoStatus410;
 	"429": SearchRepoStatus429;
 	"500": SearchRepoStatus500;
+	"502": SearchRepoStatus502;
 };
 
 /**
@@ -41049,7 +41838,8 @@ export type SearchRepoResponse =
 	| SearchRepoStatus404
 	| SearchRepoStatus410
 	| SearchRepoStatus429
-	| SearchRepoStatus500;
+	| SearchRepoStatus500
+	| SearchRepoStatus502;
 
 /**
  * @type string
@@ -41084,6 +41874,7 @@ export type GetBillingPlansQuerySource =
 			| "cli"
 			| "oauth"
 			| "backoffice"
+			| "import-recommended-integrations"
 	  )
 	| undefined;
 
@@ -45751,7 +46542,17 @@ export type DeleteRoutesStatus404 = unknown;
 /**
  * @type unknown
  */
+export type DeleteRoutesStatus409 = unknown;
+
+/**
+ * @type unknown
+ */
 export type DeleteRoutesStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
+export type DeleteRoutesStatus500 = unknown;
 
 /**
  * @type object
@@ -45789,7 +46590,9 @@ export type DeleteRoutesResponses = {
 	"401": DeleteRoutesStatus401;
 	"403": DeleteRoutesStatus403;
 	"404": DeleteRoutesStatus404;
+	"409": DeleteRoutesStatus409;
 	"410": DeleteRoutesStatus410;
+	"500": DeleteRoutesStatus500;
 };
 
 /**
@@ -45801,7 +46604,9 @@ export type DeleteRoutesResponse =
 	| DeleteRoutesStatus401
 	| DeleteRoutesStatus403
 	| DeleteRoutesStatus404
-	| DeleteRoutesStatus410;
+	| DeleteRoutesStatus409
+	| DeleteRoutesStatus410
+	| DeleteRoutesStatus500;
 
 /**
  * @type string
@@ -46316,7 +47121,7 @@ export type GetProjectsQueryElasticConcurrencyEnabled = string | undefined;
 export type GetProjectsQueryStaticIpsEnabled = string | undefined;
 
 /**
- * @description Filter results by build machine types. Accepts comma-separated values. Use \"default\" for projects without a build machine type set.
+ * @description Filter results by effective build machine types. Accepts comma-separated values. Use \"elastic\" for projects with elastic selection and \"default\" for projects without a build machine type set.
  * @example default,enhanced
  * @type string | undefined
  */
@@ -47004,11 +47809,6 @@ export type UpdateProjectStatus410 = unknown;
 export type UpdateProjectStatus428 = unknown;
 
 /**
- * @type unknown
- */
-export type UpdateProjectStatus500 = unknown;
-
-/**
  * @type object
  */
 export type UpdateProjectRequestConfig = {
@@ -47048,7 +47848,6 @@ export type UpdateProjectResponses = {
 	"409": UpdateProjectStatus409;
 	"410": UpdateProjectStatus410;
 	"428": UpdateProjectStatus428;
-	"500": UpdateProjectStatus500;
 };
 
 /**
@@ -47063,8 +47862,7 @@ export type UpdateProjectResponse =
 	| UpdateProjectStatus404
 	| UpdateProjectStatus409
 	| UpdateProjectStatus410
-	| UpdateProjectStatus428
-	| UpdateProjectStatus500;
+	| UpdateProjectStatus428;
 
 /**
  * @description The unique project identifier or the project name
@@ -51546,74 +52344,74 @@ export type ListSandboxesResponse =
  * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
  * @type string | undefined
  */
-export type CreateSandboxesQueryTeamId = string | undefined;
+export type CreateSandboxesV2QueryTeamId = string | undefined;
 
 /**
  * @description The Team slug to perform the request on behalf of.
  * @example my-team-url-slug
  * @type string | undefined
  */
-export type CreateSandboxesQuerySlug = string | undefined;
+export type CreateSandboxesV2QuerySlug = string | undefined;
 
 /**
  * @type unknown
  */
-export type CreateSandboxesStatus200 = unknown;
+export type CreateSandboxesV2Status200 = unknown;
 
 /**
  * @type unknown
  */
-export type CreateSandboxesStatus400 = unknown;
+export type CreateSandboxesV2Status400 = unknown;
 
 /**
  * @type unknown
  */
-export type CreateSandboxesStatus401 = unknown;
+export type CreateSandboxesV2Status401 = unknown;
 
 /**
  * @type unknown
  */
-export type CreateSandboxesStatus402 = unknown;
+export type CreateSandboxesV2Status402 = unknown;
 
 /**
  * @type unknown
  */
-export type CreateSandboxesStatus403 = unknown;
+export type CreateSandboxesV2Status403 = unknown;
 
 /**
  * @type unknown
  */
-export type CreateSandboxesStatus404 = unknown;
+export type CreateSandboxesV2Status404 = unknown;
 
 /**
  * @type unknown
  */
-export type CreateSandboxesStatus409 = unknown;
+export type CreateSandboxesV2Status409 = unknown;
 
 /**
  * @type unknown
  */
-export type CreateSandboxesStatus410 = unknown;
+export type CreateSandboxesV2Status410 = unknown;
 
 /**
  * @type unknown
  */
-export type CreateSandboxesStatus422 = unknown;
+export type CreateSandboxesV2Status422 = unknown;
 
 /**
  * @type unknown
  */
-export type CreateSandboxesStatus429 = unknown;
+export type CreateSandboxesV2Status429 = unknown;
 
 /**
  * @type unknown
  */
-export type CreateSandboxesStatus500 = unknown;
+export type CreateSandboxesV2Status500 = unknown;
 
 /**
  * @type object
  */
-export type CreateSandboxesRequestConfig = {
+export type CreateSandboxesV2RequestConfig = {
 	data?: never | undefined;
 	pathParams?: never | undefined;
 	/**
@@ -51621,8 +52419,8 @@ export type CreateSandboxesRequestConfig = {
 	 */
 	queryParams?:
 		| {
-				teamId?: CreateSandboxesQueryTeamId | undefined;
-				slug?: CreateSandboxesQuerySlug | undefined;
+				teamId?: CreateSandboxesV2QueryTeamId | undefined;
+				slug?: CreateSandboxesV2QuerySlug | undefined;
 		  }
 		| undefined;
 	headerParams?: never | undefined;
@@ -51635,35 +52433,35 @@ export type CreateSandboxesRequestConfig = {
 /**
  * @type object
  */
-export type CreateSandboxesResponses = {
-	"200": CreateSandboxesStatus200;
-	"400": CreateSandboxesStatus400;
-	"401": CreateSandboxesStatus401;
-	"402": CreateSandboxesStatus402;
-	"403": CreateSandboxesStatus403;
-	"404": CreateSandboxesStatus404;
-	"409": CreateSandboxesStatus409;
-	"410": CreateSandboxesStatus410;
-	"422": CreateSandboxesStatus422;
-	"429": CreateSandboxesStatus429;
-	"500": CreateSandboxesStatus500;
+export type CreateSandboxesV2Responses = {
+	"200": CreateSandboxesV2Status200;
+	"400": CreateSandboxesV2Status400;
+	"401": CreateSandboxesV2Status401;
+	"402": CreateSandboxesV2Status402;
+	"403": CreateSandboxesV2Status403;
+	"404": CreateSandboxesV2Status404;
+	"409": CreateSandboxesV2Status409;
+	"410": CreateSandboxesV2Status410;
+	"422": CreateSandboxesV2Status422;
+	"429": CreateSandboxesV2Status429;
+	"500": CreateSandboxesV2Status500;
 };
 
 /**
  * @description Union of all possible responses
  */
-export type CreateSandboxesResponse =
-	| CreateSandboxesStatus200
-	| CreateSandboxesStatus400
-	| CreateSandboxesStatus401
-	| CreateSandboxesStatus402
-	| CreateSandboxesStatus403
-	| CreateSandboxesStatus404
-	| CreateSandboxesStatus409
-	| CreateSandboxesStatus410
-	| CreateSandboxesStatus422
-	| CreateSandboxesStatus429
-	| CreateSandboxesStatus500;
+export type CreateSandboxesV2Response =
+	| CreateSandboxesV2Status200
+	| CreateSandboxesV2Status400
+	| CreateSandboxesV2Status401
+	| CreateSandboxesV2Status402
+	| CreateSandboxesV2Status403
+	| CreateSandboxesV2Status404
+	| CreateSandboxesV2Status409
+	| CreateSandboxesV2Status410
+	| CreateSandboxesV2Status422
+	| CreateSandboxesV2Status429
+	| CreateSandboxesV2Status500;
 
 /**
  * @description The project ID or name associated with the drives. Required unless using a Vercel OIDC token scoped to a project.
@@ -54022,11 +54820,6 @@ export type UpdateSessionNetworkPolicyStatus401 = unknown;
 /**
  * @type unknown
  */
-export type UpdateSessionNetworkPolicyStatus402 = unknown;
-
-/**
- * @type unknown
- */
 export type UpdateSessionNetworkPolicyStatus403 = unknown;
 
 /**
@@ -54088,7 +54881,6 @@ export type UpdateSessionNetworkPolicyResponses = {
 	"200": UpdateSessionNetworkPolicyStatus200;
 	"400": UpdateSessionNetworkPolicyStatus400;
 	"401": UpdateSessionNetworkPolicyStatus401;
-	"402": UpdateSessionNetworkPolicyStatus402;
 	"403": UpdateSessionNetworkPolicyStatus403;
 	"404": UpdateSessionNetworkPolicyStatus404;
 	"410": UpdateSessionNetworkPolicyStatus410;
@@ -54104,7 +54896,6 @@ export type UpdateSessionNetworkPolicyResponse =
 	| UpdateSessionNetworkPolicyStatus200
 	| UpdateSessionNetworkPolicyStatus400
 	| UpdateSessionNetworkPolicyStatus401
-	| UpdateSessionNetworkPolicyStatus402
 	| UpdateSessionNetworkPolicyStatus403
 	| UpdateSessionNetworkPolicyStatus404
 	| UpdateSessionNetworkPolicyStatus410
@@ -54765,6 +55556,130 @@ export type CreateSandboxesByNameForkResponse =
 	| CreateSandboxesByNameForkStatus422
 	| CreateSandboxesByNameForkStatus429
 	| CreateSandboxesByNameForkStatus500;
+
+/**
+ * @description The Team identifier to perform the request on behalf of.
+ * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+ * @type string | undefined
+ */
+export type CreateSandboxesV3QueryTeamId = string | undefined;
+
+/**
+ * @description The Team slug to perform the request on behalf of.
+ * @example my-team-url-slug
+ * @type string | undefined
+ */
+export type CreateSandboxesV3QuerySlug = string | undefined;
+
+/**
+ * @type unknown
+ */
+export type CreateSandboxesV3Status200 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateSandboxesV3Status400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateSandboxesV3Status401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateSandboxesV3Status402 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateSandboxesV3Status403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateSandboxesV3Status404 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateSandboxesV3Status409 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateSandboxesV3Status410 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateSandboxesV3Status422 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateSandboxesV3Status429 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateSandboxesV3Status500 = unknown;
+
+/**
+ * @type object
+ */
+export type CreateSandboxesV3RequestConfig = {
+	data?: never | undefined;
+	pathParams?: never | undefined;
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				teamId?: CreateSandboxesV3QueryTeamId | undefined;
+				slug?: CreateSandboxesV3QuerySlug | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: "/v3/sandboxes";
+};
+
+/**
+ * @type object
+ */
+export type CreateSandboxesV3Responses = {
+	"200": CreateSandboxesV3Status200;
+	"400": CreateSandboxesV3Status400;
+	"401": CreateSandboxesV3Status401;
+	"402": CreateSandboxesV3Status402;
+	"403": CreateSandboxesV3Status403;
+	"404": CreateSandboxesV3Status404;
+	"409": CreateSandboxesV3Status409;
+	"410": CreateSandboxesV3Status410;
+	"422": CreateSandboxesV3Status422;
+	"429": CreateSandboxesV3Status429;
+	"500": CreateSandboxesV3Status500;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type CreateSandboxesV3Response =
+	| CreateSandboxesV3Status200
+	| CreateSandboxesV3Status400
+	| CreateSandboxesV3Status401
+	| CreateSandboxesV3Status402
+	| CreateSandboxesV3Status403
+	| CreateSandboxesV3Status404
+	| CreateSandboxesV3Status409
+	| CreateSandboxesV3Status410
+	| CreateSandboxesV3Status422
+	| CreateSandboxesV3Status429
+	| CreateSandboxesV3Status500;
 
 /**
  * @description The Team identifier to perform the request on behalf of.
@@ -59269,6 +60184,446 @@ export type ListRepositoryImagesResponse =
 /**
  * @type string
  */
+export type AddRepositoryPermissionQueryProjectId = string;
+
+/**
+ * @maxLength 255
+ * @type string
+ */
+export type AddRepositoryPermissionPathIdOrName = string;
+
+/**
+ * @description The Team identifier to perform the request on behalf of.
+ * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+ * @type string | undefined
+ */
+export type AddRepositoryPermissionQueryTeamId = string | undefined;
+
+/**
+ * @description The Team slug to perform the request on behalf of.
+ * @example my-team-url-slug
+ * @type string | undefined
+ */
+export type AddRepositoryPermissionQuerySlug = string | undefined;
+
+/**
+ * @type unknown
+ */
+export type AddRepositoryPermissionStatus200 = unknown;
+
+/**
+ * @type unknown
+ */
+export type AddRepositoryPermissionStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type AddRepositoryPermissionStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type AddRepositoryPermissionStatus403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type AddRepositoryPermissionStatus404 = unknown;
+
+/**
+ * @type unknown
+ */
+export type AddRepositoryPermissionStatus410 = unknown;
+
+/**
+ * @type object
+ */
+export type AddRepositoryPermissionRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		idOrName: AddRepositoryPermissionPathIdOrName;
+	};
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				projectId: AddRepositoryPermissionQueryProjectId;
+				teamId?: AddRepositoryPermissionQueryTeamId | undefined;
+				slug?: AddRepositoryPermissionQuerySlug | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/v1/vcr/repository/${string}/permissions`;
+};
+
+/**
+ * @type object
+ */
+export type AddRepositoryPermissionResponses = {
+	"200": AddRepositoryPermissionStatus200;
+	"400": AddRepositoryPermissionStatus400;
+	"401": AddRepositoryPermissionStatus401;
+	"403": AddRepositoryPermissionStatus403;
+	"404": AddRepositoryPermissionStatus404;
+	"410": AddRepositoryPermissionStatus410;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type AddRepositoryPermissionResponse =
+	| AddRepositoryPermissionStatus200
+	| AddRepositoryPermissionStatus400
+	| AddRepositoryPermissionStatus401
+	| AddRepositoryPermissionStatus403
+	| AddRepositoryPermissionStatus404
+	| AddRepositoryPermissionStatus410;
+
+/**
+ * @type string
+ */
+export type RemoveRepositoryPermissionQueryProjectId = string;
+
+/**
+ * @maxLength 255
+ * @type string
+ */
+export type RemoveRepositoryPermissionPathIdOrName = string;
+
+/**
+ * @description The Team identifier to perform the request on behalf of.
+ * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+ * @type string | undefined
+ */
+export type RemoveRepositoryPermissionQueryTeamId = string | undefined;
+
+/**
+ * @description The Team slug to perform the request on behalf of.
+ * @example my-team-url-slug
+ * @type string | undefined
+ */
+export type RemoveRepositoryPermissionQuerySlug = string | undefined;
+
+/**
+ * @type unknown
+ */
+export type RemoveRepositoryPermissionStatus204 = unknown;
+
+/**
+ * @type unknown
+ */
+export type RemoveRepositoryPermissionStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type RemoveRepositoryPermissionStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type RemoveRepositoryPermissionStatus403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type RemoveRepositoryPermissionStatus404 = unknown;
+
+/**
+ * @type unknown
+ */
+export type RemoveRepositoryPermissionStatus410 = unknown;
+
+/**
+ * @type object
+ */
+export type RemoveRepositoryPermissionRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		idOrName: RemoveRepositoryPermissionPathIdOrName;
+	};
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				projectId: RemoveRepositoryPermissionQueryProjectId;
+				teamId?: RemoveRepositoryPermissionQueryTeamId | undefined;
+				slug?: RemoveRepositoryPermissionQuerySlug | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/v1/vcr/repository/${string}/permissions`;
+};
+
+/**
+ * @type object
+ */
+export type RemoveRepositoryPermissionResponses = {
+	"204": RemoveRepositoryPermissionStatus204;
+	"400": RemoveRepositoryPermissionStatus400;
+	"401": RemoveRepositoryPermissionStatus401;
+	"403": RemoveRepositoryPermissionStatus403;
+	"404": RemoveRepositoryPermissionStatus404;
+	"410": RemoveRepositoryPermissionStatus410;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type RemoveRepositoryPermissionResponse =
+	| RemoveRepositoryPermissionStatus204
+	| RemoveRepositoryPermissionStatus400
+	| RemoveRepositoryPermissionStatus401
+	| RemoveRepositoryPermissionStatus403
+	| RemoveRepositoryPermissionStatus404
+	| RemoveRepositoryPermissionStatus410;
+
+/**
+ * @type string
+ */
+export type ListRepositoryPermissionsQueryProjectId = string;
+
+/**
+ * @maxLength 255
+ * @type string
+ */
+export type ListRepositoryPermissionsPathIdOrName = string;
+
+/**
+ * @minLength 1
+ * @maxLength 100
+ * @type integer | undefined
+ */
+export type ListRepositoryPermissionsQueryLimit = number | undefined;
+
+/**
+ * @description Opaque pagination cursor returned by a previous list response.
+ * @maxLength 1024
+ * @type string | undefined
+ */
+export type ListRepositoryPermissionsQueryCursor = string | undefined;
+
+/**
+ * @description The Team identifier to perform the request on behalf of.
+ * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+ * @type string | undefined
+ */
+export type ListRepositoryPermissionsQueryTeamId = string | undefined;
+
+/**
+ * @description The Team slug to perform the request on behalf of.
+ * @example my-team-url-slug
+ * @type string | undefined
+ */
+export type ListRepositoryPermissionsQuerySlug = string | undefined;
+
+/**
+ * @type unknown
+ */
+export type ListRepositoryPermissionsStatus200 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ListRepositoryPermissionsStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ListRepositoryPermissionsStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ListRepositoryPermissionsStatus403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ListRepositoryPermissionsStatus404 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ListRepositoryPermissionsStatus410 = unknown;
+
+/**
+ * @type object
+ */
+export type ListRepositoryPermissionsRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		idOrName: ListRepositoryPermissionsPathIdOrName;
+	};
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				projectId: ListRepositoryPermissionsQueryProjectId;
+				limit?: ListRepositoryPermissionsQueryLimit | undefined;
+				cursor?: ListRepositoryPermissionsQueryCursor | undefined;
+				teamId?: ListRepositoryPermissionsQueryTeamId | undefined;
+				slug?: ListRepositoryPermissionsQuerySlug | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/v1/vcr/repository/${string}/permissions`;
+};
+
+/**
+ * @type object
+ */
+export type ListRepositoryPermissionsResponses = {
+	"200": ListRepositoryPermissionsStatus200;
+	"400": ListRepositoryPermissionsStatus400;
+	"401": ListRepositoryPermissionsStatus401;
+	"403": ListRepositoryPermissionsStatus403;
+	"404": ListRepositoryPermissionsStatus404;
+	"410": ListRepositoryPermissionsStatus410;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type ListRepositoryPermissionsResponse =
+	| ListRepositoryPermissionsStatus200
+	| ListRepositoryPermissionsStatus400
+	| ListRepositoryPermissionsStatus401
+	| ListRepositoryPermissionsStatus403
+	| ListRepositoryPermissionsStatus404
+	| ListRepositoryPermissionsStatus410;
+
+/**
+ * @type string
+ */
+export type ClearRepositoryPermissionsQueryProjectId = string;
+
+/**
+ * @maxLength 255
+ * @type string
+ */
+export type ClearRepositoryPermissionsPathIdOrName = string;
+
+/**
+ * @description The Team identifier to perform the request on behalf of.
+ * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+ * @type string | undefined
+ */
+export type ClearRepositoryPermissionsQueryTeamId = string | undefined;
+
+/**
+ * @description The Team slug to perform the request on behalf of.
+ * @example my-team-url-slug
+ * @type string | undefined
+ */
+export type ClearRepositoryPermissionsQuerySlug = string | undefined;
+
+/**
+ * @type unknown
+ */
+export type ClearRepositoryPermissionsStatus204 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ClearRepositoryPermissionsStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ClearRepositoryPermissionsStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ClearRepositoryPermissionsStatus403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ClearRepositoryPermissionsStatus404 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ClearRepositoryPermissionsStatus410 = unknown;
+
+/**
+ * @type object
+ */
+export type ClearRepositoryPermissionsRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		idOrName: ClearRepositoryPermissionsPathIdOrName;
+	};
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				projectId: ClearRepositoryPermissionsQueryProjectId;
+				teamId?: ClearRepositoryPermissionsQueryTeamId | undefined;
+				slug?: ClearRepositoryPermissionsQuerySlug | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/v1/vcr/repository/${string}/permissions/all`;
+};
+
+/**
+ * @type object
+ */
+export type ClearRepositoryPermissionsResponses = {
+	"204": ClearRepositoryPermissionsStatus204;
+	"400": ClearRepositoryPermissionsStatus400;
+	"401": ClearRepositoryPermissionsStatus401;
+	"403": ClearRepositoryPermissionsStatus403;
+	"404": ClearRepositoryPermissionsStatus404;
+	"410": ClearRepositoryPermissionsStatus410;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type ClearRepositoryPermissionsResponse =
+	| ClearRepositoryPermissionsStatus204
+	| ClearRepositoryPermissionsStatus400
+	| ClearRepositoryPermissionsStatus401
+	| ClearRepositoryPermissionsStatus403
+	| ClearRepositoryPermissionsStatus404
+	| ClearRepositoryPermissionsStatus410;
+
+/**
+ * @type string
+ */
 export type ListRepositoryTagsQueryProjectId = string;
 
 /**
@@ -59741,6 +61096,1446 @@ export type DeleteRepositoryImageResponse =
 	| DeleteRepositoryImageStatus403
 	| DeleteRepositoryImageStatus404
 	| DeleteRepositoryImageStatus410;
+
+/**
+ * @type unknown
+ */
+export type GetRootStatus200 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetRootStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetRootStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetRootStatus402 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetRootStatus403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetRootStatus404 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetRootStatus410 = unknown;
+
+/**
+ * @type object
+ */
+export type GetRootRequestConfig = {
+	data?: never | undefined;
+	pathParams?: never | undefined;
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: "/v2/";
+};
+
+/**
+ * @type object
+ */
+export type GetRootResponses = {
+	"200": GetRootStatus200;
+	"400": GetRootStatus400;
+	"401": GetRootStatus401;
+	"402": GetRootStatus402;
+	"403": GetRootStatus403;
+	"404": GetRootStatus404;
+	"410": GetRootStatus410;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetRootResponse =
+	| GetRootStatus200
+	| GetRootStatus400
+	| GetRootStatus401
+	| GetRootStatus402
+	| GetRootStatus403
+	| GetRootStatus404
+	| GetRootStatus410;
+
+/**
+ * @description Single Docker repository team slug component.
+ * @maxLength 255
+ * @pattern ^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$
+ * @example team-slug
+ * @type string
+ */
+export type GetByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestPathTeamSlug = string;
+
+/**
+ * @description Single Docker repository project slug component.
+ * @maxLength 255
+ * @pattern ^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$
+ * @example project-slug
+ * @type string
+ */
+export type GetByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestPathProjectSlug = string;
+
+/**
+ * @description Single Docker repository name component.
+ * @maxLength 255
+ * @pattern ^[a-z0-9]+(?:(?:\\.|_|__|-+)[a-z0-9]+)*$
+ * @example nginx
+ * @type string
+ */
+export type GetByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestPathRepositoryName = string;
+
+/**
+ * @description Content-addressable digest (algorithm:hex).
+ * @maxLength 255
+ * @pattern ^[A-Za-z0-9_+.-]+:[A-Fa-f0-9]+$
+ * @example sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+ * @type string
+ */
+export type GetByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestPathDigest = string;
+
+/**
+ * @type unknown
+ */
+export type GetByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus402 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus404 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus416 = unknown;
+
+/**
+ * @type object
+ */
+export type GetByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		teamSlug: GetByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestPathTeamSlug;
+		projectSlug: GetByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestPathProjectSlug;
+		repositoryName: GetByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestPathRepositoryName;
+		digest: GetByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestPathDigest;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/v2/${string}/${string}/${string}/blobs/${string}`;
+};
+
+/**
+ * @type object
+ */
+export type GetByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestResponses = {
+	"400": GetByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus400;
+	"401": GetByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus401;
+	"402": GetByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus402;
+	"403": GetByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus403;
+	"404": GetByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus404;
+	"410": GetByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus410;
+	"416": GetByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus416;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestResponse =
+	| GetByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus400
+	| GetByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus401
+	| GetByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus402
+	| GetByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus403
+	| GetByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus404
+	| GetByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus410
+	| GetByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus416;
+
+/**
+ * @description Single Docker repository team slug component.
+ * @maxLength 255
+ * @pattern ^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$
+ * @example team-slug
+ * @type string
+ */
+export type DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestPathTeamSlug = string;
+
+/**
+ * @description Single Docker repository project slug component.
+ * @maxLength 255
+ * @pattern ^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$
+ * @example project-slug
+ * @type string
+ */
+export type DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestPathProjectSlug = string;
+
+/**
+ * @description Single Docker repository name component.
+ * @maxLength 255
+ * @pattern ^[a-z0-9]+(?:(?:\\.|_|__|-+)[a-z0-9]+)*$
+ * @example nginx
+ * @type string
+ */
+export type DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestPathRepositoryName = string;
+
+/**
+ * @description Content-addressable digest (algorithm:hex).
+ * @maxLength 255
+ * @pattern ^[A-Za-z0-9_+.-]+:[A-Fa-f0-9]+$
+ * @example sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+ * @type string
+ */
+export type DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestPathDigest = string;
+
+/**
+ * @type unknown
+ */
+export type DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus402 = unknown;
+
+/**
+ * @type unknown
+ */
+export type DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus404 = unknown;
+
+/**
+ * @type unknown
+ */
+export type DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus405 = unknown;
+
+/**
+ * @type unknown
+ */
+export type DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus410 = unknown;
+
+/**
+ * @type object
+ */
+export type DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		teamSlug: DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestPathTeamSlug;
+		projectSlug: DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestPathProjectSlug;
+		repositoryName: DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestPathRepositoryName;
+		digest: DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestPathDigest;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/v2/${string}/${string}/${string}/blobs/${string}`;
+};
+
+/**
+ * @type object
+ */
+export type DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestResponses = {
+	"400": DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus400;
+	"401": DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus401;
+	"402": DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus402;
+	"403": DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus403;
+	"404": DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus404;
+	"405": DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus405;
+	"410": DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus410;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestResponse =
+	| DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus400
+	| DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus401
+	| DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus402
+	| DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus403
+	| DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus404
+	| DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus405
+	| DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus410;
+
+/**
+ * @description Single Docker repository team slug component.
+ * @maxLength 255
+ * @pattern ^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$
+ * @example team-slug
+ * @type string
+ */
+export type GetByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidPathTeamSlug = string;
+
+/**
+ * @description Single Docker repository project slug component.
+ * @maxLength 255
+ * @pattern ^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$
+ * @example project-slug
+ * @type string
+ */
+export type GetByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidPathProjectSlug = string;
+
+/**
+ * @description Single Docker repository name component.
+ * @maxLength 255
+ * @pattern ^[a-z0-9]+(?:(?:\\.|_|__|-+)[a-z0-9]+)*$
+ * @example nginx
+ * @type string
+ */
+export type GetByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidPathRepositoryName = string;
+
+/**
+ * @description Blob upload session identifier.
+ * @maxLength 40
+ * @pattern ^[a-f0-9]{40}$
+ * @example 0123456789abcdef0123456789abcdef01234567
+ * @type string
+ */
+export type GetByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidPathUuid = string;
+
+/**
+ * @type unknown
+ */
+export type GetByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus204 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus402 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus404 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus410 = unknown;
+
+/**
+ * @type object
+ */
+export type GetByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		teamSlug: GetByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidPathTeamSlug;
+		projectSlug: GetByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidPathProjectSlug;
+		repositoryName: GetByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidPathRepositoryName;
+		uuid: GetByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidPathUuid;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/v2/${string}/${string}/${string}/blobs/uploads/${string}`;
+};
+
+/**
+ * @type object
+ */
+export type GetByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidResponses = {
+	"204": GetByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus204;
+	"400": GetByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus400;
+	"401": GetByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus401;
+	"402": GetByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus402;
+	"403": GetByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus403;
+	"404": GetByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus404;
+	"410": GetByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus410;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidResponse =
+	| GetByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus204
+	| GetByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus400
+	| GetByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus401
+	| GetByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus402
+	| GetByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus403
+	| GetByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus404
+	| GetByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus410;
+
+/**
+ * @description Single Docker repository team slug component.
+ * @maxLength 255
+ * @pattern ^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$
+ * @example team-slug
+ * @type string
+ */
+export type DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidPathTeamSlug = string;
+
+/**
+ * @description Single Docker repository project slug component.
+ * @maxLength 255
+ * @pattern ^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$
+ * @example project-slug
+ * @type string
+ */
+export type DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidPathProjectSlug = string;
+
+/**
+ * @description Single Docker repository name component.
+ * @maxLength 255
+ * @pattern ^[a-z0-9]+(?:(?:\\.|_|__|-+)[a-z0-9]+)*$
+ * @example nginx
+ * @type string
+ */
+export type DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidPathRepositoryName =
+	string;
+
+/**
+ * @description Blob upload session identifier.
+ * @maxLength 40
+ * @pattern ^[a-f0-9]{40}$
+ * @example 0123456789abcdef0123456789abcdef01234567
+ * @type string
+ */
+export type DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidPathUuid = string;
+
+/**
+ * @type unknown
+ */
+export type DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus204 = unknown;
+
+/**
+ * @type unknown
+ */
+export type DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus402 = unknown;
+
+/**
+ * @type unknown
+ */
+export type DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus404 = unknown;
+
+/**
+ * @type unknown
+ */
+export type DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus410 = unknown;
+
+/**
+ * @type object
+ */
+export type DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		teamSlug: DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidPathTeamSlug;
+		projectSlug: DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidPathProjectSlug;
+		repositoryName: DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidPathRepositoryName;
+		uuid: DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidPathUuid;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/v2/${string}/${string}/${string}/blobs/uploads/${string}`;
+};
+
+/**
+ * @type object
+ */
+export type DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidResponses = {
+	"204": DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus204;
+	"400": DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus400;
+	"401": DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus401;
+	"402": DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus402;
+	"403": DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus403;
+	"404": DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus404;
+	"410": DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus410;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidResponse =
+	| DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus204
+	| DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus400
+	| DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus401
+	| DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus402
+	| DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus403
+	| DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus404
+	| DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus410;
+
+/**
+ * @description Single Docker repository team slug component.
+ * @maxLength 255
+ * @pattern ^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$
+ * @example team-slug
+ * @type string
+ */
+export type UpdateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidPathTeamSlug = string;
+
+/**
+ * @description Single Docker repository project slug component.
+ * @maxLength 255
+ * @pattern ^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$
+ * @example project-slug
+ * @type string
+ */
+export type UpdateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidPathProjectSlug = string;
+
+/**
+ * @description Single Docker repository name component.
+ * @maxLength 255
+ * @pattern ^[a-z0-9]+(?:(?:\\.|_|__|-+)[a-z0-9]+)*$
+ * @example nginx
+ * @type string
+ */
+export type UpdateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidPathRepositoryName =
+	string;
+
+/**
+ * @description Blob upload session identifier.
+ * @maxLength 40
+ * @pattern ^[a-f0-9]{40}$
+ * @example 0123456789abcdef0123456789abcdef01234567
+ * @type string
+ */
+export type UpdateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidPathUuid = string;
+
+/**
+ * @type unknown
+ */
+export type UpdateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus202 = unknown;
+
+/**
+ * @type unknown
+ */
+export type UpdateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type UpdateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type UpdateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus402 = unknown;
+
+/**
+ * @type unknown
+ */
+export type UpdateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type UpdateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus404 = unknown;
+
+/**
+ * @type unknown
+ */
+export type UpdateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
+export type UpdateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus413 = unknown;
+
+/**
+ * @type object
+ */
+export type UpdateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		teamSlug: UpdateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidPathTeamSlug;
+		projectSlug: UpdateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidPathProjectSlug;
+		repositoryName: UpdateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidPathRepositoryName;
+		uuid: UpdateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidPathUuid;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/v2/${string}/${string}/${string}/blobs/uploads/${string}`;
+};
+
+/**
+ * @type object
+ */
+export type UpdateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidResponses = {
+	"202": UpdateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus202;
+	"400": UpdateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus400;
+	"401": UpdateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus401;
+	"402": UpdateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus402;
+	"403": UpdateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus403;
+	"404": UpdateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus404;
+	"410": UpdateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus410;
+	"413": UpdateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus413;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type UpdateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidResponse =
+	| UpdateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus202
+	| UpdateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus400
+	| UpdateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus401
+	| UpdateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus402
+	| UpdateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus403
+	| UpdateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus404
+	| UpdateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus410
+	| UpdateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus413;
+
+/**
+ * @description Single Docker repository team slug component.
+ * @maxLength 255
+ * @pattern ^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$
+ * @example team-slug
+ * @type string
+ */
+export type ReplaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidPathTeamSlug = string;
+
+/**
+ * @description Single Docker repository project slug component.
+ * @maxLength 255
+ * @pattern ^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$
+ * @example project-slug
+ * @type string
+ */
+export type ReplaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidPathProjectSlug =
+	string;
+
+/**
+ * @description Single Docker repository name component.
+ * @maxLength 255
+ * @pattern ^[a-z0-9]+(?:(?:\\.|_|__|-+)[a-z0-9]+)*$
+ * @example nginx
+ * @type string
+ */
+export type ReplaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidPathRepositoryName =
+	string;
+
+/**
+ * @description Blob upload session identifier.
+ * @maxLength 40
+ * @pattern ^[a-f0-9]{40}$
+ * @example 0123456789abcdef0123456789abcdef01234567
+ * @type string
+ */
+export type ReplaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidPathUuid = string;
+
+/**
+ * @description Content-addressable digest (algorithm:hex).
+ * @maxLength 255
+ * @pattern ^[A-Za-z0-9_+.-]+:[A-Fa-f0-9]+$
+ * @example sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+ * @type string
+ */
+export type ReplaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidQueryDigest = string;
+
+/**
+ * @type unknown
+ */
+export type ReplaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus201 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ReplaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ReplaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ReplaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus402 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ReplaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ReplaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus404 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ReplaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ReplaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus413 = unknown;
+
+/**
+ * @type object
+ */
+export type ReplaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		teamSlug: ReplaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidPathTeamSlug;
+		projectSlug: ReplaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidPathProjectSlug;
+		repositoryName: ReplaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidPathRepositoryName;
+		uuid: ReplaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidPathUuid;
+	};
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				digest: ReplaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidQueryDigest;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/v2/${string}/${string}/${string}/blobs/uploads/${string}`;
+};
+
+/**
+ * @type object
+ */
+export type ReplaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidResponses = {
+	"201": ReplaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus201;
+	"400": ReplaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus400;
+	"401": ReplaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus401;
+	"402": ReplaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus402;
+	"403": ReplaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus403;
+	"404": ReplaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus404;
+	"410": ReplaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus410;
+	"413": ReplaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus413;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type ReplaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidResponse =
+	| ReplaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus201
+	| ReplaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus400
+	| ReplaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus401
+	| ReplaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus402
+	| ReplaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus403
+	| ReplaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus404
+	| ReplaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus410
+	| ReplaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus413;
+
+/**
+ * @description Single Docker repository team slug component.
+ * @maxLength 255
+ * @pattern ^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$
+ * @example team-slug
+ * @type string
+ */
+export type CreateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsPathTeamSlug = string;
+
+/**
+ * @description Single Docker repository project slug component.
+ * @maxLength 255
+ * @pattern ^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$
+ * @example project-slug
+ * @type string
+ */
+export type CreateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsPathProjectSlug = string;
+
+/**
+ * @description Single Docker repository name component.
+ * @maxLength 255
+ * @pattern ^[a-z0-9]+(?:(?:\\.|_|__|-+)[a-z0-9]+)*$
+ * @example nginx
+ * @type string
+ */
+export type CreateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsPathRepositoryName = string;
+
+/**
+ * @description Digest of the blob to mount from another repository.
+ * @maxLength 255
+ * @pattern ^[A-Za-z0-9_+.-]+:[A-Fa-f0-9]+$
+ * @type string | undefined
+ */
+export type CreateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsQueryMount =
+	| string
+	| undefined;
+
+/**
+ * @description Source repository to mount the blob from.
+ * @maxLength 255
+ * @pattern ^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?\\/[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?\\/[a-z0-9]+(?:(?:\\.|_|__|-+)[a-z0-9]+)*$
+ * @type string | undefined
+ */
+export type CreateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsQueryFrom = string | undefined;
+
+/**
+ * @type unknown
+ */
+export type CreateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsStatus202 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsStatus402 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsStatus403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsStatus404 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsStatus410 = unknown;
+
+/**
+ * @type object
+ */
+export type CreateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		teamSlug: CreateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsPathTeamSlug;
+		projectSlug: CreateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsPathProjectSlug;
+		repositoryName: CreateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsPathRepositoryName;
+	};
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				mount?: CreateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsQueryMount | undefined;
+				from?: CreateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsQueryFrom | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/v2/${string}/${string}/${string}/blobs/uploads/`;
+};
+
+/**
+ * @type object
+ */
+export type CreateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsResponses = {
+	"202": CreateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsStatus202;
+	"400": CreateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsStatus400;
+	"401": CreateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsStatus401;
+	"402": CreateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsStatus402;
+	"403": CreateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsStatus403;
+	"404": CreateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsStatus404;
+	"410": CreateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsStatus410;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type CreateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsResponse =
+	| CreateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsStatus202
+	| CreateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsStatus400
+	| CreateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsStatus401
+	| CreateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsStatus402
+	| CreateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsStatus403
+	| CreateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsStatus404
+	| CreateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsStatus410;
+
+/**
+ * @description Single Docker repository team slug component.
+ * @maxLength 255
+ * @pattern ^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$
+ * @example team-slug
+ * @type string
+ */
+export type ReplaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferencePathTeamSlug = string;
+
+/**
+ * @description Single Docker repository project slug component.
+ * @maxLength 255
+ * @pattern ^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$
+ * @example project-slug
+ * @type string
+ */
+export type ReplaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferencePathProjectSlug =
+	string;
+
+/**
+ * @description Single Docker repository name component.
+ * @maxLength 255
+ * @pattern ^[a-z0-9]+(?:(?:\\.|_|__|-+)[a-z0-9]+)*$
+ * @example nginx
+ * @type string
+ */
+export type ReplaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferencePathRepositoryName =
+	string;
+
+/**
+ * @description Manifest reference: a tag or digest.
+ * @maxLength 255
+ * @pattern ^(?:[a-zA-Z0-9_][a-zA-Z0-9._-]{0,127}|[A-Za-z0-9_+.-]+:[A-Fa-f0-9]+)$
+ * @example latest
+ * @type string
+ */
+export type ReplaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferencePathReference =
+	string;
+
+/**
+ * @type unknown
+ */
+export type ReplaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus201 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ReplaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ReplaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ReplaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus402 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ReplaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ReplaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus404 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ReplaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ReplaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus413 = unknown;
+
+/**
+ * @type object
+ */
+export type ReplaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		teamSlug: ReplaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferencePathTeamSlug;
+		projectSlug: ReplaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferencePathProjectSlug;
+		repositoryName: ReplaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferencePathRepositoryName;
+		reference: ReplaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferencePathReference;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/v2/${string}/${string}/${string}/manifests/${string}`;
+};
+
+/**
+ * @type object
+ */
+export type ReplaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceResponses = {
+	"201": ReplaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus201;
+	"400": ReplaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus400;
+	"401": ReplaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus401;
+	"402": ReplaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus402;
+	"403": ReplaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus403;
+	"404": ReplaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus404;
+	"410": ReplaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus410;
+	"413": ReplaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus413;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type ReplaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceResponse =
+	| ReplaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus201
+	| ReplaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus400
+	| ReplaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus401
+	| ReplaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus402
+	| ReplaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus403
+	| ReplaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus404
+	| ReplaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus410
+	| ReplaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus413;
+
+/**
+ * @description Single Docker repository team slug component.
+ * @maxLength 255
+ * @pattern ^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$
+ * @example team-slug
+ * @type string
+ */
+export type GetByTeamSlugByProjectSlugByRepositoryNameManifestsByReferencePathTeamSlug = string;
+
+/**
+ * @description Single Docker repository project slug component.
+ * @maxLength 255
+ * @pattern ^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$
+ * @example project-slug
+ * @type string
+ */
+export type GetByTeamSlugByProjectSlugByRepositoryNameManifestsByReferencePathProjectSlug = string;
+
+/**
+ * @description Single Docker repository name component.
+ * @maxLength 255
+ * @pattern ^[a-z0-9]+(?:(?:\\.|_|__|-+)[a-z0-9]+)*$
+ * @example nginx
+ * @type string
+ */
+export type GetByTeamSlugByProjectSlugByRepositoryNameManifestsByReferencePathRepositoryName =
+	string;
+
+/**
+ * @description Manifest reference: a tag or digest.
+ * @maxLength 255
+ * @pattern ^(?:[a-zA-Z0-9_][a-zA-Z0-9._-]{0,127}|[A-Za-z0-9_+.-]+:[A-Fa-f0-9]+)$
+ * @example latest
+ * @type string
+ */
+export type GetByTeamSlugByProjectSlugByRepositoryNameManifestsByReferencePathReference = string;
+
+/**
+ * @type unknown
+ */
+export type GetByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus402 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus404 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus410 = unknown;
+
+/**
+ * @type object
+ */
+export type GetByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		teamSlug: GetByTeamSlugByProjectSlugByRepositoryNameManifestsByReferencePathTeamSlug;
+		projectSlug: GetByTeamSlugByProjectSlugByRepositoryNameManifestsByReferencePathProjectSlug;
+		repositoryName: GetByTeamSlugByProjectSlugByRepositoryNameManifestsByReferencePathRepositoryName;
+		reference: GetByTeamSlugByProjectSlugByRepositoryNameManifestsByReferencePathReference;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/v2/${string}/${string}/${string}/manifests/${string}`;
+};
+
+/**
+ * @type object
+ */
+export type GetByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceResponses = {
+	"400": GetByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus400;
+	"401": GetByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus401;
+	"402": GetByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus402;
+	"403": GetByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus403;
+	"404": GetByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus404;
+	"410": GetByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus410;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceResponse =
+	| GetByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus400
+	| GetByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus401
+	| GetByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus402
+	| GetByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus403
+	| GetByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus404
+	| GetByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus410;
+
+/**
+ * @description Single Docker repository team slug component.
+ * @maxLength 255
+ * @pattern ^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$
+ * @example team-slug
+ * @type string
+ */
+export type DeleteByTeamSlugByProjectSlugByRepositoryNameManifestsByReferencePathTeamSlug = string;
+
+/**
+ * @description Single Docker repository project slug component.
+ * @maxLength 255
+ * @pattern ^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$
+ * @example project-slug
+ * @type string
+ */
+export type DeleteByTeamSlugByProjectSlugByRepositoryNameManifestsByReferencePathProjectSlug =
+	string;
+
+/**
+ * @description Single Docker repository name component.
+ * @maxLength 255
+ * @pattern ^[a-z0-9]+(?:(?:\\.|_|__|-+)[a-z0-9]+)*$
+ * @example nginx
+ * @type string
+ */
+export type DeleteByTeamSlugByProjectSlugByRepositoryNameManifestsByReferencePathRepositoryName =
+	string;
+
+/**
+ * @description Content-addressable digest (algorithm:hex).
+ * @maxLength 255
+ * @pattern ^[A-Za-z0-9_+.-]+:[A-Fa-f0-9]+$
+ * @example sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+ * @type string
+ */
+export type DeleteByTeamSlugByProjectSlugByRepositoryNameManifestsByReferencePathReference = string;
+
+/**
+ * @type unknown
+ */
+export type DeleteByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus202 = unknown;
+
+/**
+ * @type unknown
+ */
+export type DeleteByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type DeleteByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type DeleteByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus402 = unknown;
+
+/**
+ * @type unknown
+ */
+export type DeleteByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type DeleteByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus404 = unknown;
+
+/**
+ * @type unknown
+ */
+export type DeleteByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus410 = unknown;
+
+/**
+ * @type object
+ */
+export type DeleteByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		teamSlug: DeleteByTeamSlugByProjectSlugByRepositoryNameManifestsByReferencePathTeamSlug;
+		projectSlug: DeleteByTeamSlugByProjectSlugByRepositoryNameManifestsByReferencePathProjectSlug;
+		repositoryName: DeleteByTeamSlugByProjectSlugByRepositoryNameManifestsByReferencePathRepositoryName;
+		reference: DeleteByTeamSlugByProjectSlugByRepositoryNameManifestsByReferencePathReference;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/v2/${string}/${string}/${string}/manifests/${string}`;
+};
+
+/**
+ * @type object
+ */
+export type DeleteByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceResponses = {
+	"202": DeleteByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus202;
+	"400": DeleteByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus400;
+	"401": DeleteByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus401;
+	"402": DeleteByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus402;
+	"403": DeleteByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus403;
+	"404": DeleteByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus404;
+	"410": DeleteByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus410;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type DeleteByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceResponse =
+	| DeleteByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus202
+	| DeleteByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus400
+	| DeleteByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus401
+	| DeleteByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus402
+	| DeleteByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus403
+	| DeleteByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus404
+	| DeleteByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus410;
+
+/**
+ * @description Single Docker repository team slug component.
+ * @maxLength 255
+ * @pattern ^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$
+ * @example team-slug
+ * @type string
+ */
+export type GetByTeamSlugByProjectSlugByRepositoryNameTagsListPathTeamSlug = string;
+
+/**
+ * @description Single Docker repository project slug component.
+ * @maxLength 255
+ * @pattern ^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$
+ * @example project-slug
+ * @type string
+ */
+export type GetByTeamSlugByProjectSlugByRepositoryNameTagsListPathProjectSlug = string;
+
+/**
+ * @description Single Docker repository name component.
+ * @maxLength 255
+ * @pattern ^[a-z0-9]+(?:(?:\\.|_|__|-+)[a-z0-9]+)*$
+ * @example nginx
+ * @type string
+ */
+export type GetByTeamSlugByProjectSlugByRepositoryNameTagsListPathRepositoryName = string;
+
+/**
+ * @minLength 1
+ * @maxLength 1000
+ * @type integer | undefined
+ */
+export type GetByTeamSlugByProjectSlugByRepositoryNameTagsListQueryN = number | undefined;
+
+/**
+ * @description Opaque pagination cursor returned by a previous list response.
+ * @maxLength 1024
+ * @type string | undefined
+ */
+export type GetByTeamSlugByProjectSlugByRepositoryNameTagsListQueryLast = string | undefined;
+
+/**
+ * @type unknown
+ */
+export type GetByTeamSlugByProjectSlugByRepositoryNameTagsListStatus200 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetByTeamSlugByProjectSlugByRepositoryNameTagsListStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetByTeamSlugByProjectSlugByRepositoryNameTagsListStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetByTeamSlugByProjectSlugByRepositoryNameTagsListStatus402 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetByTeamSlugByProjectSlugByRepositoryNameTagsListStatus403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetByTeamSlugByProjectSlugByRepositoryNameTagsListStatus404 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetByTeamSlugByProjectSlugByRepositoryNameTagsListStatus410 = unknown;
+
+/**
+ * @type object
+ */
+export type GetByTeamSlugByProjectSlugByRepositoryNameTagsListRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		teamSlug: GetByTeamSlugByProjectSlugByRepositoryNameTagsListPathTeamSlug;
+		projectSlug: GetByTeamSlugByProjectSlugByRepositoryNameTagsListPathProjectSlug;
+		repositoryName: GetByTeamSlugByProjectSlugByRepositoryNameTagsListPathRepositoryName;
+	};
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				n?: GetByTeamSlugByProjectSlugByRepositoryNameTagsListQueryN | undefined;
+				last?: GetByTeamSlugByProjectSlugByRepositoryNameTagsListQueryLast | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/v2/${string}/${string}/${string}/tags/list`;
+};
+
+/**
+ * @type object
+ */
+export type GetByTeamSlugByProjectSlugByRepositoryNameTagsListResponses = {
+	"200": GetByTeamSlugByProjectSlugByRepositoryNameTagsListStatus200;
+	"400": GetByTeamSlugByProjectSlugByRepositoryNameTagsListStatus400;
+	"401": GetByTeamSlugByProjectSlugByRepositoryNameTagsListStatus401;
+	"402": GetByTeamSlugByProjectSlugByRepositoryNameTagsListStatus402;
+	"403": GetByTeamSlugByProjectSlugByRepositoryNameTagsListStatus403;
+	"404": GetByTeamSlugByProjectSlugByRepositoryNameTagsListStatus404;
+	"410": GetByTeamSlugByProjectSlugByRepositoryNameTagsListStatus410;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetByTeamSlugByProjectSlugByRepositoryNameTagsListResponse =
+	| GetByTeamSlugByProjectSlugByRepositoryNameTagsListStatus200
+	| GetByTeamSlugByProjectSlugByRepositoryNameTagsListStatus400
+	| GetByTeamSlugByProjectSlugByRepositoryNameTagsListStatus401
+	| GetByTeamSlugByProjectSlugByRepositoryNameTagsListStatus402
+	| GetByTeamSlugByProjectSlugByRepositoryNameTagsListStatus403
+	| GetByTeamSlugByProjectSlugByRepositoryNameTagsListStatus404
+	| GetByTeamSlugByProjectSlugByRepositoryNameTagsListStatus410;
 
 /**
  * @type string
