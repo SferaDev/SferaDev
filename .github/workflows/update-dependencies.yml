@@ -98,6 +98,12 @@ jobs:
           # the PR ships with the overrides cleared and never regenerated — every security
           # override dropped, with nothing red to show for it. Report it instead of swallowing.
           pnpm audit --fix override || echo "::warning::pnpm audit --fix failed; security overrides may be missing from this PR"
+
+          # `pnpm audit --fix` emits `overrides` as one flow-style line, which makes a 50-entry
+          # map unreviewable in a diff — a single changed entry rewrites the whole line. Re-emit
+          # it as a block map so each override reads as its own line, like every other key here.
+          yq -i '.overrides style="" | .overrides[] style=""' pnpm-workspace.yaml
+
           with_allow_builds pnpm install --no-frozen-lockfile || {
             echo "::warning::install failed after audit --fix; clearing generated overrides and retrying"
             yq -i '.overrides |= with_entries(select(.key == "@kubb/renderer-jsx"))' pnpm-workspace.yaml

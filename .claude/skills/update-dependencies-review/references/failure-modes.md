@@ -121,6 +121,74 @@ Fix the single offending entry rather than clearing the block — check what `ma
 same advisory (`>=0.25.0` here). The workflow's fallback clears *all* generated overrides, so if
 it fires you have hit the previous entry's problem as well.
 
+**Recurred 2026-08 (PR #594), same `esbuild@^0.24.3` entry** — it is intermittent, not weekly:
+it only reappears when something in the freshly-resolved tree drops back to esbuild ≤0.24.2, and
+the override that normally holds esbuild at 0.25.x has been cleared by the time `audit` runs. The
+week before shipped 53 overrides intact.
+
+**The fingerprint, when the PR has `overrides: {}`:** check whether
+`minimumReleaseAgeExclude` *gained* entries in the same diff. If it did, `audit --fix` succeeded
+and it was the **install after it** that failed — the fallback only clears `.overrides` and leaves
+the excludes behind. That mismatch tells you to go read the bot run log for
+`ERR_PNPM_NO_MATCHING_VERSION` and fix one entry, rather than re-running `audit` blind:
+
+```bash
+gh run list --workflow=update-dependencies.yml --limit 1     # get the run id
+gh run view <id> --log | grep -E "::warning|ERR_PNPM|overrides were added"
+```
+
+### `overrides` written as one flow-style line
+
+`pnpm audit --fix` emits `overrides` as a single `{a: b, c: d, …}` line. At 50+ entries any
+change rewrites the whole line, so the diff cannot be read entry-by-entry — which is precisely how
+a shrinking override set stays invisible. The workflow now re-emits it as a block map after
+`audit --fix` (2026-08):
+
+```bash
+yq -i '.overrides style="" | .overrides[] style=""' pnpm-workspace.yaml
+```
+
+Purely cosmetic to pnpm — verify with a byte-identical `pnpm-lock.yaml` after
+`pnpm install --frozen-lockfile`. If a future PR reverts to one line, that step was dropped.
+
+### Both KEEP-BACK pins jumped in the same run
+
+*Seen 2026-08 (PR #594).* `pnpm update --recursive --latest` bumped `typescript` 6.0.3 → 7.0.2
+**and** `@kubb/renderer-jsx` beta.10 → beta.35 in one run, leaving both KEEP-BACK comments in place
+above the now-wrong versions.
+
+Only the TypeScript one turned CI red; the `@kubb` one is an unmet peer that no gate catches. So
+**re-check every pin, not just whichever one broke the build** — a green `Check` is not evidence
+the other holds survived. `grep -n "KEEP-BACK" -A6 pnpm-workspace.yaml` and compare each value.
+
+---
+
+## Tests
+
+### `ai-gateway-proxy` integration tests fail locally with `GatewayAuthenticationError`
+
+*Seen 2026-08.* `packages/ai-gateway-proxy/vitest.config.ts` calls dotenv's `config()`, so an
+untracked `packages/ai-gateway-proxy/.env` is loaded even when the shell has no
+`AI_GATEWAY_API_KEY`. A stale key in that file flips `hasApiKey` to true, the
+`describe.skipIf(!hasApiKey)` block runs, and 11 tests fail — 8 with
+`GatewayAuthenticationError`, 3 with downstream `expected 0 to be greater than 0` /
+`AI_NoOutputGeneratedError` from streams that never produced tokens.
+
+**This is local-only and not a regression** — CI has no `.env` and no secret, so it reports
+`13 skipped` and goes green. Confirm which you are looking at before blaming an `ai` /
+`@ai-sdk/*` bump:
+
+```bash
+ls -la packages/ai-gateway-proxy/.env
+mv packages/ai-gateway-proxy/.env packages/ai-gateway-proxy/.env.localbak
+pnpm --filter ai-gateway-proxy test    # expect "13 skipped" — matches CI
+mv packages/ai-gateway-proxy/.env.localbak packages/ai-gateway-proxy/.env
+```
+
+The corollary is the uncomfortable one: an expired key looks exactly like a broken bump, and a
+*valid* key is the only thing that distinguishes them. Absent one, the AI SDK bump is unverified —
+say so rather than reading the skips as a pass.
+
 ---
 
 ## Build

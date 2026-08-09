@@ -76,6 +76,12 @@ Current holds (2026-07 — verify against the file, not this list):
   declarations, so every package build fails with *"Detected TypeScript 7.0.2 … install
   `@typescript/typescript6`"*. Note bunchee's peer range already advertises `^7.0`, so the peer
   range is not evidence — build a package before releasing this hold.
+
+  Re-confirmed 2026-08 on **bunchee 7.0.0**, which the bot bumped in the same PR: the hold is
+  independent of bunchee's major. bunchee 7 peer-accepts `^5.0 || ^6.0 || ^7.0` and builds all 12
+  packages fine against TypeScript 6.0.3, so take the bunchee major and keep the TS pin — they are
+  separate decisions. Releasing the TS hold still means adopting `@typescript/typescript6`, which
+  is its own PR.
 - **`@kubb/renderer-jsx`** must track the other `@kubb/*` entries rather than its own latest; kubb
   publishes it ahead of `adapter-oas`/`core`, and `@kubb/core` peer-requires the exact matching
   version.
