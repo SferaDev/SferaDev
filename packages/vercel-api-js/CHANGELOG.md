@@ -1,5 +1,23 @@
 # vercel-api-js
 
+## 1.9.0
+
+### Minor Changes
+
+- bb0d319: Added API endpoints for managing repository permissions, including adding, removing, listing, and clearing permissions for VCR repositories.
+- bb0d319: Introduced v3 Sandboxes API endpoint and types, with clarified behavior from v2.
+- bb0d319: Added new Docker Registry v2 API endpoints for blobs, manifests, and tags operations on repositories.
+
+### Patch Changes
+
+- bb0d319: Improved error responses and allowed values on several endpoints, for example, new possible DELETE status codes on DeleteRoutes and searchRepoStatus502.
+- bb0d319: Removed unused status code 500 from updateProject and updateSessionNetworkPolicy responses.
+- bb0d319: Added support for new event types and properties to the user event schema, including AI gateway events, compliance events, login events, and VCR repository visibility change.
+- bb0d319: Added support for new team billing plan information to the Team type and schema.
+- bb0d319: Added support for more API key metadata and new enum values to various event schemas.
+- bb0d319: Extended GetProjectsQueryBuildMachineTypes docs for elastic selection.
+- bb0d319: Added support for new provider 'cursor-origin' in searchRepo, billing plans, and events payloads.
+
 ## 1.8.3
 
 ### Patch Changes
