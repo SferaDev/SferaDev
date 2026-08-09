@@ -33,6 +33,12 @@ import type {
 	AddProjectMemberStatus403,
 	AddProjectMemberStatus410,
 	AddProjectMemberStatus500,
+	AddRepositoryPermissionResponse,
+	AddRepositoryPermissionStatus400,
+	AddRepositoryPermissionStatus401,
+	AddRepositoryPermissionStatus403,
+	AddRepositoryPermissionStatus404,
+	AddRepositoryPermissionStatus410,
 	AddRouteResponse,
 	AddRouteStatus400,
 	AddRouteStatus401,
@@ -112,6 +118,12 @@ import type {
 	ClaimDomainOwnershipStatus403,
 	ClaimDomainOwnershipStatus404,
 	ClaimDomainOwnershipStatus410,
+	ClearRepositoryPermissionsResponse,
+	ClearRepositoryPermissionsStatus400,
+	ClearRepositoryPermissionsStatus401,
+	ClearRepositoryPermissionsStatus403,
+	ClearRepositoryPermissionsStatus404,
+	ClearRepositoryPermissionsStatus410,
 	CompleteRollingReleaseResponse,
 	CompleteRollingReleaseStatus400,
 	CompleteRollingReleaseStatus401,
@@ -167,6 +179,13 @@ import type {
 	CreateAuthTokenStatus403,
 	CreateAuthTokenStatus404,
 	CreateAuthTokenStatus410,
+	CreateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsResponse,
+	CreateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsStatus400,
+	CreateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsStatus401,
+	CreateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsStatus402,
+	CreateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsStatus403,
+	CreateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsStatus404,
+	CreateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsStatus410,
 	CreateCheckResponse,
 	CreateCheckStatus400,
 	CreateCheckStatus401,
@@ -377,17 +396,28 @@ import type {
 	CreateSandboxesByNameForkStatus422,
 	CreateSandboxesByNameForkStatus429,
 	CreateSandboxesByNameForkStatus500,
-	CreateSandboxesResponse,
-	CreateSandboxesStatus400,
-	CreateSandboxesStatus401,
-	CreateSandboxesStatus402,
-	CreateSandboxesStatus403,
-	CreateSandboxesStatus404,
-	CreateSandboxesStatus409,
-	CreateSandboxesStatus410,
-	CreateSandboxesStatus422,
-	CreateSandboxesStatus429,
-	CreateSandboxesStatus500,
+	CreateSandboxesV2Response,
+	CreateSandboxesV2Status400,
+	CreateSandboxesV2Status401,
+	CreateSandboxesV2Status402,
+	CreateSandboxesV2Status403,
+	CreateSandboxesV2Status404,
+	CreateSandboxesV2Status409,
+	CreateSandboxesV2Status410,
+	CreateSandboxesV2Status422,
+	CreateSandboxesV2Status429,
+	CreateSandboxesV2Status500,
+	CreateSandboxesV3Response,
+	CreateSandboxesV3Status400,
+	CreateSandboxesV3Status401,
+	CreateSandboxesV3Status402,
+	CreateSandboxesV3Status403,
+	CreateSandboxesV3Status404,
+	CreateSandboxesV3Status409,
+	CreateSandboxesV3Status410,
+	CreateSandboxesV3Status422,
+	CreateSandboxesV3Status429,
+	CreateSandboxesV3Status500,
 	CreateSdkKeyResponse,
 	CreateSdkKeyStatus400,
 	CreateSdkKeyStatus401,
@@ -514,6 +544,28 @@ import type {
 	DeleteAuthTokenStatus403,
 	DeleteAuthTokenStatus404,
 	DeleteAuthTokenStatus410,
+	DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestResponse,
+	DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus400,
+	DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus401,
+	DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus402,
+	DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus403,
+	DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus404,
+	DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus405,
+	DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus410,
+	DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidResponse,
+	DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus400,
+	DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus401,
+	DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus402,
+	DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus403,
+	DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus404,
+	DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus410,
+	DeleteByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceResponse,
+	DeleteByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus400,
+	DeleteByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus401,
+	DeleteByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus402,
+	DeleteByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus403,
+	DeleteByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus404,
+	DeleteByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus410,
 	DeleteConfigurableLogDrainResponse,
 	DeleteConfigurableLogDrainStatus400,
 	DeleteConfigurableLogDrainStatus401,
@@ -667,7 +719,9 @@ import type {
 	DeleteRoutesStatus401,
 	DeleteRoutesStatus403,
 	DeleteRoutesStatus404,
+	DeleteRoutesStatus409,
 	DeleteRoutesStatus410,
+	DeleteRoutesStatus500,
 	DeleteSandboxResponse,
 	DeleteSandboxStatus400,
 	DeleteSandboxStatus401,
@@ -859,6 +913,35 @@ import type {
 	GetBypassIpStatus404,
 	GetBypassIpStatus410,
 	GetBypassIpStatus500,
+	GetByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestResponse,
+	GetByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus400,
+	GetByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus401,
+	GetByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus402,
+	GetByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus403,
+	GetByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus404,
+	GetByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus410,
+	GetByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus416,
+	GetByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidResponse,
+	GetByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus400,
+	GetByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus401,
+	GetByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus402,
+	GetByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus403,
+	GetByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus404,
+	GetByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus410,
+	GetByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceResponse,
+	GetByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus400,
+	GetByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus401,
+	GetByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus402,
+	GetByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus403,
+	GetByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus404,
+	GetByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus410,
+	GetByTeamSlugByProjectSlugByRepositoryNameTagsListResponse,
+	GetByTeamSlugByProjectSlugByRepositoryNameTagsListStatus400,
+	GetByTeamSlugByProjectSlugByRepositoryNameTagsListStatus401,
+	GetByTeamSlugByProjectSlugByRepositoryNameTagsListStatus402,
+	GetByTeamSlugByProjectSlugByRepositoryNameTagsListStatus403,
+	GetByTeamSlugByProjectSlugByRepositoryNameTagsListStatus404,
+	GetByTeamSlugByProjectSlugByRepositoryNameTagsListStatus410,
 	GetCertByIdResponse,
 	GetCertByIdStatus400,
 	GetCertByIdStatus401,
@@ -1323,6 +1406,13 @@ import type {
 	GetRollingReleaseStatus403,
 	GetRollingReleaseStatus404,
 	GetRollingReleaseStatus410,
+	GetRootResponse,
+	GetRootStatus400,
+	GetRootStatus401,
+	GetRootStatus402,
+	GetRootStatus403,
+	GetRootStatus404,
+	GetRootStatus410,
 	GetRoutesResponse,
 	GetRoutesStatus400,
 	GetRoutesStatus401,
@@ -1669,6 +1759,12 @@ import type {
 	ListRepositoryImagesStatus403,
 	ListRepositoryImagesStatus404,
 	ListRepositoryImagesStatus410,
+	ListRepositoryPermissionsResponse,
+	ListRepositoryPermissionsStatus400,
+	ListRepositoryPermissionsStatus401,
+	ListRepositoryPermissionsStatus403,
+	ListRepositoryPermissionsStatus404,
+	ListRepositoryPermissionsStatus410,
 	ListRepositoryTagsResponse,
 	ListRepositoryTagsStatus400,
 	ListRepositoryTagsStatus401,
@@ -1868,6 +1964,12 @@ import type {
 	RemoveRecordStatus403,
 	RemoveRecordStatus404,
 	RemoveRecordStatus410,
+	RemoveRepositoryPermissionResponse,
+	RemoveRepositoryPermissionStatus400,
+	RemoveRepositoryPermissionStatus401,
+	RemoveRepositoryPermissionStatus403,
+	RemoveRepositoryPermissionStatus404,
+	RemoveRepositoryPermissionStatus410,
 	RemoveTeamMemberResponse,
 	RemoveTeamMemberStatus400,
 	RemoveTeamMemberStatus401,
@@ -1882,6 +1984,22 @@ import type {
 	RenewDomainStatus404,
 	RenewDomainStatus429,
 	RenewDomainStatus500,
+	ReplaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidResponse,
+	ReplaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus400,
+	ReplaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus401,
+	ReplaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus402,
+	ReplaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus403,
+	ReplaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus404,
+	ReplaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus410,
+	ReplaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus413,
+	ReplaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceResponse,
+	ReplaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus400,
+	ReplaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus401,
+	ReplaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus402,
+	ReplaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus403,
+	ReplaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus404,
+	ReplaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus410,
+	ReplaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus413,
 	ReplaceDomainsByDomainRecordsResponse,
 	ReplaceDomainsByDomainRecordsStatus400,
 	ReplaceDomainsByDomainRecordsStatus401,
@@ -1965,6 +2083,7 @@ import type {
 	SearchRepoStatus410,
 	SearchRepoStatus429,
 	SearchRepoStatus500,
+	SearchRepoStatus502,
 	StageRedirectsResponse,
 	StageRedirectsStatus400,
 	StageRedirectsStatus401,
@@ -2066,6 +2185,14 @@ import type {
 	UpdateAttackChallengeModeStatus403,
 	UpdateAttackChallengeModeStatus404,
 	UpdateAttackChallengeModeStatus410,
+	UpdateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidResponse,
+	UpdateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus400,
+	UpdateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus401,
+	UpdateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus402,
+	UpdateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus403,
+	UpdateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus404,
+	UpdateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus410,
+	UpdateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus413,
 	UpdateCheckResponse,
 	UpdateCheckStatus400,
 	UpdateCheckStatus401,
@@ -2226,7 +2353,6 @@ import type {
 	UpdateProjectStatus409,
 	UpdateProjectStatus410,
 	UpdateProjectStatus428,
-	UpdateProjectStatus500,
 	UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionResponse,
 	UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionStatus400,
 	UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionStatus401,
@@ -2294,7 +2420,6 @@ import type {
 	UpdateSessionNetworkPolicyResponse,
 	UpdateSessionNetworkPolicyStatus400,
 	UpdateSessionNetworkPolicyStatus401,
-	UpdateSessionNetworkPolicyStatus402,
 	UpdateSessionNetworkPolicyStatus403,
 	UpdateSessionNetworkPolicyStatus404,
 	UpdateSessionNetworkPolicyStatus410,
@@ -8357,6 +8482,7 @@ export async function listUserEvents(
 			userId?: string;
 			principalId?: string;
 			projectIds?: string;
+			entityId?: string;
 			withPayload?: string;
 			teamId?: string;
 			slug?: string;
@@ -8384,6 +8510,7 @@ export async function listUserEvents(
 			userId?: string;
 			principalId?: string;
 			projectIds?: string;
+			entityId?: string;
 			withPayload?: string;
 			teamId?: string;
 			slug?: string;
@@ -9596,7 +9723,13 @@ export async function searchRepo(
 		queryParams?: {
 			query?: string;
 			namespaceId?: unknown;
-			provider?: "github" | "github-limited" | "github-custom-host" | "gitlab" | "bitbucket";
+			provider?:
+				| "github"
+				| "github-limited"
+				| "github-custom-host"
+				| "gitlab"
+				| "bitbucket"
+				| "cursor-origin";
 			installationId?: string;
 			host?: string;
 			teamId?: string;
@@ -9617,13 +9750,20 @@ export async function searchRepo(
 			| SearchRepoStatus410
 			| SearchRepoStatus429
 			| SearchRepoStatus500
+			| SearchRepoStatus502
 		>,
 		null,
 		Record<string, string>,
 		{
 			query?: string;
 			namespaceId?: unknown;
-			provider?: "github" | "github-limited" | "github-custom-host" | "gitlab" | "bitbucket";
+			provider?:
+				| "github"
+				| "github-limited"
+				| "github-custom-host"
+				| "gitlab"
+				| "bitbucket"
+				| "cursor-origin";
 			installationId?: string;
 			host?: string;
 			teamId?: string;
@@ -9664,7 +9804,8 @@ export async function getBillingPlans(
 				| "resource-claims"
 				| "cli"
 				| "oauth"
-				| "backoffice";
+				| "backoffice"
+				| "import-recommended-integrations";
 			teamId?: string;
 			slug?: string;
 		};
@@ -9702,7 +9843,8 @@ export async function getBillingPlans(
 				| "resource-claims"
 				| "cli"
 				| "oauth"
-				| "backoffice";
+				| "backoffice"
+				| "import-recommended-integrations";
 			teamId?: string;
 			slug?: string;
 		},
@@ -11929,7 +12071,9 @@ export async function deleteRoutes(
 			| DeleteRoutesStatus401
 			| DeleteRoutesStatus403
 			| DeleteRoutesStatus404
+			| DeleteRoutesStatus409
 			| DeleteRoutesStatus410
+			| DeleteRoutesStatus500
 		>,
 		null,
 		Record<string, string>,
@@ -12448,7 +12592,6 @@ export async function updateProject(
 			| UpdateProjectStatus409
 			| UpdateProjectStatus410
 			| UpdateProjectStatus428
-			| UpdateProjectStatus500
 		>,
 		null,
 		Record<string, string>,
@@ -14417,7 +14560,7 @@ export async function listSandboxes(
  * @description Creates a named sandbox environment. Named sandboxes have a unique name within a project and support automatic snapshotting on shutdown.
  * @link /v2/sandboxes
  */
-export async function createSandboxes(
+export async function createSandboxesV2(
 	{
 		queryParams,
 		config,
@@ -14429,18 +14572,18 @@ export async function createSandboxes(
 	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		CreateSandboxesResponse,
+		CreateSandboxesV2Response,
 		ErrorWrapper<
-			| CreateSandboxesStatus400
-			| CreateSandboxesStatus401
-			| CreateSandboxesStatus402
-			| CreateSandboxesStatus403
-			| CreateSandboxesStatus404
-			| CreateSandboxesStatus409
-			| CreateSandboxesStatus410
-			| CreateSandboxesStatus422
-			| CreateSandboxesStatus429
-			| CreateSandboxesStatus500
+			| CreateSandboxesV2Status400
+			| CreateSandboxesV2Status401
+			| CreateSandboxesV2Status402
+			| CreateSandboxesV2Status403
+			| CreateSandboxesV2Status404
+			| CreateSandboxesV2Status409
+			| CreateSandboxesV2Status410
+			| CreateSandboxesV2Status422
+			| CreateSandboxesV2Status429
+			| CreateSandboxesV2Status500
 		>,
 		null,
 		Record<string, string>,
@@ -15382,7 +15525,6 @@ export async function updateSessionNetworkPolicy(
 		ErrorWrapper<
 			| UpdateSessionNetworkPolicyStatus400
 			| UpdateSessionNetworkPolicyStatus401
-			| UpdateSessionNetworkPolicyStatus402
 			| UpdateSessionNetworkPolicyStatus403
 			| UpdateSessionNetworkPolicyStatus404
 			| UpdateSessionNetworkPolicyStatus410
@@ -15642,6 +15784,51 @@ export async function createSandboxesByNameFork(
 	>({
 		method: "POST",
 		url: `/v2/sandboxes/${pathParams.name}/fork`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Create a named sandbox
+ * @description Creates a named sandbox environment. Named sandboxes have a unique name within a project and support automatic snapshotting on shutdown. Unlike v2, this version has no `runtime` parameter: when no `image` is provided (and the sandbox is not restored from a snapshot), the sandbox is created from the default universal image.
+ * @link /v3/sandboxes
+ */
+export async function createSandboxesV3(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	const data = await request<
+		CreateSandboxesV3Response,
+		ErrorWrapper<
+			| CreateSandboxesV3Status400
+			| CreateSandboxesV3Status401
+			| CreateSandboxesV3Status402
+			| CreateSandboxesV3Status403
+			| CreateSandboxesV3Status404
+			| CreateSandboxesV3Status409
+			| CreateSandboxesV3Status410
+			| CreateSandboxesV3Status422
+			| CreateSandboxesV3Status429
+			| CreateSandboxesV3Status500
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
+		Record<string, string>
+	>({
+		method: "POST",
+		url: `/v3/sandboxes`,
 		queryParams,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
@@ -16247,6 +16434,7 @@ export async function createSpeedInsightsToggle(
 }
 
 /**
+ * @summary Get a store
  * @link /storage/stores/{id}
  */
 export async function getStorageStoresById(
@@ -16290,6 +16478,7 @@ export async function getStorageStoresById(
 }
 
 /**
+ * @summary Create a Blob store
  * @link /storage/stores/blob
  */
 export async function createStorageStoresBlob(
@@ -16324,6 +16513,7 @@ export async function createStorageStoresBlob(
 }
 
 /**
+ * @summary Delete a Blob store
  * @link /storage/stores/blob/{id}
  */
 export async function deleteStorageStoresBlobById(
@@ -17673,6 +17863,192 @@ export async function listRepositoryImages(
 }
 
 /**
+ * @summary Add a repository permission
+ * @description Grant a team access to a VCR repository. Sharing applies to the whole repository.
+ * @link /v1/vcr/repository/{idOrName}/permissions
+ */
+export async function addRepositoryPermission(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { idOrName: string };
+		queryParams?: { projectId?: string; teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.idOrName) {
+		throw new Error(`Missing required path parameter: idOrName`);
+	}
+	const data = await request<
+		AddRepositoryPermissionResponse,
+		ErrorWrapper<
+			| AddRepositoryPermissionStatus400
+			| AddRepositoryPermissionStatus401
+			| AddRepositoryPermissionStatus403
+			| AddRepositoryPermissionStatus404
+			| AddRepositoryPermissionStatus410
+		>,
+		null,
+		Record<string, string>,
+		{ projectId?: string; teamId?: string; slug?: string },
+		{ idOrName: string }
+	>({
+		method: "POST",
+		url: `/v1/vcr/repository/${pathParams.idOrName}/permissions`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Remove a repository permission
+ * @description Revoke a team's access to a VCR repository.
+ * @link /v1/vcr/repository/{idOrName}/permissions
+ */
+export async function removeRepositoryPermission(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { idOrName: string };
+		queryParams?: { projectId?: string; teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.idOrName) {
+		throw new Error(`Missing required path parameter: idOrName`);
+	}
+	const data = await request<
+		RemoveRepositoryPermissionResponse,
+		ErrorWrapper<
+			| RemoveRepositoryPermissionStatus400
+			| RemoveRepositoryPermissionStatus401
+			| RemoveRepositoryPermissionStatus403
+			| RemoveRepositoryPermissionStatus404
+			| RemoveRepositoryPermissionStatus410
+		>,
+		null,
+		Record<string, string>,
+		{ projectId?: string; teamId?: string; slug?: string },
+		{ idOrName: string }
+	>({
+		method: "DELETE",
+		url: `/v1/vcr/repository/${pathParams.idOrName}/permissions`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary List repository permissions
+ * @description List the teams a VCR repository is shared with.
+ * @link /v1/vcr/repository/{idOrName}/permissions
+ */
+export async function listRepositoryPermissions(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { idOrName: string };
+		queryParams?: {
+			projectId?: string;
+			limit?: number;
+			cursor?: string;
+			teamId?: string;
+			slug?: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.idOrName) {
+		throw new Error(`Missing required path parameter: idOrName`);
+	}
+	const data = await request<
+		ListRepositoryPermissionsResponse,
+		ErrorWrapper<
+			| ListRepositoryPermissionsStatus400
+			| ListRepositoryPermissionsStatus401
+			| ListRepositoryPermissionsStatus403
+			| ListRepositoryPermissionsStatus404
+			| ListRepositoryPermissionsStatus410
+		>,
+		null,
+		Record<string, string>,
+		{ projectId?: string; limit?: number; cursor?: string; teamId?: string; slug?: string },
+		{ idOrName: string }
+	>({
+		method: "GET",
+		url: `/v1/vcr/repository/${pathParams.idOrName}/permissions`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Clear all repository permissions
+ * @description Revoke every team's access to a VCR repository. Clearing an unshared repository is a no-op.
+ * @link /v1/vcr/repository/{idOrName}/permissions/all
+ */
+export async function clearRepositoryPermissions(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { idOrName: string };
+		queryParams?: { projectId?: string; teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.idOrName) {
+		throw new Error(`Missing required path parameter: idOrName`);
+	}
+	const data = await request<
+		ClearRepositoryPermissionsResponse,
+		ErrorWrapper<
+			| ClearRepositoryPermissionsStatus400
+			| ClearRepositoryPermissionsStatus401
+			| ClearRepositoryPermissionsStatus403
+			| ClearRepositoryPermissionsStatus404
+			| ClearRepositoryPermissionsStatus410
+		>,
+		null,
+		Record<string, string>,
+		{ projectId?: string; teamId?: string; slug?: string },
+		{ idOrName: string }
+	>({
+		method: "DELETE",
+		url: `/v1/vcr/repository/${pathParams.idOrName}/permissions/all`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
  * @summary List repository tags
  * @description List a repository's tags.
  * @link /v1/vcr/repository/{idOrName}/tags
@@ -17872,6 +18248,666 @@ export async function deleteRepositoryImage(
 	>({
 		method: "DELETE",
 		url: `/v1/vcr/repository/${pathParams.idOrName}/images/${pathParams.imageId}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Check registry API version support
+ * @description GET /v2/ Docker Registry v2 version check. Returns a 401 challenge when no credentials are provided, prompting the Docker client to send auth. With valid credentials, returns 200 so the client can proceed.
+ * @link /v2/
+ */
+export async function getRoot(
+	{ config }: { config?: Partial<FetcherConfig> & { client?: typeof defaultClient } } = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	const data = await request<
+		GetRootResponse,
+		ErrorWrapper<
+			| GetRootStatus400
+			| GetRootStatus401
+			| GetRootStatus402
+			| GetRootStatus403
+			| GetRootStatus404
+			| GetRootStatus410
+		>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		Record<string, string>
+	>({
+		method: "GET",
+		url: `/v2/`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Download a blob
+ * @description GET /v2/:teamSlug/:projectSlug/:repositoryName/blobs/:digest Fetch a blob by digest.
+ * @link /v2/{teamSlug}/{projectSlug}/{repositoryName}/blobs/{digest}
+ */
+export async function getByTeamSlugByProjectSlugByRepositoryNameBlobsByDigest(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { teamSlug: string; projectSlug: string; repositoryName: string; digest: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.teamSlug) {
+		throw new Error(`Missing required path parameter: teamSlug`);
+	}
+
+	if (!pathParams.projectSlug) {
+		throw new Error(`Missing required path parameter: projectSlug`);
+	}
+
+	if (!pathParams.repositoryName) {
+		throw new Error(`Missing required path parameter: repositoryName`);
+	}
+
+	if (!pathParams.digest) {
+		throw new Error(`Missing required path parameter: digest`);
+	}
+	const data = await request<
+		GetByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestResponse,
+		ErrorWrapper<
+			| GetByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus400
+			| GetByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus401
+			| GetByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus402
+			| GetByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus403
+			| GetByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus404
+			| GetByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus410
+			| GetByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus416
+		>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		{ teamSlug: string; projectSlug: string; repositoryName: string; digest: string }
+	>({
+		method: "GET",
+		url: `/v2/${pathParams.teamSlug}/${pathParams.projectSlug}/${pathParams.repositoryName}/blobs/${pathParams.digest}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Delete a blob
+ * @description DELETE /v2/:teamSlug/:projectSlug/:repositoryName/blobs/:digest Blob deletion is intentionally not supported. Matches the behaviour of most public registries.
+ * @link /v2/{teamSlug}/{projectSlug}/{repositoryName}/blobs/{digest}
+ */
+export async function deleteByTeamSlugByProjectSlugByRepositoryNameBlobsByDigest(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { teamSlug: string; projectSlug: string; repositoryName: string; digest: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.teamSlug) {
+		throw new Error(`Missing required path parameter: teamSlug`);
+	}
+
+	if (!pathParams.projectSlug) {
+		throw new Error(`Missing required path parameter: projectSlug`);
+	}
+
+	if (!pathParams.repositoryName) {
+		throw new Error(`Missing required path parameter: repositoryName`);
+	}
+
+	if (!pathParams.digest) {
+		throw new Error(`Missing required path parameter: digest`);
+	}
+	const data = await request<
+		DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestResponse,
+		ErrorWrapper<
+			| DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus400
+			| DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus401
+			| DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus402
+			| DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus403
+			| DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus404
+			| DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus405
+			| DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus410
+		>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		{ teamSlug: string; projectSlug: string; repositoryName: string; digest: string }
+	>({
+		method: "DELETE",
+		url: `/v2/${pathParams.teamSlug}/${pathParams.projectSlug}/${pathParams.repositoryName}/blobs/${pathParams.digest}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Get blob upload status
+ * @description GET /v2/:teamSlug/:projectSlug/:repositoryName/blobs/uploads/:uuid Query the status of an in-progress blob upload. Used by clients to resume a partial upload after an interruption.
+ * @link /v2/{teamSlug}/{projectSlug}/{repositoryName}/blobs/uploads/{uuid}
+ */
+export async function getByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuid(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { teamSlug: string; projectSlug: string; repositoryName: string; uuid: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.teamSlug) {
+		throw new Error(`Missing required path parameter: teamSlug`);
+	}
+
+	if (!pathParams.projectSlug) {
+		throw new Error(`Missing required path parameter: projectSlug`);
+	}
+
+	if (!pathParams.repositoryName) {
+		throw new Error(`Missing required path parameter: repositoryName`);
+	}
+
+	if (!pathParams.uuid) {
+		throw new Error(`Missing required path parameter: uuid`);
+	}
+	const data = await request<
+		GetByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidResponse,
+		ErrorWrapper<
+			| GetByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus400
+			| GetByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus401
+			| GetByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus402
+			| GetByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus403
+			| GetByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus404
+			| GetByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus410
+		>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		{ teamSlug: string; projectSlug: string; repositoryName: string; uuid: string }
+	>({
+		method: "GET",
+		url: `/v2/${pathParams.teamSlug}/${pathParams.projectSlug}/${pathParams.repositoryName}/blobs/uploads/${pathParams.uuid}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Cancel a blob upload
+ * @description DELETE /v2/:teamSlug/:projectSlug/:repositoryName/blobs/uploads/:uuid Cancel an in-flight blob upload. Aborts the underlying S3 multipart upload (if one was started) and discards the session.
+ * @link /v2/{teamSlug}/{projectSlug}/{repositoryName}/blobs/uploads/{uuid}
+ */
+export async function deleteByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuid(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { teamSlug: string; projectSlug: string; repositoryName: string; uuid: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.teamSlug) {
+		throw new Error(`Missing required path parameter: teamSlug`);
+	}
+
+	if (!pathParams.projectSlug) {
+		throw new Error(`Missing required path parameter: projectSlug`);
+	}
+
+	if (!pathParams.repositoryName) {
+		throw new Error(`Missing required path parameter: repositoryName`);
+	}
+
+	if (!pathParams.uuid) {
+		throw new Error(`Missing required path parameter: uuid`);
+	}
+	const data = await request<
+		DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidResponse,
+		ErrorWrapper<
+			| DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus400
+			| DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus401
+			| DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus402
+			| DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus403
+			| DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus404
+			| DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus410
+		>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		{ teamSlug: string; projectSlug: string; repositoryName: string; uuid: string }
+	>({
+		method: "DELETE",
+		url: `/v2/${pathParams.teamSlug}/${pathParams.projectSlug}/${pathParams.repositoryName}/blobs/uploads/${pathParams.uuid}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Upload a blob chunk
+ * @description PATCH /v2/:teamSlug/:projectSlug/:repositoryName/blobs/uploads/:uuid Upload a chunk of blob data. The request body is streamed directly to S3 as a multipart upload part while hashing incrementally. The client may call this multiple times for chunked uploads.
+ * @link /v2/{teamSlug}/{projectSlug}/{repositoryName}/blobs/uploads/{uuid}
+ */
+export async function updateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuid(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { teamSlug: string; projectSlug: string; repositoryName: string; uuid: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.teamSlug) {
+		throw new Error(`Missing required path parameter: teamSlug`);
+	}
+
+	if (!pathParams.projectSlug) {
+		throw new Error(`Missing required path parameter: projectSlug`);
+	}
+
+	if (!pathParams.repositoryName) {
+		throw new Error(`Missing required path parameter: repositoryName`);
+	}
+
+	if (!pathParams.uuid) {
+		throw new Error(`Missing required path parameter: uuid`);
+	}
+	const data = await request<
+		UpdateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidResponse,
+		ErrorWrapper<
+			| UpdateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus400
+			| UpdateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus401
+			| UpdateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus402
+			| UpdateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus403
+			| UpdateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus404
+			| UpdateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus410
+			| UpdateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus413
+		>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		{ teamSlug: string; projectSlug: string; repositoryName: string; uuid: string }
+	>({
+		method: "PATCH",
+		url: `/v2/${pathParams.teamSlug}/${pathParams.projectSlug}/${pathParams.repositoryName}/blobs/uploads/${pathParams.uuid}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Complete a blob upload
+ * @description PUT /v2/:teamSlug/:projectSlug/:repositoryName/blobs/uploads/:uuid?digest=<digest> Complete the blob upload. This may include a final chunk of data in the request body (monolithic upload) or just finalize a previous chunked upload.
+ * @link /v2/{teamSlug}/{projectSlug}/{repositoryName}/blobs/uploads/{uuid}
+ */
+export async function replaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuid(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { teamSlug: string; projectSlug: string; repositoryName: string; uuid: string };
+		queryParams?: { digest?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.teamSlug) {
+		throw new Error(`Missing required path parameter: teamSlug`);
+	}
+
+	if (!pathParams.projectSlug) {
+		throw new Error(`Missing required path parameter: projectSlug`);
+	}
+
+	if (!pathParams.repositoryName) {
+		throw new Error(`Missing required path parameter: repositoryName`);
+	}
+
+	if (!pathParams.uuid) {
+		throw new Error(`Missing required path parameter: uuid`);
+	}
+	const data = await request<
+		ReplaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidResponse,
+		ErrorWrapper<
+			| ReplaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus400
+			| ReplaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus401
+			| ReplaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus402
+			| ReplaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus403
+			| ReplaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus404
+			| ReplaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus410
+			| ReplaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus413
+		>,
+		null,
+		Record<string, string>,
+		{ digest?: string },
+		{ teamSlug: string; projectSlug: string; repositoryName: string; uuid: string }
+	>({
+		method: "PUT",
+		url: `/v2/${pathParams.teamSlug}/${pathParams.projectSlug}/${pathParams.repositoryName}/blobs/uploads/${pathParams.uuid}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Start a blob upload
+ * @description POST /v2/:teamSlug/:projectSlug/:repositoryName/blobs/uploads/[?mount=<digest>&from=<repo>] Initiate a blob upload. Returns a UUID in the Location header that the client uses for subsequent PATCH (chunk) and PUT (complete) requests.
+ * @link /v2/{teamSlug}/{projectSlug}/{repositoryName}/blobs/uploads/
+ */
+export async function createByTeamSlugByProjectSlugByRepositoryNameBlobsUploads(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { teamSlug: string; projectSlug: string; repositoryName: string };
+		queryParams?: { mount?: string; from?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.teamSlug) {
+		throw new Error(`Missing required path parameter: teamSlug`);
+	}
+
+	if (!pathParams.projectSlug) {
+		throw new Error(`Missing required path parameter: projectSlug`);
+	}
+
+	if (!pathParams.repositoryName) {
+		throw new Error(`Missing required path parameter: repositoryName`);
+	}
+	const data = await request<
+		CreateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsResponse,
+		ErrorWrapper<
+			| CreateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsStatus400
+			| CreateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsStatus401
+			| CreateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsStatus402
+			| CreateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsStatus403
+			| CreateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsStatus404
+			| CreateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsStatus410
+		>,
+		null,
+		Record<string, string>,
+		{ mount?: string; from?: string },
+		{ teamSlug: string; projectSlug: string; repositoryName: string }
+	>({
+		method: "POST",
+		url: `/v2/${pathParams.teamSlug}/${pathParams.projectSlug}/${pathParams.repositoryName}/blobs/uploads/`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Push an image manifest
+ * @description PUT /v2/:teamSlug/:projectSlug/:repositoryName/manifests/:reference Upload an image manifest. The digest is computed from the body and returned in the Docker-Content-Digest header.
+ * @link /v2/{teamSlug}/{projectSlug}/{repositoryName}/manifests/{reference}
+ */
+export async function replaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReference(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: {
+			teamSlug: string;
+			projectSlug: string;
+			repositoryName: string;
+			reference: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.teamSlug) {
+		throw new Error(`Missing required path parameter: teamSlug`);
+	}
+
+	if (!pathParams.projectSlug) {
+		throw new Error(`Missing required path parameter: projectSlug`);
+	}
+
+	if (!pathParams.repositoryName) {
+		throw new Error(`Missing required path parameter: repositoryName`);
+	}
+
+	if (!pathParams.reference) {
+		throw new Error(`Missing required path parameter: reference`);
+	}
+	const data = await request<
+		ReplaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceResponse,
+		ErrorWrapper<
+			| ReplaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus400
+			| ReplaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus401
+			| ReplaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus402
+			| ReplaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus403
+			| ReplaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus404
+			| ReplaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus410
+			| ReplaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus413
+		>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		{ teamSlug: string; projectSlug: string; repositoryName: string; reference: string }
+	>({
+		method: "PUT",
+		url: `/v2/${pathParams.teamSlug}/${pathParams.projectSlug}/${pathParams.repositoryName}/manifests/${pathParams.reference}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Pull an image manifest
+ * @description GET /v2/:teamSlug/:projectSlug/:repositoryName/manifests/:reference Fetch a manifest by tag or digest.
+ * @link /v2/{teamSlug}/{projectSlug}/{repositoryName}/manifests/{reference}
+ */
+export async function getByTeamSlugByProjectSlugByRepositoryNameManifestsByReference(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: {
+			teamSlug: string;
+			projectSlug: string;
+			repositoryName: string;
+			reference: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.teamSlug) {
+		throw new Error(`Missing required path parameter: teamSlug`);
+	}
+
+	if (!pathParams.projectSlug) {
+		throw new Error(`Missing required path parameter: projectSlug`);
+	}
+
+	if (!pathParams.repositoryName) {
+		throw new Error(`Missing required path parameter: repositoryName`);
+	}
+
+	if (!pathParams.reference) {
+		throw new Error(`Missing required path parameter: reference`);
+	}
+	const data = await request<
+		GetByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceResponse,
+		ErrorWrapper<
+			| GetByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus400
+			| GetByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus401
+			| GetByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus402
+			| GetByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus403
+			| GetByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus404
+			| GetByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus410
+		>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		{ teamSlug: string; projectSlug: string; repositoryName: string; reference: string }
+	>({
+		method: "GET",
+		url: `/v2/${pathParams.teamSlug}/${pathParams.projectSlug}/${pathParams.repositoryName}/manifests/${pathParams.reference}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Delete an image manifest
+ * @description DELETE /v2/:teamSlug/:projectSlug/:repositoryName/manifests/:reference Reference must be a digest.
+ * @link /v2/{teamSlug}/{projectSlug}/{repositoryName}/manifests/{reference}
+ */
+export async function deleteByTeamSlugByProjectSlugByRepositoryNameManifestsByReference(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: {
+			teamSlug: string;
+			projectSlug: string;
+			repositoryName: string;
+			reference: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.teamSlug) {
+		throw new Error(`Missing required path parameter: teamSlug`);
+	}
+
+	if (!pathParams.projectSlug) {
+		throw new Error(`Missing required path parameter: projectSlug`);
+	}
+
+	if (!pathParams.repositoryName) {
+		throw new Error(`Missing required path parameter: repositoryName`);
+	}
+
+	if (!pathParams.reference) {
+		throw new Error(`Missing required path parameter: reference`);
+	}
+	const data = await request<
+		DeleteByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceResponse,
+		ErrorWrapper<
+			| DeleteByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus400
+			| DeleteByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus401
+			| DeleteByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus402
+			| DeleteByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus403
+			| DeleteByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus404
+			| DeleteByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus410
+		>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		{ teamSlug: string; projectSlug: string; repositoryName: string; reference: string }
+	>({
+		method: "DELETE",
+		url: `/v2/${pathParams.teamSlug}/${pathParams.projectSlug}/${pathParams.repositoryName}/manifests/${pathParams.reference}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary List image tags
+ * @description GET /v2/:teamSlug/:projectSlug/:repositoryName/tags/list List the tags in a repository.
+ * @link /v2/{teamSlug}/{projectSlug}/{repositoryName}/tags/list
+ */
+export async function getByTeamSlugByProjectSlugByRepositoryNameTagsList(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { teamSlug: string; projectSlug: string; repositoryName: string };
+		queryParams?: { n?: number; last?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.teamSlug) {
+		throw new Error(`Missing required path parameter: teamSlug`);
+	}
+
+	if (!pathParams.projectSlug) {
+		throw new Error(`Missing required path parameter: projectSlug`);
+	}
+
+	if (!pathParams.repositoryName) {
+		throw new Error(`Missing required path parameter: repositoryName`);
+	}
+	const data = await request<
+		GetByTeamSlugByProjectSlugByRepositoryNameTagsListResponse,
+		ErrorWrapper<
+			| GetByTeamSlugByProjectSlugByRepositoryNameTagsListStatus400
+			| GetByTeamSlugByProjectSlugByRepositoryNameTagsListStatus401
+			| GetByTeamSlugByProjectSlugByRepositoryNameTagsListStatus402
+			| GetByTeamSlugByProjectSlugByRepositoryNameTagsListStatus403
+			| GetByTeamSlugByProjectSlugByRepositoryNameTagsListStatus404
+			| GetByTeamSlugByProjectSlugByRepositoryNameTagsListStatus410
+		>,
+		null,
+		Record<string, string>,
+		{ n?: number; last?: string },
+		{ teamSlug: string; projectSlug: string; repositoryName: string }
+	>({
+		method: "GET",
+		url: `/v2/${pathParams.teamSlug}/${pathParams.projectSlug}/${pathParams.repositoryName}/tags/list`,
 		queryParams,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
@@ -19306,7 +20342,7 @@ export const operationsByPath = {
 	"POST /v1/projects/{projectId}/pause": pauseProject,
 	"POST /v1/projects/{projectId}/unpause": unpauseProject,
 	"GET /v2/sandboxes": listSandboxes,
-	"POST /v2/sandboxes": createSandboxes,
+	"POST /v2/sandboxes": createSandboxesV2,
 	"GET /v2/sandboxes/drives": listDrives,
 	"POST /v2/sandboxes/drives/{name}": getOrCreateDrive,
 	"DELETE /v2/sandboxes/drives/{name}": deleteDrive,
@@ -19331,6 +20367,7 @@ export const operationsByPath = {
 	"POST /v2/sandboxes/sessions/{sessionId}/fs/write": writeSessionFiles,
 	"POST /v2/sandboxes/sessions/{sessionId}/snapshot": createSessionSnapshot,
 	"POST /v2/sandboxes/{name}/fork": createSandboxesByNameFork,
+	"POST /v3/sandboxes": createSandboxesV3,
 	"POST /v1/security/attack-mode": updateAttackChallengeMode,
 	"GET /v1/security/firewall/config": getSecurityFirewallConfig,
 	"PUT /v1/security/firewall/config": putFirewallConfig,
@@ -19379,10 +20416,37 @@ export const operationsByPath = {
 	"GET /v1/vcr/repository/{idOrName}": getRepository,
 	"DELETE /v1/vcr/repository/{idOrName}": deleteRepository,
 	"GET /v1/vcr/repository/{idOrName}/images": listRepositoryImages,
+	"POST /v1/vcr/repository/{idOrName}/permissions": addRepositoryPermission,
+	"DELETE /v1/vcr/repository/{idOrName}/permissions": removeRepositoryPermission,
+	"GET /v1/vcr/repository/{idOrName}/permissions": listRepositoryPermissions,
+	"DELETE /v1/vcr/repository/{idOrName}/permissions/all": clearRepositoryPermissions,
 	"GET /v1/vcr/repository/{idOrName}/tags": listRepositoryTags,
 	"GET /v1/vcr/repository/{idOrName}/tags/{tag}": getRepositoryTag,
 	"GET /v1/vcr/repository/{idOrName}/images/{imageIdOrDigest}": getRepositoryImage,
 	"DELETE /v1/vcr/repository/{idOrName}/images/{imageId}": deleteRepositoryImage,
+	"GET /v2/": getRoot,
+	"GET /v2/{teamSlug}/{projectSlug}/{repositoryName}/blobs/{digest}":
+		getByTeamSlugByProjectSlugByRepositoryNameBlobsByDigest,
+	"DELETE /v2/{teamSlug}/{projectSlug}/{repositoryName}/blobs/{digest}":
+		deleteByTeamSlugByProjectSlugByRepositoryNameBlobsByDigest,
+	"GET /v2/{teamSlug}/{projectSlug}/{repositoryName}/blobs/uploads/{uuid}":
+		getByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuid,
+	"DELETE /v2/{teamSlug}/{projectSlug}/{repositoryName}/blobs/uploads/{uuid}":
+		deleteByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuid,
+	"PATCH /v2/{teamSlug}/{projectSlug}/{repositoryName}/blobs/uploads/{uuid}":
+		updateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuid,
+	"PUT /v2/{teamSlug}/{projectSlug}/{repositoryName}/blobs/uploads/{uuid}":
+		replaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuid,
+	"POST /v2/{teamSlug}/{projectSlug}/{repositoryName}/blobs/uploads/":
+		createByTeamSlugByProjectSlugByRepositoryNameBlobsUploads,
+	"PUT /v2/{teamSlug}/{projectSlug}/{repositoryName}/manifests/{reference}":
+		replaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReference,
+	"GET /v2/{teamSlug}/{projectSlug}/{repositoryName}/manifests/{reference}":
+		getByTeamSlugByProjectSlugByRepositoryNameManifestsByReference,
+	"DELETE /v2/{teamSlug}/{projectSlug}/{repositoryName}/manifests/{reference}":
+		deleteByTeamSlugByProjectSlugByRepositoryNameManifestsByReference,
+	"GET /v2/{teamSlug}/{projectSlug}/{repositoryName}/tags/list":
+		getByTeamSlugByProjectSlugByRepositoryNameTagsList,
 	"POST /web/insights/toggle": createWebInsightsToggle,
 	"GET /v1/query/web-analytics/visits/aggregate": aggregatePageviews,
 	"GET /v1/query/web-analytics/events/aggregate": aggregateEvents,
@@ -19740,7 +20804,7 @@ export const operationsByTag = {
 	},
 	sandboxes: {
 		listSandboxes,
-		createSandboxes,
+		createSandboxesV2,
 		listDrives,
 		getOrCreateDrive,
 		deleteDrive,
@@ -19765,6 +20829,7 @@ export const operationsByTag = {
 		writeSessionFiles,
 		createSessionSnapshot,
 		createSandboxesByNameFork,
+		createSandboxesV3,
 	},
 	security: {
 		updateAttackChallengeMode,
@@ -19780,6 +20845,11 @@ export const operationsByTag = {
 		removeBypassIp,
 		getSecurityFirewallEvents,
 		generateFirewallRule,
+	},
+	storage: {
+		getStorageStoresById,
+		createStorageStoresBlob,
+		deleteStorageStoresBlobById,
 	},
 	teams: {
 		getTeamMembers,
@@ -19805,10 +20875,26 @@ export const operationsByTag = {
 		getRepository,
 		deleteRepository,
 		listRepositoryImages,
+		addRepositoryPermission,
+		removeRepositoryPermission,
+		listRepositoryPermissions,
+		clearRepositoryPermissions,
 		listRepositoryTags,
 		getRepositoryTag,
 		getRepositoryImage,
 		deleteRepositoryImage,
+		getRoot,
+		getByTeamSlugByProjectSlugByRepositoryNameBlobsByDigest,
+		deleteByTeamSlugByProjectSlugByRepositoryNameBlobsByDigest,
+		getByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuid,
+		deleteByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuid,
+		updateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuid,
+		replaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuid,
+		createByTeamSlugByProjectSlugByRepositoryNameBlobsUploads,
+		replaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReference,
+		getByTeamSlugByProjectSlugByRepositoryNameManifestsByReference,
+		deleteByTeamSlugByProjectSlugByRepositoryNameManifestsByReference,
+		getByTeamSlugByProjectSlugByRepositoryNameTagsList,
 	},
 	webAnalytics: {
 		aggregatePageviews,
@@ -20175,7 +21261,7 @@ export const tagDictionary = {
 			"getSessionCommandLogs",
 		],
 		POST: [
-			"createSandboxes",
+			"createSandboxesV2",
 			"getOrCreateDrive",
 			"runSessionCommand",
 			"killSessionCommand",
@@ -20187,6 +21273,7 @@ export const tagDictionary = {
 			"writeSessionFiles",
 			"createSessionSnapshot",
 			"createSandboxesByNameFork",
+			"createSandboxesV3",
 		],
 		DELETE: ["deleteDrive", "deleteSessionSnapshot", "deleteSandbox"],
 		PATCH: ["updateSandbox"],
@@ -20209,6 +21296,11 @@ export const tagDictionary = {
 		PATCH: ["updateFirewallConfig"],
 		DELETE: ["deleteSecurityFirewallConfigByConfigVersion", "removeBypassIp"],
 	},
+	storage: {
+		GET: ["getStorageStoresById"],
+		POST: ["createStorageStoresBlob"],
+		DELETE: ["deleteStorageStoresBlobById"],
+	},
 	teams: {
 		GET: ["getTeamMembers", "getTeamAccessRequest", "getTeam", "getTeams"],
 		POST: [
@@ -20222,16 +21314,39 @@ export const tagDictionary = {
 		DELETE: ["removeTeamMember", "deleteTeam", "deleteTeamInviteCode", "deleteMicrofrontendsGroup"],
 	},
 	vcr: {
-		POST: ["createRepository"],
+		POST: [
+			"createRepository",
+			"addRepositoryPermission",
+			"createByTeamSlugByProjectSlugByRepositoryNameBlobsUploads",
+		],
 		GET: [
 			"listRepositories",
 			"getRepository",
 			"listRepositoryImages",
+			"listRepositoryPermissions",
 			"listRepositoryTags",
 			"getRepositoryTag",
 			"getRepositoryImage",
+			"getRoot",
+			"getByTeamSlugByProjectSlugByRepositoryNameBlobsByDigest",
+			"getByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuid",
+			"getByTeamSlugByProjectSlugByRepositoryNameManifestsByReference",
+			"getByTeamSlugByProjectSlugByRepositoryNameTagsList",
 		],
-		DELETE: ["deleteRepository", "deleteRepositoryImage"],
+		DELETE: [
+			"deleteRepository",
+			"removeRepositoryPermission",
+			"clearRepositoryPermissions",
+			"deleteRepositoryImage",
+			"deleteByTeamSlugByProjectSlugByRepositoryNameBlobsByDigest",
+			"deleteByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuid",
+			"deleteByTeamSlugByProjectSlugByRepositoryNameManifestsByReference",
+		],
+		PATCH: ["updateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuid"],
+		PUT: [
+			"replaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuid",
+			"replaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReference",
+		],
 	},
 	webAnalytics: {
 		GET: ["aggregatePageviews", "aggregateEvents", "countPageviews", "countEvents"],

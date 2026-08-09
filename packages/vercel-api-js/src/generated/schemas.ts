@@ -646,6 +646,11 @@ export const userEventSchema = z
 				"ai-gateway-rule-deleted",
 				"ai-gateway-rule-updated",
 				"ai-gateway-scope-budget-updated",
+				"ai-gateway-transcripts-default-disabled",
+				"ai-gateway-transcripts-default-enabled",
+				"ai-gateway-transcripts-disabled",
+				"ai-gateway-transcripts-enabled",
+				"ai-gateway-transcripts-retention-updated",
 				"ai-gateway-virtual-model-config-archived",
 				"ai-gateway-virtual-model-config-created",
 				"ai-gateway-virtual-model-config-restored",
@@ -691,6 +696,7 @@ export const userEventSchema = z
 				"cert-system-create",
 				"code-owners-config-updated",
 				"compliance-document-downloaded",
+				"compliance-document-previewed",
 				"compliance-documents-bulk-downloaded",
 				"concurrent-builds-update",
 				"connect-attach-project",
@@ -829,6 +835,7 @@ export const userEventSchema = z
 				"flags-segment",
 				"flags-settings",
 				"flags-transferred",
+				"git-integration-repo-push",
 				"git_account_integration_link_added",
 				"instant-rollback-created",
 				"integration-configuration-owner-changed",
@@ -849,6 +856,7 @@ export const userEventSchema = z
 				"kms-issuer-deleted",
 				"kms-issuer-key-activated",
 				"kms-issuer-key-created",
+				"kms-issuer-key-revoked",
 				"kms-issuer-key-rotated",
 				"kms-issuer-policy-created",
 				"kms-issuer-policy-deleted",
@@ -859,6 +867,8 @@ export const userEventSchema = z
 				"log-drain-disabled",
 				"log-drain-enabled",
 				"login",
+				"login-connection-linked",
+				"login-connection-unlinked",
 				"manual-deployment-promotion-created",
 				"marketplace-flex-commit-opt-in",
 				"marketplace-integration-allowlist-updated",
@@ -890,6 +900,8 @@ export const userEventSchema = z
 				"oidc-policy-used-to-obtain-app-token",
 				"organization-create",
 				"organization-delete",
+				"organization-dsync-group-delete",
+				"organization-dsync-group-upsert",
 				"organization-slug-update",
 				"organization-team-add",
 				"organization-team-create",
@@ -1038,8 +1050,11 @@ export const userEventSchema = z
 				"protected-git-scope-added",
 				"protected-git-scope-removed",
 				"runtime-cache-purge-all",
+				"saml-connection-created",
+				"saml-connection-deleted",
 				"sandbox-alias-assigned",
 				"sandbox-alias-delete",
+				"sandbox-snapshot-regions-updated",
 				"scale",
 				"scale-auto",
 				"secondary-email-added",
@@ -1069,6 +1084,7 @@ export const userEventSchema = z
 				"spend-created",
 				"spend-deleted",
 				"spend-updated",
+				"sso-login",
 				"storage-accept-tos",
 				"storage-access-token-set",
 				"storage-accessed-data-browser",
@@ -1095,6 +1111,7 @@ export const userEventSchema = z
 				"subscription-product-added",
 				"subscription-product-removed",
 				"subscription-updated",
+				"support-session-created",
 				"team",
 				"team-agent-billing-migration-decision-changed",
 				"team-avatar-update",
@@ -1145,24 +1162,36 @@ export const userEventSchema = z
 				"tracing-configured",
 				"tracing-disabled",
 				"unlink-login-connection",
+				"update-account-flow-dismissed",
 				"update-account-flow-triggered",
+				"user-auto-block-configured",
+				"user-blocked",
 				"user-delete",
+				"user-delete-requested",
 				"user-emu-account-archived",
 				"user-emu-account-deleted",
 				"user-emu-account-recovered",
+				"user-emu-recovery-email-sent",
+				"user-emu-recovery-initiated",
+				"user-emu-toggled",
 				"user-mfa-challenge-failed",
 				"user-mfa-challenge-verified",
 				"user-mfa-change-failed",
 				"user-mfa-configuration-updated",
+				"user-mfa-recovery-code-used",
 				"user-mfa-recovery-codes-regenerated",
 				"user-mfa-removed",
 				"user-mfa-setup-skipped",
 				"user-mfa-totp-verification-started",
 				"user-mfa-totp-verified",
+				"user-phone-removed",
+				"user-phone-updated",
 				"user-primary-email-updated",
+				"user-sudo-mode-removed",
 				"user-token-created",
 				"user-token-deleted",
 				"user-tokens-deleted",
+				"user-unblocked",
 				"username",
 				"v0-chat-ai-usage",
 				"v0-chat-created",
@@ -1174,6 +1203,7 @@ export const userEventSchema = z
 				"vcr-repository-permission-added",
 				"vcr-repository-permission-removed",
 				"vcr-repository-permissions-cleared",
+				"vcr-repository-visibility-changed",
 				"vercel-agent-elevated-permissions-approved",
 				"vercel-agent-elevated-permissions-requested",
 				"vercel-agent-session-created",
@@ -1205,6 +1235,7 @@ export const userEventSchema = z
 					"ai",
 					"ai-gateway",
 					"billing",
+					"connect",
 					"deployment",
 					"domain",
 					"edge",
@@ -1501,6 +1532,10 @@ export const userEventSchema = z
 							.describe(
 								"Spend budget on an AI Gateway API key, as surfaced in activity messages. Defined locally (rather than imported from `@api/pubsub-types`) because `@api/pubsub-types` already depends on `@api/events`; importing it here would create a circular dependency. Must stay structurally aligned with `APIKeyBudget` in `@api/pubsub-types/event-payloads/api-keys`.",
 							),
+						zdrExemption: z
+							.union([z.literal(false), z.literal(true)])
+							.optional()
+							.describe("True when the key was created with a ZDR exemption."),
 					})
 					.strict(),
 				z
@@ -1620,6 +1655,16 @@ export const userEventSchema = z
 					.strict(),
 				z
 					.object({
+						retention: z.object({
+							defaultMode: z.enum(["days", "until-requested"]),
+							defaultDays: z.number().optional(),
+							ceilingMode: z.enum(["days", "until-requested"]),
+							ceilingDays: z.number().optional(),
+						}),
+					})
+					.strict(),
+				z
+					.object({
 						rule: z.object({
 							id: z.string(),
 							type: z.string(),
@@ -1652,7 +1697,7 @@ export const userEventSchema = z
 						virtualModelConfig: z.object({
 							id: z.string(),
 							displayName: z.string().optional(),
-							modelSlug: z.string(),
+							modelSlug: z.string().optional(),
 						}),
 					})
 					.strict(),
@@ -1885,6 +1930,7 @@ export const userEventSchema = z
 									"read-write:ai-gateway-guardrails",
 									"read-write:ai-gateway-private-models",
 									"read-write:ai-gateway-rules",
+									"read-write:ai-gateway-virtual-model-configs",
 									"read-write:alerts",
 									"read-write:billing",
 									"read-write:blob",
@@ -1908,10 +1954,12 @@ export const userEventSchema = z
 									"read-write:remote-cache",
 									"read-write:sandbox",
 									"read-write:team-members",
+									"read-write:vcr",
 									"read:access-group",
 									"read:ai-gateway-guardrails",
 									"read:ai-gateway-private-models",
 									"read:ai-gateway-rules",
+									"read:ai-gateway-virtual-model-configs",
 									"read:alerts",
 									"read:billing",
 									"read:deployment",
@@ -1931,6 +1979,7 @@ export const userEventSchema = z
 									"read:speed-insights",
 									"read:team",
 									"read:user",
+									"read:vcr",
 									"read:web-analytics",
 									"use:ai-gateway",
 								]),
@@ -1958,6 +2007,7 @@ export const userEventSchema = z
 									"read-write:ai-gateway-guardrails",
 									"read-write:ai-gateway-private-models",
 									"read-write:ai-gateway-rules",
+									"read-write:ai-gateway-virtual-model-configs",
 									"read-write:alerts",
 									"read-write:billing",
 									"read-write:blob",
@@ -1981,10 +2031,12 @@ export const userEventSchema = z
 									"read-write:remote-cache",
 									"read-write:sandbox",
 									"read-write:team-members",
+									"read-write:vcr",
 									"read:access-group",
 									"read:ai-gateway-guardrails",
 									"read:ai-gateway-private-models",
 									"read:ai-gateway-rules",
+									"read:ai-gateway-virtual-model-configs",
 									"read:alerts",
 									"read:billing",
 									"read:deployment",
@@ -2004,6 +2056,7 @@ export const userEventSchema = z
 									"read:speed-insights",
 									"read:team",
 									"read:user",
+									"read:vcr",
 									"read:web-analytics",
 									"use:ai-gateway",
 								]),
@@ -2040,6 +2093,7 @@ export const userEventSchema = z
 											"read-write:ai-gateway-guardrails",
 											"read-write:ai-gateway-private-models",
 											"read-write:ai-gateway-rules",
+											"read-write:ai-gateway-virtual-model-configs",
 											"read-write:alerts",
 											"read-write:billing",
 											"read-write:blob",
@@ -2063,10 +2117,12 @@ export const userEventSchema = z
 											"read-write:remote-cache",
 											"read-write:sandbox",
 											"read-write:team-members",
+											"read-write:vcr",
 											"read:access-group",
 											"read:ai-gateway-guardrails",
 											"read:ai-gateway-private-models",
 											"read:ai-gateway-rules",
+											"read:ai-gateway-virtual-model-configs",
 											"read:alerts",
 											"read:billing",
 											"read:deployment",
@@ -2085,6 +2141,7 @@ export const userEventSchema = z
 											"read:sandbox",
 											"read:speed-insights",
 											"read:team",
+											"read:vcr",
 											"read:web-analytics",
 											"use:ai-gateway",
 										]),
@@ -2116,6 +2173,7 @@ export const userEventSchema = z
 											"read-write:ai-gateway-guardrails",
 											"read-write:ai-gateway-private-models",
 											"read-write:ai-gateway-rules",
+											"read-write:ai-gateway-virtual-model-configs",
 											"read-write:alerts",
 											"read-write:billing",
 											"read-write:blob",
@@ -2139,10 +2197,12 @@ export const userEventSchema = z
 											"read-write:remote-cache",
 											"read-write:sandbox",
 											"read-write:team-members",
+											"read-write:vcr",
 											"read:access-group",
 											"read:ai-gateway-guardrails",
 											"read:ai-gateway-private-models",
 											"read:ai-gateway-rules",
+											"read:ai-gateway-virtual-model-configs",
 											"read:alerts",
 											"read:billing",
 											"read:deployment",
@@ -2161,6 +2221,7 @@ export const userEventSchema = z
 											"read:sandbox",
 											"read:speed-insights",
 											"read:team",
+											"read:vcr",
 											"read:web-analytics",
 											"use:ai-gateway",
 										]),
@@ -2196,6 +2257,7 @@ export const userEventSchema = z
 									"read-write:ai-gateway-guardrails",
 									"read-write:ai-gateway-private-models",
 									"read-write:ai-gateway-rules",
+									"read-write:ai-gateway-virtual-model-configs",
 									"read-write:alerts",
 									"read-write:billing",
 									"read-write:blob",
@@ -2219,10 +2281,12 @@ export const userEventSchema = z
 									"read-write:remote-cache",
 									"read-write:sandbox",
 									"read-write:team-members",
+									"read-write:vcr",
 									"read:access-group",
 									"read:ai-gateway-guardrails",
 									"read:ai-gateway-private-models",
 									"read:ai-gateway-rules",
+									"read:ai-gateway-virtual-model-configs",
 									"read:alerts",
 									"read:billing",
 									"read:deployment",
@@ -2241,6 +2305,7 @@ export const userEventSchema = z
 									"read:sandbox",
 									"read:speed-insights",
 									"read:team",
+									"read:vcr",
 									"read:web-analytics",
 									"use:ai-gateway",
 								]),
@@ -2703,6 +2768,7 @@ export const userEventSchema = z
 							.nullish(),
 						url: z.string(),
 						forced: z.union([z.literal(false), z.literal(true)]).optional(),
+						gitCredentialSource: z.enum(["external-token"]).optional(),
 						deploymentId: z.string().optional(),
 						plan: z.string().optional(),
 						project: z.string().optional(),
@@ -3462,6 +3528,130 @@ export const userEventSchema = z
 										.describe("Vercel"),
 									org: z.string(),
 									provider: z.enum(["vercel"]),
+									customEnvId: z.string().nullish(),
+									prId: z.number().nullish(),
+								})
+								.strict(),
+							z
+								.object({
+									type: z.enum(["cursor-origin-push"]),
+									ref: z.string(),
+									sha: z.string(),
+									beforeSha: z.string().optional(),
+									defaultBranch: z.string().optional(),
+									forced: z.union([z.literal(false), z.literal(true)]).optional(),
+									repoPushedAt: z.number().nullish(),
+									deployHook: z
+										.object({
+											createdAt: z.number(),
+											id: z.string(),
+											name: z.string(),
+											ref: z.string(),
+										})
+										.optional(),
+									url: z.string().optional(),
+									target: z.string().nullish(),
+									deploymentId: z.string().optional(),
+									linkedProjectId: z.string().optional(),
+									projectId: z.string().optional(),
+									createdAt: z.number().optional(),
+									eventful: z.union([z.literal(false), z.literal(true)]).optional(),
+									forceNew: z.union([z.literal(false), z.literal(true)]).optional(),
+									authorized: z.union([z.literal(false), z.literal(true)]).optional(),
+									authorizedBy: z.string().optional(),
+									jobProjectIds: z
+										.array(z.string())
+										.optional()
+										.describe(
+											"Since December 2022 All project ids associated to this job. Think monorepo. This job will be for one of these project.",
+										),
+									jobPairs: z
+										.array(
+											z
+												.array(z.union([z.string(), z.string()]))
+												.min(2)
+												.max(2),
+										)
+										.optional()
+										.describe(
+											"Since December 2022 Pairs of projects and owner ids to build for this build request.",
+										),
+									skippedJobPairs: z
+										.array(
+											z
+												.array(z.union([z.string(), z.string()]))
+												.min(2)
+												.max(2),
+										)
+										.optional()
+										.describe(
+											"Since June 2024 Pairs of projects and owner ids to immediately finish (without building) because we want to create them in a skipped state.",
+										),
+									gitHashtagVercel: z
+										.array(z.string())
+										.optional()
+										.describe(
+											"Since February 2022 All the hashtag-vercel tags found in the commit message triggering the deploy. For example, #VERCEL_DO_SOMETHING",
+										),
+									connectedProjectCount: z
+										.number()
+										.optional()
+										.describe(
+											"Since April 2023 Cached count of how many projects are connected to the repo. Saves a few Cosmos queries down the road in the main flow.",
+										),
+									prIdOrZero: z
+										.number()
+										.optional()
+										.describe(
+											"Since April 2023 If set then it is a cached result of asking the remote for the PR ID the commit that triggered this Job. Or zero if it was not a PR. This prevents a few git round trips by the git updater.",
+										),
+									gitComments: z
+										.object({
+											onPullRequest: z.union([z.literal(false), z.literal(true)]),
+											onCommit: z.union([z.literal(false), z.literal(true)]),
+										})
+										.optional()
+										.describe(
+											"Since June 2023 Determines if comments should be posted to the git host. Replaces `github.silent` in the vercel.json.",
+										),
+									isManualGitDeploy: z
+										.union([z.literal(false), z.literal(true)])
+										.optional()
+										.describe(
+											"Since 28 Feb 2024 If set to true, identifies that the git job was created for a manual git deployment",
+										),
+									commitVerification: z
+										.enum(["unknown", "unverified", "verified"])
+										.optional()
+										.describe(
+											"Since 6 Nov 2025 The verification status of the commit. - 'verified' if the commit is verified - 'unverified' if the commit is not verified - 'unknown' if the commit verification status is unknown or not supported",
+										),
+									nsnbSideEffect: z
+										.object({
+											action: z.enum(["auto-approved-member", "auto-approved-pending-invite"]),
+											gitUserLogin: z.string(),
+										})
+										.optional()
+										.describe(
+											"Since March 2026 Records a successful NSNB auto-add result so later GitHub PR comments can deterministically explain why this SHA was allowed to deploy.",
+										),
+									headInfo: z
+										.object({
+											owner: z.string().describe("Owner (namespace) slug, e.g. `acme`."),
+											ownerId: z.string().describe("Origin namespace id (`ns_…`)."),
+											ref: z.string(),
+											repo: z.string().describe("Repository name, e.g. `api`."),
+											repoId: z.string().describe("Origin repository id."),
+											sha: z.string(),
+										})
+										.describe("Cursor Origin"),
+									installationId: z
+										.string()
+										.describe("Origin installation id (`i_…`) used to resolve the credential."),
+									owner: z.string(),
+									repo: z.string(),
+									repoId: z.string(),
+									provider: z.enum(["cursor-origin"]),
 									customEnvId: z.string().nullish(),
 									prId: z.number().nullish(),
 								})
@@ -4233,6 +4423,40 @@ export const userEventSchema = z
 					.strict(),
 				z
 					.object({
+						provider: z.enum(["bitbucket", "github", "gitlab"]),
+						actorLogin: z
+							.string()
+							.nullable()
+							.describe("Display name only. Logins are mutable; join on `actorAccountId`."),
+						actorAccountId: z.string().nullable().describe("Stable account id on `provider`."),
+						installationId: z
+							.string()
+							.nullable()
+							.describe("Set only when an App installation token was minted (GitHub only)."),
+						usedAppToken: z.union([z.literal(false), z.literal(true)]),
+						sourceRepo: z.string().describe('Source repository, "owner/name".'),
+						sourceCommitSha: z.string().nullable(),
+						destinationRepo: z
+							.string()
+							.describe('"owner/name", or the raw request value if blocked before it resolved.'),
+						destinationBranch: z
+							.string()
+							.nullable()
+							.describe("Branch actually pushed to, or the requested one if blocked."),
+						resultCommitSha: z.string().nullable(),
+						outcome: z.enum(["failure", "success"]),
+						failureStage: z
+							.enum(["authorization", "push", "unexpected", "unknown"])
+							.optional()
+							.describe("Mirrors `PushFailureStage` in `@api/git-push-repo`."),
+						failureCode: z
+							.string()
+							.optional()
+							.describe("Sanitized code, never a raw error message."),
+					})
+					.strict(),
+				z
+					.object({
 						projectId: z.string(),
 						fromDeploymentId: z.string(),
 						toDeploymentId: z.string(),
@@ -4425,6 +4649,7 @@ export const userEventSchema = z
 								importFlowGitProvider: z
 									.enum([
 										"bitbucket",
+										"cursor-origin",
 										"github",
 										"github-custom-host",
 										"github-limited",
@@ -4461,11 +4686,18 @@ export const userEventSchema = z
 										z.object({
 											projectId: z.string(),
 											widget: z.enum([
-												"alert",
+												"analytics-online",
+												"analytics-page-views",
+												"analytics-visitors",
 												"firewall-allowed",
 												"firewall-denied",
-												"online",
-												"res",
+												"observability-alert",
+												"observability-edge-requests",
+												"observability-error-rate",
+												"observability-function-invocations",
+												"speed-insights-cls",
+												"speed-insights-lcp",
+												"speed-insights-res",
 											]),
 										}),
 									)
@@ -4805,6 +5037,7 @@ export const userEventSchema = z
 														"AiGatewayBudgetManager",
 														"AiGatewayCredits",
 														"AiGatewaySettings",
+														"ConnectorManager",
 														"CreateProject",
 														"EnvVariableManager",
 														"EnvironmentManager",
@@ -5802,6 +6035,37 @@ export const userEventSchema = z
 					.strict(),
 				z
 					.object({
+						provider: z.enum([
+							"apple",
+							"bitbucket",
+							"chatgpt",
+							"github",
+							"github-custom-host",
+							"github-limited",
+							"gitlab",
+							"google",
+							"saml",
+						]),
+						login: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						provider: z.enum([
+							"apple",
+							"bitbucket",
+							"chatgpt",
+							"github",
+							"github-custom-host",
+							"github-limited",
+							"gitlab",
+							"google",
+							"saml",
+						]),
+					})
+					.strict(),
+				z
+					.object({
 						userAgent: z.string().optional(),
 						geolocation: z
 							.object({
@@ -6180,6 +6444,49 @@ export const userEventSchema = z
 						rootTeamId: z.string(),
 						slug: z.string(),
 						name: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						directoryGroupId: z.string(),
+						directoryId: z.string(),
+						groupName: z.string(),
+						next: z.object({
+							default: z
+								.enum([
+									"BILLING",
+									"CONTRIBUTOR",
+									"DEVELOPER",
+									"MEMBER",
+									"OWNER",
+									"SECURITY",
+									"VIEWER",
+									"VIEWER_FOR_PLUS",
+								])
+								.optional(),
+							roles: z
+								.object({})
+								.catchall(
+									z.enum([
+										"BILLING",
+										"CONTRIBUTOR",
+										"DEVELOPER",
+										"MEMBER",
+										"OWNER",
+										"SECURITY",
+										"VIEWER",
+										"VIEWER_FOR_PLUS",
+									]),
+								),
+						}),
+						organizationId: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						directoryGroupId: z.string(),
+						directoryId: z.string(),
+						organizationId: z.string(),
 					})
 					.strict(),
 				z
@@ -6707,7 +7014,23 @@ export const userEventSchema = z
 						projectId: z.string(),
 						projectName: z.string(),
 						widget: z
-							.enum(["alert", "firewall-allowed", "firewall-denied", "online", "res"])
+							.enum([
+								"alert",
+								"analytics-online",
+								"analytics-page-views",
+								"analytics-visitors",
+								"firewall-allowed",
+								"firewall-denied",
+								"observability-alert",
+								"observability-edge-requests",
+								"observability-error-rate",
+								"observability-function-invocations",
+								"online",
+								"res",
+								"speed-insights-cls",
+								"speed-insights-lcp",
+								"speed-insights-res",
+							])
 							.nullable(),
 					})
 					.strict(),
@@ -6937,6 +7260,7 @@ export const userEventSchema = z
 							.object({
 								gitProvider: z.enum([
 									"bitbucket",
+									"cursor-origin",
 									"github",
 									"github-custom-host",
 									"github-limited",
@@ -6950,6 +7274,7 @@ export const userEventSchema = z
 						next: z.object({
 							gitProvider: z.enum([
 								"bitbucket",
+								"cursor-origin",
 								"github",
 								"github-custom-host",
 								"github-limited",
@@ -6967,6 +7292,7 @@ export const userEventSchema = z
 						projectName: z.string(),
 						gitProvider: z.enum([
 							"bitbucket",
+							"cursor-origin",
 							"github",
 							"github-custom-host",
 							"github-limited",
@@ -7683,10 +8009,24 @@ export const userEventSchema = z
 					.strict(),
 				z
 					.object({
+						connectionId: z.string(),
+						connectionType: z.string(),
+					})
+					.strict(),
+				z
+					.object({
 						alias: z.string(),
 						sandboxName: z.string(),
 						sandboxId: z.string().optional(),
 						projectId: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						projectId: z.string(),
+						projectName: z.string(),
+						snapshotId: z.string(),
+						targetRegions: z.array(z.string()),
 					})
 					.strict(),
 				z
@@ -8065,6 +8405,15 @@ export const userEventSchema = z
 						type: z.enum(["blob", "edge-config", "integration", "postgres", "redis"]),
 						access: z.enum(["private", "public"]).optional(),
 						locked: z.union([z.literal(false), z.literal(true)]),
+					})
+					.strict(),
+				z
+					.object({
+						actorId: z.string().optional(),
+						actorType: z.enum(["admin", "user"]).optional(),
+						reason: z.string().optional(),
+						caseNumber: z.string().optional(),
+						client: z.string().optional(),
 					})
 					.strict(),
 				z
@@ -8626,21 +8975,6 @@ export const userEventSchema = z
 					.strict(),
 				z
 					.object({
-						provider: z.enum([
-							"apple",
-							"bitbucket",
-							"chatgpt",
-							"github",
-							"github-custom-host",
-							"github-limited",
-							"gitlab",
-							"google",
-						]),
-						login: z.string(),
-					})
-					.strict(),
-				z
-					.object({
 						teamName: z.string().optional(),
 					})
 					.strict(),
@@ -8662,6 +8996,35 @@ export const userEventSchema = z
 				z
 					.object({
 						username: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						actorId: z.string(),
+						actorType: z.enum(["admin"]),
+						reason: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						actorId: z.string(),
+						actorType: z.enum(["admin"]),
+					})
+					.strict(),
+				z
+					.object({
+						enabled: z.union([z.literal(false), z.literal(true)]),
+						actorId: z.string(),
+						actorType: z.enum(["admin"]),
+					})
+					.strict(),
+				z
+					.object({
+						autoBlockPrevented: z.union([z.literal(false), z.literal(true)]),
+						preventUntil: z.number().optional(),
+						actorId: z.string(),
+						actorType: z.enum(["admin"]),
+						reason: z.string().optional(),
 					})
 					.strict(),
 				z
@@ -8694,6 +9057,11 @@ export const userEventSchema = z
 							enabled: z.union([z.literal(false), z.literal(true)]),
 							totpVerified: z.union([z.literal(false), z.literal(true)]),
 						}),
+					})
+					.strict(),
+				z
+					.object({
+						remaining: z.number(),
 					})
 					.strict(),
 				z
@@ -8760,6 +9128,14 @@ export const userEventSchema = z
 						projectName: z.string(),
 						repositoryName: z.string(),
 						sharedWithTeamId: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						projectId: z.string(),
+						projectName: z.string(),
+						repositoryName: z.string(),
+						public: z.union([z.literal(false), z.literal(true)]),
 					})
 					.strict(),
 				z
@@ -9392,6 +9768,11 @@ export const listEventTypeSchema = z
 				"ai-gateway-rule-deleted",
 				"ai-gateway-rule-updated",
 				"ai-gateway-scope-budget-updated",
+				"ai-gateway-transcripts-default-disabled",
+				"ai-gateway-transcripts-default-enabled",
+				"ai-gateway-transcripts-disabled",
+				"ai-gateway-transcripts-enabled",
+				"ai-gateway-transcripts-retention-updated",
 				"ai-gateway-virtual-model-config-archived",
 				"ai-gateway-virtual-model-config-created",
 				"ai-gateway-virtual-model-config-restored",
@@ -9437,6 +9818,7 @@ export const listEventTypeSchema = z
 				"cert-system-create",
 				"code-owners-config-updated",
 				"compliance-document-downloaded",
+				"compliance-document-previewed",
 				"compliance-documents-bulk-downloaded",
 				"concurrent-builds-update",
 				"connect-attach-project",
@@ -9575,6 +9957,7 @@ export const listEventTypeSchema = z
 				"flags-segment",
 				"flags-settings",
 				"flags-transferred",
+				"git-integration-repo-push",
 				"git_account_integration_link_added",
 				"instant-rollback-created",
 				"integration-configuration-owner-changed",
@@ -9595,6 +9978,7 @@ export const listEventTypeSchema = z
 				"kms-issuer-deleted",
 				"kms-issuer-key-activated",
 				"kms-issuer-key-created",
+				"kms-issuer-key-revoked",
 				"kms-issuer-key-rotated",
 				"kms-issuer-policy-created",
 				"kms-issuer-policy-deleted",
@@ -9605,6 +9989,8 @@ export const listEventTypeSchema = z
 				"log-drain-disabled",
 				"log-drain-enabled",
 				"login",
+				"login-connection-linked",
+				"login-connection-unlinked",
 				"manual-deployment-promotion-created",
 				"marketplace-flex-commit-opt-in",
 				"marketplace-integration-allowlist-updated",
@@ -9636,6 +10022,8 @@ export const listEventTypeSchema = z
 				"oidc-policy-used-to-obtain-app-token",
 				"organization-create",
 				"organization-delete",
+				"organization-dsync-group-delete",
+				"organization-dsync-group-upsert",
 				"organization-slug-update",
 				"organization-team-add",
 				"organization-team-create",
@@ -9784,8 +10172,11 @@ export const listEventTypeSchema = z
 				"protected-git-scope-added",
 				"protected-git-scope-removed",
 				"runtime-cache-purge-all",
+				"saml-connection-created",
+				"saml-connection-deleted",
 				"sandbox-alias-assigned",
 				"sandbox-alias-delete",
+				"sandbox-snapshot-regions-updated",
 				"scale",
 				"scale-auto",
 				"secondary-email-added",
@@ -9815,6 +10206,7 @@ export const listEventTypeSchema = z
 				"spend-created",
 				"spend-deleted",
 				"spend-updated",
+				"sso-login",
 				"storage-accept-tos",
 				"storage-access-token-set",
 				"storage-accessed-data-browser",
@@ -9841,6 +10233,7 @@ export const listEventTypeSchema = z
 				"subscription-product-added",
 				"subscription-product-removed",
 				"subscription-updated",
+				"support-session-created",
 				"team",
 				"team-agent-billing-migration-decision-changed",
 				"team-avatar-update",
@@ -9891,24 +10284,36 @@ export const listEventTypeSchema = z
 				"tracing-configured",
 				"tracing-disabled",
 				"unlink-login-connection",
+				"update-account-flow-dismissed",
 				"update-account-flow-triggered",
+				"user-auto-block-configured",
+				"user-blocked",
 				"user-delete",
+				"user-delete-requested",
 				"user-emu-account-archived",
 				"user-emu-account-deleted",
 				"user-emu-account-recovered",
+				"user-emu-recovery-email-sent",
+				"user-emu-recovery-initiated",
+				"user-emu-toggled",
 				"user-mfa-challenge-failed",
 				"user-mfa-challenge-verified",
 				"user-mfa-change-failed",
 				"user-mfa-configuration-updated",
+				"user-mfa-recovery-code-used",
 				"user-mfa-recovery-codes-regenerated",
 				"user-mfa-removed",
 				"user-mfa-setup-skipped",
 				"user-mfa-totp-verification-started",
 				"user-mfa-totp-verified",
+				"user-phone-removed",
+				"user-phone-updated",
 				"user-primary-email-updated",
+				"user-sudo-mode-removed",
 				"user-token-created",
 				"user-token-deleted",
 				"user-tokens-deleted",
+				"user-unblocked",
 				"username",
 				"v0-chat-ai-usage",
 				"v0-chat-created",
@@ -9920,6 +10325,7 @@ export const listEventTypeSchema = z
 				"vcr-repository-permission-added",
 				"vcr-repository-permission-removed",
 				"vcr-repository-permissions-cleared",
+				"vcr-repository-visibility-changed",
 				"vercel-agent-elevated-permissions-approved",
 				"vercel-agent-elevated-permissions-requested",
 				"vercel-agent-session-created",
@@ -9953,6 +10359,7 @@ export const listEventTypeSchema = z
 					"ai",
 					"ai-gateway",
 					"billing",
+					"connect",
 					"deployment",
 					"domain",
 					"edge",
@@ -10018,6 +10425,11 @@ export const listEventTypeSchema = z
 					"ai-gateway-rule-deleted",
 					"ai-gateway-rule-updated",
 					"ai-gateway-scope-budget-updated",
+					"ai-gateway-transcripts-default-disabled",
+					"ai-gateway-transcripts-default-enabled",
+					"ai-gateway-transcripts-disabled",
+					"ai-gateway-transcripts-enabled",
+					"ai-gateway-transcripts-retention-updated",
 					"ai-gateway-virtual-model-config-archived",
 					"ai-gateway-virtual-model-config-created",
 					"ai-gateway-virtual-model-config-restored",
@@ -10063,6 +10475,7 @@ export const listEventTypeSchema = z
 					"cert-system-create",
 					"code-owners-config-updated",
 					"compliance-document-downloaded",
+					"compliance-document-previewed",
 					"compliance-documents-bulk-downloaded",
 					"concurrent-builds-update",
 					"connect-attach-project",
@@ -10201,6 +10614,7 @@ export const listEventTypeSchema = z
 					"flags-segment",
 					"flags-settings",
 					"flags-transferred",
+					"git-integration-repo-push",
 					"git_account_integration_link_added",
 					"instant-rollback-created",
 					"integration-configuration-owner-changed",
@@ -10221,6 +10635,7 @@ export const listEventTypeSchema = z
 					"kms-issuer-deleted",
 					"kms-issuer-key-activated",
 					"kms-issuer-key-created",
+					"kms-issuer-key-revoked",
 					"kms-issuer-key-rotated",
 					"kms-issuer-policy-created",
 					"kms-issuer-policy-deleted",
@@ -10231,6 +10646,8 @@ export const listEventTypeSchema = z
 					"log-drain-disabled",
 					"log-drain-enabled",
 					"login",
+					"login-connection-linked",
+					"login-connection-unlinked",
 					"manual-deployment-promotion-created",
 					"marketplace-flex-commit-opt-in",
 					"marketplace-integration-allowlist-updated",
@@ -10262,6 +10679,8 @@ export const listEventTypeSchema = z
 					"oidc-policy-used-to-obtain-app-token",
 					"organization-create",
 					"organization-delete",
+					"organization-dsync-group-delete",
+					"organization-dsync-group-upsert",
 					"organization-slug-update",
 					"organization-team-add",
 					"organization-team-create",
@@ -10410,8 +10829,11 @@ export const listEventTypeSchema = z
 					"protected-git-scope-added",
 					"protected-git-scope-removed",
 					"runtime-cache-purge-all",
+					"saml-connection-created",
+					"saml-connection-deleted",
 					"sandbox-alias-assigned",
 					"sandbox-alias-delete",
+					"sandbox-snapshot-regions-updated",
 					"scale",
 					"scale-auto",
 					"secondary-email-added",
@@ -10441,6 +10863,7 @@ export const listEventTypeSchema = z
 					"spend-created",
 					"spend-deleted",
 					"spend-updated",
+					"sso-login",
 					"storage-accept-tos",
 					"storage-access-token-set",
 					"storage-accessed-data-browser",
@@ -10467,6 +10890,7 @@ export const listEventTypeSchema = z
 					"subscription-product-added",
 					"subscription-product-removed",
 					"subscription-updated",
+					"support-session-created",
 					"team",
 					"team-agent-billing-migration-decision-changed",
 					"team-avatar-update",
@@ -10517,24 +10941,36 @@ export const listEventTypeSchema = z
 					"tracing-configured",
 					"tracing-disabled",
 					"unlink-login-connection",
+					"update-account-flow-dismissed",
 					"update-account-flow-triggered",
+					"user-auto-block-configured",
+					"user-blocked",
 					"user-delete",
+					"user-delete-requested",
 					"user-emu-account-archived",
 					"user-emu-account-deleted",
 					"user-emu-account-recovered",
+					"user-emu-recovery-email-sent",
+					"user-emu-recovery-initiated",
+					"user-emu-toggled",
 					"user-mfa-challenge-failed",
 					"user-mfa-challenge-verified",
 					"user-mfa-change-failed",
 					"user-mfa-configuration-updated",
+					"user-mfa-recovery-code-used",
 					"user-mfa-recovery-codes-regenerated",
 					"user-mfa-removed",
 					"user-mfa-setup-skipped",
 					"user-mfa-totp-verification-started",
 					"user-mfa-totp-verified",
+					"user-phone-removed",
+					"user-phone-updated",
 					"user-primary-email-updated",
+					"user-sudo-mode-removed",
 					"user-token-created",
 					"user-token-deleted",
 					"user-tokens-deleted",
+					"user-unblocked",
 					"username",
 					"v0-chat-ai-usage",
 					"v0-chat-created",
@@ -10546,6 +10982,7 @@ export const listEventTypeSchema = z
 					"vcr-repository-permission-added",
 					"vcr-repository-permission-removed",
 					"vcr-repository-permissions-cleared",
+					"vcr-repository-visibility-changed",
 					"vercel-agent-elevated-permissions-approved",
 					"vercel-agent-elevated-permissions-requested",
 					"vercel-agent-session-created",
@@ -10584,6 +11021,7 @@ export const listEventTypesResponseSchema = z
 					"ai",
 					"ai-gateway",
 					"billing",
+					"connect",
 					"deployment",
 					"domain",
 					"edge",
@@ -11114,6 +11552,12 @@ export const aPIKeySchema = z
 			.nullable()
 			.describe("The ID of the app that created the API key, if any"),
 		quota: z.unknown().optional(),
+		metadata: z
+			.object({})
+			.optional()
+			.describe(
+				"Generic metadata attached to the API key.\n\nThe accepted shape depends on the key's `purpose` and is validated when the key is created. For `ai-gateway` keys this carries `environment` and `spendAttribution`.",
+			),
 	})
 	.describe("Information about the newly created API key.");
 
@@ -11515,6 +11959,7 @@ export const invitedTeamMemberSchema = z
 					"AiGatewayBudgetManager",
 					"AiGatewayCredits",
 					"AiGatewaySettings",
+					"ConnectorManager",
 					"CreateProject",
 					"EnvVariableManager",
 					"EnvironmentManager",
@@ -11652,6 +12097,12 @@ export const teamSchema = z
 			.string()
 			.optional()
 			.describe("Code that can be used to join this Team. Only visible to Team owners."),
+		billing: z
+			.object({
+				plan: z.enum(["enterprise", "hobby", "pro"]),
+			})
+			.nullable()
+			.describe("The team's billing plan."),
 		description: z.string().nullable().describe("A short description of the Team."),
 		defaultRoles: z
 			.object({
@@ -11676,6 +12127,7 @@ export const teamSchema = z
 							"AiGatewayBudgetManager",
 							"AiGatewayCredits",
 							"AiGatewaySettings",
+							"ConnectorManager",
 							"CreateProject",
 							"EnvVariableManager",
 							"EnvironmentManager",
@@ -12087,6 +12539,7 @@ export const teamSchema = z
 							"AiGatewayBudgetManager",
 							"AiGatewayCredits",
 							"AiGatewaySettings",
+							"ConnectorManager",
 							"CreateProject",
 							"EnvVariableManager",
 							"EnvironmentManager",
@@ -12286,6 +12739,7 @@ export const teamLimitedSchema = z
 							"AiGatewayBudgetManager",
 							"AiGatewayCredits",
 							"AiGatewaySettings",
+							"ConnectorManager",
 							"CreateProject",
 							"EnvVariableManager",
 							"EnvironmentManager",
@@ -12830,7 +13284,15 @@ export const authUserSchema = z
 		importFlowGitNamespace: z.union([z.string(), z.number()]).nullish(),
 		importFlowGitNamespaceId: z.union([z.string(), z.number()]).nullish(),
 		importFlowGitProvider: z
-			.enum(["bitbucket", "github", "github-custom-host", "github-limited", "gitlab", "vercel"])
+			.enum([
+				"bitbucket",
+				"cursor-origin",
+				"github",
+				"github-custom-host",
+				"github-limited",
+				"gitlab",
+				"vercel",
+			])
 			.nullish(),
 		preferredScopesAndGitNamespaces: z
 			.array(
@@ -12911,8 +13373,10 @@ export const authUserSchema = z
 						slug: z.string(),
 						name: z.string(),
 						avatar: z.string().nullable(),
+						workEmail: z.string(),
 					}),
 				),
+				verifiedEmuDomains: z.array(z.string()),
 			})
 			.optional()
 			.describe(
@@ -12986,6 +13450,11 @@ export const vcrRepositorySchema = z
 		id: z.string().describe("Unique identifier of the repository."),
 		projectId: z.string().describe("Identifier of the project the repository belongs to."),
 		name: z.string().describe("Name of the repository."),
+		public: z
+			.union([z.literal(false), z.literal(true)])
+			.describe(
+				"Whether the repository is public. Images in public repositories can be pulled by anyone. Defaults to `false` (private).",
+			),
 		createdAt: z.string().describe("ISO 8601 timestamp of when the repository was created."),
 		updatedAt: z.string().describe("ISO 8601 timestamp of when the repository was last updated."),
 	})
@@ -13066,6 +13535,17 @@ export const vcrImageListSchema = z
 			.describe("Cursor to fetch the next page of results, when more are available."),
 	})
 	.describe("A paginated list of images for a repository.");
+
+export const vcrRepositoryPermissionSchema = z
+	.object({
+		repositoryId: z
+			.string()
+			.describe("Identifier of the repository the permission grants access to."),
+		teamId: z.string().describe("Identifier of the team that is granted access to the repository."),
+		teamSlug: z.string().describe("Slug of the team that is granted access to the repository."),
+		createdAt: z.string().describe("ISO 8601 timestamp of when the permission was created."),
+	})
+	.describe("A team's access grant to a Vercel Container Registry repository.");
 
 export const vcrTagSchema = z
 	.object({
@@ -13305,6 +13785,16 @@ export const vcrImageDetailSchema = z
 		createdAt: z.string().describe("ISO 8601 timestamp of when the image was created."),
 	})
 	.describe("A single image with its tags, status and resolved Dockerfile layer history.");
+
+export const vcrRepositoryPermissionListSchema = z
+	.object({
+		permissions: z.array(z.unknown()),
+		nextCursor: z
+			.string()
+			.optional()
+			.describe("Cursor to fetch the next page of results, when more are available."),
+	})
+	.describe("A paginated list of Vercel Container Registry repository permissions.");
 
 export const fileTreeSchema = z
 	.object({
@@ -18099,6 +18589,13 @@ export const listUserEventsQueryProjectIdsSchema = z
 	.optional()
 	.describe("Comma-delimited list of project IDs to filter the results by.");
 
+export const listUserEventsQueryEntityIdSchema = z
+	.string()
+	.optional()
+	.describe(
+		"Filters events to those associated with a specific entity (matched against `payload.id`). For example, a connector ID.",
+	);
+
 export const listUserEventsQueryWithPayloadSchema = z
 	.string()
 	.optional()
@@ -19265,7 +19762,7 @@ export const searchRepoQueryQuerySchema = z.string().optional();
 export const searchRepoQueryNamespaceIdSchema = z.union([z.string(), z.number()]).nullish();
 
 export const searchRepoQueryProviderSchema = z
-	.enum(["github", "github-limited", "github-custom-host", "gitlab", "bitbucket"])
+	.enum(["github", "github-limited", "github-custom-host", "gitlab", "bitbucket", "cursor-origin"])
 	.optional();
 
 export const searchRepoQueryInstallationIdSchema = z.string().optional();
@@ -19301,6 +19798,8 @@ export const searchRepoStatus429Schema = z.unknown();
 
 export const searchRepoStatus500Schema = z.unknown();
 
+export const searchRepoStatus502Schema = z.unknown();
+
 export const searchRepoResponseSchema = z.union([
 	searchRepoStatus200Schema,
 	searchRepoStatus400Schema,
@@ -19310,6 +19809,7 @@ export const searchRepoResponseSchema = z.union([
 	searchRepoStatus410Schema,
 	searchRepoStatus429Schema,
 	searchRepoStatus500Schema,
+	searchRepoStatus502Schema,
 ]);
 
 export const getBillingPlansPathIntegrationIdOrSlugSchema = z.string();
@@ -19330,6 +19830,7 @@ export const getBillingPlansQuerySourceSchema = z
 		"cli",
 		"oauth",
 		"backoffice",
+		"import-recommended-integrations",
 	])
 	.optional();
 
@@ -20905,7 +21406,11 @@ export const deleteRoutesStatus403Schema = z.unknown();
 
 export const deleteRoutesStatus404Schema = z.unknown();
 
+export const deleteRoutesStatus409Schema = z.unknown();
+
 export const deleteRoutesStatus410Schema = z.unknown();
+
+export const deleteRoutesStatus500Schema = z.unknown();
 
 export const deleteRoutesResponseSchema = z.union([
 	deleteRoutesStatus200Schema,
@@ -20913,7 +21418,9 @@ export const deleteRoutesResponseSchema = z.union([
 	deleteRoutesStatus401Schema,
 	deleteRoutesStatus403Schema,
 	deleteRoutesStatus404Schema,
+	deleteRoutesStatus409Schema,
 	deleteRoutesStatus410Schema,
+	deleteRoutesStatus500Schema,
 ]);
 
 export const editRoutePathProjectIdSchema = z.string();
@@ -21131,7 +21638,7 @@ export const getProjectsQueryBuildMachineTypesSchema = z
 	.string()
 	.optional()
 	.describe(
-		'Filter results by build machine types. Accepts comma-separated values. Use "default" for projects without a build machine type set.',
+		'Filter results by effective build machine types. Accepts comma-separated values. Use "elastic" for projects with elastic selection and "default" for projects without a build machine type set.',
 	);
 
 export const getProjectsQueryBuildQueueConfigurationSchema = z
@@ -21381,8 +21888,6 @@ export const updateProjectStatus410Schema = z.unknown();
 
 export const updateProjectStatus428Schema = z.unknown();
 
-export const updateProjectStatus500Schema = z.unknown();
-
 export const updateProjectResponseSchema = z.union([
 	updateProjectStatus200Schema,
 	updateProjectStatus400Schema,
@@ -21393,7 +21898,6 @@ export const updateProjectResponseSchema = z.union([
 	updateProjectStatus409Schema,
 	updateProjectStatus410Schema,
 	updateProjectStatus428Schema,
-	updateProjectStatus500Schema,
 ]);
 
 export const deleteProjectPathIdOrNameSchema = z
@@ -23069,50 +23573,50 @@ export const listSandboxesResponseSchema = z.union([
 	listSandboxesStatus429Schema,
 ]);
 
-export const createSandboxesQueryTeamIdSchema = z
+export const createSandboxesV2QueryTeamIdSchema = z
 	.string()
 	.optional()
 	.describe("The Team identifier to perform the request on behalf of.");
 
-export const createSandboxesQuerySlugSchema = z
+export const createSandboxesV2QuerySlugSchema = z
 	.string()
 	.optional()
 	.describe("The Team slug to perform the request on behalf of.");
 
-export const createSandboxesStatus200Schema = z.unknown();
+export const createSandboxesV2Status200Schema = z.unknown();
 
-export const createSandboxesStatus400Schema = z.unknown();
+export const createSandboxesV2Status400Schema = z.unknown();
 
-export const createSandboxesStatus401Schema = z.unknown();
+export const createSandboxesV2Status401Schema = z.unknown();
 
-export const createSandboxesStatus402Schema = z.unknown();
+export const createSandboxesV2Status402Schema = z.unknown();
 
-export const createSandboxesStatus403Schema = z.unknown();
+export const createSandboxesV2Status403Schema = z.unknown();
 
-export const createSandboxesStatus404Schema = z.unknown();
+export const createSandboxesV2Status404Schema = z.unknown();
 
-export const createSandboxesStatus409Schema = z.unknown();
+export const createSandboxesV2Status409Schema = z.unknown();
 
-export const createSandboxesStatus410Schema = z.unknown();
+export const createSandboxesV2Status410Schema = z.unknown();
 
-export const createSandboxesStatus422Schema = z.unknown();
+export const createSandboxesV2Status422Schema = z.unknown();
 
-export const createSandboxesStatus429Schema = z.unknown();
+export const createSandboxesV2Status429Schema = z.unknown();
 
-export const createSandboxesStatus500Schema = z.unknown();
+export const createSandboxesV2Status500Schema = z.unknown();
 
-export const createSandboxesResponseSchema = z.union([
-	createSandboxesStatus200Schema,
-	createSandboxesStatus400Schema,
-	createSandboxesStatus401Schema,
-	createSandboxesStatus402Schema,
-	createSandboxesStatus403Schema,
-	createSandboxesStatus404Schema,
-	createSandboxesStatus409Schema,
-	createSandboxesStatus410Schema,
-	createSandboxesStatus422Schema,
-	createSandboxesStatus429Schema,
-	createSandboxesStatus500Schema,
+export const createSandboxesV2ResponseSchema = z.union([
+	createSandboxesV2Status200Schema,
+	createSandboxesV2Status400Schema,
+	createSandboxesV2Status401Schema,
+	createSandboxesV2Status402Schema,
+	createSandboxesV2Status403Schema,
+	createSandboxesV2Status404Schema,
+	createSandboxesV2Status409Schema,
+	createSandboxesV2Status410Schema,
+	createSandboxesV2Status422Schema,
+	createSandboxesV2Status429Schema,
+	createSandboxesV2Status500Schema,
 ]);
 
 export const listDrivesQueryProjectIdSchema = z
@@ -24069,8 +24573,6 @@ export const updateSessionNetworkPolicyStatus400Schema = z.unknown();
 
 export const updateSessionNetworkPolicyStatus401Schema = z.unknown();
 
-export const updateSessionNetworkPolicyStatus402Schema = z.unknown();
-
 export const updateSessionNetworkPolicyStatus403Schema = z.unknown();
 
 export const updateSessionNetworkPolicyStatus404Schema = z.unknown();
@@ -24087,7 +24589,6 @@ export const updateSessionNetworkPolicyResponseSchema = z.union([
 	updateSessionNetworkPolicyStatus200Schema,
 	updateSessionNetworkPolicyStatus400Schema,
 	updateSessionNetworkPolicyStatus401Schema,
-	updateSessionNetworkPolicyStatus402Schema,
 	updateSessionNetworkPolicyStatus403Schema,
 	updateSessionNetworkPolicyStatus404Schema,
 	updateSessionNetworkPolicyStatus410Schema,
@@ -24340,6 +24841,52 @@ export const createSandboxesByNameForkResponseSchema = z.union([
 	createSandboxesByNameForkStatus422Schema,
 	createSandboxesByNameForkStatus429Schema,
 	createSandboxesByNameForkStatus500Schema,
+]);
+
+export const createSandboxesV3QueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe("The Team identifier to perform the request on behalf of.");
+
+export const createSandboxesV3QuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.");
+
+export const createSandboxesV3Status200Schema = z.unknown();
+
+export const createSandboxesV3Status400Schema = z.unknown();
+
+export const createSandboxesV3Status401Schema = z.unknown();
+
+export const createSandboxesV3Status402Schema = z.unknown();
+
+export const createSandboxesV3Status403Schema = z.unknown();
+
+export const createSandboxesV3Status404Schema = z.unknown();
+
+export const createSandboxesV3Status409Schema = z.unknown();
+
+export const createSandboxesV3Status410Schema = z.unknown();
+
+export const createSandboxesV3Status422Schema = z.unknown();
+
+export const createSandboxesV3Status429Schema = z.unknown();
+
+export const createSandboxesV3Status500Schema = z.unknown();
+
+export const createSandboxesV3ResponseSchema = z.union([
+	createSandboxesV3Status200Schema,
+	createSandboxesV3Status400Schema,
+	createSandboxesV3Status401Schema,
+	createSandboxesV3Status402Schema,
+	createSandboxesV3Status403Schema,
+	createSandboxesV3Status404Schema,
+	createSandboxesV3Status409Schema,
+	createSandboxesV3Status410Schema,
+	createSandboxesV3Status422Schema,
+	createSandboxesV3Status429Schema,
+	createSandboxesV3Status500Schema,
 ]);
 
 export const updateAttackChallengeModeQueryTeamIdSchema = z
@@ -25895,6 +26442,154 @@ export const listRepositoryImagesResponseSchema = z.union([
 	listRepositoryImagesStatus410Schema,
 ]);
 
+export const addRepositoryPermissionQueryProjectIdSchema = z.string();
+
+export const addRepositoryPermissionPathIdOrNameSchema = z.string().max(255);
+
+export const addRepositoryPermissionQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe("The Team identifier to perform the request on behalf of.");
+
+export const addRepositoryPermissionQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.");
+
+export const addRepositoryPermissionStatus200Schema = z.unknown();
+
+export const addRepositoryPermissionStatus400Schema = z.unknown();
+
+export const addRepositoryPermissionStatus401Schema = z.unknown();
+
+export const addRepositoryPermissionStatus403Schema = z.unknown();
+
+export const addRepositoryPermissionStatus404Schema = z.unknown();
+
+export const addRepositoryPermissionStatus410Schema = z.unknown();
+
+export const addRepositoryPermissionResponseSchema = z.union([
+	addRepositoryPermissionStatus200Schema,
+	addRepositoryPermissionStatus400Schema,
+	addRepositoryPermissionStatus401Schema,
+	addRepositoryPermissionStatus403Schema,
+	addRepositoryPermissionStatus404Schema,
+	addRepositoryPermissionStatus410Schema,
+]);
+
+export const removeRepositoryPermissionQueryProjectIdSchema = z.string();
+
+export const removeRepositoryPermissionPathIdOrNameSchema = z.string().max(255);
+
+export const removeRepositoryPermissionQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe("The Team identifier to perform the request on behalf of.");
+
+export const removeRepositoryPermissionQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.");
+
+export const removeRepositoryPermissionStatus204Schema = z.unknown();
+
+export const removeRepositoryPermissionStatus400Schema = z.unknown();
+
+export const removeRepositoryPermissionStatus401Schema = z.unknown();
+
+export const removeRepositoryPermissionStatus403Schema = z.unknown();
+
+export const removeRepositoryPermissionStatus404Schema = z.unknown();
+
+export const removeRepositoryPermissionStatus410Schema = z.unknown();
+
+export const removeRepositoryPermissionResponseSchema = z.union([
+	removeRepositoryPermissionStatus204Schema,
+	removeRepositoryPermissionStatus400Schema,
+	removeRepositoryPermissionStatus401Schema,
+	removeRepositoryPermissionStatus403Schema,
+	removeRepositoryPermissionStatus404Schema,
+	removeRepositoryPermissionStatus410Schema,
+]);
+
+export const listRepositoryPermissionsQueryProjectIdSchema = z.string();
+
+export const listRepositoryPermissionsPathIdOrNameSchema = z.string().max(255);
+
+export const listRepositoryPermissionsQueryLimitSchema = z.int().min(1).max(100).optional();
+
+export const listRepositoryPermissionsQueryCursorSchema = z
+	.string()
+	.max(1024)
+	.optional()
+	.describe("Opaque pagination cursor returned by a previous list response.");
+
+export const listRepositoryPermissionsQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe("The Team identifier to perform the request on behalf of.");
+
+export const listRepositoryPermissionsQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.");
+
+export const listRepositoryPermissionsStatus200Schema = z.unknown();
+
+export const listRepositoryPermissionsStatus400Schema = z.unknown();
+
+export const listRepositoryPermissionsStatus401Schema = z.unknown();
+
+export const listRepositoryPermissionsStatus403Schema = z.unknown();
+
+export const listRepositoryPermissionsStatus404Schema = z.unknown();
+
+export const listRepositoryPermissionsStatus410Schema = z.unknown();
+
+export const listRepositoryPermissionsResponseSchema = z.union([
+	listRepositoryPermissionsStatus200Schema,
+	listRepositoryPermissionsStatus400Schema,
+	listRepositoryPermissionsStatus401Schema,
+	listRepositoryPermissionsStatus403Schema,
+	listRepositoryPermissionsStatus404Schema,
+	listRepositoryPermissionsStatus410Schema,
+]);
+
+export const clearRepositoryPermissionsQueryProjectIdSchema = z.string();
+
+export const clearRepositoryPermissionsPathIdOrNameSchema = z.string().max(255);
+
+export const clearRepositoryPermissionsQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe("The Team identifier to perform the request on behalf of.");
+
+export const clearRepositoryPermissionsQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.");
+
+export const clearRepositoryPermissionsStatus204Schema = z.unknown();
+
+export const clearRepositoryPermissionsStatus400Schema = z.unknown();
+
+export const clearRepositoryPermissionsStatus401Schema = z.unknown();
+
+export const clearRepositoryPermissionsStatus403Schema = z.unknown();
+
+export const clearRepositoryPermissionsStatus404Schema = z.unknown();
+
+export const clearRepositoryPermissionsStatus410Schema = z.unknown();
+
+export const clearRepositoryPermissionsResponseSchema = z.union([
+	clearRepositoryPermissionsStatus204Schema,
+	clearRepositoryPermissionsStatus400Schema,
+	clearRepositoryPermissionsStatus401Schema,
+	clearRepositoryPermissionsStatus403Schema,
+	clearRepositoryPermissionsStatus404Schema,
+	clearRepositoryPermissionsStatus410Schema,
+]);
+
 export const listRepositoryTagsQueryProjectIdSchema = z.string();
 
 export const listRepositoryTagsPathIdOrNameSchema = z.string().max(255);
@@ -26058,6 +26753,666 @@ export const deleteRepositoryImageResponseSchema = z.union([
 	deleteRepositoryImageStatus403Schema,
 	deleteRepositoryImageStatus404Schema,
 	deleteRepositoryImageStatus410Schema,
+]);
+
+export const getRootStatus200Schema = z.unknown();
+
+export const getRootStatus400Schema = z.unknown();
+
+export const getRootStatus401Schema = z.unknown();
+
+export const getRootStatus402Schema = z.unknown();
+
+export const getRootStatus403Schema = z.unknown();
+
+export const getRootStatus404Schema = z.unknown();
+
+export const getRootStatus410Schema = z.unknown();
+
+export const getRootResponseSchema = z.union([
+	getRootStatus200Schema,
+	getRootStatus400Schema,
+	getRootStatus401Schema,
+	getRootStatus402Schema,
+	getRootStatus403Schema,
+	getRootStatus404Schema,
+	getRootStatus410Schema,
+]);
+
+export const getByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestPathTeamSlugSchema = z
+	.string()
+	.max(255)
+	.regex(/^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$/)
+	.describe("Single Docker repository team slug component.");
+
+export const getByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestPathProjectSlugSchema = z
+	.string()
+	.max(255)
+	.regex(/^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$/)
+	.describe("Single Docker repository project slug component.");
+
+export const getByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestPathRepositoryNameSchema = z
+	.string()
+	.max(255)
+	.regex(/^[a-z0-9]+(?:(?:\\.|_|__|-+)[a-z0-9]+)*$/)
+	.describe("Single Docker repository name component.");
+
+export const getByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestPathDigestSchema = z
+	.string()
+	.max(255)
+	.regex(/^[A-Za-z0-9_+.-]+:[A-Fa-f0-9]+$/)
+	.describe("Content-addressable digest (algorithm:hex).");
+
+export const getByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus400Schema = z.unknown();
+
+export const getByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus401Schema = z.unknown();
+
+export const getByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus402Schema = z.unknown();
+
+export const getByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus403Schema = z.unknown();
+
+export const getByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus404Schema = z.unknown();
+
+export const getByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus410Schema = z.unknown();
+
+export const getByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus416Schema = z.unknown();
+
+export const getByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestResponseSchema = z.union([
+	getByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus400Schema,
+	getByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus401Schema,
+	getByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus402Schema,
+	getByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus403Schema,
+	getByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus404Schema,
+	getByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus410Schema,
+	getByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus416Schema,
+]);
+
+export const deleteByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestPathTeamSlugSchema = z
+	.string()
+	.max(255)
+	.regex(/^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$/)
+	.describe("Single Docker repository team slug component.");
+
+export const deleteByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestPathProjectSlugSchema = z
+	.string()
+	.max(255)
+	.regex(/^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$/)
+	.describe("Single Docker repository project slug component.");
+
+export const deleteByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestPathRepositoryNameSchema = z
+	.string()
+	.max(255)
+	.regex(/^[a-z0-9]+(?:(?:\\.|_|__|-+)[a-z0-9]+)*$/)
+	.describe("Single Docker repository name component.");
+
+export const deleteByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestPathDigestSchema = z
+	.string()
+	.max(255)
+	.regex(/^[A-Za-z0-9_+.-]+:[A-Fa-f0-9]+$/)
+	.describe("Content-addressable digest (algorithm:hex).");
+
+export const deleteByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus400Schema =
+	z.unknown();
+
+export const deleteByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus401Schema =
+	z.unknown();
+
+export const deleteByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus402Schema =
+	z.unknown();
+
+export const deleteByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus403Schema =
+	z.unknown();
+
+export const deleteByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus404Schema =
+	z.unknown();
+
+export const deleteByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus405Schema =
+	z.unknown();
+
+export const deleteByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus410Schema =
+	z.unknown();
+
+export const deleteByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestResponseSchema = z.union([
+	deleteByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus400Schema,
+	deleteByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus401Schema,
+	deleteByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus402Schema,
+	deleteByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus403Schema,
+	deleteByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus404Schema,
+	deleteByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus405Schema,
+	deleteByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus410Schema,
+]);
+
+export const getByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidPathTeamSlugSchema = z
+	.string()
+	.max(255)
+	.regex(/^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$/)
+	.describe("Single Docker repository team slug component.");
+
+export const getByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidPathProjectSlugSchema = z
+	.string()
+	.max(255)
+	.regex(/^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$/)
+	.describe("Single Docker repository project slug component.");
+
+export const getByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidPathRepositoryNameSchema =
+	z
+		.string()
+		.max(255)
+		.regex(/^[a-z0-9]+(?:(?:\\.|_|__|-+)[a-z0-9]+)*$/)
+		.describe("Single Docker repository name component.");
+
+export const getByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidPathUuidSchema = z
+	.string()
+	.max(40)
+	.regex(/^[a-f0-9]{40}$/)
+	.describe("Blob upload session identifier.");
+
+export const getByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus204Schema =
+	z.unknown();
+
+export const getByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus400Schema =
+	z.unknown();
+
+export const getByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus401Schema =
+	z.unknown();
+
+export const getByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus402Schema =
+	z.unknown();
+
+export const getByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus403Schema =
+	z.unknown();
+
+export const getByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus404Schema =
+	z.unknown();
+
+export const getByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus410Schema =
+	z.unknown();
+
+export const getByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidResponseSchema = z.union([
+	getByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus204Schema,
+	getByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus400Schema,
+	getByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus401Schema,
+	getByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus402Schema,
+	getByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus403Schema,
+	getByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus404Schema,
+	getByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus410Schema,
+]);
+
+export const deleteByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidPathTeamSlugSchema = z
+	.string()
+	.max(255)
+	.regex(/^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$/)
+	.describe("Single Docker repository team slug component.");
+
+export const deleteByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidPathProjectSlugSchema =
+	z
+		.string()
+		.max(255)
+		.regex(/^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$/)
+		.describe("Single Docker repository project slug component.");
+
+export const deleteByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidPathRepositoryNameSchema =
+	z
+		.string()
+		.max(255)
+		.regex(/^[a-z0-9]+(?:(?:\\.|_|__|-+)[a-z0-9]+)*$/)
+		.describe("Single Docker repository name component.");
+
+export const deleteByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidPathUuidSchema = z
+	.string()
+	.max(40)
+	.regex(/^[a-f0-9]{40}$/)
+	.describe("Blob upload session identifier.");
+
+export const deleteByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus204Schema =
+	z.unknown();
+
+export const deleteByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus400Schema =
+	z.unknown();
+
+export const deleteByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus401Schema =
+	z.unknown();
+
+export const deleteByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus402Schema =
+	z.unknown();
+
+export const deleteByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus403Schema =
+	z.unknown();
+
+export const deleteByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus404Schema =
+	z.unknown();
+
+export const deleteByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus410Schema =
+	z.unknown();
+
+export const deleteByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidResponseSchema =
+	z.union([
+		deleteByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus204Schema,
+		deleteByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus400Schema,
+		deleteByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus401Schema,
+		deleteByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus402Schema,
+		deleteByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus403Schema,
+		deleteByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus404Schema,
+		deleteByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus410Schema,
+	]);
+
+export const updateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidPathTeamSlugSchema = z
+	.string()
+	.max(255)
+	.regex(/^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$/)
+	.describe("Single Docker repository team slug component.");
+
+export const updateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidPathProjectSlugSchema =
+	z
+		.string()
+		.max(255)
+		.regex(/^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$/)
+		.describe("Single Docker repository project slug component.");
+
+export const updateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidPathRepositoryNameSchema =
+	z
+		.string()
+		.max(255)
+		.regex(/^[a-z0-9]+(?:(?:\\.|_|__|-+)[a-z0-9]+)*$/)
+		.describe("Single Docker repository name component.");
+
+export const updateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidPathUuidSchema = z
+	.string()
+	.max(40)
+	.regex(/^[a-f0-9]{40}$/)
+	.describe("Blob upload session identifier.");
+
+export const updateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus202Schema =
+	z.unknown();
+
+export const updateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus400Schema =
+	z.unknown();
+
+export const updateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus401Schema =
+	z.unknown();
+
+export const updateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus402Schema =
+	z.unknown();
+
+export const updateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus403Schema =
+	z.unknown();
+
+export const updateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus404Schema =
+	z.unknown();
+
+export const updateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus410Schema =
+	z.unknown();
+
+export const updateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus413Schema =
+	z.unknown();
+
+export const updateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidResponseSchema =
+	z.union([
+		updateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus202Schema,
+		updateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus400Schema,
+		updateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus401Schema,
+		updateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus402Schema,
+		updateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus403Schema,
+		updateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus404Schema,
+		updateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus410Schema,
+		updateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus413Schema,
+	]);
+
+export const replaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidPathTeamSlugSchema = z
+	.string()
+	.max(255)
+	.regex(/^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$/)
+	.describe("Single Docker repository team slug component.");
+
+export const replaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidPathProjectSlugSchema =
+	z
+		.string()
+		.max(255)
+		.regex(/^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$/)
+		.describe("Single Docker repository project slug component.");
+
+export const replaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidPathRepositoryNameSchema =
+	z
+		.string()
+		.max(255)
+		.regex(/^[a-z0-9]+(?:(?:\\.|_|__|-+)[a-z0-9]+)*$/)
+		.describe("Single Docker repository name component.");
+
+export const replaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidPathUuidSchema = z
+	.string()
+	.max(40)
+	.regex(/^[a-f0-9]{40}$/)
+	.describe("Blob upload session identifier.");
+
+export const replaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidQueryDigestSchema = z
+	.string()
+	.max(255)
+	.regex(/^[A-Za-z0-9_+.-]+:[A-Fa-f0-9]+$/)
+	.describe("Content-addressable digest (algorithm:hex).");
+
+export const replaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus201Schema =
+	z.unknown();
+
+export const replaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus400Schema =
+	z.unknown();
+
+export const replaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus401Schema =
+	z.unknown();
+
+export const replaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus402Schema =
+	z.unknown();
+
+export const replaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus403Schema =
+	z.unknown();
+
+export const replaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus404Schema =
+	z.unknown();
+
+export const replaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus410Schema =
+	z.unknown();
+
+export const replaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus413Schema =
+	z.unknown();
+
+export const replaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidResponseSchema =
+	z.union([
+		replaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus201Schema,
+		replaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus400Schema,
+		replaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus401Schema,
+		replaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus402Schema,
+		replaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus403Schema,
+		replaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus404Schema,
+		replaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus410Schema,
+		replaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus413Schema,
+	]);
+
+export const createByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsPathTeamSlugSchema = z
+	.string()
+	.max(255)
+	.regex(/^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$/)
+	.describe("Single Docker repository team slug component.");
+
+export const createByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsPathProjectSlugSchema = z
+	.string()
+	.max(255)
+	.regex(/^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$/)
+	.describe("Single Docker repository project slug component.");
+
+export const createByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsPathRepositoryNameSchema = z
+	.string()
+	.max(255)
+	.regex(/^[a-z0-9]+(?:(?:\\.|_|__|-+)[a-z0-9]+)*$/)
+	.describe("Single Docker repository name component.");
+
+export const createByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsQueryMountSchema = z
+	.string()
+	.max(255)
+	.regex(/^[A-Za-z0-9_+.-]+:[A-Fa-f0-9]+$/)
+	.optional()
+	.describe("Digest of the blob to mount from another repository.");
+
+export const createByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsQueryFromSchema = z
+	.string()
+	.max(255)
+	.regex(
+		/^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?\\\/[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?\\\/[a-z0-9]+(?:(?:\\.|_|__|-+)[a-z0-9]+)*$/,
+	)
+	.optional()
+	.describe("Source repository to mount the blob from.");
+
+export const createByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsStatus202Schema = z.unknown();
+
+export const createByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsStatus400Schema = z.unknown();
+
+export const createByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsStatus401Schema = z.unknown();
+
+export const createByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsStatus402Schema = z.unknown();
+
+export const createByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsStatus403Schema = z.unknown();
+
+export const createByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsStatus404Schema = z.unknown();
+
+export const createByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsStatus410Schema = z.unknown();
+
+export const createByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsResponseSchema = z.union([
+	createByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsStatus202Schema,
+	createByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsStatus400Schema,
+	createByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsStatus401Schema,
+	createByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsStatus402Schema,
+	createByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsStatus403Schema,
+	createByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsStatus404Schema,
+	createByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsStatus410Schema,
+]);
+
+export const replaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferencePathTeamSlugSchema =
+	z
+		.string()
+		.max(255)
+		.regex(/^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$/)
+		.describe("Single Docker repository team slug component.");
+
+export const replaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferencePathProjectSlugSchema =
+	z
+		.string()
+		.max(255)
+		.regex(/^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$/)
+		.describe("Single Docker repository project slug component.");
+
+export const replaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferencePathRepositoryNameSchema =
+	z
+		.string()
+		.max(255)
+		.regex(/^[a-z0-9]+(?:(?:\\.|_|__|-+)[a-z0-9]+)*$/)
+		.describe("Single Docker repository name component.");
+
+export const replaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferencePathReferenceSchema =
+	z
+		.string()
+		.max(255)
+		.regex(/^(?:[a-zA-Z0-9_][a-zA-Z0-9._-]{0,127}|[A-Za-z0-9_+.-]+:[A-Fa-f0-9]+)$/)
+		.describe("Manifest reference: a tag or digest.");
+
+export const replaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus201Schema =
+	z.unknown();
+
+export const replaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus400Schema =
+	z.unknown();
+
+export const replaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus401Schema =
+	z.unknown();
+
+export const replaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus402Schema =
+	z.unknown();
+
+export const replaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus403Schema =
+	z.unknown();
+
+export const replaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus404Schema =
+	z.unknown();
+
+export const replaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus410Schema =
+	z.unknown();
+
+export const replaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus413Schema =
+	z.unknown();
+
+export const replaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceResponseSchema =
+	z.union([
+		replaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus201Schema,
+		replaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus400Schema,
+		replaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus401Schema,
+		replaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus402Schema,
+		replaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus403Schema,
+		replaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus404Schema,
+		replaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus410Schema,
+		replaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus413Schema,
+	]);
+
+export const getByTeamSlugByProjectSlugByRepositoryNameManifestsByReferencePathTeamSlugSchema = z
+	.string()
+	.max(255)
+	.regex(/^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$/)
+	.describe("Single Docker repository team slug component.");
+
+export const getByTeamSlugByProjectSlugByRepositoryNameManifestsByReferencePathProjectSlugSchema = z
+	.string()
+	.max(255)
+	.regex(/^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$/)
+	.describe("Single Docker repository project slug component.");
+
+export const getByTeamSlugByProjectSlugByRepositoryNameManifestsByReferencePathRepositoryNameSchema =
+	z
+		.string()
+		.max(255)
+		.regex(/^[a-z0-9]+(?:(?:\\.|_|__|-+)[a-z0-9]+)*$/)
+		.describe("Single Docker repository name component.");
+
+export const getByTeamSlugByProjectSlugByRepositoryNameManifestsByReferencePathReferenceSchema = z
+	.string()
+	.max(255)
+	.regex(/^(?:[a-zA-Z0-9_][a-zA-Z0-9._-]{0,127}|[A-Za-z0-9_+.-]+:[A-Fa-f0-9]+)$/)
+	.describe("Manifest reference: a tag or digest.");
+
+export const getByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus400Schema =
+	z.unknown();
+
+export const getByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus401Schema =
+	z.unknown();
+
+export const getByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus402Schema =
+	z.unknown();
+
+export const getByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus403Schema =
+	z.unknown();
+
+export const getByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus404Schema =
+	z.unknown();
+
+export const getByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus410Schema =
+	z.unknown();
+
+export const getByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceResponseSchema = z.union(
+	[
+		getByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus400Schema,
+		getByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus401Schema,
+		getByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus402Schema,
+		getByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus403Schema,
+		getByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus404Schema,
+		getByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus410Schema,
+	],
+);
+
+export const deleteByTeamSlugByProjectSlugByRepositoryNameManifestsByReferencePathTeamSlugSchema = z
+	.string()
+	.max(255)
+	.regex(/^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$/)
+	.describe("Single Docker repository team slug component.");
+
+export const deleteByTeamSlugByProjectSlugByRepositoryNameManifestsByReferencePathProjectSlugSchema =
+	z
+		.string()
+		.max(255)
+		.regex(/^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$/)
+		.describe("Single Docker repository project slug component.");
+
+export const deleteByTeamSlugByProjectSlugByRepositoryNameManifestsByReferencePathRepositoryNameSchema =
+	z
+		.string()
+		.max(255)
+		.regex(/^[a-z0-9]+(?:(?:\\.|_|__|-+)[a-z0-9]+)*$/)
+		.describe("Single Docker repository name component.");
+
+export const deleteByTeamSlugByProjectSlugByRepositoryNameManifestsByReferencePathReferenceSchema =
+	z
+		.string()
+		.max(255)
+		.regex(/^[A-Za-z0-9_+.-]+:[A-Fa-f0-9]+$/)
+		.describe("Content-addressable digest (algorithm:hex).");
+
+export const deleteByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus202Schema =
+	z.unknown();
+
+export const deleteByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus400Schema =
+	z.unknown();
+
+export const deleteByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus401Schema =
+	z.unknown();
+
+export const deleteByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus402Schema =
+	z.unknown();
+
+export const deleteByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus403Schema =
+	z.unknown();
+
+export const deleteByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus404Schema =
+	z.unknown();
+
+export const deleteByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus410Schema =
+	z.unknown();
+
+export const deleteByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceResponseSchema =
+	z.union([
+		deleteByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus202Schema,
+		deleteByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus400Schema,
+		deleteByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus401Schema,
+		deleteByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus402Schema,
+		deleteByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus403Schema,
+		deleteByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus404Schema,
+		deleteByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus410Schema,
+	]);
+
+export const getByTeamSlugByProjectSlugByRepositoryNameTagsListPathTeamSlugSchema = z
+	.string()
+	.max(255)
+	.regex(/^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$/)
+	.describe("Single Docker repository team slug component.");
+
+export const getByTeamSlugByProjectSlugByRepositoryNameTagsListPathProjectSlugSchema = z
+	.string()
+	.max(255)
+	.regex(/^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$/)
+	.describe("Single Docker repository project slug component.");
+
+export const getByTeamSlugByProjectSlugByRepositoryNameTagsListPathRepositoryNameSchema = z
+	.string()
+	.max(255)
+	.regex(/^[a-z0-9]+(?:(?:\\.|_|__|-+)[a-z0-9]+)*$/)
+	.describe("Single Docker repository name component.");
+
+export const getByTeamSlugByProjectSlugByRepositoryNameTagsListQueryNSchema = z
+	.int()
+	.min(1)
+	.max(1000)
+	.optional();
+
+export const getByTeamSlugByProjectSlugByRepositoryNameTagsListQueryLastSchema = z
+	.string()
+	.max(1024)
+	.optional()
+	.describe("Opaque pagination cursor returned by a previous list response.");
+
+export const getByTeamSlugByProjectSlugByRepositoryNameTagsListStatus200Schema = z.unknown();
+
+export const getByTeamSlugByProjectSlugByRepositoryNameTagsListStatus400Schema = z.unknown();
+
+export const getByTeamSlugByProjectSlugByRepositoryNameTagsListStatus401Schema = z.unknown();
+
+export const getByTeamSlugByProjectSlugByRepositoryNameTagsListStatus402Schema = z.unknown();
+
+export const getByTeamSlugByProjectSlugByRepositoryNameTagsListStatus403Schema = z.unknown();
+
+export const getByTeamSlugByProjectSlugByRepositoryNameTagsListStatus404Schema = z.unknown();
+
+export const getByTeamSlugByProjectSlugByRepositoryNameTagsListStatus410Schema = z.unknown();
+
+export const getByTeamSlugByProjectSlugByRepositoryNameTagsListResponseSchema = z.union([
+	getByTeamSlugByProjectSlugByRepositoryNameTagsListStatus200Schema,
+	getByTeamSlugByProjectSlugByRepositoryNameTagsListStatus400Schema,
+	getByTeamSlugByProjectSlugByRepositoryNameTagsListStatus401Schema,
+	getByTeamSlugByProjectSlugByRepositoryNameTagsListStatus402Schema,
+	getByTeamSlugByProjectSlugByRepositoryNameTagsListStatus403Schema,
+	getByTeamSlugByProjectSlugByRepositoryNameTagsListStatus404Schema,
+	getByTeamSlugByProjectSlugByRepositoryNameTagsListStatus410Schema,
 ]);
 
 export const createWebInsightsToggleQueryProjectIdSchema = z.string();
