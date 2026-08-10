@@ -801,6 +801,7 @@ export const userEventSchema = z
 				"email-notification-rule-removed",
 				"email-notification-rule-updated",
 				"emu-member-removed-unverified-domain",
+				"enforce-disjunctive-production-secrets",
 				"enforce-sensitive-environment-variables",
 				"env-variable-add",
 				"env-variable-delete",
@@ -9940,6 +9941,7 @@ export const listEventTypeSchema = z
 				"email-notification-rule-removed",
 				"email-notification-rule-updated",
 				"emu-member-removed-unverified-domain",
+				"enforce-disjunctive-production-secrets",
 				"enforce-sensitive-environment-variables",
 				"env-variable-add",
 				"env-variable-delete",
@@ -10601,6 +10603,7 @@ export const listEventTypeSchema = z
 					"email-notification-rule-removed",
 					"email-notification-rule-updated",
 					"emu-member-removed-unverified-domain",
+					"enforce-disjunctive-production-secrets",
 					"enforce-sensitive-environment-variables",
 					"env-variable-add",
 					"env-variable-delete",
@@ -12352,6 +12355,10 @@ export const teamSchema = z
 			.enum(["default", "off", "on"])
 			.nullish()
 			.describe("Sensitive environment variable policy for this team"),
+		disjunctiveProductionSecretPolicy: z
+			.enum(["default", "off", "on"])
+			.nullish()
+			.describe("Require production secrets to use a different value than preview or development."),
 		hideIpAddresses: z
 			.union([z.literal(false), z.literal(true)])
 			.nullish()
