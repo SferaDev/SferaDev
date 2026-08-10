@@ -108,7 +108,7 @@ catalog:
   # 7.0.2 ... install `@typescript/typescript6`". bunchee's peer range already claims
   # ^7.0, so the range is not a reliable signal — test a package build before releasing
   # this. Moving to TS 7 is its own PR, not a weekly bump.
-  typescript: 7.0.2
+  typescript: 6.0.3
   vitest: 4.1.10
   yaml: 2.9.0
   zod: 4.4.3
@@ -116,7 +116,7 @@ catalog:
   # renderer-jsx ahead of adapter-oas/core, and @kubb/core peer-requires the exact
   # matching version — a newer renderer-jsx here means an unmet peer. `pnpm update
   # --latest` will bump it past this; re-pin it to match when reviewing the weekly PR.
-  '@kubb/renderer-jsx': 5.0.0-beta.35
+  '@kubb/renderer-jsx': 5.0.0-beta.10
 catalogMode: strict
 cleanupUnusedCatalogs: true
 allowBuilds:
@@ -156,4 +156,58 @@ minimumReleaseAgeExclude:
   - brace-expansion@5.0.8
   - fast-uri@3.1.5
   - ip-address@10.2.1 || 10.2.2 || 10.3.1
-overrides: {}
+overrides:
+  '@auth/core@<=0.41.2': ^0.41.3
+  '@auth/core@>=0.1.0 <0.41.3': ^0.41.3
+  '@hono/node-server@<1.19.10': ^1.19.10
+  '@hono/node-server@<1.19.13': ^1.19.13
+  '@hono/node-server@<2.0.5': ^2.0.5
+  adm-zip@<0.6.0: ^0.6.0
+  axios@>=1.0.0 <1.18.0: ^1.18.0
+  axios@>=1.13.0 <1.18.0: ^1.18.0
+  axios@>=1.15.0 <1.18.0: ^1.18.0
+  axios@>=1.15.1 <1.18.0: ^1.18.0
+  axios@>=1.15.2 <1.18.0: ^1.18.0
+  axios@>=1.7.0 <1.18.0: ^1.18.0
+  effect@<3.20.0: ^3.20.0
+  esbuild@<=0.24.2: '>=0.25.0'
+  hono@<4.11.10: ^4.11.10
+  hono@<4.11.7: ^4.11.7
+  hono@<4.12.12: ^4.12.12
+  hono@<4.12.14: ^4.12.14
+  hono@<4.12.16: ^4.12.16
+  hono@<4.12.18: ^4.12.18
+  hono@<4.12.21: ^4.12.21
+  hono@<4.12.25: ^4.12.25
+  hono@<4.12.34: ^4.12.34
+  hono@<4.12.4: ^4.12.4
+  hono@<4.12.7: ^4.12.7
+  hono@>=3.8.0 <4.12.34: ^4.12.34
+  hono@>=4.0.0 <4.12.27: ^4.12.27
+  hono@>=4.0.0 <=4.12.11: ^4.12.12
+  hono@>=4.3.3 <4.12.27: ^4.12.27
+  hono@>=4.7.0 <4.12.34: ^4.12.34
+  ip-address@<=10.3.0: ^10.3.1
+  ip-address@>=10.1.1 <=10.2.0: ^10.2.1
+  ip-address@>=10.1.1 <=10.2.1: ^10.2.2
+  js-yaml@>=4.0.0 <4.3.0: ^4.3.0
+  js-yaml@>=4.0.0 <4.3.1: ^4.3.1
+  js-yaml@>=4.0.0 <=4.1.1: ^4.1.2
+  lodash@<=4.17.23: ^4.17.24
+  lodash@>=4.0.0 <=4.17.22: ^4.17.23
+  lodash@>=4.0.0 <=4.17.23: ^4.17.24
+  next-auth@>=5.0.0-beta.0 <5.0.0-beta.30: ^5.0.0-beta.30
+  next-auth@>=5.0.0-beta.0 <=5.0.0-beta.31: ^5.0.0
+  next-auth@>=5.0.0-beta.1 <=5.0.0-beta.31: ^5.0.0
+  path-to-regexp@>=4.0.0 <6.3.0: ^6.3.0
+  postcss@<=8.5.17: ^8.5.18
+  postcss@<=8.5.22: ^8.5.23
+  qs@>=6.11.1 <=6.15.1: ^6.15.2
+  rollup@>=4.0.0 <4.59.0: ^4.59.0
+  sharp@<0.35.0: ^0.35.0
+  tar@<=7.5.15: ^7.5.16
+  tar@<=7.5.16: ^7.5.17
+  tar@<=7.5.17: ^7.5.18
+  tar@<=7.5.18: ^7.5.19
+  tar@<=7.5.20: ^7.5.21
+  valibot@<=1.4.1: ^1.4.2
