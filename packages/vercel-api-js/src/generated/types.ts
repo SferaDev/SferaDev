@@ -1967,6 +1967,8 @@ export const userEventTypeEnum = {
 	"saml-connection-deleted": "saml-connection-deleted",
 	"sandbox-alias-assigned": "sandbox-alias-assigned",
 	"sandbox-alias-delete": "sandbox-alias-delete",
+	"sandbox-drive-created": "sandbox-drive-created",
+	"sandbox-drive-deleted": "sandbox-drive-deleted",
 	"sandbox-snapshot-regions-updated": "sandbox-snapshot-regions-updated",
 	scale: "scale",
 	"scale-auto": "scale-auto",
@@ -15653,6 +15655,24 @@ export type UserEvent = {
 						/**
 						 * @type string
 						 */
+						driveName: string;
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string
+						 */
+						projectName: string;
+						/**
+						 * @type string
+						 */
+						region: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
 						projectId: string;
 						/**
 						 * @type string
@@ -19250,6 +19270,8 @@ export const listEventTypeNameEnum = {
 	"saml-connection-deleted": "saml-connection-deleted",
 	"sandbox-alias-assigned": "sandbox-alias-assigned",
 	"sandbox-alias-delete": "sandbox-alias-delete",
+	"sandbox-drive-created": "sandbox-drive-created",
+	"sandbox-drive-deleted": "sandbox-drive-deleted",
 	"sandbox-snapshot-regions-updated": "sandbox-snapshot-regions-updated",
 	scale: "scale",
 	"scale-auto": "scale-auto",
@@ -19914,6 +19936,8 @@ export const listEventTypeReplacedByEnum = {
 	"saml-connection-deleted": "saml-connection-deleted",
 	"sandbox-alias-assigned": "sandbox-alias-assigned",
 	"sandbox-alias-delete": "sandbox-alias-delete",
+	"sandbox-drive-created": "sandbox-drive-created",
+	"sandbox-drive-deleted": "sandbox-drive-deleted",
 	"sandbox-snapshot-regions-updated": "sandbox-snapshot-regions-updated",
 	scale: "scale",
 	"scale-auto": "scale-auto",
@@ -21966,6 +21990,12 @@ export type Drive = {
 	 * @type number
 	 */
 	maxSizeBytes: number;
+	/**
+	 * @description The region where the drive is stored.
+	 * @example iad1
+	 * @type string
+	 */
+	region: string;
 	/**
 	 * @description Current session ID the drive is attached to, if any.
 	 * @example sbx_123
@@ -47286,6 +47316,11 @@ export type GetProjectTraceStatus403 = unknown;
 /**
  * @type unknown
  */
+export type GetProjectTraceStatus404 = unknown;
+
+/**
+ * @type unknown
+ */
 export type GetProjectTraceStatus410 = unknown;
 
 /**
@@ -47320,6 +47355,7 @@ export type GetProjectTraceResponses = {
 	"400": GetProjectTraceStatus400;
 	"401": GetProjectTraceStatus401;
 	"403": GetProjectTraceStatus403;
+	"404": GetProjectTraceStatus404;
 	"410": GetProjectTraceStatus410;
 };
 
@@ -47331,6 +47367,7 @@ export type GetProjectTraceResponse =
 	| GetProjectTraceStatus400
 	| GetProjectTraceStatus401
 	| GetProjectTraceStatus403
+	| GetProjectTraceStatus404
 	| GetProjectTraceStatus410;
 
 /**

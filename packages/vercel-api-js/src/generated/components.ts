@@ -1357,6 +1357,7 @@ import type {
 	GetProjectTraceStatus400,
 	GetProjectTraceStatus401,
 	GetProjectTraceStatus403,
+	GetProjectTraceStatus404,
 	GetProjectTraceStatus410,
 	GetRecordsResponse,
 	GetRecordsStatus400,
@@ -12372,6 +12373,7 @@ export async function getProjectTrace(
 			| GetProjectTraceStatus400
 			| GetProjectTraceStatus401
 			| GetProjectTraceStatus403
+			| GetProjectTraceStatus404
 			| GetProjectTraceStatus410
 		>,
 		null,
