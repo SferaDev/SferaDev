@@ -414,7 +414,7 @@ importers:
         version: 1.1.21(@types/react-dom@19.2.4(@types/react@19.2.18))(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       better-auth:
         specifier: 'catalog:'
-        version: 1.6.26(f7e487ef02675d984ba7001fb84f91a1)
+        version: 1.6.26(144b5af0850524ac363e30405f077d41)
       class-variance-authority:
         specifier: 'catalog:'
         version: 0.7.1
