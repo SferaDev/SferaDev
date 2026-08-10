@@ -1627,6 +1627,8 @@ export const userEventTypeEnum = {
 	"custom-alert-deleted": "custom-alert-deleted",
 	"custom-alert-updated": "custom-alert-updated",
 	"custom-environments-settings-updated": "custom-environments-settings-updated",
+	"custom-metric-metadata-deleted": "custom-metric-metadata-deleted",
+	"custom-metric-metadata-updated": "custom-metric-metadata-updated",
 	"custom-suffix-clear": "custom-suffix-clear",
 	"custom-suffix-disable": "custom-suffix-disable",
 	"custom-suffix-enable": "custom-suffix-enable",
@@ -5601,6 +5603,13 @@ export type UserEvent = {
 						 * @type number
 						 */
 						prevPurchasedAmount: number;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						metricName: string;
+						[key: string]: unknown;
 				  }
 				| {
 						/**
@@ -18930,6 +18939,8 @@ export const listEventTypeNameEnum = {
 	"custom-alert-deleted": "custom-alert-deleted",
 	"custom-alert-updated": "custom-alert-updated",
 	"custom-environments-settings-updated": "custom-environments-settings-updated",
+	"custom-metric-metadata-deleted": "custom-metric-metadata-deleted",
+	"custom-metric-metadata-updated": "custom-metric-metadata-updated",
 	"custom-suffix-clear": "custom-suffix-clear",
 	"custom-suffix-disable": "custom-suffix-disable",
 	"custom-suffix-enable": "custom-suffix-enable",
@@ -19596,6 +19607,8 @@ export const listEventTypeReplacedByEnum = {
 	"custom-alert-deleted": "custom-alert-deleted",
 	"custom-alert-updated": "custom-alert-updated",
 	"custom-environments-settings-updated": "custom-environments-settings-updated",
+	"custom-metric-metadata-deleted": "custom-metric-metadata-deleted",
+	"custom-metric-metadata-updated": "custom-metric-metadata-updated",
 	"custom-suffix-clear": "custom-suffix-clear",
 	"custom-suffix-disable": "custom-suffix-disable",
 	"custom-suffix-enable": "custom-suffix-enable",
