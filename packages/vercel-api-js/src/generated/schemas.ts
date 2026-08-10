@@ -726,6 +726,8 @@ export const userEventSchema = z
 				"custom-alert-deleted",
 				"custom-alert-updated",
 				"custom-environments-settings-updated",
+				"custom-metric-metadata-deleted",
+				"custom-metric-metadata-updated",
 				"custom-suffix-clear",
 				"custom-suffix-disable",
 				"custom-suffix-enable",
@@ -2693,6 +2695,11 @@ export const userEventSchema = z
 						prevPurchasedAmount: z.number(),
 					})
 					.strict(),
+				z
+					.object({
+						metricName: z.string(),
+					})
+					.catchall(z.unknown()),
 				z
 					.object({
 						reason: z.string().optional(),
@@ -9858,6 +9865,8 @@ export const listEventTypeSchema = z
 				"custom-alert-deleted",
 				"custom-alert-updated",
 				"custom-environments-settings-updated",
+				"custom-metric-metadata-deleted",
+				"custom-metric-metadata-updated",
 				"custom-suffix-clear",
 				"custom-suffix-disable",
 				"custom-suffix-enable",
@@ -10517,6 +10526,8 @@ export const listEventTypeSchema = z
 					"custom-alert-deleted",
 					"custom-alert-updated",
 					"custom-environments-settings-updated",
+					"custom-metric-metadata-deleted",
+					"custom-metric-metadata-updated",
 					"custom-suffix-clear",
 					"custom-suffix-disable",
 					"custom-suffix-enable",
