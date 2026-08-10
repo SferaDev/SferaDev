@@ -1703,6 +1703,7 @@ export const userEventTypeEnum = {
 	"email-notification-rule-removed": "email-notification-rule-removed",
 	"email-notification-rule-updated": "email-notification-rule-updated",
 	"emu-member-removed-unverified-domain": "emu-member-removed-unverified-domain",
+	"enforce-disjunctive-production-secrets": "enforce-disjunctive-production-secrets",
 	"enforce-sensitive-environment-variables": "enforce-sensitive-environment-variables",
 	"env-variable-add": "env-variable-add",
 	"env-variable-delete": "env-variable-delete",
@@ -19015,6 +19016,7 @@ export const listEventTypeNameEnum = {
 	"email-notification-rule-removed": "email-notification-rule-removed",
 	"email-notification-rule-updated": "email-notification-rule-updated",
 	"emu-member-removed-unverified-domain": "emu-member-removed-unverified-domain",
+	"enforce-disjunctive-production-secrets": "enforce-disjunctive-production-secrets",
 	"enforce-sensitive-environment-variables": "enforce-sensitive-environment-variables",
 	"env-variable-add": "env-variable-add",
 	"env-variable-delete": "env-variable-delete",
@@ -19683,6 +19685,7 @@ export const listEventTypeReplacedByEnum = {
 	"email-notification-rule-removed": "email-notification-rule-removed",
 	"email-notification-rule-updated": "email-notification-rule-updated",
 	"emu-member-removed-unverified-domain": "emu-member-removed-unverified-domain",
+	"enforce-disjunctive-production-secrets": "enforce-disjunctive-production-secrets",
 	"enforce-sensitive-environment-variables": "enforce-sensitive-environment-variables",
 	"env-variable-add": "env-variable-add",
 	"env-variable-delete": "env-variable-delete",
@@ -22395,6 +22398,15 @@ export const teamSensitiveEnvironmentVariablePolicyEnum = {
 export type TeamSensitiveEnvironmentVariablePolicyEnumKey =
 	(typeof teamSensitiveEnvironmentVariablePolicyEnum)[keyof typeof teamSensitiveEnvironmentVariablePolicyEnum];
 
+export const teamDisjunctiveProductionSecretPolicyEnum = {
+	default: "default",
+	off: "off",
+	on: "on",
+} as const;
+
+export type TeamDisjunctiveProductionSecretPolicyEnumKey =
+	(typeof teamDisjunctiveProductionSecretPolicyEnum)[keyof typeof teamDisjunctiveProductionSecretPolicyEnum];
+
 export const teamDpAccessRequestsModeEnum = {
 	all: "all",
 	"email-domain": "email-domain",
@@ -22950,6 +22962,13 @@ export type Team = {
 	 */
 	sensitiveEnvironmentVariablePolicy?:
 		| (TeamSensitiveEnvironmentVariablePolicyEnumKey | null)
+		| undefined;
+	/**
+	 * @description Require production secrets to use a different value than preview or development.
+	 * @type string
+	 */
+	disjunctiveProductionSecretPolicy?:
+		| (TeamDisjunctiveProductionSecretPolicyEnumKey | null)
 		| undefined;
 	/**
 	 * @description Indicates if IP addresses should be accessible in observability (o11y) tooling
