@@ -297,6 +297,43 @@ you.
 
 ---
 
+## After merge
+
+### `ERR_PNPM_LOCKFILE_MISSING_DEPENDENCY` on `main` — two green PRs that collide
+
+*Seen 2026-08-10: #601 (weekly bump) and #604 (added `better-auth`) both merged green; `main` then
+failed every Vercel build with*
+
+```
+[ERR_PNPM_LOCKFILE_MISSING_DEPENDENCY] Broken lockfile: no entry for
+'better-auth@1.6.26(f7e487ef02675d984ba7001fb84f91a1)' in pnpm-lock.yaml
+```
+
+pnpm records a dependency in `importers` as `version(<hash-of-resolved-peer-set>)`. #604 added
+`better-auth` and recorded one hash; #601 had branched earlier and bumped `pg`, which is *in* that
+peer set, so the correct hash changed. Each lockfile was valid on its own branch, git merged them
+with **no textual conflict**, and the result was a one-line inconsistency.
+
+**Why no gate caught it:** every CI job installs with `--frozen-lockfile`, which trusts the
+recorded importer entry instead of re-resolving. Both PRs were legitimately green, and the failure
+only appears where an install happens from scratch — the deploy.
+
+The fix is `pnpm install` on `main` and committing the regenerated lockfile; expect a **one-line**
+diff, and treat a larger one as a sign something else drifted.
+
+**The general rule:** the weekly PR sits open for hours and is a lockfile-wide diff, so *any* PR
+merging a manifest change in the meantime can desync it. Before merging the dependency PR, check
+whether anything touched a `package.json` since it was branched, and rebase if so:
+
+```bash
+git log --oneline origin/main --since="$(git log -1 --format=%cI $(git merge-base HEAD origin/main))" -- '*/package.json'
+```
+
+Non-empty output → rebase on `main` and re-run `pnpm install` before merging. This is cheaper than
+a broken `main`, and it is the one failure mode in this file that **a green board actively hides**.
+
+---
+
 ## CI mechanics
 
 ### PR shows no checks at all
