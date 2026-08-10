@@ -1054,6 +1054,8 @@ export const userEventSchema = z
 				"saml-connection-deleted",
 				"sandbox-alias-assigned",
 				"sandbox-alias-delete",
+				"sandbox-drive-created",
+				"sandbox-drive-deleted",
 				"sandbox-snapshot-regions-updated",
 				"scale",
 				"scale-auto",
@@ -8023,6 +8025,14 @@ export const userEventSchema = z
 					.strict(),
 				z
 					.object({
+						driveName: z.string(),
+						projectId: z.string(),
+						projectName: z.string(),
+						region: z.string(),
+					})
+					.strict(),
+				z
+					.object({
 						projectId: z.string(),
 						projectName: z.string(),
 						snapshotId: z.string(),
@@ -10176,6 +10186,8 @@ export const listEventTypeSchema = z
 				"saml-connection-deleted",
 				"sandbox-alias-assigned",
 				"sandbox-alias-delete",
+				"sandbox-drive-created",
+				"sandbox-drive-deleted",
 				"sandbox-snapshot-regions-updated",
 				"scale",
 				"scale-auto",
@@ -10833,6 +10845,8 @@ export const listEventTypeSchema = z
 					"saml-connection-deleted",
 					"sandbox-alias-assigned",
 					"sandbox-alias-delete",
+					"sandbox-drive-created",
+					"sandbox-drive-deleted",
 					"sandbox-snapshot-regions-updated",
 					"scale",
 					"scale-auto",
@@ -11844,6 +11858,7 @@ export const driveSchema = z
 		name: z.string().describe("The unique drive name within the project."),
 		projectId: z.string().describe("The project that owns the drive."),
 		maxSizeBytes: z.number().describe("The maximum drive size in bytes."),
+		region: z.string().describe("The region where the drive is stored."),
 		currentSessionId: z
 			.string()
 			.optional()
@@ -21701,6 +21716,8 @@ export const getProjectTraceStatus401Schema = z.unknown();
 
 export const getProjectTraceStatus403Schema = z.unknown();
 
+export const getProjectTraceStatus404Schema = z.unknown();
+
 export const getProjectTraceStatus410Schema = z.unknown();
 
 export const getProjectTraceResponseSchema = z.union([
@@ -21708,6 +21725,7 @@ export const getProjectTraceResponseSchema = z.union([
 	getProjectTraceStatus400Schema,
 	getProjectTraceStatus401Schema,
 	getProjectTraceStatus403Schema,
+	getProjectTraceStatus404Schema,
 	getProjectTraceStatus410Schema,
 ]);
 
