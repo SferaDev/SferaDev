@@ -10,8 +10,19 @@ Enumerate them from the files, never from this document:
 grep -n "pnpm = " mise.toml
 grep -n -A3 "^overrides:" pnpm-workspace.yaml
 grep -n "catalogMode\|cleanupUnusedCatalogs" pnpm-workspace.yaml
+grep -n "KEEP-BACK\|TEMPORARY" pnpm-workspace.yaml
 grep -n '"@types/vscode"\|"vscode":' apps/vscode-ai-gateway/package.json
 ```
+
+And read the diff for **deletions**, not only bumps. `pnpm audit --fix` rewrites the whole
+`overrides` block, so it drops hand-added lines and their comments silently:
+
+```bash
+git diff origin/main...HEAD -- pnpm-workspace.yaml | grep '^-'
+```
+
+A removed override with no replacement is a regression *unless* the catalog already satisfies it —
+check the catalog value before restoring.
 
 ---
 
@@ -106,6 +117,71 @@ Aligning them also removed a duplicate copy from the tree.
 **Rule of thumb:** if you are tempted to add an override for a package that also has a catalog
 entry, change the catalog entry instead. Reach for an override only for something you do not
 control directly — a transitive dependency.
+
+### An override can silently defeat a pin
+
+`pnpm audit --fix` can add an override that forces a held-back package **back up** past its pin.
+Restoring the catalog value is then a no-op and the regression ships anyway. After **any** re-pin,
+verify what actually resolved rather than trusting the catalog edit:
+
+```bash
+grep -oE '^  <pkg>@[0-9.]+' pnpm-lock.yaml | sort -u
+```
+
+If an override is fighting a pin, narrow or drop it and leave a comment saying the bot will re-add
+it and it must not be restored — otherwise this costs a debugging cycle every week.
+
+---
+
+## `minimumReleaseAge` — the gate the exclude list turns off
+
+`minimumReleaseAge` is supply-chain protection: pnpm refuses to *resolve* a version published
+inside that window, so a compromised release has to survive review time before it can reach us.
+Every line in `minimumReleaseAgeExclude` turns that protection off for one package, and the bot
+adds entries freely — `audit --fix` appends one for every patched version it wants.
+
+**Read the current state from the file every review** (`grep -n -A30 "minimumReleaseAgeExclude"
+pnpm-workspace.yaml`); the list grows week over week and nothing prunes it.
+
+### This repo does not set `minimumReleaseAge` (verified 2026-08)
+
+`minimumReleaseAge` is **not** configured — not in `pnpm-workspace.yaml`, not in `.npmrc`
+(`pnpm config get minimumReleaseAge` → `undefined`). Two consequences, and the second is the
+one that bites:
+
+1. pnpm 11 defaults it to **1440 minutes (1 day)**, so a gate *is* active — which is why the bot
+   keeps appending excludes.
+2. `minimumReleaseAgeStrict` defaults to **`true` only when `minimumReleaseAge` is set
+   explicitly**, and `false` otherwise. Unset means **non-strict**: when nothing in range
+   satisfies the window, pnpm quietly **falls back to a non-compliant version** instead of
+   failing.
+
+So the protection is softer than a 19-entry exclude list implies, and most of those entries are
+belt-and-braces rather than load-bearing. Setting `minimumReleaseAge` explicitly (even to the same
+1440) would flip strict mode on and make the gate real — **that is a deliberate PR, not a weekly
+bump**, because it converts today's silent fallbacks into hard resolution failures.
+
+### Rules for the list
+
+1. **Only trusted-publishing packages should be excluded.** Un-gating a package whose releases are
+   pushed with a long-lived npm token is exactly the attack the window absorbs.
+   ```bash
+   npm view <pkg>@<ver> _npmUser.trustedPublisher --json
+   ```
+   Trusted publishing prints an object and `_npmUser` reads
+   `GitHub Actions <npm-oidc-no-reply@github.com>`; anything else prints nothing, and
+   `npm view <pkg>@<ver> _npmUser` names the human account that pushed the tarball. Do **not**
+   settle for provenance/attestations — `npm publish --provenance` attaches those to token
+   publishes too.
+2. **Retire aged-out entries.** An exclude only needs to exist until its version clears the window.
+   ```bash
+   npm view <pkg>@<ver> time --json   # read the "<ver>" key
+   date -u
+   ```
+   Published longer ago than the window → delete the line in this PR. Entries quietly becoming
+   permanent is the failure this guards against; each one is a package running un-gated forever.
+3. **Keep the permanent tier small.** "The bot wanted a newer version" is a temporary, not a
+   promotion.
 
 ---
 

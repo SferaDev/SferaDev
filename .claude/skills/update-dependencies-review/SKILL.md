@@ -26,8 +26,19 @@ The job: understand the bumps, make CI green, verify what CI cannot see, and lea
    local pass. A cached `check` proves nothing about the new lockfile.
 5. **Stay in scope.** A dependency PR bumps dependencies. If a bump surfaces a wider refactor,
    pin the dependency back with a tracking comment and raise the refactor separately.
-6. **Update this skill.** It is re-used every week. When you learn a new failure mode, add it to
-   `references/failure-modes.md` — dated, as a class — and commit that with the dependency PR.
+6. **Semver is not evidence.** The version step is a claim by the publisher, not proof. Triage
+   decides *how deep* to read, never *whether* to look — regressions here have shipped as a patch
+   and as a "no breaking changes" minor.
+7. **Prefer fixing the cause over keeping back.** A keep-back is the fallback, not the first move.
+   When a bump exposes a genuine upstream bug, reproduce it and open the upstream issue/PR, then
+   pin with a `# TEMPORARY` comment naming it so the next run bumps forward instead of
+   re-litigating. A `# KEEP-BACK` is for holds with no forward path yet.
+8. **Update this skill — both halves.** It is re-used every week, so it decays if it only ever
+   grows. **Add** each new finding to `references/failure-modes.md`, dated, as a class with the
+   symptom string the next reviewer would grep for. **Prune** in the same pass: merge two entries
+   describing one root cause, delete guidance the repo has outgrown, and fix anything this run
+   proved wrong — stale instructions are worse than missing ones, because they get followed.
+   Commit skill changes with the dependency PR.
 
 ## Workflow
 
@@ -52,6 +63,13 @@ gh api -X POST repos/SferaDev/SferaDev/actions/runs/<id>/approve
 
 A PR showing no checks is normally this, not a passing build. The required check is **`Check`**
 (repo ruleset on `main`); everything else is advisory.
+
+Every job installs first, so **one install failure paints the whole board red** — fix install
+before reading anything else as a signal.
+
+**An all-green board is not a light week.** CI cannot see a stranded keep-back, a deleted override,
+or an unmet peer — and all three have shipped. When everything passes, go to step 3 *first* and
+read harder, not faster.
 
 ### 2. Triage what broke
 
@@ -86,16 +104,46 @@ echo -n "PR:   "; yq '.overrides | keys | length' pnpm-workspace.yaml
 git diff origin/main -- '*/package.json' | grep -E '^\-.*"catalog:"'
 ```
 
-Then skim the `pnpm-workspace.yaml` catalog diff and triage by blast radius:
+Then work the `pnpm-workspace.yaml` catalog diff. For each entry, go down this list until you can
+say what changed and why it is safe — stopping early is a triage decision, not a default:
 
-- **Majors first**, then runtime-facing libraries (next, react, ai/@ai-sdk, better-auth, drizzle,
-  effect, kubb, tailwind), then patch/minor.
-- For majors, read the changelog across the **whole range**, and ask what the major *removed* or
-  stopped reading — not only what it renamed.
-- Audit **new `overrides` entries** the bot added. `pnpm audit --fix` is not compatibility-aware
-  and will happily force a transitive dependency across a major boundary.
-- `mise.toml` / `mise.lock` diffs: check node did not cross a major the code is not ready for,
-  and that `mise.lock` still carries all platforms (CI needs `linux-x64`).
+1. **Release notes across the whole range**, not just the newest version.
+   `gh api repos/<org>/<repo>/releases`. Changeset monorepos keep per-package files:
+   `gh api repos/<org>/<repo>/contents/packages/<pkg>/CHANGELOG.md --jq .content | base64 -d`.
+2. **Upgrade / migration guide** — always for a major, and many projects document behaviour
+   changes only there. Fetch current docs (Context7), do not answer from memory.
+3. **The actual commits**, when the notes are thin or absent. "chore: update deps" is a reason to
+   look, not to move on:
+   `gh api repos/<org>/<repo>/compare/<old>...<new> --jq '.commits[].commit.message'`.
+4. **The published artifact**, when source and release disagree or the package generates its
+   output — `npm pack <pkg>@<ver>` for both versions and diff `dist/`.
+5. **Its own manifest** — `npm view <pkg>@<ver> dependencies peerDependencies engines --json`, old
+   vs new. A widened range can reintroduce a version a pin holds back; a raised `engines` can
+   outrun the toolchain.
+
+For a major, ask what it **removed or stopped reading**, not only what it renamed — see
+non-negotiable 3.
+
+Then close the loop against this repo rather than assuming:
+
+- Changelog names a renamed/removed API → grep for it. One line of evidence turns most entries
+  into a fast "we don't use this".
+- Codegen tool (`kubb`) → generated code is committed; confirm no diff, and see the Build section
+  of `failure-modes.md` about builds that re-run codegen.
+- Build/bundler tool (`bunchee`, `rollup`, `turbo`) → the risk is what it *emits*. Build a package
+  and import the output.
+
+Depth by blast radius: majors and runtime-facing libraries (next, react, ai/@ai-sdk, better-auth,
+drizzle, effect, kubb, tailwind) earn the artifact-level checks; build tooling counts as
+runtime-facing here, because its behaviour changes are what turn the board red.
+
+Also in the same diff:
+
+- **New `overrides` entries.** `pnpm audit --fix` is not compatibility-aware and will happily
+  force a transitive dependency across a major boundary — or point at a version that was never
+  published (see `ERR_PNPM_NO_MATCHING_VERSION`).
+- `mise.toml` / `mise.lock`: check node did not cross a major the code is not ready for, and that
+  `mise.lock` still carries all platforms (CI needs `linux-x64`).
 - Workflow diffs are normally just pinned Action SHA bumps — benign.
 
 ### 5. Local CI parity
@@ -140,8 +188,23 @@ which preview surfaces to exercise for which dependency families.
 
 ### 7. Finish
 
-Iterate until `Check` is green and the surfaces in step 6 hold, then comment on the PR
-(`gh pr comment <num> --body-file <file>`): what was held back and why, what broke and the fix,
-what you verified and what you could not. Write it for the next reviewer, not as a play-by-play.
+Iterate until `Check` is green and the surfaces in step 6 hold, then write the review **into the
+PR description**, not a comment:
 
-Then fold anything new into `references/failure-modes.md`.
+```bash
+gh pr edit <num> --body-file <file>
+```
+
+The bot opens the PR with a one-line placeholder body ("This is an autogenerated PR to update the
+dependencies!"), so there is nothing worth preserving — replace it. Cover what was held back and
+why, what broke and the fix, and what you verified — and explicitly what you did **not**. Being
+clear about the gap matters more than the list of greens: the next reviewer needs to know whether
+the previews were exercised or merely deployed. Write it for them, not as a play-by-play.
+
+**The description is a living summary; comments are an append-only log.** A stack of comments
+narrating how the branch got here ages badly — half of it is false by merge time. So re-edit the
+description when facts change rather than appending a correction, and reserve comments for things
+that are genuinely a moment in time (a question for a specific person, a heads-up that needs to
+interrupt someone). Leave the bots' own comments alone.
+
+Then fold anything new into `references/failure-modes.md` — **and prune**, per non-negotiable 8.

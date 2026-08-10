@@ -90,7 +90,38 @@ worth investigating.
 
 ---
 
-## What to write in the PR comment
+---
+
+## Before blaming a bump: build a control
+
+The expensive mistake in this phase is debugging a pre-existing failure as if the PR caused it.
+Whenever a preview, a test or a CLI/extension build misbehaves, reproduce it on the **pre-PR tree**
+before writing it up:
+
+```bash
+git worktree add ../SferaDev-control origin/main
+cd ../SferaDev-control && pnpm install --frozen-lockfile
+# run the exact same command that failed
+git worktree remove ../SferaDev-control
+```
+
+If the control reproduces it, say "pre-existing on `main`" in the PR description and move on.
+Known cases already in this class, so check these before investigating:
+
+- `ai-gateway-proxy` tests failing locally with `GatewayAuthenticationError` → a stale
+  `packages/ai-gateway-proxy/.env`, not a bump. See `failure-modes.md` → Tests.
+- A turbo `test` run reporting a failure for a package whose test files all show `✓` → the task
+  was torn down when a *sibling* package failed. Re-run that package alone before believing it.
+- `next-auth` advisories in `pnpm audit` → `apps/openapi` pins the catalog version, and the
+  `next-auth` overrides only reach transitive copies. Compare against `main` before treating it
+  as new.
+
+**Confirm a route exists before calling its 404 a regression** — enumerate it from the app rather
+than guessing the path, then run the same path against production.
+
+---
+
+## What to write in the PR description
 
 Cover, briefly:
 

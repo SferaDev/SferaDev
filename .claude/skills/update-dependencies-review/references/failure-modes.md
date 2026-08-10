@@ -121,21 +121,43 @@ Fix the single offending entry rather than clearing the block — check what `ma
 same advisory (`>=0.25.0` here). The workflow's fallback clears *all* generated overrides, so if
 it fires you have hit the previous entry's problem as well.
 
-**Recurred 2026-08 (PR #594), same `esbuild@^0.24.3` entry** — it is intermittent, not weekly:
-it only reappears when something in the freshly-resolved tree drops back to esbuild ≤0.24.2, and
-the override that normally holds esbuild at 0.25.x has been cleared by the time `audit` runs. The
-week before shipped 53 overrides intact.
+**Recurred 2026-08 (PR #594), and again 2026-08-10 (PR #601) — same `esbuild@^0.24.3` entry.**
+It is intermittent, not weekly: it only reappears when something in the freshly-resolved tree
+drops back to esbuild ≤0.24.2, and the override that normally holds esbuild at 0.25.x has been
+cleared by the time `audit` runs. In #601 the path was
+`drizzle-kit → @esbuild-kit/esm-loader → esbuild`, and it cost all 54 overrides.
 
-**The fingerprint, when the PR has `overrides: {}`:** check whether
-`minimumReleaseAgeExclude` *gained* entries in the same diff. If it did, `audit --fix` succeeded
-and it was the **install after it** that failed — the fallback only clears `.overrides` and leaves
-the excludes behind. That mismatch tells you to go read the bot run log for
-`ERR_PNPM_NO_MATCHING_VERSION` and fix one entry, rather than re-running `audit` blind:
+Because it has now fired twice with an identical fix, treat it as the **first hypothesis** whenever
+a PR arrives with `overrides: {}`. The fix is one line — restore `main`'s
+`esbuild@<=0.24.2: '>=0.25.0'` — and the cheapest reliable route to a correct set is to take
+`main`'s whole `overrides` block as the base rather than re-deriving it:
+
+```bash
+git show origin/main:pnpm-workspace.yaml | yq '.overrides' > /tmp/main-overrides.yaml
+yq -i '.overrides = load("/tmp/main-overrides.yaml") | .overrides style="" | .overrides[] style=""' pnpm-workspace.yaml
+pnpm install
+```
+
+Then confirm the lockfile agrees (`yq '.overrides | keys | length' pnpm-lock.yaml`) and that no
+banned version resolved (`grep -oE '^  esbuild@[0-9.]+' pnpm-lock.yaml | sort -u`).
+
+**When the PR has `overrides: {}`, read the bot's own run log — do not infer.** Go straight to it:
 
 ```bash
 gh run list --workflow=update-dependencies.yml --limit 1     # get the run id
 gh run view <id> --log | grep -E "::warning|ERR_PNPM|overrides were added"
 ```
+
+`N overrides were added` followed by `ERR_PNPM_NO_MATCHING_VERSION` and
+`install failed after audit --fix` means `audit --fix` worked and the **install after it** failed,
+so the fix is one bad entry, not a blind re-run of `audit`.
+
+*Correction, 2026-08-10 (PR #601):* a previous version of this file said to use
+`minimumReleaseAgeExclude` *gaining* entries as the tell for that case. **That heuristic is
+sufficient but not necessary and should not be relied on.** This run had `overrides: {}` with the
+exclude list completely unchanged, yet `audit --fix` had succeeded with 34 overrides — the 12
+excludes it wanted were already present from earlier weeks, so there was nothing new to add. An
+unchanged exclude list proves nothing either way; the run log is the only reliable signal.
 
 ### `overrides` written as one flow-style line
 
@@ -160,6 +182,15 @@ above the now-wrong versions.
 Only the TypeScript one turned CI red; the `@kubb` one is an unmet peer that no gate catches. So
 **re-check every pin, not just whichever one broke the build** — a green `Check` is not evidence
 the other holds survived. `grep -n "KEEP-BACK" -A6 pnpm-workspace.yaml` and compare each value.
+
+**Recurred identically 2026-08-10 (PR #601)** — same two pins, same direction (`typescript`
+6.0.3 → 7.0.2, `@kubb/renderer-jsx` beta.10 → beta.35), same comments left stranded above the
+wrong values. This is not an occasional slip: `pnpm update --recursive --latest` has no notion of
+a keep-back, so **every** run bumps past **every** pin, and the only thing standing between that
+and `main` is this review. Re-pinning is a default step, not a contingency.
+
+The TypeScript hold is still required as of 2026-08-10 — bunchee 7.0.1 fails all 12 package builds
+on TS 7.0.2 with the same "Detected TypeScript 7.0.2 … install `@typescript/typescript6`" error.
 
 ---
 

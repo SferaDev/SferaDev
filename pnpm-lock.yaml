@@ -148,8 +148,8 @@ catalogs:
       specifier: ^1.4.4
       version: 1.4.4
     bunchee:
-      specifier: 7.0.0
-      version: 7.0.0
+      specifier: 7.0.1
+      version: 7.0.1
     case:
       specifier: 1.6.3
       version: 1.6.3
@@ -226,8 +226,8 @@ catalogs:
       specifier: 1.30.0
       version: 1.30.0
     mintlify:
-      specifier: 4.2.784
-      version: 4.2.784
+      specifier: 4.2.788
+      version: 4.2.788
     motion:
       specifier: 13.0.0
       version: 13.0.0
@@ -244,8 +244,8 @@ catalogs:
       specifier: 4.6.1
       version: 4.6.1
     pg:
-      specifier: 8.22.0
-      version: 8.22.0
+      specifier: 8.23.0
+      version: 8.23.0
     postcss:
       specifier: 8.5.26
       version: 8.5.26
@@ -423,7 +423,7 @@ importers:
         version: 2.1.1
       drizzle-orm:
         specifier: 'catalog:'
-        version: 0.45.2(@electric-sql/pglite@0.3.15)(@opentelemetry/api@1.9.1)(@prisma/client@6.19.1(prisma@7.4.2(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(typescript@6.0.3))(typescript@6.0.3))(@types/pg@8.21.0)(bun-types@1.3.14)(kysely@0.29.4)(mysql2@3.15.3)(pg@8.22.0)(postgres@3.4.7)(prisma@7.4.2(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(typescript@6.0.3))
+        version: 0.45.2(@electric-sql/pglite@0.3.15)(@opentelemetry/api@1.9.1)(@prisma/client@6.19.1(prisma@7.4.2(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(typescript@6.0.3))(typescript@6.0.3))(@types/pg@8.21.0)(bun-types@1.3.14)(kysely@0.29.4)(mysql2@3.15.3)(pg@8.23.0)(postgres@3.4.7)(prisma@7.4.2(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(typescript@6.0.3))
       lucide-react:
         specifier: 'catalog:'
         version: 1.30.0(react@19.2.8)
@@ -432,7 +432,7 @@ importers:
         version: 16.3.0(@opentelemetry/api@1.9.1)(@types/node@26.2.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       pg:
         specifier: 'catalog:'
-        version: 8.22.0
+        version: 8.23.0
       react:
         specifier: 'catalog:'
         version: 19.2.8
@@ -532,7 +532,7 @@ importers:
         version: 2.1.1
       drizzle-orm:
         specifier: 'catalog:'
-        version: 0.45.2(@electric-sql/pglite@0.3.15)(@opentelemetry/api@1.9.1)(@prisma/client@6.19.1(prisma@7.4.2(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(typescript@6.0.3))(typescript@6.0.3))(@types/pg@8.21.0)(bun-types@1.3.14)(kysely@0.29.4)(mysql2@3.15.3)(pg@8.22.0)(postgres@3.4.7)(prisma@7.4.2(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(typescript@6.0.3))
+        version: 0.45.2(@electric-sql/pglite@0.3.15)(@opentelemetry/api@1.9.1)(@prisma/client@6.19.1(prisma@7.4.2(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(typescript@6.0.3))(typescript@6.0.3))(@types/pg@8.21.0)(bun-types@1.3.14)(kysely@0.29.4)(mysql2@3.15.3)(pg@8.23.0)(postgres@3.4.7)(prisma@7.4.2(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(typescript@6.0.3))
       geist:
         specifier: 'catalog:'
         version: 1.7.2(next@16.3.0(@opentelemetry/api@1.9.1)(@types/node@26.2.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))
@@ -562,7 +562,7 @@ importers:
         version: 0.4.6(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       pg:
         specifier: 'catalog:'
-        version: 8.22.0
+        version: 8.23.0
       qrcode:
         specifier: 'catalog:'
         version: 1.5.4
@@ -638,10 +638,10 @@ importers:
         version: 2.1.0(hono@4.13.1)
       better-auth:
         specifier: 'catalog:'
-        version: 1.6.26(f7e487ef02675d984ba7001fb84f91a1)
+        version: 1.6.26(144b5af0850524ac363e30405f077d41)
       drizzle-orm:
         specifier: 'catalog:'
-        version: 0.45.2(@electric-sql/pglite@0.3.15)(@opentelemetry/api@1.9.1)(@prisma/client@6.19.1(prisma@7.4.2(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(typescript@6.0.3))(typescript@6.0.3))(@types/pg@8.21.0)(bun-types@1.3.14)(kysely@0.29.4)(mysql2@3.15.3)(pg@8.22.0)(postgres@3.4.7)(prisma@7.4.2(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(typescript@6.0.3))
+        version: 0.45.2(@electric-sql/pglite@0.3.15)(@opentelemetry/api@1.9.1)(@prisma/client@6.19.1(prisma@7.4.2(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(typescript@6.0.3))(typescript@6.0.3))(@types/pg@8.21.0)(bun-types@1.3.14)(kysely@0.29.4)(mysql2@3.15.3)(pg@8.23.0)(postgres@3.4.7)(prisma@7.4.2(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(typescript@6.0.3))
       hono:
         specifier: 'catalog:'
         version: 4.13.1
@@ -650,7 +650,7 @@ importers:
         version: 11.5.2
       pg:
         specifier: 'catalog:'
-        version: 8.22.0
+        version: 8.23.0
       stripe:
         specifier: 'catalog:'
         version: 22.4.0(@types/node@26.2.0)
@@ -810,7 +810,7 @@ importers:
         version: 3.9.2(supports-color@7.2.0)
       bunchee:
         specifier: 'catalog:'
-        version: 7.0.0(typescript@6.0.3)
+        version: 7.0.1(typescript@6.0.3)
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -903,7 +903,7 @@ importers:
     devDependencies:
       mintlify:
         specifier: 'catalog:'
-        version: 4.2.784(@base-ui/react@1.7.0(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.3))(react@19.2.3))(@types/node@26.2.0)(@types/react@19.2.18)(debug@4.4.3(supports-color@7.2.0))(react-dom@19.2.8(react@19.2.3))(supports-color@7.2.0)(typescript@6.0.3)
+        version: 4.2.788(@base-ui/react@1.7.0(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.3))(react@19.2.3))(@types/node@26.2.0)(@types/react@19.2.18)(debug@4.4.3(supports-color@7.2.0))(react-dom@19.2.8(react@19.2.3))(supports-color@7.2.0)(typescript@6.0.3)
 
   packages/ai-gateway-proxy:
     dependencies:
@@ -931,7 +931,7 @@ importers:
         version: 7.0.58(zod@4.4.3)
       bunchee:
         specifier: 'catalog:'
-        version: 7.0.0(typescript@6.0.3)
+        version: 7.0.1(typescript@6.0.3)
       dotenv:
         specifier: 'catalog:'
         version: 17.4.2
@@ -958,7 +958,7 @@ importers:
         version: 26.2.0
       bunchee:
         specifier: 'catalog:'
-        version: 7.0.0(typescript@6.0.3)
+        version: 7.0.1(typescript@6.0.3)
       case:
         specifier: 'catalog:'
         version: 1.6.3
@@ -995,7 +995,7 @@ importers:
         version: 26.2.0
       bunchee:
         specifier: 'catalog:'
-        version: 7.0.0(typescript@6.0.3)
+        version: 7.0.1(typescript@6.0.3)
       kubb:
         specifier: 'catalog:'
         version: 5.0.0-beta.10(typescript@6.0.3)
@@ -1032,7 +1032,7 @@ importers:
         version: 26.2.0
       bunchee:
         specifier: 'catalog:'
-        version: 7.0.0(typescript@6.0.3)
+        version: 7.0.1(typescript@6.0.3)
       kubb:
         specifier: 'catalog:'
         version: 5.0.0-beta.10(typescript@6.0.3)
@@ -1066,7 +1066,7 @@ importers:
         version: 26.2.0
       bunchee:
         specifier: 'catalog:'
-        version: 7.0.0(typescript@6.0.3)
+        version: 7.0.1(typescript@6.0.3)
       effect:
         specifier: 'catalog:'
         version: 3.22.1
@@ -1100,7 +1100,7 @@ importers:
         version: 26.2.0
       bunchee:
         specifier: 'catalog:'
-        version: 7.0.0(typescript@6.0.3)
+        version: 7.0.1(typescript@6.0.3)
       case:
         specifier: 'catalog:'
         version: 1.6.3
@@ -1161,7 +1161,7 @@ importers:
         version: 19.2.4(@types/react@19.2.18)
       bunchee:
         specifier: 'catalog:'
-        version: 7.0.0(typescript@6.0.3)
+        version: 7.0.1(typescript@6.0.3)
       effect:
         specifier: 'catalog:'
         version: 3.22.1
@@ -1189,7 +1189,7 @@ importers:
         version: 26.2.0
       bunchee:
         specifier: 'catalog:'
-        version: 7.0.0(typescript@6.0.3)
+        version: 7.0.1(typescript@6.0.3)
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -1211,7 +1211,7 @@ importers:
         version: 26.2.0
       bunchee:
         specifier: 'catalog:'
-        version: 7.0.0(typescript@6.0.3)
+        version: 7.0.1(typescript@6.0.3)
       rollup:
         specifier: 'catalog:'
         version: 4.62.4
@@ -1242,7 +1242,7 @@ importers:
         version: 26.2.0
       bunchee:
         specifier: 'catalog:'
-        version: 7.0.0(typescript@6.0.3)
+        version: 7.0.1(typescript@6.0.3)
       effect:
         specifier: 'catalog:'
         version: 3.22.1
@@ -1279,7 +1279,7 @@ importers:
         version: 26.2.0
       bunchee:
         specifier: 'catalog:'
-        version: 7.0.0(typescript@6.0.3)
+        version: 7.0.1(typescript@6.0.3)
       effect:
         specifier: 'catalog:'
         version: 3.22.1
@@ -1316,7 +1316,7 @@ importers:
         version: 26.2.0
       bunchee:
         specifier: 'catalog:'
-        version: 7.0.0(typescript@6.0.3)
+        version: 7.0.1(typescript@6.0.3)
       effect:
         specifier: 'catalog:'
         version: 3.22.1
@@ -1867,8 +1867,8 @@ packages:
     cpu: [ppc64]
     os: [aix]
 
-  '@esbuild/aix-ppc64@0.28.1':
-    resolution: {integrity: sha512-Svl7tq8k/08+p6CXPpRjQ1fKX+1odH/BQbb48fV6fj3CWHhsoIOoY87w1oHXm0qEpkIK3ZfVgp0hed3XBXzXMQ==}
+  '@esbuild/aix-ppc64@0.28.2':
+    resolution: {integrity: sha512-XExcO+dvLKvVtNTibSTBej1NCAbaGhWn9Ww1ZPx80qsahhPFe/8jgWP0IchNe0F3HwkU7n8ejhH8bjonqht8mQ==}
     engines: {node: '>=18'}
     cpu: [ppc64]
     os: [aix]
@@ -1879,8 +1879,8 @@ packages:
     cpu: [arm64]
     os: [android]
 
-  '@esbuild/android-arm64@0.28.1':
-    resolution: {integrity: sha512-34EGEbCIAgosYz6goLcopX6Mo7NyGv9tfwEM2/7Ce2VcVRk568iSvniGWcUXIy7wEDR1wzolcxcriFVrWYcwBg==}
+  '@esbuild/android-arm64@0.28.2':
+    resolution: {integrity: sha512-5YfKeeI8qWfBZIX+u2xZC3Zlb3Os/gLS2sbEKM+I4ZOcsWmHS2WLysCcQZDAFRslDUU5Oiq44gf6PYN1vGwG5A==}
     engines: {node: '>=18'}
     cpu: [arm64]
     os: [android]
@@ -1891,8 +1891,8 @@ packages:
     cpu: [arm]
     os: [android]
 
-  '@esbuild/android-arm@0.28.1':
-    resolution: {integrity: sha512-0k2F129Xdio1TdJfzJ8sy1Q47vUD2NnwdhiAf7drUN1EBTfPf4hsFCtmMgu/6m8JSzsBrlmVjudMBQqOfG8usQ==}
+  '@esbuild/android-arm@0.28.2':
+    resolution: {integrity: sha512-kXXoiPVVGQcnIYGOeaovwOURpniDBpSq4A03qkQ+BMQqtGG6HYap3xne9C1O1yo4TR3qxlCX5IqqmX6fFo2Lqg==}
     engines: {node: '>=18'}
     cpu: [arm]
     os: [android]
@@ -1903,8 +1903,8 @@ packages:
     cpu: [x64]
     os: [android]
 
-  '@esbuild/android-x64@0.28.1':
-    resolution: {integrity: sha512-dbwY7ltSMDWsRatcRpCnES4F+im88OCUgGZjy52shC7GqHRE/cYlxNbB4Z4UpJswpcc4Qxd2oE/ufM0p61IKng==}
+  '@esbuild/android-x64@0.28.2':
+    resolution: {integrity: sha512-O387ite7SzUyCcy3JQX4P4bLtEA7bLLkx+esve5JHnyYfNTxcVpXZo9jhdB0lTKN44gztELTdU7nS8Nr16Fs1Q==}
     engines: {node: '>=18'}
     cpu: [x64]
     os: [android]
@@ -1915,8 +1915,8 @@ packages:
     cpu: [arm64]
     os: [darwin]
 
-  '@esbuild/darwin-arm64@0.28.1':
-    resolution: {integrity: sha512-TZbWkQY7kvTAXbXUT7uVACR5cMHsDiSz9z7ZKAX/RTq/WJEk3QyRr0wZpNhBDX+/0CtdqUIJlOiodQcta6tY3Q==}
+  '@esbuild/darwin-arm64@0.28.2':
+    resolution: {integrity: sha512-n4KqkOQrraxHJcgjM1RvwbigfQKIKJVpM7xp+KsxiyUSrRdIXnt73VhrPAx0fV44hgfmIVKjxMN9J1t5jySVkw==}
     engines: {node: '>=18'}
     cpu: [arm64]
     os: [darwin]
@@ -1927,8 +1927,8 @@ packages:
     cpu: [x64]
     os: [darwin]
 
-  '@esbuild/darwin-x64@0.28.1':
-    resolution: {integrity: sha512-zfdzgK9ACBNZLI/CyHTOx81SyNbM6YXn7rxSgX97VjyiPl9W1i4Ka4fgKECEoFCKGpvBj5qArWIGgQjOwkgskQ==}
+  '@esbuild/darwin-x64@0.28.2':
+    resolution: {integrity: sha512-uq6suIWYP37qzGddBKPw5QEQPi6HiLGsO7UmkpfyaYNQ3D+rN6w6WfwH+nuqcGXWvawGwxOEroO4YGnFh95azw==}
     engines: {node: '>=18'}
     cpu: [x64]
     os: [darwin]
@@ -1939,8 +1939,8 @@ packages:
     cpu: [arm64]
     os: [freebsd]
 
-  '@esbuild/freebsd-arm64@0.28.1':
-    resolution: {integrity: sha512-wG2EA8ENdEI0qhkSZMjfqrdY+ziCYCPMmtZjjIwOmXFjmyzEHn+UUxk5of+SYsjtfs3VpnlC7QLzSI5hY/rOAw==}
+  '@esbuild/freebsd-arm64@0.28.2':
+    resolution: {integrity: sha512-n+I0BTSRIoy+d6RPKnEVwql5UwBJolytvY4mAOIEJorKlqgPII8ix6slVVrfZ5Tnj7glIZvloylbB/EJPMWEXw==}
     engines: {node: '>=18'}
     cpu: [arm64]
     os: [freebsd]
@@ -1951,8 +1951,8 @@ packages:
     cpu: [x64]
     os: [freebsd]
 
-  '@esbuild/freebsd-x64@0.28.1':
-    resolution: {integrity: sha512-i7dZ9vQgnvSCzi/rYCXNgtF/U+eKZNJBzu3eTQbRgHnM7tNSizLOkRFAl3qzVc/Op/u5YkHHa4pf/3DOYHthLQ==}
+  '@esbuild/freebsd-x64@0.28.2':
+    resolution: {integrity: sha512-78XJTJkvPs0kz2w61301PJjXl4g7q3JqiYMZ/M/yVI73EHBrCRTgkhu9oqG7vPqq+a/yadEW8aD+agKlk5xrmg==}
     engines: {node: '>=18'}
     cpu: [x64]
     os: [freebsd]
@@ -1963,8 +1963,8 @@ packages:
     cpu: [arm64]
     os: [linux]
 
-  '@esbuild/linux-arm64@0.28.1':
-    resolution: {integrity: sha512-yHs+0uc8+nvEAfAfxrWQKK5peSNzBc4PegcMO0EJ2hT71uA7vB8Ihg2e77R2P7SG5uYjPbHlLLmve4LLLRCf0g==}
+  '@esbuild/linux-arm64@0.28.2':
+    resolution: {integrity: sha512-pW4AC0P3it8c7do9MVM4p51FzHzdM/TZrerurgRcHJ2WTa1VQ1CIq18xncfpBJw4ojkiZZrKW2yIBWBP92j6Ug==}
     engines: {node: '>=18'}
     cpu: [arm64]
     os: [linux]
@@ -1975,8 +1975,8 @@ packages:
     cpu: [arm]
     os: [linux]
 
-  '@esbuild/linux-arm@0.28.1':
-    resolution: {integrity: sha512-qVXBOHQS+d5Y722GwJzJUtOLlX7km3CraOaGormF1pDtPd2C/l1SHRPgjLunLGe51Sh5YYWKMFDyV4SxgMQYTQ==}
+  '@esbuild/linux-arm@0.28.2':
+    resolution: {integrity: sha512-XlDnu2q5yoqems+xay6wSAcg9DDD7K9RLKZEBOMZm3ckNpJBvOX20tSfby8KfrrhINDyv9V2YVZKY/SpoGJI8w==}
     engines: {node: '>=18'}
     cpu: [arm]
     os: [linux]
@@ -1987,8 +1987,8 @@ packages:
     cpu: [ia32]
     os: [linux]
 
-  '@esbuild/linux-ia32@0.28.1':
-    resolution: {integrity: sha512-d1z4ZuP0ajrfz/FhGT4vv278rX8KnPPJx8i5+AtK7TYbx9Le9F1hyzurZpkEyjkGa9dUGhQow4C1NmeGvqxN2w==}
+  '@esbuild/linux-ia32@0.28.2':
+    resolution: {integrity: sha512-CYbnj78HsIeA+DhgUKgFCfvNsTHFhMMrinUrMZpDXJXKN8T3XViTZ/+wtHeVxEWY8ewSzTFN+nRmSwO2tZaLUQ==}
     engines: {node: '>=18'}
     cpu: [ia32]
     os: [linux]
@@ -1999,8 +1999,8 @@ packages:
     cpu: [loong64]
     os: [linux]
 
-  '@esbuild/linux-loong64@0.28.1':
-    resolution: {integrity: sha512-M5sRjUVZrkm1OAPR3dlOYzNmN+loZKGVi1VUQGrwuqLcbR6qeAz+famMhjASeH3YVKvZz+zT1jlh/keC3Rj/lg==}
+  '@esbuild/linux-loong64@0.28.2':
+    resolution: {integrity: sha512-buwkd8nsph4R+ajRvw0qM5Hja/TXQow3ptzWO2EbG/cqcIkHloRrdlBtQlshyYGTNFvfkfJ5tpPLVkY4DtsPfQ==}
     engines: {node: '>=18'}
     cpu: [loong64]
     os: [linux]
@@ -2011,8 +2011,8 @@ packages:
     cpu: [mips64el]
     os: [linux]
 
-  '@esbuild/linux-mips64el@0.28.1':
-    resolution: {integrity: sha512-mRObBZeHh2OxcBFPWE/FjylkRgZdYuiTR3vaTozquCGOH14iP9oN4x4Ge81CoIDYQrXmIxpFumJBu5MtZpnQJQ==}
+  '@esbuild/linux-mips64el@0.28.2':
+    resolution: {integrity: sha512-ZVykbDyk7519VwiNb9Lcj9m8XM6v5V9uKPvrEMkkEedVewf+0itkhahp4HDpgERXhwLRpWFypsGbG/J8s0QjJA==}
     engines: {node: '>=18'}
     cpu: [mips64el]
     os: [linux]
@@ -2023,8 +2023,8 @@ packages:
     cpu: [ppc64]
     os: [linux]
 
-  '@esbuild/linux-ppc64@0.28.1':
-    resolution: {integrity: sha512-slScBsMAb3GFDcdrCgLwZtPYRoH2H/youv10QiZyRjmsP48fznoveWytSgCI/R0ZcUgpc0ZhIUEx6LHts8yrfQ==}
+  '@esbuild/linux-ppc64@0.28.2':
+    resolution: {integrity: sha512-CAXl+Dtd9UUuJd8pKKdwh6MLm3MUMiqMPmhZ3tTSXPqfyQ3vDl6R5hZdZ/kYojK4ofXtdfSv1tFq8XzWx3heNQ==}
     engines: {node: '>=18'}
     cpu: [ppc64]
     os: [linux]
@@ -2035,8 +2035,8 @@ packages:
     cpu: [riscv64]
     os: [linux]
 
-  '@esbuild/linux-riscv64@0.28.1':
-    resolution: {integrity: sha512-kw0owk1o0GFETUJyW0jc0G4Yzs0BHZn0JDZ8JRT088vjJYX777BAs1fDGxAC+q831qOs2DTC96mNsG2opdfyyQ==}
+  '@esbuild/linux-riscv64@0.28.2':
+    resolution: {integrity: sha512-GeXCej4IQtU1B+QlDV8W/RRvbzI3O/Stss+/bCXv4lZls5WGRtu2a+3JkA3i4qIUlMXpcHebWpF8AkJhATowuA==}
     engines: {node: '>=18'}
     cpu: [riscv64]
     os: [linux]
@@ -2047,8 +2047,8 @@ packages:
     cpu: [s390x]
     os: [linux]
 
-  '@esbuild/linux-s390x@0.28.1':
-    resolution: {integrity: sha512-/lAIjX8aYFRByhh6L5rYtPEDRqa9de/4V/juOXcta5frjvzXO4/sqEtyytse0g3zZFuWu5cDN0MkLz2qRDD2Ag==}
+  '@esbuild/linux-s390x@0.28.2':
+    resolution: {integrity: sha512-3H1weTYZPxt/WOhByszQZybS9w5lKzUn1FDMsgEChbHWQwHYQQRfBxgCcZvPhjHfKyJjIievvMmEUawJrdY9Dg==}
     engines: {node: '>=18'}
     cpu: [s390x]
     os: [linux]
@@ -2059,8 +2059,8 @@ packages:
     cpu: [x64]
     os: [linux]
 
-  '@esbuild/linux-x64@0.28.1':
-    resolution: {integrity: sha512-u/anNYF2mmVOEDwLtnQ1wOr3EZ9sTNGLWrsYGYwHWzGA3Si84IOkHXlbWTD1NB+9/1lcnweYKO54uhxZydNzfA==}
+  '@esbuild/linux-x64@0.28.2':
+    resolution: {integrity: sha512-4xTZr1FUmSoQW4XIWmit3tzQrUTZM+N3P0XV8xROKYF50XfI7xeO90+1bZvNwxIufQ9hDQVRJH5YhgPVF8A/HQ==}
     engines: {node: '>=18'}
     cpu: [x64]
     os: [linux]
@@ -2071,8 +2071,8 @@ packages:
     cpu: [arm64]
     os: [netbsd]
 
-  '@esbuild/netbsd-arm64@0.28.1':
-    resolution: {integrity: sha512-oks0DYbLwWMmaakTsCb+zL4E+aHRVLom9IJZOAthMQEPiQmydXHkziYEsGYRx0uNV/IjEKGAV941JzH02pflqw==}
+  '@esbuild/netbsd-arm64@0.28.2':
+    resolution: {integrity: sha512-sSATRjPeDBg3pdgHoQfoYBob11Kk1FGa9lui5RIHZCoCkJa9QKlvl3/vKz2usCmYYjs7ymJR/2Nnsqe+Hjt5nw==}
     engines: {node: '>=18'}
     cpu: [arm64]
     os: [netbsd]
@@ -2083,8 +2083,8 @@ packages:
     cpu: [x64]
     os: [netbsd]
 
-  '@esbuild/netbsd-x64@0.28.1':
-    resolution: {integrity: sha512-aeL6lAnN89Hz43Mlh1G8ARasbuoYvSITDEx0tHh5b7jJnHcssqgjy9Yx430GDpmCa6OyrKoS0aNRjKundRizGg==}
+  '@esbuild/netbsd-x64@0.28.2':
+    resolution: {integrity: sha512-lqnzCV+mM0gIADaKihiCg6ifgfU2L3h5E33rNQBN1Y4MaVGnzryzmvvf7UHxprpQdE8hpqLolJ9Rl+SkIRDpyw==}
     engines: {node: '>=18'}
     cpu: [x64]
     os: [netbsd]
@@ -2095,8 +2095,8 @@ packages:
     cpu: [arm64]
     os: [openbsd]
 
-  '@esbuild/openbsd-arm64@0.28.1':
-    resolution: {integrity: sha512-MEFJe5C3R8pwXdZ5Y21oo6m7ePiS0d9pWucn99O/wvyJZChoIQKrQDxKrGeW8F5+T0okTHesAmDeiHDTIq0V/Q==}
+  '@esbuild/openbsd-arm64@0.28.2':
+    resolution: {integrity: sha512-AL2qJILH7lNjrDmCQDvdxMfAUIv8KMNZOvrwAQ8i8//ntL9FflhOyMJ8OZSMBb8/AWXe3/5v5S20y3zCoZWKoQ==}
     engines: {node: '>=18'}
     cpu: [arm64]
     os: [openbsd]
@@ -2107,8 +2107,8 @@ packages:
     cpu: [x64]
     os: [openbsd]
 
-  '@esbuild/openbsd-x64@0.28.1':
-    resolution: {integrity: sha512-i/ZLIOafE0Z8cI/XANJAixoJL/uRAoS2xOA3rb0xN+KK0K177cMAsQYkzHtBrtMXAKuAc7HGgcWiZ/sRC1Nxgw==}
+  '@esbuild/openbsd-x64@0.28.2':
+    resolution: {integrity: sha512-QtiuPytchRyC4rwUKhexJdQKvDuZ6hWloi3igqPQNUJCS1/v9EiO3UTOXR6A3FoMo4fnAKbWJdqaIwhOzh8qEw==}
     engines: {node: '>=18'}
     cpu: [x64]
     os: [openbsd]
@@ -2119,8 +2119,8 @@ packages:
     cpu: [arm64]
     os: [openharmony]
 
-  '@esbuild/openharmony-arm64@0.28.1':
-    resolution: {integrity: sha512-ge+Z7EXFNt2BO1oAMsVpiQ8EwndV9i1xXerAeTIK7AtPs3bKFXQM7nlRxDSIUIMeueR1CNXxqztLzdNeReKBJg==}
+  '@esbuild/openharmony-arm64@0.28.2':
+    resolution: {integrity: sha512-WkhYDmpTjLvGlScA1rwjRUmhl4k8oXR3cIbtqWmELgU/dFeHHlEllxDvdWcNJV9rbzCexB5vz8gtNewWLgCT7Q==}
     engines: {node: '>=18'}
     cpu: [arm64]
     os: [openharmony]
@@ -2131,8 +2131,8 @@ packages:
     cpu: [x64]
     os: [sunos]
 
-  '@esbuild/sunos-x64@0.28.1':
-    resolution: {integrity: sha512-BEjgtECkL3vY+SaSQ6nzVfiALUeFxpawyp8Jmf5PtYhf1Ug40N1h/hxlhts+f1FvSvarEigdxS3BlSMI2PJLcQ==}
+  '@esbuild/sunos-x64@0.28.2':
+    resolution: {integrity: sha512-GPMSkTOtMnv2U2F8gxe4Io6qmVs+YKyp832Etqqxr0hFngmXQ3rzwytelm3GIn7T4VviRUlf3sOgBOiTdvaf7g==}
     engines: {node: '>=18'}
     cpu: [x64]
     os: [sunos]
@@ -2143,8 +2143,8 @@ packages:
     cpu: [arm64]
     os: [win32]
 
-  '@esbuild/win32-arm64@0.28.1':
-    resolution: {integrity: sha512-lCv9eK/H6ZJWbE7bh2nw54CZ9M2nupBxJcTsdk/QQnWkdSjKGuxmmH8/GWrlT1eMmZfn4dGcCjRte397WqfQXA==}
+  '@esbuild/win32-arm64@0.28.2':
+    resolution: {integrity: sha512-PIhhEkE9uPBleRBrQEJpUn7MBnibZzbGzYWPmY3x+YoVg/95zbjB4CxPPOQ8l5tYYM4mMaCthF8/1DIfBQQyWQ==}
     engines: {node: '>=18'}
     cpu: [arm64]
     os: [win32]
@@ -2155,8 +2155,8 @@ packages:
     cpu: [ia32]
     os: [win32]
 
-  '@esbuild/win32-ia32@0.28.1':
-    resolution: {integrity: sha512-zvb/mB2bSCoJOpoCBgYKKpX6YM6mJBlBUVUtVj41DlZJVEB6/0CKlRYxP5wWl1C1ILiCoAU5wZZ4q1P3qeS6Eg==}
+  '@esbuild/win32-ia32@0.28.2':
+    resolution: {integrity: sha512-YmJbfTlvU7Sdn9BB+4PRES4oB6pxgS37MAONj+hBr/cpXS1aBPKXxNnDbu+QCWPj0o9dgyxeq79g6c5P8KeuYA==}
     engines: {node: '>=18'}
     cpu: [ia32]
     os: [win32]
@@ -2167,8 +2167,8 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@esbuild/win32-x64@0.28.1':
-    resolution: {integrity: sha512-bm4Mowrv+GXMlpWX++EcXw/iLyd1o3+bJkC2DkWXYVvgZCqD/bSj9ctZeAMC3cIxgjRVR2Dufaiu4YPxr5gW1A==}
+  '@esbuild/win32-x64@0.28.2':
+    resolution: {integrity: sha512-5ebpxr3nWMzrL/rnUI755Jkuee0bHL/Gq0WTF9lvcpv73wAp5eu8MfBUgWK9bhWvZjj7yX8etf/8tI8Ney695g==}
     engines: {node: '>=18'}
     cpu: [x64]
     os: [win32]
@@ -2652,16 +2652,16 @@ packages:
       '@types/react': '>=16'
       react: '>=16'
 
-  '@mintlify/cli@4.0.1387':
-    resolution: {integrity: sha512-12ZjghdYWhxaKbThuZFmkazl0+2CI6OzLORDvUJLQqxLpZoRe9pssR0ftS7StbYt0ufIRrROD2/dp28DypmipA==}
+  '@mintlify/cli@4.0.1391':
+    resolution: {integrity: sha512-ReIYfnF9+f2BmbqkAaaxSQzThi/1pJwIW+oDG4XnqSX/f3MwoOKURtpA8X/R/35gubxBRBEft7qg9uHw5g4T0Q==}
     engines: {node: '>=18.0.0'}
     hasBin: true
 
-  '@mintlify/common@1.0.1077':
-    resolution: {integrity: sha512-g0MdHgP/smFTwM6vYxu47Q6rO5HPNqf6Z1frADOef57EzrjFlK6O1PuvghvB9LH4kr3vITVyXKwMjW3aIU5F6A==}
+  '@mintlify/common@1.0.1080':
+    resolution: {integrity: sha512-CRy0cFVRpKyqHRG4MMMFcgCg19duMatJupGDYMld8vWtM+/WEqmSbzpxOQaQyeXSDW+OKaZHCLjdtPpBqTawlA==}
 
-  '@mintlify/link-rot@3.0.1274':
-    resolution: {integrity: sha512-LCyVDFWPm/l3ZRfP5S8otl0VLJt3vco2KFIcxSWbfpH4MshKiOZ9zQ8No94euj7felo6hFGT2lSxROBqxKVLOA==}
+  '@mintlify/link-rot@3.0.1278':
+    resolution: {integrity: sha512-QZ3eL41i7O6LTTH5ZriKqXcrXeuwb6vQRWmFRPeO0elW9o5ivyNioQFERFb+hwX9UwZh5B/vYKLHxDT8bYnRUQ==}
     engines: {node: '>=18.0.0'}
 
   '@mintlify/mdx@4.0.2':
@@ -2671,28 +2671,28 @@ packages:
       react: ^19.2.1
       react-dom: ^19.2.1
 
-  '@mintlify/models@0.0.346':
-    resolution: {integrity: sha512-QMCIT57WPwL9y4WEAHF7Ob+LPnxzuvPdYACL3S3yzXz7OqjePj4k/j0NG4NUfOAy6qvSsWE6xuPR+9vU66creA==}
+  '@mintlify/models@0.0.347':
+    resolution: {integrity: sha512-uBYTaYDEQePfbK0IHjTpaFnVMNI2YqtzUv7fZWK4ex5RX+BAPaGunEl/1QD3V9zyIDkoB6J8BlWcj2XIOcvsNA==}
     engines: {node: '>=18.0.0'}
 
   '@mintlify/openapi-parser@0.0.8':
     resolution: {integrity: sha512-9MBRq9lS4l4HITYCrqCL7T61MOb20q9IdU7HWhqYMNMM1jGO1nHjXasFy61yZ8V6gMZyyKQARGVoZ0ZrYN48Og==}
     engines: {node: '>=18'}
 
-  '@mintlify/prebuild@1.0.1228':
-    resolution: {integrity: sha512-V0ICW4JPAmUD2OVEhR7dEo3Uc2qm/KSsTfAHMVEmil2vxAk3z6ALZkoKgDh5TuE8VgF7Lnxqw9WufEI2UQoqNA==}
+  '@mintlify/prebuild@1.0.1231':
+    resolution: {integrity: sha512-r5fAs5ErT2AZAVvVpnw9stlGHEUkjZQ3r4zsmPsOJZ5uG2VJddZ5Oa7JzTsXhV7vaNUl1b0QjRIoeC/q0uG3bg==}
 
-  '@mintlify/previewing@4.0.1298':
-    resolution: {integrity: sha512-EA4Ofzcfg0WcHSxm/iLdszh39cVJ+6PqSo+RcQoCLU1Bnskr0FC8R3y5Spa4nX0vZQk9u8BsMgdl0usf1KM72A==}
+  '@mintlify/previewing@4.0.1302':
+    resolution: {integrity: sha512-2DMwhs7fdbYzsg07MqLuivu0CojnZdGfCG3pTZRTzbHxgZbGdWhROlJbMbnsnvcPmPcOiIO5znGFQFSi/6qbdQ==}
     engines: {node: '>=18.0.0'}
 
-  '@mintlify/scraping@4.0.944':
-    resolution: {integrity: sha512-3xctzynRMNPclEj86P2NZxhA/EG5RV/BNjm7x7ZX3Q0xv0R2VrccTt0pavRBnt7W4WcsHDyNWlfBZunD3lWauA==}
+  '@mintlify/scraping@4.0.947':
+    resolution: {integrity: sha512-AtdRwk3eIFspleB2ocaNQN1FSD+CWIy0TJUiQYQL9uWBj9DL0D7+K7qFijF0MhycYznXSmntPfwVWZ9MHZ1RSg==}
     engines: {node: '>=18.0.0'}
     hasBin: true
 
-  '@mintlify/validation@0.1.821':
-    resolution: {integrity: sha512-ojOwNjgciR+Xp96ZsbfYJ/aHXhz+a1jq4lu7u+orzj3yoS9WwB5pavWdiL37jLhH6zU5PoDgj/T0/7kF20JyRQ==}
+  '@mintlify/validation@0.1.823':
+    resolution: {integrity: sha512-rKGLBAKPK9pMSbAMfXo4flj5mdlZVHCPGbSe3K0XUU+wZQtdnY5dirvgSCdkOPe6T6uCN0WyScHNnk+wH6t7vw==}
 
   '@mongodb-js/saslprep@1.4.11':
     resolution: {integrity: sha512-o9rAHc0IpIjuPSxRutWpE1F62x7n+4mVS4rCNHkzhIUMQcc18bb6xEq5wd2NdN0WjepIyXIppRshYI2kQDOZVA==}
@@ -5205,6 +5205,9 @@ packages:
     resolution: {integrity: sha512-NZKeq9AfyQvEeNlN0zSYAaWrmBffJh3IELMZfRpJVWgrpEbtEpnjvzqBPf+mxoI287JohRDoa+/nsfqqiZmF6g==}
     engines: {node: '>= 6.0.0'}
 
+  axios@1.18.0:
+    resolution: {integrity: sha512-E32NzpYKp++W7XRe52rHiXV2ehxmh3wbdgO7MHeFM+vqxLBYHzt0ElkiImtOBxtOmyp0yoC8C6uESVV84Y2/hw==}
+
   axios@1.18.1:
     resolution: {integrity: sha512-3nTvFlvpn9Zu/RkHUqtc7/+al4UpRW5az71ap5zccp6e8RAYEzhMTecX8Dz1wWDYrPpUoB1HAQEGEAEvUr7S9g==}
 
@@ -5277,8 +5280,8 @@ packages:
     resolution: {integrity: sha512-lGe34o6EHj9y3Kts9R4ZYs/Gr+6N7MCaMlIFA3F1R2O5/m7K06AxfSeO5530PEERE6/WyEg3lsuyw4GHlPZHog==}
     engines: {node: ^4.5.0 || >= 5.9}
 
-  baseline-browser-mapping@2.11.12:
-    resolution: {integrity: sha512-r7WnVImvVCeFpf2DOXfy41aPWzeNg3H/A2X4dKmy1QL0MSyyk/e7z8ihJ3N6Nn2PsdhkVlqnEfnUE4a05P2aTA==}
+  baseline-browser-mapping@2.11.13:
+    resolution: {integrity: sha512-k9HNuUVMlqVjQ9UHzfPjIqiDbWw7WqT1AoT7GL8VwvF3r0ZfArtgiSPAlmupyNquNgOJHTuH4CKYf8ttMTWBTQ==}
     engines: {node: '>=6.0.0'}
     hasBin: true
 
@@ -5424,8 +5427,8 @@ packages:
   bun-types@1.3.14:
     resolution: {integrity: sha512-4N0ig0fEomHt5R0KCFWjovxow98rIoRwKolrYdCcknNwMekCXRnWEUvgu5soYV8QXtVsrUD8B95MBOZGPvr6KQ==}
 
-  bunchee@7.0.0:
-    resolution: {integrity: sha512-eJjYhsN72WXa4LoyxFpkbne+L+VP8//sUJcyzuVaVCOiFVmCqRwFD7USpvdLxl5cqSG0hjnkWz91wBStpgqdrg==}
+  bunchee@7.0.1:
+    resolution: {integrity: sha512-jrAFcG54vhjPDK95fG1feN10K+TpUHjUnMdN8PALAMQRLsZjHa6phuKtEp2XxHvpzFIM8sQIWAjbrNqUz/Eo6w==}
     engines: {node: '>=22.12.0'}
     hasBin: true
     peerDependencies:
@@ -6266,8 +6269,8 @@ packages:
     engines: {node: '>=18'}
     hasBin: true
 
-  esbuild@0.28.1:
-    resolution: {integrity: sha512-HrJrvZv5ayxBzPfwphOoNzkzOIIlifzk0KJrGK2c8R4+LKpMtpYLQeUdjnwjWv/LZlkH2laZk+4w78pi99D4Vw==}
+  esbuild@0.28.2:
+    resolution: {integrity: sha512-HKVLS8dvII+xoKW9kmqxbRKrnWEXfJJr/FZhhJmiqIB0e053QNYFqOBouTMO/k5sID4MvCiUCvv8b9M4h32wIA==}
     engines: {node: '>=18'}
     hasBin: true
 
@@ -7882,8 +7885,8 @@ packages:
     resolution: {integrity: sha512-KZxYo1BUkWD2TVFLr0MQoM8vUUigWD3LlD83a/75BqC+4qE0Hb1Vo5v1FgcfaNXvfXzr+5EhQ6ing/CaBijTlw==}
     engines: {node: '>= 18'}
 
-  mintlify@4.2.784:
-    resolution: {integrity: sha512-YyttfT8ujooACwwDRMIm/9Oy0dlVdUqYnbOcGgW/HQZx0SQUqRjIybI/OhYAB0tEHb3TD+JkqZF1zAygI0Ingw==}
+  mintlify@4.2.788:
+    resolution: {integrity: sha512-e549sNM3ebTTE6Cf1Qd8Fi1/qips30K0WK1tTxG6uH5nj71+V8LoOvIyeWGTRdpSb45TIsW6G7LQ6/5aWzYDQw==}
     engines: {node: '>=18.0.0'}
     hasBin: true
 
@@ -8412,15 +8415,15 @@ packages:
     peerDependencies:
       pg: '>=8.0'
 
-  pg-protocol@1.15.0:
-    resolution: {integrity: sha512-cq9sECI5s0+uPUXjbz8ioyPJni6RzsRib0US67i5IoTZKw8fNeYlVE7u8F4dG7vEJJtc5wdD1K189lCCUwqWTQ==}
+  pg-protocol@1.16.0:
+    resolution: {integrity: sha512-sILXutLVjCLjcDuOmvhX5e2Z4cS5qG/6Bu3VkpFwdf/633ElGLpEh9bgmuI5I4sqKqkifQiGyiCcx1HdtrK7tg==}
 
   pg-types@2.2.0:
     resolution: {integrity: sha512-qTAAlrEsl8s4OiEQY69wDvcMIdQN6wdz5ojQiOy6YRMuynxenON0O5oCpJI6lshc6scgAY8qvJ2On/p+CXY0GA==}
     engines: {node: '>=4'}
 
-  pg@8.22.0:
-    resolution: {integrity: sha512-8wih1vVIBMxoUM2oB4soJsD9tDnDpLv4OXBJ+EJzFsvycD+lfyIreC2gGHq78f8jbLLt+bvlPTFdFZfJkOuzAA==}
+  pg@8.23.0:
+    resolution: {integrity: sha512-Ip2EQCngowJLGOfCwkFhPXU7/ljlhn6Rxlmy4XYfL2Y+vyRM59+8uR2xqRWKdYmbXmxCFOAmKxBuSUCdF34qLg==}
     engines: {node: '>= 16.0.0'}
     peerDependencies:
       pg-native: '>=3.0.1'
@@ -9512,8 +9515,8 @@ packages:
   tar-stream@3.2.0:
     resolution: {integrity: sha512-ojzvCvVaNp6aOTFmG7jaRD0meowIAuPc3cMMhSgKiVWws1GyHbGd/xvnyuRKcKlMpt3qvxx6r0hreCNITP9hIg==}
 
-  tar@7.5.22:
-    resolution: {integrity: sha512-MFO/QzvtAOmJbkhOaCTvbGcFN9L9b+JunIsDwaKljSOdcLMea3NJ1k9Usz/rjdfSXTq4dfzfeS7W4p4YOAAHeA==}
+  tar@7.5.21:
+    resolution: {integrity: sha512-XdhtCvlMywwxpCW8YEq3lOXBJpUPTR2OHHcwLPO3HwsJqOHa2Ok/oJ7ruGzp+JrKoRPVCzJwAdEjqLW/vNRPHA==}
     engines: {node: '>=18'}
 
   teex@1.0.1:
@@ -9710,8 +9713,8 @@ packages:
   uc.micro@2.1.0:
     resolution: {integrity: sha512-ARDJmphmdvUk6Glw7y9DQ2bFkKBHwQHLi2lsaH6PPmz/Ka9sFOBsBluozhDltWmnv9u/cF6Rt87znRTPV+yp/A==}
 
-  unbash@4.0.7:
-    resolution: {integrity: sha512-P3NODenm+qh2PwrP3gzJBx7a541oRtrUTRCyMH8K53P27oZjstMwf7A3CqwWtLLLOIUigRqjdEHSn2UHBQlASA==}
+  unbash@4.0.10:
+    resolution: {integrity: sha512-b7zoBQvpWp0vuN5q2vK2RRBR2SvuruQAs50DApdDveBSn3eSYd84IaHodFqQIMlvY9K2VnyBUEXgwOBuGU9GBg==}
     engines: {node: '>=14'}
 
   unbox-primitive@1.1.0:
@@ -10660,12 +10663,12 @@ snapshots:
     optionalDependencies:
       '@opentelemetry/api': 1.9.1
 
-  '@better-auth/drizzle-adapter@1.6.26(@better-auth/core@1.6.26(@better-auth/utils@0.4.2)(@better-fetch/fetch@1.3.1)(@opentelemetry/api@1.9.1)(better-call@1.3.7(zod@4.4.3))(jose@6.2.8)(kysely@0.29.4)(nanostores@1.4.2))(@better-auth/utils@0.4.2)(drizzle-orm@0.45.2(@electric-sql/pglite@0.3.15)(@opentelemetry/api@1.9.1)(@prisma/client@6.19.1(prisma@7.4.2(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(typescript@6.0.3))(typescript@6.0.3))(@types/pg@8.21.0)(bun-types@1.3.14)(kysely@0.29.4)(mysql2@3.15.3)(pg@8.22.0)(postgres@3.4.7)(prisma@7.4.2(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(typescript@6.0.3)))':
+  '@better-auth/drizzle-adapter@1.6.26(@better-auth/core@1.6.26(@better-auth/utils@0.4.2)(@better-fetch/fetch@1.3.1)(@opentelemetry/api@1.9.1)(better-call@1.3.7(zod@4.4.3))(jose@6.2.8)(kysely@0.29.4)(nanostores@1.4.2))(@better-auth/utils@0.4.2)(drizzle-orm@0.45.2(@electric-sql/pglite@0.3.15)(@opentelemetry/api@1.9.1)(@prisma/client@6.19.1(prisma@7.4.2(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(typescript@6.0.3))(typescript@6.0.3))(@types/pg@8.21.0)(bun-types@1.3.14)(kysely@0.29.4)(mysql2@3.15.3)(pg@8.23.0)(postgres@3.4.7)(prisma@7.4.2(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(typescript@6.0.3)))':
     dependencies:
       '@better-auth/core': 1.6.26(@better-auth/utils@0.4.2)(@better-fetch/fetch@1.3.1)(@opentelemetry/api@1.9.1)(better-call@1.3.7(zod@4.4.3))(jose@6.2.8)(kysely@0.29.4)(nanostores@1.4.2)
       '@better-auth/utils': 0.4.2
     optionalDependencies:
-      drizzle-orm: 0.45.2(@electric-sql/pglite@0.3.15)(@opentelemetry/api@1.9.1)(@prisma/client@6.19.1(prisma@7.4.2(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(typescript@6.0.3))(typescript@6.0.3))(@types/pg@8.21.0)(bun-types@1.3.14)(kysely@0.29.4)(mysql2@3.15.3)(pg@8.22.0)(postgres@3.4.7)(prisma@7.4.2(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(typescript@6.0.3))
+      drizzle-orm: 0.45.2(@electric-sql/pglite@0.3.15)(@opentelemetry/api@1.9.1)(@prisma/client@6.19.1(prisma@7.4.2(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(typescript@6.0.3))(typescript@6.0.3))(@types/pg@8.21.0)(bun-types@1.3.14)(kysely@0.29.4)(mysql2@3.15.3)(pg@8.23.0)(postgres@3.4.7)(prisma@7.4.2(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(typescript@6.0.3))
 
   '@better-auth/kysely-adapter@1.6.26(@better-auth/core@1.6.26(@better-auth/utils@0.4.2)(@better-fetch/fetch@1.3.1)(@opentelemetry/api@1.9.1)(better-call@1.3.7(zod@4.4.3))(jose@6.2.8)(kysely@0.29.4)(nanostores@1.4.2))(@better-auth/utils@0.4.2)(kysely@0.29.4)':
     dependencies:
@@ -10989,7 +10992,7 @@ snapshots:
 
   '@esbuild-kit/core-utils@3.3.2':
     dependencies:
-      esbuild: 0.28.1
+      esbuild: 0.28.2
       source-map-support: 0.5.21
 
   '@esbuild-kit/esm-loader@2.6.5':
@@ -11000,157 +11003,157 @@ snapshots:
   '@esbuild/aix-ppc64@0.25.12':
     optional: true
 
-  '@esbuild/aix-ppc64@0.28.1':
+  '@esbuild/aix-ppc64@0.28.2':
     optional: true
 
   '@esbuild/android-arm64@0.25.12':
     optional: true
 
-  '@esbuild/android-arm64@0.28.1':
+  '@esbuild/android-arm64@0.28.2':
     optional: true
 
   '@esbuild/android-arm@0.25.12':
     optional: true
 
-  '@esbuild/android-arm@0.28.1':
+  '@esbuild/android-arm@0.28.2':
     optional: true
 
   '@esbuild/android-x64@0.25.12':
     optional: true
 
-  '@esbuild/android-x64@0.28.1':
+  '@esbuild/android-x64@0.28.2':
     optional: true
 
   '@esbuild/darwin-arm64@0.25.12':
     optional: true
 
-  '@esbuild/darwin-arm64@0.28.1':
+  '@esbuild/darwin-arm64@0.28.2':
     optional: true
 
   '@esbuild/darwin-x64@0.25.12':
     optional: true
 
-  '@esbuild/darwin-x64@0.28.1':
+  '@esbuild/darwin-x64@0.28.2':
     optional: true
 
   '@esbuild/freebsd-arm64@0.25.12':
     optional: true
 
-  '@esbuild/freebsd-arm64@0.28.1':
+  '@esbuild/freebsd-arm64@0.28.2':
     optional: true
 
   '@esbuild/freebsd-x64@0.25.12':
     optional: true
 
-  '@esbuild/freebsd-x64@0.28.1':
+  '@esbuild/freebsd-x64@0.28.2':
     optional: true
 
   '@esbuild/linux-arm64@0.25.12':
     optional: true
 
-  '@esbuild/linux-arm64@0.28.1':
+  '@esbuild/linux-arm64@0.28.2':
     optional: true
 
   '@esbuild/linux-arm@0.25.12':
     optional: true
 
-  '@esbuild/linux-arm@0.28.1':
+  '@esbuild/linux-arm@0.28.2':
     optional: true
 
   '@esbuild/linux-ia32@0.25.12':
     optional: true
 
-  '@esbuild/linux-ia32@0.28.1':
+  '@esbuild/linux-ia32@0.28.2':
     optional: true
 
   '@esbuild/linux-loong64@0.25.12':
     optional: true
 
-  '@esbuild/linux-loong64@0.28.1':
+  '@esbuild/linux-loong64@0.28.2':
     optional: true
 
   '@esbuild/linux-mips64el@0.25.12':
     optional: true
 
-  '@esbuild/linux-mips64el@0.28.1':
+  '@esbuild/linux-mips64el@0.28.2':
     optional: true
 
   '@esbuild/linux-ppc64@0.25.12':
     optional: true
 
-  '@esbuild/linux-ppc64@0.28.1':
+  '@esbuild/linux-ppc64@0.28.2':
     optional: true
 
   '@esbuild/linux-riscv64@0.25.12':
     optional: true
 
-  '@esbuild/linux-riscv64@0.28.1':
+  '@esbuild/linux-riscv64@0.28.2':
     optional: true
 
   '@esbuild/linux-s390x@0.25.12':
     optional: true
 
-  '@esbuild/linux-s390x@0.28.1':
+  '@esbuild/linux-s390x@0.28.2':
     optional: true
 
   '@esbuild/linux-x64@0.25.12':
     optional: true
 
-  '@esbuild/linux-x64@0.28.1':
+  '@esbuild/linux-x64@0.28.2':
     optional: true
 
   '@esbuild/netbsd-arm64@0.25.12':
     optional: true
 
-  '@esbuild/netbsd-arm64@0.28.1':
+  '@esbuild/netbsd-arm64@0.28.2':
     optional: true
 
   '@esbuild/netbsd-x64@0.25.12':
     optional: true
 
-  '@esbuild/netbsd-x64@0.28.1':
+  '@esbuild/netbsd-x64@0.28.2':
     optional: true
 
   '@esbuild/openbsd-arm64@0.25.12':
     optional: true
 
-  '@esbuild/openbsd-arm64@0.28.1':
+  '@esbuild/openbsd-arm64@0.28.2':
     optional: true
 
   '@esbuild/openbsd-x64@0.25.12':
     optional: true
 
-  '@esbuild/openbsd-x64@0.28.1':
+  '@esbuild/openbsd-x64@0.28.2':
     optional: true
 
   '@esbuild/openharmony-arm64@0.25.12':
     optional: true
 
-  '@esbuild/openharmony-arm64@0.28.1':
+  '@esbuild/openharmony-arm64@0.28.2':
     optional: true
 
   '@esbuild/sunos-x64@0.25.12':
     optional: true
 
-  '@esbuild/sunos-x64@0.28.1':
+  '@esbuild/sunos-x64@0.28.2':
     optional: true
 
   '@esbuild/win32-arm64@0.25.12':
     optional: true
 
-  '@esbuild/win32-arm64@0.28.1':
+  '@esbuild/win32-arm64@0.28.2':
     optional: true
 
   '@esbuild/win32-ia32@0.25.12':
     optional: true
 
-  '@esbuild/win32-ia32@0.28.1':
+  '@esbuild/win32-ia32@0.28.2':
     optional: true
 
   '@esbuild/win32-x64@0.25.12':
     optional: true
 
-  '@esbuild/win32-x64@0.28.1':
+  '@esbuild/win32-x64@0.28.2':
     optional: true
 
   '@exodus/bytes@1.15.1(@noble/hashes@2.3.0)':
@@ -11610,15 +11613,15 @@ snapshots:
       '@types/react': 19.2.18
       react: 19.2.3
 
-  '@mintlify/cli@4.0.1387(@base-ui/react@1.7.0(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.3))(react@19.2.3))(@types/node@26.2.0)(@types/react@19.2.18)(debug@4.4.3(supports-color@7.2.0))(react-dom@19.2.8(react@19.2.3))(supports-color@7.2.0)(typescript@6.0.3)':
+  '@mintlify/cli@4.0.1391(@base-ui/react@1.7.0(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.3))(react@19.2.3))(@types/node@26.2.0)(@types/react@19.2.18)(debug@4.4.3(supports-color@7.2.0))(react-dom@19.2.8(react@19.2.3))(supports-color@7.2.0)(typescript@6.0.3)':
     dependencies:
       '@inquirer/prompts': 7.9.0(@types/node@26.2.0)
-      '@mintlify/common': 1.0.1077(@base-ui/react@1.7.0(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.3))(react@19.2.3))(@types/react@19.2.18)(debug@4.4.3(supports-color@7.2.0))(react-dom@19.2.8(react@19.2.3))(react@19.2.3)(supports-color@7.2.0)(typescript@6.0.3)
-      '@mintlify/link-rot': 3.0.1274(@base-ui/react@1.7.0(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.3))(react@19.2.3))(@types/node@26.2.0)(@types/react@19.2.18)(debug@4.4.3(supports-color@7.2.0))(react-dom@19.2.8(react@19.2.3))(react@19.2.3)(supports-color@7.2.0)(typescript@6.0.3)
-      '@mintlify/models': 0.0.346(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
-      '@mintlify/prebuild': 1.0.1228(@base-ui/react@1.7.0(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.3))(react@19.2.3))(@types/node@26.2.0)(@types/react@19.2.18)(debug@4.4.3(supports-color@7.2.0))(react-dom@19.2.8(react@19.2.3))(react@19.2.3)(supports-color@7.2.0)(typescript@6.0.3)
-      '@mintlify/previewing': 4.0.1298(@base-ui/react@1.7.0(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.3))(react@19.2.3))(@types/node@26.2.0)(@types/react@19.2.18)(debug@4.4.3(supports-color@7.2.0))(react-dom@19.2.8(react@19.2.3))(supports-color@7.2.0)(typescript@6.0.3)
-      '@mintlify/validation': 0.1.821(@base-ui/react@1.7.0(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.3))(react@19.2.3))(@types/react@19.2.18)(debug@4.4.3(supports-color@7.2.0))(react-dom@19.2.8(react@19.2.3))(react@19.2.3)(supports-color@7.2.0)(typescript@6.0.3)
+      '@mintlify/common': 1.0.1080(@base-ui/react@1.7.0(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.3))(react@19.2.3))(@types/react@19.2.18)(debug@4.4.3(supports-color@7.2.0))(react-dom@19.2.8(react@19.2.3))(react@19.2.3)(supports-color@7.2.0)(typescript@6.0.3)
+      '@mintlify/link-rot': 3.0.1278(@base-ui/react@1.7.0(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.3))(react@19.2.3))(@types/node@26.2.0)(@types/react@19.2.18)(debug@4.4.3(supports-color@7.2.0))(react-dom@19.2.8(react@19.2.3))(react@19.2.3)(supports-color@7.2.0)(typescript@6.0.3)
+      '@mintlify/models': 0.0.347(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@mintlify/prebuild': 1.0.1231(@base-ui/react@1.7.0(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.3))(react@19.2.3))(@types/node@26.2.0)(@types/react@19.2.18)(debug@4.4.3(supports-color@7.2.0))(react-dom@19.2.8(react@19.2.3))(react@19.2.3)(supports-color@7.2.0)(typescript@6.0.3)
+      '@mintlify/previewing': 4.0.1302(@base-ui/react@1.7.0(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.3))(react@19.2.3))(@types/node@26.2.0)(@types/react@19.2.18)(debug@4.4.3(supports-color@7.2.0))(react-dom@19.2.8(react@19.2.3))(supports-color@7.2.0)(typescript@6.0.3)
+      '@mintlify/validation': 0.1.823(@base-ui/react@1.7.0(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.3))(react@19.2.3))(@types/react@19.2.18)(debug@4.4.3(supports-color@7.2.0))(react-dom@19.2.8(react@19.2.3))(react@19.2.3)(supports-color@7.2.0)(typescript@6.0.3)
       adm-zip: 0.6.0
       chalk: 5.2.0
       color: 4.2.3
@@ -11664,13 +11667,13 @@ snapshots:
       - typescript
       - utf-8-validate
 
-  '@mintlify/common@1.0.1077(@base-ui/react@1.7.0(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.3))(react@19.2.3))(@types/react@19.2.18)(debug@4.4.3(supports-color@7.2.0))(react-dom@19.2.8(react@19.2.3))(react@19.2.3)(supports-color@7.2.0)(typescript@6.0.3)':
+  '@mintlify/common@1.0.1080(@base-ui/react@1.7.0(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.3))(react@19.2.3))(@types/react@19.2.18)(debug@4.4.3(supports-color@7.2.0))(react-dom@19.2.8(react@19.2.3))(react@19.2.3)(supports-color@7.2.0)(typescript@6.0.3)':
     dependencies:
       '@asyncapi/parser': 3.4.0
       '@mintlify/mdx': 4.0.2(@base-ui/react@1.7.0(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.3))(react@19.2.3))(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.3))(react@19.2.3)(supports-color@7.2.0)(typescript@6.0.3)
-      '@mintlify/models': 0.0.346(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@mintlify/models': 0.0.347(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@mintlify/openapi-parser': 0.0.8
-      '@mintlify/validation': 0.1.821(@base-ui/react@1.7.0(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.3))(react@19.2.3))(@types/react@19.2.18)(debug@4.4.3(supports-color@7.2.0))(react-dom@19.2.8(react@19.2.3))(react@19.2.3)(supports-color@7.2.0)(typescript@6.0.3)
+      '@mintlify/validation': 0.1.823(@base-ui/react@1.7.0(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.3))(react@19.2.3))(@types/react@19.2.18)(debug@4.4.3(supports-color@7.2.0))(react-dom@19.2.8(react@19.2.3))(react@19.2.3)(supports-color@7.2.0)(typescript@6.0.3)
       '@sindresorhus/slugify': 2.2.0
       '@types/mdast': 4.0.4
       acorn: 8.11.2
@@ -11690,7 +11693,7 @@ snapshots:
       micromark-extension-gfm: 3.0.0
       micromark-extension-mdxjs: 3.0.0
       openapi-types: 12.1.3
-      postcss: 8.5.26
+      postcss: 8.5.23
       rehype-stringify: 10.0.1
       remark: 15.0.1(supports-color@7.2.0)
       remark-frontmatter: 5.0.0(supports-color@7.2.0)
@@ -11722,14 +11725,14 @@ snapshots:
       - ts-node
       - typescript
 
-  '@mintlify/link-rot@3.0.1274(@base-ui/react@1.7.0(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.3))(react@19.2.3))(@types/node@26.2.0)(@types/react@19.2.18)(debug@4.4.3(supports-color@7.2.0))(react-dom@19.2.8(react@19.2.3))(react@19.2.3)(supports-color@7.2.0)(typescript@6.0.3)':
+  '@mintlify/link-rot@3.0.1278(@base-ui/react@1.7.0(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.3))(react@19.2.3))(@types/node@26.2.0)(@types/react@19.2.18)(debug@4.4.3(supports-color@7.2.0))(react-dom@19.2.8(react@19.2.3))(react@19.2.3)(supports-color@7.2.0)(typescript@6.0.3)':
     dependencies:
-      '@mintlify/common': 1.0.1077(@base-ui/react@1.7.0(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.3))(react@19.2.3))(@types/react@19.2.18)(debug@4.4.3(supports-color@7.2.0))(react-dom@19.2.8(react@19.2.3))(react@19.2.3)(supports-color@7.2.0)(typescript@6.0.3)
-      '@mintlify/models': 0.0.346(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
-      '@mintlify/prebuild': 1.0.1228(@base-ui/react@1.7.0(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.3))(react@19.2.3))(@types/node@26.2.0)(@types/react@19.2.18)(debug@4.4.3(supports-color@7.2.0))(react-dom@19.2.8(react@19.2.3))(react@19.2.3)(supports-color@7.2.0)(typescript@6.0.3)
-      '@mintlify/previewing': 4.0.1298(@base-ui/react@1.7.0(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.3))(react@19.2.3))(@types/node@26.2.0)(@types/react@19.2.18)(debug@4.4.3(supports-color@7.2.0))(react-dom@19.2.8(react@19.2.3))(supports-color@7.2.0)(typescript@6.0.3)
-      '@mintlify/scraping': 4.0.944(@base-ui/react@1.7.0(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.3))(react@19.2.3))(@types/react@19.2.18)(debug@4.4.3(supports-color@7.2.0))(react-dom@19.2.8(react@19.2.3))(react@19.2.3)(supports-color@7.2.0)(typescript@6.0.3)
-      '@mintlify/validation': 0.1.821(@base-ui/react@1.7.0(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.3))(react@19.2.3))(@types/react@19.2.18)(debug@4.4.3(supports-color@7.2.0))(react-dom@19.2.8(react@19.2.3))(react@19.2.3)(supports-color@7.2.0)(typescript@6.0.3)
+      '@mintlify/common': 1.0.1080(@base-ui/react@1.7.0(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.3))(react@19.2.3))(@types/react@19.2.18)(debug@4.4.3(supports-color@7.2.0))(react-dom@19.2.8(react@19.2.3))(react@19.2.3)(supports-color@7.2.0)(typescript@6.0.3)
+      '@mintlify/models': 0.0.347(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@mintlify/prebuild': 1.0.1231(@base-ui/react@1.7.0(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.3))(react@19.2.3))(@types/node@26.2.0)(@types/react@19.2.18)(debug@4.4.3(supports-color@7.2.0))(react-dom@19.2.8(react@19.2.3))(react@19.2.3)(supports-color@7.2.0)(typescript@6.0.3)
+      '@mintlify/previewing': 4.0.1302(@base-ui/react@1.7.0(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.3))(react@19.2.3))(@types/node@26.2.0)(@types/react@19.2.18)(debug@4.4.3(supports-color@7.2.0))(react-dom@19.2.8(react@19.2.3))(supports-color@7.2.0)(typescript@6.0.3)
+      '@mintlify/scraping': 4.0.947(@base-ui/react@1.7.0(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.3))(react@19.2.3))(@types/react@19.2.18)(debug@4.4.3(supports-color@7.2.0))(react-dom@19.2.8(react@19.2.3))(react@19.2.3)(supports-color@7.2.0)(typescript@6.0.3)
+      '@mintlify/validation': 0.1.823(@base-ui/react@1.7.0(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.3))(react@19.2.3))(@types/react@19.2.18)(debug@4.4.3(supports-color@7.2.0))(react-dom@19.2.8(react@19.2.3))(react@19.2.3)(supports-color@7.2.0)(typescript@6.0.3)
       fs-extra: 11.1.0
       unist-util-visit: 4.1.2
     transitivePeerDependencies:
@@ -11777,9 +11780,9 @@ snapshots:
       - supports-color
       - typescript
 
-  '@mintlify/models@0.0.346(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)':
+  '@mintlify/models@0.0.347(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)':
     dependencies:
-      axios: 1.18.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      axios: 1.18.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       openapi-types: 12.1.3
     transitivePeerDependencies:
       - debug
@@ -11794,11 +11797,11 @@ snapshots:
       leven: 4.1.0
       yaml: 2.9.0
 
-  '@mintlify/prebuild@1.0.1228(@base-ui/react@1.7.0(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.3))(react@19.2.3))(@types/node@26.2.0)(@types/react@19.2.18)(debug@4.4.3(supports-color@7.2.0))(react-dom@19.2.8(react@19.2.3))(react@19.2.3)(supports-color@7.2.0)(typescript@6.0.3)':
+  '@mintlify/prebuild@1.0.1231(@base-ui/react@1.7.0(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.3))(react@19.2.3))(@types/node@26.2.0)(@types/react@19.2.18)(debug@4.4.3(supports-color@7.2.0))(react-dom@19.2.8(react@19.2.3))(react@19.2.3)(supports-color@7.2.0)(typescript@6.0.3)':
     dependencies:
-      '@mintlify/common': 1.0.1077(@base-ui/react@1.7.0(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.3))(react@19.2.3))(@types/react@19.2.18)(debug@4.4.3(supports-color@7.2.0))(react-dom@19.2.8(react@19.2.3))(react@19.2.3)(supports-color@7.2.0)(typescript@6.0.3)
-      '@mintlify/scraping': 4.0.944(@base-ui/react@1.7.0(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.3))(react@19.2.3))(@types/react@19.2.18)(debug@4.4.3(supports-color@7.2.0))(react-dom@19.2.8(react@19.2.3))(react@19.2.3)(supports-color@7.2.0)(typescript@6.0.3)
-      '@mintlify/validation': 0.1.821(@base-ui/react@1.7.0(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.3))(react@19.2.3))(@types/react@19.2.18)(debug@4.4.3(supports-color@7.2.0))(react-dom@19.2.8(react@19.2.3))(react@19.2.3)(supports-color@7.2.0)(typescript@6.0.3)
+      '@mintlify/common': 1.0.1080(@base-ui/react@1.7.0(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.3))(react@19.2.3))(@types/react@19.2.18)(debug@4.4.3(supports-color@7.2.0))(react-dom@19.2.8(react@19.2.3))(react@19.2.3)(supports-color@7.2.0)(typescript@6.0.3)
+      '@mintlify/scraping': 4.0.947(@base-ui/react@1.7.0(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.3))(react@19.2.3))(@types/react@19.2.18)(debug@4.4.3(supports-color@7.2.0))(react-dom@19.2.8(react@19.2.3))(react@19.2.3)(supports-color@7.2.0)(typescript@6.0.3)
+      '@mintlify/validation': 0.1.823(@base-ui/react@1.7.0(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.3))(react@19.2.3))(@types/react@19.2.18)(debug@4.4.3(supports-color@7.2.0))(react-dom@19.2.8(react@19.2.3))(react@19.2.3)(supports-color@7.2.0)(typescript@6.0.3)
       chalk: 5.3.0
       favicons: 7.2.0(@types/node@26.2.0)
       fflate: 0.8.3
@@ -11825,11 +11828,11 @@ snapshots:
       - typescript
       - utf-8-validate
 
-  '@mintlify/previewing@4.0.1298(@base-ui/react@1.7.0(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.3))(react@19.2.3))(@types/node@26.2.0)(@types/react@19.2.18)(debug@4.4.3(supports-color@7.2.0))(react-dom@19.2.8(react@19.2.3))(supports-color@7.2.0)(typescript@6.0.3)':
+  '@mintlify/previewing@4.0.1302(@base-ui/react@1.7.0(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.3))(react@19.2.3))(@types/node@26.2.0)(@types/react@19.2.18)(debug@4.4.3(supports-color@7.2.0))(react-dom@19.2.8(react@19.2.3))(supports-color@7.2.0)(typescript@6.0.3)':
     dependencies:
-      '@mintlify/common': 1.0.1077(@base-ui/react@1.7.0(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.3))(react@19.2.3))(@types/react@19.2.18)(debug@4.4.3(supports-color@7.2.0))(react-dom@19.2.8(react@19.2.3))(react@19.2.3)(supports-color@7.2.0)(typescript@6.0.3)
-      '@mintlify/prebuild': 1.0.1228(@base-ui/react@1.7.0(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.3))(react@19.2.3))(@types/node@26.2.0)(@types/react@19.2.18)(debug@4.4.3(supports-color@7.2.0))(react-dom@19.2.8(react@19.2.3))(react@19.2.3)(supports-color@7.2.0)(typescript@6.0.3)
-      '@mintlify/validation': 0.1.821(@base-ui/react@1.7.0(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.3))(react@19.2.3))(@types/react@19.2.18)(debug@4.4.3(supports-color@7.2.0))(react-dom@19.2.8(react@19.2.3))(react@19.2.3)(supports-color@7.2.0)(typescript@6.0.3)
+      '@mintlify/common': 1.0.1080(@base-ui/react@1.7.0(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.3))(react@19.2.3))(@types/react@19.2.18)(debug@4.4.3(supports-color@7.2.0))(react-dom@19.2.8(react@19.2.3))(react@19.2.3)(supports-color@7.2.0)(typescript@6.0.3)
+      '@mintlify/prebuild': 1.0.1231(@base-ui/react@1.7.0(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.3))(react@19.2.3))(@types/node@26.2.0)(@types/react@19.2.18)(debug@4.4.3(supports-color@7.2.0))(react-dom@19.2.8(react@19.2.3))(react@19.2.3)(supports-color@7.2.0)(typescript@6.0.3)
+      '@mintlify/validation': 0.1.823(@base-ui/react@1.7.0(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.3))(react@19.2.3))(@types/react@19.2.18)(debug@4.4.3(supports-color@7.2.0))(react-dom@19.2.8(react@19.2.3))(react@19.2.3)(supports-color@7.2.0)(typescript@6.0.3)
       adm-zip: 0.6.0
       better-opn: 3.0.2
       chalk: 5.2.0
@@ -11843,7 +11846,7 @@ snapshots:
       js-yaml: 4.3.1
       react: 19.2.3
       socket.io: 4.8.0(supports-color@7.2.0)
-      tar: 7.5.22
+      tar: 7.5.21
       yargs: 17.7.1
     transitivePeerDependencies:
       - '@base-ui/react'
@@ -11862,9 +11865,9 @@ snapshots:
       - typescript
       - utf-8-validate
 
-  '@mintlify/scraping@4.0.944(@base-ui/react@1.7.0(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.3))(react@19.2.3))(@types/react@19.2.18)(debug@4.4.3(supports-color@7.2.0))(react-dom@19.2.8(react@19.2.3))(react@19.2.3)(supports-color@7.2.0)(typescript@6.0.3)':
+  '@mintlify/scraping@4.0.947(@base-ui/react@1.7.0(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.3))(react@19.2.3))(@types/react@19.2.18)(debug@4.4.3(supports-color@7.2.0))(react-dom@19.2.8(react@19.2.3))(react@19.2.3)(supports-color@7.2.0)(typescript@6.0.3)':
     dependencies:
-      '@mintlify/common': 1.0.1077(@base-ui/react@1.7.0(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.3))(react@19.2.3))(@types/react@19.2.18)(debug@4.4.3(supports-color@7.2.0))(react-dom@19.2.8(react@19.2.3))(react@19.2.3)(supports-color@7.2.0)(typescript@6.0.3)
+      '@mintlify/common': 1.0.1080(@base-ui/react@1.7.0(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.3))(react@19.2.3))(@types/react@19.2.18)(debug@4.4.3(supports-color@7.2.0))(react-dom@19.2.8(react@19.2.3))(react@19.2.3)(supports-color@7.2.0)(typescript@6.0.3)
       fast-xml-parser: 5.7.3
       fs-extra: 11.1.1
       graphql: 16.11.0
@@ -11898,10 +11901,10 @@ snapshots:
       - typescript
       - utf-8-validate
 
-  '@mintlify/validation@0.1.821(@base-ui/react@1.7.0(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.3))(react@19.2.3))(@types/react@19.2.18)(debug@4.4.3(supports-color@7.2.0))(react-dom@19.2.8(react@19.2.3))(react@19.2.3)(supports-color@7.2.0)(typescript@6.0.3)':
+  '@mintlify/validation@0.1.823(@base-ui/react@1.7.0(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.3))(react@19.2.3))(@types/react@19.2.18)(debug@4.4.3(supports-color@7.2.0))(react-dom@19.2.8(react@19.2.3))(react@19.2.3)(supports-color@7.2.0)(typescript@6.0.3)':
     dependencies:
       '@mintlify/mdx': 4.0.2(@base-ui/react@1.7.0(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.3))(react@19.2.3))(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.3))(react@19.2.3)(supports-color@7.2.0)(typescript@6.0.3)
-      '@mintlify/models': 0.0.346(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@mintlify/models': 0.0.347(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       fractional-indexing: 3.2.0
       js-yaml: 4.3.1
       lcm: 0.0.3
@@ -13938,7 +13941,7 @@ snapshots:
   '@types/pg@8.21.0':
     dependencies:
       '@types/node': 26.2.0
-      pg-protocol: 1.15.0
+      pg-protocol: 1.16.0
       pg-types: 2.2.0
 
   '@types/qrcode@1.5.6':
@@ -14378,6 +14381,16 @@ snapshots:
   aws-ssl-profiles@1.1.2:
     optional: true
 
+  axios@1.18.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0):
+    dependencies:
+      follow-redirects: 1.16.0(debug@4.4.3(supports-color@7.2.0))
+      form-data: 4.0.6
+      https-proxy-agent: 5.0.1(supports-color@7.2.0)
+      proxy-from-env: 2.1.0
+    transitivePeerDependencies:
+      - debug
+      - supports-color
+
   axios@1.18.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0):
     dependencies:
       follow-redirects: 1.16.0(debug@4.4.3(supports-color@7.2.0))
@@ -14387,6 +14400,7 @@ snapshots:
     transitivePeerDependencies:
       - debug
       - supports-color
+    optional: true
 
   azure-devops-node-api@12.5.0:
     dependencies:
@@ -14438,14 +14452,14 @@ snapshots:
 
   base64id@2.0.0: {}
 
-  baseline-browser-mapping@2.11.12: {}
+  baseline-browser-mapping@2.11.13: {}
 
   basic-ftp@5.3.1: {}
 
-  better-auth@1.6.26(f7e487ef02675d984ba7001fb84f91a1):
+  better-auth@1.6.26(144b5af0850524ac363e30405f077d41):
     dependencies:
       '@better-auth/core': 1.6.26(@better-auth/utils@0.4.2)(@better-fetch/fetch@1.3.1)(@opentelemetry/api@1.9.1)(better-call@1.3.7(zod@4.4.3))(jose@6.2.8)(kysely@0.29.4)(nanostores@1.4.2)
-      '@better-auth/drizzle-adapter': 1.6.26(@better-auth/core@1.6.26(@better-auth/utils@0.4.2)(@better-fetch/fetch@1.3.1)(@opentelemetry/api@1.9.1)(better-call@1.3.7(zod@4.4.3))(jose@6.2.8)(kysely@0.29.4)(nanostores@1.4.2))(@better-auth/utils@0.4.2)(drizzle-orm@0.45.2(@electric-sql/pglite@0.3.15)(@opentelemetry/api@1.9.1)(@prisma/client@6.19.1(prisma@7.4.2(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(typescript@6.0.3))(typescript@6.0.3))(@types/pg@8.21.0)(bun-types@1.3.14)(kysely@0.29.4)(mysql2@3.15.3)(pg@8.22.0)(postgres@3.4.7)(prisma@7.4.2(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(typescript@6.0.3)))
+      '@better-auth/drizzle-adapter': 1.6.26(@better-auth/core@1.6.26(@better-auth/utils@0.4.2)(@better-fetch/fetch@1.3.1)(@opentelemetry/api@1.9.1)(better-call@1.3.7(zod@4.4.3))(jose@6.2.8)(kysely@0.29.4)(nanostores@1.4.2))(@better-auth/utils@0.4.2)(drizzle-orm@0.45.2(@electric-sql/pglite@0.3.15)(@opentelemetry/api@1.9.1)(@prisma/client@6.19.1(prisma@7.4.2(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(typescript@6.0.3))(typescript@6.0.3))(@types/pg@8.21.0)(bun-types@1.3.14)(kysely@0.29.4)(mysql2@3.15.3)(pg@8.23.0)(postgres@3.4.7)(prisma@7.4.2(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(typescript@6.0.3)))
       '@better-auth/kysely-adapter': 1.6.26(@better-auth/core@1.6.26(@better-auth/utils@0.4.2)(@better-fetch/fetch@1.3.1)(@opentelemetry/api@1.9.1)(better-call@1.3.7(zod@4.4.3))(jose@6.2.8)(kysely@0.29.4)(nanostores@1.4.2))(@better-auth/utils@0.4.2)(kysely@0.29.4)
       '@better-auth/memory-adapter': 1.6.26(@better-auth/core@1.6.26(@better-auth/utils@0.4.2)(@better-fetch/fetch@1.3.1)(@opentelemetry/api@1.9.1)(better-call@1.3.7(zod@4.4.3))(jose@6.2.8)(kysely@0.29.4)(nanostores@1.4.2))(@better-auth/utils@0.4.2)
       '@better-auth/mongo-adapter': 1.6.26(@better-auth/core@1.6.26(@better-auth/utils@0.4.2)(@better-fetch/fetch@1.3.1)(@opentelemetry/api@1.9.1)(better-call@1.3.7(zod@4.4.3))(jose@6.2.8)(kysely@0.29.4)(nanostores@1.4.2))(@better-auth/utils@0.4.2)(mongodb@7.1.0(socks@2.8.9))
@@ -14464,11 +14478,11 @@ snapshots:
     optionalDependencies:
       '@prisma/client': 6.19.1(prisma@7.4.2(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(typescript@6.0.3))(typescript@6.0.3)
       drizzle-kit: 0.31.10
-      drizzle-orm: 0.45.2(@electric-sql/pglite@0.3.15)(@opentelemetry/api@1.9.1)(@prisma/client@6.19.1(prisma@7.4.2(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(typescript@6.0.3))(typescript@6.0.3))(@types/pg@8.21.0)(bun-types@1.3.14)(kysely@0.29.4)(mysql2@3.15.3)(pg@8.22.0)(postgres@3.4.7)(prisma@7.4.2(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(typescript@6.0.3))
+      drizzle-orm: 0.45.2(@electric-sql/pglite@0.3.15)(@opentelemetry/api@1.9.1)(@prisma/client@6.19.1(prisma@7.4.2(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(typescript@6.0.3))(typescript@6.0.3))(@types/pg@8.21.0)(bun-types@1.3.14)(kysely@0.29.4)(mysql2@3.15.3)(pg@8.23.0)(postgres@3.4.7)(prisma@7.4.2(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(typescript@6.0.3))
       mongodb: 7.1.0(socks@2.8.9)
       mysql2: 3.15.3
       next: 16.3.0(@opentelemetry/api@1.9.1)(@types/node@26.2.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
-      pg: 8.22.0
+      pg: 8.23.0
       prisma: 7.4.2(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(typescript@6.0.3)
       react: 19.2.8
       react-dom: 19.2.8(react@19.2.8)
@@ -14571,7 +14585,7 @@ snapshots:
     dependencies:
       '@types/node': 26.2.0
 
-  bunchee@7.0.0(typescript@6.0.3):
+  bunchee@7.0.1(typescript@6.0.3):
     dependencies:
       '@rollup/plugin-commonjs': 29.0.3(rollup@4.62.4)
       '@rollup/plugin-json': 6.1.0(rollup@4.62.4)
@@ -15201,7 +15215,7 @@ snapshots:
       esbuild: 0.25.12
       tsx: 4.23.11
 
-  drizzle-orm@0.45.2(@electric-sql/pglite@0.3.15)(@opentelemetry/api@1.9.1)(@prisma/client@6.19.1(prisma@7.4.2(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(typescript@6.0.3))(typescript@6.0.3))(@types/pg@8.21.0)(bun-types@1.3.14)(kysely@0.29.4)(mysql2@3.15.3)(pg@8.22.0)(postgres@3.4.7)(prisma@7.4.2(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(typescript@6.0.3)):
+  drizzle-orm@0.45.2(@electric-sql/pglite@0.3.15)(@opentelemetry/api@1.9.1)(@prisma/client@6.19.1(prisma@7.4.2(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(typescript@6.0.3))(typescript@6.0.3))(@types/pg@8.21.0)(bun-types@1.3.14)(kysely@0.29.4)(mysql2@3.15.3)(pg@8.23.0)(postgres@3.4.7)(prisma@7.4.2(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(typescript@6.0.3)):
     optionalDependencies:
       '@electric-sql/pglite': 0.3.15
       '@opentelemetry/api': 1.9.1
@@ -15210,7 +15224,7 @@ snapshots:
       bun-types: 1.3.14
       kysely: 0.29.4
       mysql2: 3.15.3
-      pg: 8.22.0
+      pg: 8.23.0
       postgres: 3.4.7
       prisma: 7.4.2(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(typescript@6.0.3)
 
@@ -15471,34 +15485,34 @@ snapshots:
       '@esbuild/win32-ia32': 0.25.12
       '@esbuild/win32-x64': 0.25.12
 
-  esbuild@0.28.1:
+  esbuild@0.28.2:
     optionalDependencies:
-      '@esbuild/aix-ppc64': 0.28.1
-      '@esbuild/android-arm': 0.28.1
-      '@esbuild/android-arm64': 0.28.1
-      '@esbuild/android-x64': 0.28.1
-      '@esbuild/darwin-arm64': 0.28.1
-      '@esbuild/darwin-x64': 0.28.1
-      '@esbuild/freebsd-arm64': 0.28.1
-      '@esbuild/freebsd-x64': 0.28.1
-      '@esbuild/linux-arm': 0.28.1
-      '@esbuild/linux-arm64': 0.28.1
-      '@esbuild/linux-ia32': 0.28.1
-      '@esbuild/linux-loong64': 0.28.1
-      '@esbuild/linux-mips64el': 0.28.1
-      '@esbuild/linux-ppc64': 0.28.1
-      '@esbuild/linux-riscv64': 0.28.1
-      '@esbuild/linux-s390x': 0.28.1
-      '@esbuild/linux-x64': 0.28.1
-      '@esbuild/netbsd-arm64': 0.28.1
-      '@esbuild/netbsd-x64': 0.28.1
-      '@esbuild/openbsd-arm64': 0.28.1
-      '@esbuild/openbsd-x64': 0.28.1
-      '@esbuild/openharmony-arm64': 0.28.1
-      '@esbuild/sunos-x64': 0.28.1
-      '@esbuild/win32-arm64': 0.28.1
-      '@esbuild/win32-ia32': 0.28.1
-      '@esbuild/win32-x64': 0.28.1
+      '@esbuild/aix-ppc64': 0.28.2
+      '@esbuild/android-arm': 0.28.2
+      '@esbuild/android-arm64': 0.28.2
+      '@esbuild/android-x64': 0.28.2
+      '@esbuild/darwin-arm64': 0.28.2
+      '@esbuild/darwin-x64': 0.28.2
+      '@esbuild/freebsd-arm64': 0.28.2
+      '@esbuild/freebsd-x64': 0.28.2
+      '@esbuild/linux-arm': 0.28.2
+      '@esbuild/linux-arm64': 0.28.2
+      '@esbuild/linux-ia32': 0.28.2
+      '@esbuild/linux-loong64': 0.28.2
+      '@esbuild/linux-mips64el': 0.28.2
+      '@esbuild/linux-ppc64': 0.28.2
+      '@esbuild/linux-riscv64': 0.28.2
+      '@esbuild/linux-s390x': 0.28.2
+      '@esbuild/linux-x64': 0.28.2
+      '@esbuild/netbsd-arm64': 0.28.2
+      '@esbuild/netbsd-x64': 0.28.2
+      '@esbuild/openbsd-arm64': 0.28.2
+      '@esbuild/openbsd-x64': 0.28.2
+      '@esbuild/openharmony-arm64': 0.28.2
+      '@esbuild/sunos-x64': 0.28.2
+      '@esbuild/win32-arm64': 0.28.2
+      '@esbuild/win32-ia32': 0.28.2
+      '@esbuild/win32-x64': 0.28.2
 
   escalade@3.2.0: {}
 
@@ -16849,7 +16863,7 @@ snapshots:
       smol-toml: 1.7.1
       strip-json-comments: 5.0.3
       tinyglobby: 0.2.17
-      unbash: 4.0.7
+      unbash: 4.0.10
       yaml: 2.9.0
       zod: 4.4.3
 
@@ -17642,9 +17656,9 @@ snapshots:
     dependencies:
       minipass: 7.1.3
 
-  mintlify@4.2.784(@base-ui/react@1.7.0(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.3))(react@19.2.3))(@types/node@26.2.0)(@types/react@19.2.18)(debug@4.4.3(supports-color@7.2.0))(react-dom@19.2.8(react@19.2.3))(supports-color@7.2.0)(typescript@6.0.3):
+  mintlify@4.2.788(@base-ui/react@1.7.0(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.3))(react@19.2.3))(@types/node@26.2.0)(@types/react@19.2.18)(debug@4.4.3(supports-color@7.2.0))(react-dom@19.2.8(react@19.2.3))(supports-color@7.2.0)(typescript@6.0.3):
     dependencies:
-      '@mintlify/cli': 4.0.1387(@base-ui/react@1.7.0(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.3))(react@19.2.3))(@types/node@26.2.0)(@types/react@19.2.18)(debug@4.4.3(supports-color@7.2.0))(react-dom@19.2.8(react@19.2.3))(supports-color@7.2.0)(typescript@6.0.3)
+      '@mintlify/cli': 4.0.1391(@base-ui/react@1.7.0(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.3))(react@19.2.3))(@types/node@26.2.0)(@types/react@19.2.18)(debug@4.4.3(supports-color@7.2.0))(react-dom@19.2.8(react@19.2.3))(supports-color@7.2.0)(typescript@6.0.3)
     transitivePeerDependencies:
       - '@base-ui/react'
       - '@types/node'
@@ -17803,7 +17817,7 @@ snapshots:
     dependencies:
       '@next/env': 16.3.0
       '@swc/helpers': 0.5.15
-      baseline-browser-mapping: 2.11.12
+      baseline-browser-mapping: 2.11.13
       caniuse-lite: 1.0.30001809
       postcss: 8.5.23
       react: 19.2.8
@@ -18245,11 +18259,11 @@ snapshots:
 
   pg-int8@1.0.1: {}
 
-  pg-pool@3.14.0(pg@8.22.0):
+  pg-pool@3.14.0(pg@8.23.0):
     dependencies:
-      pg: 8.22.0
+      pg: 8.23.0
 
-  pg-protocol@1.15.0: {}
+  pg-protocol@1.16.0: {}
 
   pg-types@2.2.0:
     dependencies:
@@ -18259,11 +18273,11 @@ snapshots:
       postgres-date: 1.0.7
       postgres-interval: 1.2.0
 
-  pg@8.22.0:
+  pg@8.23.0:
     dependencies:
       pg-connection-string: 2.14.0
-      pg-pool: 3.14.0(pg@8.22.0)
-      pg-protocol: 1.15.0
+      pg-pool: 3.14.0(pg@8.23.0)
+      pg-protocol: 1.16.0
       pg-types: 2.2.0
       pgpass: 1.0.5
     optionalDependencies:
@@ -19771,7 +19785,7 @@ snapshots:
       - bare-buffer
       - react-native-b4a
 
-  tar@7.5.22:
+  tar@7.5.21:
     dependencies:
       '@isaacs/fs-minipass': 4.0.1
       chownr: 3.0.0
@@ -19887,7 +19901,7 @@ snapshots:
 
   tsx@4.23.11:
     dependencies:
-      esbuild: 0.28.1
+      esbuild: 0.28.2
     optionalDependencies:
       fsevents: 2.3.3
 
@@ -19979,7 +19993,7 @@ snapshots:
 
   uc.micro@2.1.0: {}
 
-  unbash@4.0.7: {}
+  unbash@4.0.10: {}
 
   unbox-primitive@1.1.0:
     dependencies:
@@ -20206,7 +20220,7 @@ snapshots:
 
   vite@7.3.6(@types/node@26.2.0)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.23.11)(yaml@2.9.0):
     dependencies:
-      esbuild: 0.28.1
+      esbuild: 0.28.2
       fdir: 6.5.0(picomatch@4.0.5)
       picomatch: 4.0.5
       postcss: 8.5.26
