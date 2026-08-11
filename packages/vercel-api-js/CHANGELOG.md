@@ -1,5 +1,14 @@
 # vercel-api-js
 
+## 1.9.2
+
+### Patch Changes
+
+- 854f11f: Add max length and regex validation for snapshotId parameters in get and delete session snapshot schemas.
+- 4328969: Renamed EdgeConfigItem, EdgeConfigItemValue, and EdgeConfigToken types to GlobalConfigItem, GlobalConfigItemValue, and GlobalConfigToken.
+- 4328969: Renamed edgeConfigItemSchema, edgeConfigItemValueSchema, and edgeConfigTokenSchema to global equivalents in exports.
+- 854f11f: Update type definitions for GetSessionSnapshotPathSnapshotId and DeleteSessionSnapshotPathSnapshotId to include max length, regex pattern, and improved examples.
+
 ## 1.9.1
 
 ### Patch Changes
