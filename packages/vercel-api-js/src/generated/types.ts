@@ -2373,6 +2373,7 @@ export const failureStageEnum = {
 	push: "push",
 	unexpected: "unexpected",
 	unknown: "unknown",
+	validation: "validation",
 } as const;
 
 export type FailureStageEnumKey = (typeof failureStageEnum)[keyof typeof failureStageEnum];
@@ -7522,6 +7523,106 @@ export type UserEvent = {
 									 * @type number
 									 */
 									prId?: (number | null) | undefined;
+							  }
+							| {
+									/**
+									 * @type number | undefined
+									 */
+									createdAt?: number | undefined;
+									/**
+									 * @type boolean | undefined
+									 */
+									eventful?: (false | true) | undefined;
+									/**
+									 * @description Cursor Origin
+									 * @type object
+									 */
+									headInfo: {
+										/**
+										 * @description Owner (namespace) slug, e.g. `acme`.
+										 * @type string
+										 */
+										owner: string;
+										/**
+										 * @description Origin namespace id (`ns_…`).
+										 * @type string
+										 */
+										ownerId: string;
+										/**
+										 * @type string
+										 */
+										ref: string;
+										/**
+										 * @description Repository name, e.g. `api`.
+										 * @type string
+										 */
+										repo: string;
+										/**
+										 * @description Origin repository id.
+										 * @type string
+										 */
+										repoId: string;
+										/**
+										 * @type string
+										 */
+										sha: string;
+									};
+									/**
+									 * @description Origin installation id (`i_…`) used to resolve the credential.
+									 * @type string
+									 */
+									installationId: string;
+									/**
+									 * @type string | undefined
+									 */
+									linkedProjectId?: string | undefined;
+									/**
+									 * @type string
+									 */
+									owner: string;
+									/**
+									 * @type number
+									 */
+									prId: number;
+									/**
+									 * @type unknown
+									 */
+									projectId: unknown | null;
+									/**
+									 * @type unknown
+									 */
+									customEnvId?: (unknown | null) | undefined;
+									/**
+									 * @type string
+									 */
+									repo: string;
+									/**
+									 * @type string
+									 */
+									repoId: string;
+									/**
+									 * @type string
+									 */
+									type: TypeEnumKey;
+									/**
+									 * @type object | undefined
+									 */
+									gitComments?:
+										| {
+												/**
+												 * @type boolean
+												 */
+												onPullRequest: false | true;
+												/**
+												 * @type boolean
+												 */
+												onCommit: false | true;
+										  }
+										| undefined;
+									/**
+									 * @type string
+									 */
+									provider: ProviderEnumKey;
 							  };
 				  }
 				| {
@@ -9033,10 +9134,10 @@ export type UserEvent = {
 						 */
 						usedAppToken: false | true;
 						/**
-						 * @description Source repository, \"owner/name\".
+						 * @description Source repository, \"owner/name\". Null when the pushed content was generated in-request (push-files-to-repo) rather than copied from a repository.
 						 * @type string
 						 */
-						sourceRepo: string;
+						sourceRepo: string | null;
 						/**
 						 * @type string
 						 */
