@@ -53075,7 +53075,9 @@ export type ListSessionSnapshotsResponse =
 
 /**
  * @description The unique identifier of the snapshot to retrieve.
- * @example snap_abc123
+ * @maxLength 33
+ * @pattern ^(?:snap_[A-Za-z0-9]{28}|vhs_[a-z0-9]{28})$
+ * @example snap_1234567890123456789012345678
  * @type string
  */
 export type GetSessionSnapshotPathSnapshotId = string;
@@ -53183,7 +53185,9 @@ export type GetSessionSnapshotResponse =
 
 /**
  * @description The unique identifier of the snapshot to delete.
- * @example snap_abc123
+ * @maxLength 33
+ * @pattern ^(?:snap_[A-Za-z0-9]{28}|vhs_[a-z0-9]{28})$
+ * @example snap_1234567890123456789012345678
  * @type string
  */
 export type DeleteSessionSnapshotPathSnapshotId = string;

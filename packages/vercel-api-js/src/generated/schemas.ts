@@ -23898,6 +23898,8 @@ export const listSessionSnapshotsResponseSchema = z.union([
 
 export const getSessionSnapshotPathSnapshotIdSchema = z
 	.string()
+	.max(33)
+	.regex(/^(?:snap_[A-Za-z0-9]{28}|vhs_[a-z0-9]{28})$/)
 	.describe("The unique identifier of the snapshot to retrieve.");
 
 export const getSessionSnapshotQueryTeamIdSchema = z
@@ -23936,6 +23938,8 @@ export const getSessionSnapshotResponseSchema = z.union([
 
 export const deleteSessionSnapshotPathSnapshotIdSchema = z
 	.string()
+	.max(33)
+	.regex(/^(?:snap_[A-Za-z0-9]{28}|vhs_[a-z0-9]{28})$/)
 	.describe("The unique identifier of the snapshot to delete.");
 
 export const deleteSessionSnapshotQueryTeamIdSchema = z
