@@ -3666,6 +3666,40 @@ export const userEventSchema = z
 									prId: z.number().nullish(),
 								})
 								.strict(),
+							z
+								.object({
+									createdAt: z.number().optional(),
+									eventful: z.union([z.literal(false), z.literal(true)]).optional(),
+									headInfo: z
+										.object({
+											owner: z.string().describe("Owner (namespace) slug, e.g. `acme`."),
+											ownerId: z.string().describe("Origin namespace id (`ns_…`)."),
+											ref: z.string(),
+											repo: z.string().describe("Repository name, e.g. `api`."),
+											repoId: z.string().describe("Origin repository id."),
+											sha: z.string(),
+										})
+										.describe("Cursor Origin"),
+									installationId: z
+										.string()
+										.describe("Origin installation id (`i_…`) used to resolve the credential."),
+									linkedProjectId: z.string().optional(),
+									owner: z.string(),
+									prId: z.number(),
+									projectId: z.unknown().nullable(),
+									customEnvId: z.unknown().nullish(),
+									repo: z.string(),
+									repoId: z.string(),
+									type: z.enum(["cursor-origin-now-comment"]),
+									gitComments: z
+										.object({
+											onPullRequest: z.union([z.literal(false), z.literal(true)]),
+											onCommit: z.union([z.literal(false), z.literal(true)]),
+										})
+										.optional(),
+									provider: z.enum(["cursor-origin"]),
+								})
+								.strict(),
 						]),
 					})
 					.strict(),
@@ -4444,7 +4478,12 @@ export const userEventSchema = z
 							.nullable()
 							.describe("Set only when an App installation token was minted (GitHub only)."),
 						usedAppToken: z.union([z.literal(false), z.literal(true)]),
-						sourceRepo: z.string().describe('Source repository, "owner/name".'),
+						sourceRepo: z
+							.string()
+							.nullable()
+							.describe(
+								'Source repository, "owner/name". Null when the pushed content was generated in-request (push-files-to-repo) rather than copied from a repository.',
+							),
 						sourceCommitSha: z.string().nullable(),
 						destinationRepo: z
 							.string()
@@ -4456,7 +4495,7 @@ export const userEventSchema = z
 						resultCommitSha: z.string().nullable(),
 						outcome: z.enum(["failure", "success"]),
 						failureStage: z
-							.enum(["authorization", "push", "unexpected", "unknown"])
+							.enum(["authorization", "push", "unexpected", "unknown", "validation"])
 							.optional()
 							.describe("Mirrors `PushFailureStage` in `@api/git-push-repo`."),
 						failureCode: z
