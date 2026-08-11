@@ -519,7 +519,7 @@ export const registrantFieldSchema = z
 	])
 	.describe("Schema definition for registrant fields.");
 
-export const edgeConfigItemValueSchema = z
+export const globalConfigItemValueSchema = z
 	.union([
 		z.string(),
 		z.number(),
@@ -529,7 +529,7 @@ export const edgeConfigItemValueSchema = z
 	])
 	.nullable();
 
-export const edgeConfigItemSchema = z
+export const globalConfigItemSchema = z
 	.object({
 		key: z.string(),
 		value: z.unknown(),
@@ -540,7 +540,7 @@ export const edgeConfigItemSchema = z
 	})
 	.describe("The Global Config.");
 
-export const edgeConfigTokenSchema = z
+export const globalConfigTokenSchema = z
 	.object({
 		partialToken: z
 			.string()
