@@ -1,5 +1,18 @@
 # vercel-api-js
 
+## 1.9.1
+
+### Patch Changes
+
+- 760ff59: Added 'region' field to the Drive type and schema.
+- 760ff59: Added handling for 404 response to getProjectTrace endpoint and its response types.
+- 4605a05: Added teamDisjunctiveProductionSecretPolicyEnum and TeamDisjunctiveProductionSecretPolicyEnumKey types to support policy configuration for production secrets.
+- 090a072: Added new event types 'custom-metric-metadata-deleted' and 'custom-metric-metadata-updated' to userEventSchema and related enums.
+- 4605a05: Added enforce-disjunctive-production-secrets as a supported event type in enum schemas and event type constants.
+- 4605a05: Added disjunctiveProductionSecretPolicy field to Team type for specifying if production secrets must differ from preview or development.
+- 090a072: Extended UserEvent type to include a new variant with 'metricName' property and additional fields.
+- 760ff59: Added 'sandbox-drive-created' and 'sandbox-drive-deleted' event types to user event schemas and types.
+
 ## 1.9.0
 
 ### Minor Changes
