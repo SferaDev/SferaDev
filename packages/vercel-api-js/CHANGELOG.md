@@ -1,5 +1,19 @@
 # vercel-api-js
 
+## 1.10.0
+
+### Minor Changes
+
+- ee644e4: Added API endpoints for managing AI Gateway Virtual Model Configs, including create, get, update, delete, and list operations.
+- c26f0e1: Added support for 'cursor-origin-now-comment' event type to the userEvent schema and type definitions.
+
+### Patch Changes
+
+- c26f0e1: Added 'validation' as a possible value for the 'failureStage' field in userEvent schema and types.
+- ee644e4: Updated schema and type pattern for team slug validation to accept team IDs in Docker repository endpoints.
+- c26f0e1: Made 'sourceRepo' field nullable in userEvent schema to account for generated content.
+- ee644e4: Added types and schemas for AI Gateway Virtual Model Configs and related enums.
+
 ## 1.9.2
 
 ### Patch Changes
