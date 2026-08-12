@@ -3,6 +3,313 @@
  * Do not edit manually.
  */
 
+export const scopeEnum = {
+	global: "global",
+	specific: "specific",
+	zone: "zone",
+} as const;
+
+export type ScopeEnumKey = (typeof scopeEnum)[keyof typeof scopeEnum];
+
+export const aiGatewayVirtualModelConfigInferenceRegionScopeEnum = {
+	global: "global",
+	specific: "specific",
+	zone: "zone",
+} as const;
+
+export type AiGatewayVirtualModelConfigInferenceRegionScopeEnumKey =
+	(typeof aiGatewayVirtualModelConfigInferenceRegionScopeEnum)[keyof typeof aiGatewayVirtualModelConfigInferenceRegionScopeEnum];
+
+export const aiGatewayVirtualModelConfigSelectorEnum = {
+	cost: "cost",
+	priority: "priority",
+	tps: "tps",
+	ttft: "ttft",
+} as const;
+
+export type AiGatewayVirtualModelConfigSelectorEnumKey =
+	(typeof aiGatewayVirtualModelConfigSelectorEnum)[keyof typeof aiGatewayVirtualModelConfigSelectorEnum];
+
+export const aiGatewayVirtualModelConfigSortEnum = {
+	cost: "cost",
+	latency: "latency",
+	price: "price",
+	throughput: "throughput",
+	tps: "tps",
+	ttft: "ttft",
+} as const;
+
+export type AiGatewayVirtualModelConfigSortEnumKey =
+	(typeof aiGatewayVirtualModelConfigSortEnum)[keyof typeof aiGatewayVirtualModelConfigSortEnum];
+
+export const aiGatewayVirtualModelConfigHasEnum = {
+	"implicit-caching": "implicit-caching",
+	vision: "vision",
+} as const;
+
+export type AiGatewayVirtualModelConfigHasEnumKey =
+	(typeof aiGatewayVirtualModelConfigHasEnum)[keyof typeof aiGatewayVirtualModelConfigHasEnum];
+
+export const aiGatewayVirtualModelConfigCachingEnum = {
+	auto: "auto",
+} as const;
+
+export type AiGatewayVirtualModelConfigCachingEnumKey =
+	(typeof aiGatewayVirtualModelConfigCachingEnum)[keyof typeof aiGatewayVirtualModelConfigCachingEnum];
+
+export const aiGatewayVirtualModelConfigServiceTierEnum = {
+	fast: "fast",
+	flex: "flex",
+	priority: "priority",
+} as const;
+
+export type AiGatewayVirtualModelConfigServiceTierEnumKey =
+	(typeof aiGatewayVirtualModelConfigServiceTierEnum)[keyof typeof aiGatewayVirtualModelConfigServiceTierEnum];
+
+export const aiGatewayVirtualModelConfigSpeedEnum = {
+	fast: "fast",
+} as const;
+
+export type AiGatewayVirtualModelConfigSpeedEnumKey =
+	(typeof aiGatewayVirtualModelConfigSpeedEnum)[keyof typeof aiGatewayVirtualModelConfigSpeedEnum];
+
+/**
+ * @description Public response shape for virtual model configs. Used so OpenAPI generation can avoid ElectroDB\'s recursive EntityItem types.
+ * @type object
+ */
+export type AiGatewayVirtualModelConfig = {
+	/**
+	 * @description Team (owner) that owns this VMC.
+	 * @type string
+	 */
+	ownerId: string;
+	/**
+	 * @description Client-facing alias used as the model slug in Gateway calls.
+	 * @type string
+	 */
+	virtualModelSlug: string;
+	/**
+	 * @description Human-readable name for UI.
+	 * @type string | undefined
+	 */
+	displayName?: string | undefined;
+	/**
+	 * @description Optional description for UI.
+	 * @type string | undefined
+	 */
+	description?: string | undefined;
+	/**
+	 * @description Whether this VMC is soft-deleted.
+	 * @type boolean
+	 */
+	deleted: false | true;
+	/**
+	 * @description UI lifecycle status: draft, active, or archived.
+	 * @type string
+	 */
+	status: string;
+	/**
+	 * @description Visibility in listings: public, internal, or stealth.
+	 * @type string | undefined
+	 */
+	visibility?: string | undefined;
+	/**
+	 * @description User id that last updated this VMC.
+	 * @type string | undefined
+	 */
+	updatedBy?: string | undefined;
+	/**
+	 * @description VMC kind: alias, relay, or router.
+	 * @type string
+	 */
+	kind: string;
+	/**
+	 * @description For kind=relay: URL the gateway forwards requests to as a transparent proxy.
+	 * @type string | undefined
+	 */
+	baseUrl?: string | undefined;
+	/**
+	 * @description The concrete model-provider instance this VMC resolves to.
+	 * @type string | undefined
+	 */
+	instanceId?: string | undefined;
+	/**
+	 * @description Ordered list of providers to try as fallbacks on failure.
+	 * @type array | undefined
+	 */
+	providerOrder?: string[] | undefined;
+	/**
+	 * @description Restrict routing to only these providers.
+	 * @type array | undefined
+	 */
+	providerOnly?: string[] | undefined;
+	/**
+	 * @description Region pinned on the VMC for system-credential routing (alias/router only).
+	 * @type object | undefined
+	 */
+	inferenceRegion?:
+		| {
+				/**
+				 * @description Per-provider region overrides keyed by provider slug.
+				 * @type object | undefined
+				 */
+				providers?:
+					| {
+							[key: string]: {
+								/**
+								 * @description Pin scope: `specific` (one provider region), `zone` (geo zone), or `global`.
+								 * @type string | undefined
+								 */
+								scope?: ScopeEnumKey | undefined;
+								/**
+								 * @description Geo zone (e.g. \"us\", \"eu\").
+								 * @type string | undefined
+								 */
+								geoRegion?: string | undefined;
+								/**
+								 * @description Provider-specific region identifier.
+								 * @type string | undefined
+								 */
+								providerRegion?: string | undefined;
+							};
+					  }
+					| undefined;
+				/**
+				 * @description Pin scope: `specific` (one provider region), `zone` (geo zone), or `global`.
+				 * @type string | undefined
+				 */
+				scope?: AiGatewayVirtualModelConfigInferenceRegionScopeEnumKey | undefined;
+				/**
+				 * @description Geo zone (e.g. \"us\", \"eu\").
+				 * @type string | undefined
+				 */
+				geoRegion?: string | undefined;
+				/**
+				 * @description Provider-specific region identifier.
+				 * @type string | undefined
+				 */
+				providerRegion?: string | undefined;
+		  }
+		| undefined;
+	/**
+	 * @description Canonical model slug this VMC maps to (e.g. \"creator/model\"). Not used by kind=router.
+	 * @type string | undefined
+	 */
+	modelSlug?: string | undefined;
+	/**
+	 * @description For kind=router: ordered candidates, model slugs or router references. Otherwise: fallback models.
+	 * @type array | undefined
+	 */
+	models?: string[] | undefined;
+	/**
+	 * @description For kind=router: how to order candidates.
+	 * @type string | undefined
+	 */
+	selector?: AiGatewayVirtualModelConfigSelectorEnumKey | undefined;
+	/**
+	 * @description For kind=router: capability tags a candidate must have.
+	 * @type array | undefined
+	 */
+	requires?: string[] | undefined;
+	/**
+	 * @description BYOK credential IDs allowed for this VMC.
+	 * @type array | undefined
+	 */
+	byokCredentialIds?: string[] | undefined;
+	/**
+	 * @description Observability tags attached to requests through this VMC.
+	 * @type array | undefined
+	 */
+	observabilityTags?: string[] | undefined;
+	/**
+	 * @description Rank eligible providers by an attribute.
+	 * @type string | undefined
+	 */
+	sort?: AiGatewayVirtualModelConfigSortEnumKey | undefined;
+	/**
+	 * @description Limit providers to those with these features.
+	 * @type array | undefined
+	 */
+	has?: AiGatewayVirtualModelConfigHasEnumKey[] | undefined;
+	/**
+	 * @description Use caching if available.
+	 * @type string | undefined
+	 */
+	caching?: AiGatewayVirtualModelConfigCachingEnumKey | undefined;
+	/**
+	 * @description Service tier for providers that support it.
+	 * @type string | undefined
+	 */
+	serviceTier?: AiGatewayVirtualModelConfigServiceTierEnumKey | undefined;
+	/**
+	 * @description Per-request provider timeouts in ms, keyed by provider slug for BYOK credentials.
+	 * @type object | undefined
+	 */
+	providerTimeouts?:
+		| {
+				/**
+				 * @type object | undefined
+				 */
+				byok?:
+					| {
+							[key: string]: number;
+					  }
+					| undefined;
+		  }
+		| undefined;
+	/**
+	 * @description Only use providers with zero data retention.
+	 * @type boolean | undefined
+	 */
+	zeroDataRetention?: (false | true) | undefined;
+	/**
+	 * @description Only use HIPAA-compliant providers.
+	 * @type boolean | undefined
+	 */
+	hipaaCompliant?: (false | true) | undefined;
+	/**
+	 * @description Only use providers that will not train on your prompts.
+	 * @type boolean | undefined
+	 */
+	disallowPromptTraining?: (false | true) | undefined;
+	/**
+	 * @description Only use fastest providers with short timeouts.
+	 * @type string | undefined
+	 */
+	speed?: AiGatewayVirtualModelConfigSpeedEnumKey | undefined;
+	/**
+	 * @description Allow fallback from fast to standard providers on failure.
+	 * @type boolean | undefined
+	 */
+	allowFallbackFromFast?: (false | true) | undefined;
+	/**
+	 * @description Creation timestamp (epoch ms).
+	 * @type number
+	 */
+	createdAt: number;
+	/**
+	 * @description Last update timestamp (epoch ms).
+	 * @type number
+	 */
+	updatedAt: number;
+};
+
+/**
+ * @type object
+ */
+export type AiGatewayVirtualModelConfigList = {
+	/**
+	 * @description The page of VMCs.
+	 * @type array
+	 */
+	virtualModelConfigs: unknown[];
+	/**
+	 * @description Cursor for the next page, or null when no more pages remain.
+	 * @type string
+	 */
+	cursor: string | null;
+};
+
 export const aiGatewayRuleTypeEnum = {
 	deny: "deny",
 	rewrite: "rewrite",
@@ -2866,14 +3173,6 @@ export const accessEnum = {
 } as const;
 
 export type AccessEnumKey = (typeof accessEnum)[keyof typeof accessEnum];
-
-export const scopeEnum = {
-	project: "project",
-	team: "team",
-	user: "user",
-} as const;
-
-export type ScopeEnumKey = (typeof scopeEnum)[keyof typeof scopeEnum];
 
 export const previousEnum = {
 	basic: "basic",
@@ -11323,6 +11622,29 @@ export type UserEvent = {
 										 * @type object | undefined
 										 */
 										connexTokenRequests?:
+											| {
+													/**
+													 * @type number
+													 */
+													updatedAt: number;
+													/**
+													 * @type number | undefined
+													 */
+													blockedFrom?: number | undefined;
+													/**
+													 * @type number | undefined
+													 */
+													blockedUntil?: number | undefined;
+													/**
+													 * @type string
+													 */
+													blockReason: BlockReasonEnumKey;
+											  }
+											| undefined;
+										/**
+										 * @type object | undefined
+										 */
+										kmsOperations?:
 											| {
 													/**
 													 * @type number
@@ -26468,6 +26790,529 @@ export type DeleteAccessGroupProjectResponse =
 	| DeleteAccessGroupProjectStatus401
 	| DeleteAccessGroupProjectStatus403
 	| DeleteAccessGroupProjectStatus410;
+
+/**
+ * @description The Team identifier to perform the request on behalf of.
+ * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+ * @type string | undefined
+ */
+export type CreateAiGatewayVirtualModelConfigQueryTeamId = string | undefined;
+
+/**
+ * @description The Team slug to perform the request on behalf of.
+ * @example my-team-url-slug
+ * @type string | undefined
+ */
+export type CreateAiGatewayVirtualModelConfigQuerySlug = string | undefined;
+
+/**
+ * @type unknown
+ */
+export type CreateAiGatewayVirtualModelConfigStatus201 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateAiGatewayVirtualModelConfigStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateAiGatewayVirtualModelConfigStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateAiGatewayVirtualModelConfigStatus403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateAiGatewayVirtualModelConfigStatus409 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateAiGatewayVirtualModelConfigStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateAiGatewayVirtualModelConfigStatus429 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateAiGatewayVirtualModelConfigStatus500 = unknown;
+
+/**
+ * @type object
+ */
+export type CreateAiGatewayVirtualModelConfigRequestConfig = {
+	data?: never | undefined;
+	pathParams?: never | undefined;
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				teamId?: CreateAiGatewayVirtualModelConfigQueryTeamId | undefined;
+				slug?: CreateAiGatewayVirtualModelConfigQuerySlug | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: "/v1/ai-gateway/virtual-model-configs";
+};
+
+/**
+ * @type object
+ */
+export type CreateAiGatewayVirtualModelConfigResponses = {
+	"201": CreateAiGatewayVirtualModelConfigStatus201;
+	"400": CreateAiGatewayVirtualModelConfigStatus400;
+	"401": CreateAiGatewayVirtualModelConfigStatus401;
+	"403": CreateAiGatewayVirtualModelConfigStatus403;
+	"409": CreateAiGatewayVirtualModelConfigStatus409;
+	"410": CreateAiGatewayVirtualModelConfigStatus410;
+	"429": CreateAiGatewayVirtualModelConfigStatus429;
+	"500": CreateAiGatewayVirtualModelConfigStatus500;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type CreateAiGatewayVirtualModelConfigResponse =
+	| CreateAiGatewayVirtualModelConfigStatus201
+	| CreateAiGatewayVirtualModelConfigStatus400
+	| CreateAiGatewayVirtualModelConfigStatus401
+	| CreateAiGatewayVirtualModelConfigStatus403
+	| CreateAiGatewayVirtualModelConfigStatus409
+	| CreateAiGatewayVirtualModelConfigStatus410
+	| CreateAiGatewayVirtualModelConfigStatus429
+	| CreateAiGatewayVirtualModelConfigStatus500;
+
+/**
+ * @type string | undefined
+ */
+export type GetAiGatewayVirtualModelConfigQueryOwnerId = string | undefined;
+
+/**
+ * @type string
+ */
+export type GetAiGatewayVirtualModelConfigQueryVirtualModelSlug = string;
+
+/**
+ * @description The Team identifier to perform the request on behalf of.
+ * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+ * @type string | undefined
+ */
+export type GetAiGatewayVirtualModelConfigQueryTeamId = string | undefined;
+
+/**
+ * @description The Team slug to perform the request on behalf of.
+ * @example my-team-url-slug
+ * @type string | undefined
+ */
+export type GetAiGatewayVirtualModelConfigQuerySlug = string | undefined;
+
+/**
+ * @type unknown
+ */
+export type GetAiGatewayVirtualModelConfigStatus200 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetAiGatewayVirtualModelConfigStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetAiGatewayVirtualModelConfigStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetAiGatewayVirtualModelConfigStatus403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetAiGatewayVirtualModelConfigStatus404 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetAiGatewayVirtualModelConfigStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetAiGatewayVirtualModelConfigStatus500 = unknown;
+
+/**
+ * @type object
+ */
+export type GetAiGatewayVirtualModelConfigRequestConfig = {
+	data?: never | undefined;
+	pathParams?: never | undefined;
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				ownerId?: GetAiGatewayVirtualModelConfigQueryOwnerId | undefined;
+				virtualModelSlug: GetAiGatewayVirtualModelConfigQueryVirtualModelSlug;
+				teamId?: GetAiGatewayVirtualModelConfigQueryTeamId | undefined;
+				slug?: GetAiGatewayVirtualModelConfigQuerySlug | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: "/v1/ai-gateway/virtual-model-configs";
+};
+
+/**
+ * @type object
+ */
+export type GetAiGatewayVirtualModelConfigResponses = {
+	"200": GetAiGatewayVirtualModelConfigStatus200;
+	"400": GetAiGatewayVirtualModelConfigStatus400;
+	"401": GetAiGatewayVirtualModelConfigStatus401;
+	"403": GetAiGatewayVirtualModelConfigStatus403;
+	"404": GetAiGatewayVirtualModelConfigStatus404;
+	"410": GetAiGatewayVirtualModelConfigStatus410;
+	"500": GetAiGatewayVirtualModelConfigStatus500;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetAiGatewayVirtualModelConfigResponse =
+	| GetAiGatewayVirtualModelConfigStatus200
+	| GetAiGatewayVirtualModelConfigStatus400
+	| GetAiGatewayVirtualModelConfigStatus401
+	| GetAiGatewayVirtualModelConfigStatus403
+	| GetAiGatewayVirtualModelConfigStatus404
+	| GetAiGatewayVirtualModelConfigStatus410
+	| GetAiGatewayVirtualModelConfigStatus500;
+
+/**
+ * @description The Team identifier to perform the request on behalf of.
+ * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+ * @type string | undefined
+ */
+export type UpdateAiGatewayVirtualModelConfigQueryTeamId = string | undefined;
+
+/**
+ * @description The Team slug to perform the request on behalf of.
+ * @example my-team-url-slug
+ * @type string | undefined
+ */
+export type UpdateAiGatewayVirtualModelConfigQuerySlug = string | undefined;
+
+/**
+ * @type unknown
+ */
+export type UpdateAiGatewayVirtualModelConfigStatus200 = unknown;
+
+/**
+ * @type unknown
+ */
+export type UpdateAiGatewayVirtualModelConfigStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type UpdateAiGatewayVirtualModelConfigStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type UpdateAiGatewayVirtualModelConfigStatus403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type UpdateAiGatewayVirtualModelConfigStatus404 = unknown;
+
+/**
+ * @type unknown
+ */
+export type UpdateAiGatewayVirtualModelConfigStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
+export type UpdateAiGatewayVirtualModelConfigStatus500 = unknown;
+
+/**
+ * @type object
+ */
+export type UpdateAiGatewayVirtualModelConfigRequestConfig = {
+	data?: never | undefined;
+	pathParams?: never | undefined;
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				teamId?: UpdateAiGatewayVirtualModelConfigQueryTeamId | undefined;
+				slug?: UpdateAiGatewayVirtualModelConfigQuerySlug | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: "/v1/ai-gateway/virtual-model-configs";
+};
+
+/**
+ * @type object
+ */
+export type UpdateAiGatewayVirtualModelConfigResponses = {
+	"200": UpdateAiGatewayVirtualModelConfigStatus200;
+	"400": UpdateAiGatewayVirtualModelConfigStatus400;
+	"401": UpdateAiGatewayVirtualModelConfigStatus401;
+	"403": UpdateAiGatewayVirtualModelConfigStatus403;
+	"404": UpdateAiGatewayVirtualModelConfigStatus404;
+	"410": UpdateAiGatewayVirtualModelConfigStatus410;
+	"500": UpdateAiGatewayVirtualModelConfigStatus500;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type UpdateAiGatewayVirtualModelConfigResponse =
+	| UpdateAiGatewayVirtualModelConfigStatus200
+	| UpdateAiGatewayVirtualModelConfigStatus400
+	| UpdateAiGatewayVirtualModelConfigStatus401
+	| UpdateAiGatewayVirtualModelConfigStatus403
+	| UpdateAiGatewayVirtualModelConfigStatus404
+	| UpdateAiGatewayVirtualModelConfigStatus410
+	| UpdateAiGatewayVirtualModelConfigStatus500;
+
+/**
+ * @type string | undefined
+ */
+export type DeleteAiGatewayVirtualModelConfigQueryOwnerId = string | undefined;
+
+/**
+ * @type string
+ */
+export type DeleteAiGatewayVirtualModelConfigQueryVirtualModelSlug = string;
+
+/**
+ * @description The Team identifier to perform the request on behalf of.
+ * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+ * @type string | undefined
+ */
+export type DeleteAiGatewayVirtualModelConfigQueryTeamId = string | undefined;
+
+/**
+ * @description The Team slug to perform the request on behalf of.
+ * @example my-team-url-slug
+ * @type string | undefined
+ */
+export type DeleteAiGatewayVirtualModelConfigQuerySlug = string | undefined;
+
+/**
+ * @type unknown
+ */
+export type DeleteAiGatewayVirtualModelConfigStatus204 = unknown;
+
+/**
+ * @type unknown
+ */
+export type DeleteAiGatewayVirtualModelConfigStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type DeleteAiGatewayVirtualModelConfigStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type DeleteAiGatewayVirtualModelConfigStatus403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type DeleteAiGatewayVirtualModelConfigStatus404 = unknown;
+
+/**
+ * @type unknown
+ */
+export type DeleteAiGatewayVirtualModelConfigStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
+export type DeleteAiGatewayVirtualModelConfigStatus500 = unknown;
+
+/**
+ * @type object
+ */
+export type DeleteAiGatewayVirtualModelConfigRequestConfig = {
+	data?: never | undefined;
+	pathParams?: never | undefined;
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				ownerId?: DeleteAiGatewayVirtualModelConfigQueryOwnerId | undefined;
+				virtualModelSlug: DeleteAiGatewayVirtualModelConfigQueryVirtualModelSlug;
+				teamId?: DeleteAiGatewayVirtualModelConfigQueryTeamId | undefined;
+				slug?: DeleteAiGatewayVirtualModelConfigQuerySlug | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: "/v1/ai-gateway/virtual-model-configs";
+};
+
+/**
+ * @type object
+ */
+export type DeleteAiGatewayVirtualModelConfigResponses = {
+	"204": DeleteAiGatewayVirtualModelConfigStatus204;
+	"400": DeleteAiGatewayVirtualModelConfigStatus400;
+	"401": DeleteAiGatewayVirtualModelConfigStatus401;
+	"403": DeleteAiGatewayVirtualModelConfigStatus403;
+	"404": DeleteAiGatewayVirtualModelConfigStatus404;
+	"410": DeleteAiGatewayVirtualModelConfigStatus410;
+	"500": DeleteAiGatewayVirtualModelConfigStatus500;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type DeleteAiGatewayVirtualModelConfigResponse =
+	| DeleteAiGatewayVirtualModelConfigStatus204
+	| DeleteAiGatewayVirtualModelConfigStatus400
+	| DeleteAiGatewayVirtualModelConfigStatus401
+	| DeleteAiGatewayVirtualModelConfigStatus403
+	| DeleteAiGatewayVirtualModelConfigStatus404
+	| DeleteAiGatewayVirtualModelConfigStatus410
+	| DeleteAiGatewayVirtualModelConfigStatus500;
+
+/**
+ * @type string | undefined
+ */
+export type ListAiGatewayVirtualModelConfigsQueryOwnerId = string | undefined;
+
+/**
+ * @minLength 1
+ * @type integer | undefined
+ */
+export type ListAiGatewayVirtualModelConfigsQueryLimit = number | undefined;
+
+/**
+ * @type string | undefined
+ */
+export type ListAiGatewayVirtualModelConfigsQueryCursor = string | undefined;
+
+/**
+ * @description The Team identifier to perform the request on behalf of.
+ * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+ * @type string | undefined
+ */
+export type ListAiGatewayVirtualModelConfigsQueryTeamId = string | undefined;
+
+/**
+ * @description The Team slug to perform the request on behalf of.
+ * @example my-team-url-slug
+ * @type string | undefined
+ */
+export type ListAiGatewayVirtualModelConfigsQuerySlug = string | undefined;
+
+/**
+ * @type unknown
+ */
+export type ListAiGatewayVirtualModelConfigsStatus200 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ListAiGatewayVirtualModelConfigsStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ListAiGatewayVirtualModelConfigsStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ListAiGatewayVirtualModelConfigsStatus403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ListAiGatewayVirtualModelConfigsStatus410 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ListAiGatewayVirtualModelConfigsStatus500 = unknown;
+
+/**
+ * @type object
+ */
+export type ListAiGatewayVirtualModelConfigsRequestConfig = {
+	data?: never | undefined;
+	pathParams?: never | undefined;
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				ownerId?: ListAiGatewayVirtualModelConfigsQueryOwnerId | undefined;
+				limit?: ListAiGatewayVirtualModelConfigsQueryLimit | undefined;
+				cursor?: ListAiGatewayVirtualModelConfigsQueryCursor | undefined;
+				teamId?: ListAiGatewayVirtualModelConfigsQueryTeamId | undefined;
+				slug?: ListAiGatewayVirtualModelConfigsQuerySlug | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: "/v1/ai-gateway/virtual-model-configs/list";
+};
+
+/**
+ * @type object
+ */
+export type ListAiGatewayVirtualModelConfigsResponses = {
+	"200": ListAiGatewayVirtualModelConfigsStatus200;
+	"400": ListAiGatewayVirtualModelConfigsStatus400;
+	"401": ListAiGatewayVirtualModelConfigsStatus401;
+	"403": ListAiGatewayVirtualModelConfigsStatus403;
+	"410": ListAiGatewayVirtualModelConfigsStatus410;
+	"500": ListAiGatewayVirtualModelConfigsStatus500;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type ListAiGatewayVirtualModelConfigsResponse =
+	| ListAiGatewayVirtualModelConfigsStatus200
+	| ListAiGatewayVirtualModelConfigsStatus400
+	| ListAiGatewayVirtualModelConfigsStatus401
+	| ListAiGatewayVirtualModelConfigsStatus403
+	| ListAiGatewayVirtualModelConfigsStatus410
+	| ListAiGatewayVirtualModelConfigsStatus500;
 
 /**
  * @description The Team identifier to perform the request on behalf of.
@@ -61346,9 +62191,9 @@ export type GetRootResponse =
 	| GetRootStatus410;
 
 /**
- * @description Single Docker repository team slug component.
+ * @description Single Docker repository team slug or team ID component.
  * @maxLength 255
- * @pattern ^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$
+ * @pattern ^(?:[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?|team_[a-zA-Z0-9]+)$
  * @example team-slug
  * @type string
  */
@@ -61464,9 +62309,9 @@ export type GetByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestResponse =
 	| GetByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus416;
 
 /**
- * @description Single Docker repository team slug component.
+ * @description Single Docker repository team slug or team ID component.
  * @maxLength 255
- * @pattern ^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$
+ * @pattern ^(?:[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?|team_[a-zA-Z0-9]+)$
  * @example team-slug
  * @type string
  */
@@ -61582,9 +62427,9 @@ export type DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestResponse =
 	| DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus410;
 
 /**
- * @description Single Docker repository team slug component.
+ * @description Single Docker repository team slug or team ID component.
  * @maxLength 255
- * @pattern ^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$
+ * @pattern ^(?:[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?|team_[a-zA-Z0-9]+)$
  * @example team-slug
  * @type string
  */
@@ -61700,9 +62545,9 @@ export type GetByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidResponse
 	| GetByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus410;
 
 /**
- * @description Single Docker repository team slug component.
+ * @description Single Docker repository team slug or team ID component.
  * @maxLength 255
- * @pattern ^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$
+ * @pattern ^(?:[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?|team_[a-zA-Z0-9]+)$
  * @example team-slug
  * @type string
  */
@@ -61819,9 +62664,9 @@ export type DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidRespo
 	| DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus410;
 
 /**
- * @description Single Docker repository team slug component.
+ * @description Single Docker repository team slug or team ID component.
  * @maxLength 255
- * @pattern ^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$
+ * @pattern ^(?:[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?|team_[a-zA-Z0-9]+)$
  * @example team-slug
  * @type string
  */
@@ -61945,9 +62790,9 @@ export type UpdateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidRespo
 	| UpdateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus413;
 
 /**
- * @description Single Docker repository team slug component.
+ * @description Single Docker repository team slug or team ID component.
  * @maxLength 255
- * @pattern ^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$
+ * @pattern ^(?:[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?|team_[a-zA-Z0-9]+)$
  * @example team-slug
  * @type string
  */
@@ -62088,9 +62933,9 @@ export type ReplaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidResp
 	| ReplaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus413;
 
 /**
- * @description Single Docker repository team slug component.
+ * @description Single Docker repository team slug or team ID component.
  * @maxLength 255
- * @pattern ^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$
+ * @pattern ^(?:[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?|team_[a-zA-Z0-9]+)$
  * @example team-slug
  * @type string
  */
@@ -62127,7 +62972,7 @@ export type CreateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsQueryMount 
 /**
  * @description Source repository to mount the blob from.
  * @maxLength 255
- * @pattern ^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?\\/[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?\\/[a-z0-9]+(?:(?:\\.|_|__|-+)[a-z0-9]+)*$
+ * @pattern ^(?:[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?|team_[a-zA-Z0-9]+)\\/[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?\\/[a-z0-9]+(?:(?:\\.|_|__|-+)[a-z0-9]+)*$
  * @type string | undefined
  */
 export type CreateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsQueryFrom = string | undefined;
@@ -62222,9 +63067,9 @@ export type CreateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsResponse =
 	| CreateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsStatus410;
 
 /**
- * @description Single Docker repository team slug component.
+ * @description Single Docker repository team slug or team ID component.
  * @maxLength 255
- * @pattern ^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$
+ * @pattern ^(?:[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?|team_[a-zA-Z0-9]+)$
  * @example team-slug
  * @type string
  */
@@ -62350,9 +63195,9 @@ export type ReplaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceRe
 	| ReplaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus413;
 
 /**
- * @description Single Docker repository team slug component.
+ * @description Single Docker repository team slug or team ID component.
  * @maxLength 255
- * @pattern ^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$
+ * @pattern ^(?:[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?|team_[a-zA-Z0-9]+)$
  * @example team-slug
  * @type string
  */
@@ -62462,9 +63307,9 @@ export type GetByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceRespon
 	| GetByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus410;
 
 /**
- * @description Single Docker repository team slug component.
+ * @description Single Docker repository team slug or team ID component.
  * @maxLength 255
- * @pattern ^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$
+ * @pattern ^(?:[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?|team_[a-zA-Z0-9]+)$
  * @example team-slug
  * @type string
  */
@@ -62582,9 +63427,9 @@ export type DeleteByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceRes
 	| DeleteByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus410;
 
 /**
- * @description Single Docker repository team slug component.
+ * @description Single Docker repository team slug or team ID component.
  * @maxLength 255
- * @pattern ^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$
+ * @pattern ^(?:[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?|team_[a-zA-Z0-9]+)$
  * @example team-slug
  * @type string
  */

@@ -165,6 +165,14 @@ import type {
 	CreateAiGatewayRuleStatus409,
 	CreateAiGatewayRuleStatus410,
 	CreateAiGatewayRuleStatus500,
+	CreateAiGatewayVirtualModelConfigResponse,
+	CreateAiGatewayVirtualModelConfigStatus400,
+	CreateAiGatewayVirtualModelConfigStatus401,
+	CreateAiGatewayVirtualModelConfigStatus403,
+	CreateAiGatewayVirtualModelConfigStatus409,
+	CreateAiGatewayVirtualModelConfigStatus410,
+	CreateAiGatewayVirtualModelConfigStatus429,
+	CreateAiGatewayVirtualModelConfigStatus500,
 	CreateApiKeysResponse,
 	CreateApiKeysStatus400,
 	CreateApiKeysStatus401,
@@ -527,6 +535,13 @@ import type {
 	DeleteAiGatewayRuleStatus404,
 	DeleteAiGatewayRuleStatus410,
 	DeleteAiGatewayRuleStatus500,
+	DeleteAiGatewayVirtualModelConfigResponse,
+	DeleteAiGatewayVirtualModelConfigStatus400,
+	DeleteAiGatewayVirtualModelConfigStatus401,
+	DeleteAiGatewayVirtualModelConfigStatus403,
+	DeleteAiGatewayVirtualModelConfigStatus404,
+	DeleteAiGatewayVirtualModelConfigStatus410,
+	DeleteAiGatewayVirtualModelConfigStatus500,
 	DeleteAliasResponse,
 	DeleteAliasStatus400,
 	DeleteAliasStatus401,
@@ -864,6 +879,13 @@ import type {
 	GetActiveAttackStatusStatus403,
 	GetActiveAttackStatusStatus404,
 	GetActiveAttackStatusStatus410,
+	GetAiGatewayVirtualModelConfigResponse,
+	GetAiGatewayVirtualModelConfigStatus400,
+	GetAiGatewayVirtualModelConfigStatus401,
+	GetAiGatewayVirtualModelConfigStatus403,
+	GetAiGatewayVirtualModelConfigStatus404,
+	GetAiGatewayVirtualModelConfigStatus410,
+	GetAiGatewayVirtualModelConfigStatus500,
 	GetAliasResponse,
 	GetAliasStatus400,
 	GetAliasStatus401,
@@ -1642,6 +1664,12 @@ import type {
 	ListAiGatewayRulesStatus403,
 	ListAiGatewayRulesStatus410,
 	ListAiGatewayRulesStatus500,
+	ListAiGatewayVirtualModelConfigsResponse,
+	ListAiGatewayVirtualModelConfigsStatus400,
+	ListAiGatewayVirtualModelConfigsStatus401,
+	ListAiGatewayVirtualModelConfigsStatus403,
+	ListAiGatewayVirtualModelConfigsStatus410,
+	ListAiGatewayVirtualModelConfigsStatus500,
 	ListAliasesResponse,
 	ListAliasesStatus400,
 	ListAliasesStatus401,
@@ -2180,6 +2208,13 @@ import type {
 	UpdateAiGatewayRuleStatus404,
 	UpdateAiGatewayRuleStatus410,
 	UpdateAiGatewayRuleStatus500,
+	UpdateAiGatewayVirtualModelConfigResponse,
+	UpdateAiGatewayVirtualModelConfigStatus400,
+	UpdateAiGatewayVirtualModelConfigStatus401,
+	UpdateAiGatewayVirtualModelConfigStatus403,
+	UpdateAiGatewayVirtualModelConfigStatus404,
+	UpdateAiGatewayVirtualModelConfigStatus410,
+	UpdateAiGatewayVirtualModelConfigStatus500,
 	UpdateAttackChallengeModeResponse,
 	UpdateAttackChallengeModeStatus400,
 	UpdateAttackChallengeModeStatus401,
@@ -3001,6 +3036,217 @@ export async function deleteAccessGroupProject(
 	>({
 		method: "DELETE",
 		url: `/v1/access-groups/${pathParams.accessGroupIdOrName}/projects/${pathParams.projectId}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Create virtual model config
+ * @description Create a virtual model config (VMC)
+ * @link /v1/ai-gateway/virtual-model-configs
+ */
+export async function createAiGatewayVirtualModelConfig(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	const data = await request<
+		CreateAiGatewayVirtualModelConfigResponse,
+		ErrorWrapper<
+			| CreateAiGatewayVirtualModelConfigStatus400
+			| CreateAiGatewayVirtualModelConfigStatus401
+			| CreateAiGatewayVirtualModelConfigStatus403
+			| CreateAiGatewayVirtualModelConfigStatus409
+			| CreateAiGatewayVirtualModelConfigStatus410
+			| CreateAiGatewayVirtualModelConfigStatus429
+			| CreateAiGatewayVirtualModelConfigStatus500
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
+		Record<string, string>
+	>({
+		method: "POST",
+		url: `/v1/ai-gateway/virtual-model-configs`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Get virtual model config
+ * @description Get a virtual model config
+ * @link /v1/ai-gateway/virtual-model-configs
+ */
+export async function getAiGatewayVirtualModelConfig(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { ownerId?: string; virtualModelSlug?: string; teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	const data = await request<
+		GetAiGatewayVirtualModelConfigResponse,
+		ErrorWrapper<
+			| GetAiGatewayVirtualModelConfigStatus400
+			| GetAiGatewayVirtualModelConfigStatus401
+			| GetAiGatewayVirtualModelConfigStatus403
+			| GetAiGatewayVirtualModelConfigStatus404
+			| GetAiGatewayVirtualModelConfigStatus410
+			| GetAiGatewayVirtualModelConfigStatus500
+		>,
+		null,
+		Record<string, string>,
+		{ ownerId?: string; virtualModelSlug?: string; teamId?: string; slug?: string },
+		Record<string, string>
+	>({
+		method: "GET",
+		url: `/v1/ai-gateway/virtual-model-configs`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Update virtual model config
+ * @description Update a virtual model config
+ * @link /v1/ai-gateway/virtual-model-configs
+ */
+export async function updateAiGatewayVirtualModelConfig(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	const data = await request<
+		UpdateAiGatewayVirtualModelConfigResponse,
+		ErrorWrapper<
+			| UpdateAiGatewayVirtualModelConfigStatus400
+			| UpdateAiGatewayVirtualModelConfigStatus401
+			| UpdateAiGatewayVirtualModelConfigStatus403
+			| UpdateAiGatewayVirtualModelConfigStatus404
+			| UpdateAiGatewayVirtualModelConfigStatus410
+			| UpdateAiGatewayVirtualModelConfigStatus500
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
+		Record<string, string>
+	>({
+		method: "PATCH",
+		url: `/v1/ai-gateway/virtual-model-configs`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Delete virtual model config
+ * @description Delete a virtual model config (soft delete)
+ * @link /v1/ai-gateway/virtual-model-configs
+ */
+export async function deleteAiGatewayVirtualModelConfig(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { ownerId?: string; virtualModelSlug?: string; teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	const data = await request<
+		DeleteAiGatewayVirtualModelConfigResponse,
+		ErrorWrapper<
+			| DeleteAiGatewayVirtualModelConfigStatus400
+			| DeleteAiGatewayVirtualModelConfigStatus401
+			| DeleteAiGatewayVirtualModelConfigStatus403
+			| DeleteAiGatewayVirtualModelConfigStatus404
+			| DeleteAiGatewayVirtualModelConfigStatus410
+			| DeleteAiGatewayVirtualModelConfigStatus500
+		>,
+		null,
+		Record<string, string>,
+		{ ownerId?: string; virtualModelSlug?: string; teamId?: string; slug?: string },
+		Record<string, string>
+	>({
+		method: "DELETE",
+		url: `/v1/ai-gateway/virtual-model-configs`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary List virtual model configs
+ * @description List virtual model configs. With `ownerId`, returns all of that team's VMCs. Without it, pages through VMCs across all teams (newest-first, `limit`/`cursor`).
+ * @link /v1/ai-gateway/virtual-model-configs/list
+ */
+export async function listAiGatewayVirtualModelConfigs(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: {
+			ownerId?: string;
+			limit?: number;
+			cursor?: string;
+			teamId?: string;
+			slug?: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	const data = await request<
+		ListAiGatewayVirtualModelConfigsResponse,
+		ErrorWrapper<
+			| ListAiGatewayVirtualModelConfigsStatus400
+			| ListAiGatewayVirtualModelConfigsStatus401
+			| ListAiGatewayVirtualModelConfigsStatus403
+			| ListAiGatewayVirtualModelConfigsStatus410
+			| ListAiGatewayVirtualModelConfigsStatus500
+		>,
+		null,
+		Record<string, string>,
+		{ ownerId?: string; limit?: number; cursor?: string; teamId?: string; slug?: string },
+		Record<string, string>
+	>({
+		method: "GET",
+		url: `/v1/ai-gateway/virtual-model-configs/list`,
 		queryParams,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
@@ -20075,6 +20321,11 @@ export const operationsByPath = {
 	"GET /v1/access-groups/{accessGroupIdOrName}/projects/{projectId}": readAccessGroupProject,
 	"PATCH /v1/access-groups/{accessGroupIdOrName}/projects/{projectId}": updateAccessGroupProject,
 	"DELETE /v1/access-groups/{accessGroupIdOrName}/projects/{projectId}": deleteAccessGroupProject,
+	"POST /v1/ai-gateway/virtual-model-configs": createAiGatewayVirtualModelConfig,
+	"GET /v1/ai-gateway/virtual-model-configs": getAiGatewayVirtualModelConfig,
+	"PATCH /v1/ai-gateway/virtual-model-configs": updateAiGatewayVirtualModelConfig,
+	"DELETE /v1/ai-gateway/virtual-model-configs": deleteAiGatewayVirtualModelConfig,
+	"GET /v1/ai-gateway/virtual-model-configs/list": listAiGatewayVirtualModelConfigs,
 	"POST /v1/ai-gateway/rules": createAiGatewayRule,
 	"GET /v1/ai-gateway/rules": listAiGatewayRules,
 	"PATCH /v1/ai-gateway/rules": updateAiGatewayRule,
@@ -20488,6 +20739,13 @@ export const operationsByTag = {
 		readAccessGroupProject,
 		updateAccessGroupProject,
 		deleteAccessGroupProject,
+	},
+	apiAiGateway: {
+		createAiGatewayVirtualModelConfig,
+		getAiGatewayVirtualModelConfig,
+		updateAiGatewayVirtualModelConfig,
+		deleteAiGatewayVirtualModelConfig,
+		listAiGatewayVirtualModelConfigs,
 	},
 	aiGateway: {
 		createAiGatewayRule,
@@ -20939,6 +21197,12 @@ export const tagDictionary = {
 		POST: ["updateAccessGroup", "createAccessGroup", "createAccessGroupProject"],
 		DELETE: ["deleteAccessGroup", "deleteAccessGroupProject"],
 		PATCH: ["updateAccessGroupProject"],
+	},
+	apiAiGateway: {
+		POST: ["createAiGatewayVirtualModelConfig"],
+		GET: ["getAiGatewayVirtualModelConfig", "listAiGatewayVirtualModelConfigs"],
+		PATCH: ["updateAiGatewayVirtualModelConfig"],
+		DELETE: ["deleteAiGatewayVirtualModelConfig"],
 	},
 	aiGateway: {
 		POST: ["createAiGatewayRule"],

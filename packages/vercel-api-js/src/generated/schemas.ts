@@ -2,6 +2,151 @@
 
 import * as z from "zod";
 
+export const aiGatewayVirtualModelConfigSchema = z
+	.object({
+		ownerId: z.string().describe("Team (owner) that owns this VMC."),
+		virtualModelSlug: z
+			.string()
+			.describe("Client-facing alias used as the model slug in Gateway calls."),
+		displayName: z.string().optional().describe("Human-readable name for UI."),
+		description: z.string().optional().describe("Optional description for UI."),
+		deleted: z
+			.union([z.literal(false), z.literal(true)])
+			.describe("Whether this VMC is soft-deleted."),
+		status: z.string().describe("UI lifecycle status: draft, active, or archived."),
+		visibility: z
+			.string()
+			.optional()
+			.describe("Visibility in listings: public, internal, or stealth."),
+		updatedBy: z.string().optional().describe("User id that last updated this VMC."),
+		kind: z.string().describe("VMC kind: alias, relay, or router."),
+		baseUrl: z
+			.string()
+			.optional()
+			.describe("For kind=relay: URL the gateway forwards requests to as a transparent proxy."),
+		instanceId: z
+			.string()
+			.optional()
+			.describe("The concrete model-provider instance this VMC resolves to."),
+		providerOrder: z
+			.array(z.string())
+			.optional()
+			.describe("Ordered list of providers to try as fallbacks on failure."),
+		providerOnly: z
+			.array(z.string())
+			.optional()
+			.describe("Restrict routing to only these providers."),
+		inferenceRegion: z
+			.object({
+				providers: z
+					.object({})
+					.catchall(
+						z.object({
+							scope: z
+								.enum(["global", "specific", "zone"])
+								.optional()
+								.describe(
+									"Pin scope: `specific` (one provider region), `zone` (geo zone), or `global`.",
+								),
+							geoRegion: z.string().optional().describe('Geo zone (e.g. "us", "eu").'),
+							providerRegion: z
+								.string()
+								.optional()
+								.describe("Provider-specific region identifier."),
+						}),
+					)
+					.optional()
+					.describe("Per-provider region overrides keyed by provider slug."),
+				scope: z
+					.enum(["global", "specific", "zone"])
+					.optional()
+					.describe("Pin scope: `specific` (one provider region), `zone` (geo zone), or `global`."),
+				geoRegion: z.string().optional().describe('Geo zone (e.g. "us", "eu").'),
+				providerRegion: z.string().optional().describe("Provider-specific region identifier."),
+			})
+			.optional()
+			.describe("Region pinned on the VMC for system-credential routing (alias/router only)."),
+		modelSlug: z
+			.string()
+			.optional()
+			.describe(
+				'Canonical model slug this VMC maps to (e.g. "creator/model"). Not used by kind=router.',
+			),
+		models: z
+			.array(z.string())
+			.optional()
+			.describe(
+				"For kind=router: ordered candidates, model slugs or router references. Otherwise: fallback models.",
+			),
+		selector: z
+			.enum(["cost", "priority", "tps", "ttft"])
+			.optional()
+			.describe("For kind=router: how to order candidates."),
+		requires: z
+			.array(z.string())
+			.optional()
+			.describe("For kind=router: capability tags a candidate must have."),
+		byokCredentialIds: z
+			.array(z.string())
+			.optional()
+			.describe("BYOK credential IDs allowed for this VMC."),
+		observabilityTags: z
+			.array(z.string())
+			.optional()
+			.describe("Observability tags attached to requests through this VMC."),
+		sort: z
+			.enum(["cost", "latency", "price", "throughput", "tps", "ttft"])
+			.optional()
+			.describe("Rank eligible providers by an attribute."),
+		has: z
+			.array(z.enum(["implicit-caching", "vision"]))
+			.optional()
+			.describe("Limit providers to those with these features."),
+		caching: z.enum(["auto"]).optional().describe("Use caching if available."),
+		serviceTier: z
+			.enum(["fast", "flex", "priority"])
+			.optional()
+			.describe("Service tier for providers that support it."),
+		providerTimeouts: z
+			.object({
+				byok: z.object({}).catchall(z.number()).optional(),
+			})
+			.optional()
+			.describe(
+				"Per-request provider timeouts in ms, keyed by provider slug for BYOK credentials.",
+			),
+		zeroDataRetention: z
+			.union([z.literal(false), z.literal(true)])
+			.optional()
+			.describe("Only use providers with zero data retention."),
+		hipaaCompliant: z
+			.union([z.literal(false), z.literal(true)])
+			.optional()
+			.describe("Only use HIPAA-compliant providers."),
+		disallowPromptTraining: z
+			.union([z.literal(false), z.literal(true)])
+			.optional()
+			.describe("Only use providers that will not train on your prompts."),
+		speed: z.enum(["fast"]).optional().describe("Only use fastest providers with short timeouts."),
+		allowFallbackFromFast: z
+			.union([z.literal(false), z.literal(true)])
+			.optional()
+			.describe("Allow fallback from fast to standard providers on failure."),
+		createdAt: z.number().describe("Creation timestamp (epoch ms)."),
+		updatedAt: z.number().describe("Last update timestamp (epoch ms)."),
+	})
+	.describe(
+		"Public response shape for virtual model configs. Used so OpenAPI generation can avoid ElectroDB's recursive EntityItem types.",
+	);
+
+export const aiGatewayVirtualModelConfigListSchema = z.object({
+	virtualModelConfigs: z.array(z.unknown()).describe("The page of VMCs."),
+	cursor: z
+		.string()
+		.nullable()
+		.describe("Cursor for the next page, or null when no more pages remain."),
+});
+
 export const aiGatewayRuleSchema = z
 	.object({
 		ownerId: z.string(),
@@ -5749,6 +5894,14 @@ export const userEventSchema = z
 											})
 											.optional(),
 										connexTokenRequests: z
+											.object({
+												updatedAt: z.number(),
+												blockedFrom: z.number().optional(),
+												blockedUntil: z.number().optional(),
+												blockReason: z.enum(["admin_override", "hard_blocked", "limits_exceeded"]),
+											})
+											.optional(),
+										kmsOperations: z
 											.object({
 												updatedAt: z.number(),
 												blockedFrom: z.number().optional(),
@@ -14338,6 +14491,190 @@ export const deleteAccessGroupProjectResponseSchema = z.union([
 	deleteAccessGroupProjectStatus401Schema,
 	deleteAccessGroupProjectStatus403Schema,
 	deleteAccessGroupProjectStatus410Schema,
+]);
+
+export const createAiGatewayVirtualModelConfigQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe("The Team identifier to perform the request on behalf of.");
+
+export const createAiGatewayVirtualModelConfigQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.");
+
+export const createAiGatewayVirtualModelConfigStatus201Schema = z.unknown();
+
+export const createAiGatewayVirtualModelConfigStatus400Schema = z.unknown();
+
+export const createAiGatewayVirtualModelConfigStatus401Schema = z.unknown();
+
+export const createAiGatewayVirtualModelConfigStatus403Schema = z.unknown();
+
+export const createAiGatewayVirtualModelConfigStatus409Schema = z.unknown();
+
+export const createAiGatewayVirtualModelConfigStatus410Schema = z.unknown();
+
+export const createAiGatewayVirtualModelConfigStatus429Schema = z.unknown();
+
+export const createAiGatewayVirtualModelConfigStatus500Schema = z.unknown();
+
+export const createAiGatewayVirtualModelConfigResponseSchema = z.union([
+	createAiGatewayVirtualModelConfigStatus201Schema,
+	createAiGatewayVirtualModelConfigStatus400Schema,
+	createAiGatewayVirtualModelConfigStatus401Schema,
+	createAiGatewayVirtualModelConfigStatus403Schema,
+	createAiGatewayVirtualModelConfigStatus409Schema,
+	createAiGatewayVirtualModelConfigStatus410Schema,
+	createAiGatewayVirtualModelConfigStatus429Schema,
+	createAiGatewayVirtualModelConfigStatus500Schema,
+]);
+
+export const getAiGatewayVirtualModelConfigQueryOwnerIdSchema = z.string().optional();
+
+export const getAiGatewayVirtualModelConfigQueryVirtualModelSlugSchema = z.string();
+
+export const getAiGatewayVirtualModelConfigQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe("The Team identifier to perform the request on behalf of.");
+
+export const getAiGatewayVirtualModelConfigQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.");
+
+export const getAiGatewayVirtualModelConfigStatus200Schema = z.unknown();
+
+export const getAiGatewayVirtualModelConfigStatus400Schema = z.unknown();
+
+export const getAiGatewayVirtualModelConfigStatus401Schema = z.unknown();
+
+export const getAiGatewayVirtualModelConfigStatus403Schema = z.unknown();
+
+export const getAiGatewayVirtualModelConfigStatus404Schema = z.unknown();
+
+export const getAiGatewayVirtualModelConfigStatus410Schema = z.unknown();
+
+export const getAiGatewayVirtualModelConfigStatus500Schema = z.unknown();
+
+export const getAiGatewayVirtualModelConfigResponseSchema = z.union([
+	getAiGatewayVirtualModelConfigStatus200Schema,
+	getAiGatewayVirtualModelConfigStatus400Schema,
+	getAiGatewayVirtualModelConfigStatus401Schema,
+	getAiGatewayVirtualModelConfigStatus403Schema,
+	getAiGatewayVirtualModelConfigStatus404Schema,
+	getAiGatewayVirtualModelConfigStatus410Schema,
+	getAiGatewayVirtualModelConfigStatus500Schema,
+]);
+
+export const updateAiGatewayVirtualModelConfigQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe("The Team identifier to perform the request on behalf of.");
+
+export const updateAiGatewayVirtualModelConfigQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.");
+
+export const updateAiGatewayVirtualModelConfigStatus200Schema = z.unknown();
+
+export const updateAiGatewayVirtualModelConfigStatus400Schema = z.unknown();
+
+export const updateAiGatewayVirtualModelConfigStatus401Schema = z.unknown();
+
+export const updateAiGatewayVirtualModelConfigStatus403Schema = z.unknown();
+
+export const updateAiGatewayVirtualModelConfigStatus404Schema = z.unknown();
+
+export const updateAiGatewayVirtualModelConfigStatus410Schema = z.unknown();
+
+export const updateAiGatewayVirtualModelConfigStatus500Schema = z.unknown();
+
+export const updateAiGatewayVirtualModelConfigResponseSchema = z.union([
+	updateAiGatewayVirtualModelConfigStatus200Schema,
+	updateAiGatewayVirtualModelConfigStatus400Schema,
+	updateAiGatewayVirtualModelConfigStatus401Schema,
+	updateAiGatewayVirtualModelConfigStatus403Schema,
+	updateAiGatewayVirtualModelConfigStatus404Schema,
+	updateAiGatewayVirtualModelConfigStatus410Schema,
+	updateAiGatewayVirtualModelConfigStatus500Schema,
+]);
+
+export const deleteAiGatewayVirtualModelConfigQueryOwnerIdSchema = z.string().optional();
+
+export const deleteAiGatewayVirtualModelConfigQueryVirtualModelSlugSchema = z.string();
+
+export const deleteAiGatewayVirtualModelConfigQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe("The Team identifier to perform the request on behalf of.");
+
+export const deleteAiGatewayVirtualModelConfigQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.");
+
+export const deleteAiGatewayVirtualModelConfigStatus204Schema = z.unknown();
+
+export const deleteAiGatewayVirtualModelConfigStatus400Schema = z.unknown();
+
+export const deleteAiGatewayVirtualModelConfigStatus401Schema = z.unknown();
+
+export const deleteAiGatewayVirtualModelConfigStatus403Schema = z.unknown();
+
+export const deleteAiGatewayVirtualModelConfigStatus404Schema = z.unknown();
+
+export const deleteAiGatewayVirtualModelConfigStatus410Schema = z.unknown();
+
+export const deleteAiGatewayVirtualModelConfigStatus500Schema = z.unknown();
+
+export const deleteAiGatewayVirtualModelConfigResponseSchema = z.union([
+	deleteAiGatewayVirtualModelConfigStatus204Schema,
+	deleteAiGatewayVirtualModelConfigStatus400Schema,
+	deleteAiGatewayVirtualModelConfigStatus401Schema,
+	deleteAiGatewayVirtualModelConfigStatus403Schema,
+	deleteAiGatewayVirtualModelConfigStatus404Schema,
+	deleteAiGatewayVirtualModelConfigStatus410Schema,
+	deleteAiGatewayVirtualModelConfigStatus500Schema,
+]);
+
+export const listAiGatewayVirtualModelConfigsQueryOwnerIdSchema = z.string().optional();
+
+export const listAiGatewayVirtualModelConfigsQueryLimitSchema = z.int().min(1).optional();
+
+export const listAiGatewayVirtualModelConfigsQueryCursorSchema = z.string().optional();
+
+export const listAiGatewayVirtualModelConfigsQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe("The Team identifier to perform the request on behalf of.");
+
+export const listAiGatewayVirtualModelConfigsQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.");
+
+export const listAiGatewayVirtualModelConfigsStatus200Schema = z.unknown();
+
+export const listAiGatewayVirtualModelConfigsStatus400Schema = z.unknown();
+
+export const listAiGatewayVirtualModelConfigsStatus401Schema = z.unknown();
+
+export const listAiGatewayVirtualModelConfigsStatus403Schema = z.unknown();
+
+export const listAiGatewayVirtualModelConfigsStatus410Schema = z.unknown();
+
+export const listAiGatewayVirtualModelConfigsStatus500Schema = z.unknown();
+
+export const listAiGatewayVirtualModelConfigsResponseSchema = z.union([
+	listAiGatewayVirtualModelConfigsStatus200Schema,
+	listAiGatewayVirtualModelConfigsStatus400Schema,
+	listAiGatewayVirtualModelConfigsStatus401Schema,
+	listAiGatewayVirtualModelConfigsStatus403Schema,
+	listAiGatewayVirtualModelConfigsStatus410Schema,
+	listAiGatewayVirtualModelConfigsStatus500Schema,
 ]);
 
 export const createAiGatewayRuleQueryTeamIdSchema = z
@@ -26861,8 +27198,8 @@ export const getRootResponseSchema = z.union([
 export const getByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestPathTeamSlugSchema = z
 	.string()
 	.max(255)
-	.regex(/^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$/)
-	.describe("Single Docker repository team slug component.");
+	.regex(/^(?:[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?|team_[a-zA-Z0-9]+)$/)
+	.describe("Single Docker repository team slug or team ID component.");
 
 export const getByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestPathProjectSlugSchema = z
 	.string()
@@ -26909,8 +27246,8 @@ export const getByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestResponseSche
 export const deleteByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestPathTeamSlugSchema = z
 	.string()
 	.max(255)
-	.regex(/^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$/)
-	.describe("Single Docker repository team slug component.");
+	.regex(/^(?:[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?|team_[a-zA-Z0-9]+)$/)
+	.describe("Single Docker repository team slug or team ID component.");
 
 export const deleteByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestPathProjectSlugSchema = z
 	.string()
@@ -26964,8 +27301,8 @@ export const deleteByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestResponseS
 export const getByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidPathTeamSlugSchema = z
 	.string()
 	.max(255)
-	.regex(/^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$/)
-	.describe("Single Docker repository team slug component.");
+	.regex(/^(?:[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?|team_[a-zA-Z0-9]+)$/)
+	.describe("Single Docker repository team slug or team ID component.");
 
 export const getByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidPathProjectSlugSchema = z
 	.string()
@@ -27020,8 +27357,8 @@ export const getByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidRespons
 export const deleteByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidPathTeamSlugSchema = z
 	.string()
 	.max(255)
-	.regex(/^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$/)
-	.describe("Single Docker repository team slug component.");
+	.regex(/^(?:[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?|team_[a-zA-Z0-9]+)$/)
+	.describe("Single Docker repository team slug or team ID component.");
 
 export const deleteByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidPathProjectSlugSchema =
 	z
@@ -27078,8 +27415,8 @@ export const deleteByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidResp
 export const updateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidPathTeamSlugSchema = z
 	.string()
 	.max(255)
-	.regex(/^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$/)
-	.describe("Single Docker repository team slug component.");
+	.regex(/^(?:[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?|team_[a-zA-Z0-9]+)$/)
+	.describe("Single Docker repository team slug or team ID component.");
 
 export const updateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidPathProjectSlugSchema =
 	z
@@ -27140,8 +27477,8 @@ export const updateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidResp
 export const replaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidPathTeamSlugSchema = z
 	.string()
 	.max(255)
-	.regex(/^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$/)
-	.describe("Single Docker repository team slug component.");
+	.regex(/^(?:[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?|team_[a-zA-Z0-9]+)$/)
+	.describe("Single Docker repository team slug or team ID component.");
 
 export const replaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidPathProjectSlugSchema =
 	z
@@ -27208,8 +27545,8 @@ export const replaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidRes
 export const createByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsPathTeamSlugSchema = z
 	.string()
 	.max(255)
-	.regex(/^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$/)
-	.describe("Single Docker repository team slug component.");
+	.regex(/^(?:[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?|team_[a-zA-Z0-9]+)$/)
+	.describe("Single Docker repository team slug or team ID component.");
 
 export const createByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsPathProjectSlugSchema = z
 	.string()
@@ -27234,7 +27571,7 @@ export const createByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsQueryFromS
 	.string()
 	.max(255)
 	.regex(
-		/^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?\\\/[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?\\\/[a-z0-9]+(?:(?:\\.|_|__|-+)[a-z0-9]+)*$/,
+		/^(?:[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?|team_[a-zA-Z0-9]+)\\\/[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?\\\/[a-z0-9]+(?:(?:\\.|_|__|-+)[a-z0-9]+)*$/,
 	)
 	.optional()
 	.describe("Source repository to mount the blob from.");
@@ -27267,8 +27604,8 @@ export const replaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceP
 	z
 		.string()
 		.max(255)
-		.regex(/^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$/)
-		.describe("Single Docker repository team slug component.");
+		.regex(/^(?:[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?|team_[a-zA-Z0-9]+)$/)
+		.describe("Single Docker repository team slug or team ID component.");
 
 export const replaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferencePathProjectSlugSchema =
 	z
@@ -27330,8 +27667,8 @@ export const replaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceR
 export const getByTeamSlugByProjectSlugByRepositoryNameManifestsByReferencePathTeamSlugSchema = z
 	.string()
 	.max(255)
-	.regex(/^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$/)
-	.describe("Single Docker repository team slug component.");
+	.regex(/^(?:[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?|team_[a-zA-Z0-9]+)$/)
+	.describe("Single Docker repository team slug or team ID component.");
 
 export const getByTeamSlugByProjectSlugByRepositoryNameManifestsByReferencePathProjectSlugSchema = z
 	.string()
@@ -27384,8 +27721,8 @@ export const getByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceRespo
 export const deleteByTeamSlugByProjectSlugByRepositoryNameManifestsByReferencePathTeamSlugSchema = z
 	.string()
 	.max(255)
-	.regex(/^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$/)
-	.describe("Single Docker repository team slug component.");
+	.regex(/^(?:[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?|team_[a-zA-Z0-9]+)$/)
+	.describe("Single Docker repository team slug or team ID component.");
 
 export const deleteByTeamSlugByProjectSlugByRepositoryNameManifestsByReferencePathProjectSlugSchema =
 	z
@@ -27443,8 +27780,8 @@ export const deleteByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceRe
 export const getByTeamSlugByProjectSlugByRepositoryNameTagsListPathTeamSlugSchema = z
 	.string()
 	.max(255)
-	.regex(/^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$/)
-	.describe("Single Docker repository team slug component.");
+	.regex(/^(?:[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?|team_[a-zA-Z0-9]+)$/)
+	.describe("Single Docker repository team slug or team ID component.");
 
 export const getByTeamSlugByProjectSlugByRepositoryNameTagsListPathProjectSlugSchema = z
 	.string()
