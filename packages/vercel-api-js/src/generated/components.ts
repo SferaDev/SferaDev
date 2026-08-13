@@ -17155,7 +17155,7 @@ export async function updateTeamMember(
 
 /**
  * @summary Remove a Team Member
- * @description Remove a Team Member from the Team, or dismiss a user that requested access, or leave a team.
+ * @description Remove a Team Member from the Team, or dismiss a user that requested access, or leave a team. Directory Sync members can be removed when their directory email is absent or does not match the user's primary or verified secondary emails.
  * @link /v1/teams/{teamId}/members/{uid}
  */
 export async function removeTeamMember(
