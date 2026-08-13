@@ -1822,6 +1822,15 @@ export const userEventTypeEnum = {
 	"access-group-updated": "access-group-updated",
 	"access-group-user-added": "access-group-user-added",
 	"access-group-user-removed": "access-group-user-removed",
+	"admin-agentic-provisioning-account-unlinked": "admin-agentic-provisioning-account-unlinked",
+	"admin-plan-updated": "admin-plan-updated",
+	"admin-secondary-email-added": "admin-secondary-email-added",
+	"admin-secondary-email-removed": "admin-secondary-email-removed",
+	"admin-team-name-update": "admin-team-name-update",
+	"admin-team-slug-update": "admin-team-slug-update",
+	"admin-user-delete": "admin-user-delete",
+	"admin-user-primary-email-updated": "admin-user-primary-email-updated",
+	"admin-username-updated": "admin-username-updated",
 	"agentic-provisioning-account-blocked": "agentic-provisioning-account-blocked",
 	"agentic-provisioning-account-linked": "agentic-provisioning-account-linked",
 	"agentic-provisioning-account-relinked": "agentic-provisioning-account-relinked",
@@ -2400,6 +2409,7 @@ export const userEventTypeEnum = {
 	"user-emu-recovery-initiated": "user-emu-recovery-initiated",
 	"user-emu-toggled": "user-emu-toggled",
 	"user-mfa-challenge-failed": "user-mfa-challenge-failed",
+	"user-mfa-challenge-initiated": "user-mfa-challenge-initiated",
 	"user-mfa-challenge-verified": "user-mfa-challenge-verified",
 	"user-mfa-change-failed": "user-mfa-change-failed",
 	"user-mfa-configuration-updated": "user-mfa-configuration-updated",
@@ -2412,6 +2422,7 @@ export const userEventTypeEnum = {
 	"user-phone-removed": "user-phone-removed",
 	"user-phone-updated": "user-phone-updated",
 	"user-primary-email-updated": "user-primary-email-updated",
+	"user-provider-email-claim-evaluated": "user-provider-email-claim-evaluated",
 	"user-sudo-mode-removed": "user-sudo-mode-removed",
 	"user-token-created": "user-token-created",
 	"user-token-deleted": "user-token-deleted",
@@ -2496,18 +2507,16 @@ export const actionEnum = {
 export type ActionEnumKey = (typeof actionEnum)[keyof typeof actionEnum];
 
 export const providerEnum = {
-	apple: "apple",
-	bitbucket: "bitbucket",
-	chatgpt: "chatgpt",
-	github: "github",
-	"github-custom-host": "github-custom-host",
-	"github-limited": "github-limited",
-	gitlab: "gitlab",
 	google: "google",
-	saml: "saml",
 } as const;
 
 export type ProviderEnumKey = (typeof providerEnum)[keyof typeof providerEnum];
+
+export const actorTypeEnum = {
+	admin: "admin",
+} as const;
+
+export type ActorTypeEnumKey = (typeof actorTypeEnum)[keyof typeof actorTypeEnum];
 
 export const fromPlanEnum = {
 	hobby: "hobby",
@@ -2669,8 +2678,8 @@ export const initiatorEnum = {
 export type InitiatorEnumKey = (typeof initiatorEnum)[keyof typeof initiatorEnum];
 
 export const outcomeEnum = {
-	failure: "failure",
-	success: "success",
+	"account-matched": "account-matched",
+	"linking-required": "linking-required",
 } as const;
 
 export type OutcomeEnumKey = (typeof outcomeEnum)[keyof typeof outcomeEnum];
@@ -2987,12 +2996,6 @@ export const methodEnum = {
 
 export type MethodEnumKey = (typeof methodEnum)[keyof typeof methodEnum];
 
-export const actorTypeEnum = {
-	admin: "admin",
-} as const;
-
-export type ActorTypeEnumKey = (typeof actorTypeEnum)[keyof typeof actorTypeEnum];
-
 export const queryTypeEnum = {
 	"data-edit": "data-edit",
 	"data-view": "data-view",
@@ -3262,6 +3265,30 @@ export const envEnum = {
 } as const;
 
 export type EnvEnumKey = (typeof envEnum)[keyof typeof envEnum];
+
+export const contextEnum = {
+	login: "login",
+	sudo: "sudo",
+} as const;
+
+export type ContextEnumKey = (typeof contextEnum)[keyof typeof contextEnum];
+
+export const basisEnum = {
+	gmail: "gmail",
+	none: "none",
+	"workspace-mx": "workspace-mx",
+} as const;
+
+export type BasisEnumKey = (typeof basisEnum)[keyof typeof basisEnum];
+
+export const mxOutcomeEnum = {
+	google: "google",
+	"lookup-error": "lookup-error",
+	"non-google": "non-google",
+	"not-checked": "not-checked",
+} as const;
+
+export type MxOutcomeEnumKey = (typeof mxOutcomeEnum)[keyof typeof mxOutcomeEnum];
 
 export const tierEnum = {
 	plus: "plus",
@@ -3769,6 +3796,45 @@ export type UserEvent = {
 						 * @type string
 						 */
 						projectName: string;
+				  }
+				| {
+						/**
+						 * @description Present on new events only. Equivalent to \"stripe\" when absent.
+						 * @type string | undefined
+						 */
+						provider?: ProviderEnumKey | undefined;
+						/**
+						 * @description Present on new events only. Equivalent to `stripeAccount` when absent.
+						 * @type string | undefined
+						 */
+						providerAccount?: string | undefined;
+						/**
+						 * @description Present when `provider` is \"stripe\". Equivalent to `providerAccount`.
+						 * @type string | undefined
+						 */
+						stripeAccount?: string | undefined;
+						/**
+						 * @description Present when `provider` is \"stripe\".
+						 * @type string | undefined
+						 */
+						stripeOrganisation?: string | undefined;
+						/**
+						 * @type string
+						 */
+						teamId: string;
+						/**
+						 * @description Okta user id.
+						 * @type string
+						 */
+						actorId: string;
+						/**
+						 * @type string
+						 */
+						actorType: ActorTypeEnumKey;
+						/**
+						 * @type string | undefined
+						 */
+						actorName?: string | undefined;
 				  }
 				| {
 						/**
@@ -7977,6 +8043,10 @@ export type UserEvent = {
 						 * @type string
 						 */
 						source: string;
+						/**
+						 * @type string | undefined
+						 */
+						reason?: ReasonEnumKey | undefined;
 				  }
 				| {
 						/**
@@ -10370,6 +10440,7 @@ export type UserEvent = {
 													| "V0Builder"
 													| "V0Chatter"
 													| "V0Viewer"
+													| "WorkflowDecryptor"
 											  )[]
 											| undefined;
 										/**
@@ -12447,6 +12518,11 @@ export type UserEvent = {
 						 */
 						os?: string | undefined;
 						/**
+						 * @description Browser login correlation ID. This is not an authentication credential.
+						 * @type string | undefined
+						 */
+						loginSessionId?: string | undefined;
+						/**
 						 * @type string | undefined
 						 */
 						username?: string | undefined;
@@ -13668,6 +13744,136 @@ export type UserEvent = {
 						 * @type number | undefined
 						 */
 						removedMemberCount?: number | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						plan: string;
+						/**
+						 * @type object | undefined
+						 */
+						removedUsers?:
+							| {
+									[key: string]: {
+										/**
+										 * @type string
+										 */
+										role: RoleEnumKey;
+										/**
+										 * @type boolean
+										 */
+										confirmed: false | true;
+										/**
+										 * @type number | undefined
+										 */
+										confirmedAt?: number | undefined;
+										/**
+										 * @type object | undefined
+										 */
+										joinedFrom?:
+											| {
+													/**
+													 * @type string
+													 */
+													origin: OriginEnumKey;
+													/**
+													 * @type string | undefined
+													 */
+													commitId?: string | undefined;
+													/**
+													 * @type string | undefined
+													 */
+													repoId?: string | undefined;
+													/**
+													 * @type string | undefined
+													 */
+													repoPath?: string | undefined;
+													gitUserId?: (string | number) | undefined;
+													/**
+													 * @type string | undefined
+													 */
+													gitUserLogin?: string | undefined;
+													/**
+													 * @type string | undefined
+													 */
+													ssoUserId?: string | undefined;
+													/**
+													 * @type number | undefined
+													 */
+													ssoConnectedAt?: number | undefined;
+													/**
+													 * @type string | undefined
+													 */
+													idpUserId?: string | undefined;
+													/**
+													 * @type string | undefined
+													 */
+													dsyncUserId?: string | undefined;
+													/**
+													 * @type number | undefined
+													 */
+													dsyncConnectedAt?: number | undefined;
+											  }
+											| undefined;
+									};
+							  }
+							| undefined;
+						/**
+						 * @type string | undefined
+						 */
+						prevPlan?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						priorPlan?: string | undefined;
+						/**
+						 * @type boolean | undefined
+						 */
+						isDowngrade?: (false | true) | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						userAgent?: string | undefined;
+						/**
+						 * @type boolean | undefined
+						 */
+						isReactivate?: (false | true) | undefined;
+						/**
+						 * @type boolean | undefined
+						 */
+						isTrialUpgrade?: (false | true) | undefined;
+						/**
+						 * @description Whether the plan change was system-initiated rather than human-initiated.
+						 * @type boolean | undefined
+						 */
+						automated?: (false | true) | undefined;
+						/**
+						 * @description Why the plan changed. For downgrades, this is a {@link DowngradeReason} from `@api/pubsub-types` (e.g. `user_downgrade`, `trial_expired`).
+						 * @type string | undefined
+						 */
+						reason?: string | undefined;
+						/**
+						 * @type number | undefined
+						 */
+						timestamp?: number | undefined;
+						/**
+						 * @type number | undefined
+						 */
+						removedMemberCount?: number | undefined;
+						/**
+						 * @description Okta user id.
+						 * @type string
+						 */
+						actorId: string;
+						/**
+						 * @type string
+						 */
+						actorType: ActorTypeEnumKey;
+						/**
+						 * @type string | undefined
+						 */
+						actorName?: string | undefined;
 				  }
 				| {
 						/**
@@ -16145,6 +16351,29 @@ export type UserEvent = {
 						 * @type string
 						 */
 						email: string;
+						/**
+						 * @type boolean
+						 */
+						verified: false | true;
+						/**
+						 * @description Okta user id.
+						 * @type string
+						 */
+						actorId: string;
+						/**
+						 * @type string
+						 */
+						actorType: ActorTypeEnumKey;
+						/**
+						 * @type string | undefined
+						 */
+						actorName?: string | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						email: string;
 				  }
 				| {
 						/**
@@ -17690,6 +17919,25 @@ export type UserEvent = {
 				  }
 				| {
 						/**
+						 * @type string | undefined
+						 */
+						name?: string | undefined;
+						/**
+						 * @description Okta user id.
+						 * @type string
+						 */
+						actorId: string;
+						/**
+						 * @type string
+						 */
+						actorType: ActorTypeEnumKey;
+						/**
+						 * @type string | undefined
+						 */
+						actorName?: string | undefined;
+				  }
+				| {
+						/**
 						 * @type string
 						 */
 						decision: DecisionEnumKey;
@@ -17838,6 +18086,25 @@ export type UserEvent = {
 				  }
 				| {
 						/**
+						 * @type string | undefined
+						 */
+						slug?: string | undefined;
+						/**
+						 * @description Okta user id.
+						 * @type string
+						 */
+						actorId: string;
+						/**
+						 * @type string
+						 */
+						actorType: ActorTypeEnumKey;
+						/**
+						 * @type string | undefined
+						 */
+						actorName?: string | undefined;
+				  }
+				| {
+						/**
 						 * @type string
 						 */
 						projectId: string;
@@ -17893,6 +18160,11 @@ export type UserEvent = {
 						 */
 						actorType?: ActorTypeEnumKey | undefined;
 						/**
+						 * @description Human-readable admin who performed the removal.
+						 * @type string | undefined
+						 */
+						actorName?: string | undefined;
+						/**
 						 * @type string | undefined
 						 */
 						reason?: string | undefined;
@@ -17906,6 +18178,29 @@ export type UserEvent = {
 						 * @type string
 						 */
 						username: string;
+				  }
+				| {
+						/**
+						 * @type number
+						 */
+						deletedAt?: (number | null) | undefined;
+						/**
+						 * @type string
+						 */
+						username: string;
+						/**
+						 * @description Okta user id.
+						 * @type string
+						 */
+						actorId: string;
+						/**
+						 * @type string
+						 */
+						actorType: ActorTypeEnumKey;
+						/**
+						 * @type string | undefined
+						 */
+						actorName?: string | undefined;
 				  }
 				| {
 						/**
@@ -17982,6 +18277,32 @@ export type UserEvent = {
 						 * @type string
 						 */
 						reason: string;
+						/**
+						 * @type string | undefined
+						 */
+						flowId?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						loginSessionId?: string | undefined;
+				  }
+				| {
+						/**
+						 * @type array
+						 */
+						allowedMethods: ("recovery-code" | "totp" | "webauthn")[];
+						/**
+						 * @type string
+						 */
+						firstFactor: string;
+						/**
+						 * @type string
+						 */
+						flowId: string;
+						/**
+						 * @type string | undefined
+						 */
+						loginSessionId?: string | undefined;
 				  }
 				| {
 						/**
@@ -18020,12 +18341,21 @@ export type UserEvent = {
 							 */
 							totpVerified: false | true;
 						};
+						/**
+						 * @type string | undefined
+						 */
+						method?: MethodEnumKey | undefined;
 				  }
 				| {
 						/**
 						 * @type number
 						 */
 						remaining: number;
+						/**
+						 * @description Absent on events predating the field; those were all logins.
+						 * @type string | undefined
+						 */
+						context?: ContextEnumKey | undefined;
 				  }
 				| {
 						/**
@@ -18060,6 +18390,77 @@ export type UserEvent = {
 				  }
 				| {
 						/**
+						 * @type object
+						 */
+						previous: {
+							/**
+							 * @type boolean
+							 */
+							enabled: false | true;
+							/**
+							 * @type boolean
+							 */
+							totpVerified: false | true;
+						};
+						/**
+						 * @type object
+						 */
+						next: {
+							/**
+							 * @type boolean
+							 */
+							enabled: false | true;
+							/**
+							 * @type boolean
+							 */
+							totpVerified: false | true;
+						};
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						provider: ProviderEnumKey;
+						/**
+						 * @type string
+						 */
+						providerSubjectId: string;
+						/**
+						 * @type string
+						 */
+						outcome: OutcomeEnumKey;
+						/**
+						 * @type object
+						 */
+						decision: {
+							/**
+							 * @type boolean
+							 */
+							authoritative: false | true;
+							/**
+							 * @type string
+							 */
+							basis: BasisEnumKey;
+							/**
+							 * @type string
+							 */
+							emailDomain: string;
+							/**
+							 * @type boolean
+							 */
+							emailVerified: false | true;
+							/**
+							 * @type boolean
+							 */
+							hostedDomainMatch: false | true;
+							/**
+							 * @type string
+							 */
+							mxOutcome: MxOutcomeEnumKey;
+						};
+				  }
+				| {
+						/**
 						 * @type string
 						 */
 						email: string;
@@ -18067,6 +18468,48 @@ export type UserEvent = {
 						 * @type string
 						 */
 						prevEmail: string;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						email: string;
+						/**
+						 * @type string
+						 */
+						prevEmail: string;
+						/**
+						 * @description Okta user id.
+						 * @type string
+						 */
+						actorId: string;
+						/**
+						 * @type string
+						 */
+						actorType: ActorTypeEnumKey;
+						/**
+						 * @type string | undefined
+						 */
+						actorName?: string | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						username: string;
+						/**
+						 * @description Okta user id.
+						 * @type string
+						 */
+						actorId: string;
+						/**
+						 * @type string
+						 */
+						actorType: ActorTypeEnumKey;
+						/**
+						 * @type string | undefined
+						 */
+						actorName?: string | undefined;
 				  }
 				| {
 						/**
@@ -19251,6 +19694,15 @@ export const listEventTypeNameEnum = {
 	"access-group-updated": "access-group-updated",
 	"access-group-user-added": "access-group-user-added",
 	"access-group-user-removed": "access-group-user-removed",
+	"admin-agentic-provisioning-account-unlinked": "admin-agentic-provisioning-account-unlinked",
+	"admin-plan-updated": "admin-plan-updated",
+	"admin-secondary-email-added": "admin-secondary-email-added",
+	"admin-secondary-email-removed": "admin-secondary-email-removed",
+	"admin-team-name-update": "admin-team-name-update",
+	"admin-team-slug-update": "admin-team-slug-update",
+	"admin-user-delete": "admin-user-delete",
+	"admin-user-primary-email-updated": "admin-user-primary-email-updated",
+	"admin-username-updated": "admin-username-updated",
 	"agentic-provisioning-account-blocked": "agentic-provisioning-account-blocked",
 	"agentic-provisioning-account-linked": "agentic-provisioning-account-linked",
 	"agentic-provisioning-account-relinked": "agentic-provisioning-account-relinked",
@@ -19829,6 +20281,7 @@ export const listEventTypeNameEnum = {
 	"user-emu-recovery-initiated": "user-emu-recovery-initiated",
 	"user-emu-toggled": "user-emu-toggled",
 	"user-mfa-challenge-failed": "user-mfa-challenge-failed",
+	"user-mfa-challenge-initiated": "user-mfa-challenge-initiated",
 	"user-mfa-challenge-verified": "user-mfa-challenge-verified",
 	"user-mfa-change-failed": "user-mfa-change-failed",
 	"user-mfa-configuration-updated": "user-mfa-configuration-updated",
@@ -19841,6 +20294,7 @@ export const listEventTypeNameEnum = {
 	"user-phone-removed": "user-phone-removed",
 	"user-phone-updated": "user-phone-updated",
 	"user-primary-email-updated": "user-primary-email-updated",
+	"user-provider-email-claim-evaluated": "user-provider-email-claim-evaluated",
 	"user-sudo-mode-removed": "user-sudo-mode-removed",
 	"user-token-created": "user-token-created",
 	"user-token-deleted": "user-token-deleted",
@@ -19920,6 +20374,15 @@ export const listEventTypeReplacedByEnum = {
 	"access-group-updated": "access-group-updated",
 	"access-group-user-added": "access-group-user-added",
 	"access-group-user-removed": "access-group-user-removed",
+	"admin-agentic-provisioning-account-unlinked": "admin-agentic-provisioning-account-unlinked",
+	"admin-plan-updated": "admin-plan-updated",
+	"admin-secondary-email-added": "admin-secondary-email-added",
+	"admin-secondary-email-removed": "admin-secondary-email-removed",
+	"admin-team-name-update": "admin-team-name-update",
+	"admin-team-slug-update": "admin-team-slug-update",
+	"admin-user-delete": "admin-user-delete",
+	"admin-user-primary-email-updated": "admin-user-primary-email-updated",
+	"admin-username-updated": "admin-username-updated",
 	"agentic-provisioning-account-blocked": "agentic-provisioning-account-blocked",
 	"agentic-provisioning-account-linked": "agentic-provisioning-account-linked",
 	"agentic-provisioning-account-relinked": "agentic-provisioning-account-relinked",
@@ -20498,6 +20961,7 @@ export const listEventTypeReplacedByEnum = {
 	"user-emu-recovery-initiated": "user-emu-recovery-initiated",
 	"user-emu-toggled": "user-emu-toggled",
 	"user-mfa-challenge-failed": "user-mfa-challenge-failed",
+	"user-mfa-challenge-initiated": "user-mfa-challenge-initiated",
 	"user-mfa-challenge-verified": "user-mfa-challenge-verified",
 	"user-mfa-change-failed": "user-mfa-change-failed",
 	"user-mfa-configuration-updated": "user-mfa-configuration-updated",
@@ -20510,6 +20974,7 @@ export const listEventTypeReplacedByEnum = {
 	"user-phone-removed": "user-phone-removed",
 	"user-phone-updated": "user-phone-updated",
 	"user-primary-email-updated": "user-primary-email-updated",
+	"user-provider-email-claim-evaluated": "user-provider-email-claim-evaluated",
 	"user-sudo-mode-removed": "user-sudo-mode-removed",
 	"user-token-created": "user-token-created",
 	"user-token-deleted": "user-token-deleted",
@@ -22650,6 +23115,7 @@ export const invitedTeamMemberTeamPermissionsEnum = {
 	V0Builder: "V0Builder",
 	V0Chatter: "V0Chatter",
 	V0Viewer: "V0Viewer",
+	WorkflowDecryptor: "WorkflowDecryptor",
 } as const;
 
 export type InvitedTeamMemberTeamPermissionsEnumKey =
@@ -22762,6 +23228,7 @@ export const teamDefaultRolesTeamPermissionsEnum = {
 	V0Builder: "V0Builder",
 	V0Chatter: "V0Chatter",
 	V0Viewer: "V0Viewer",
+	WorkflowDecryptor: "WorkflowDecryptor",
 } as const;
 
 export type TeamDefaultRolesTeamPermissionsEnumKey =
@@ -22900,6 +23367,7 @@ export const teamMembershipTeamPermissionsEnum = {
 	V0Builder: "V0Builder",
 	V0Chatter: "V0Chatter",
 	V0Viewer: "V0Viewer",
+	WorkflowDecryptor: "WorkflowDecryptor",
 } as const;
 
 export type TeamMembershipTeamPermissionsEnumKey =
@@ -23852,6 +24320,7 @@ export const teamLimitedMembershipTeamPermissionsEnum = {
 	V0Builder: "V0Builder",
 	V0Chatter: "V0Chatter",
 	V0Viewer: "V0Viewer",
+	WorkflowDecryptor: "WorkflowDecryptor",
 } as const;
 
 export type TeamLimitedMembershipTeamPermissionsEnumKey =
@@ -62191,9 +62660,9 @@ export type GetRootResponse =
 	| GetRootStatus410;
 
 /**
- * @description Single Docker repository team slug or team ID component.
+ * @description Single Docker repository team slug component.
  * @maxLength 255
- * @pattern ^(?:[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?|team_[a-zA-Z0-9]+)$
+ * @pattern ^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$
  * @example team-slug
  * @type string
  */
@@ -62309,9 +62778,9 @@ export type GetByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestResponse =
 	| GetByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus416;
 
 /**
- * @description Single Docker repository team slug or team ID component.
+ * @description Single Docker repository team slug component.
  * @maxLength 255
- * @pattern ^(?:[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?|team_[a-zA-Z0-9]+)$
+ * @pattern ^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$
  * @example team-slug
  * @type string
  */
@@ -62427,9 +62896,9 @@ export type DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestResponse =
 	| DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestStatus410;
 
 /**
- * @description Single Docker repository team slug or team ID component.
+ * @description Single Docker repository team slug component.
  * @maxLength 255
- * @pattern ^(?:[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?|team_[a-zA-Z0-9]+)$
+ * @pattern ^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$
  * @example team-slug
  * @type string
  */
@@ -62545,9 +63014,9 @@ export type GetByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidResponse
 	| GetByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus410;
 
 /**
- * @description Single Docker repository team slug or team ID component.
+ * @description Single Docker repository team slug component.
  * @maxLength 255
- * @pattern ^(?:[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?|team_[a-zA-Z0-9]+)$
+ * @pattern ^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$
  * @example team-slug
  * @type string
  */
@@ -62664,9 +63133,9 @@ export type DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidRespo
 	| DeleteByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus410;
 
 /**
- * @description Single Docker repository team slug or team ID component.
+ * @description Single Docker repository team slug component.
  * @maxLength 255
- * @pattern ^(?:[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?|team_[a-zA-Z0-9]+)$
+ * @pattern ^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$
  * @example team-slug
  * @type string
  */
@@ -62790,9 +63259,9 @@ export type UpdateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidRespo
 	| UpdateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus413;
 
 /**
- * @description Single Docker repository team slug or team ID component.
+ * @description Single Docker repository team slug component.
  * @maxLength 255
- * @pattern ^(?:[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?|team_[a-zA-Z0-9]+)$
+ * @pattern ^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$
  * @example team-slug
  * @type string
  */
@@ -62933,9 +63402,9 @@ export type ReplaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidResp
 	| ReplaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus413;
 
 /**
- * @description Single Docker repository team slug or team ID component.
+ * @description Single Docker repository team slug component.
  * @maxLength 255
- * @pattern ^(?:[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?|team_[a-zA-Z0-9]+)$
+ * @pattern ^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$
  * @example team-slug
  * @type string
  */
@@ -62972,7 +63441,7 @@ export type CreateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsQueryMount 
 /**
  * @description Source repository to mount the blob from.
  * @maxLength 255
- * @pattern ^(?:[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?|team_[a-zA-Z0-9]+)\\/[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?\\/[a-z0-9]+(?:(?:\\.|_|__|-+)[a-z0-9]+)*$
+ * @pattern ^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?\\/[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?\\/[a-z0-9]+(?:(?:\\.|_|__|-+)[a-z0-9]+)*$
  * @type string | undefined
  */
 export type CreateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsQueryFrom = string | undefined;
@@ -63067,9 +63536,9 @@ export type CreateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsResponse =
 	| CreateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsStatus410;
 
 /**
- * @description Single Docker repository team slug or team ID component.
+ * @description Single Docker repository team slug component.
  * @maxLength 255
- * @pattern ^(?:[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?|team_[a-zA-Z0-9]+)$
+ * @pattern ^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$
  * @example team-slug
  * @type string
  */
@@ -63195,9 +63664,9 @@ export type ReplaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceRe
 	| ReplaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus413;
 
 /**
- * @description Single Docker repository team slug or team ID component.
+ * @description Single Docker repository team slug component.
  * @maxLength 255
- * @pattern ^(?:[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?|team_[a-zA-Z0-9]+)$
+ * @pattern ^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$
  * @example team-slug
  * @type string
  */
@@ -63307,9 +63776,9 @@ export type GetByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceRespon
 	| GetByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus410;
 
 /**
- * @description Single Docker repository team slug or team ID component.
+ * @description Single Docker repository team slug component.
  * @maxLength 255
- * @pattern ^(?:[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?|team_[a-zA-Z0-9]+)$
+ * @pattern ^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$
  * @example team-slug
  * @type string
  */
@@ -63427,9 +63896,9 @@ export type DeleteByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceRes
 	| DeleteByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus410;
 
 /**
- * @description Single Docker repository team slug or team ID component.
+ * @description Single Docker repository team slug component.
  * @maxLength 255
- * @pattern ^(?:[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?|team_[a-zA-Z0-9]+)$
+ * @pattern ^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$
  * @example team-slug
  * @type string
  */

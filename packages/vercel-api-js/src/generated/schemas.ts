@@ -760,6 +760,15 @@ export const userEventSchema = z
 				"access-group-updated",
 				"access-group-user-added",
 				"access-group-user-removed",
+				"admin-agentic-provisioning-account-unlinked",
+				"admin-plan-updated",
+				"admin-secondary-email-added",
+				"admin-secondary-email-removed",
+				"admin-team-name-update",
+				"admin-team-slug-update",
+				"admin-user-delete",
+				"admin-user-primary-email-updated",
+				"admin-username-updated",
 				"agentic-provisioning-account-blocked",
 				"agentic-provisioning-account-linked",
 				"agentic-provisioning-account-relinked",
@@ -1325,6 +1334,7 @@ export const userEventSchema = z
 				"user-emu-recovery-initiated",
 				"user-emu-toggled",
 				"user-mfa-challenge-failed",
+				"user-mfa-challenge-initiated",
 				"user-mfa-challenge-verified",
 				"user-mfa-change-failed",
 				"user-mfa-configuration-updated",
@@ -1337,6 +1347,7 @@ export const userEventSchema = z
 				"user-phone-removed",
 				"user-phone-updated",
 				"user-primary-email-updated",
+				"user-provider-email-claim-evaluated",
 				"user-sudo-mode-removed",
 				"user-token-created",
 				"user-token-deleted",
@@ -1641,6 +1652,30 @@ export const userEventSchema = z
 							.describe('Present when `provider` is "stripe". Equivalent to `providerAccount`.'),
 						resourceId: z.string(),
 						projectName: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						provider: z
+							.enum(["chatgpt", "stripe"])
+							.optional()
+							.describe('Present on new events only. Equivalent to "stripe" when absent.'),
+						providerAccount: z
+							.string()
+							.optional()
+							.describe("Present on new events only. Equivalent to `stripeAccount` when absent."),
+						stripeAccount: z
+							.string()
+							.optional()
+							.describe('Present when `provider` is "stripe". Equivalent to `providerAccount`.'),
+						stripeOrganisation: z
+							.string()
+							.optional()
+							.describe('Present when `provider` is "stripe".'),
+						teamId: z.string(),
+						actorId: z.string().describe("Okta user id."),
+						actorType: z.enum(["admin"]),
+						actorName: z.string().optional(),
 					})
 					.strict(),
 				z
@@ -3871,6 +3906,7 @@ export const userEventSchema = z
 						projectName: z.string(),
 						gitCommitterName: z.string(),
 						source: z.string(),
+						reason: z.enum(["ip_allow_list"]).optional(),
 					})
 					.strict(),
 				z
@@ -5243,6 +5279,7 @@ export const userEventSchema = z
 														"V0Builder",
 														"V0Chatter",
 														"V0Viewer",
+														"WorkflowDecryptor",
 													]),
 												)
 												.optional(),
@@ -6295,6 +6332,10 @@ export const userEventSchema = z
 							.nullish(),
 						env: z.string().optional(),
 						os: z.string().optional(),
+						loginSessionId: z
+							.string()
+							.optional()
+							.describe("Browser login correlation ID. This is not an authentication credential."),
 						username: z.string().optional(),
 						ssoType: z.string().optional(),
 						factors: z
@@ -6308,6 +6349,7 @@ export const userEventSchema = z
 													"bitbucket",
 													"chatgpt",
 													"email",
+													"emu-recovery",
 													"github",
 													"gitlab",
 													"google",
@@ -6337,6 +6379,7 @@ export const userEventSchema = z
 														"bitbucket",
 														"chatgpt",
 														"email",
+														"emu-recovery",
 														"github",
 														"gitlab",
 														"google",
@@ -7020,6 +7063,88 @@ export const userEventSchema = z
 							),
 						timestamp: z.number().optional(),
 						removedMemberCount: z.number().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						plan: z.string(),
+						removedUsers: z
+							.object({})
+							.catchall(
+								z.object({
+									role: z.enum([
+										"BILLING",
+										"CONTRIBUTOR",
+										"DEVELOPER",
+										"MEMBER",
+										"OWNER",
+										"SECURITY",
+										"VIEWER",
+										"VIEWER_FOR_PLUS",
+									]),
+									confirmed: z.union([z.literal(false), z.literal(true)]),
+									confirmedAt: z.number().optional(),
+									joinedFrom: z
+										.object({
+											origin: z.enum([
+												"account-update",
+												"bitbucket",
+												"dsync",
+												"feedback",
+												"github",
+												"gitlab",
+												"import",
+												"link",
+												"mail",
+												"nsnb-auto-approve",
+												"nsnb-hobby-upgrade",
+												"nsnb-invite",
+												"nsnb-redeploy",
+												"nsnb-redeploy-attribution-card",
+												"nsnb-request-access",
+												"nsnb-viewer-upgrade",
+												"organization-teams",
+												"saml",
+												"teams",
+											]),
+											commitId: z.string().optional(),
+											repoId: z.string().optional(),
+											repoPath: z.string().optional(),
+											gitUserId: z.union([z.string(), z.number()]).optional(),
+											gitUserLogin: z.string().optional(),
+											ssoUserId: z.string().optional(),
+											ssoConnectedAt: z.number().optional(),
+											idpUserId: z.string().optional(),
+											dsyncUserId: z.string().optional(),
+											dsyncConnectedAt: z.number().optional(),
+										})
+										.optional(),
+								}),
+							)
+							.optional(),
+						prevPlan: z.string().optional(),
+						priorPlan: z.string().optional(),
+						isDowngrade: z.union([z.literal(false), z.literal(true)]).optional(),
+						userAgent: z.string().optional(),
+						isReactivate: z.union([z.literal(false), z.literal(true)]).optional(),
+						isTrialUpgrade: z.union([z.literal(false), z.literal(true)]).optional(),
+						automated: z
+							.union([z.literal(false), z.literal(true)])
+							.optional()
+							.describe(
+								"Whether the plan change was system-initiated rather than human-initiated.",
+							),
+						reason: z
+							.string()
+							.optional()
+							.describe(
+								"Why the plan changed. For downgrades, this is a {@link DowngradeReason} from `@api/pubsub-types` (e.g. `user_downgrade`, `trial_expired`).",
+							),
+						timestamp: z.number().optional(),
+						removedMemberCount: z.number().optional(),
+						actorId: z.string().describe("Okta user id."),
+						actorType: z.enum(["admin"]),
+						actorName: z.string().optional(),
 					})
 					.strict(),
 				z
@@ -8254,6 +8379,15 @@ export const userEventSchema = z
 				z
 					.object({
 						email: z.string(),
+						verified: z.union([z.literal(false), z.literal(true)]),
+						actorId: z.string().describe("Okta user id."),
+						actorType: z.enum(["admin"]),
+						actorName: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						email: z.string(),
 					})
 					.strict(),
 				z
@@ -9055,6 +9189,14 @@ export const userEventSchema = z
 					.strict(),
 				z
 					.object({
+						name: z.string().optional(),
+						actorId: z.string().describe("Okta user id."),
+						actorType: z.enum(["admin"]),
+						actorName: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
 						decision: z.enum(["keep_on", "turn_off"]),
 						version: z.string(),
 					})
@@ -9169,6 +9311,14 @@ export const userEventSchema = z
 					.strict(),
 				z
 					.object({
+						slug: z.string().optional(),
+						actorId: z.string().describe("Okta user id."),
+						actorType: z.enum(["admin"]),
+						actorName: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
 						projectId: z.string(),
 						projectName: z.string(),
 						sampling: z
@@ -9194,6 +9344,10 @@ export const userEventSchema = z
 						recoveryCodes: z.number(),
 						actorId: z.string().optional(),
 						actorType: z.enum(["admin", "user"]).optional(),
+						actorName: z
+							.string()
+							.optional()
+							.describe("Human-readable admin who performed the removal."),
 						reason: z.string().optional(),
 					})
 					.strict(),
@@ -9201,6 +9355,15 @@ export const userEventSchema = z
 					.object({
 						deletedAt: z.number().nullish(),
 						username: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						deletedAt: z.number().nullish(),
+						username: z.string(),
+						actorId: z.string().describe("Okta user id."),
+						actorType: z.enum(["admin"]),
+						actorName: z.string().optional(),
 					})
 					.strict(),
 				z
@@ -9241,6 +9404,16 @@ export const userEventSchema = z
 					.object({
 						method: z.enum(["email-otp", "recovery-code", "totp", "webauthn"]),
 						reason: z.string(),
+						flowId: z.string().optional(),
+						loginSessionId: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						allowedMethods: z.array(z.enum(["recovery-code", "totp", "webauthn"])),
+						firstFactor: z.string(),
+						flowId: z.string(),
+						loginSessionId: z.string().optional(),
 					})
 					.strict(),
 				z
@@ -9267,11 +9440,16 @@ export const userEventSchema = z
 							enabled: z.union([z.literal(false), z.literal(true)]),
 							totpVerified: z.union([z.literal(false), z.literal(true)]),
 						}),
+						method: z.enum(["passkey", "self_serve_recovery", "totp", "user_disabled"]).optional(),
 					})
 					.strict(),
 				z
 					.object({
 						remaining: z.number(),
+						context: z
+							.enum(["login", "sudo"])
+							.optional()
+							.describe("Absent on events predating the field; those were all logins."),
 					})
 					.strict(),
 				z
@@ -9295,8 +9473,52 @@ export const userEventSchema = z
 					.strict(),
 				z
 					.object({
+						previous: z.object({
+							enabled: z.union([z.literal(false), z.literal(true)]),
+							totpVerified: z.union([z.literal(false), z.literal(true)]),
+						}),
+						next: z.object({
+							enabled: z.union([z.literal(false), z.literal(true)]),
+							totpVerified: z.union([z.literal(false), z.literal(true)]),
+						}),
+					})
+					.strict(),
+				z
+					.object({
+						provider: z.enum(["google"]),
+						providerSubjectId: z.string(),
+						outcome: z.enum(["account-matched", "linking-required"]),
+						decision: z.object({
+							authoritative: z.union([z.literal(false), z.literal(true)]),
+							basis: z.enum(["gmail", "none", "workspace-mx"]),
+							emailDomain: z.string(),
+							emailVerified: z.union([z.literal(false), z.literal(true)]),
+							hostedDomainMatch: z.union([z.literal(false), z.literal(true)]),
+							mxOutcome: z.enum(["google", "lookup-error", "non-google", "not-checked"]),
+						}),
+					})
+					.strict(),
+				z
+					.object({
 						email: z.string(),
 						prevEmail: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						email: z.string(),
+						prevEmail: z.string(),
+						actorId: z.string().describe("Okta user id."),
+						actorType: z.enum(["admin"]),
+						actorName: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						username: z.string(),
+						actorId: z.string().describe("Okta user id."),
+						actorType: z.enum(["admin"]),
+						actorName: z.string().optional(),
 					})
 					.strict(),
 				z
@@ -9947,6 +10169,15 @@ export const listEventTypeSchema = z
 				"access-group-updated",
 				"access-group-user-added",
 				"access-group-user-removed",
+				"admin-agentic-provisioning-account-unlinked",
+				"admin-plan-updated",
+				"admin-secondary-email-added",
+				"admin-secondary-email-removed",
+				"admin-team-name-update",
+				"admin-team-slug-update",
+				"admin-user-delete",
+				"admin-user-primary-email-updated",
+				"admin-username-updated",
 				"agentic-provisioning-account-blocked",
 				"agentic-provisioning-account-linked",
 				"agentic-provisioning-account-relinked",
@@ -10512,6 +10743,7 @@ export const listEventTypeSchema = z
 				"user-emu-recovery-initiated",
 				"user-emu-toggled",
 				"user-mfa-challenge-failed",
+				"user-mfa-challenge-initiated",
 				"user-mfa-challenge-verified",
 				"user-mfa-change-failed",
 				"user-mfa-configuration-updated",
@@ -10524,6 +10756,7 @@ export const listEventTypeSchema = z
 				"user-phone-removed",
 				"user-phone-updated",
 				"user-primary-email-updated",
+				"user-provider-email-claim-evaluated",
 				"user-sudo-mode-removed",
 				"user-token-created",
 				"user-token-deleted",
@@ -10609,6 +10842,15 @@ export const listEventTypeSchema = z
 					"access-group-updated",
 					"access-group-user-added",
 					"access-group-user-removed",
+					"admin-agentic-provisioning-account-unlinked",
+					"admin-plan-updated",
+					"admin-secondary-email-added",
+					"admin-secondary-email-removed",
+					"admin-team-name-update",
+					"admin-team-slug-update",
+					"admin-user-delete",
+					"admin-user-primary-email-updated",
+					"admin-username-updated",
 					"agentic-provisioning-account-blocked",
 					"agentic-provisioning-account-linked",
 					"agentic-provisioning-account-relinked",
@@ -11174,6 +11416,7 @@ export const listEventTypeSchema = z
 					"user-emu-recovery-initiated",
 					"user-emu-toggled",
 					"user-mfa-challenge-failed",
+					"user-mfa-challenge-initiated",
 					"user-mfa-challenge-verified",
 					"user-mfa-change-failed",
 					"user-mfa-configuration-updated",
@@ -11186,6 +11429,7 @@ export const listEventTypeSchema = z
 					"user-phone-removed",
 					"user-phone-updated",
 					"user-primary-email-updated",
+					"user-provider-email-claim-evaluated",
 					"user-sudo-mode-removed",
 					"user-token-created",
 					"user-token-deleted",
@@ -12192,6 +12436,7 @@ export const invitedTeamMemberSchema = z
 					"V0Builder",
 					"V0Chatter",
 					"V0Viewer",
+					"WorkflowDecryptor",
 				]),
 			)
 			.optional()
@@ -12360,6 +12605,7 @@ export const teamSchema = z
 							"V0Builder",
 							"V0Chatter",
 							"V0Viewer",
+							"WorkflowDecryptor",
 						]),
 					)
 					.optional(),
@@ -12776,6 +13022,7 @@ export const teamSchema = z
 							"V0Builder",
 							"V0Chatter",
 							"V0Viewer",
+							"WorkflowDecryptor",
 						]),
 					)
 					.optional(),
@@ -12976,6 +13223,7 @@ export const teamLimitedSchema = z
 							"V0Builder",
 							"V0Chatter",
 							"V0Viewer",
+							"WorkflowDecryptor",
 						]),
 					)
 					.optional(),
@@ -27198,8 +27446,8 @@ export const getRootResponseSchema = z.union([
 export const getByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestPathTeamSlugSchema = z
 	.string()
 	.max(255)
-	.regex(/^(?:[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?|team_[a-zA-Z0-9]+)$/)
-	.describe("Single Docker repository team slug or team ID component.");
+	.regex(/^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$/)
+	.describe("Single Docker repository team slug component.");
 
 export const getByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestPathProjectSlugSchema = z
 	.string()
@@ -27246,8 +27494,8 @@ export const getByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestResponseSche
 export const deleteByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestPathTeamSlugSchema = z
 	.string()
 	.max(255)
-	.regex(/^(?:[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?|team_[a-zA-Z0-9]+)$/)
-	.describe("Single Docker repository team slug or team ID component.");
+	.regex(/^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$/)
+	.describe("Single Docker repository team slug component.");
 
 export const deleteByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestPathProjectSlugSchema = z
 	.string()
@@ -27301,8 +27549,8 @@ export const deleteByTeamSlugByProjectSlugByRepositoryNameBlobsByDigestResponseS
 export const getByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidPathTeamSlugSchema = z
 	.string()
 	.max(255)
-	.regex(/^(?:[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?|team_[a-zA-Z0-9]+)$/)
-	.describe("Single Docker repository team slug or team ID component.");
+	.regex(/^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$/)
+	.describe("Single Docker repository team slug component.");
 
 export const getByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidPathProjectSlugSchema = z
 	.string()
@@ -27357,8 +27605,8 @@ export const getByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidRespons
 export const deleteByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidPathTeamSlugSchema = z
 	.string()
 	.max(255)
-	.regex(/^(?:[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?|team_[a-zA-Z0-9]+)$/)
-	.describe("Single Docker repository team slug or team ID component.");
+	.regex(/^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$/)
+	.describe("Single Docker repository team slug component.");
 
 export const deleteByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidPathProjectSlugSchema =
 	z
@@ -27415,8 +27663,8 @@ export const deleteByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidResp
 export const updateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidPathTeamSlugSchema = z
 	.string()
 	.max(255)
-	.regex(/^(?:[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?|team_[a-zA-Z0-9]+)$/)
-	.describe("Single Docker repository team slug or team ID component.");
+	.regex(/^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$/)
+	.describe("Single Docker repository team slug component.");
 
 export const updateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidPathProjectSlugSchema =
 	z
@@ -27477,8 +27725,8 @@ export const updateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidResp
 export const replaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidPathTeamSlugSchema = z
 	.string()
 	.max(255)
-	.regex(/^(?:[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?|team_[a-zA-Z0-9]+)$/)
-	.describe("Single Docker repository team slug or team ID component.");
+	.regex(/^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$/)
+	.describe("Single Docker repository team slug component.");
 
 export const replaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidPathProjectSlugSchema =
 	z
@@ -27545,8 +27793,8 @@ export const replaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidRes
 export const createByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsPathTeamSlugSchema = z
 	.string()
 	.max(255)
-	.regex(/^(?:[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?|team_[a-zA-Z0-9]+)$/)
-	.describe("Single Docker repository team slug or team ID component.");
+	.regex(/^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$/)
+	.describe("Single Docker repository team slug component.");
 
 export const createByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsPathProjectSlugSchema = z
 	.string()
@@ -27571,7 +27819,7 @@ export const createByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsQueryFromS
 	.string()
 	.max(255)
 	.regex(
-		/^(?:[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?|team_[a-zA-Z0-9]+)\\\/[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?\\\/[a-z0-9]+(?:(?:\\.|_|__|-+)[a-z0-9]+)*$/,
+		/^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?\\\/[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?\\\/[a-z0-9]+(?:(?:\\.|_|__|-+)[a-z0-9]+)*$/,
 	)
 	.optional()
 	.describe("Source repository to mount the blob from.");
@@ -27604,8 +27852,8 @@ export const replaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceP
 	z
 		.string()
 		.max(255)
-		.regex(/^(?:[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?|team_[a-zA-Z0-9]+)$/)
-		.describe("Single Docker repository team slug or team ID component.");
+		.regex(/^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$/)
+		.describe("Single Docker repository team slug component.");
 
 export const replaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferencePathProjectSlugSchema =
 	z
@@ -27667,8 +27915,8 @@ export const replaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceR
 export const getByTeamSlugByProjectSlugByRepositoryNameManifestsByReferencePathTeamSlugSchema = z
 	.string()
 	.max(255)
-	.regex(/^(?:[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?|team_[a-zA-Z0-9]+)$/)
-	.describe("Single Docker repository team slug or team ID component.");
+	.regex(/^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$/)
+	.describe("Single Docker repository team slug component.");
 
 export const getByTeamSlugByProjectSlugByRepositoryNameManifestsByReferencePathProjectSlugSchema = z
 	.string()
@@ -27721,8 +27969,8 @@ export const getByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceRespo
 export const deleteByTeamSlugByProjectSlugByRepositoryNameManifestsByReferencePathTeamSlugSchema = z
 	.string()
 	.max(255)
-	.regex(/^(?:[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?|team_[a-zA-Z0-9]+)$/)
-	.describe("Single Docker repository team slug or team ID component.");
+	.regex(/^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$/)
+	.describe("Single Docker repository team slug component.");
 
 export const deleteByTeamSlugByProjectSlugByRepositoryNameManifestsByReferencePathProjectSlugSchema =
 	z
@@ -27780,8 +28028,8 @@ export const deleteByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceRe
 export const getByTeamSlugByProjectSlugByRepositoryNameTagsListPathTeamSlugSchema = z
 	.string()
 	.max(255)
-	.regex(/^(?:[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?|team_[a-zA-Z0-9]+)$/)
-	.describe("Single Docker repository team slug or team ID component.");
+	.regex(/^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$/)
+	.describe("Single Docker repository team slug component.");
 
 export const getByTeamSlugByProjectSlugByRepositoryNameTagsListPathProjectSlugSchema = z
 	.string()
