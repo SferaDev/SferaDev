@@ -11319,6 +11319,24 @@ export type UserEvent = {
 								  }
 								| undefined;
 							/**
+							 * @description Tracks notifications sent for the team-wide Speed Insights free allocation. The allocation is measured over a rolling window (not a billing period), so deduplication is time-based rather than reset at period start.
+							 * @type object | undefined
+							 */
+							speedInsightsFreeUsageAlert?:
+								| {
+										/**
+										 * @description Highest allocation percentage threshold notified (e.g. 75 or 100).
+										 * @type number
+										 */
+										currentThreshold: number;
+										/**
+										 * @description When the notification for `currentThreshold` was sent.
+										 * @type number
+										 */
+										notifiedAt: number;
+								  }
+								| undefined;
+							/**
 							 * @type string
 							 */
 							username: string;
@@ -11739,6 +11757,30 @@ export type UserEvent = {
 										 * @type object | undefined
 										 */
 										vcr?:
+											| {
+													/**
+													 * @type number
+													 */
+													updatedAt: number;
+													/**
+													 * @type number | undefined
+													 */
+													blockedFrom?: number | undefined;
+													/**
+													 * @type number | undefined
+													 */
+													blockedUntil?: number | undefined;
+													/**
+													 * @type string
+													 */
+													blockReason: BlockReasonEnumKey;
+											  }
+											| undefined;
+										/**
+										 * @description Pauses Speed Insights free data-point ingestion when the team-wide free allocation is exhausted. The block lasts at least 14 days and is extended while rolling usage stays above half of the allocation.
+										 * @type object | undefined
+										 */
+										speedInsightsFree?:
 											| {
 													/**
 													 * @type number
