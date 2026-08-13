@@ -1,5 +1,20 @@
 # vercel-api-js
 
+## 1.11.0
+
+### Minor Changes
+
+- c30dfc5: Added new enums, such as 'contextEnum', 'basisEnum', and 'mxOutcomeEnum' to better type user and authentication events.
+- c30dfc5: Added several new object shapes/fields to user event schema for tracking more granular admin and security activities.
+- c30dfc5: Added 'WorkflowDecryptor' as a possible team permission value in multiple schemas and types.
+- c30dfc5: Added new fields for login session tracking and MFA flows in various user event types.
+- c30dfc5: Added new admin-related user event types and their support to schemas and types.
+
+### Patch Changes
+
+- c30dfc5: [BREAKING] Docker registry API now restricts team slug to be a team slug only, not a team ID, changing relevant pattern match and descriptions.
+- c30dfc5: Improved description for directory sync removals in removeTeamMember endpoint.
+
 ## 1.10.0
 
 ### Minor Changes
