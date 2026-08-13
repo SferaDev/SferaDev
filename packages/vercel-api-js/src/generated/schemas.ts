@@ -12107,7 +12107,7 @@ export const namedSandboxSchema = z
 			.string()
 			.optional()
 			.describe(
-				"The region the sandbox is configured to run in: the region set on the sandbox, otherwise the project-level default, then the platform default. Where a running session actually landed is reported by `session.region`.",
+				"The region the sandbox is pinned to: the region stored on the sandbox, otherwise the platform default. Where a running session actually landed is reported by `session.region`.",
 			),
 		vcpus: z.number().optional().describe("Number of virtual CPUs allocated."),
 		memory: z.number().optional().describe("Memory allocated in MB."),
