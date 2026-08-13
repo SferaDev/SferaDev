@@ -5661,6 +5661,21 @@ export const userEventSchema = z
 									})
 									.optional()
 									.describe("Contains the timestamps for usage summary emails."),
+								speedInsightsFreeUsageAlert: z
+									.object({
+										currentThreshold: z
+											.number()
+											.describe(
+												"Highest allocation percentage threshold notified (e.g. 75 or 100).",
+											),
+										notifiedAt: z
+											.number()
+											.describe("When the notification for `currentThreshold` was sent."),
+									})
+									.optional()
+									.describe(
+										"Tracks notifications sent for the team-wide Speed Insights free allocation. The allocation is measured over a rolling window (not a billing period), so deduplication is time-based rather than reset at period start.",
+									),
 								username: z.string(),
 								updatedAt: z.number(),
 								enablePreviewFeedback: z
@@ -5954,6 +5969,17 @@ export const userEventSchema = z
 												blockReason: z.enum(["admin_override", "hard_blocked", "limits_exceeded"]),
 											})
 											.optional(),
+										speedInsightsFree: z
+											.object({
+												updatedAt: z.number(),
+												blockedFrom: z.number().optional(),
+												blockedUntil: z.number().optional(),
+												blockReason: z.enum(["admin_override", "hard_blocked", "limits_exceeded"]),
+											})
+											.optional()
+											.describe(
+												"Pauses Speed Insights free data-point ingestion when the team-wide free allocation is exhausted. The block lasts at least 14 days and is extended while rolling usage stays above half of the allocation.",
+											),
 									})
 									.optional()
 									.describe(
