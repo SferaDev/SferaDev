@@ -2618,16 +2618,17 @@ export const planSlugEnum = {
 export type PlanSlugEnumKey = (typeof planSlugEnum)[keyof typeof planSlugEnum];
 
 export const reasonEnum = {
-	BLOCKED_FOR_PLATFORM_ABUSE: "BLOCKED_FOR_PLATFORM_ABUSE",
-	DOMAIN_OWNER_DELETION_REQUEST: "DOMAIN_OWNER_DELETION_REQUEST",
-	ENTERPRISE_TRIAL_ENDED: "ENTERPRISE_TRIAL_ENDED",
-	ENTERPRISE_UNPAID_INVOICE: "ENTERPRISE_UNPAID_INVOICE",
-	EXPOSURE_CAP_EXCEEDED: "EXPOSURE_CAP_EXCEEDED",
-	FAIR_USE_LIMITS_EXCEEDED: "FAIR_USE_LIMITS_EXCEEDED",
-	HOBBY_ALLOCATION_PAUSED: "HOBBY_ALLOCATION_PAUSED",
-	SUBSCRIPTION_CANCELED: "SUBSCRIPTION_CANCELED",
-	SUBSCRIPTION_EXPIRED: "SUBSCRIPTION_EXPIRED",
-	UNPAID_INVOICE: "UNPAID_INVOICE",
+	"basic-floor": "basic-floor",
+	"build-timeout-failure": "build-timeout-failure",
+	"enospc-failure": "enospc-failure",
+	"enterprise-floor": "enterprise-floor",
+	"high-peak-disk": "high-peak-disk",
+	"high-peak-memory": "high-peak-memory",
+	"long-build-duration": "long-build-duration",
+	"oom-failure": "oom-failure",
+	"plan-change": "plan-change",
+	"short-build-duration": "short-build-duration",
+	"sustained-high-cpu": "sustained-high-cpu",
 } as const;
 
 export type ReasonEnumKey = (typeof reasonEnum)[keyof typeof reasonEnum];
@@ -17366,6 +17367,14 @@ export type UserEvent = {
 						 * @type string | undefined
 						 */
 						next?: NextEnumKey | undefined;
+						/**
+						 * @type boolean | undefined
+						 */
+						isSystemInitiated?: (false | true) | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						reason?: ReasonEnumKey | undefined;
 				  }
 				| {
 						/**

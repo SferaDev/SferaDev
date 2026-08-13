@@ -8902,6 +8902,22 @@ export const userEventSchema = z
 					.object({
 						previous: z.enum(["basic", "elastic", "enhanced", "standard", "turbo"]).optional(),
 						next: z.enum(["basic", "elastic", "enhanced", "standard", "turbo"]).optional(),
+						isSystemInitiated: z.union([z.literal(false), z.literal(true)]).optional(),
+						reason: z
+							.enum([
+								"basic-floor",
+								"build-timeout-failure",
+								"enospc-failure",
+								"enterprise-floor",
+								"high-peak-disk",
+								"high-peak-memory",
+								"long-build-duration",
+								"oom-failure",
+								"plan-change",
+								"short-build-duration",
+								"sustained-high-cpu",
+							])
+							.optional(),
 					})
 					.strict(),
 				z
