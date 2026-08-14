@@ -393,17 +393,48 @@ import type {
 	CreateRepositoryStatus404,
 	CreateRepositoryStatus409,
 	CreateRepositoryStatus410,
-	CreateSandboxesByNameForkResponse,
-	CreateSandboxesByNameForkStatus400,
-	CreateSandboxesByNameForkStatus401,
-	CreateSandboxesByNameForkStatus402,
-	CreateSandboxesByNameForkStatus403,
-	CreateSandboxesByNameForkStatus404,
-	CreateSandboxesByNameForkStatus409,
-	CreateSandboxesByNameForkStatus410,
-	CreateSandboxesByNameForkStatus422,
-	CreateSandboxesByNameForkStatus429,
-	CreateSandboxesByNameForkStatus500,
+	CreateSandboxesByNameForkV2Response,
+	CreateSandboxesByNameForkV2Status400,
+	CreateSandboxesByNameForkV2Status401,
+	CreateSandboxesByNameForkV2Status402,
+	CreateSandboxesByNameForkV2Status403,
+	CreateSandboxesByNameForkV2Status404,
+	CreateSandboxesByNameForkV2Status409,
+	CreateSandboxesByNameForkV2Status410,
+	CreateSandboxesByNameForkV2Status422,
+	CreateSandboxesByNameForkV2Status429,
+	CreateSandboxesByNameForkV2Status500,
+	CreateSandboxesByNameForkV3Response,
+	CreateSandboxesByNameForkV3Status400,
+	CreateSandboxesByNameForkV3Status401,
+	CreateSandboxesByNameForkV3Status402,
+	CreateSandboxesByNameForkV3Status403,
+	CreateSandboxesByNameForkV3Status404,
+	CreateSandboxesByNameForkV3Status409,
+	CreateSandboxesByNameForkV3Status410,
+	CreateSandboxesByNameForkV3Status422,
+	CreateSandboxesByNameForkV3Status429,
+	CreateSandboxesByNameForkV3Status500,
+	CreateSandboxesSessionsBySessionIdSnapshotV2Response,
+	CreateSandboxesSessionsBySessionIdSnapshotV2Status400,
+	CreateSandboxesSessionsBySessionIdSnapshotV2Status401,
+	CreateSandboxesSessionsBySessionIdSnapshotV2Status402,
+	CreateSandboxesSessionsBySessionIdSnapshotV2Status403,
+	CreateSandboxesSessionsBySessionIdSnapshotV2Status404,
+	CreateSandboxesSessionsBySessionIdSnapshotV2Status410,
+	CreateSandboxesSessionsBySessionIdSnapshotV2Status422,
+	CreateSandboxesSessionsBySessionIdSnapshotV2Status429,
+	CreateSandboxesSessionsBySessionIdSnapshotV2Status500,
+	CreateSandboxesSessionsBySessionIdSnapshotV3Response,
+	CreateSandboxesSessionsBySessionIdSnapshotV3Status400,
+	CreateSandboxesSessionsBySessionIdSnapshotV3Status401,
+	CreateSandboxesSessionsBySessionIdSnapshotV3Status402,
+	CreateSandboxesSessionsBySessionIdSnapshotV3Status403,
+	CreateSandboxesSessionsBySessionIdSnapshotV3Status404,
+	CreateSandboxesSessionsBySessionIdSnapshotV3Status410,
+	CreateSandboxesSessionsBySessionIdSnapshotV3Status422,
+	CreateSandboxesSessionsBySessionIdSnapshotV3Status429,
+	CreateSandboxesSessionsBySessionIdSnapshotV3Status500,
 	CreateSandboxesV2Response,
 	CreateSandboxesV2Status400,
 	CreateSandboxesV2Status401,
@@ -426,6 +457,17 @@ import type {
 	CreateSandboxesV3Status422,
 	CreateSandboxesV3Status429,
 	CreateSandboxesV3Status500,
+	CreateSandboxesV4Response,
+	CreateSandboxesV4Status400,
+	CreateSandboxesV4Status401,
+	CreateSandboxesV4Status402,
+	CreateSandboxesV4Status403,
+	CreateSandboxesV4Status404,
+	CreateSandboxesV4Status409,
+	CreateSandboxesV4Status410,
+	CreateSandboxesV4Status422,
+	CreateSandboxesV4Status429,
+	CreateSandboxesV4Status500,
 	CreateSdkKeyResponse,
 	CreateSdkKeyStatus400,
 	CreateSdkKeyStatus401,
@@ -451,16 +493,6 @@ import type {
 	CreateSessionDirectoryStatus422,
 	CreateSessionDirectoryStatus429,
 	CreateSessionDirectoryStatus500,
-	CreateSessionSnapshotResponse,
-	CreateSessionSnapshotStatus400,
-	CreateSessionSnapshotStatus401,
-	CreateSessionSnapshotStatus402,
-	CreateSessionSnapshotStatus403,
-	CreateSessionSnapshotStatus404,
-	CreateSessionSnapshotStatus410,
-	CreateSessionSnapshotStatus422,
-	CreateSessionSnapshotStatus429,
-	CreateSessionSnapshotStatus500,
 	CreateSharedEnvVariableResponse,
 	CreateSharedEnvVariableStatus400,
 	CreateSharedEnvVariableStatus401,
@@ -15946,7 +15978,7 @@ export async function writeSessionFiles(
  * @description Creates a point-in-time snapshot of a running session's filesystem. Snapshots can be used to quickly restore a session to a previous state or to create new sessions with pre-configured environments. The session must be running and able to accept commands for a snapshot to be created. The session will be terminated after the snapshot is created.
  * @link /v2/sandboxes/sessions/{sessionId}/snapshot
  */
-export async function createSessionSnapshot(
+export async function createSandboxesSessionsBySessionIdSnapshotV2(
 	{
 		pathParams,
 		queryParams,
@@ -15963,17 +15995,17 @@ export async function createSessionSnapshot(
 		throw new Error(`Missing required path parameter: sessionId`);
 	}
 	const data = await request<
-		CreateSessionSnapshotResponse,
+		CreateSandboxesSessionsBySessionIdSnapshotV2Response,
 		ErrorWrapper<
-			| CreateSessionSnapshotStatus400
-			| CreateSessionSnapshotStatus401
-			| CreateSessionSnapshotStatus402
-			| CreateSessionSnapshotStatus403
-			| CreateSessionSnapshotStatus404
-			| CreateSessionSnapshotStatus410
-			| CreateSessionSnapshotStatus422
-			| CreateSessionSnapshotStatus429
-			| CreateSessionSnapshotStatus500
+			| CreateSandboxesSessionsBySessionIdSnapshotV2Status400
+			| CreateSandboxesSessionsBySessionIdSnapshotV2Status401
+			| CreateSandboxesSessionsBySessionIdSnapshotV2Status402
+			| CreateSandboxesSessionsBySessionIdSnapshotV2Status403
+			| CreateSandboxesSessionsBySessionIdSnapshotV2Status404
+			| CreateSandboxesSessionsBySessionIdSnapshotV2Status410
+			| CreateSandboxesSessionsBySessionIdSnapshotV2Status422
+			| CreateSandboxesSessionsBySessionIdSnapshotV2Status429
+			| CreateSandboxesSessionsBySessionIdSnapshotV2Status500
 		>,
 		null,
 		Record<string, string>,
@@ -15995,7 +16027,7 @@ export async function createSessionSnapshot(
  * @description Forks a named sandbox, creating a new named sandbox from the source's configuration. Resources, timeout, ports, tags, network policy, mounts, Connect network, image, persistence, snapshot settings and — unlike the SDK-side fork — environment variables are copied from the source automatically (`interactive` is not). When the source has a snapshot the fork starts from it; otherwise it starts from the source's runtime/image. Any field provided in the request body overrides the value copied from the source.
  * @link /v2/sandboxes/{name}/fork
  */
-export async function createSandboxesByNameFork(
+export async function createSandboxesByNameForkV2(
 	{
 		pathParams,
 		queryParams,
@@ -16012,18 +16044,18 @@ export async function createSandboxesByNameFork(
 		throw new Error(`Missing required path parameter: name`);
 	}
 	const data = await request<
-		CreateSandboxesByNameForkResponse,
+		CreateSandboxesByNameForkV2Response,
 		ErrorWrapper<
-			| CreateSandboxesByNameForkStatus400
-			| CreateSandboxesByNameForkStatus401
-			| CreateSandboxesByNameForkStatus402
-			| CreateSandboxesByNameForkStatus403
-			| CreateSandboxesByNameForkStatus404
-			| CreateSandboxesByNameForkStatus409
-			| CreateSandboxesByNameForkStatus410
-			| CreateSandboxesByNameForkStatus422
-			| CreateSandboxesByNameForkStatus429
-			| CreateSandboxesByNameForkStatus500
+			| CreateSandboxesByNameForkV2Status400
+			| CreateSandboxesByNameForkV2Status401
+			| CreateSandboxesByNameForkV2Status402
+			| CreateSandboxesByNameForkV2Status403
+			| CreateSandboxesByNameForkV2Status404
+			| CreateSandboxesByNameForkV2Status409
+			| CreateSandboxesByNameForkV2Status410
+			| CreateSandboxesByNameForkV2Status422
+			| CreateSandboxesByNameForkV2Status429
+			| CreateSandboxesByNameForkV2Status500
 		>,
 		null,
 		Record<string, string>,
@@ -16077,6 +16109,150 @@ export async function createSandboxesV3(
 	>({
 		method: "POST",
 		url: `/v3/sandboxes`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Create a snapshot
+ * @description Creates a point-in-time snapshot of a running session's filesystem. Snapshots can be used to quickly restore a session to a previous state or to create new sessions with pre-configured environments. The session must be running and able to accept commands for a snapshot to be created. The session will be terminated after the snapshot is created. Unlike v2, snapshots expire after 7 days when neither the request nor the sandbox configuration specifies an expiration.
+ * @link /v3/sandboxes/sessions/{sessionId}/snapshot
+ */
+export async function createSandboxesSessionsBySessionIdSnapshotV3(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { sessionId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.sessionId) {
+		throw new Error(`Missing required path parameter: sessionId`);
+	}
+	const data = await request<
+		CreateSandboxesSessionsBySessionIdSnapshotV3Response,
+		ErrorWrapper<
+			| CreateSandboxesSessionsBySessionIdSnapshotV3Status400
+			| CreateSandboxesSessionsBySessionIdSnapshotV3Status401
+			| CreateSandboxesSessionsBySessionIdSnapshotV3Status402
+			| CreateSandboxesSessionsBySessionIdSnapshotV3Status403
+			| CreateSandboxesSessionsBySessionIdSnapshotV3Status404
+			| CreateSandboxesSessionsBySessionIdSnapshotV3Status410
+			| CreateSandboxesSessionsBySessionIdSnapshotV3Status422
+			| CreateSandboxesSessionsBySessionIdSnapshotV3Status429
+			| CreateSandboxesSessionsBySessionIdSnapshotV3Status500
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
+		{ sessionId: string }
+	>({
+		method: "POST",
+		url: `/v3/sandboxes/sessions/${pathParams.sessionId}/snapshot`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Fork a named sandbox
+ * @description Forks a named sandbox, creating a new named sandbox from the source's configuration. Resources, timeout, ports, tags, network policy, mounts, Connect network, image, persistence, snapshot settings and — unlike the SDK-side fork — environment variables are copied from the source automatically (`interactive` is not). When the source has a snapshot the fork starts from it; otherwise it starts from the source's runtime/image. Any field provided in the request body overrides the value copied from the source. Unlike v2, when neither the body nor the source provides a value, snapshots expire after 7 days by default and persistent sandboxes keep only their most recent snapshot (`keepLastSnapshots: null` disables the limit).
+ * @link /v3/sandboxes/{name}/fork
+ */
+export async function createSandboxesByNameForkV3(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { name: string };
+		queryParams?: { projectId?: string; teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.name) {
+		throw new Error(`Missing required path parameter: name`);
+	}
+	const data = await request<
+		CreateSandboxesByNameForkV3Response,
+		ErrorWrapper<
+			| CreateSandboxesByNameForkV3Status400
+			| CreateSandboxesByNameForkV3Status401
+			| CreateSandboxesByNameForkV3Status402
+			| CreateSandboxesByNameForkV3Status403
+			| CreateSandboxesByNameForkV3Status404
+			| CreateSandboxesByNameForkV3Status409
+			| CreateSandboxesByNameForkV3Status410
+			| CreateSandboxesByNameForkV3Status422
+			| CreateSandboxesByNameForkV3Status429
+			| CreateSandboxesByNameForkV3Status500
+		>,
+		null,
+		Record<string, string>,
+		{ projectId?: string; teamId?: string; slug?: string },
+		{ name: string }
+	>({
+		method: "POST",
+		url: `/v3/sandboxes/${pathParams.name}/fork`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Create a named sandbox
+ * @description Creates a named sandbox environment. Named sandboxes have a unique name within a project and support automatic snapshotting on shutdown. When no `image` is provided (and the sandbox is not restored from a snapshot), the sandbox is created from the default universal image. Unlike v3, snapshots expire after 7 days by default and persistent sandboxes keep only their most recent snapshot unless `keepLastSnapshots` is configured otherwise (or set to `null` to disable the limit).
+ * @link /v4/sandboxes
+ */
+export async function createSandboxesV4(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	const data = await request<
+		CreateSandboxesV4Response,
+		ErrorWrapper<
+			| CreateSandboxesV4Status400
+			| CreateSandboxesV4Status401
+			| CreateSandboxesV4Status402
+			| CreateSandboxesV4Status403
+			| CreateSandboxesV4Status404
+			| CreateSandboxesV4Status409
+			| CreateSandboxesV4Status410
+			| CreateSandboxesV4Status422
+			| CreateSandboxesV4Status429
+			| CreateSandboxesV4Status500
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
+		Record<string, string>
+	>({
+		method: "POST",
+		url: `/v4/sandboxes`,
 		queryParams,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
@@ -20618,9 +20794,12 @@ export const operationsByPath = {
 	"POST /v2/sandboxes/sessions/{sessionId}/fs/read": readSessionFile,
 	"POST /v2/sandboxes/sessions/{sessionId}/fs/mkdir": createSessionDirectory,
 	"POST /v2/sandboxes/sessions/{sessionId}/fs/write": writeSessionFiles,
-	"POST /v2/sandboxes/sessions/{sessionId}/snapshot": createSessionSnapshot,
-	"POST /v2/sandboxes/{name}/fork": createSandboxesByNameFork,
+	"POST /v2/sandboxes/sessions/{sessionId}/snapshot": createSandboxesSessionsBySessionIdSnapshotV2,
+	"POST /v2/sandboxes/{name}/fork": createSandboxesByNameForkV2,
 	"POST /v3/sandboxes": createSandboxesV3,
+	"POST /v3/sandboxes/sessions/{sessionId}/snapshot": createSandboxesSessionsBySessionIdSnapshotV3,
+	"POST /v3/sandboxes/{name}/fork": createSandboxesByNameForkV3,
+	"POST /v4/sandboxes": createSandboxesV4,
 	"POST /v1/security/attack-mode": updateAttackChallengeMode,
 	"GET /v1/security/firewall/config": getSecurityFirewallConfig,
 	"PUT /v1/security/firewall/config": putFirewallConfig,
@@ -21087,9 +21266,12 @@ export const operationsByTag = {
 		readSessionFile,
 		createSessionDirectory,
 		writeSessionFiles,
-		createSessionSnapshot,
-		createSandboxesByNameFork,
+		createSandboxesSessionsBySessionIdSnapshotV2,
+		createSandboxesByNameForkV2,
 		createSandboxesV3,
+		createSandboxesSessionsBySessionIdSnapshotV3,
+		createSandboxesByNameForkV3,
+		createSandboxesV4,
 	},
 	security: {
 		updateAttackChallengeMode,
@@ -21537,9 +21719,12 @@ export const tagDictionary = {
 			"readSessionFile",
 			"createSessionDirectory",
 			"writeSessionFiles",
-			"createSessionSnapshot",
-			"createSandboxesByNameFork",
+			"createSandboxesSessionsBySessionIdSnapshotV2",
+			"createSandboxesByNameForkV2",
 			"createSandboxesV3",
+			"createSandboxesSessionsBySessionIdSnapshotV3",
+			"createSandboxesByNameForkV3",
+			"createSandboxesV4",
 		],
 		DELETE: ["deleteDrive", "deleteSessionSnapshot", "deleteSandbox"],
 		PATCH: ["updateSandbox"],

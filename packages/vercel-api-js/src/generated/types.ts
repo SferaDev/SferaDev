@@ -56827,90 +56827,90 @@ export type WriteSessionFilesResponse =
  * @example sbx_abc123
  * @type string
  */
-export type CreateSessionSnapshotPathSessionId = string;
+export type CreateSandboxesSessionsBySessionIdSnapshotV2PathSessionId = string;
 
 /**
  * @description The Team identifier to perform the request on behalf of.
  * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
  * @type string | undefined
  */
-export type CreateSessionSnapshotQueryTeamId = string | undefined;
+export type CreateSandboxesSessionsBySessionIdSnapshotV2QueryTeamId = string | undefined;
 
 /**
  * @description The Team slug to perform the request on behalf of.
  * @example my-team-url-slug
  * @type string | undefined
  */
-export type CreateSessionSnapshotQuerySlug = string | undefined;
+export type CreateSandboxesSessionsBySessionIdSnapshotV2QuerySlug = string | undefined;
 
 /**
  * @type unknown
  */
-export type CreateSessionSnapshotStatus201 = unknown;
+export type CreateSandboxesSessionsBySessionIdSnapshotV2Status201 = unknown;
 
 /**
  * @type unknown
  */
-export type CreateSessionSnapshotStatus400 = unknown;
+export type CreateSandboxesSessionsBySessionIdSnapshotV2Status400 = unknown;
 
 /**
  * @type unknown
  */
-export type CreateSessionSnapshotStatus401 = unknown;
+export type CreateSandboxesSessionsBySessionIdSnapshotV2Status401 = unknown;
 
 /**
  * @type unknown
  */
-export type CreateSessionSnapshotStatus402 = unknown;
+export type CreateSandboxesSessionsBySessionIdSnapshotV2Status402 = unknown;
 
 /**
  * @type unknown
  */
-export type CreateSessionSnapshotStatus403 = unknown;
+export type CreateSandboxesSessionsBySessionIdSnapshotV2Status403 = unknown;
 
 /**
  * @type unknown
  */
-export type CreateSessionSnapshotStatus404 = unknown;
+export type CreateSandboxesSessionsBySessionIdSnapshotV2Status404 = unknown;
 
 /**
  * @type unknown
  */
-export type CreateSessionSnapshotStatus410 = unknown;
+export type CreateSandboxesSessionsBySessionIdSnapshotV2Status410 = unknown;
 
 /**
  * @type unknown
  */
-export type CreateSessionSnapshotStatus422 = unknown;
+export type CreateSandboxesSessionsBySessionIdSnapshotV2Status422 = unknown;
 
 /**
  * @type unknown
  */
-export type CreateSessionSnapshotStatus429 = unknown;
+export type CreateSandboxesSessionsBySessionIdSnapshotV2Status429 = unknown;
 
 /**
  * @type unknown
  */
-export type CreateSessionSnapshotStatus500 = unknown;
+export type CreateSandboxesSessionsBySessionIdSnapshotV2Status500 = unknown;
 
 /**
  * @type object
  */
-export type CreateSessionSnapshotRequestConfig = {
+export type CreateSandboxesSessionsBySessionIdSnapshotV2RequestConfig = {
 	data?: never | undefined;
 	/**
 	 * @type object
 	 */
 	pathParams: {
-		sessionId: CreateSessionSnapshotPathSessionId;
+		sessionId: CreateSandboxesSessionsBySessionIdSnapshotV2PathSessionId;
 	};
 	/**
 	 * @type object | undefined
 	 */
 	queryParams?:
 		| {
-				teamId?: CreateSessionSnapshotQueryTeamId | undefined;
-				slug?: CreateSessionSnapshotQuerySlug | undefined;
+				teamId?: CreateSandboxesSessionsBySessionIdSnapshotV2QueryTeamId | undefined;
+				slug?: CreateSandboxesSessionsBySessionIdSnapshotV2QuerySlug | undefined;
 		  }
 		| undefined;
 	headerParams?: never | undefined;
@@ -56923,33 +56923,33 @@ export type CreateSessionSnapshotRequestConfig = {
 /**
  * @type object
  */
-export type CreateSessionSnapshotResponses = {
-	"201": CreateSessionSnapshotStatus201;
-	"400": CreateSessionSnapshotStatus400;
-	"401": CreateSessionSnapshotStatus401;
-	"402": CreateSessionSnapshotStatus402;
-	"403": CreateSessionSnapshotStatus403;
-	"404": CreateSessionSnapshotStatus404;
-	"410": CreateSessionSnapshotStatus410;
-	"422": CreateSessionSnapshotStatus422;
-	"429": CreateSessionSnapshotStatus429;
-	"500": CreateSessionSnapshotStatus500;
+export type CreateSandboxesSessionsBySessionIdSnapshotV2Responses = {
+	"201": CreateSandboxesSessionsBySessionIdSnapshotV2Status201;
+	"400": CreateSandboxesSessionsBySessionIdSnapshotV2Status400;
+	"401": CreateSandboxesSessionsBySessionIdSnapshotV2Status401;
+	"402": CreateSandboxesSessionsBySessionIdSnapshotV2Status402;
+	"403": CreateSandboxesSessionsBySessionIdSnapshotV2Status403;
+	"404": CreateSandboxesSessionsBySessionIdSnapshotV2Status404;
+	"410": CreateSandboxesSessionsBySessionIdSnapshotV2Status410;
+	"422": CreateSandboxesSessionsBySessionIdSnapshotV2Status422;
+	"429": CreateSandboxesSessionsBySessionIdSnapshotV2Status429;
+	"500": CreateSandboxesSessionsBySessionIdSnapshotV2Status500;
 };
 
 /**
  * @description Union of all possible responses
  */
-export type CreateSessionSnapshotResponse =
-	| CreateSessionSnapshotStatus201
-	| CreateSessionSnapshotStatus400
-	| CreateSessionSnapshotStatus401
-	| CreateSessionSnapshotStatus402
-	| CreateSessionSnapshotStatus403
-	| CreateSessionSnapshotStatus404
-	| CreateSessionSnapshotStatus410
-	| CreateSessionSnapshotStatus422
-	| CreateSessionSnapshotStatus429
-	| CreateSessionSnapshotStatus500;
+export type CreateSandboxesSessionsBySessionIdSnapshotV2Response =
+	| CreateSandboxesSessionsBySessionIdSnapshotV2Status201
+	| CreateSandboxesSessionsBySessionIdSnapshotV2Status400
+	| CreateSandboxesSessionsBySessionIdSnapshotV2Status401
+	| CreateSandboxesSessionsBySessionIdSnapshotV2Status402
+	| CreateSandboxesSessionsBySessionIdSnapshotV2Status403
+	| CreateSandboxesSessionsBySessionIdSnapshotV2Status404
+	| CreateSandboxesSessionsBySessionIdSnapshotV2Status410
+	| CreateSandboxesSessionsBySessionIdSnapshotV2Status422
+	| CreateSandboxesSessionsBySessionIdSnapshotV2Status429
+	| CreateSandboxesSessionsBySessionIdSnapshotV2Status500;
 
 /**
  * @description Name of the source sandbox to fork.
@@ -56957,103 +56957,103 @@ export type CreateSessionSnapshotResponse =
  * @pattern ^[a-zA-Z0-9_-]+$
  * @type string
  */
-export type CreateSandboxesByNameForkPathName = string;
+export type CreateSandboxesByNameForkV2PathName = string;
 
 /**
  * @description The ID of the project the source sandbox belongs to. Required unless authenticating with an OIDC token.
  * @maxLength 128
  * @type string | undefined
  */
-export type CreateSandboxesByNameForkQueryProjectId = string | undefined;
+export type CreateSandboxesByNameForkV2QueryProjectId = string | undefined;
 
 /**
  * @description The Team identifier to perform the request on behalf of.
  * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
  * @type string | undefined
  */
-export type CreateSandboxesByNameForkQueryTeamId = string | undefined;
+export type CreateSandboxesByNameForkV2QueryTeamId = string | undefined;
 
 /**
  * @description The Team slug to perform the request on behalf of.
  * @example my-team-url-slug
  * @type string | undefined
  */
-export type CreateSandboxesByNameForkQuerySlug = string | undefined;
+export type CreateSandboxesByNameForkV2QuerySlug = string | undefined;
 
 /**
  * @type unknown
  */
-export type CreateSandboxesByNameForkStatus200 = unknown;
+export type CreateSandboxesByNameForkV2Status200 = unknown;
 
 /**
  * @type unknown
  */
-export type CreateSandboxesByNameForkStatus400 = unknown;
+export type CreateSandboxesByNameForkV2Status400 = unknown;
 
 /**
  * @type unknown
  */
-export type CreateSandboxesByNameForkStatus401 = unknown;
+export type CreateSandboxesByNameForkV2Status401 = unknown;
 
 /**
  * @type unknown
  */
-export type CreateSandboxesByNameForkStatus402 = unknown;
+export type CreateSandboxesByNameForkV2Status402 = unknown;
 
 /**
  * @type unknown
  */
-export type CreateSandboxesByNameForkStatus403 = unknown;
+export type CreateSandboxesByNameForkV2Status403 = unknown;
 
 /**
  * @type unknown
  */
-export type CreateSandboxesByNameForkStatus404 = unknown;
+export type CreateSandboxesByNameForkV2Status404 = unknown;
 
 /**
  * @type unknown
  */
-export type CreateSandboxesByNameForkStatus409 = unknown;
+export type CreateSandboxesByNameForkV2Status409 = unknown;
 
 /**
  * @type unknown
  */
-export type CreateSandboxesByNameForkStatus410 = unknown;
+export type CreateSandboxesByNameForkV2Status410 = unknown;
 
 /**
  * @type unknown
  */
-export type CreateSandboxesByNameForkStatus422 = unknown;
+export type CreateSandboxesByNameForkV2Status422 = unknown;
 
 /**
  * @type unknown
  */
-export type CreateSandboxesByNameForkStatus429 = unknown;
+export type CreateSandboxesByNameForkV2Status429 = unknown;
 
 /**
  * @type unknown
  */
-export type CreateSandboxesByNameForkStatus500 = unknown;
+export type CreateSandboxesByNameForkV2Status500 = unknown;
 
 /**
  * @type object
  */
-export type CreateSandboxesByNameForkRequestConfig = {
+export type CreateSandboxesByNameForkV2RequestConfig = {
 	data?: never | undefined;
 	/**
 	 * @type object
 	 */
 	pathParams: {
-		name: CreateSandboxesByNameForkPathName;
+		name: CreateSandboxesByNameForkV2PathName;
 	};
 	/**
 	 * @type object | undefined
 	 */
 	queryParams?:
 		| {
-				projectId?: CreateSandboxesByNameForkQueryProjectId | undefined;
-				teamId?: CreateSandboxesByNameForkQueryTeamId | undefined;
-				slug?: CreateSandboxesByNameForkQuerySlug | undefined;
+				projectId?: CreateSandboxesByNameForkV2QueryProjectId | undefined;
+				teamId?: CreateSandboxesByNameForkV2QueryTeamId | undefined;
+				slug?: CreateSandboxesByNameForkV2QuerySlug | undefined;
 		  }
 		| undefined;
 	headerParams?: never | undefined;
@@ -57066,35 +57066,35 @@ export type CreateSandboxesByNameForkRequestConfig = {
 /**
  * @type object
  */
-export type CreateSandboxesByNameForkResponses = {
-	"200": CreateSandboxesByNameForkStatus200;
-	"400": CreateSandboxesByNameForkStatus400;
-	"401": CreateSandboxesByNameForkStatus401;
-	"402": CreateSandboxesByNameForkStatus402;
-	"403": CreateSandboxesByNameForkStatus403;
-	"404": CreateSandboxesByNameForkStatus404;
-	"409": CreateSandboxesByNameForkStatus409;
-	"410": CreateSandboxesByNameForkStatus410;
-	"422": CreateSandboxesByNameForkStatus422;
-	"429": CreateSandboxesByNameForkStatus429;
-	"500": CreateSandboxesByNameForkStatus500;
+export type CreateSandboxesByNameForkV2Responses = {
+	"200": CreateSandboxesByNameForkV2Status200;
+	"400": CreateSandboxesByNameForkV2Status400;
+	"401": CreateSandboxesByNameForkV2Status401;
+	"402": CreateSandboxesByNameForkV2Status402;
+	"403": CreateSandboxesByNameForkV2Status403;
+	"404": CreateSandboxesByNameForkV2Status404;
+	"409": CreateSandboxesByNameForkV2Status409;
+	"410": CreateSandboxesByNameForkV2Status410;
+	"422": CreateSandboxesByNameForkV2Status422;
+	"429": CreateSandboxesByNameForkV2Status429;
+	"500": CreateSandboxesByNameForkV2Status500;
 };
 
 /**
  * @description Union of all possible responses
  */
-export type CreateSandboxesByNameForkResponse =
-	| CreateSandboxesByNameForkStatus200
-	| CreateSandboxesByNameForkStatus400
-	| CreateSandboxesByNameForkStatus401
-	| CreateSandboxesByNameForkStatus402
-	| CreateSandboxesByNameForkStatus403
-	| CreateSandboxesByNameForkStatus404
-	| CreateSandboxesByNameForkStatus409
-	| CreateSandboxesByNameForkStatus410
-	| CreateSandboxesByNameForkStatus422
-	| CreateSandboxesByNameForkStatus429
-	| CreateSandboxesByNameForkStatus500;
+export type CreateSandboxesByNameForkV2Response =
+	| CreateSandboxesByNameForkV2Status200
+	| CreateSandboxesByNameForkV2Status400
+	| CreateSandboxesByNameForkV2Status401
+	| CreateSandboxesByNameForkV2Status402
+	| CreateSandboxesByNameForkV2Status403
+	| CreateSandboxesByNameForkV2Status404
+	| CreateSandboxesByNameForkV2Status409
+	| CreateSandboxesByNameForkV2Status410
+	| CreateSandboxesByNameForkV2Status422
+	| CreateSandboxesByNameForkV2Status429
+	| CreateSandboxesByNameForkV2Status500;
 
 /**
  * @description The Team identifier to perform the request on behalf of.
@@ -57219,6 +57219,404 @@ export type CreateSandboxesV3Response =
 	| CreateSandboxesV3Status422
 	| CreateSandboxesV3Status429
 	| CreateSandboxesV3Status500;
+
+/**
+ * @description The unique identifier of the session to snapshot.
+ * @example sbx_abc123
+ * @type string
+ */
+export type CreateSandboxesSessionsBySessionIdSnapshotV3PathSessionId = string;
+
+/**
+ * @description The Team identifier to perform the request on behalf of.
+ * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+ * @type string | undefined
+ */
+export type CreateSandboxesSessionsBySessionIdSnapshotV3QueryTeamId = string | undefined;
+
+/**
+ * @description The Team slug to perform the request on behalf of.
+ * @example my-team-url-slug
+ * @type string | undefined
+ */
+export type CreateSandboxesSessionsBySessionIdSnapshotV3QuerySlug = string | undefined;
+
+/**
+ * @type unknown
+ */
+export type CreateSandboxesSessionsBySessionIdSnapshotV3Status201 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateSandboxesSessionsBySessionIdSnapshotV3Status400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateSandboxesSessionsBySessionIdSnapshotV3Status401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateSandboxesSessionsBySessionIdSnapshotV3Status402 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateSandboxesSessionsBySessionIdSnapshotV3Status403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateSandboxesSessionsBySessionIdSnapshotV3Status404 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateSandboxesSessionsBySessionIdSnapshotV3Status410 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateSandboxesSessionsBySessionIdSnapshotV3Status422 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateSandboxesSessionsBySessionIdSnapshotV3Status429 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateSandboxesSessionsBySessionIdSnapshotV3Status500 = unknown;
+
+/**
+ * @type object
+ */
+export type CreateSandboxesSessionsBySessionIdSnapshotV3RequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		sessionId: CreateSandboxesSessionsBySessionIdSnapshotV3PathSessionId;
+	};
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				teamId?: CreateSandboxesSessionsBySessionIdSnapshotV3QueryTeamId | undefined;
+				slug?: CreateSandboxesSessionsBySessionIdSnapshotV3QuerySlug | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/v3/sandboxes/sessions/${string}/snapshot`;
+};
+
+/**
+ * @type object
+ */
+export type CreateSandboxesSessionsBySessionIdSnapshotV3Responses = {
+	"201": CreateSandboxesSessionsBySessionIdSnapshotV3Status201;
+	"400": CreateSandboxesSessionsBySessionIdSnapshotV3Status400;
+	"401": CreateSandboxesSessionsBySessionIdSnapshotV3Status401;
+	"402": CreateSandboxesSessionsBySessionIdSnapshotV3Status402;
+	"403": CreateSandboxesSessionsBySessionIdSnapshotV3Status403;
+	"404": CreateSandboxesSessionsBySessionIdSnapshotV3Status404;
+	"410": CreateSandboxesSessionsBySessionIdSnapshotV3Status410;
+	"422": CreateSandboxesSessionsBySessionIdSnapshotV3Status422;
+	"429": CreateSandboxesSessionsBySessionIdSnapshotV3Status429;
+	"500": CreateSandboxesSessionsBySessionIdSnapshotV3Status500;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type CreateSandboxesSessionsBySessionIdSnapshotV3Response =
+	| CreateSandboxesSessionsBySessionIdSnapshotV3Status201
+	| CreateSandboxesSessionsBySessionIdSnapshotV3Status400
+	| CreateSandboxesSessionsBySessionIdSnapshotV3Status401
+	| CreateSandboxesSessionsBySessionIdSnapshotV3Status402
+	| CreateSandboxesSessionsBySessionIdSnapshotV3Status403
+	| CreateSandboxesSessionsBySessionIdSnapshotV3Status404
+	| CreateSandboxesSessionsBySessionIdSnapshotV3Status410
+	| CreateSandboxesSessionsBySessionIdSnapshotV3Status422
+	| CreateSandboxesSessionsBySessionIdSnapshotV3Status429
+	| CreateSandboxesSessionsBySessionIdSnapshotV3Status500;
+
+/**
+ * @description Name of the source sandbox to fork.
+ * @maxLength 128
+ * @pattern ^[a-zA-Z0-9_-]+$
+ * @type string
+ */
+export type CreateSandboxesByNameForkV3PathName = string;
+
+/**
+ * @description The ID of the project the source sandbox belongs to. Required unless authenticating with an OIDC token.
+ * @maxLength 128
+ * @type string | undefined
+ */
+export type CreateSandboxesByNameForkV3QueryProjectId = string | undefined;
+
+/**
+ * @description The Team identifier to perform the request on behalf of.
+ * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+ * @type string | undefined
+ */
+export type CreateSandboxesByNameForkV3QueryTeamId = string | undefined;
+
+/**
+ * @description The Team slug to perform the request on behalf of.
+ * @example my-team-url-slug
+ * @type string | undefined
+ */
+export type CreateSandboxesByNameForkV3QuerySlug = string | undefined;
+
+/**
+ * @type unknown
+ */
+export type CreateSandboxesByNameForkV3Status200 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateSandboxesByNameForkV3Status400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateSandboxesByNameForkV3Status401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateSandboxesByNameForkV3Status402 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateSandboxesByNameForkV3Status403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateSandboxesByNameForkV3Status404 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateSandboxesByNameForkV3Status409 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateSandboxesByNameForkV3Status410 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateSandboxesByNameForkV3Status422 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateSandboxesByNameForkV3Status429 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateSandboxesByNameForkV3Status500 = unknown;
+
+/**
+ * @type object
+ */
+export type CreateSandboxesByNameForkV3RequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		name: CreateSandboxesByNameForkV3PathName;
+	};
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				projectId?: CreateSandboxesByNameForkV3QueryProjectId | undefined;
+				teamId?: CreateSandboxesByNameForkV3QueryTeamId | undefined;
+				slug?: CreateSandboxesByNameForkV3QuerySlug | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/v3/sandboxes/${string}/fork`;
+};
+
+/**
+ * @type object
+ */
+export type CreateSandboxesByNameForkV3Responses = {
+	"200": CreateSandboxesByNameForkV3Status200;
+	"400": CreateSandboxesByNameForkV3Status400;
+	"401": CreateSandboxesByNameForkV3Status401;
+	"402": CreateSandboxesByNameForkV3Status402;
+	"403": CreateSandboxesByNameForkV3Status403;
+	"404": CreateSandboxesByNameForkV3Status404;
+	"409": CreateSandboxesByNameForkV3Status409;
+	"410": CreateSandboxesByNameForkV3Status410;
+	"422": CreateSandboxesByNameForkV3Status422;
+	"429": CreateSandboxesByNameForkV3Status429;
+	"500": CreateSandboxesByNameForkV3Status500;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type CreateSandboxesByNameForkV3Response =
+	| CreateSandboxesByNameForkV3Status200
+	| CreateSandboxesByNameForkV3Status400
+	| CreateSandboxesByNameForkV3Status401
+	| CreateSandboxesByNameForkV3Status402
+	| CreateSandboxesByNameForkV3Status403
+	| CreateSandboxesByNameForkV3Status404
+	| CreateSandboxesByNameForkV3Status409
+	| CreateSandboxesByNameForkV3Status410
+	| CreateSandboxesByNameForkV3Status422
+	| CreateSandboxesByNameForkV3Status429
+	| CreateSandboxesByNameForkV3Status500;
+
+/**
+ * @description The Team identifier to perform the request on behalf of.
+ * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+ * @type string | undefined
+ */
+export type CreateSandboxesV4QueryTeamId = string | undefined;
+
+/**
+ * @description The Team slug to perform the request on behalf of.
+ * @example my-team-url-slug
+ * @type string | undefined
+ */
+export type CreateSandboxesV4QuerySlug = string | undefined;
+
+/**
+ * @type unknown
+ */
+export type CreateSandboxesV4Status200 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateSandboxesV4Status400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateSandboxesV4Status401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateSandboxesV4Status402 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateSandboxesV4Status403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateSandboxesV4Status404 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateSandboxesV4Status409 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateSandboxesV4Status410 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateSandboxesV4Status422 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateSandboxesV4Status429 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateSandboxesV4Status500 = unknown;
+
+/**
+ * @type object
+ */
+export type CreateSandboxesV4RequestConfig = {
+	data?: never | undefined;
+	pathParams?: never | undefined;
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				teamId?: CreateSandboxesV4QueryTeamId | undefined;
+				slug?: CreateSandboxesV4QuerySlug | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: "/v4/sandboxes";
+};
+
+/**
+ * @type object
+ */
+export type CreateSandboxesV4Responses = {
+	"200": CreateSandboxesV4Status200;
+	"400": CreateSandboxesV4Status400;
+	"401": CreateSandboxesV4Status401;
+	"402": CreateSandboxesV4Status402;
+	"403": CreateSandboxesV4Status403;
+	"404": CreateSandboxesV4Status404;
+	"409": CreateSandboxesV4Status409;
+	"410": CreateSandboxesV4Status410;
+	"422": CreateSandboxesV4Status422;
+	"429": CreateSandboxesV4Status429;
+	"500": CreateSandboxesV4Status500;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type CreateSandboxesV4Response =
+	| CreateSandboxesV4Status200
+	| CreateSandboxesV4Status400
+	| CreateSandboxesV4Status401
+	| CreateSandboxesV4Status402
+	| CreateSandboxesV4Status403
+	| CreateSandboxesV4Status404
+	| CreateSandboxesV4Status409
+	| CreateSandboxesV4Status410
+	| CreateSandboxesV4Status422
+	| CreateSandboxesV4Status429
+	| CreateSandboxesV4Status500;
 
 /**
  * @description The Team identifier to perform the request on behalf of.
