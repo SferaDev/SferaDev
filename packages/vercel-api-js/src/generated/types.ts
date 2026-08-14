@@ -8610,7 +8610,7 @@ export type UserEvent = {
 						/**
 						 * @type object | undefined
 						 */
-						edgeConfigSchema?: object | undefined;
+						globalConfigSchema?: object | undefined;
 				  }
 				| {
 						/**

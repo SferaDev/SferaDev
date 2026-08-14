@@ -4177,7 +4177,7 @@ export const userEventSchema = z
 					.object({
 						edgeConfigId: z.string(),
 						edgeConfigSlug: z.string(),
-						edgeConfigSchema: z.object({}).optional(),
+						globalConfigSchema: z.object({}).optional(),
 					})
 					.strict(),
 				z
