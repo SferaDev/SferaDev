@@ -17847,6 +17847,84 @@ export type UserEvent = {
 						 */
 						previousRole: string;
 						/**
+						 * @type array | undefined
+						 */
+						previousTeamRoles?:
+							| (
+									| "BILLING"
+									| "CONTRIBUTOR"
+									| "DEVELOPER"
+									| "MEMBER"
+									| "OWNER"
+									| "SECURITY"
+									| "VIEWER"
+									| "VIEWER_FOR_PLUS"
+							  )[]
+							| undefined;
+						/**
+						 * @type array | undefined
+						 */
+						teamRoles?:
+							| (
+									| "BILLING"
+									| "CONTRIBUTOR"
+									| "DEVELOPER"
+									| "MEMBER"
+									| "OWNER"
+									| "SECURITY"
+									| "VIEWER"
+									| "VIEWER_FOR_PLUS"
+							  )[]
+							| undefined;
+						/**
+						 * @type array | undefined
+						 */
+						previousTeamPermissions?:
+							| (
+									| "AiGatewayApiKeyOwnedBySelf"
+									| "AiGatewayBudgetManager"
+									| "AiGatewayCredits"
+									| "AiGatewaySettings"
+									| "ConnectorManager"
+									| "CreateProject"
+									| "EnvVariableManager"
+									| "EnvironmentManager"
+									| "FullProductionDeployment"
+									| "IntegrationManager"
+									| "OrgAdmin"
+									| "OrgViewer"
+									| "UsageViewer"
+									| "V0Builder"
+									| "V0Chatter"
+									| "V0Viewer"
+									| "WorkflowDecryptor"
+							  )[]
+							| undefined;
+						/**
+						 * @type array | undefined
+						 */
+						teamPermissions?:
+							| (
+									| "AiGatewayApiKeyOwnedBySelf"
+									| "AiGatewayBudgetManager"
+									| "AiGatewayCredits"
+									| "AiGatewaySettings"
+									| "ConnectorManager"
+									| "CreateProject"
+									| "EnvVariableManager"
+									| "EnvironmentManager"
+									| "FullProductionDeployment"
+									| "IntegrationManager"
+									| "OrgAdmin"
+									| "OrgViewer"
+									| "UsageViewer"
+									| "V0Builder"
+									| "V0Chatter"
+									| "V0Viewer"
+									| "WorkflowDecryptor"
+							  )[]
+							| undefined;
+						/**
 						 * @type string | undefined
 						 */
 						updatedUid?: string | undefined;
