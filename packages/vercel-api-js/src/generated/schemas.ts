@@ -2,6 +2,11 @@
 
 import * as z from "zod";
 
+export const aiGatewayProviderOptionBagSchema = z
+	.object({})
+	.catchall(z.unknown())
+	.describe("Arbitrary per-provider AI SDK options, keyed by gateway provider slug.");
+
 export const aiGatewayVirtualModelConfigSchema = z
 	.object({
 		ownerId: z.string().describe("Team (owner) that owns this VMC."),
@@ -36,6 +41,11 @@ export const aiGatewayVirtualModelConfigSchema = z
 			.array(z.string())
 			.optional()
 			.describe("Restrict routing to only these providers."),
+		providerOptions: z
+			.object({})
+			.catchall(z.unknown())
+			.optional()
+			.describe("Arbitrary per-provider AI SDK options, keyed by gateway provider slug."),
 		inferenceRegion: z
 			.object({
 				providers: z
@@ -995,6 +1005,7 @@ export const userEventSchema = z
 				"git-integration-repo-push",
 				"git_account_integration_link_added",
 				"instant-rollback-created",
+				"integration-configuration-credential-rotated",
 				"integration-configuration-owner-changed",
 				"integration-configuration-scope-change-confirmed",
 				"integration-configuration-transfer-in-success",
@@ -4692,6 +4703,14 @@ export const userEventSchema = z
 						toDeploymentId: z.string(),
 						projectName: z.string(),
 						reason: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						integrationId: z.string(),
+						configurationId: z.string(),
+						integrationSlug: z.string(),
+						integrationName: z.string(),
 					})
 					.strict(),
 				z
@@ -10520,6 +10539,7 @@ export const listEventTypeSchema = z
 				"git-integration-repo-push",
 				"git_account_integration_link_added",
 				"instant-rollback-created",
+				"integration-configuration-credential-rotated",
 				"integration-configuration-owner-changed",
 				"integration-configuration-scope-change-confirmed",
 				"integration-configuration-transfer-in-success",
@@ -11193,6 +11213,7 @@ export const listEventTypeSchema = z
 					"git-integration-repo-push",
 					"git_account_integration_link_added",
 					"instant-rollback-created",
+					"integration-configuration-credential-rotated",
 					"integration-configuration-owner-changed",
 					"integration-configuration-scope-change-confirmed",
 					"integration-configuration-transfer-in-success",
@@ -20742,6 +20763,32 @@ export const getMemberResponseSchema = z.union([
 	getMemberStatus403Schema,
 	getMemberStatus404Schema,
 	getMemberStatus410Schema,
+]);
+
+export const rotateInstallationCredentialPathIntegrationConfigurationIdSchema = z.string();
+
+export const rotateInstallationCredentialStatus200Schema = z.unknown();
+
+export const rotateInstallationCredentialStatus400Schema = z.unknown();
+
+export const rotateInstallationCredentialStatus401Schema = z.unknown();
+
+export const rotateInstallationCredentialStatus403Schema = z.unknown();
+
+export const rotateInstallationCredentialStatus404Schema = z.unknown();
+
+export const rotateInstallationCredentialStatus409Schema = z.unknown();
+
+export const rotateInstallationCredentialStatus410Schema = z.unknown();
+
+export const rotateInstallationCredentialResponseSchema = z.union([
+	rotateInstallationCredentialStatus200Schema,
+	rotateInstallationCredentialStatus400Schema,
+	rotateInstallationCredentialStatus401Schema,
+	rotateInstallationCredentialStatus403Schema,
+	rotateInstallationCredentialStatus404Schema,
+	rotateInstallationCredentialStatus409Schema,
+	rotateInstallationCredentialStatus410Schema,
 ]);
 
 export const createEventPathIntegrationConfigurationIdSchema = z.string();

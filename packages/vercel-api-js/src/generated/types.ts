@@ -3,6 +3,14 @@
  * Do not edit manually.
  */
 
+/**
+ * @description Arbitrary per-provider AI SDK options, keyed by gateway provider slug.
+ * @type object
+ */
+export type AiGatewayProviderOptionBag = {
+	[key: string]: unknown;
+};
+
 export const scopeEnum = {
 	global: "global",
 	specific: "specific",
@@ -143,6 +151,15 @@ export type AiGatewayVirtualModelConfig = {
 	 * @type array | undefined
 	 */
 	providerOnly?: string[] | undefined;
+	/**
+	 * @description Arbitrary per-provider AI SDK options, keyed by gateway provider slug.
+	 * @type object | undefined
+	 */
+	providerOptions?:
+		| {
+				[key: string]: unknown;
+		  }
+		| undefined;
 	/**
 	 * @description Region pinned on the VMC for system-credential routing (alias/router only).
 	 * @type object | undefined
@@ -2059,6 +2076,7 @@ export const userEventTypeEnum = {
 	"git-integration-repo-push": "git-integration-repo-push",
 	git_account_integration_link_added: "git_account_integration_link_added",
 	"instant-rollback-created": "instant-rollback-created",
+	"integration-configuration-credential-rotated": "integration-configuration-credential-rotated",
 	"integration-configuration-owner-changed": "integration-configuration-owner-changed",
 	"integration-configuration-scope-change-confirmed":
 		"integration-configuration-scope-change-confirmed",
@@ -9562,6 +9580,24 @@ export type UserEvent = {
 						 * @type string | undefined
 						 */
 						reason?: string | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						integrationId: string;
+						/**
+						 * @type string
+						 */
+						configurationId: string;
+						/**
+						 * @type string
+						 */
+						integrationSlug: string;
+						/**
+						 * @type string
+						 */
+						integrationName: string;
 				  }
 				| {
 						/**
@@ -20060,6 +20096,7 @@ export const listEventTypeNameEnum = {
 	"git-integration-repo-push": "git-integration-repo-push",
 	git_account_integration_link_added: "git_account_integration_link_added",
 	"instant-rollback-created": "instant-rollback-created",
+	"integration-configuration-credential-rotated": "integration-configuration-credential-rotated",
 	"integration-configuration-owner-changed": "integration-configuration-owner-changed",
 	"integration-configuration-scope-change-confirmed":
 		"integration-configuration-scope-change-confirmed",
@@ -20740,6 +20777,7 @@ export const listEventTypeReplacedByEnum = {
 	"git-integration-repo-push": "git-integration-repo-push",
 	git_account_integration_link_added: "git_account_integration_link_added",
 	"instant-rollback-created": "instant-rollback-created",
+	"integration-configuration-credential-rotated": "integration-configuration-credential-rotated",
 	"integration-configuration-owner-changed": "integration-configuration-owner-changed",
 	"integration-configuration-scope-change-confirmed":
 		"integration-configuration-scope-change-confirmed",
@@ -43923,6 +43961,90 @@ export type GetMemberResponse =
 	| GetMemberStatus403
 	| GetMemberStatus404
 	| GetMemberStatus410;
+
+/**
+ * @type string
+ */
+export type RotateInstallationCredentialPathIntegrationConfigurationId = string;
+
+/**
+ * @type unknown
+ */
+export type RotateInstallationCredentialStatus200 = unknown;
+
+/**
+ * @type unknown
+ */
+export type RotateInstallationCredentialStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type RotateInstallationCredentialStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type RotateInstallationCredentialStatus403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type RotateInstallationCredentialStatus404 = unknown;
+
+/**
+ * @type unknown
+ */
+export type RotateInstallationCredentialStatus409 = unknown;
+
+/**
+ * @type unknown
+ */
+export type RotateInstallationCredentialStatus410 = unknown;
+
+/**
+ * @type object
+ */
+export type RotateInstallationCredentialRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		integrationConfigurationId: RotateInstallationCredentialPathIntegrationConfigurationId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/v1/installations/${string}/credentials/rotate`;
+};
+
+/**
+ * @type object
+ */
+export type RotateInstallationCredentialResponses = {
+	"200": RotateInstallationCredentialStatus200;
+	"400": RotateInstallationCredentialStatus400;
+	"401": RotateInstallationCredentialStatus401;
+	"403": RotateInstallationCredentialStatus403;
+	"404": RotateInstallationCredentialStatus404;
+	"409": RotateInstallationCredentialStatus409;
+	"410": RotateInstallationCredentialStatus410;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type RotateInstallationCredentialResponse =
+	| RotateInstallationCredentialStatus200
+	| RotateInstallationCredentialStatus400
+	| RotateInstallationCredentialStatus401
+	| RotateInstallationCredentialStatus403
+	| RotateInstallationCredentialStatus404
+	| RotateInstallationCredentialStatus409
+	| RotateInstallationCredentialStatus410;
 
 /**
  * @type string

@@ -2127,6 +2127,13 @@ import type {
 	RestoreRedirectsStatus404,
 	RestoreRedirectsStatus410,
 	RestoreRedirectsStatus500,
+	RotateInstallationCredentialResponse,
+	RotateInstallationCredentialStatus400,
+	RotateInstallationCredentialStatus401,
+	RotateInstallationCredentialStatus403,
+	RotateInstallationCredentialStatus404,
+	RotateInstallationCredentialStatus409,
+	RotateInstallationCredentialStatus410,
 	RunSessionCommandResponse,
 	RunSessionCommandStatus400,
 	RunSessionCommandStatus401,
@@ -10311,6 +10318,49 @@ export async function getMember(
 	>({
 		method: "GET",
 		url: `/v1/installations/${pathParams.integrationConfigurationId}/member/${pathParams.memberId}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Rotate Installation Credential
+ * @description Issues a replacement access token for an installation, so a partner can rotate a credential it believes is compromised without the customer having to reinstall. Authenticated by the credential being replaced plus the integration's client secret: a leaked access token on its own cannot rotate itself, which would otherwise let an attacker take over the installation and lock the partner out. The previous credential intentionally stays valid so in-flight requests keep working. Retiring it is a separate, explicit operation — a partner is never left mid-rotation without a working credential.
+ * @link /v1/installations/{integrationConfigurationId}/credentials/rotate
+ */
+export async function rotateInstallationCredential(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { integrationConfigurationId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.integrationConfigurationId) {
+		throw new Error(`Missing required path parameter: integrationConfigurationId`);
+	}
+	const data = await request<
+		RotateInstallationCredentialResponse,
+		ErrorWrapper<
+			| RotateInstallationCredentialStatus400
+			| RotateInstallationCredentialStatus401
+			| RotateInstallationCredentialStatus403
+			| RotateInstallationCredentialStatus404
+			| RotateInstallationCredentialStatus409
+			| RotateInstallationCredentialStatus410
+		>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		{ integrationConfigurationId: string }
+	>({
+		method: "POST",
+		url: `/v1/installations/${pathParams.integrationConfigurationId}/credentials/rotate`,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
 	});
@@ -20659,6 +20709,8 @@ export const operationsByPath = {
 	"PATCH /v1/installations/{integrationConfigurationId}": updateInstallation,
 	"GET /v1/installations/{integrationConfigurationId}/account": getAccountInfo,
 	"GET /v1/installations/{integrationConfigurationId}/member/{memberId}": getMember,
+	"POST /v1/installations/{integrationConfigurationId}/credentials/rotate":
+		rotateInstallationCredential,
 	"POST /v1/installations/{integrationConfigurationId}/events": createEvent,
 	"GET /v1/installations/{integrationConfigurationId}/resources": getIntegrationResources,
 	"GET /v1/installations/{integrationConfigurationId}/resources/{resourceId}":
@@ -21137,6 +21189,7 @@ export const operationsByTag = {
 		updateInstallation,
 		getAccountInfo,
 		getMember,
+		rotateInstallationCredential,
 		createEvent,
 		getIntegrationResources,
 		getIntegrationResource,
@@ -21596,6 +21649,7 @@ export const tagDictionary = {
 			"getInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfig",
 		],
 		POST: [
+			"rotateInstallationCredential",
 			"createEvent",
 			"submitBillingData",
 			"submitInvoice",
