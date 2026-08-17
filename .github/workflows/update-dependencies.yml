@@ -99,9 +99,9 @@ jobs:
           # Patch vulnerabilities (regenerates the overrides in pnpm-workspace.yaml).
           #
           # `--fix` takes a value on pnpm 11 ("override" or "update"); the bare flag is a usage
-          # error. Because this is followed by `|| true`, getting that wrong fails silently and
-          # the PR ships with the overrides cleared and never regenerated — every security
-          # override dropped, with nothing red to show for it. Report it instead of swallowing.
+          # error. This must not abort the job — a failed audit should still produce an update PR —
+          # but it must not be swallowed by a bare `|| true` either, which is how a usage error once
+          # shipped a PR with every security override dropped and nothing red to show for it.
           pnpm audit --fix override || echo "::warning::pnpm audit --fix failed; security overrides may be missing from this PR"
 
           # `pnpm audit --fix` is not publish-aware: it emits overrides pointing at whatever
