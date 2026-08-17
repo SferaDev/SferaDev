@@ -1,5 +1,28 @@
 # vercel-api-js
 
+## 1.12.0
+
+### Minor Changes
+
+- 2447c9a: Added the rotateInstallationCredential endpoint, types, and schemas to rotate installation credentials.
+- 15076bc: Added support for v4 sandboxes creation with createSandboxesV4.
+- 15076bc: Added v3 versions of sandbox snapshot and fork functions: createSandboxesSessionsBySessionIdSnapshotV3 and createSandboxesByNameForkV3.
+
+### Patch Changes
+
+- e8282a5: Added optional fields isSystemInitiated and reason to UserEvent's plan update event schema.
+- 15076bc: [BREAKING] Renamed createSessionSnapshot to createSandboxesSessionsBySessionIdSnapshotV2 and createSandboxesByNameFork to createSandboxesByNameForkV2.
+- e8282a5: Updated reasonEnum with new values related to plan change reasons for user events.
+- c24dbe7: Added previousTeamRoles, teamRoles, previousTeamPermissions, and teamPermissions fields to the UserEvent type and schema.
+- 2447c9a: Added providerOptions field to AiGatewayVirtualModelConfig for per-provider AI SDK options.
+- d34bf91: Add speedInsightsFreeUsageAlert field to userEventSchema to track notifications for Speed Insights free allocation usage.
+- d34bf91: Add speedInsightsFree field to userEventSchema to pause Speed Insights free data ingestion when allocation is exhausted.
+- 7422258: Updated description for sandbox region to clarify it refers to the pinned region rather than the configured region.
+- 4302880: Renamed property 'edgeConfigSchema' to 'globalConfigSchema' in userEventSchema.
+- 15076bc: Removed previously exported types and schemas for createSessionSnapshot and createSandboxesByNameFork; added corresponding v2, v3, and v4 variants.
+- 2447c9a: Added support for integration-configuration-credential-rotated user event type.
+- 2447c9a: Added aiGatewayProviderOptionBagSchema and related AiGatewayProviderOptionBag type for arbitrary per-provider AI SDK options.
+
 ## 1.11.0
 
 ### Minor Changes
