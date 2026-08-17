@@ -4,22 +4,22 @@ packages:
   - configs/*
   - content
 catalog:
-  '@ai-sdk/gateway': 4.0.46
-  '@ai-sdk/openai': 4.0.36
+  '@ai-sdk/gateway': 4.0.52
+  '@ai-sdk/openai': 4.0.42
   '@ai-sdk/provider': 4.0.7
-  '@ai-sdk/provider-utils': 5.0.25
-  '@aws-sdk/client-s3': 3.1106.0
-  '@aws-sdk/s3-request-presigner': 3.1106.0
-  '@biomejs/biome': 2.5.7
-  '@changesets/cli': 2.31.1
-  '@hono/node-server': ^2.1.0
+  '@ai-sdk/provider-utils': 5.0.27
+  '@aws-sdk/client-s3': 3.1111.0
+  '@aws-sdk/s3-request-presigner': 3.1111.0
+  '@biomejs/biome': 2.5.8
+  '@changesets/cli': 3.0.0
+  '@hono/node-server': ^2.1.1
   '@kubb/adapter-oas': 5.0.0-beta.10
   '@kubb/cli': 5.0.0-beta.10
   '@kubb/core': 5.0.0-beta.10
   '@kubb/plugin-client': 5.0.0-beta.10
   '@kubb/plugin-ts': 5.0.0-beta.10
   '@kubb/plugin-zod': 5.0.0-beta.10
-  '@next/third-parties': 16.3.0
+  '@next/third-parties': 16.3.1
   '@radix-ui/react-alert-dialog': 1.1.23
   '@radix-ui/react-avatar': 1.2.6
   '@radix-ui/react-dialog': 1.1.23
@@ -33,7 +33,7 @@ catalog:
   '@radix-ui/react-toast': 1.2.23
   '@tailwindcss/postcss': 4.3.3
   '@tailwindcss/typography': 0.5.20
-  '@testing-library/jest-dom': 7.0.0
+  '@testing-library/jest-dom': 7.0.1
   '@types/bun': 1.3.14
   '@types/ipp': ^2.0.5
   '@types/json-schema': 7.0.15
@@ -43,12 +43,12 @@ catalog:
   '@types/react': 19.2.18
   '@types/react-dom': 19.2.4
   '@vercel/analytics': 2.0.1
-  '@vercel/config': 0.5.6
-  '@vercel/oidc': 3.8.2
+  '@vercel/config': 0.6.1
+  '@vercel/oidc': 3.8.4
   '@vscode/vsce': 3.9.2
-  '@xyflow/react': 12.11.2
-  ai: 7.0.58
-  better-auth: 1.6.26
+  '@xyflow/react': 12.11.3
+  ai: 7.0.66
+  better-auth: 1.6.29
   bonjour-service: ^1.4.4
   bunchee: 7.0.1
   case: 1.6.3
@@ -59,27 +59,27 @@ catalog:
   drizzle-orm: 0.45.2
   effect: 3.22.1
   es-module-lexer: 2.3.1
-  framer-motion: 13.0.0
+  framer-motion: 13.1.0
   geist: 1.7.2
   gifenc: 1.0.3
   gray-matter: 4.0.3
-  hono: ^4.13.1
+  hono: ^4.13.2
   html-to-image: 1.11.13
   ipp: ^2.0.1
   is-tree-shakable: 0.5.0
   jsdom: 30.0.1
   jspdf: 4.2.1
   jszip: 3.10.1
-  knip: 6.32.0
-  konva: 10.3.0
+  knip: 6.32.2
+  konva: 10.3.1
   kubb: 5.0.0-beta.10
   lefthook: 2.1.10
   lru-cache: ^11.5.2
-  lucide-react: 1.30.0
-  mintlify: 4.2.788
-  motion: 13.0.0
-  next: 16.3.0
-  next-intl: 4.13.5
+  lucide-react: 1.31.0
+  mintlify: 4.2.804
+  motion: 13.1.0
+  next: 16.3.1
+  next-intl: 4.13.6
   next-themes: 0.4.6
   openapi3-ts: 4.6.1
   pg: 8.23.0
@@ -92,20 +92,20 @@ catalog:
   react-markdown: 10.1.0
   rimraf: 6.1.3
   rollup: 4.62.4
-  stripe: 22.4.0
-  swr: 2.5.0
+  stripe: 22.5.0
+  swr: 2.5.1
   tailwind-merge: 3.6.0
   tailwindcss: 4.3.3
   tailwindcss-animate: 1.0.7
-  tsx: 4.23.11
-  turbo: 2.10.9
+  tsx: 4.23.12
+  turbo: 2.10.10
   tw-animate-css: 1.4.0
   # KEEP-BACK: TypeScript 7 dropped the JavaScript compiler API that bunchee uses to
   # emit type declarations, so every package build fails with "Detected TypeScript
   # 7.0.2 ... install `@typescript/typescript6`". bunchee's peer range already claims
   # ^7.0, so the range is not a reliable signal — test a package build before releasing
   # this. Moving to TS 7 is its own PR, not a weekly bump.
-  typescript: 6.0.3
+  typescript: 7.0.2
   vitest: 4.1.10
   yaml: 2.9.0
   zod: 4.4.3
@@ -113,7 +113,7 @@ catalog:
   # renderer-jsx ahead of adapter-oas/core, and @kubb/core peer-requires the exact
   # matching version — a newer renderer-jsx here means an unmet peer. `pnpm update
   # --latest` will bump it past this; re-pin it to match when reviewing the weekly PR.
-  '@kubb/renderer-jsx': 5.0.0-beta.10
+  '@kubb/renderer-jsx': 5.0.0-beta.35
 catalogMode: strict
 cleanupUnusedCatalogs: true
 allowBuilds:
@@ -153,58 +153,5 @@ minimumReleaseAgeExclude:
   - brace-expansion@5.0.8
   - fast-uri@3.1.5
   - ip-address@10.2.1 || 10.2.2 || 10.3.1
-overrides:
-  '@auth/core@<=0.41.2': ^0.41.3
-  '@auth/core@>=0.1.0 <0.41.3': ^0.41.3
-  '@hono/node-server@<1.19.10': ^1.19.10
-  '@hono/node-server@<1.19.13': ^1.19.13
-  '@hono/node-server@<2.0.5': ^2.0.5
-  adm-zip@<0.6.0: ^0.6.0
-  axios@>=1.0.0 <1.18.0: ^1.18.0
-  axios@>=1.13.0 <1.18.0: ^1.18.0
-  axios@>=1.15.0 <1.18.0: ^1.18.0
-  axios@>=1.15.1 <1.18.0: ^1.18.0
-  axios@>=1.15.2 <1.18.0: ^1.18.0
-  axios@>=1.7.0 <1.18.0: ^1.18.0
-  effect@<3.20.0: ^3.20.0
-  esbuild@<=0.24.2: '>=0.25.0'
-  hono@<4.11.10: ^4.11.10
-  hono@<4.11.7: ^4.11.7
-  hono@<4.12.12: ^4.12.12
-  hono@<4.12.14: ^4.12.14
-  hono@<4.12.16: ^4.12.16
-  hono@<4.12.18: ^4.12.18
-  hono@<4.12.21: ^4.12.21
-  hono@<4.12.25: ^4.12.25
-  hono@<4.12.34: ^4.12.34
-  hono@<4.12.4: ^4.12.4
-  hono@<4.12.7: ^4.12.7
-  hono@>=3.8.0 <4.12.34: ^4.12.34
-  hono@>=4.0.0 <4.12.27: ^4.12.27
-  hono@>=4.0.0 <=4.12.11: ^4.12.12
-  hono@>=4.3.3 <4.12.27: ^4.12.27
-  hono@>=4.7.0 <4.12.34: ^4.12.34
-  ip-address@<=10.3.0: ^10.3.1
-  ip-address@>=10.1.1 <=10.2.0: ^10.2.1
-  ip-address@>=10.1.1 <=10.2.1: ^10.2.2
-  js-yaml@>=4.0.0 <4.3.0: ^4.3.0
-  js-yaml@>=4.0.0 <4.3.1: ^4.3.1
-  js-yaml@>=4.0.0 <=4.1.1: ^4.1.2
-  lodash@<=4.17.23: ^4.17.24
-  lodash@>=4.0.0 <=4.17.22: ^4.17.23
-  lodash@>=4.0.0 <=4.17.23: ^4.17.24
-  next-auth@>=5.0.0-beta.0 <5.0.0-beta.30: ^5.0.0-beta.30
-  next-auth@>=5.0.0-beta.0 <=5.0.0-beta.31: ^5.0.0
-  next-auth@>=5.0.0-beta.1 <=5.0.0-beta.31: ^5.0.0
-  path-to-regexp@>=4.0.0 <6.3.0: ^6.3.0
-  postcss@<=8.5.17: ^8.5.18
-  postcss@<=8.5.22: ^8.5.23
-  qs@>=6.11.1 <=6.15.1: ^6.15.2
-  rollup@>=4.0.0 <4.59.0: ^4.59.0
-  sharp@<0.35.0: ^0.35.0
-  tar@<=7.5.15: ^7.5.16
-  tar@<=7.5.16: ^7.5.17
-  tar@<=7.5.17: ^7.5.18
-  tar@<=7.5.18: ^7.5.19
-  tar@<=7.5.20: ^7.5.21
-  valibot@<=1.4.1: ^1.4.2
+  - extract-zip@2.0.2
+overrides: {}
