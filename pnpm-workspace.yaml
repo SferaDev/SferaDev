@@ -4,22 +4,22 @@ packages:
   - configs/*
   - content
 catalog:
-  '@ai-sdk/gateway': 4.0.46
-  '@ai-sdk/openai': 4.0.36
+  '@ai-sdk/gateway': 4.0.52
+  '@ai-sdk/openai': 4.0.42
   '@ai-sdk/provider': 4.0.7
-  '@ai-sdk/provider-utils': 5.0.25
-  '@aws-sdk/client-s3': 3.1106.0
-  '@aws-sdk/s3-request-presigner': 3.1106.0
-  '@biomejs/biome': 2.5.7
-  '@changesets/cli': 2.31.1
-  '@hono/node-server': ^2.1.0
+  '@ai-sdk/provider-utils': 5.0.27
+  '@aws-sdk/client-s3': 3.1111.0
+  '@aws-sdk/s3-request-presigner': 3.1111.0
+  '@biomejs/biome': 2.5.8
+  '@changesets/cli': 3.0.0
+  '@hono/node-server': ^2.1.1
   '@kubb/adapter-oas': 5.0.0-beta.10
   '@kubb/cli': 5.0.0-beta.10
   '@kubb/core': 5.0.0-beta.10
   '@kubb/plugin-client': 5.0.0-beta.10
   '@kubb/plugin-ts': 5.0.0-beta.10
   '@kubb/plugin-zod': 5.0.0-beta.10
-  '@next/third-parties': 16.3.0
+  '@next/third-parties': 16.3.1
   '@radix-ui/react-alert-dialog': 1.1.23
   '@radix-ui/react-avatar': 1.2.6
   '@radix-ui/react-dialog': 1.1.23
@@ -33,7 +33,7 @@ catalog:
   '@radix-ui/react-toast': 1.2.23
   '@tailwindcss/postcss': 4.3.3
   '@tailwindcss/typography': 0.5.20
-  '@testing-library/jest-dom': 7.0.0
+  '@testing-library/jest-dom': 7.0.1
   '@types/bun': 1.3.14
   '@types/ipp': ^2.0.5
   '@types/json-schema': 7.0.15
@@ -43,12 +43,12 @@ catalog:
   '@types/react': 19.2.18
   '@types/react-dom': 19.2.4
   '@vercel/analytics': 2.0.1
-  '@vercel/config': 0.5.6
-  '@vercel/oidc': 3.8.2
+  '@vercel/config': 0.6.1
+  '@vercel/oidc': 3.8.4
   '@vscode/vsce': 3.9.2
-  '@xyflow/react': 12.11.2
-  ai: 7.0.58
-  better-auth: 1.6.26
+  '@xyflow/react': 12.11.3
+  ai: 7.0.66
+  better-auth: 1.6.29
   bonjour-service: ^1.4.4
   bunchee: 7.0.1
   case: 1.6.3
@@ -59,27 +59,27 @@ catalog:
   drizzle-orm: 0.45.2
   effect: 3.22.1
   es-module-lexer: 2.3.1
-  framer-motion: 13.0.0
+  framer-motion: 13.1.0
   geist: 1.7.2
   gifenc: 1.0.3
   gray-matter: 4.0.3
-  hono: ^4.13.1
+  hono: ^4.13.2
   html-to-image: 1.11.13
   ipp: ^2.0.1
   is-tree-shakable: 0.5.0
   jsdom: 30.0.1
   jspdf: 4.2.1
   jszip: 3.10.1
-  knip: 6.32.0
-  konva: 10.3.0
+  knip: 6.32.2
+  konva: 10.3.1
   kubb: 5.0.0-beta.10
   lefthook: 2.1.10
   lru-cache: ^11.5.2
-  lucide-react: 1.30.0
-  mintlify: 4.2.788
-  motion: 13.0.0
-  next: 16.3.0
-  next-intl: 4.13.5
+  lucide-react: 1.31.0
+  mintlify: 4.2.804
+  motion: 13.1.0
+  next: 16.3.1
+  next-intl: 4.13.6
   next-themes: 0.4.6
   openapi3-ts: 4.6.1
   pg: 8.23.0
@@ -92,13 +92,13 @@ catalog:
   react-markdown: 10.1.0
   rimraf: 6.1.3
   rollup: 4.62.4
-  stripe: 22.4.0
-  swr: 2.5.0
+  stripe: 22.5.0
+  swr: 2.5.1
   tailwind-merge: 3.6.0
   tailwindcss: 4.3.3
   tailwindcss-animate: 1.0.7
-  tsx: 4.23.11
-  turbo: 2.10.9
+  tsx: 4.23.12
+  turbo: 2.10.10
   tw-animate-css: 1.4.0
   # KEEP-BACK: TypeScript 7 dropped the JavaScript compiler API that bunchee uses to
   # emit type declarations, so every package build fails with "Detected TypeScript

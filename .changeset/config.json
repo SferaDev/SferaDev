@@ -1,5 +1,5 @@
 {
-	"$schema": "https://unpkg.com/@changesets/config@3/schema.json",
+	"$schema": "https://unpkg.com/@changesets/config@4/schema.json",
 	"changelog": "@changesets/cli/changelog",
 	"baseBranch": "main",
 	"commit": false,
@@ -7,5 +7,6 @@
 	"linked": [],
 	"access": "public",
 	"updateInternalDependencies": "patch",
-	"ignore": ["@sferadev/website", "@sferadev/openapi-website"]
+	"ignore": ["@sferadev/website", "@sferadev/openapi-website"],
+	"privatePackages": { "version": true, "tag": false }
 }
