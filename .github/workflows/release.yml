@@ -42,11 +42,9 @@ jobs:
       - name: Create Release Pull Request or Publish
         id: changesets
         uses: changesets/action@198f833dd7d863100ea6e28967bc9a9fdefadb0a # v2.1.0
-        # changesets/action v2 renamed every root input (`publish` -> `publish-script`)
-        # and stopped reading a custom token from the GITHUB_TOKEN env var — it must be
-        # passed to the `github-token` input. Unknown `with:` keys are silently ignored
-        # by GitHub Actions, so leaving the v1 names here would quietly downgrade this
-        # job to opening a version PR and never publishing anything.
+        # v2 renamed every root input and stopped reading GITHUB_TOKEN from the env. Unknown
+        # `with:` keys are ignored silently, so the v1 names here would downgrade this job to
+        # opening a version PR and never publishing.
         with:
           publish-script: pnpm release
           github-token: ${{ secrets.GIT_TOKEN }}
