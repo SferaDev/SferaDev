@@ -111,26 +111,34 @@ A drop is a blocker. Root cause seen so far: pnpm 11 requires a *value* for `--f
 `--fix override` and warns instead of swallowing, but any future failure of that command has the
 same silent shape.
 
-### `ERR_PNPM_NO_MATCHING_VERSION` after `audit --fix`
+### `ERR_PNPM_NO_MATCHING_VERSION` after `audit --fix` — the `overrides: {}` PR
 
-`pnpm audit --fix` is not publish-aware: it will generate an override pointing at a version the
-advisory recommends but that was never released. Seen with `esbuild@<=0.24.2` → `^0.24.3`, where
-0.24.2 is the last 0.24.x.
+**`pnpm audit --fix` is not publish-aware.** It generates entries pointing at whatever version an
+advisory recommends, including versions that were never released. When one of those reaches an
+install, the install fails and the workflow's fallback clears *every* generated override — so the
+PR ships with the whole security block gone and nothing red.
 
-Fix the single offending entry rather than clearing the block — check what `main` used for the
-same advisory (`>=0.25.0` here). The workflow's fallback clears *all* generated overrides, so if
-it fires you have hit the previous entry's problem as well.
+**Fired three times with an identical fix: 2026-08 (#594), 2026-08-10 (#601), 2026-08-17 (#626) —
+always `esbuild@^0.24.3`** (0.24.2 is the last 0.24.x). It is intermittent, not weekly: it needs
+something in the freshly-resolved tree to drop back to esbuild ≤0.24.2 while the override that
+normally holds esbuild at 0.25.x has already been cleared. In #601 the path was
+`drizzle-kit → @esbuild-kit/esm-loader → esbuild`.
 
-**Recurred 2026-08 (PR #594), and again 2026-08-10 (PR #601) — same `esbuild@^0.24.3` entry.**
-It is intermittent, not weekly: it only reappears when something in the freshly-resolved tree
-drops back to esbuild ≤0.24.2, and the override that normally holds esbuild at 0.25.x has been
-cleared by the time `audit` runs. In #601 the path was
-`drizzle-kit → @esbuild-kit/esm-loader → esbuild`, and it cost all 54 overrides.
+Treat it as the **first hypothesis** whenever a PR arrives with `overrides: {}` — but confirm from
+the bot's own run log rather than inferring:
 
-Because it has now fired twice with an identical fix, treat it as the **first hypothesis** whenever
-a PR arrives with `overrides: {}`. The fix is one line — restore `main`'s
-`esbuild@<=0.24.2: '>=0.25.0'` — and the cheapest reliable route to a correct set is to take
-`main`'s whole `overrides` block as the base rather than re-deriving it:
+```bash
+gh run list --workflow=update-dependencies.yml --limit 1     # get the run id
+gh run view <id> --log | grep -E "::warning|ERR_PNPM|overrides were added"
+```
+
+`N overrides were added` followed by `ERR_PNPM_NO_MATCHING_VERSION` and `install failed after
+audit --fix` means `audit --fix` worked and the **install after it** failed — so the cause is one
+bad entry, not a reason to re-run `audit`. Nothing else is a reliable tell; in particular
+`minimumReleaseAgeExclude` gaining or not gaining entries proves nothing either way (#601 had an
+unchanged exclude list and a fully successful `audit --fix`).
+
+Take `main`'s whole block as the base rather than re-deriving it:
 
 ```bash
 git show origin/main:pnpm-workspace.yaml | yq '.overrides' > /tmp/main-overrides.yaml
@@ -141,23 +149,14 @@ pnpm install
 Then confirm the lockfile agrees (`yq '.overrides | keys | length' pnpm-lock.yaml`) and that no
 banned version resolved (`grep -oE '^  esbuild@[0-9.]+' pnpm-lock.yaml | sort -u`).
 
-**When the PR has `overrides: {}`, read the bot's own run log — do not infer.** Go straight to it:
+**The same non-publish-awareness reaches `minimumReleaseAgeExclude`.** #626 added
+`extract-zip@2.0.2`, which does not exist (latest is 2.0.1). Such an entry is inert, but it will
+sit there forever un-audited, so check new excludes resolve before accepting them — one
+`npm view <pkg> version` per added line:
 
 ```bash
-gh run list --workflow=update-dependencies.yml --limit 1     # get the run id
-gh run view <id> --log | grep -E "::warning|ERR_PNPM|overrides were added"
+git diff origin/main...HEAD -- pnpm-workspace.yaml | grep '^+  - '
 ```
-
-`N overrides were added` followed by `ERR_PNPM_NO_MATCHING_VERSION` and
-`install failed after audit --fix` means `audit --fix` worked and the **install after it** failed,
-so the fix is one bad entry, not a blind re-run of `audit`.
-
-*Correction, 2026-08-10 (PR #601):* a previous version of this file said to use
-`minimumReleaseAgeExclude` *gaining* entries as the tell for that case. **That heuristic is
-sufficient but not necessary and should not be relied on.** This run had `overrides: {}` with the
-exclude list completely unchanged, yet `audit --fix` had succeeded with 34 overrides — the 12
-excludes it wanted were already present from earlier weeks, so there was nothing new to add. An
-unchanged exclude list proves nothing either way; the run log is the only reliable signal.
 
 ### `overrides` written as one flow-style line
 
@@ -173,24 +172,22 @@ yq -i '.overrides style="" | .overrides[] style=""' pnpm-workspace.yaml
 Purely cosmetic to pnpm — verify with a byte-identical `pnpm-lock.yaml` after
 `pnpm install --frozen-lockfile`. If a future PR reverts to one line, that step was dropped.
 
-### Both KEEP-BACK pins jumped in the same run
+### Every KEEP-BACK pin jumps, every run
 
-*Seen 2026-08 (PR #594).* `pnpm update --recursive --latest` bumped `typescript` 6.0.3 → 7.0.2
-**and** `@kubb/renderer-jsx` beta.10 → beta.35 in one run, leaving both KEEP-BACK comments in place
-above the now-wrong versions.
+`pnpm update --recursive --latest` has no notion of a keep-back, so **every** run bumps past
+**every** pin and leaves the explaining comment stranded above the now-wrong value. Re-pinning is a
+default step of this review, not a contingency.
 
-Only the TypeScript one turned CI red; the `@kubb` one is an unmet peer that no gate catches. So
-**re-check every pin, not just whichever one broke the build** — a green `Check` is not evidence
-the other holds survived. `grep -n "KEEP-BACK" -A6 pnpm-workspace.yaml` and compare each value.
+Identical in #594, #601 and #626: `typescript` 6.0.3 → 7.0.2 **and** `@kubb/renderer-jsx`
+beta.10 → beta.35, together, every time.
 
-**Recurred identically 2026-08-10 (PR #601)** — same two pins, same direction (`typescript`
-6.0.3 → 7.0.2, `@kubb/renderer-jsx` beta.10 → beta.35), same comments left stranded above the
-wrong values. This is not an occasional slip: `pnpm update --recursive --latest` has no notion of
-a keep-back, so **every** run bumps past **every** pin, and the only thing standing between that
-and `main` is this review. Re-pinning is a default step, not a contingency.
+Only the TypeScript one turns CI red; the `@kubb` one is an unmet peer that no gate catches — so
+**re-check every pin, not just whichever one broke the build.** A green `Check` is not evidence the
+other holds survived. `grep -n "KEEP-BACK" -A6 pnpm-workspace.yaml` and compare each value, then
+verify what actually resolved (an override can defeat a re-pin — see `pin-governance.md`).
 
-The TypeScript hold is still required as of 2026-08-10 — bunchee 7.0.1 fails all 12 package builds
-on TS 7.0.2 with the same "Detected TypeScript 7.0.2 … install `@typescript/typescript6`" error.
+The TypeScript hold is still required as of 2026-08-17: bunchee 7.0.1 fails all 12 package builds
+on TS 7.0.2 with "Detected TypeScript 7.0.2 … install `@typescript/typescript6`".
 
 ---
 
@@ -267,6 +264,65 @@ This is the single most likely way the weekly PR breaks the release, and it only
 ---
 
 ## Release / publish (after merge)
+
+### A pinned Action crosses a major and the workflow keeps the old input names
+
+*Seen 2026-08-17 (#626): `changesets/action` v1.9.0 → v2.1.0.*
+
+**Workflow diffs are not always benign SHA re-pins.** `pinact` re-pins by SHA, and the comment
+beside it is the only thing revealing that the tag moved a whole major. v2.0.0 renamed every root
+input — `publish` → `publish-script`, `version` → `version-script`, `commit` → `commit-message`,
+`title` → `pr-title`, `branch` → `pr-base-branch` — and **GitHub Actions silently ignores unknown
+`with:` keys.** So `release.yml` kept `publish: pnpm release`, the input was dropped on the floor,
+and the job would have stopped publishing npm packages *and* the VS Code extension while still
+going green — it just opens a version PR instead. v2 also stopped reading a custom token from the
+`GITHUB_TOKEN` env var; it must be passed to the `github-token` input, so `secrets.GIT_TOKEN` was
+being ignored too.
+
+**So: read the version comment on every Action bump in the diff, and for any major, diff the
+action's own input list rather than the release notes alone** — it is the authoritative list, and
+unknown keys will never tell you:
+
+```bash
+gh api repos/<org>/<action>/tarball/<new-sha> > /tmp/a.tgz
+mkdir -p /tmp/a && tar xzf /tmp/a.tgz -C /tmp/a --strip-components=1
+sed -n '/^inputs:/,/^outputs:/p' /tmp/a/action.yml
+grep -nE '^\s+(with|uses|env):' -A8 .github/workflows/release.yml
+```
+
+Note this class is invisible to every gate: `release.yml` runs only on push to `main`, so the fix
+can be reviewed but not proven until the next merge. Say so in the PR description.
+
+### A tool major changes a default that silently invalidates repo config
+
+*Seen 2026-08-17 (#626): `@changesets/cli` 2.31.1 → 3.0.0.*
+
+v3 stopped versioning private packages by default. `packages/openapi-utils` and
+`packages/platform-sdk` are `private: true`, and five published API clients depend on
+`@sferadev/openapi-utils` — a tree changesets then refuses outright:
+
+```
+Invalid tree: "netlify-api" depends on the skipped package "@sferadev/openapi-utils",
+but "netlify-api" is not skipped. Please add "netlify-api" to the "ignore" option.
+```
+
+Restored the previous behaviour explicitly rather than reshuffling `ignore`:
+`"privatePackages": { "version": true, "tag": false }` in `.changeset/config.json`.
+
+The general move: **a dev tool's config is a gate nothing else runs**, so exercise it directly
+after any major of a tool that reads committed config. One command is usually enough:
+
+```bash
+pnpm changeset status --since=main     # exits 1 and prints the tree error
+```
+
+Also bump the config's `$schema` URL to match the installed major (`@changesets/config@4` here) —
+the bot never does, and a stale schema silently stops validating new options.
+
+**Related, pre-existing and out of scope but worth an issue:** `vercel-api-js` and four siblings
+publish with `"@sferadev/openapi-utils": "0.0.1"` in `dependencies`, while that package is
+`private: true` and 404s on npm — so those published packages are not installable. Confirm with
+`npm view vercel-api-js dependencies` before treating any of it as new.
 
 ### `npm error 404 … you do not have permission` on every package
 

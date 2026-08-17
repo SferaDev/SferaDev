@@ -144,7 +144,14 @@ Also in the same diff:
   published (see `ERR_PNPM_NO_MATCHING_VERSION`).
 - `mise.toml` / `mise.lock`: check node did not cross a major the code is not ready for, and that
   `mise.lock` still carries all platforms (CI needs `linux-x64`).
-- Workflow diffs are normally just pinned Action SHA bumps — benign.
+- **Workflow diffs are not automatically benign.** `pinact` re-pins by SHA, so a whole major looks
+  identical to a patch — the trailing `# vX.Y.Z` comment is the only tell. Read it on every Action
+  bump, and for a major, diff the action's own `inputs:` against the workflow's `with:` keys:
+  GitHub silently ignores unknown inputs, so a rename disables a step with no error anywhere. See
+  the `changesets/action` entry in `failure-modes.md`.
+- **A tool major can invalidate committed config** rather than code — exercise any tool that reads
+  a config file in the repo (`pnpm changeset status --since=main`), and bump `$schema` URLs to
+  match the new major.
 
 ### 5. Local CI parity
 
