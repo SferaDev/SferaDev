@@ -36,6 +36,7 @@ jobs:
           install-deps: "false"
 
       - name: Install new versions
+        id: update
         run: |
           # Bump the mise toolchain to latest first, so the rest of the run — and the
           # generated lockfile — executes under the versions we pin.
@@ -70,11 +71,18 @@ jobs:
           # Mirror the pnpm version into `packageManager`, which turbo and Vercel read.
           jq --arg v "pnpm@$(mise current pnpm)" '.packageManager = $v' package.json > package.tmp && mv package.tmp package.json
 
-          # Clear the generated security overrides before updating; `pnpm audit --fix`
-          # regenerates them below. Keep the hand-written ones — `@kubb/renderer-jsx` holds
-          # a peer conflict together and audit will never re-add it, so a blanket
-          # `del(.overrides)` would drop it permanently.
-          yq -i '.overrides |= with_entries(select(.key == "@kubb/renderer-jsx"))' pnpm-workspace.yaml
+          # The committed overrides are the set currently installing cleanly on main. Snapshot
+          # them before touching anything: they are both the floor this PR must not ship below
+          # and the known-good fallback if a freshly generated set turns out to be unresolvable.
+          overrides_snapshot="$RUNNER_TEMP/committed-overrides.yaml"
+          git show HEAD:pnpm-workspace.yaml | yq '.overrides // {}' > "$overrides_snapshot"
+
+          # Clear the generated security overrides before updating so `pnpm audit --fix` below
+          # regenerates them against the freshly resolved tree instead of layering onto stale
+          # ranges. Nothing hand-written lives in this block any more — the `@kubb/renderer-jsx`
+          # pin was folded into the catalog in 2026-07 — and the snapshot above is what keeps the
+          # generated ones recoverable, so this can clear the whole block.
+          yq -i '.overrides = {}' pnpm-workspace.yaml
           with_allow_builds pnpm install --no-frozen-lockfile
 
           # Update dependencies.
@@ -88,10 +96,7 @@ jobs:
           with_allow_builds pnpm update --recursive --latest
           sed -i 's/^catalogMode: manual/catalogMode: strict/' pnpm-workspace.yaml
 
-          # Patch vulnerabilities (regenerates the overrides in pnpm-workspace.yaml). If a
-          # generated override can't be resolved (e.g. a patched version not yet published to
-          # npm), drop the generated ones so the update PR still opens; they regenerate once
-          # the fix lands. The hand-written pins are kept, as above.
+          # Patch vulnerabilities (regenerates the overrides in pnpm-workspace.yaml).
           #
           # `--fix` takes a value on pnpm 11 ("override" or "update"); the bare flag is a usage
           # error. Because this is followed by `|| true`, getting that wrong fails silently and
@@ -99,16 +104,60 @@ jobs:
           # override dropped, with nothing red to show for it. Report it instead of swallowing.
           pnpm audit --fix override || echo "::warning::pnpm audit --fix failed; security overrides may be missing from this PR"
 
+          # `pnpm audit --fix` is not publish-aware: it emits overrides pointing at whatever
+          # version an advisory recommends, including versions that were never released — the
+          # phantom `esbuild@^0.24.3` has broken this job three times (PRs #594, #601, #626).
+          # One unresolvable entry fails the install for all of them, so drop those entries here
+          # rather than discovering it downstream, where the only remedy left is coarse.
+          overrides_dropped=""
+          yq -r '.overrides // {} | keys | .[]' pnpm-workspace.yaml > "$RUNNER_TEMP/override-keys.txt"
+          while IFS= read -r key; do
+            if [ -z "$key" ]; then continue; fi
+            target=$(key="$key" yq -r '.overrides[strenv(key)]' pnpm-workspace.yaml)
+            # Keys read `<name>@<range>`, so the package name is everything before the last "@" —
+            # which keeps scoped names (`@auth/core@<=0.41.2`) intact.
+            pkg="${key%@*}"
+            if ! npm view "$pkg@$target" version >/dev/null 2>&1; then
+              key="$key" yq -i 'del(.overrides[strenv(key)])' pnpm-workspace.yaml
+              overrides_dropped="$overrides_dropped $pkg@$target"
+            fi
+          done < "$RUNNER_TEMP/override-keys.txt"
+          if [ -n "$overrides_dropped" ]; then
+            echo "::warning::dropped unresolvable generated overrides:$overrides_dropped"
+          fi
+
+          # Union the committed set underneath the generated one, generated winning on conflict,
+          # so a weekly run can only ever add protection. A regenerated set can legitimately come
+          # out smaller than the committed one — an advisory's range stops matching once the tree
+          # moves past it — and a redundant override is a no-op, whereas a missing one is a silent
+          # security regression. That asymmetry is why this merges rather than replaces.
+          snapshot="$overrides_snapshot" yq -i '.overrides = load(strenv(snapshot)) * (.overrides // {})' pnpm-workspace.yaml
+
           # `pnpm audit --fix` emits `overrides` as one flow-style line, which makes a 50-entry
           # map unreviewable in a diff — a single changed entry rewrites the whole line. Re-emit
           # it as a block map so each override reads as its own line, like every other key here.
           yq -i '.overrides style="" | .overrides[] style=""' pnpm-workspace.yaml
 
+          # Last resort. Restore the committed overrides wholesale rather than clearing them: they
+          # are known to install, so the PR degrades to "no new advisories picked up this week"
+          # instead of "every security override silently deleted".
+          overrides_fallback=""
           with_allow_builds pnpm install --no-frozen-lockfile || {
-            echo "::warning::install failed after audit --fix; clearing generated overrides and retrying"
-            yq -i '.overrides |= with_entries(select(.key == "@kubb/renderer-jsx"))' pnpm-workspace.yaml
+            echo "::warning::install failed after audit --fix; restoring the committed overrides and retrying"
+            overrides_fallback="1"
+            snapshot="$overrides_snapshot" yq -i '.overrides = load(strenv(snapshot)) | .overrides style="" | .overrides[] style=""' pnpm-workspace.yaml
             with_allow_builds pnpm install --no-frozen-lockfile
           }
+
+          # The merge above makes shrinkage structurally impossible, so this can only fire if one
+          # of the steps here is itself broken. Fail loudly: a week without a dependency PR is
+          # recoverable, a PR that quietly drops security overrides is what this job keeps doing.
+          committed_count=$(yq 'keys | length' "$overrides_snapshot")
+          current_count=$(yq '.overrides // {} | keys | length' pnpm-workspace.yaml)
+          if [ "$current_count" -lt "$committed_count" ]; then
+            echo "::error::security overrides shrank from $committed_count to $current_count"
+            exit 1
+          fi
 
           # Update biome config, then fix formatting and linting issues
           pnpm biome migrate --write
@@ -116,6 +165,23 @@ jobs:
 
           # Pin and update GitHub Actions to commit SHAs
           pinact run --update .github/workflows/*.yml .github/actions/*/action.yml
+
+          # Anything the steps above had to work around goes into the PR body. A `::warning::`
+          # only exists in the run log, which is precisely where nobody looks — and every bad
+          # outcome this job has shipped was one a reviewer would have caught if the PR had said
+          # so out loud.
+          notes=""
+          if [ -n "$overrides_dropped" ]; then
+            notes="$notes"$'\n'"- Dropped generated overrides that resolve to no published version:$overrides_dropped"
+          fi
+          if [ -n "$overrides_fallback" ]; then
+            notes="$notes"$'\n'"- \`pnpm audit --fix\` produced an unresolvable set, so the security overrides were **restored from \`main\` unchanged** — no new advisories were picked up this week."
+          fi
+          {
+            echo "notes<<UPDATE_NOTES_EOF"
+            echo "$notes"
+            echo "UPDATE_NOTES_EOF"
+          } >> "$GITHUB_OUTPUT"
 
           # Commit changes
           git add .
@@ -129,4 +195,5 @@ jobs:
           title: "Update dependencies"
           body: |
             This is an autogenerated PR to update the dependencies!
+            ${{ steps.update.outputs.notes }}
           branch: update-dependencies-${{ github.run_id }}

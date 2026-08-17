@@ -106,10 +106,13 @@ echo -n "main: "; git show origin/main:pnpm-workspace.yaml | yq '.overrides | ke
 echo -n "PR:   "; yq '.overrides | keys | length' pnpm-workspace.yaml
 ```
 
-A drop is a blocker. Root cause seen so far: pnpm 11 requires a *value* for `--fix`
-(`override` or `update`), so the bare `pnpm audit --fix` is a usage error. The workflow now uses
-`--fix override` and warns instead of swallowing, but any future failure of that command has the
-same silent shape.
+A drop is a blocker. Two root causes have been found and both are now fixed in the workflow: pnpm
+11 requires a *value* for `--fix` (`override` or `update`), so the bare `pnpm audit --fix` was a
+usage error swallowed by `|| true`; and the post-`audit` install fallback cleared the whole block
+instead of restoring the committed one (see the `ERR_PNPM_NO_MATCHING_VERSION` entry below).
+
+**Keep running this check anyway.** It is two commands, it is the cheapest possible confirmation
+that those guards still work, and the failure it catches is invisible by construction.
 
 ### `ERR_PNPM_NO_MATCHING_VERSION` after `audit --fix` — the `overrides: {}` PR
 
@@ -124,8 +127,21 @@ something in the freshly-resolved tree to drop back to esbuild ≤0.24.2 while t
 normally holds esbuild at 0.25.x has already been cleared. In #601 the path was
 `drizzle-kit → @esbuild-kit/esm-loader → esbuild`.
 
-Treat it as the **first hypothesis** whenever a PR arrives with `overrides: {}` — but confirm from
-the bot's own run log rather than inferring:
+> **Fixed at the source in #626 — so `overrides: {}` should never appear again.** The workflow now
+> snapshots the committed overrides before it touches anything, drops generated entries whose
+> target resolves to no published version (`npm view` per new entry), merges the committed set
+> underneath the generated one so the block can only grow, falls back to the *committed* overrides
+> rather than to empty when the install still fails, and hard-fails the job if the count ever
+> shrinks. It also reports both the dropped entries and any fallback in the **PR body**, not just
+> the run log.
+>
+> **So a PR that still arrives with fewer overrides than `main` now means one of those guards is
+> broken, not that `audit --fix` misbehaved.** Read the run log for `::error::security overrides
+> shrank` and treat it as a bug in `update-dependencies.yml`. The recovery below is still the right
+> manual fix; it is just no longer expected to be needed.
+
+Historically the first hypothesis whenever a PR arrived with `overrides: {}` — confirm from the
+bot's own run log rather than inferring:
 
 ```bash
 gh run list --workflow=update-dependencies.yml --limit 1     # get the run id
