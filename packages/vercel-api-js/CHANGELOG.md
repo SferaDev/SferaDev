@@ -1,5 +1,17 @@
 # vercel-api-js
 
+## 1.13.0
+
+### Minor Changes
+
+- f484ddd: Added ai-gateway-auto-reload-updated and ai-gateway-credits-purchased as user event types.
+- f484ddd: Added experiment-created, experiment-transitioned, and experiment-updated as user event types.
+
+### Patch Changes
+
+- f484ddd: Updated flagSchema.experiment to a new structure with base, weights, defaultVariantId, and exposureLogging fields.
+- f484ddd: Removed deprecated experiment-related enums and types from the flag and experiment schemas.
+
 ## 1.12.0
 
 ### Minor Changes
