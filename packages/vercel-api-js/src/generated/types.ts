@@ -1860,10 +1860,12 @@ export const userEventTypeEnum = {
 	"ai-gateway-api-key-created": "ai-gateway-api-key-created",
 	"ai-gateway-api-key-deleted": "ai-gateway-api-key-deleted",
 	"ai-gateway-api-key-quota-updated": "ai-gateway-api-key-quota-updated",
+	"ai-gateway-auto-reload-updated": "ai-gateway-auto-reload-updated",
 	"ai-gateway-budget-default-updated": "ai-gateway-budget-default-updated",
 	"ai-gateway-byok-credential-created": "ai-gateway-byok-credential-created",
 	"ai-gateway-byok-credential-deleted": "ai-gateway-byok-credential-deleted",
 	"ai-gateway-byok-credential-updated": "ai-gateway-byok-credential-updated",
+	"ai-gateway-credits-purchased": "ai-gateway-credits-purchased",
 	"ai-gateway-guardrails-updated": "ai-gateway-guardrails-updated",
 	"ai-gateway-model-allowlist-models-updated": "ai-gateway-model-allowlist-models-updated",
 	"ai-gateway-model-allowlist-toggled": "ai-gateway-model-allowlist-toggled",
@@ -2052,6 +2054,9 @@ export const userEventTypeEnum = {
 	"env-variable-read:unknown-source": "env-variable-read:unknown-source",
 	"env-variable-read:v0:env:pull": "env-variable-read:v0:env:pull",
 	"env-variable-rotated": "env-variable-rotated",
+	"experiment-created": "experiment-created",
+	"experiment-transitioned": "experiment-transitioned",
+	"experiment-updated": "experiment-updated",
 	"firewall-bypass-created": "firewall-bypass-created",
 	"firewall-bypass-deleted": "firewall-bypass-deleted",
 	"firewall-config-modified": "firewall-config-modified",
@@ -3641,6 +3646,32 @@ export type UserEvent = {
 						 */
 						action: ActionEnumKey;
 						/**
+						 * @type string
+						 */
+						id: string;
+						/**
+						 * @type string
+						 */
+						name: string;
+						/**
+						 * @type string
+						 */
+						state: string;
+						/**
+						 * @type string
+						 */
+						projectId: string;
+						/**
+						 * @type string | undefined
+						 */
+						projectName?: string | undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						action: ActionEnumKey;
+						/**
 						 * @type string | undefined
 						 */
 						label?: string | undefined;
@@ -3985,6 +4016,65 @@ export type UserEvent = {
 						/**
 						 * @type string
 						 */
+						change: ChangeEnumKey;
+						/**
+						 * @type object | undefined
+						 */
+						settings?:
+							| {
+									/**
+									 * @type string
+									 */
+									minimumBalance: string;
+									/**
+									 * @type string
+									 */
+									targetBalance: string;
+									/**
+									 * @type string
+									 */
+									maximumMonthlySpend: string | null;
+							  }
+							| undefined;
+						/**
+						 * @type object | undefined
+						 */
+						previous?:
+							| {
+									/**
+									 * @type string
+									 */
+									minimumBalance: string;
+									/**
+									 * @type string
+									 */
+									targetBalance: string;
+									/**
+									 * @type string
+									 */
+									maximumMonthlySpend: string | null;
+							  }
+							| undefined;
+						/**
+						 * @type object | undefined
+						 */
+						commitment?:
+							| {
+									/**
+									 * @type string
+									 */
+									maximumMonthlySpend: string | null;
+									/**
+									 * @type string
+									 */
+									deferredInvoiceTargetBalance: string;
+							  }
+							| undefined;
+				  }
+				| {
+						/**
+						 * @type string
+						 */
 						scopeType: ScopeTypeEnumKey;
 						/**
 						 * @description Spend budget on an AI Gateway API key, as surfaced in activity messages. Defined locally (rather than imported from `@api/pubsub-types`) because `@api/pubsub-types` already depends on `@api/events`; importing it here would create a circular dependency. Must stay structurally aligned with `APIKeyBudget` in `@api/pubsub-types/event-payloads/api-keys`.
@@ -4062,6 +4152,16 @@ export type UserEvent = {
 							 */
 							providerSlug: string;
 						};
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						amount: string;
+						/**
+						 * @type string
+						 */
+						purchaseIntentId: string;
 				  }
 				| {
 						/**
@@ -19880,10 +19980,12 @@ export const listEventTypeNameEnum = {
 	"ai-gateway-api-key-created": "ai-gateway-api-key-created",
 	"ai-gateway-api-key-deleted": "ai-gateway-api-key-deleted",
 	"ai-gateway-api-key-quota-updated": "ai-gateway-api-key-quota-updated",
+	"ai-gateway-auto-reload-updated": "ai-gateway-auto-reload-updated",
 	"ai-gateway-budget-default-updated": "ai-gateway-budget-default-updated",
 	"ai-gateway-byok-credential-created": "ai-gateway-byok-credential-created",
 	"ai-gateway-byok-credential-deleted": "ai-gateway-byok-credential-deleted",
 	"ai-gateway-byok-credential-updated": "ai-gateway-byok-credential-updated",
+	"ai-gateway-credits-purchased": "ai-gateway-credits-purchased",
 	"ai-gateway-guardrails-updated": "ai-gateway-guardrails-updated",
 	"ai-gateway-model-allowlist-models-updated": "ai-gateway-model-allowlist-models-updated",
 	"ai-gateway-model-allowlist-toggled": "ai-gateway-model-allowlist-toggled",
@@ -20072,6 +20174,9 @@ export const listEventTypeNameEnum = {
 	"env-variable-read:unknown-source": "env-variable-read:unknown-source",
 	"env-variable-read:v0:env:pull": "env-variable-read:v0:env:pull",
 	"env-variable-rotated": "env-variable-rotated",
+	"experiment-created": "experiment-created",
+	"experiment-transitioned": "experiment-transitioned",
+	"experiment-updated": "experiment-updated",
 	"firewall-bypass-created": "firewall-bypass-created",
 	"firewall-bypass-deleted": "firewall-bypass-deleted",
 	"firewall-config-modified": "firewall-config-modified",
@@ -20561,10 +20666,12 @@ export const listEventTypeReplacedByEnum = {
 	"ai-gateway-api-key-created": "ai-gateway-api-key-created",
 	"ai-gateway-api-key-deleted": "ai-gateway-api-key-deleted",
 	"ai-gateway-api-key-quota-updated": "ai-gateway-api-key-quota-updated",
+	"ai-gateway-auto-reload-updated": "ai-gateway-auto-reload-updated",
 	"ai-gateway-budget-default-updated": "ai-gateway-budget-default-updated",
 	"ai-gateway-byok-credential-created": "ai-gateway-byok-credential-created",
 	"ai-gateway-byok-credential-deleted": "ai-gateway-byok-credential-deleted",
 	"ai-gateway-byok-credential-updated": "ai-gateway-byok-credential-updated",
+	"ai-gateway-credits-purchased": "ai-gateway-credits-purchased",
 	"ai-gateway-guardrails-updated": "ai-gateway-guardrails-updated",
 	"ai-gateway-model-allowlist-models-updated": "ai-gateway-model-allowlist-models-updated",
 	"ai-gateway-model-allowlist-toggled": "ai-gateway-model-allowlist-toggled",
@@ -20753,6 +20860,9 @@ export const listEventTypeReplacedByEnum = {
 	"env-variable-read:unknown-source": "env-variable-read:unknown-source",
 	"env-variable-read:v0:env:pull": "env-variable-read:v0:env:pull",
 	"env-variable-rotated": "env-variable-rotated",
+	"experiment-created": "experiment-created",
+	"experiment-transitioned": "experiment-transitioned",
+	"experiment-updated": "experiment-updated",
 	"firewall-bypass-created": "firewall-bypass-created",
 	"firewall-bypass-deleted": "firewall-bypass-deleted",
 	"firewall-config-modified": "firewall-config-modified",
@@ -21243,65 +21353,12 @@ export type ListEventTypesResponse = {
 	}[];
 };
 
-export const metricTypeEnum = {
-	count: "count",
-	currency: "currency",
-	percentage: "percentage",
+export const flagExperimentBaseTypeEnum = {
+	entity: "entity",
 } as const;
 
-export type MetricTypeEnumKey = (typeof metricTypeEnum)[keyof typeof metricTypeEnum];
-
-export const metricUnitEnum = {
-	session: "session",
-	user: "user",
-	visitor: "visitor",
-} as const;
-
-export type MetricUnitEnumKey = (typeof metricUnitEnum)[keyof typeof metricUnitEnum];
-
-export const directionalityEnum = {
-	decreaseIsGood: "decreaseIsGood",
-	increaseIsGood: "increaseIsGood",
-} as const;
-
-export type DirectionalityEnumKey = (typeof directionalityEnum)[keyof typeof directionalityEnum];
-
-export const flagExperimentDeviceEnum = {
-	android: "android",
-	desktop: "desktop",
-	ios: "ios",
-	mweb: "mweb",
-} as const;
-
-export type FlagExperimentDeviceEnumKey =
-	(typeof flagExperimentDeviceEnum)[keyof typeof flagExperimentDeviceEnum];
-
-export const flagExperimentDurationUnitEnum = {
-	days: "days",
-	exposures: "exposures",
-} as const;
-
-export type FlagExperimentDurationUnitEnumKey =
-	(typeof flagExperimentDurationUnitEnum)[keyof typeof flagExperimentDurationUnitEnum];
-
-export const flagExperimentAllocationUnitEnum = {
-	cookieId: "cookieId",
-	userId: "userId",
-	visitorId: "visitorId",
-} as const;
-
-export type FlagExperimentAllocationUnitEnumKey =
-	(typeof flagExperimentAllocationUnitEnum)[keyof typeof flagExperimentAllocationUnitEnum];
-
-export const flagExperimentStatusEnum = {
-	closed: "closed",
-	draft: "draft",
-	paused: "paused",
-	running: "running",
-} as const;
-
-export type FlagExperimentStatusEnumKey =
-	(typeof flagExperimentStatusEnum)[keyof typeof flagExperimentStatusEnum];
+export type FlagExperimentBaseTypeEnumKey =
+	(typeof flagExperimentBaseTypeEnum)[keyof typeof flagExperimentBaseTypeEnum];
 
 export const cmpEnum = {
 	after: "after",
@@ -21355,6 +21412,56 @@ export type Flag = {
 	 */
 	description?: string | undefined;
 	/**
+	 * @type object
+	 */
+	experiment?:
+		| ({
+				/**
+				 * @type string | undefined
+				 */
+				rampId?: string | undefined;
+				/**
+				 * @type number | undefined
+				 */
+				rampPercentage?: number | undefined;
+				/**
+				 * @type string
+				 */
+				id: string;
+				/**
+				 * @type object
+				 */
+				base: {
+					/**
+					 * @type string
+					 */
+					type: FlagExperimentBaseTypeEnumKey;
+					/**
+					 * @type string
+					 */
+					kind: string;
+					/**
+					 * @type string
+					 */
+					attribute: string;
+				};
+				/**
+				 * @type object
+				 */
+				weights: {
+					[key: string]: number;
+				};
+				/**
+				 * @type string
+				 */
+				defaultVariantId: string;
+				/**
+				 * @type boolean
+				 */
+				exposureLogging: false | true;
+		  } | null)
+		| undefined;
+	/**
 	 * @type array | undefined
 	 */
 	maintainerIds?: string[] | undefined;
@@ -21366,145 +21473,6 @@ export type Flag = {
 	 * @type array | undefined
 	 */
 	tags?: string[] | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	experiment?:
-		| {
-				/**
-				 * @type string | undefined
-				 */
-				id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				name?: string | undefined;
-				/**
-				 * @type number | undefined
-				 */
-				numVariants?: number | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				surfaceArea?: string | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
-				stickyRequirement?: (false | true) | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				layer?: string | undefined;
-				/**
-				 * @type array | undefined
-				 */
-				guardrailMetrics?:
-					| {
-							/**
-							 * @type string | undefined
-							 */
-							description?: string | undefined;
-							/**
-							 * @type string | undefined
-							 */
-							metricFormula?: string | undefined;
-							/**
-							 * @type string
-							 */
-							name: string;
-							/**
-							 * @type string
-							 */
-							metricType: MetricTypeEnumKey;
-							/**
-							 * @type string
-							 */
-							metricUnit: MetricUnitEnumKey;
-							/**
-							 * @type string
-							 */
-							directionality: DirectionalityEnumKey;
-					  }[]
-					| undefined;
-				/**
-				 * @type string | undefined
-				 */
-				hypothesis?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				device?: FlagExperimentDeviceEnumKey | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				controlVariantId?: string | undefined;
-				/**
-				 * @type number | undefined
-				 */
-				startedAt?: number | undefined;
-				/**
-				 * @type number | undefined
-				 */
-				endedAt?: number | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				decision?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				decisionReason?: string | undefined;
-				/**
-				 * @type number | undefined
-				 */
-				duration?: number | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				durationUnit?: FlagExperimentDurationUnitEnumKey | undefined;
-				/**
-				 * @type number | undefined
-				 */
-				allocationPercent?: number | undefined;
-				/**
-				 * @type string
-				 */
-				allocationUnit: FlagExperimentAllocationUnitEnumKey;
-				/**
-				 * @type array
-				 */
-				primaryMetrics: {
-					/**
-					 * @type string | undefined
-					 */
-					description?: string | undefined;
-					/**
-					 * @type string | undefined
-					 */
-					metricFormula?: string | undefined;
-					/**
-					 * @type string
-					 */
-					name: string;
-					/**
-					 * @type string
-					 */
-					metricType: MetricTypeEnumKey;
-					/**
-					 * @type string
-					 */
-					metricUnit: MetricUnitEnumKey;
-					/**
-					 * @type string
-					 */
-					directionality: DirectionalityEnumKey;
-				}[];
-				/**
-				 * @type string
-				 */
-				status: FlagExperimentStatusEnumKey;
-		  }
-		| undefined;
 	/**
 	 * @type string | undefined
 	 */
@@ -21670,6 +21638,12 @@ export type Flag = {
 							 */
 							durationMs: number;
 						}[];
+				  }
+				| {
+						/**
+						 * @type string
+						 */
+						type: TypeEnumKey;
 				  };
 			/**
 			 * @type boolean
@@ -21778,6 +21752,12 @@ export type Flag = {
 								 */
 								durationMs: number;
 							}[];
+					  }
+					| {
+							/**
+							 * @type string
+							 */
+							type: TypeEnumKey;
 					  };
 				/**
 				 * @type array
