@@ -637,6 +637,13 @@ export type ChatDetail = {
 				 * @type boolean | undefined
 				 */
 				thinking?: boolean | undefined;
+				thinkingEffort?:
+					| (("none" | "minimal" | "low" | "medium" | "high" | "max" | "xhigh") | null)
+					| undefined;
+				/**
+				 * @type boolean | undefined
+				 */
+				fast?: boolean | undefined;
 		  }
 		| undefined;
 	/**

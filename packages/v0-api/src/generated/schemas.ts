@@ -290,6 +290,10 @@ export const chatDetailSchema = z
 					.optional()
 					.default(false)
 					.describe("Enables thinking to generate a response in multiple steps."),
+				thinkingEffort: z
+					.union([z.enum(["none", "minimal", "low", "medium", "high", "max", "xhigh"]), z.null()])
+					.optional(),
+				fast: z.boolean().optional(),
 			})
 			.strict()
 			.optional()
