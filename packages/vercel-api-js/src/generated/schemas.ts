@@ -791,10 +791,12 @@ export const userEventSchema = z
 				"ai-gateway-api-key-created",
 				"ai-gateway-api-key-deleted",
 				"ai-gateway-api-key-quota-updated",
+				"ai-gateway-auto-reload-updated",
 				"ai-gateway-budget-default-updated",
 				"ai-gateway-byok-credential-created",
 				"ai-gateway-byok-credential-deleted",
 				"ai-gateway-byok-credential-updated",
+				"ai-gateway-credits-purchased",
 				"ai-gateway-guardrails-updated",
 				"ai-gateway-model-allowlist-models-updated",
 				"ai-gateway-model-allowlist-toggled",
@@ -981,6 +983,9 @@ export const userEventSchema = z
 				"env-variable-read:unknown-source",
 				"env-variable-read:v0:env:pull",
 				"env-variable-rotated",
+				"experiment-created",
+				"experiment-transitioned",
+				"experiment-updated",
 				"firewall-bypass-created",
 				"firewall-bypass-deleted",
 				"firewall-config-modified",
@@ -1545,6 +1550,16 @@ export const userEventSchema = z
 					.strict(),
 				z
 					.object({
+						action: z.enum(["created", "transitioned", "updated"]),
+						id: z.string(),
+						name: z.string(),
+						state: z.string(),
+						projectId: z.string(),
+						projectName: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
 						action: z.enum(["added", "deleted", "rotated"]),
 						label: z.string().optional(),
 						projectName: z.string().optional(),
@@ -1762,6 +1777,37 @@ export const userEventSchema = z
 					.strict(),
 				z
 					.object({
+						change: z.enum([
+							"disable",
+							"disable-commitment",
+							"enable",
+							"enable-commitment",
+							"update",
+						]),
+						settings: z
+							.object({
+								minimumBalance: z.string(),
+								targetBalance: z.string(),
+								maximumMonthlySpend: z.string().nullable(),
+							})
+							.optional(),
+						previous: z
+							.object({
+								minimumBalance: z.string(),
+								targetBalance: z.string(),
+								maximumMonthlySpend: z.string().nullable(),
+							})
+							.optional(),
+						commitment: z
+							.object({
+								maximumMonthlySpend: z.string().nullable(),
+								deferredInvoiceTargetBalance: z.string(),
+							})
+							.optional(),
+					})
+					.strict(),
+				z
+					.object({
 						scopeType: z.enum(["api-key", "project", "team"]),
 						budget: z
 							.object({
@@ -1802,6 +1848,12 @@ export const userEventSchema = z
 							name: z.string(),
 							providerSlug: z.string(),
 						}),
+					})
+					.strict(),
+				z
+					.object({
+						amount: z.string(),
+						purchaseIntentId: z.string(),
 					})
 					.strict(),
 				z
@@ -10325,10 +10377,12 @@ export const listEventTypeSchema = z
 				"ai-gateway-api-key-created",
 				"ai-gateway-api-key-deleted",
 				"ai-gateway-api-key-quota-updated",
+				"ai-gateway-auto-reload-updated",
 				"ai-gateway-budget-default-updated",
 				"ai-gateway-byok-credential-created",
 				"ai-gateway-byok-credential-deleted",
 				"ai-gateway-byok-credential-updated",
+				"ai-gateway-credits-purchased",
 				"ai-gateway-guardrails-updated",
 				"ai-gateway-model-allowlist-models-updated",
 				"ai-gateway-model-allowlist-toggled",
@@ -10515,6 +10569,9 @@ export const listEventTypeSchema = z
 				"env-variable-read:unknown-source",
 				"env-variable-read:v0:env:pull",
 				"env-variable-rotated",
+				"experiment-created",
+				"experiment-transitioned",
+				"experiment-updated",
 				"firewall-bypass-created",
 				"firewall-bypass-deleted",
 				"firewall-config-modified",
@@ -10999,10 +11056,12 @@ export const listEventTypeSchema = z
 					"ai-gateway-api-key-created",
 					"ai-gateway-api-key-deleted",
 					"ai-gateway-api-key-quota-updated",
+					"ai-gateway-auto-reload-updated",
 					"ai-gateway-budget-default-updated",
 					"ai-gateway-byok-credential-created",
 					"ai-gateway-byok-credential-deleted",
 					"ai-gateway-byok-credential-updated",
+					"ai-gateway-credits-purchased",
 					"ai-gateway-guardrails-updated",
 					"ai-gateway-model-allowlist-models-updated",
 					"ai-gateway-model-allowlist-toggled",
@@ -11189,6 +11248,9 @@ export const listEventTypeSchema = z
 					"env-variable-read:unknown-source",
 					"env-variable-read:v0:env:pull",
 					"env-variable-rotated",
+					"experiment-created",
+					"experiment-transitioned",
+					"experiment-updated",
 					"firewall-bypass-created",
 					"firewall-bypass-deleted",
 					"firewall-config-modified",
@@ -11650,53 +11712,24 @@ export const listEventTypesResponseSchema = z
 
 export const flagSchema = z.object({
 	description: z.string().optional(),
+	experiment: z
+		.object({
+			rampId: z.string().optional(),
+			rampPercentage: z.number().optional(),
+			id: z.string(),
+			base: z.object({
+				type: z.enum(["entity"]),
+				kind: z.string(),
+				attribute: z.string(),
+			}),
+			weights: z.object({}).catchall(z.number()),
+			defaultVariantId: z.string(),
+			exposureLogging: z.union([z.literal(false), z.literal(true)]),
+		})
+		.nullish(),
 	maintainerIds: z.array(z.string()).optional(),
 	permanent: z.union([z.literal(false), z.literal(true)]).optional(),
 	tags: z.array(z.string()).optional(),
-	experiment: z
-		.object({
-			id: z.string().optional(),
-			name: z.string().optional(),
-			numVariants: z.number().optional(),
-			surfaceArea: z.string().optional(),
-			stickyRequirement: z.union([z.literal(false), z.literal(true)]).optional(),
-			layer: z.string().optional(),
-			guardrailMetrics: z
-				.array(
-					z.object({
-						description: z.string().optional(),
-						metricFormula: z.string().optional(),
-						name: z.string(),
-						metricType: z.enum(["count", "currency", "percentage"]),
-						metricUnit: z.enum(["session", "user", "visitor"]),
-						directionality: z.enum(["decreaseIsGood", "increaseIsGood"]),
-					}),
-				)
-				.optional(),
-			hypothesis: z.string().optional(),
-			device: z.enum(["android", "desktop", "ios", "mweb"]).optional(),
-			controlVariantId: z.string().optional(),
-			startedAt: z.number().optional(),
-			endedAt: z.number().optional(),
-			decision: z.string().optional(),
-			decisionReason: z.string().optional(),
-			duration: z.number().optional(),
-			durationUnit: z.enum(["days", "exposures"]).optional(),
-			allocationPercent: z.number().optional(),
-			allocationUnit: z.enum(["cookieId", "userId", "visitorId"]),
-			primaryMetrics: z.array(
-				z.object({
-					description: z.string().optional(),
-					metricFormula: z.string().optional(),
-					name: z.string(),
-					metricType: z.enum(["count", "currency", "percentage"]),
-					metricUnit: z.enum(["session", "user", "visitor"]),
-					directionality: z.enum(["decreaseIsGood", "increaseIsGood"]),
-				}),
-			),
-			status: z.enum(["closed", "draft", "paused", "running"]),
-		})
-		.optional(),
 	updatedBy: z.string().optional(),
 	variants: z.array(z.object({})),
 	id: z.string(),
@@ -11767,6 +11800,11 @@ export const flagSchema = z.object({
 						),
 					})
 					.strict(),
+				z
+					.object({
+						type: z.enum(["experiment"]),
+					})
+					.strict(),
 			]),
 			active: z.union([z.literal(false), z.literal(true)]),
 			rules: z.array(
@@ -11809,6 +11847,11 @@ export const flagSchema = z.object({
 										durationMs: z.number(),
 									}),
 								),
+							})
+							.strict(),
+						z
+							.object({
+								type: z.enum(["experiment"]),
 							})
 							.strict(),
 					]),
