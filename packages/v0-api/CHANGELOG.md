@@ -1,5 +1,12 @@
 # v0-api
 
+## 0.2.1
+
+### Patch Changes
+
+- 724e03b: Added optional thinkingEffort field to chatDetailSchema and ChatDetail type.
+- 724e03b: Added optional fast field to chatDetailSchema and ChatDetail type.
+
 ## 0.2.0
 
 ### Minor Changes
