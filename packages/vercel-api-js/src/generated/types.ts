@@ -2080,6 +2080,17 @@ export const userEventTypeEnum = {
 	"flags-transferred": "flags-transferred",
 	"git-integration-repo-push": "git-integration-repo-push",
 	git_account_integration_link_added: "git_account_integration_link_added",
+	"global-config-backup-restored": "global-config-backup-restored",
+	"global-config-created": "global-config-created",
+	"global-config-deleted": "global-config-deleted",
+	"global-config-items-updated": "global-config-items-updated",
+	"global-config-schema-deleted": "global-config-schema-deleted",
+	"global-config-schema-updated": "global-config-schema-updated",
+	"global-config-token-created": "global-config-token-created",
+	"global-config-token-deleted": "global-config-token-deleted",
+	"global-config-transfer-in": "global-config-transfer-in",
+	"global-config-transfer-out": "global-config-transfer-out",
+	"global-config-updated": "global-config-updated",
 	"instant-rollback-created": "instant-rollback-created",
 	"integration-configuration-credential-rotated": "integration-configuration-credential-rotated",
 	"integration-configuration-owner-changed": "integration-configuration-owner-changed",
@@ -2576,6 +2587,7 @@ export type ChangeEnumKey = (typeof changeEnum)[keyof typeof changeEnum];
 export const scopeTypeEnum = {
 	project: "project",
 	team: "team",
+	user: "user",
 } as const;
 
 export type ScopeTypeEnumKey = (typeof scopeTypeEnum)[keyof typeof scopeTypeEnum];
@@ -4113,6 +4125,15 @@ export type UserEvent = {
 						 */
 						projectName?: string | undefined;
 						/**
+						 * @description Associates the event with a member for filtering; not rendered.
+						 * @type string | undefined
+						 */
+						userId?: string | undefined;
+						/**
+						 * @type string | undefined
+						 */
+						userName?: string | undefined;
+						/**
 						 * @description Spend budget on an AI Gateway API key, as surfaced in activity messages. Defined locally (rather than imported from `@api/pubsub-types`) because `@api/pubsub-types` already depends on `@api/events`; importing it here would create a circular dependency. Must stay structurally aligned with `APIKeyBudget` in `@api/pubsub-types/event-payloads/api-keys`.
 						 * @type object
 						 */
@@ -4839,6 +4860,7 @@ export type UserEvent = {
 									| "read-write:alerts"
 									| "read-write:billing"
 									| "read-write:blob"
+									| "read-write:connect"
 									| "read-write:deployment"
 									| "read-write:domain"
 									| "read-write:domain-registrar"
@@ -4928,6 +4950,7 @@ export type UserEvent = {
 									| "read-write:alerts"
 									| "read-write:billing"
 									| "read-write:blob"
+									| "read-write:connect"
 									| "read-write:deployment"
 									| "read-write:domain"
 									| "read-write:domain-registrar"
@@ -5042,6 +5065,7 @@ export type UserEvent = {
 												| "read-write:alerts"
 												| "read-write:billing"
 												| "read-write:blob"
+												| "read-write:connect"
 												| "read-write:deployment"
 												| "read-write:domain"
 												| "read-write:domain-registrar"
@@ -5143,6 +5167,7 @@ export type UserEvent = {
 												| "read-write:alerts"
 												| "read-write:billing"
 												| "read-write:blob"
+												| "read-write:connect"
 												| "read-write:deployment"
 												| "read-write:domain"
 												| "read-write:domain-registrar"
@@ -5249,6 +5274,7 @@ export type UserEvent = {
 									| "read-write:alerts"
 									| "read-write:billing"
 									| "read-write:blob"
+									| "read-write:connect"
 									| "read-write:deployment"
 									| "read-write:domain"
 									| "read-write:domain-registrar"
@@ -8728,7 +8754,7 @@ export type UserEvent = {
 						/**
 						 * @type object | undefined
 						 */
-						globalConfigSchema?: object | undefined;
+						edgeConfigSchema?: object | undefined;
 				  }
 				| {
 						/**
@@ -11825,6 +11851,29 @@ export type UserEvent = {
 										 * @type object | undefined
 										 */
 										workflowEvents?:
+											| {
+													/**
+													 * @type number
+													 */
+													updatedAt: number;
+													/**
+													 * @type number | undefined
+													 */
+													blockedFrom?: number | undefined;
+													/**
+													 * @type number | undefined
+													 */
+													blockedUntil?: number | undefined;
+													/**
+													 * @type string
+													 */
+													blockReason: BlockReasonEnumKey;
+											  }
+											| undefined;
+										/**
+										 * @type object | undefined
+										 */
+										connexForwardTriggers?:
 											| {
 													/**
 													 * @type number
@@ -20200,6 +20249,17 @@ export const listEventTypeNameEnum = {
 	"flags-transferred": "flags-transferred",
 	"git-integration-repo-push": "git-integration-repo-push",
 	git_account_integration_link_added: "git_account_integration_link_added",
+	"global-config-backup-restored": "global-config-backup-restored",
+	"global-config-created": "global-config-created",
+	"global-config-deleted": "global-config-deleted",
+	"global-config-items-updated": "global-config-items-updated",
+	"global-config-schema-deleted": "global-config-schema-deleted",
+	"global-config-schema-updated": "global-config-schema-updated",
+	"global-config-token-created": "global-config-token-created",
+	"global-config-token-deleted": "global-config-token-deleted",
+	"global-config-transfer-in": "global-config-transfer-in",
+	"global-config-transfer-out": "global-config-transfer-out",
+	"global-config-updated": "global-config-updated",
 	"instant-rollback-created": "instant-rollback-created",
 	"integration-configuration-credential-rotated": "integration-configuration-credential-rotated",
 	"integration-configuration-owner-changed": "integration-configuration-owner-changed",
@@ -20886,6 +20946,17 @@ export const listEventTypeReplacedByEnum = {
 	"flags-transferred": "flags-transferred",
 	"git-integration-repo-push": "git-integration-repo-push",
 	git_account_integration_link_added: "git_account_integration_link_added",
+	"global-config-backup-restored": "global-config-backup-restored",
+	"global-config-created": "global-config-created",
+	"global-config-deleted": "global-config-deleted",
+	"global-config-items-updated": "global-config-items-updated",
+	"global-config-schema-deleted": "global-config-schema-deleted",
+	"global-config-schema-updated": "global-config-schema-updated",
+	"global-config-token-created": "global-config-token-created",
+	"global-config-token-deleted": "global-config-token-deleted",
+	"global-config-transfer-in": "global-config-transfer-in",
+	"global-config-transfer-out": "global-config-transfer-out",
+	"global-config-updated": "global-config-updated",
 	"instant-rollback-created": "instant-rollback-created",
 	"integration-configuration-credential-rotated": "integration-configuration-credential-rotated",
 	"integration-configuration-owner-changed": "integration-configuration-owner-changed",
@@ -21353,13 +21424,6 @@ export type ListEventTypesResponse = {
 	}[];
 };
 
-export const flagExperimentBaseTypeEnum = {
-	entity: "entity",
-} as const;
-
-export type FlagExperimentBaseTypeEnumKey =
-	(typeof flagExperimentBaseTypeEnum)[keyof typeof flagExperimentBaseTypeEnum];
-
 export const cmpEnum = {
 	after: "after",
 	before: "before",
@@ -21411,72 +21475,6 @@ export type Flag = {
 	 * @type string | undefined
 	 */
 	description?: string | undefined;
-	/**
-	 * @type object
-	 */
-	experiment?:
-		| ({
-				/**
-				 * @type string | undefined
-				 */
-				rampId?: string | undefined;
-				/**
-				 * @type number | undefined
-				 */
-				rampPercentage?: number | undefined;
-				/**
-				 * @type string
-				 */
-				id: string;
-				/**
-				 * @type object
-				 */
-				base: {
-					/**
-					 * @type string
-					 */
-					type: FlagExperimentBaseTypeEnumKey;
-					/**
-					 * @type string
-					 */
-					kind: string;
-					/**
-					 * @type string
-					 */
-					attribute: string;
-				};
-				/**
-				 * @type object
-				 */
-				weights: {
-					[key: string]: number;
-				};
-				/**
-				 * @type string
-				 */
-				defaultVariantId: string;
-				/**
-				 * @type boolean
-				 */
-				exposureLogging: false | true;
-		  } | null)
-		| undefined;
-	/**
-	 * @type array | undefined
-	 */
-	maintainerIds?: string[] | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	permanent?: (false | true) | undefined;
-	/**
-	 * @type array | undefined
-	 */
-	tags?: string[] | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	updatedBy?: string | undefined;
 	/**
 	 * @type array
 	 */
@@ -21880,6 +21878,18 @@ export type Flag = {
 	 */
 	state: FlagStateEnumKey;
 	/**
+	 * @type array | undefined
+	 */
+	maintainerIds?: string[] | undefined;
+	/**
+	 * @type boolean | undefined
+	 */
+	permanent?: (false | true) | undefined;
+	/**
+	 * @type array | undefined
+	 */
+	tags?: string[] | undefined;
+	/**
 	 * @type string
 	 */
 	slug: string;
@@ -21891,6 +21901,10 @@ export type Flag = {
 	 * @type number
 	 */
 	updatedAt: number;
+	/**
+	 * @type string | undefined
+	 */
+	updatedBy?: string | undefined;
 	/**
 	 * @type string
 	 */
@@ -22681,6 +22695,10 @@ export type NamedSandbox = {
 				 * @type array | undefined
 				 */
 				deniedCIDRs?: string[] | undefined;
+				/**
+				 * @type string | undefined
+				 */
+				s3Key?: string | undefined;
 		  }
 		| undefined;
 	/**
@@ -46055,6 +46073,1314 @@ export type CreateApiKeysResponse =
 	| CreateApiKeysStatus500;
 
 /**
+ * @description Maximum number of issuers to return.
+ * @minLength 1
+ * @maxLength 100
+ * @type integer | undefined
+ */
+export type ListKmsIssuersQueryLimit = number | undefined;
+
+/**
+ * @description Continuation cursor to retrieve the next page of results.
+ * @maxLength 1024
+ * @pattern ^[A-Za-z0-9_-]+$
+ * @type string | undefined
+ */
+export type ListKmsIssuersQueryNext = string | undefined;
+
+/**
+ * @description The Team identifier to perform the request on behalf of.
+ * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+ * @type string | undefined
+ */
+export type ListKmsIssuersQueryTeamId = string | undefined;
+
+/**
+ * @description The Team slug to perform the request on behalf of.
+ * @example my-team-url-slug
+ * @type string | undefined
+ */
+export type ListKmsIssuersQuerySlug = string | undefined;
+
+/**
+ * @type unknown
+ */
+export type ListKmsIssuersStatus200 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ListKmsIssuersStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ListKmsIssuersStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ListKmsIssuersStatus403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ListKmsIssuersStatus410 = unknown;
+
+/**
+ * @type object
+ */
+export type ListKmsIssuersRequestConfig = {
+	data?: never | undefined;
+	pathParams?: never | undefined;
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				limit?: ListKmsIssuersQueryLimit | undefined;
+				next?: ListKmsIssuersQueryNext | undefined;
+				teamId?: ListKmsIssuersQueryTeamId | undefined;
+				slug?: ListKmsIssuersQuerySlug | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: "/v1/kms/issuers";
+};
+
+/**
+ * @type object
+ */
+export type ListKmsIssuersResponses = {
+	"200": ListKmsIssuersStatus200;
+	"400": ListKmsIssuersStatus400;
+	"401": ListKmsIssuersStatus401;
+	"403": ListKmsIssuersStatus403;
+	"410": ListKmsIssuersStatus410;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type ListKmsIssuersResponse =
+	| ListKmsIssuersStatus200
+	| ListKmsIssuersStatus400
+	| ListKmsIssuersStatus401
+	| ListKmsIssuersStatus403
+	| ListKmsIssuersStatus410;
+
+/**
+ * @description The Team identifier to perform the request on behalf of.
+ * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+ * @type string | undefined
+ */
+export type CreateKmsIssuerQueryTeamId = string | undefined;
+
+/**
+ * @description The Team slug to perform the request on behalf of.
+ * @example my-team-url-slug
+ * @type string | undefined
+ */
+export type CreateKmsIssuerQuerySlug = string | undefined;
+
+/**
+ * @type unknown
+ */
+export type CreateKmsIssuerStatus201 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateKmsIssuerStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateKmsIssuerStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateKmsIssuerStatus403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateKmsIssuerStatus404 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateKmsIssuerStatus410 = unknown;
+
+/**
+ * @type object
+ */
+export type CreateKmsIssuerRequestConfig = {
+	data?: never | undefined;
+	pathParams?: never | undefined;
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				teamId?: CreateKmsIssuerQueryTeamId | undefined;
+				slug?: CreateKmsIssuerQuerySlug | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: "/v1/kms/issuers";
+};
+
+/**
+ * @type object
+ */
+export type CreateKmsIssuerResponses = {
+	"201": CreateKmsIssuerStatus201;
+	"400": CreateKmsIssuerStatus400;
+	"401": CreateKmsIssuerStatus401;
+	"403": CreateKmsIssuerStatus403;
+	"404": CreateKmsIssuerStatus404;
+	"410": CreateKmsIssuerStatus410;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type CreateKmsIssuerResponse =
+	| CreateKmsIssuerStatus201
+	| CreateKmsIssuerStatus400
+	| CreateKmsIssuerStatus401
+	| CreateKmsIssuerStatus403
+	| CreateKmsIssuerStatus404
+	| CreateKmsIssuerStatus410;
+
+/**
+ * @description The ID of the issuer.
+ * @type string
+ */
+export type SignKmsMessagePathIssuerId = string;
+
+/**
+ * @type unknown
+ */
+export type SignKmsMessageStatus200 = unknown;
+
+/**
+ * @type unknown
+ */
+export type SignKmsMessageStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type SignKmsMessageStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type SignKmsMessageStatus403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type SignKmsMessageStatus404 = unknown;
+
+/**
+ * @type unknown
+ */
+export type SignKmsMessageStatus429 = unknown;
+
+/**
+ * @type object
+ */
+export type SignKmsMessageRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		issuerId: SignKmsMessagePathIssuerId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/v1/kms/issuers/${string}/sign/message`;
+};
+
+/**
+ * @type object
+ */
+export type SignKmsMessageResponses = {
+	"200": SignKmsMessageStatus200;
+	"400": SignKmsMessageStatus400;
+	"401": SignKmsMessageStatus401;
+	"403": SignKmsMessageStatus403;
+	"404": SignKmsMessageStatus404;
+	"429": SignKmsMessageStatus429;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type SignKmsMessageResponse =
+	| SignKmsMessageStatus200
+	| SignKmsMessageStatus400
+	| SignKmsMessageStatus401
+	| SignKmsMessageStatus403
+	| SignKmsMessageStatus404
+	| SignKmsMessageStatus429;
+
+/**
+ * @description The ID of the issuer.
+ * @type string
+ */
+export type SignKmsTokenPathIssuerId = string;
+
+/**
+ * @type unknown
+ */
+export type SignKmsTokenStatus200 = unknown;
+
+/**
+ * @type unknown
+ */
+export type SignKmsTokenStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type SignKmsTokenStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type SignKmsTokenStatus403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type SignKmsTokenStatus404 = unknown;
+
+/**
+ * @type unknown
+ */
+export type SignKmsTokenStatus429 = unknown;
+
+/**
+ * @type object
+ */
+export type SignKmsTokenRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		issuerId: SignKmsTokenPathIssuerId;
+	};
+	queryParams?: never | undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/v1/kms/issuers/${string}/sign/token`;
+};
+
+/**
+ * @type object
+ */
+export type SignKmsTokenResponses = {
+	"200": SignKmsTokenStatus200;
+	"400": SignKmsTokenStatus400;
+	"401": SignKmsTokenStatus401;
+	"403": SignKmsTokenStatus403;
+	"404": SignKmsTokenStatus404;
+	"429": SignKmsTokenStatus429;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type SignKmsTokenResponse =
+	| SignKmsTokenStatus200
+	| SignKmsTokenStatus400
+	| SignKmsTokenStatus401
+	| SignKmsTokenStatus403
+	| SignKmsTokenStatus404
+	| SignKmsTokenStatus429;
+
+/**
+ * @description The ID of the issuer.
+ * @type string
+ */
+export type CreateKmsSigningKeyPathIssuerId = string;
+
+/**
+ * @description The Team identifier to perform the request on behalf of.
+ * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+ * @type string | undefined
+ */
+export type CreateKmsSigningKeyQueryTeamId = string | undefined;
+
+/**
+ * @description The Team slug to perform the request on behalf of.
+ * @example my-team-url-slug
+ * @type string | undefined
+ */
+export type CreateKmsSigningKeyQuerySlug = string | undefined;
+
+/**
+ * @type unknown
+ */
+export type CreateKmsSigningKeyStatus200 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateKmsSigningKeyStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateKmsSigningKeyStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateKmsSigningKeyStatus403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateKmsSigningKeyStatus404 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateKmsSigningKeyStatus409 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateKmsSigningKeyStatus410 = unknown;
+
+/**
+ * @type object
+ */
+export type CreateKmsSigningKeyRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		issuerId: CreateKmsSigningKeyPathIssuerId;
+	};
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				teamId?: CreateKmsSigningKeyQueryTeamId | undefined;
+				slug?: CreateKmsSigningKeyQuerySlug | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/v1/kms/issuers/${string}/keys`;
+};
+
+/**
+ * @type object
+ */
+export type CreateKmsSigningKeyResponses = {
+	"200": CreateKmsSigningKeyStatus200;
+	"400": CreateKmsSigningKeyStatus400;
+	"401": CreateKmsSigningKeyStatus401;
+	"403": CreateKmsSigningKeyStatus403;
+	"404": CreateKmsSigningKeyStatus404;
+	"409": CreateKmsSigningKeyStatus409;
+	"410": CreateKmsSigningKeyStatus410;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type CreateKmsSigningKeyResponse =
+	| CreateKmsSigningKeyStatus200
+	| CreateKmsSigningKeyStatus400
+	| CreateKmsSigningKeyStatus401
+	| CreateKmsSigningKeyStatus403
+	| CreateKmsSigningKeyStatus404
+	| CreateKmsSigningKeyStatus409
+	| CreateKmsSigningKeyStatus410;
+
+/**
+ * @description The ID of the issuer.
+ * @type string
+ */
+export type ActivateKmsSigningKeyPathIssuerId = string;
+
+/**
+ * @description The ID of the pending signing key to activate.
+ * @type string
+ */
+export type ActivateKmsSigningKeyPathKeyId = string;
+
+/**
+ * @description The Team identifier to perform the request on behalf of.
+ * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+ * @type string | undefined
+ */
+export type ActivateKmsSigningKeyQueryTeamId = string | undefined;
+
+/**
+ * @description The Team slug to perform the request on behalf of.
+ * @example my-team-url-slug
+ * @type string | undefined
+ */
+export type ActivateKmsSigningKeyQuerySlug = string | undefined;
+
+/**
+ * @type unknown
+ */
+export type ActivateKmsSigningKeyStatus200 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ActivateKmsSigningKeyStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ActivateKmsSigningKeyStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ActivateKmsSigningKeyStatus403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ActivateKmsSigningKeyStatus404 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ActivateKmsSigningKeyStatus409 = unknown;
+
+/**
+ * @type unknown
+ */
+export type ActivateKmsSigningKeyStatus410 = unknown;
+
+/**
+ * @type object
+ */
+export type ActivateKmsSigningKeyRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		issuerId: ActivateKmsSigningKeyPathIssuerId;
+		keyId: ActivateKmsSigningKeyPathKeyId;
+	};
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				teamId?: ActivateKmsSigningKeyQueryTeamId | undefined;
+				slug?: ActivateKmsSigningKeyQuerySlug | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/v1/kms/issuers/${string}/keys/${string}/activate`;
+};
+
+/**
+ * @type object
+ */
+export type ActivateKmsSigningKeyResponses = {
+	"200": ActivateKmsSigningKeyStatus200;
+	"400": ActivateKmsSigningKeyStatus400;
+	"401": ActivateKmsSigningKeyStatus401;
+	"403": ActivateKmsSigningKeyStatus403;
+	"404": ActivateKmsSigningKeyStatus404;
+	"409": ActivateKmsSigningKeyStatus409;
+	"410": ActivateKmsSigningKeyStatus410;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type ActivateKmsSigningKeyResponse =
+	| ActivateKmsSigningKeyStatus200
+	| ActivateKmsSigningKeyStatus400
+	| ActivateKmsSigningKeyStatus401
+	| ActivateKmsSigningKeyStatus403
+	| ActivateKmsSigningKeyStatus404
+	| ActivateKmsSigningKeyStatus409
+	| ActivateKmsSigningKeyStatus410;
+
+/**
+ * @description The ID of the issuer.
+ * @type string
+ */
+export type RevokeKmsSigningKeyPathIssuerId = string;
+
+/**
+ * @description The ID of the signing key to revoke immediately. The key must already be scheduled for revocation.
+ * @type string
+ */
+export type RevokeKmsSigningKeyPathKeyId = string;
+
+/**
+ * @description The Team identifier to perform the request on behalf of.
+ * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+ * @type string | undefined
+ */
+export type RevokeKmsSigningKeyQueryTeamId = string | undefined;
+
+/**
+ * @description The Team slug to perform the request on behalf of.
+ * @example my-team-url-slug
+ * @type string | undefined
+ */
+export type RevokeKmsSigningKeyQuerySlug = string | undefined;
+
+/**
+ * @type unknown
+ */
+export type RevokeKmsSigningKeyStatus200 = unknown;
+
+/**
+ * @type unknown
+ */
+export type RevokeKmsSigningKeyStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type RevokeKmsSigningKeyStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type RevokeKmsSigningKeyStatus403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type RevokeKmsSigningKeyStatus404 = unknown;
+
+/**
+ * @type unknown
+ */
+export type RevokeKmsSigningKeyStatus409 = unknown;
+
+/**
+ * @type unknown
+ */
+export type RevokeKmsSigningKeyStatus410 = unknown;
+
+/**
+ * @type object
+ */
+export type RevokeKmsSigningKeyRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		issuerId: RevokeKmsSigningKeyPathIssuerId;
+		keyId: RevokeKmsSigningKeyPathKeyId;
+	};
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				teamId?: RevokeKmsSigningKeyQueryTeamId | undefined;
+				slug?: RevokeKmsSigningKeyQuerySlug | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/v1/kms/issuers/${string}/keys/${string}/revoke`;
+};
+
+/**
+ * @type object
+ */
+export type RevokeKmsSigningKeyResponses = {
+	"200": RevokeKmsSigningKeyStatus200;
+	"400": RevokeKmsSigningKeyStatus400;
+	"401": RevokeKmsSigningKeyStatus401;
+	"403": RevokeKmsSigningKeyStatus403;
+	"404": RevokeKmsSigningKeyStatus404;
+	"409": RevokeKmsSigningKeyStatus409;
+	"410": RevokeKmsSigningKeyStatus410;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type RevokeKmsSigningKeyResponse =
+	| RevokeKmsSigningKeyStatus200
+	| RevokeKmsSigningKeyStatus400
+	| RevokeKmsSigningKeyStatus401
+	| RevokeKmsSigningKeyStatus403
+	| RevokeKmsSigningKeyStatus404
+	| RevokeKmsSigningKeyStatus409
+	| RevokeKmsSigningKeyStatus410;
+
+/**
+ * @description The ID of the issuer.
+ * @type string
+ */
+export type GetKmsIssuerPathIssuerId = string;
+
+/**
+ * @description The Team identifier to perform the request on behalf of.
+ * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+ * @type string | undefined
+ */
+export type GetKmsIssuerQueryTeamId = string | undefined;
+
+/**
+ * @description The Team slug to perform the request on behalf of.
+ * @example my-team-url-slug
+ * @type string | undefined
+ */
+export type GetKmsIssuerQuerySlug = string | undefined;
+
+/**
+ * @type unknown
+ */
+export type GetKmsIssuerStatus200 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetKmsIssuerStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetKmsIssuerStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetKmsIssuerStatus403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetKmsIssuerStatus404 = unknown;
+
+/**
+ * @type unknown
+ */
+export type GetKmsIssuerStatus410 = unknown;
+
+/**
+ * @type object
+ */
+export type GetKmsIssuerRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		issuerId: GetKmsIssuerPathIssuerId;
+	};
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				teamId?: GetKmsIssuerQueryTeamId | undefined;
+				slug?: GetKmsIssuerQuerySlug | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/v1/kms/issuers/${string}`;
+};
+
+/**
+ * @type object
+ */
+export type GetKmsIssuerResponses = {
+	"200": GetKmsIssuerStatus200;
+	"400": GetKmsIssuerStatus400;
+	"401": GetKmsIssuerStatus401;
+	"403": GetKmsIssuerStatus403;
+	"404": GetKmsIssuerStatus404;
+	"410": GetKmsIssuerStatus410;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetKmsIssuerResponse =
+	| GetKmsIssuerStatus200
+	| GetKmsIssuerStatus400
+	| GetKmsIssuerStatus401
+	| GetKmsIssuerStatus403
+	| GetKmsIssuerStatus404
+	| GetKmsIssuerStatus410;
+
+/**
+ * @description The ID of the issuer.
+ * @type string
+ */
+export type UpdateKmsIssuerPathIssuerId = string;
+
+/**
+ * @description The Team identifier to perform the request on behalf of.
+ * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+ * @type string | undefined
+ */
+export type UpdateKmsIssuerQueryTeamId = string | undefined;
+
+/**
+ * @description The Team slug to perform the request on behalf of.
+ * @example my-team-url-slug
+ * @type string | undefined
+ */
+export type UpdateKmsIssuerQuerySlug = string | undefined;
+
+/**
+ * @type unknown
+ */
+export type UpdateKmsIssuerStatus200 = unknown;
+
+/**
+ * @type unknown
+ */
+export type UpdateKmsIssuerStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type UpdateKmsIssuerStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type UpdateKmsIssuerStatus403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type UpdateKmsIssuerStatus404 = unknown;
+
+/**
+ * @type unknown
+ */
+export type UpdateKmsIssuerStatus410 = unknown;
+
+/**
+ * @type object
+ */
+export type UpdateKmsIssuerRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		issuerId: UpdateKmsIssuerPathIssuerId;
+	};
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				teamId?: UpdateKmsIssuerQueryTeamId | undefined;
+				slug?: UpdateKmsIssuerQuerySlug | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/v1/kms/issuers/${string}`;
+};
+
+/**
+ * @type object
+ */
+export type UpdateKmsIssuerResponses = {
+	"200": UpdateKmsIssuerStatus200;
+	"400": UpdateKmsIssuerStatus400;
+	"401": UpdateKmsIssuerStatus401;
+	"403": UpdateKmsIssuerStatus403;
+	"404": UpdateKmsIssuerStatus404;
+	"410": UpdateKmsIssuerStatus410;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type UpdateKmsIssuerResponse =
+	| UpdateKmsIssuerStatus200
+	| UpdateKmsIssuerStatus400
+	| UpdateKmsIssuerStatus401
+	| UpdateKmsIssuerStatus403
+	| UpdateKmsIssuerStatus404
+	| UpdateKmsIssuerStatus410;
+
+/**
+ * @description The ID of the issuer.
+ * @type string
+ */
+export type DeleteKmsIssuerPathIssuerId = string;
+
+/**
+ * @description The Team identifier to perform the request on behalf of.
+ * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+ * @type string | undefined
+ */
+export type DeleteKmsIssuerQueryTeamId = string | undefined;
+
+/**
+ * @description The Team slug to perform the request on behalf of.
+ * @example my-team-url-slug
+ * @type string | undefined
+ */
+export type DeleteKmsIssuerQuerySlug = string | undefined;
+
+/**
+ * @type unknown
+ */
+export type DeleteKmsIssuerStatus204 = unknown;
+
+/**
+ * @type unknown
+ */
+export type DeleteKmsIssuerStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type DeleteKmsIssuerStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type DeleteKmsIssuerStatus403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type DeleteKmsIssuerStatus404 = unknown;
+
+/**
+ * @type unknown
+ */
+export type DeleteKmsIssuerStatus410 = unknown;
+
+/**
+ * @type object
+ */
+export type DeleteKmsIssuerRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		issuerId: DeleteKmsIssuerPathIssuerId;
+	};
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				teamId?: DeleteKmsIssuerQueryTeamId | undefined;
+				slug?: DeleteKmsIssuerQuerySlug | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/v1/kms/issuers/${string}`;
+};
+
+/**
+ * @type object
+ */
+export type DeleteKmsIssuerResponses = {
+	"204": DeleteKmsIssuerStatus204;
+	"400": DeleteKmsIssuerStatus400;
+	"401": DeleteKmsIssuerStatus401;
+	"403": DeleteKmsIssuerStatus403;
+	"404": DeleteKmsIssuerStatus404;
+	"410": DeleteKmsIssuerStatus410;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type DeleteKmsIssuerResponse =
+	| DeleteKmsIssuerStatus204
+	| DeleteKmsIssuerStatus400
+	| DeleteKmsIssuerStatus401
+	| DeleteKmsIssuerStatus403
+	| DeleteKmsIssuerStatus404
+	| DeleteKmsIssuerStatus410;
+
+/**
+ * @description The ID of the issuer.
+ * @type string
+ */
+export type CreateKmsIssuerPolicyPathIssuerId = string;
+
+/**
+ * @description The Team identifier to perform the request on behalf of.
+ * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+ * @type string | undefined
+ */
+export type CreateKmsIssuerPolicyQueryTeamId = string | undefined;
+
+/**
+ * @description The Team slug to perform the request on behalf of.
+ * @example my-team-url-slug
+ * @type string | undefined
+ */
+export type CreateKmsIssuerPolicyQuerySlug = string | undefined;
+
+/**
+ * @type unknown
+ */
+export type CreateKmsIssuerPolicyStatus201 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateKmsIssuerPolicyStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateKmsIssuerPolicyStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateKmsIssuerPolicyStatus403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateKmsIssuerPolicyStatus404 = unknown;
+
+/**
+ * @type unknown
+ */
+export type CreateKmsIssuerPolicyStatus410 = unknown;
+
+/**
+ * @type object
+ */
+export type CreateKmsIssuerPolicyRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		issuerId: CreateKmsIssuerPolicyPathIssuerId;
+	};
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				teamId?: CreateKmsIssuerPolicyQueryTeamId | undefined;
+				slug?: CreateKmsIssuerPolicyQuerySlug | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/v1/kms/issuers/${string}/policies`;
+};
+
+/**
+ * @type object
+ */
+export type CreateKmsIssuerPolicyResponses = {
+	"201": CreateKmsIssuerPolicyStatus201;
+	"400": CreateKmsIssuerPolicyStatus400;
+	"401": CreateKmsIssuerPolicyStatus401;
+	"403": CreateKmsIssuerPolicyStatus403;
+	"404": CreateKmsIssuerPolicyStatus404;
+	"410": CreateKmsIssuerPolicyStatus410;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type CreateKmsIssuerPolicyResponse =
+	| CreateKmsIssuerPolicyStatus201
+	| CreateKmsIssuerPolicyStatus400
+	| CreateKmsIssuerPolicyStatus401
+	| CreateKmsIssuerPolicyStatus403
+	| CreateKmsIssuerPolicyStatus404
+	| CreateKmsIssuerPolicyStatus410;
+
+/**
+ * @description The ID of the issuer.
+ * @type string
+ */
+export type UpdateKmsIssuerPolicyPathIssuerId = string;
+
+/**
+ * @description The issuer policy kind.
+ * @type string
+ */
+export type UpdateKmsIssuerPolicyPathKind = "project-grant";
+
+/**
+ * @description The policy identifier.
+ * @type string
+ */
+export type UpdateKmsIssuerPolicyPathPolicyKey = string;
+
+/**
+ * @description The Team identifier to perform the request on behalf of.
+ * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+ * @type string | undefined
+ */
+export type UpdateKmsIssuerPolicyQueryTeamId = string | undefined;
+
+/**
+ * @description The Team slug to perform the request on behalf of.
+ * @example my-team-url-slug
+ * @type string | undefined
+ */
+export type UpdateKmsIssuerPolicyQuerySlug = string | undefined;
+
+/**
+ * @type unknown
+ */
+export type UpdateKmsIssuerPolicyStatus200 = unknown;
+
+/**
+ * @type unknown
+ */
+export type UpdateKmsIssuerPolicyStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type UpdateKmsIssuerPolicyStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type UpdateKmsIssuerPolicyStatus403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type UpdateKmsIssuerPolicyStatus404 = unknown;
+
+/**
+ * @type unknown
+ */
+export type UpdateKmsIssuerPolicyStatus410 = unknown;
+
+/**
+ * @type object
+ */
+export type UpdateKmsIssuerPolicyRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		issuerId: UpdateKmsIssuerPolicyPathIssuerId;
+		kind: UpdateKmsIssuerPolicyPathKind;
+		policyKey: UpdateKmsIssuerPolicyPathPolicyKey;
+	};
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				teamId?: UpdateKmsIssuerPolicyQueryTeamId | undefined;
+				slug?: UpdateKmsIssuerPolicyQuerySlug | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/v1/kms/issuers/${string}/policies/${string}/${string}`;
+};
+
+/**
+ * @type object
+ */
+export type UpdateKmsIssuerPolicyResponses = {
+	"200": UpdateKmsIssuerPolicyStatus200;
+	"400": UpdateKmsIssuerPolicyStatus400;
+	"401": UpdateKmsIssuerPolicyStatus401;
+	"403": UpdateKmsIssuerPolicyStatus403;
+	"404": UpdateKmsIssuerPolicyStatus404;
+	"410": UpdateKmsIssuerPolicyStatus410;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type UpdateKmsIssuerPolicyResponse =
+	| UpdateKmsIssuerPolicyStatus200
+	| UpdateKmsIssuerPolicyStatus400
+	| UpdateKmsIssuerPolicyStatus401
+	| UpdateKmsIssuerPolicyStatus403
+	| UpdateKmsIssuerPolicyStatus404
+	| UpdateKmsIssuerPolicyStatus410;
+
+/**
+ * @description The ID of the issuer.
+ * @type string
+ */
+export type DeleteKmsIssuerPolicyPathIssuerId = string;
+
+/**
+ * @description The issuer policy kind.
+ * @type string
+ */
+export type DeleteKmsIssuerPolicyPathKind = "project-grant" | "connex-grant";
+
+/**
+ * @description The policy identifier.
+ * @type string
+ */
+export type DeleteKmsIssuerPolicyPathPolicyKey = string;
+
+/**
+ * @description The Team identifier to perform the request on behalf of.
+ * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+ * @type string | undefined
+ */
+export type DeleteKmsIssuerPolicyQueryTeamId = string | undefined;
+
+/**
+ * @description The Team slug to perform the request on behalf of.
+ * @example my-team-url-slug
+ * @type string | undefined
+ */
+export type DeleteKmsIssuerPolicyQuerySlug = string | undefined;
+
+/**
+ * @type unknown
+ */
+export type DeleteKmsIssuerPolicyStatus204 = unknown;
+
+/**
+ * @type unknown
+ */
+export type DeleteKmsIssuerPolicyStatus400 = unknown;
+
+/**
+ * @type unknown
+ */
+export type DeleteKmsIssuerPolicyStatus401 = unknown;
+
+/**
+ * @type unknown
+ */
+export type DeleteKmsIssuerPolicyStatus403 = unknown;
+
+/**
+ * @type unknown
+ */
+export type DeleteKmsIssuerPolicyStatus404 = unknown;
+
+/**
+ * @type unknown
+ */
+export type DeleteKmsIssuerPolicyStatus410 = unknown;
+
+/**
+ * @type object
+ */
+export type DeleteKmsIssuerPolicyRequestConfig = {
+	data?: never | undefined;
+	/**
+	 * @type object
+	 */
+	pathParams: {
+		issuerId: DeleteKmsIssuerPolicyPathIssuerId;
+		kind: DeleteKmsIssuerPolicyPathKind;
+		policyKey: DeleteKmsIssuerPolicyPathPolicyKey;
+	};
+	/**
+	 * @type object | undefined
+	 */
+	queryParams?:
+		| {
+				teamId?: DeleteKmsIssuerPolicyQueryTeamId | undefined;
+				slug?: DeleteKmsIssuerPolicyQuerySlug | undefined;
+		  }
+		| undefined;
+	headerParams?: never | undefined;
+	/**
+	 * @type string
+	 */
+	url: `/v1/kms/issuers/${string}/policies/${string}/${string}`;
+};
+
+/**
+ * @type object
+ */
+export type DeleteKmsIssuerPolicyResponses = {
+	"204": DeleteKmsIssuerPolicyStatus204;
+	"400": DeleteKmsIssuerPolicyStatus400;
+	"401": DeleteKmsIssuerPolicyStatus401;
+	"403": DeleteKmsIssuerPolicyStatus403;
+	"404": DeleteKmsIssuerPolicyStatus404;
+	"410": DeleteKmsIssuerPolicyStatus410;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type DeleteKmsIssuerPolicyResponse =
+	| DeleteKmsIssuerPolicyStatus204
+	| DeleteKmsIssuerPolicyStatus400
+	| DeleteKmsIssuerPolicyStatus401
+	| DeleteKmsIssuerPolicyStatus403
+	| DeleteKmsIssuerPolicyStatus404
+	| DeleteKmsIssuerPolicyStatus410;
+
+/**
  * @type string
  */
 export type GetRuntimeLogsPathProjectId = string;
@@ -53511,6 +54837,11 @@ export type RequestPromoteStatus409 = unknown;
 export type RequestPromoteStatus410 = unknown;
 
 /**
+ * @type unknown
+ */
+export type RequestPromoteStatus422 = unknown;
+
+/**
  * @type object
  */
 export type RequestPromoteRequestConfig = {
@@ -53549,6 +54880,7 @@ export type RequestPromoteResponses = {
 	"403": RequestPromoteStatus403;
 	"409": RequestPromoteStatus409;
 	"410": RequestPromoteStatus410;
+	"422": RequestPromoteStatus422;
 };
 
 /**
@@ -53561,7 +54893,8 @@ export type RequestPromoteResponse =
 	| RequestPromoteStatus401
 	| RequestPromoteStatus403
 	| RequestPromoteStatus409
-	| RequestPromoteStatus410;
+	| RequestPromoteStatus410
+	| RequestPromoteStatus422;
 
 /**
  * @type string
