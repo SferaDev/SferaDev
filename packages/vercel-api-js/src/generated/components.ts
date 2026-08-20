@@ -13,6 +13,13 @@ import type {
 	AcceptProjectTransferRequestStatus404,
 	AcceptProjectTransferRequestStatus410,
 	AcceptProjectTransferRequestStatus422,
+	ActivateKmsSigningKeyResponse,
+	ActivateKmsSigningKeyStatus400,
+	ActivateKmsSigningKeyStatus401,
+	ActivateKmsSigningKeyStatus403,
+	ActivateKmsSigningKeyStatus404,
+	ActivateKmsSigningKeyStatus409,
+	ActivateKmsSigningKeyStatus410,
 	AddBypassIpResponse,
 	AddBypassIpStatus400,
 	AddBypassIpStatus401,
@@ -312,6 +319,25 @@ import type {
 	CreateIntegrationStoreDirectStatus410,
 	CreateIntegrationStoreDirectStatus429,
 	CreateIntegrationStoreDirectStatus500,
+	CreateKmsIssuerPolicyResponse,
+	CreateKmsIssuerPolicyStatus400,
+	CreateKmsIssuerPolicyStatus401,
+	CreateKmsIssuerPolicyStatus403,
+	CreateKmsIssuerPolicyStatus404,
+	CreateKmsIssuerPolicyStatus410,
+	CreateKmsIssuerResponse,
+	CreateKmsIssuerStatus400,
+	CreateKmsIssuerStatus401,
+	CreateKmsIssuerStatus403,
+	CreateKmsIssuerStatus404,
+	CreateKmsIssuerStatus410,
+	CreateKmsSigningKeyResponse,
+	CreateKmsSigningKeyStatus400,
+	CreateKmsSigningKeyStatus401,
+	CreateKmsSigningKeyStatus403,
+	CreateKmsSigningKeyStatus404,
+	CreateKmsSigningKeyStatus409,
+	CreateKmsSigningKeyStatus410,
 	CreateLogDrainResponse,
 	CreateLogDrainStatus400,
 	CreateLogDrainStatus401,
@@ -709,6 +735,18 @@ import type {
 	DeleteIntegrationResourceStatus403,
 	DeleteIntegrationResourceStatus404,
 	DeleteIntegrationResourceStatus410,
+	DeleteKmsIssuerPolicyResponse,
+	DeleteKmsIssuerPolicyStatus400,
+	DeleteKmsIssuerPolicyStatus401,
+	DeleteKmsIssuerPolicyStatus403,
+	DeleteKmsIssuerPolicyStatus404,
+	DeleteKmsIssuerPolicyStatus410,
+	DeleteKmsIssuerResponse,
+	DeleteKmsIssuerStatus400,
+	DeleteKmsIssuerStatus401,
+	DeleteKmsIssuerStatus403,
+	DeleteKmsIssuerStatus404,
+	DeleteKmsIssuerStatus410,
 	DeleteMicrofrontendsGroupResponse,
 	DeleteMicrofrontendsGroupStatus400,
 	DeleteMicrofrontendsGroupStatus401,
@@ -1287,6 +1325,12 @@ import type {
 	GetInvoiceStatus404,
 	GetInvoiceStatus410,
 	GetInvoiceStatus429,
+	GetKmsIssuerResponse,
+	GetKmsIssuerStatus400,
+	GetKmsIssuerStatus401,
+	GetKmsIssuerStatus403,
+	GetKmsIssuerStatus404,
+	GetKmsIssuerStatus410,
 	GetMemberResponse,
 	GetMemberStatus400,
 	GetMemberStatus401,
@@ -1791,6 +1835,11 @@ import type {
 	ListFlagVersionsStatus403,
 	ListFlagVersionsStatus404,
 	ListFlagVersionsStatus410,
+	ListKmsIssuersResponse,
+	ListKmsIssuersStatus400,
+	ListKmsIssuersStatus401,
+	ListKmsIssuersStatus403,
+	ListKmsIssuersStatus410,
 	ListNetworksResponse,
 	ListNetworksStatus400,
 	ListNetworksStatus401,
@@ -2097,6 +2146,7 @@ import type {
 	RequestPromoteStatus403,
 	RequestPromoteStatus409,
 	RequestPromoteStatus410,
+	RequestPromoteStatus422,
 	RequestRollbackResponse,
 	RequestRollbackStatus400,
 	RequestRollbackStatus401,
@@ -2127,6 +2177,13 @@ import type {
 	RestoreRedirectsStatus404,
 	RestoreRedirectsStatus410,
 	RestoreRedirectsStatus500,
+	RevokeKmsSigningKeyResponse,
+	RevokeKmsSigningKeyStatus400,
+	RevokeKmsSigningKeyStatus401,
+	RevokeKmsSigningKeyStatus403,
+	RevokeKmsSigningKeyStatus404,
+	RevokeKmsSigningKeyStatus409,
+	RevokeKmsSigningKeyStatus410,
 	RotateInstallationCredentialResponse,
 	RotateInstallationCredentialStatus400,
 	RotateInstallationCredentialStatus401,
@@ -2152,6 +2209,18 @@ import type {
 	SearchRepoStatus429,
 	SearchRepoStatus500,
 	SearchRepoStatus502,
+	SignKmsMessageResponse,
+	SignKmsMessageStatus400,
+	SignKmsMessageStatus401,
+	SignKmsMessageStatus403,
+	SignKmsMessageStatus404,
+	SignKmsMessageStatus429,
+	SignKmsTokenResponse,
+	SignKmsTokenStatus400,
+	SignKmsTokenStatus401,
+	SignKmsTokenStatus403,
+	SignKmsTokenStatus404,
+	SignKmsTokenStatus429,
 	StageRedirectsResponse,
 	StageRedirectsStatus400,
 	StageRedirectsStatus401,
@@ -2374,6 +2443,18 @@ import type {
 	UpdateInvoiceStatus404,
 	UpdateInvoiceStatus409,
 	UpdateInvoiceStatus410,
+	UpdateKmsIssuerPolicyResponse,
+	UpdateKmsIssuerPolicyStatus400,
+	UpdateKmsIssuerPolicyStatus401,
+	UpdateKmsIssuerPolicyStatus403,
+	UpdateKmsIssuerPolicyStatus404,
+	UpdateKmsIssuerPolicyStatus410,
+	UpdateKmsIssuerResponse,
+	UpdateKmsIssuerStatus400,
+	UpdateKmsIssuerStatus401,
+	UpdateKmsIssuerStatus403,
+	UpdateKmsIssuerStatus404,
+	UpdateKmsIssuerStatus410,
 	UpdateMicrofrontendsGroupResponse,
 	UpdateMicrofrontendsGroupStatus400,
 	UpdateMicrofrontendsGroupStatus401,
@@ -11380,6 +11461,601 @@ export async function createApiKeys(
 }
 
 /**
+ * @summary List issuers
+ * @description Retrieve the list of KMS issuers that belong to the authenticated team. The results are paginated.
+ * @link /v1/kms/issuers
+ */
+export async function listKmsIssuers(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { limit?: number; next?: string; teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	const data = await request<
+		ListKmsIssuersResponse,
+		ErrorWrapper<
+			| ListKmsIssuersStatus400
+			| ListKmsIssuersStatus401
+			| ListKmsIssuersStatus403
+			| ListKmsIssuersStatus410
+		>,
+		null,
+		Record<string, string>,
+		{ limit?: number; next?: string; teamId?: string; slug?: string },
+		Record<string, string>
+	>({
+		method: "GET",
+		url: `/v1/kms/issuers`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Create an issuer
+ * @description Create a new KMS issuer for the authenticated team. An issuer owns the asymmetric signing keys that are used to sign tokens and messages.
+ * @link /v1/kms/issuers
+ */
+export async function createKmsIssuer(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	const data = await request<
+		CreateKmsIssuerResponse,
+		ErrorWrapper<
+			| CreateKmsIssuerStatus400
+			| CreateKmsIssuerStatus401
+			| CreateKmsIssuerStatus403
+			| CreateKmsIssuerStatus404
+			| CreateKmsIssuerStatus410
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
+		Record<string, string>
+	>({
+		method: "POST",
+		url: `/v1/kms/issuers`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Sign a message
+ * @description Sign a raw message with a KMS issuer's active signing key. Authenticate the request with a Vercel OIDC token in the `Authorization: Bearer` header; the issuer's policies decide which workloads are allowed to sign.
+ * @link /v1/kms/issuers/{issuerId}/sign/message
+ */
+export async function signKmsMessage(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { issuerId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.issuerId) {
+		throw new Error(`Missing required path parameter: issuerId`);
+	}
+	const data = await request<
+		SignKmsMessageResponse,
+		ErrorWrapper<
+			| SignKmsMessageStatus400
+			| SignKmsMessageStatus401
+			| SignKmsMessageStatus403
+			| SignKmsMessageStatus404
+			| SignKmsMessageStatus429
+		>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		{ issuerId: string }
+	>({
+		method: "POST",
+		url: `/v1/kms/issuers/${pathParams.issuerId}/sign/message`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Sign a token
+ * @description Sign a JWT with a KMS issuer's active signing key. Authenticate the request with a Vercel OIDC token in the `Authorization: Bearer` header; the issuer's policies decide which workloads are allowed to sign.
+ * @link /v1/kms/issuers/{issuerId}/sign/token
+ */
+export async function signKmsToken(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { issuerId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.issuerId) {
+		throw new Error(`Missing required path parameter: issuerId`);
+	}
+	const data = await request<
+		SignKmsTokenResponse,
+		ErrorWrapper<
+			| SignKmsTokenStatus400
+			| SignKmsTokenStatus401
+			| SignKmsTokenStatus403
+			| SignKmsTokenStatus404
+			| SignKmsTokenStatus429
+		>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		{ issuerId: string }
+	>({
+		method: "POST",
+		url: `/v1/kms/issuers/${pathParams.issuerId}/sign/token`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Create a signing key
+ * @description Create a new signing key for a KMS issuer. Depending on the activation mode, the key is activated automatically once its public key has propagated, or manually via the activate endpoint.
+ * @link /v1/kms/issuers/{issuerId}/keys
+ */
+export async function createKmsSigningKey(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { issuerId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.issuerId) {
+		throw new Error(`Missing required path parameter: issuerId`);
+	}
+	const data = await request<
+		CreateKmsSigningKeyResponse,
+		ErrorWrapper<
+			| CreateKmsSigningKeyStatus400
+			| CreateKmsSigningKeyStatus401
+			| CreateKmsSigningKeyStatus403
+			| CreateKmsSigningKeyStatus404
+			| CreateKmsSigningKeyStatus409
+			| CreateKmsSigningKeyStatus410
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
+		{ issuerId: string }
+	>({
+		method: "POST",
+		url: `/v1/kms/issuers/${pathParams.issuerId}/keys`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Activate a signing key
+ * @description Activate a pending signing key so the issuer starts signing with it.
+ * @link /v1/kms/issuers/{issuerId}/keys/{keyId}/activate
+ */
+export async function activateKmsSigningKey(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { issuerId: string; keyId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.issuerId) {
+		throw new Error(`Missing required path parameter: issuerId`);
+	}
+
+	if (!pathParams.keyId) {
+		throw new Error(`Missing required path parameter: keyId`);
+	}
+	const data = await request<
+		ActivateKmsSigningKeyResponse,
+		ErrorWrapper<
+			| ActivateKmsSigningKeyStatus400
+			| ActivateKmsSigningKeyStatus401
+			| ActivateKmsSigningKeyStatus403
+			| ActivateKmsSigningKeyStatus404
+			| ActivateKmsSigningKeyStatus409
+			| ActivateKmsSigningKeyStatus410
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
+		{ issuerId: string; keyId: string }
+	>({
+		method: "POST",
+		url: `/v1/kms/issuers/${pathParams.issuerId}/keys/${pathParams.keyId}/activate`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Revoke a signing key
+ * @description Immediately revoke a signing key that is already scheduled for revocation.
+ * @link /v1/kms/issuers/{issuerId}/keys/{keyId}/revoke
+ */
+export async function revokeKmsSigningKey(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { issuerId: string; keyId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.issuerId) {
+		throw new Error(`Missing required path parameter: issuerId`);
+	}
+
+	if (!pathParams.keyId) {
+		throw new Error(`Missing required path parameter: keyId`);
+	}
+	const data = await request<
+		RevokeKmsSigningKeyResponse,
+		ErrorWrapper<
+			| RevokeKmsSigningKeyStatus400
+			| RevokeKmsSigningKeyStatus401
+			| RevokeKmsSigningKeyStatus403
+			| RevokeKmsSigningKeyStatus404
+			| RevokeKmsSigningKeyStatus409
+			| RevokeKmsSigningKeyStatus410
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
+		{ issuerId: string; keyId: string }
+	>({
+		method: "POST",
+		url: `/v1/kms/issuers/${pathParams.issuerId}/keys/${pathParams.keyId}/revoke`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Get an issuer
+ * @description Retrieve a single KMS issuer by its ID.
+ * @link /v1/kms/issuers/{issuerId}
+ */
+export async function getKmsIssuer(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { issuerId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.issuerId) {
+		throw new Error(`Missing required path parameter: issuerId`);
+	}
+	const data = await request<
+		GetKmsIssuerResponse,
+		ErrorWrapper<
+			| GetKmsIssuerStatus400
+			| GetKmsIssuerStatus401
+			| GetKmsIssuerStatus403
+			| GetKmsIssuerStatus404
+			| GetKmsIssuerStatus410
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
+		{ issuerId: string }
+	>({
+		method: "GET",
+		url: `/v1/kms/issuers/${pathParams.issuerId}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Update an issuer
+ * @description Update a KMS issuer's name or claims schema.
+ * @link /v1/kms/issuers/{issuerId}
+ */
+export async function updateKmsIssuer(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { issuerId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.issuerId) {
+		throw new Error(`Missing required path parameter: issuerId`);
+	}
+	const data = await request<
+		UpdateKmsIssuerResponse,
+		ErrorWrapper<
+			| UpdateKmsIssuerStatus400
+			| UpdateKmsIssuerStatus401
+			| UpdateKmsIssuerStatus403
+			| UpdateKmsIssuerStatus404
+			| UpdateKmsIssuerStatus410
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
+		{ issuerId: string }
+	>({
+		method: "PATCH",
+		url: `/v1/kms/issuers/${pathParams.issuerId}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Delete an issuer
+ * @description Delete a KMS issuer and its signing keys.
+ * @link /v1/kms/issuers/{issuerId}
+ */
+export async function deleteKmsIssuer(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { issuerId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.issuerId) {
+		throw new Error(`Missing required path parameter: issuerId`);
+	}
+	const data = await request<
+		DeleteKmsIssuerResponse,
+		ErrorWrapper<
+			| DeleteKmsIssuerStatus400
+			| DeleteKmsIssuerStatus401
+			| DeleteKmsIssuerStatus403
+			| DeleteKmsIssuerStatus404
+			| DeleteKmsIssuerStatus410
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
+		{ issuerId: string }
+	>({
+		method: "DELETE",
+		url: `/v1/kms/issuers/${pathParams.issuerId}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Create an issuer policy
+ * @description Attach a policy to a KMS issuer that grants a project's deployments permission to sign with it.
+ * @link /v1/kms/issuers/{issuerId}/policies
+ */
+export async function createKmsIssuerPolicy(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { issuerId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.issuerId) {
+		throw new Error(`Missing required path parameter: issuerId`);
+	}
+	const data = await request<
+		CreateKmsIssuerPolicyResponse,
+		ErrorWrapper<
+			| CreateKmsIssuerPolicyStatus400
+			| CreateKmsIssuerPolicyStatus401
+			| CreateKmsIssuerPolicyStatus403
+			| CreateKmsIssuerPolicyStatus404
+			| CreateKmsIssuerPolicyStatus410
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
+		{ issuerId: string }
+	>({
+		method: "POST",
+		url: `/v1/kms/issuers/${pathParams.issuerId}/policies`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Update an issuer policy
+ * @description Update an existing KMS issuer policy's environments or token claims.
+ * @link /v1/kms/issuers/{issuerId}/policies/{kind}/{policyKey}
+ */
+export async function updateKmsIssuerPolicy(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { issuerId: string; kind: "project-grant"; policyKey: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.issuerId) {
+		throw new Error(`Missing required path parameter: issuerId`);
+	}
+
+	if (!pathParams.kind) {
+		throw new Error(`Missing required path parameter: kind`);
+	}
+
+	if (!pathParams.policyKey) {
+		throw new Error(`Missing required path parameter: policyKey`);
+	}
+	const data = await request<
+		UpdateKmsIssuerPolicyResponse,
+		ErrorWrapper<
+			| UpdateKmsIssuerPolicyStatus400
+			| UpdateKmsIssuerPolicyStatus401
+			| UpdateKmsIssuerPolicyStatus403
+			| UpdateKmsIssuerPolicyStatus404
+			| UpdateKmsIssuerPolicyStatus410
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
+		{ issuerId: string; kind: "project-grant"; policyKey: string }
+	>({
+		method: "PATCH",
+		url: `/v1/kms/issuers/${pathParams.issuerId}/policies/${pathParams.kind}/${pathParams.policyKey}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Delete an issuer policy
+ * @description Remove a policy from a KMS issuer.
+ * @link /v1/kms/issuers/{issuerId}/policies/{kind}/{policyKey}
+ */
+export async function deleteKmsIssuerPolicy(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { issuerId: string; kind: "project-grant" | "connex-grant"; policyKey: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.issuerId) {
+		throw new Error(`Missing required path parameter: issuerId`);
+	}
+
+	if (!pathParams.kind) {
+		throw new Error(`Missing required path parameter: kind`);
+	}
+
+	if (!pathParams.policyKey) {
+		throw new Error(`Missing required path parameter: policyKey`);
+	}
+	const data = await request<
+		DeleteKmsIssuerPolicyResponse,
+		ErrorWrapper<
+			| DeleteKmsIssuerPolicyStatus400
+			| DeleteKmsIssuerPolicyStatus401
+			| DeleteKmsIssuerPolicyStatus403
+			| DeleteKmsIssuerPolicyStatus404
+			| DeleteKmsIssuerPolicyStatus410
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
+		{ issuerId: string; kind: "project-grant" | "connex-grant"; policyKey: string }
+	>({
+		method: "DELETE",
+		url: `/v1/kms/issuers/${pathParams.issuerId}/policies/${pathParams.kind}/${pathParams.policyKey}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
  * @summary Get logs for a deployment
  * @description Returns a stream of logs for a given deployment.
  * @link /v1/projects/{projectId}/deployments/{deploymentId}/runtime-logs
@@ -14657,6 +15333,7 @@ export async function requestPromote(
 			| RequestPromoteStatus403
 			| RequestPromoteStatus409
 			| RequestPromoteStatus410
+			| RequestPromoteStatus422
 		>,
 		null,
 		Record<string, string>,
@@ -20739,6 +21416,19 @@ export const operationsByPath = {
 	"POST /v2/integrations/log-drains": createLogDrain,
 	"DELETE /v1/integrations/log-drains/{id}": deleteIntegrationLogDrain,
 	"POST /api-keys": createApiKeys,
+	"GET /v1/kms/issuers": listKmsIssuers,
+	"POST /v1/kms/issuers": createKmsIssuer,
+	"POST /v1/kms/issuers/{issuerId}/sign/message": signKmsMessage,
+	"POST /v1/kms/issuers/{issuerId}/sign/token": signKmsToken,
+	"POST /v1/kms/issuers/{issuerId}/keys": createKmsSigningKey,
+	"POST /v1/kms/issuers/{issuerId}/keys/{keyId}/activate": activateKmsSigningKey,
+	"POST /v1/kms/issuers/{issuerId}/keys/{keyId}/revoke": revokeKmsSigningKey,
+	"GET /v1/kms/issuers/{issuerId}": getKmsIssuer,
+	"PATCH /v1/kms/issuers/{issuerId}": updateKmsIssuer,
+	"DELETE /v1/kms/issuers/{issuerId}": deleteKmsIssuer,
+	"POST /v1/kms/issuers/{issuerId}/policies": createKmsIssuerPolicy,
+	"PATCH /v1/kms/issuers/{issuerId}/policies/{kind}/{policyKey}": updateKmsIssuerPolicy,
+	"DELETE /v1/kms/issuers/{issuerId}/policies/{kind}/{policyKey}": deleteKmsIssuerPolicy,
 	"GET /v1/projects/{projectId}/deployments/{deploymentId}/runtime-logs": getRuntimeLogs,
 	"POST /v1/installations/{integrationConfigurationId}/resources/{resourceId}/experimentation/items":
 		createInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItems,
@@ -21218,6 +21908,21 @@ export const operationsByTag = {
 		getAuthToken,
 		deleteAuthToken,
 	},
+	kms: {
+		listKmsIssuers,
+		createKmsIssuer,
+		signKmsMessage,
+		signKmsToken,
+		createKmsSigningKey,
+		activateKmsSigningKey,
+		revokeKmsSigningKey,
+		getKmsIssuer,
+		updateKmsIssuer,
+		deleteKmsIssuer,
+		createKmsIssuerPolicy,
+		updateKmsIssuerPolicy,
+		deleteKmsIssuerPolicy,
+	},
 	logs: {
 		getRuntimeLogs,
 	},
@@ -21674,6 +22379,20 @@ export const tagDictionary = {
 		POST: ["exchangeSsoToken", "createAuthToken"],
 		GET: ["listAuthTokens", "getAuthToken"],
 		DELETE: ["deleteAuthToken"],
+	},
+	kms: {
+		GET: ["listKmsIssuers", "getKmsIssuer"],
+		POST: [
+			"createKmsIssuer",
+			"signKmsMessage",
+			"signKmsToken",
+			"createKmsSigningKey",
+			"activateKmsSigningKey",
+			"revokeKmsSigningKey",
+			"createKmsIssuerPolicy",
+		],
+		PATCH: ["updateKmsIssuer", "updateKmsIssuerPolicy"],
+		DELETE: ["deleteKmsIssuer", "deleteKmsIssuerPolicy"],
 	},
 	logs: {
 		GET: ["getRuntimeLogs"],
