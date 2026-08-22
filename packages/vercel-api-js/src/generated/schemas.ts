@@ -984,6 +984,7 @@ export const userEventSchema = z
 				"env-variable-read:v0:env:pull",
 				"env-variable-rotated",
 				"experiment-created",
+				"experiment-deleted",
 				"experiment-transitioned",
 				"experiment-updated",
 				"firewall-bypass-created",
@@ -1224,6 +1225,7 @@ export const userEventSchema = z
 				"project-source-files-outside-root-directory-updated",
 				"project-speed-insights-disabled",
 				"project-speed-insights-enabled",
+				"project-speed-insights-free-data-started",
 				"project-sso-protection",
 				"project-static-ips-updated",
 				"project-trusted-ips",
@@ -1347,6 +1349,8 @@ export const userEventSchema = z
 				"team-tokens-invalidated",
 				"tracing-configured",
 				"tracing-disabled",
+				"tracing-paused",
+				"tracing-resumed",
 				"unlink-login-connection",
 				"update-account-flow-dismissed",
 				"update-account-flow-triggered",
@@ -1474,7 +1478,11 @@ export const userEventSchema = z
 				z
 					.object({
 						type: z.enum(["app"]),
-						clientId: z.string(),
+						id: z
+							.string()
+							.optional()
+							.describe("The backing Vercel App ID. When absent, defaults to `clientId`."),
+						clientId: z.string().describe("The OAuth 2.0 client ID, which may be a CIMD URL."),
 						name: z.string(),
 					})
 					.strict(),
@@ -1509,7 +1517,11 @@ export const userEventSchema = z
 					z
 						.object({
 							type: z.enum(["app"]),
-							clientId: z.string(),
+							id: z
+								.string()
+								.optional()
+								.describe("The backing Vercel App ID. When absent, defaults to `clientId`."),
+							clientId: z.string().describe("The OAuth 2.0 client ID, which may be a CIMD URL."),
 							name: z.string(),
 						})
 						.strict(),
@@ -1561,7 +1573,7 @@ export const userEventSchema = z
 					.strict(),
 				z
 					.object({
-						action: z.enum(["created", "transitioned", "updated"]),
+						action: z.enum(["created", "deleted", "transitioned", "updated"]),
 						id: z.string(),
 						name: z.string(),
 						state: z.string(),
@@ -1758,6 +1770,12 @@ export const userEventSchema = z
 							.union([z.literal(false), z.literal(true)])
 							.optional()
 							.describe("True when the key was created with a ZDR exemption."),
+						bypassAll: z
+							.union([z.literal(false), z.literal(true)])
+							.optional()
+							.describe(
+								"True when the key was created to bypass all of the team's restrictions (the ZDR-only model restriction and the provider/model allowlist).",
+							),
 					})
 					.strict(),
 				z
@@ -5750,6 +5768,24 @@ export const userEventSchema = z
 											.describe(
 												"Tracks the last time we attempted to send an increased on-demand email. This check is to limit the number of attempts per day.",
 											),
+										hobbyPolicyNoticeSlackSentAt: z
+											.number()
+											.optional()
+											.describe(
+												"Tracks when the new-Hobby-policy notice was reported for this owner. Reported at most once per owner, ever.",
+											),
+										hobbyWarningV2SlackSentAt: z
+											.number()
+											.optional()
+											.describe(
+												"Tracks the last time a `warningThresholdsV2` crossing was reported for this owner. Hobby has no billing period, so this re-arms on the same rolling window the service already uses for Hobby alerts.",
+											),
+										hobbyPauseNoticeSlackSentAt: z
+											.number()
+											.optional()
+											.describe(
+												"Tracks the last time a `blockThresholdV2` breach was reported for this owner. Re-arms on the same rolling window as `hobbyWarningV2SlackSentAt`.",
+											),
 									})
 									.optional()
 									.describe("Contains the timestamps for usage summary emails."),
@@ -6054,6 +6090,14 @@ export const userEventSchema = z
 											})
 											.optional(),
 										kmsOperations: z
+											.object({
+												updatedAt: z.number(),
+												blockedFrom: z.number().optional(),
+												blockedUntil: z.number().optional(),
+												blockReason: z.enum(["admin_override", "hard_blocked", "limits_exceeded"]),
+											})
+											.optional(),
+										tracing: z
 											.object({
 												updatedAt: z.number(),
 												blockedFrom: z.number().optional(),
@@ -6582,10 +6626,12 @@ export const userEventSchema = z
 						slug: z.string().optional(),
 						name: z.string().optional(),
 						fallbackEnvironment: z.string().optional(),
+						enablePolyrepoBranchRouting: z.union([z.literal(false), z.literal(true)]).optional(),
 						prev: z.object({
 							name: z.string(),
 							slug: z.string(),
 							fallbackEnvironment: z.string(),
+							enablePolyrepoBranchRouting: z.union([z.literal(false), z.literal(true)]).optional(),
 						}),
 					})
 					.strict(),
@@ -7449,6 +7495,10 @@ export const userEventSchema = z
 					.object({
 						projectId: z.string().optional(),
 						projectName: z.string(),
+						deploymentId: z
+							.string()
+							.optional()
+							.describe("Deployment whose outcome caused a system-initiated elastic resize."),
 						previousBuildMachineType: z.string().optional(),
 						nextBuildMachineType: z.string(),
 						previousBuildMachineSelection: z.string(),
@@ -8706,7 +8756,7 @@ export const userEventSchema = z
 										.optional()
 										.describe("Should all projects be paused if budget is exceeded"),
 									pricingPlan: z
-										.enum(["legacy", "platform", "plus", "unbundled"])
+										.enum(["flex", "legacy", "platform", "plus", "unbundled"])
 										.optional()
 										.describe("The acive pricing plan the team is billed with"),
 									teamId: z.string().describe("Partition key"),
@@ -8750,7 +8800,7 @@ export const userEventSchema = z
 									.optional()
 									.describe("Should all projects be paused if budget is exceeded"),
 								pricingPlan: z
-									.enum(["legacy", "platform", "plus", "unbundled"])
+									.enum(["flex", "legacy", "platform", "plus", "unbundled"])
 									.optional()
 									.describe("The acive pricing plan the team is billed with"),
 								teamId: z.string().describe("Partition key"),
@@ -8791,7 +8841,7 @@ export const userEventSchema = z
 									.optional()
 									.describe("Should all projects be paused if budget is exceeded"),
 								pricingPlan: z
-									.enum(["legacy", "platform", "plus", "unbundled"])
+									.enum(["flex", "legacy", "platform", "plus", "unbundled"])
 									.optional()
 									.describe("The acive pricing plan the team is billed with"),
 								teamId: z.string().describe("Partition key"),
@@ -9547,6 +9597,11 @@ export const userEventSchema = z
 								}),
 							)
 							.optional(),
+					})
+					.strict(),
+				z
+					.object({
+						reason: z.enum(["limits-exceeded"]),
 					})
 					.strict(),
 				z
@@ -10599,6 +10654,7 @@ export const listEventTypeSchema = z
 				"env-variable-read:v0:env:pull",
 				"env-variable-rotated",
 				"experiment-created",
+				"experiment-deleted",
 				"experiment-transitioned",
 				"experiment-updated",
 				"firewall-bypass-created",
@@ -10839,6 +10895,7 @@ export const listEventTypeSchema = z
 				"project-source-files-outside-root-directory-updated",
 				"project-speed-insights-disabled",
 				"project-speed-insights-enabled",
+				"project-speed-insights-free-data-started",
 				"project-sso-protection",
 				"project-static-ips-updated",
 				"project-trusted-ips",
@@ -10962,6 +11019,8 @@ export const listEventTypeSchema = z
 				"team-tokens-invalidated",
 				"tracing-configured",
 				"tracing-disabled",
+				"tracing-paused",
+				"tracing-resumed",
 				"unlink-login-connection",
 				"update-account-flow-dismissed",
 				"update-account-flow-triggered",
@@ -11289,6 +11348,7 @@ export const listEventTypeSchema = z
 					"env-variable-read:v0:env:pull",
 					"env-variable-rotated",
 					"experiment-created",
+					"experiment-deleted",
 					"experiment-transitioned",
 					"experiment-updated",
 					"firewall-bypass-created",
@@ -11529,6 +11589,7 @@ export const listEventTypeSchema = z
 					"project-source-files-outside-root-directory-updated",
 					"project-speed-insights-disabled",
 					"project-speed-insights-enabled",
+					"project-speed-insights-free-data-started",
 					"project-sso-protection",
 					"project-static-ips-updated",
 					"project-trusted-ips",
@@ -11652,6 +11713,8 @@ export const listEventTypeSchema = z
 					"team-tokens-invalidated",
 					"tracing-configured",
 					"tracing-disabled",
+					"tracing-paused",
+					"tracing-resumed",
 					"unlink-login-connection",
 					"update-account-flow-dismissed",
 					"update-account-flow-triggered",
@@ -12299,6 +12362,10 @@ export const namedSandboxSchema = z
 			.describe(
 				"The region the sandbox is pinned to: the region stored on the sandbox, otherwise the platform default. Where a running session actually landed is reported by `session.region`.",
 			),
+		failoverRegions: z
+			.array(z.enum(["cdg1", "cle1", "iad1", "sfo1"]))
+			.optional()
+			.describe("The regions the sandbox fails over to. Empty when it does not fail over."),
 		vcpus: z.number().optional().describe("Number of virtual CPUs allocated."),
 		memory: z.number().optional().describe("Memory allocated in MB."),
 		runtime: z.string().optional().describe("Runtime identifier."),
@@ -12550,6 +12617,10 @@ export const snapshotSchema = z
 			.string()
 			.describe("The unique identifier of the session from which the snapshot was created."),
 		region: z.string().optional().describe("The region where the snapshot is stored."),
+		regions: z
+			.array(z.string())
+			.optional()
+			.describe("The regions where the snapshot is available."),
 		status: z.enum(["created", "deleted", "failed"]).describe("The status of the snapshot."),
 		sizeBytes: z.number().describe("The size of the snapshot in bytes."),
 		expiresAt: z
@@ -14039,6 +14110,17 @@ export const authUserSchema = z
 						isCurrentlyBlocked: z.union([z.literal(false), z.literal(true)]),
 					})
 					.optional(),
+				speedInsightsFree: z
+					.object({
+						blockedFrom: z.number().optional(),
+						blockedUntil: z.number().optional(),
+						blockReason: z.enum(["admin_override", "hard_blocked", "limits_exceeded"]),
+						isCurrentlyBlocked: z.union([z.literal(false), z.literal(true)]),
+					})
+					.optional()
+					.describe(
+						"Client-facing view of the `speedInsightsFree` ingestion block. The dashboard needs `blockReason` to tell usage pauses apart from admin blocks.",
+					),
 			})
 			.optional()
 			.describe("Feature blocks for the user"),
@@ -14162,10 +14244,6 @@ export const vcrRepositoryListSchema = z
 
 export const vcrImageListItemSchema = z
 	.object({
-		status: z
-			.enum(["preparing", "ready", "unoptimized"])
-			.nullable()
-			.describe("VHS-readiness status, or `null` for a multi-platform index."),
 		tags: z.array(z.string()).describe("Tags pointing at this image's manifest."),
 		id: z.string().describe("Internal identifier of the image."),
 		repositoryId: z.string().describe("Identifier of the repository the image belongs to."),
@@ -14193,23 +14271,10 @@ export const vcrImageListItemSchema = z
 			.describe(
 				"Total size in bytes of the image's resources (manifest, config and layer blobs) stored by the registry.",
 			),
-		vhs: z
-			.object({
-				path: z.string(),
-				digest: z.string(),
-				config: z
-					.object({
-						command: z.array(z.string()).optional(),
-						entrypoint: z.array(z.string()).optional(),
-						workingDir: z.string().optional(),
-					})
-					.optional()
-					.describe("Optional VHS drive configuration captured for an optimized image."),
-			})
-			.optional()
-			.describe(
-				"Converted VHS drive data, present once an image has been optimized for sandbox launch.",
-			),
+		status: z
+			.enum(["preparing", "ready", "unoptimized"])
+			.nullable()
+			.describe("VHS-readiness status, or `null` for a multi-platform index."),
 		createdAt: z.string().describe("ISO 8601 timestamp of when the image was created."),
 	})
 	.describe(
@@ -14424,10 +14489,6 @@ export const vcrImageLayerSchema = z.union([
 export const vcrImageDetailSchema = z
 	.object({
 		layers: z.array(z.unknown()),
-		status: z
-			.enum(["preparing", "ready", "unoptimized"])
-			.nullable()
-			.describe("VHS-readiness status, or `null` for a multi-platform index."),
 		tags: z.array(z.string()).describe("Tags pointing at this image's manifest."),
 		id: z.string().describe("Internal identifier of the image."),
 		repositoryId: z.string().describe("Identifier of the repository the image belongs to."),
@@ -14455,23 +14516,10 @@ export const vcrImageDetailSchema = z
 			.describe(
 				"Total size in bytes of the image's resources (manifest, config and layer blobs) stored by the registry.",
 			),
-		vhs: z
-			.object({
-				path: z.string(),
-				digest: z.string(),
-				config: z
-					.object({
-						command: z.array(z.string()).optional(),
-						entrypoint: z.array(z.string()).optional(),
-						workingDir: z.string().optional(),
-					})
-					.optional()
-					.describe("Optional VHS drive configuration captured for an optimized image."),
-			})
-			.optional()
-			.describe(
-				"Converted VHS drive data, present once an image has been optimized for sandbox launch.",
-			),
+		status: z
+			.enum(["preparing", "ready", "unoptimized"])
+			.nullable()
+			.describe("VHS-readiness status, or `null` for a multi-platform index."),
 		createdAt: z.string().describe("ISO 8601 timestamp of when the image was created."),
 	})
 	.describe("A single image with its tags, status and resolved Dockerfile layer history.");

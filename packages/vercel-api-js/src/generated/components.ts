@@ -18405,7 +18405,7 @@ export async function deleteTeamInviteCode(
 
 /**
  * @summary Update a microfrontends group
- * @description Updates the name (and slug) of a microfrontends group.
+ * @description Updates a microfrontends group's settings.
  * @link /v1/teams/{teamId}/microfrontends/{groupId}
  */
 export async function updateMicrofrontendsGroup(
