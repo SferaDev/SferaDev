@@ -2055,6 +2055,7 @@ export const userEventTypeEnum = {
 	"env-variable-read:v0:env:pull": "env-variable-read:v0:env:pull",
 	"env-variable-rotated": "env-variable-rotated",
 	"experiment-created": "experiment-created",
+	"experiment-deleted": "experiment-deleted",
 	"experiment-transitioned": "experiment-transitioned",
 	"experiment-updated": "experiment-updated",
 	"firewall-bypass-created": "firewall-bypass-created",
@@ -2306,6 +2307,7 @@ export const userEventTypeEnum = {
 		"project-source-files-outside-root-directory-updated",
 	"project-speed-insights-disabled": "project-speed-insights-disabled",
 	"project-speed-insights-enabled": "project-speed-insights-enabled",
+	"project-speed-insights-free-data-started": "project-speed-insights-free-data-started",
 	"project-sso-protection": "project-sso-protection",
 	"project-static-ips-updated": "project-static-ips-updated",
 	"project-trusted-ips": "project-trusted-ips",
@@ -2429,6 +2431,8 @@ export const userEventTypeEnum = {
 	"team-tokens-invalidated": "team-tokens-invalidated",
 	"tracing-configured": "tracing-configured",
 	"tracing-disabled": "tracing-disabled",
+	"tracing-paused": "tracing-paused",
+	"tracing-resumed": "tracing-resumed",
 	"unlink-login-connection": "unlink-login-connection",
 	"update-account-flow-dismissed": "update-account-flow-dismissed",
 	"update-account-flow-triggered": "update-account-flow-triggered",
@@ -2653,17 +2657,7 @@ export const planSlugEnum = {
 export type PlanSlugEnumKey = (typeof planSlugEnum)[keyof typeof planSlugEnum];
 
 export const reasonEnum = {
-	"basic-floor": "basic-floor",
-	"build-timeout-failure": "build-timeout-failure",
-	"enospc-failure": "enospc-failure",
-	"enterprise-floor": "enterprise-floor",
-	"high-peak-disk": "high-peak-disk",
-	"high-peak-memory": "high-peak-memory",
-	"long-build-duration": "long-build-duration",
-	"oom-failure": "oom-failure",
-	"plan-change": "plan-change",
-	"short-build-duration": "short-build-duration",
-	"sustained-high-cpu": "sustained-high-cpu",
+	"limits-exceeded": "limits-exceeded",
 } as const;
 
 export type ReasonEnumKey = (typeof reasonEnum)[keyof typeof reasonEnum];
@@ -3191,6 +3185,7 @@ export const oldTrustedIpsEnum = {
 export type OldTrustedIpsEnumKey = (typeof oldTrustedIpsEnum)[keyof typeof oldTrustedIpsEnum];
 
 export const pricingPlanEnum = {
+	flex: "flex",
 	legacy: "legacy",
 	platform: "platform",
 	plus: "plus",
@@ -3505,6 +3500,12 @@ export type UserEvent = {
 						 */
 						type: TypeEnumKey;
 						/**
+						 * @description The backing Vercel App ID. When absent, defaults to `clientId`.
+						 * @type string | undefined
+						 */
+						id?: string | undefined;
+						/**
+						 * @description The OAuth 2.0 client ID, which may be a CIMD URL.
 						 * @type string
 						 */
 						clientId: string;
@@ -3577,6 +3578,12 @@ export type UserEvent = {
 						 */
 						type: TypeEnumKey;
 						/**
+						 * @description The backing Vercel App ID. When absent, defaults to `clientId`.
+						 * @type string | undefined
+						 */
+						id?: string | undefined;
+						/**
+						 * @description The OAuth 2.0 client ID, which may be a CIMD URL.
 						 * @type string
 						 */
 						clientId: string;
@@ -3972,6 +3979,11 @@ export type UserEvent = {
 						 * @type boolean | undefined
 						 */
 						zdrExemption?: (false | true) | undefined;
+						/**
+						 * @description True when the key was created to bypass all of the team\'s restrictions (the ZDR-only model restriction and the provider/model allowlist).
+						 * @type boolean | undefined
+						 */
+						bypassAll?: (false | true) | undefined;
 				  }
 				| {
 						/**
@@ -11479,6 +11491,21 @@ export type UserEvent = {
 										 * @type number | undefined
 										 */
 										increasedOnDemandEmailAttemptedAt?: number | undefined;
+										/**
+										 * @description Tracks when the new-Hobby-policy notice was reported for this owner. Reported at most once per owner, ever.
+										 * @type number | undefined
+										 */
+										hobbyPolicyNoticeSlackSentAt?: number | undefined;
+										/**
+										 * @description Tracks the last time a `warningThresholdsV2` crossing was reported for this owner. Hobby has no billing period, so this re-arms on the same rolling window the service already uses for Hobby alerts.
+										 * @type number | undefined
+										 */
+										hobbyWarningV2SlackSentAt?: number | undefined;
+										/**
+										 * @description Tracks the last time a `blockThresholdV2` breach was reported for this owner. Re-arms on the same rolling window as `hobbyWarningV2SlackSentAt`.
+										 * @type number | undefined
+										 */
+										hobbyPauseNoticeSlackSentAt?: number | undefined;
 								  }
 								| undefined;
 							/**
@@ -11920,6 +11947,29 @@ export type UserEvent = {
 										 * @type object | undefined
 										 */
 										kmsOperations?:
+											| {
+													/**
+													 * @type number
+													 */
+													updatedAt: number;
+													/**
+													 * @type number | undefined
+													 */
+													blockedFrom?: number | undefined;
+													/**
+													 * @type number | undefined
+													 */
+													blockedUntil?: number | undefined;
+													/**
+													 * @type string
+													 */
+													blockReason: BlockReasonEnumKey;
+											  }
+											| undefined;
+										/**
+										 * @type object | undefined
+										 */
+										tracing?:
 											| {
 													/**
 													 * @type number
@@ -12930,6 +12980,10 @@ export type UserEvent = {
 						 */
 						fallbackEnvironment?: string | undefined;
 						/**
+						 * @type boolean | undefined
+						 */
+						enablePolyrepoBranchRouting?: (false | true) | undefined;
+						/**
 						 * @type object
 						 */
 						prev: {
@@ -12945,6 +12999,10 @@ export type UserEvent = {
 							 * @type string
 							 */
 							fallbackEnvironment: string;
+							/**
+							 * @type boolean | undefined
+							 */
+							enablePolyrepoBranchRouting?: (false | true) | undefined;
 						};
 				  }
 				| {
@@ -14530,6 +14588,11 @@ export type UserEvent = {
 						 * @type string
 						 */
 						projectName: string;
+						/**
+						 * @description Deployment whose outcome caused a system-initiated elastic resize.
+						 * @type string | undefined
+						 */
+						deploymentId?: string | undefined;
 						/**
 						 * @type string | undefined
 						 */
@@ -18452,6 +18515,12 @@ export type UserEvent = {
 				  }
 				| {
 						/**
+						 * @type string
+						 */
+						reason: ReasonEnumKey;
+				  }
+				| {
+						/**
 						 * @type string | undefined
 						 */
 						teamName?: string | undefined;
@@ -20224,6 +20293,7 @@ export const listEventTypeNameEnum = {
 	"env-variable-read:v0:env:pull": "env-variable-read:v0:env:pull",
 	"env-variable-rotated": "env-variable-rotated",
 	"experiment-created": "experiment-created",
+	"experiment-deleted": "experiment-deleted",
 	"experiment-transitioned": "experiment-transitioned",
 	"experiment-updated": "experiment-updated",
 	"firewall-bypass-created": "firewall-bypass-created",
@@ -20475,6 +20545,7 @@ export const listEventTypeNameEnum = {
 		"project-source-files-outside-root-directory-updated",
 	"project-speed-insights-disabled": "project-speed-insights-disabled",
 	"project-speed-insights-enabled": "project-speed-insights-enabled",
+	"project-speed-insights-free-data-started": "project-speed-insights-free-data-started",
 	"project-sso-protection": "project-sso-protection",
 	"project-static-ips-updated": "project-static-ips-updated",
 	"project-trusted-ips": "project-trusted-ips",
@@ -20598,6 +20669,8 @@ export const listEventTypeNameEnum = {
 	"team-tokens-invalidated": "team-tokens-invalidated",
 	"tracing-configured": "tracing-configured",
 	"tracing-disabled": "tracing-disabled",
+	"tracing-paused": "tracing-paused",
+	"tracing-resumed": "tracing-resumed",
 	"unlink-login-connection": "unlink-login-connection",
 	"update-account-flow-dismissed": "update-account-flow-dismissed",
 	"update-account-flow-triggered": "update-account-flow-triggered",
@@ -20921,6 +20994,7 @@ export const listEventTypeReplacedByEnum = {
 	"env-variable-read:v0:env:pull": "env-variable-read:v0:env:pull",
 	"env-variable-rotated": "env-variable-rotated",
 	"experiment-created": "experiment-created",
+	"experiment-deleted": "experiment-deleted",
 	"experiment-transitioned": "experiment-transitioned",
 	"experiment-updated": "experiment-updated",
 	"firewall-bypass-created": "firewall-bypass-created",
@@ -21172,6 +21246,7 @@ export const listEventTypeReplacedByEnum = {
 		"project-source-files-outside-root-directory-updated",
 	"project-speed-insights-disabled": "project-speed-insights-disabled",
 	"project-speed-insights-enabled": "project-speed-insights-enabled",
+	"project-speed-insights-free-data-started": "project-speed-insights-free-data-started",
 	"project-sso-protection": "project-sso-protection",
 	"project-static-ips-updated": "project-static-ips-updated",
 	"project-trusted-ips": "project-trusted-ips",
@@ -21295,6 +21370,8 @@ export const listEventTypeReplacedByEnum = {
 	"team-tokens-invalidated": "team-tokens-invalidated",
 	"tracing-configured": "tracing-configured",
 	"tracing-disabled": "tracing-disabled",
+	"tracing-paused": "tracing-paused",
+	"tracing-resumed": "tracing-resumed",
 	"unlink-login-connection": "unlink-login-connection",
 	"update-account-flow-dismissed": "update-account-flow-dismissed",
 	"update-account-flow-triggered": "update-account-flow-triggered",
@@ -22548,6 +22625,16 @@ export const namedSandboxStatusEnum = {
 export type NamedSandboxStatusEnumKey =
 	(typeof namedSandboxStatusEnum)[keyof typeof namedSandboxStatusEnum];
 
+export const namedSandboxFailoverRegionsEnum = {
+	cdg1: "cdg1",
+	cle1: "cle1",
+	iad1: "iad1",
+	sfo1: "sfo1",
+} as const;
+
+export type NamedSandboxFailoverRegionsEnumKey =
+	(typeof namedSandboxFailoverRegionsEnum)[keyof typeof namedSandboxFailoverRegionsEnum];
+
 export const namedSandboxNetworkPolicyModeEnum = {
 	"allow-all": "allow-all",
 	custom: "custom",
@@ -22611,6 +22698,12 @@ export type NamedSandbox = {
 	 * @type string | undefined
 	 */
 	region?: string | undefined;
+	/**
+	 * @description The regions the sandbox fails over to. Empty when it does not fail over.
+	 * @example cle1,sfo1
+	 * @type array | undefined
+	 */
+	failoverRegions?: NamedSandboxFailoverRegionsEnumKey[] | undefined;
 	/**
 	 * @description Number of virtual CPUs allocated.
 	 * @example 2
@@ -23130,6 +23223,12 @@ export type Snapshot = {
 	 * @type string | undefined
 	 */
 	region?: string | undefined;
+	/**
+	 * @description The regions where the snapshot is available.
+	 * @example iad1,sfo1
+	 * @type array | undefined
+	 */
+	regions?: string[] | undefined;
 	/**
 	 * @description The status of the snapshot.
 	 * @example created
@@ -25007,6 +25106,15 @@ export const authUserImportFlowGitProviderEnum = {
 export type AuthUserImportFlowGitProviderEnumKey =
 	(typeof authUserImportFlowGitProviderEnum)[keyof typeof authUserImportFlowGitProviderEnum];
 
+export const authUserFeatureBlocksSpeedInsightsFreeBlockReasonEnum = {
+	admin_override: "admin_override",
+	hard_blocked: "hard_blocked",
+	limits_exceeded: "limits_exceeded",
+} as const;
+
+export type AuthUserFeatureBlocksSpeedInsightsFreeBlockReasonEnumKey =
+	(typeof authUserFeatureBlocksSpeedInsightsFreeBlockReasonEnum)[keyof typeof authUserFeatureBlocksSpeedInsightsFreeBlockReasonEnum];
+
 /**
  * @description Data for the currently authenticated User.
  * @type object
@@ -25402,6 +25510,30 @@ export type AuthUser = {
 							isCurrentlyBlocked: false | true;
 					  }
 					| undefined;
+				/**
+				 * @description Client-facing view of the `speedInsightsFree` ingestion block. The dashboard needs `blockReason` to tell usage pauses apart from admin blocks.
+				 * @type object | undefined
+				 */
+				speedInsightsFree?:
+					| {
+							/**
+							 * @type number | undefined
+							 */
+							blockedFrom?: number | undefined;
+							/**
+							 * @type number | undefined
+							 */
+							blockedUntil?: number | undefined;
+							/**
+							 * @type string
+							 */
+							blockReason: AuthUserFeatureBlocksSpeedInsightsFreeBlockReasonEnumKey;
+							/**
+							 * @type boolean
+							 */
+							isCurrentlyBlocked: false | true;
+					  }
+					| undefined;
 		  }
 		| undefined;
 	/**
@@ -25628,15 +25760,6 @@ export type VcrRepositoryList = {
 	nextCursor?: string | undefined;
 };
 
-export const vcrImageListItemStatusEnum = {
-	preparing: "preparing",
-	ready: "ready",
-	unoptimized: "unoptimized",
-} as const;
-
-export type VcrImageListItemStatusEnumKey =
-	(typeof vcrImageListItemStatusEnum)[keyof typeof vcrImageListItemStatusEnum];
-
 export const vcrImageListItemKindEnum = {
 	attestation: "attestation",
 	index: "index",
@@ -25646,16 +25769,20 @@ export const vcrImageListItemKindEnum = {
 export type VcrImageListItemKindEnumKey =
 	(typeof vcrImageListItemKindEnum)[keyof typeof vcrImageListItemKindEnum];
 
+export const vcrImageListItemStatusEnum = {
+	preparing: "preparing",
+	ready: "ready",
+	unoptimized: "unoptimized",
+} as const;
+
+export type VcrImageListItemStatusEnumKey =
+	(typeof vcrImageListItemStatusEnum)[keyof typeof vcrImageListItemStatusEnum];
+
 /**
  * @description An image enriched with its tags and VHS-readiness status, as returned when listing a repository\'s images.
  * @type object
  */
 export type VcrImageListItem = {
-	/**
-	 * @description VHS-readiness status, or `null` for a multi-platform index.
-	 * @type string
-	 */
-	status: VcrImageListItemStatusEnumKey | null;
 	/**
 	 * @description Tags pointing at this image\'s manifest.
 	 * @type array
@@ -25707,41 +25834,10 @@ export type VcrImageListItem = {
 	 */
 	sizeInBytes: number;
 	/**
-	 * @description Converted VHS drive data, present once an image has been optimized for sandbox launch.
-	 * @type object | undefined
+	 * @description VHS-readiness status, or `null` for a multi-platform index.
+	 * @type string
 	 */
-	vhs?:
-		| {
-				/**
-				 * @type string
-				 */
-				path: string;
-				/**
-				 * @type string
-				 */
-				digest: string;
-				/**
-				 * @description Optional VHS drive configuration captured for an optimized image.
-				 * @type object | undefined
-				 */
-				config?:
-					| {
-							/**
-							 * @type array | undefined
-							 */
-							command?: string[] | undefined;
-							/**
-							 * @type array | undefined
-							 */
-							entrypoint?: string[] | undefined;
-							/**
-							 * @type string | undefined
-							 */
-							workingDir?: string | undefined;
-					  }
-					| undefined;
-		  }
-		| undefined;
+	status: VcrImageListItemStatusEnumKey | null;
 	/**
 	 * @description ISO 8601 timestamp of when the image was created.
 	 * @example 2026-06-30T10:00:00.000Z
@@ -26023,15 +26119,6 @@ export type VcrImageLayer =
 			value: string | null;
 	  };
 
-export const vcrImageDetailStatusEnum = {
-	preparing: "preparing",
-	ready: "ready",
-	unoptimized: "unoptimized",
-} as const;
-
-export type VcrImageDetailStatusEnumKey =
-	(typeof vcrImageDetailStatusEnum)[keyof typeof vcrImageDetailStatusEnum];
-
 export const vcrImageDetailKindEnum = {
 	attestation: "attestation",
 	index: "index",
@@ -26040,6 +26127,15 @@ export const vcrImageDetailKindEnum = {
 
 export type VcrImageDetailKindEnumKey =
 	(typeof vcrImageDetailKindEnum)[keyof typeof vcrImageDetailKindEnum];
+
+export const vcrImageDetailStatusEnum = {
+	preparing: "preparing",
+	ready: "ready",
+	unoptimized: "unoptimized",
+} as const;
+
+export type VcrImageDetailStatusEnumKey =
+	(typeof vcrImageDetailStatusEnum)[keyof typeof vcrImageDetailStatusEnum];
 
 /**
  * @description A single image with its tags, status and resolved Dockerfile layer history.
@@ -26050,11 +26146,6 @@ export type VcrImageDetail = {
 	 * @type array
 	 */
 	layers: unknown[];
-	/**
-	 * @description VHS-readiness status, or `null` for a multi-platform index.
-	 * @type string
-	 */
-	status: VcrImageDetailStatusEnumKey | null;
 	/**
 	 * @description Tags pointing at this image\'s manifest.
 	 * @type array
@@ -26106,41 +26197,10 @@ export type VcrImageDetail = {
 	 */
 	sizeInBytes: number;
 	/**
-	 * @description Converted VHS drive data, present once an image has been optimized for sandbox launch.
-	 * @type object | undefined
+	 * @description VHS-readiness status, or `null` for a multi-platform index.
+	 * @type string
 	 */
-	vhs?:
-		| {
-				/**
-				 * @type string
-				 */
-				path: string;
-				/**
-				 * @type string
-				 */
-				digest: string;
-				/**
-				 * @description Optional VHS drive configuration captured for an optimized image.
-				 * @type object | undefined
-				 */
-				config?:
-					| {
-							/**
-							 * @type array | undefined
-							 */
-							command?: string[] | undefined;
-							/**
-							 * @type array | undefined
-							 */
-							entrypoint?: string[] | undefined;
-							/**
-							 * @type string | undefined
-							 */
-							workingDir?: string | undefined;
-					  }
-					| undefined;
-		  }
-		| undefined;
+	status: VcrImageDetailStatusEnumKey | null;
 	/**
 	 * @description ISO 8601 timestamp of when the image was created.
 	 * @example 2026-06-30T10:00:00.000Z
