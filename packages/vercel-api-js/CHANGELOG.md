@@ -1,5 +1,29 @@
 # vercel-api-js
 
+## 1.14.0
+
+### Minor Changes
+
+- 20a8254: Added new KMS Issuers API endpoints for listing, creating, updating, deleting issuers, creating and managing issuer policies, and signing operations.
+- 9a8ff0c: Added support for new pricing plan 'flex'.
+
+### Patch Changes
+
+- 9a8ff0c: [BREAKING] Changed ReasonEnum to only include 'limits-exceeded'.
+- 9a8ff0c: Added optional 'deploymentId' for build machine selection events.
+- 9a8ff0c: Added ability to enable polyrepo branch routing on microfrontends group updates.
+- 20a8254: Removed the experiment property from the Flag type schema and interface.
+- 9a8ff0c: Updated description for updateMicrofrontendsGroup endpoint to cover all group settings.
+- 20a8254: Added new options and fields on the user event and named sandbox types including support for associating events with users and Connex network policy details.
+- 9a8ff0c: Fixed export and order of enum keys and types for image detail/list item status for VCR images, and removed 'vhs' fields from image schemas/types.
+- 20a8254: Added new enum values and event types related to global config events and permissions.
+- 20a8254: Added new possible status code 422 for requestPromote endpoint.
+- 9a8ff0c: Added 'speedInsightsFree' block state to AuthUser feature blocks.
+- 20a8254: Added full type and schema support for KMS Issuer API endpoints in the generated client.
+- 9a8ff0c: Added new event types and event fields for project speed insights, tracing, and experiments.
+- 9a8ff0c: Added optional tracing block details to feature blocks.
+- 9a8ff0c: Added failover regions to NamedSandbox and available regions to Snapshot schemas.
+
 ## 1.13.0
 
 ### Minor Changes
