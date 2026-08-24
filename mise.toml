@@ -12,7 +12,7 @@
 [tools]
 node = "26.7.0"
 pnpm = "11"
-yq = "4.53.3"
+yq = "4.53.6"
 "aqua:suzuki-shunsuke/pinact" = "4.1.1"
 
 [settings]
