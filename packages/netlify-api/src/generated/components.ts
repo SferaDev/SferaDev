@@ -6,7 +6,7 @@
 import type { ErrorWrapper, FetcherConfig } from "../utils/fetcher";
 import defaultClient from "../utils/fetcher";
 import type {
-	AddMemberToAccountData,
+	AddMemberToAccountBody,
 	AddMemberToAccountResponse,
 	AgentRunnerCommitToBranchResponse,
 	AgentRunnerCommitToBranchStatus400,
@@ -24,7 +24,7 @@ import type {
 	ClearSiteDatabaseComputeSettingsResponse,
 	ClearSiteDatabaseComputeSettingsStatus403,
 	ConfigureDNSForSiteResponse,
-	CreateAccountData,
+	CreateAccountBody,
 	CreateAccountResponse,
 	CreateAgentRunnerResponse,
 	CreateAgentRunnerSessionResponse,
@@ -36,47 +36,47 @@ import type {
 	CreateAgentRunnerUploadUrlStatus400,
 	CreateAgentRunnerUploadUrlStatus422,
 	CreateDeployKeyResponse,
-	CreateDnsRecordData,
+	CreateDnsRecordBody,
 	CreateDnsRecordResponse,
-	CreateDnsZoneData,
+	CreateDnsZoneBody,
 	CreateDnsZoneResponse,
-	CreateEnvVarsData,
+	CreateEnvVarsBody,
 	CreateEnvVarsResponse,
-	CreateHookBySiteIdData,
+	CreateHookBySiteIdBody,
 	CreateHookBySiteIdResponse,
-	CreatePluginRunData,
+	CreatePluginRunBody,
 	CreatePluginRunResponse,
-	CreateServiceInstanceData,
+	CreateServiceInstanceBody,
 	CreateServiceInstanceResponse,
-	CreateSiteAgentRunnerHookData,
+	CreateSiteAgentRunnerHookBody,
 	CreateSiteAgentRunnerHookResponse,
 	CreateSiteAssetResponse,
-	CreateSiteBuildHookData,
+	CreateSiteBody,
+	CreateSiteBuildHookBody,
 	CreateSiteBuildHookResponse,
 	CreateSiteBuildResponse,
 	CreateSiteBuildStatus400,
 	CreateSiteBuildStatus404,
 	CreateSiteBuildStatus422,
-	CreateSiteData,
-	CreateSiteDatabaseBranchData,
+	CreateSiteDatabaseBody,
+	CreateSiteDatabaseBranchBody,
 	CreateSiteDatabaseBranchResponse,
-	CreateSiteDatabaseData,
 	CreateSiteDatabaseResponse,
-	CreateSiteDatabaseSnapshotData,
+	CreateSiteDatabaseSnapshotBody,
 	CreateSiteDatabaseSnapshotResponse,
-	CreateSiteDeployData,
+	CreateSiteDeployBody,
 	CreateSiteDeployResponse,
-	CreateSiteDevServerHookData,
+	CreateSiteDevServerHookBody,
 	CreateSiteDevServerHookResponse,
 	CreateSiteDevServerResponse,
-	CreateSiteInTeamData,
+	CreateSiteInTeamBody,
 	CreateSiteInTeamResponse,
 	CreateSiteResponse,
-	CreateSiteSnippetData,
+	CreateSiteSnippetBody,
 	CreateSiteSnippetResponse,
-	CreateSplitTestData,
+	CreateSplitTestBody,
 	CreateSplitTestResponse,
-	CreateTicketData,
+	CreateTicketBody,
 	CreateTicketResponse,
 	CreateTicketStatus401,
 	CreateTicketStatus422,
@@ -196,30 +196,30 @@ import type {
 	NotifyBuildStartResponse,
 	ProvisionSiteTLSCertificateResponse,
 	ProvisionSiteTLSCertificateStatus422,
-	PurgeCacheData,
+	PurgeCacheBody,
 	PurgeCacheResponse,
 	PurgeCacheStatus400,
 	PurgeCacheStatus404,
 	RemoveAccountMemberResponse,
-	ResetSiteDatabaseBranchData,
+	ResetSiteDatabaseBranchBody,
 	ResetSiteDatabaseBranchResponse,
 	ResetSiteDatabaseBranchStatus400,
 	ResetSiteDatabaseBranchStatus404,
-	RestoreSiteDatabaseSnapshotData,
+	RestoreSiteDatabaseSnapshotBody,
 	RestoreSiteDatabaseSnapshotResponse,
 	RestoreSiteDeployResponse,
 	RollbackSiteDeployResponse,
-	RunSiteDatabaseMigrationsData,
+	RunSiteDatabaseMigrationsBody,
 	RunSiteDatabaseMigrationsResponse,
 	RunSiteDatabaseMigrationsStatus409,
 	RunSiteDatabaseMigrationsStatus422,
 	SearchSiteFunctionsResponse,
-	SetEnvVarValueData,
+	SetEnvVarValueBody,
 	SetEnvVarValueResponse,
-	SetSiteDatabaseBranchComputeSettingsData,
+	SetSiteDatabaseBranchComputeSettingsBody,
 	SetSiteDatabaseBranchComputeSettingsResponse,
 	SetSiteDatabaseBranchComputeSettingsStatus403,
-	SetSiteDatabaseComputeSettingsData,
+	SetSiteDatabaseComputeSettingsBody,
 	SetSiteDatabaseComputeSettingsResponse,
 	SetSiteDatabaseComputeSettingsStatus403,
 	ShowServiceInstanceResponse,
@@ -231,42 +231,43 @@ import type {
 	UnlinkSiteRepoResponse,
 	UnlinkSiteRepoStatus404,
 	UnlockDeployResponse,
-	UpdateAccountData,
-	UpdateAccountMemberData,
+	UpdateAccountBody,
+	UpdateAccountMemberBody,
 	UpdateAccountMemberResponse,
 	UpdateAccountResponse,
 	UpdateAgentRunnerResponse,
 	UpdateAgentRunnerSessionResponse,
-	UpdateDeployValidationsData,
+	UpdateDeployValidationsBody,
 	UpdateDeployValidationsResponse,
-	UpdateDevServerStateData,
+	UpdateDevServerStateBody,
 	UpdateDevServerStateResponse,
 	UpdateDevServerStateStatus409,
-	UpdateEnvVarData,
+	UpdateEnvVarBody,
 	UpdateEnvVarResponse,
-	UpdateHookData,
+	UpdateHookBody,
 	UpdateHookResponse,
-	UpdatePluginData,
+	UpdatePluginBody,
 	UpdatePluginResponse,
-	UpdateServiceInstanceData,
+	UpdateServiceInstanceBody,
 	UpdateServiceInstanceResponse,
-	UpdateSiteAgentRunnerHookData,
+	UpdateSiteAgentRunnerHookBody,
 	UpdateSiteAgentRunnerHookResponse,
 	UpdateSiteAssetResponse,
-	UpdateSiteBuildHookData,
+	UpdateSiteBody,
+	UpdateSiteBuildHookBody,
 	UpdateSiteBuildHookResponse,
+	UpdateSiteBuildLogBody,
 	UpdateSiteBuildLogResponse,
-	UpdateSiteData,
-	UpdateSiteDeployData,
+	UpdateSiteDeployBody,
 	UpdateSiteDeployResponse,
-	UpdateSiteDevServerHookData,
+	UpdateSiteDevServerHookBody,
 	UpdateSiteDevServerHookResponse,
-	UpdateSiteMetadataData,
+	UpdateSiteMetadataBody,
 	UpdateSiteMetadataResponse,
 	UpdateSiteResponse,
-	UpdateSiteSnippetData,
+	UpdateSiteSnippetBody,
 	UpdateSiteSnippetResponse,
-	UpdateSplitTestData,
+	UpdateSplitTestBody,
 	UpdateSplitTestResponse,
 	UploadDeployEdgeFunctionResponse,
 	UploadDeployFileResponse,
@@ -321,7 +322,7 @@ export async function createSite(
 		queryParams,
 		config,
 	}: {
-		body?: CreateSiteData;
+		body: CreateSiteBody;
 		queryParams?: { configure_dns?: boolean };
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
@@ -331,7 +332,7 @@ export async function createSite(
 	const data = await request<
 		CreateSiteResponse,
 		ErrorWrapper<Error>,
-		CreateSiteData,
+		CreateSiteBody,
 		Record<string, string>,
 		{ configure_dns?: boolean },
 		Record<string, string>
@@ -396,7 +397,7 @@ export async function updateSite(
 		config,
 	}: {
 		pathParams: { site_id: string };
-		body?: UpdateSiteData;
+		body: UpdateSiteBody;
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
 ) {
@@ -408,7 +409,7 @@ export async function updateSite(
 	const data = await request<
 		UpdateSiteResponse,
 		ErrorWrapper<Error>,
-		UpdateSiteData,
+		UpdateSiteBody,
 		Record<string, string>,
 		Record<string, string>,
 		{ site_id: string }
@@ -642,7 +643,7 @@ export async function createEnvVars(
 		config,
 	}: {
 		pathParams: { account_id: string };
-		body?: CreateEnvVarsData;
+		body?: CreateEnvVarsBody;
 		queryParams?: { site_id?: string };
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
@@ -655,7 +656,7 @@ export async function createEnvVars(
 	const data = await request<
 		CreateEnvVarsResponse,
 		ErrorWrapper<Error>,
-		CreateEnvVarsData,
+		CreateEnvVarsBody,
 		Record<string, string>,
 		{ site_id?: string },
 		{ account_id: string }
@@ -781,7 +782,7 @@ export async function updateEnvVar(
 		config,
 	}: {
 		pathParams: { account_id: string; key: string };
-		body?: UpdateEnvVarData;
+		body?: UpdateEnvVarBody;
 		queryParams?: { site_id?: string };
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
@@ -798,7 +799,7 @@ export async function updateEnvVar(
 	const data = await request<
 		UpdateEnvVarResponse,
 		ErrorWrapper<Error>,
-		UpdateEnvVarData,
+		UpdateEnvVarBody,
 		Record<string, string>,
 		{ site_id?: string },
 		{ account_id: string; key: string }
@@ -826,7 +827,7 @@ export async function setEnvVarValue(
 		config,
 	}: {
 		pathParams: { account_id: string; key: string };
-		body?: SetEnvVarValueData;
+		body?: SetEnvVarValueBody;
 		queryParams?: { site_id?: string };
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
@@ -843,7 +844,7 @@ export async function setEnvVarValue(
 	const data = await request<
 		SetEnvVarValueResponse,
 		ErrorWrapper<Error>,
-		SetEnvVarValueData,
+		SetEnvVarValueBody,
 		Record<string, string>,
 		{ site_id?: string },
 		{ account_id: string; key: string }
@@ -1400,7 +1401,7 @@ export async function purgeCache(
 		body,
 		config,
 	}: {
-		body: PurgeCacheData;
+		body: PurgeCacheBody;
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
 ) {
@@ -1409,7 +1410,7 @@ export async function purgeCache(
 	const data = await request<
 		PurgeCacheResponse,
 		ErrorWrapper<PurgeCacheStatus400 | PurgeCacheStatus404>,
-		PurgeCacheData,
+		PurgeCacheBody,
 		Record<string, string>,
 		Record<string, string>,
 		Record<string, string>
@@ -1468,7 +1469,7 @@ export async function createSiteSnippet(
 		config,
 	}: {
 		pathParams: { site_id: string };
-		body?: CreateSiteSnippetData;
+		body: CreateSiteSnippetBody;
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
 ) {
@@ -1480,7 +1481,7 @@ export async function createSiteSnippet(
 	const data = await request<
 		CreateSiteSnippetResponse,
 		ErrorWrapper<Error>,
-		CreateSiteSnippetData,
+		CreateSiteSnippetBody,
 		Record<string, string>,
 		Record<string, string>,
 		{ site_id: string }
@@ -1543,7 +1544,7 @@ export async function updateSiteSnippet(
 		config,
 	}: {
 		pathParams: { site_id: string; snippet_id: string };
-		body?: UpdateSiteSnippetData;
+		body: UpdateSiteSnippetBody;
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
 ) {
@@ -1559,7 +1560,7 @@ export async function updateSiteSnippet(
 	const data = await request<
 		UpdateSiteSnippetResponse,
 		ErrorWrapper<Error>,
-		UpdateSiteSnippetData,
+		UpdateSiteSnippetBody,
 		Record<string, string>,
 		Record<string, string>,
 		{ site_id: string; snippet_id: string }
@@ -1656,7 +1657,7 @@ export async function updateSiteMetadata(
 		config,
 	}: {
 		pathParams: { site_id: string };
-		body?: UpdateSiteMetadataData;
+		body: UpdateSiteMetadataBody;
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
 ) {
@@ -1668,7 +1669,7 @@ export async function updateSiteMetadata(
 	const data = await request<
 		UpdateSiteMetadataResponse,
 		ErrorWrapper<Error>,
-		UpdateSiteMetadataData,
+		UpdateSiteMetadataBody,
 		Record<string, string>,
 		Record<string, string>,
 		{ site_id: string }
@@ -1727,7 +1728,7 @@ export async function createSiteBuildHook(
 		config,
 	}: {
 		pathParams: { site_id: string };
-		body?: CreateSiteBuildHookData;
+		body: CreateSiteBuildHookBody;
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
 ) {
@@ -1739,7 +1740,7 @@ export async function createSiteBuildHook(
 	const data = await request<
 		CreateSiteBuildHookResponse,
 		ErrorWrapper<Error>,
-		CreateSiteBuildHookData,
+		CreateSiteBuildHookBody,
 		Record<string, string>,
 		Record<string, string>,
 		{ site_id: string }
@@ -1802,7 +1803,7 @@ export async function updateSiteBuildHook(
 		config,
 	}: {
 		pathParams: { site_id: string; id: string };
-		body?: UpdateSiteBuildHookData;
+		body: UpdateSiteBuildHookBody;
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
 ) {
@@ -1818,7 +1819,7 @@ export async function updateSiteBuildHook(
 	const data = await request<
 		UpdateSiteBuildHookResponse,
 		ErrorWrapper<Error>,
-		UpdateSiteBuildHookData,
+		UpdateSiteBuildHookBody,
 		Record<string, string>,
 		Record<string, string>,
 		{ site_id: string; id: string }
@@ -1965,7 +1966,7 @@ export async function createSiteDeploy(
 		config,
 	}: {
 		pathParams: { site_id: string };
-		body?: CreateSiteDeployData;
+		body: CreateSiteDeployBody;
 		queryParams?: {
 			"deploy-previews"?: boolean;
 			production?: boolean;
@@ -2000,7 +2001,7 @@ export async function createSiteDeploy(
 	const data = await request<
 		CreateSiteDeployResponse,
 		ErrorWrapper<Error>,
-		CreateSiteDeployData,
+		CreateSiteDeployBody,
 		Record<string, string>,
 		{
 			"deploy-previews"?: boolean;
@@ -2087,7 +2088,7 @@ export async function updateSiteDeploy(
 		config,
 	}: {
 		pathParams: { site_id: string; deploy_id: string };
-		body?: UpdateSiteDeployData;
+		body: UpdateSiteDeployBody;
 		queryParams?: { commit_ref?: string };
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
@@ -2104,7 +2105,7 @@ export async function updateSiteDeploy(
 	const data = await request<
 		UpdateSiteDeployResponse,
 		ErrorWrapper<Error>,
-		UpdateSiteDeployData,
+		UpdateSiteDeployBody,
 		Record<string, string>,
 		{ commit_ref?: string },
 		{ site_id: string; deploy_id: string }
@@ -2506,9 +2507,11 @@ export async function getSiteBuild(
 export async function updateSiteBuildLog(
 	{
 		pathParams,
+		body,
 		config,
 	}: {
 		pathParams: { build_id: string };
+		body: UpdateSiteBuildLogBody;
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
 ) {
@@ -2520,13 +2523,14 @@ export async function updateSiteBuildLog(
 	const data = await request<
 		UpdateSiteBuildLogResponse,
 		ErrorWrapper<Error>,
-		null,
+		UpdateSiteBuildLogBody,
 		Record<string, string>,
 		Record<string, string>,
 		{ build_id: string }
 	>({
 		method: "POST",
 		url: `/builds/${pathParams.build_id}/log`,
+		body: body,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
 	});
@@ -2786,7 +2790,7 @@ export async function updateDeployValidations(
 		config,
 	}: {
 		pathParams: { deploy_id: string };
-		body: UpdateDeployValidationsData;
+		body: UpdateDeployValidationsBody;
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
 ) {
@@ -2798,7 +2802,7 @@ export async function updateDeployValidations(
 	const data = await request<
 		UpdateDeployValidationsResponse,
 		ErrorWrapper<Error>,
-		UpdateDeployValidationsData,
+		UpdateDeployValidationsBody,
 		Record<string, string>,
 		Record<string, string>,
 		{ deploy_id: string }
@@ -3054,7 +3058,7 @@ export async function createPluginRun(
 		config,
 	}: {
 		pathParams: { deploy_id: string };
-		body?: CreatePluginRunData;
+		body?: CreatePluginRunBody;
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
 ) {
@@ -3066,7 +3070,7 @@ export async function createPluginRun(
 	const data = await request<
 		CreatePluginRunResponse,
 		ErrorWrapper<Error>,
-		CreatePluginRunData,
+		CreatePluginRunBody,
 		Record<string, string>,
 		Record<string, string>,
 		{ deploy_id: string }
@@ -3159,7 +3163,7 @@ export async function createHookBySiteId(
 		queryParams,
 		config,
 	}: {
-		body?: CreateHookBySiteIdData;
+		body: CreateHookBySiteIdBody;
 		queryParams?: { site_id?: string };
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
@@ -3169,7 +3173,7 @@ export async function createHookBySiteId(
 	const data = await request<
 		CreateHookBySiteIdResponse,
 		ErrorWrapper<Error>,
-		CreateHookBySiteIdData,
+		CreateHookBySiteIdBody,
 		Record<string, string>,
 		{ site_id?: string },
 		Record<string, string>
@@ -3229,7 +3233,7 @@ export async function updateHook(
 		config,
 	}: {
 		pathParams: { hook_id: string };
-		body?: UpdateHookData;
+		body: UpdateHookBody;
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
 ) {
@@ -3241,7 +3245,7 @@ export async function updateHook(
 	const data = await request<
 		UpdateHookResponse,
 		ErrorWrapper<Error>,
-		UpdateHookData,
+		UpdateHookBody,
 		Record<string, string>,
 		Record<string, string>,
 		{ hook_id: string }
@@ -3358,7 +3362,7 @@ export async function createTicket(
 		queryParams,
 		config,
 	}: {
-		body?: CreateTicketData;
+		body?: CreateTicketBody;
 		queryParams?: { client_id?: string };
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
@@ -3368,7 +3372,7 @@ export async function createTicket(
 	const data = await request<
 		CreateTicketResponse,
 		ErrorWrapper<CreateTicketStatus401 | CreateTicketStatus422>,
-		CreateTicketData,
+		CreateTicketBody,
 		Record<string, string>,
 		{ client_id?: string },
 		Record<string, string>
@@ -3582,7 +3586,7 @@ export async function createSiteInTeam(
 		config,
 	}: {
 		pathParams: { account_slug: string };
-		body?: CreateSiteInTeamData;
+		body?: CreateSiteInTeamBody;
 		queryParams?: { configure_dns?: boolean };
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
@@ -3595,7 +3599,7 @@ export async function createSiteInTeam(
 	const data = await request<
 		CreateSiteInTeamResponse,
 		ErrorWrapper<Error>,
-		CreateSiteInTeamData,
+		CreateSiteInTeamBody,
 		Record<string, string>,
 		{ configure_dns?: boolean },
 		{ account_slug: string }
@@ -3693,7 +3697,7 @@ export async function addMemberToAccount(
 		config,
 	}: {
 		pathParams: { account_slug: string };
-		body: AddMemberToAccountData;
+		body: AddMemberToAccountBody;
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
 ) {
@@ -3705,7 +3709,7 @@ export async function addMemberToAccount(
 	const data = await request<
 		AddMemberToAccountResponse,
 		ErrorWrapper<Error>,
-		AddMemberToAccountData,
+		AddMemberToAccountBody,
 		Record<string, string>,
 		Record<string, string>,
 		{ account_slug: string }
@@ -3768,7 +3772,7 @@ export async function updateAccountMember(
 		config,
 	}: {
 		pathParams: { account_slug: string; member_id: string };
-		body: UpdateAccountMemberData;
+		body: UpdateAccountMemberBody;
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
 ) {
@@ -3784,7 +3788,7 @@ export async function updateAccountMember(
 	const data = await request<
 		UpdateAccountMemberResponse,
 		ErrorWrapper<Error>,
-		UpdateAccountMemberData,
+		UpdateAccountMemberBody,
 		Record<string, string>,
 		Record<string, string>,
 		{ account_slug: string; member_id: string }
@@ -3927,7 +3931,7 @@ export async function createAccount(
 		body,
 		config,
 	}: {
-		body: CreateAccountData;
+		body: CreateAccountBody;
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
 ) {
@@ -3936,7 +3940,7 @@ export async function createAccount(
 	const data = await request<
 		CreateAccountResponse,
 		ErrorWrapper<Error>,
-		CreateAccountData,
+		CreateAccountBody,
 		Record<string, string>,
 		Record<string, string>,
 		Record<string, string>
@@ -3995,7 +3999,7 @@ export async function updateAccount(
 		config,
 	}: {
 		pathParams: { account_id: string };
-		body?: UpdateAccountData;
+		body?: UpdateAccountBody;
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
 ) {
@@ -4007,7 +4011,7 @@ export async function updateAccount(
 	const data = await request<
 		UpdateAccountResponse,
 		ErrorWrapper<Error>,
-		UpdateAccountData,
+		UpdateAccountBody,
 		Record<string, string>,
 		Record<string, string>,
 		{ account_id: string }
@@ -4766,7 +4770,7 @@ export async function createServiceInstance(
 		config,
 	}: {
 		pathParams: { site_id: string; addon: string };
-		body?: CreateServiceInstanceData;
+		body: CreateServiceInstanceBody;
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
 ) {
@@ -4782,7 +4786,7 @@ export async function createServiceInstance(
 	const data = await request<
 		CreateServiceInstanceResponse,
 		ErrorWrapper<Error>,
-		CreateServiceInstanceData,
+		CreateServiceInstanceBody,
 		Record<string, string>,
 		Record<string, string>,
 		{ site_id: string; addon: string }
@@ -4849,7 +4853,7 @@ export async function updateServiceInstance(
 		config,
 	}: {
 		pathParams: { site_id: string; addon: string; instance_id: string };
-		body?: UpdateServiceInstanceData;
+		body: UpdateServiceInstanceBody;
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
 ) {
@@ -4869,7 +4873,7 @@ export async function updateServiceInstance(
 	const data = await request<
 		UpdateServiceInstanceResponse,
 		ErrorWrapper<Error>,
-		UpdateServiceInstanceData,
+		UpdateServiceInstanceBody,
 		Record<string, string>,
 		Record<string, string>,
 		{ site_id: string; addon: string; instance_id: string }
@@ -5061,7 +5065,7 @@ export async function createSplitTest(
 		config,
 	}: {
 		pathParams: { site_id: string };
-		body?: CreateSplitTestData;
+		body: CreateSplitTestBody;
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
 ) {
@@ -5073,7 +5077,7 @@ export async function createSplitTest(
 	const data = await request<
 		CreateSplitTestResponse,
 		ErrorWrapper<Error>,
-		CreateSplitTestData,
+		CreateSplitTestBody,
 		Record<string, string>,
 		Record<string, string>,
 		{ site_id: string }
@@ -5132,7 +5136,7 @@ export async function updateSplitTest(
 		config,
 	}: {
 		pathParams: { site_id: string; split_test_id: string };
-		body?: UpdateSplitTestData;
+		body: UpdateSplitTestBody;
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
 ) {
@@ -5148,7 +5152,7 @@ export async function updateSplitTest(
 	const data = await request<
 		UpdateSplitTestResponse,
 		ErrorWrapper<Error>,
-		UpdateSplitTestData,
+		UpdateSplitTestBody,
 		Record<string, string>,
 		Record<string, string>,
 		{ site_id: string; split_test_id: string }
@@ -5285,7 +5289,7 @@ export async function createDnsZone(
 		body,
 		config,
 	}: {
-		body: CreateDnsZoneData;
+		body: CreateDnsZoneBody;
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
 ) {
@@ -5294,7 +5298,7 @@ export async function createDnsZone(
 	const data = await request<
 		CreateDnsZoneResponse,
 		ErrorWrapper<Error>,
-		CreateDnsZoneData,
+		CreateDnsZoneBody,
 		Record<string, string>,
 		Record<string, string>,
 		Record<string, string>
@@ -5490,7 +5494,7 @@ export async function createDnsRecord(
 		config,
 	}: {
 		pathParams: { zone_id: string };
-		body: CreateDnsRecordData;
+		body: CreateDnsRecordBody;
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
 ) {
@@ -5502,7 +5506,7 @@ export async function createDnsRecord(
 	const data = await request<
 		CreateDnsRecordResponse,
 		ErrorWrapper<Error>,
-		CreateDnsRecordData,
+		CreateDnsRecordBody,
 		Record<string, string>,
 		Record<string, string>,
 		{ zone_id: string }
@@ -5790,7 +5794,7 @@ export async function updateDevServerState(
 		config,
 	}: {
 		pathParams: { site_id: string; dev_server_id: string };
-		body: UpdateDevServerStateData;
+		body: UpdateDevServerStateBody;
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
 ) {
@@ -5806,7 +5810,7 @@ export async function updateDevServerState(
 	const data = await request<
 		UpdateDevServerStateResponse,
 		ErrorWrapper<UpdateDevServerStateStatus409>,
-		UpdateDevServerStateData,
+		UpdateDevServerStateBody,
 		Record<string, string>,
 		Record<string, string>,
 		{ site_id: string; dev_server_id: string }
@@ -5865,7 +5869,7 @@ export async function createSiteDevServerHook(
 		config,
 	}: {
 		pathParams: { site_id: string };
-		body?: CreateSiteDevServerHookData;
+		body: CreateSiteDevServerHookBody;
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
 ) {
@@ -5877,7 +5881,7 @@ export async function createSiteDevServerHook(
 	const data = await request<
 		CreateSiteDevServerHookResponse,
 		ErrorWrapper<Error>,
-		CreateSiteDevServerHookData,
+		CreateSiteDevServerHookBody,
 		Record<string, string>,
 		Record<string, string>,
 		{ site_id: string }
@@ -5940,7 +5944,7 @@ export async function updateSiteDevServerHook(
 		config,
 	}: {
 		pathParams: { site_id: string; id: string };
-		body?: UpdateSiteDevServerHookData;
+		body: UpdateSiteDevServerHookBody;
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
 ) {
@@ -5956,7 +5960,7 @@ export async function updateSiteDevServerHook(
 	const data = await request<
 		UpdateSiteDevServerHookResponse,
 		ErrorWrapper<Error>,
-		UpdateSiteDevServerHookData,
+		UpdateSiteDevServerHookBody,
 		Record<string, string>,
 		Record<string, string>,
 		{ site_id: string; id: string }
@@ -6053,7 +6057,7 @@ export async function createSiteAgentRunnerHook(
 		config,
 	}: {
 		pathParams: { site_id: string };
-		body?: CreateSiteAgentRunnerHookData;
+		body: CreateSiteAgentRunnerHookBody;
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
 ) {
@@ -6065,7 +6069,7 @@ export async function createSiteAgentRunnerHook(
 	const data = await request<
 		CreateSiteAgentRunnerHookResponse,
 		ErrorWrapper<Error>,
-		CreateSiteAgentRunnerHookData,
+		CreateSiteAgentRunnerHookBody,
 		Record<string, string>,
 		Record<string, string>,
 		{ site_id: string }
@@ -6128,7 +6132,7 @@ export async function updateSiteAgentRunnerHook(
 		config,
 	}: {
 		pathParams: { site_id: string; id: string };
-		body?: UpdateSiteAgentRunnerHookData;
+		body: UpdateSiteAgentRunnerHookBody;
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
 ) {
@@ -6144,7 +6148,7 @@ export async function updateSiteAgentRunnerHook(
 	const data = await request<
 		UpdateSiteAgentRunnerHookResponse,
 		ErrorWrapper<Error>,
-		UpdateSiteAgentRunnerHookData,
+		UpdateSiteAgentRunnerHookBody,
 		Record<string, string>,
 		Record<string, string>,
 		{ site_id: string; id: string }
@@ -6303,7 +6307,7 @@ export async function createSiteDatabase(
 		config,
 	}: {
 		pathParams: { site_id: string };
-		body?: CreateSiteDatabaseData;
+		body?: CreateSiteDatabaseBody;
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
 ) {
@@ -6315,7 +6319,7 @@ export async function createSiteDatabase(
 	const data = await request<
 		CreateSiteDatabaseResponse,
 		ErrorWrapper<Error>,
-		CreateSiteDatabaseData,
+		CreateSiteDatabaseBody,
 		Record<string, string>,
 		Record<string, string>,
 		{ site_id: string }
@@ -6414,7 +6418,7 @@ export async function createSiteDatabaseBranch(
 		config,
 	}: {
 		pathParams: { site_id: string };
-		body: CreateSiteDatabaseBranchData;
+		body: CreateSiteDatabaseBranchBody;
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
 ) {
@@ -6426,7 +6430,7 @@ export async function createSiteDatabaseBranch(
 	const data = await request<
 		CreateSiteDatabaseBranchResponse,
 		ErrorWrapper<Error>,
-		CreateSiteDatabaseBranchData,
+		CreateSiteDatabaseBranchBody,
 		Record<string, string>,
 		Record<string, string>,
 		{ site_id: string }
@@ -6569,7 +6573,7 @@ export async function resetSiteDatabaseBranch(
 		config,
 	}: {
 		pathParams: { site_id: string; branch_id: string };
-		body?: ResetSiteDatabaseBranchData;
+		body?: ResetSiteDatabaseBranchBody;
 		queryParams?: { force?: boolean; role?: "netlifydb_owner" | "netlifydb_readonly" };
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
@@ -6586,7 +6590,7 @@ export async function resetSiteDatabaseBranch(
 	const data = await request<
 		ResetSiteDatabaseBranchResponse,
 		ErrorWrapper<ResetSiteDatabaseBranchStatus400 | ResetSiteDatabaseBranchStatus404>,
-		ResetSiteDatabaseBranchData,
+		ResetSiteDatabaseBranchBody,
 		Record<string, string>,
 		{ force?: boolean; role?: "netlifydb_owner" | "netlifydb_readonly" },
 		{ site_id: string; branch_id: string }
@@ -6613,7 +6617,7 @@ export async function setSiteDatabaseBranchComputeSettings(
 		config,
 	}: {
 		pathParams: { site_id: string; branch_id: string };
-		body?: SetSiteDatabaseBranchComputeSettingsData;
+		body: SetSiteDatabaseBranchComputeSettingsBody;
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
 ) {
@@ -6629,7 +6633,7 @@ export async function setSiteDatabaseBranchComputeSettings(
 	const data = await request<
 		SetSiteDatabaseBranchComputeSettingsResponse,
 		ErrorWrapper<SetSiteDatabaseBranchComputeSettingsStatus403>,
-		SetSiteDatabaseBranchComputeSettingsData,
+		SetSiteDatabaseBranchComputeSettingsBody,
 		Record<string, string>,
 		Record<string, string>,
 		{ site_id: string; branch_id: string }
@@ -6655,7 +6659,7 @@ export async function setSiteDatabaseComputeSettings(
 		config,
 	}: {
 		pathParams: { site_id: string };
-		body?: SetSiteDatabaseComputeSettingsData;
+		body: SetSiteDatabaseComputeSettingsBody;
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
 ) {
@@ -6667,7 +6671,7 @@ export async function setSiteDatabaseComputeSettings(
 	const data = await request<
 		SetSiteDatabaseComputeSettingsResponse,
 		ErrorWrapper<SetSiteDatabaseComputeSettingsStatus403>,
-		SetSiteDatabaseComputeSettingsData,
+		SetSiteDatabaseComputeSettingsBody,
 		Record<string, string>,
 		Record<string, string>,
 		{ site_id: string }
@@ -6843,7 +6847,7 @@ export async function runSiteDatabaseMigrations(
 		config,
 	}: {
 		pathParams: { site_id: string; deploy_id: string };
-		body?: RunSiteDatabaseMigrationsData;
+		body?: RunSiteDatabaseMigrationsBody;
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
 ) {
@@ -6859,7 +6863,7 @@ export async function runSiteDatabaseMigrations(
 	const data = await request<
 		RunSiteDatabaseMigrationsResponse,
 		ErrorWrapper<RunSiteDatabaseMigrationsStatus409 | RunSiteDatabaseMigrationsStatus422>,
-		RunSiteDatabaseMigrationsData,
+		RunSiteDatabaseMigrationsBody,
 		Record<string, string>,
 		Record<string, string>,
 		{ site_id: string; deploy_id: string }
@@ -6885,7 +6889,7 @@ export async function createSiteDatabaseSnapshot(
 		config,
 	}: {
 		pathParams: { site_id: string };
-		body?: CreateSiteDatabaseSnapshotData;
+		body?: CreateSiteDatabaseSnapshotBody;
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
 ) {
@@ -6897,7 +6901,7 @@ export async function createSiteDatabaseSnapshot(
 	const data = await request<
 		CreateSiteDatabaseSnapshotResponse,
 		ErrorWrapper<Error>,
-		CreateSiteDatabaseSnapshotData,
+		CreateSiteDatabaseSnapshotBody,
 		Record<string, string>,
 		Record<string, string>,
 		{ site_id: string }
@@ -6997,7 +7001,7 @@ export async function restoreSiteDatabaseSnapshot(
 		config,
 	}: {
 		pathParams: { site_id: string; snapshot_id: string };
-		body?: RestoreSiteDatabaseSnapshotData;
+		body?: RestoreSiteDatabaseSnapshotBody;
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
 ) {
@@ -7013,7 +7017,7 @@ export async function restoreSiteDatabaseSnapshot(
 	const data = await request<
 		RestoreSiteDatabaseSnapshotResponse,
 		ErrorWrapper<Error>,
-		RestoreSiteDatabaseSnapshotData,
+		RestoreSiteDatabaseSnapshotBody,
 		Record<string, string>,
 		Record<string, string>,
 		{ site_id: string; snapshot_id: string }
@@ -7039,7 +7043,7 @@ export async function updatePlugin(
 		config,
 	}: {
 		pathParams: { site_id: string; _package: string };
-		body?: UpdatePluginData;
+		body?: UpdatePluginBody;
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
 ) {
@@ -7055,7 +7059,7 @@ export async function updatePlugin(
 	const data = await request<
 		UpdatePluginResponse,
 		ErrorWrapper<Error>,
-		UpdatePluginData,
+		UpdatePluginBody,
 		Record<string, string>,
 		Record<string, string>,
 		{ site_id: string; _package: string }

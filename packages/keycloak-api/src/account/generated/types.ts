@@ -4,477 +4,219 @@
  */
 
 export type OrganizationRepresentation = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	alias?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	description?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	enabled?: boolean | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	domains?: string[] | undefined;
 };
 
 export type GroupRepresentation = {
-	/**
-	 * @type object | undefined
-	 */
 	access?:
 		| {
 				[key: string]: unknown;
 		  }
 		| undefined;
-	/**
-	 * @type object | undefined
-	 */
 	attributes?:
 		| {
 				[key: string]: unknown;
 		  }
 		| undefined;
-	/**
-	 * @type object | undefined
-	 */
 	clientRoles?:
 		| {
 				[key: string]: unknown;
 		  }
 		| undefined;
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	path?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	realmRoles?: string[] | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	subGroups?: GroupRepresentation[] | undefined;
 };
 
 export type ConsentScopeRepresentation = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	displayText?: string | undefined;
 };
 
 export type ConsentRepresentation = {
-	/**
-	 * @type number | undefined
-	 */
 	createdDate?: number | undefined;
-	/**
-	 * @type number | undefined
-	 */
 	lastUpdatedDate?: number | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	grantedScopes?: ConsentScopeRepresentation[] | undefined;
 };
 
 export type ClientRepresentation = {
-	/**
-	 * @type string | undefined
-	 */
 	clientId?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	clientName?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	description?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	userConsentRequired?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	inUse?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	offlineAccess?: boolean | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	rootUrl?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	baseUrl?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	effectiveUrl?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	logoUri?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	policyUri?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	tosUri?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	consent?: ConsentRepresentation | undefined;
 };
 
 export type LinkedAccountRepresentation = {
-	/**
-	 * @type boolean | undefined
-	 */
 	connected?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	social?: boolean | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	providerAlias?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	providerName?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	displayName?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	linkedUsername?: string | undefined;
 };
 
 export type AccountLinkUriRepresentation = {
-	/**
-	 * @type string | undefined
-	 */
 	accountLinkUri?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	nonce?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	hash?: string | undefined;
 };
 
 export type UserProfileMetadataAttributeRepresentation = {
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	displayName?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	required?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	readOnly?: boolean | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	validators?: object | undefined;
 };
 
 export type UserProfileMetadataRepresentation = {
-	/**
-	 * @type array | undefined
-	 */
 	attributes?: UserProfileMetadataAttributeRepresentation[] | undefined;
 };
 
 export type UserProfileAttributesRepresentation = {
-	/**
-	 * @type array | undefined
-	 */
 	locale?: string[] | undefined;
 };
 
 export type AccountRepresentation = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	username?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	firstName?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	lastName?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	email?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	emailVerified?: boolean | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	userProfileMetadata?: UserProfileMetadataRepresentation | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	attributes?: UserProfileAttributesRepresentation | undefined;
 };
 
 export type CredentialMetadataRepresentation = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	type?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	userLabel?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	createdDate?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	credentialData?: object | undefined;
 };
 
 export type UserCredentialMetadataRepresentation = {
-	/**
-	 * @type object | undefined
-	 */
 	credential?: CredentialMetadataRepresentation | undefined;
 };
 
 export type CredentialRepresentation = {
-	/**
-	 * @type string | undefined
-	 */
 	type?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	category?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	displayName?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	helpText?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	iconCssClass?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	updateAction?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	removeable?: boolean | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	userCredentialMetadatas?: UserCredentialMetadataRepresentation[] | undefined;
 };
 
 export type SessionRepresentation = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	ipAddress?: string | undefined;
-	/**
-	 * @type number | undefined
-	 */
 	started?: number | undefined;
-	/**
-	 * @type number | undefined
-	 */
 	lastAccess?: number | undefined;
-	/**
-	 * @type number | undefined
-	 */
 	expires?: number | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	browser?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	current?: boolean | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	clients?: ClientRepresentation[] | undefined;
 };
 
 export type DeviceRepresentation = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	ipAddress?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	os?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	osVersion?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	browser?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	device?: string | undefined;
-	/**
-	 * @type number | undefined
-	 */
 	lastAccess?: number | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	current?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	mobile?: boolean | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	sessions?: SessionRepresentation[] | undefined;
 };
 
-export type GetAccountQueryParams = {
-	/**
-	 * @type boolean | undefined
-	 */
+export type GetAccountQuery = {
 	userProfileMetadata?: boolean | undefined;
 };
 
-/**
- * @description success
- */
-export type GetAccount200 = AccountRepresentation;
+export type GetAccountStatus200 = AccountRepresentation;
 
-export type GetAccountQueryResponse = GetAccount200;
+export type GetAccountOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query?: GetAccountQuery | undefined;
+	headers?: never | undefined;
+};
 
-export type GetAccountQuery = {
-	Response: GetAccount200;
-	QueryParams: GetAccountQueryParams;
-	Errors: any;
+export type GetAccountResponses = {
+	"200": GetAccountStatus200;
 };
 
 /**
- * @description success
+ * @description Union of all possible responses
  */
-export type UpdateAccount204 = unknown;
+export type GetAccountResponse = GetAccountStatus200;
 
-export type UpdateAccountMutationRequest = AccountRepresentation;
+export type UpdateAccountStatus204 = unknown;
 
-export type UpdateAccountMutationResponse = UpdateAccount204;
+export type UpdateAccountBody = AccountRepresentation;
 
-export type UpdateAccountMutation = {
-	Response: UpdateAccount204;
-	Request: UpdateAccountMutationRequest;
-	Errors: any;
+export type UpdateAccountOptions = {
+	body: UpdateAccountBody;
+	path?: never | undefined;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-export type GetApplicationsQueryParams = {
-	/**
-	 * @type string | undefined
-	 */
+export type UpdateAccountResponses = {
+	"204": UpdateAccountStatus204;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type UpdateAccountResponse = UpdateAccountStatus204;
+
+export type GetApplicationsQuery = {
 	name?: string | undefined;
 };
 
-/**
- * @description success
- */
-export type GetApplications200 = ClientRepresentation[];
+export type GetApplicationsStatus200 = ClientRepresentation[];
 
-export type GetApplicationsQueryResponse = GetApplications200;
-
-export type GetApplicationsQuery = {
-	Response: GetApplications200;
-	QueryParams: GetApplicationsQueryParams;
-	Errors: any;
+export type GetApplicationsOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query?: GetApplicationsQuery | undefined;
+	headers?: never | undefined;
 };
 
-export type GetConsentPathParams = {
+export type GetApplicationsResponses = {
+	"200": GetApplicationsStatus200;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetApplicationsResponse = GetApplicationsStatus200;
+
+export type GetConsentPath = {
 	/**
 	 * @description client id
 	 * @type string
@@ -482,20 +224,25 @@ export type GetConsentPathParams = {
 	clientId: string;
 };
 
-/**
- * @description success
- */
-export type GetConsent200 = ConsentRepresentation;
+export type GetConsentStatus200 = ConsentRepresentation;
 
-export type GetConsentQueryResponse = GetConsent200;
-
-export type GetConsentQuery = {
-	Response: GetConsent200;
-	PathParams: GetConsentPathParams;
-	Errors: any;
+export type GetConsentOptions = {
+	body?: never | undefined;
+	path: GetConsentPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-export type CreateConsentPathParams = {
+export type GetConsentResponses = {
+	"200": GetConsentStatus200;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetConsentResponse = GetConsentStatus200;
+
+export type CreateConsentPath = {
 	/**
 	 * @description client id
 	 * @type string
@@ -503,20 +250,25 @@ export type CreateConsentPathParams = {
 	clientId: string;
 };
 
-/**
- * @description success
- */
-export type CreateConsent200 = ConsentRepresentation;
+export type CreateConsentStatus200 = ConsentRepresentation;
 
-export type CreateConsentMutationResponse = CreateConsent200;
-
-export type CreateConsentMutation = {
-	Response: CreateConsent200;
-	PathParams: CreateConsentPathParams;
-	Errors: any;
+export type CreateConsentOptions = {
+	body?: never | undefined;
+	path: CreateConsentPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-export type UpdateConsentPathParams = {
+export type CreateConsentResponses = {
+	"200": CreateConsentStatus200;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type CreateConsentResponse = CreateConsentStatus200;
+
+export type UpdateConsentPath = {
 	/**
 	 * @description client id
 	 * @type string
@@ -524,20 +276,25 @@ export type UpdateConsentPathParams = {
 	clientId: string;
 };
 
-/**
- * @description success
- */
-export type UpdateConsent200 = ConsentRepresentation;
+export type UpdateConsentStatus200 = ConsentRepresentation;
 
-export type UpdateConsentMutationResponse = UpdateConsent200;
-
-export type UpdateConsentMutation = {
-	Response: UpdateConsent200;
-	PathParams: UpdateConsentPathParams;
-	Errors: any;
+export type UpdateConsentOptions = {
+	body?: never | undefined;
+	path: UpdateConsentPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-export type DeleteConsentPathParams = {
+export type UpdateConsentResponses = {
+	"200": UpdateConsentStatus200;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type UpdateConsentResponse = UpdateConsentStatus200;
+
+export type DeleteConsentPath = {
 	/**
 	 * @description client id
 	 * @type string
@@ -545,44 +302,48 @@ export type DeleteConsentPathParams = {
 	clientId: string;
 };
 
-/**
- * @description Deleted
- */
-export type DeleteConsent204 = unknown;
+export type DeleteConsentStatus204 = unknown;
 
-export type DeleteConsentMutationResponse = DeleteConsent204;
-
-export type DeleteConsentMutation = {
-	Response: DeleteConsent204;
-	PathParams: DeleteConsentPathParams;
-	Errors: any;
+export type DeleteConsentOptions = {
+	body?: never | undefined;
+	path: DeleteConsentPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-export type GetCredentialsQueryParams = {
-	/**
-	 * @type string | undefined
-	 */
+export type DeleteConsentResponses = {
+	"204": DeleteConsentStatus204;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type DeleteConsentResponse = DeleteConsentStatus204;
+
+export type GetCredentialsQuery = {
 	type?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	"user-credentials"?: boolean | undefined;
 };
 
-/**
- * @description success
- */
-export type GetCredentials200 = CredentialRepresentation[];
+export type GetCredentialsStatus200 = CredentialRepresentation[];
 
-export type GetCredentialsQueryResponse = GetCredentials200;
-
-export type GetCredentialsQuery = {
-	Response: GetCredentials200;
-	QueryParams: GetCredentialsQueryParams;
-	Errors: any;
+export type GetCredentialsOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query?: GetCredentialsQuery | undefined;
+	headers?: never | undefined;
 };
 
-export type DeleteCredentialPathParams = {
+export type GetCredentialsResponses = {
+	"200": GetCredentialsStatus200;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetCredentialsResponse = GetCredentialsStatus200;
+
+export type DeleteCredentialPath = {
 	/**
 	 * @description Credential ID
 	 * @type string
@@ -590,20 +351,25 @@ export type DeleteCredentialPathParams = {
 	credentialId: string;
 };
 
-/**
- * @description success
- */
-export type DeleteCredential204 = unknown;
+export type DeleteCredentialStatus204 = unknown;
 
-export type DeleteCredentialMutationResponse = DeleteCredential204;
-
-export type DeleteCredentialMutation = {
-	Response: DeleteCredential204;
-	PathParams: DeleteCredentialPathParams;
-	Errors: any;
+export type DeleteCredentialOptions = {
+	body?: never | undefined;
+	path: DeleteCredentialPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-export type UpdateCredentialLabelPathParams = {
+export type DeleteCredentialResponses = {
+	"204": DeleteCredentialStatus204;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type DeleteCredentialResponse = DeleteCredentialStatus204;
+
+export type UpdateCredentialLabelPath = {
 	/**
 	 * @description Credential ID
 	 * @type string
@@ -611,59 +377,81 @@ export type UpdateCredentialLabelPathParams = {
 	credentialId: string;
 };
 
-/**
- * @description No Content
- */
-export type UpdateCredentialLabel204 = unknown;
+export type UpdateCredentialLabelStatus204 = unknown;
 
-export type UpdateCredentialLabelMutationRequest = string;
+export type UpdateCredentialLabelBody = string | undefined;
 
-export type UpdateCredentialLabelMutationResponse = UpdateCredentialLabel204;
+export type UpdateCredentialLabelOptions = {
+	body: UpdateCredentialLabelBody;
+	path: UpdateCredentialLabelPath;
+	query?: never | undefined;
+	headers?: never | undefined;
+};
 
-export type UpdateCredentialLabelMutation = {
-	Response: UpdateCredentialLabel204;
-	Request: UpdateCredentialLabelMutationRequest;
-	PathParams: UpdateCredentialLabelPathParams;
-	Errors: any;
+export type UpdateCredentialLabelResponses = {
+	"204": UpdateCredentialLabelStatus204;
 };
 
 /**
- * @description success
+ * @description Union of all possible responses
  */
-export type GetSessions200 = SessionRepresentation[];
+export type UpdateCredentialLabelResponse = UpdateCredentialLabelStatus204;
 
-export type GetSessionsQueryResponse = GetSessions200;
+export type GetSessionsStatus200 = SessionRepresentation[];
 
-export type GetSessionsQuery = {
-	Response: GetSessions200;
-	Errors: any;
+export type GetSessionsOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query?: never | undefined;
+	headers?: never | undefined;
+};
+
+export type GetSessionsResponses = {
+	"200": GetSessionsStatus200;
 };
 
 /**
- * @description success
+ * @description Union of all possible responses
  */
-export type DeleteCurrentSession204 = unknown;
+export type GetSessionsResponse = GetSessionsStatus200;
 
-export type DeleteCurrentSessionMutationResponse = DeleteCurrentSession204;
+export type DeleteCurrentSessionStatus204 = unknown;
 
-export type DeleteCurrentSessionMutation = {
-	Response: DeleteCurrentSession204;
-	Errors: any;
+export type DeleteCurrentSessionOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query?: never | undefined;
+	headers?: never | undefined;
+};
+
+export type DeleteCurrentSessionResponses = {
+	"204": DeleteCurrentSessionStatus204;
 };
 
 /**
- * @description success
+ * @description Union of all possible responses
  */
-export type GetDevices200 = DeviceRepresentation[];
+export type DeleteCurrentSessionResponse = DeleteCurrentSessionStatus204;
 
-export type GetDevicesQueryResponse = GetDevices200;
+export type GetDevicesStatus200 = DeviceRepresentation[];
 
-export type GetDevicesQuery = {
-	Response: GetDevices200;
-	Errors: any;
+export type GetDevicesOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-export type DeleteSessionPathParams = {
+export type GetDevicesResponses = {
+	"200": GetDevicesStatus200;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetDevicesResponse = GetDevicesStatus200;
+
+export type DeleteSessionPath = {
 	/**
 	 * @description Session ID
 	 * @type string
@@ -671,32 +459,43 @@ export type DeleteSessionPathParams = {
 	sessionId: string;
 };
 
-/**
- * @description success
- */
-export type DeleteSession204 = unknown;
+export type DeleteSessionStatus204 = unknown;
 
-export type DeleteSessionMutationResponse = DeleteSession204;
+export type DeleteSessionOptions = {
+	body?: never | undefined;
+	path: DeleteSessionPath;
+	query?: never | undefined;
+	headers?: never | undefined;
+};
 
-export type DeleteSessionMutation = {
-	Response: DeleteSession204;
-	PathParams: DeleteSessionPathParams;
-	Errors: any;
+export type DeleteSessionResponses = {
+	"204": DeleteSessionStatus204;
 };
 
 /**
- * @description success
+ * @description Union of all possible responses
  */
-export type GetLinkedAccounts200 = LinkedAccountRepresentation[];
+export type DeleteSessionResponse = DeleteSessionStatus204;
 
-export type GetLinkedAccountsQueryResponse = GetLinkedAccounts200;
+export type GetLinkedAccountsStatus200 = LinkedAccountRepresentation[];
 
-export type GetLinkedAccountsQuery = {
-	Response: GetLinkedAccounts200;
-	Errors: any;
+export type GetLinkedAccountsOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-export type BuildLinkingUriPathParams = {
+export type GetLinkedAccountsResponses = {
+	"200": GetLinkedAccountsStatus200;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetLinkedAccountsResponse = GetLinkedAccountsStatus200;
+
+export type BuildLinkingUriPath = {
 	/**
 	 * @description Provider ID
 	 * @type string
@@ -704,7 +503,7 @@ export type BuildLinkingUriPathParams = {
 	providerId: string;
 };
 
-export type BuildLinkingUriQueryParams = {
+export type BuildLinkingUriQuery = {
 	/**
 	 * @description Redirect URI to return to after account linking
 	 * @type string
@@ -712,21 +511,25 @@ export type BuildLinkingUriQueryParams = {
 	redirectUri: string;
 };
 
-/**
- * @description success
- */
-export type BuildLinkingUri200 = AccountLinkUriRepresentation;
+export type BuildLinkingUriStatus200 = AccountLinkUriRepresentation;
 
-export type BuildLinkingUriQueryResponse = BuildLinkingUri200;
-
-export type BuildLinkingUriQuery = {
-	Response: BuildLinkingUri200;
-	PathParams: BuildLinkingUriPathParams;
-	QueryParams: BuildLinkingUriQueryParams;
-	Errors: any;
+export type BuildLinkingUriOptions = {
+	body?: never | undefined;
+	path: BuildLinkingUriPath;
+	query: BuildLinkingUriQuery;
+	headers?: never | undefined;
 };
 
-export type DeleteLinkedProviderPathParams = {
+export type BuildLinkingUriResponses = {
+	"200": BuildLinkingUriStatus200;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type BuildLinkingUriResponse = BuildLinkingUriStatus200;
+
+export type DeleteLinkedProviderPath = {
 	/**
 	 * @description Provider ID
 	 * @type string
@@ -734,20 +537,25 @@ export type DeleteLinkedProviderPathParams = {
 	providerId: string;
 };
 
-/**
- * @description success
- */
-export type DeleteLinkedProvider204 = unknown;
+export type DeleteLinkedProviderStatus204 = unknown;
 
-export type DeleteLinkedProviderMutationResponse = DeleteLinkedProvider204;
-
-export type DeleteLinkedProviderMutation = {
-	Response: DeleteLinkedProvider204;
-	PathParams: DeleteLinkedProviderPathParams;
-	Errors: any;
+export type DeleteLinkedProviderOptions = {
+	body?: never | undefined;
+	path: DeleteLinkedProviderPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-export type GetGroupsQueryParams = {
+export type DeleteLinkedProviderResponses = {
+	"204": DeleteLinkedProviderStatus204;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type DeleteLinkedProviderResponse = DeleteLinkedProviderStatus204;
+
+export type GetGroupsQuery = {
 	/**
 	 * @default true
 	 * @type boolean | undefined
@@ -755,27 +563,38 @@ export type GetGroupsQueryParams = {
 	briefRepresentation?: boolean | undefined;
 };
 
-/**
- * @description success
- */
-export type GetGroups200 = GroupRepresentation[];
+export type GetGroupsStatus200 = GroupRepresentation[];
 
-export type GetGroupsQueryResponse = GetGroups200;
+export type GetGroupsOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query?: GetGroupsQuery | undefined;
+	headers?: never | undefined;
+};
 
-export type GetGroupsQuery = {
-	Response: GetGroups200;
-	QueryParams: GetGroupsQueryParams;
-	Errors: any;
+export type GetGroupsResponses = {
+	"200": GetGroupsStatus200;
 };
 
 /**
- * @description success
+ * @description Union of all possible responses
  */
-export type GetOrganizations200 = OrganizationRepresentation[];
+export type GetGroupsResponse = GetGroupsStatus200;
 
-export type GetOrganizationsQueryResponse = GetOrganizations200;
+export type GetOrganizationsStatus200 = OrganizationRepresentation[];
 
-export type GetOrganizationsQuery = {
-	Response: GetOrganizations200;
-	Errors: any;
+export type GetOrganizationsOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
+
+export type GetOrganizationsResponses = {
+	"200": GetOrganizationsStatus200;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetOrganizationsResponse = GetOrganizationsStatus200;

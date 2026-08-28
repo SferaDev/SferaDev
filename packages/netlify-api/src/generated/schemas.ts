@@ -62,7 +62,7 @@ export const databaseBranchesResponseSchema = z
 						.enum(["init", "creating", "resetting", "ready", "archived"])
 						.optional()
 						.describe("The current state of the branch"),
-					logical_size_bytes: z
+					logical_size_bytes: z.coerce
 						.bigint()
 						.optional()
 						.describe("The logical size of the branch in bytes"),
@@ -83,7 +83,7 @@ export const databaseBranchesResponseSchema = z
 								.number()
 								.optional()
 								.describe("Maximum compute units for autoscaling"),
-							suspend_timeout_seconds: z
+							suspend_timeout_seconds: z.coerce
 								.bigint()
 								.optional()
 								.describe("Seconds of inactivity before the compute endpoint is suspended"),
@@ -115,7 +115,10 @@ export const databaseBranchDetailSchema = z
 			.enum(["init", "creating", "resetting", "ready", "archived"])
 			.optional()
 			.describe("The current state of the branch"),
-		logical_size_bytes: z.bigint().optional().describe("The logical size of the branch in bytes"),
+		logical_size_bytes: z.coerce
+			.bigint()
+			.optional()
+			.describe("The logical size of the branch in bytes"),
 		created_at: z.string().optional().describe("When the branch was created"),
 		updated_at: z.string().optional().describe("When the branch was last updated"),
 		last_active_at: z.string().optional().describe("When the branch was last active"),
@@ -133,7 +136,7 @@ export const databaseBranchDetailSchema = z
 					.number()
 					.optional()
 					.describe("Maximum compute units for autoscaling"),
-				suspend_timeout_seconds: z
+				suspend_timeout_seconds: z.coerce
 					.bigint()
 					.optional()
 					.describe("Seconds of inactivity before the compute endpoint is suspended"),
@@ -163,7 +166,7 @@ export const databaseBranchComputeSchema = z
 			.number()
 			.optional()
 			.describe("Maximum compute units for autoscaling"),
-		suspend_timeout_seconds: z
+		suspend_timeout_seconds: z.coerce
 			.bigint()
 			.optional()
 			.describe("Seconds of inactivity before the compute endpoint is suspended"),
@@ -280,7 +283,7 @@ export const databaseComputeSettingsRequestSchema = z
 			.describe(
 				"Maximum compute units (0.25 to 16.0). Must be greater than or equal to min_cu. max_cu - min_cu must not exceed 8.0.",
 			),
-		sleep_timeout_seconds: z
+		sleep_timeout_seconds: z.coerce
 			.bigint()
 			.nullish()
 			.describe(
@@ -295,7 +298,7 @@ export const databaseComputeSettingsSchema = z
 	.object({
 		min_cu: z.number().optional().describe("Minimum compute units"),
 		max_cu: z.number().optional().describe("Maximum compute units"),
-		sleep_timeout_seconds: z
+		sleep_timeout_seconds: z.coerce
 			.bigint()
 			.optional()
 			.describe("Seconds of inactivity before suspension"),
@@ -347,7 +350,7 @@ export const listDatabaseMigrationsResponseSchema = z
 		migrations: z
 			.array(
 				z.object({
-					version: z.bigint().optional().describe("The migration version number"),
+					version: z.coerce.bigint().optional().describe("The migration version number"),
 					name: z.string().optional().describe("The migration name"),
 					path: z
 						.string()
@@ -366,7 +369,7 @@ export const listDatabaseMigrationsResponseSchema = z
 
 export const databaseMigrationSchema = z
 	.object({
-		version: z.bigint().optional().describe("The migration version number"),
+		version: z.coerce.bigint().optional().describe("The migration version number"),
 		name: z.string().optional().describe("The migration name"),
 		path: z.string().optional().describe("The path to the migration file in the deploy bundle"),
 		applied: z
@@ -378,7 +381,7 @@ export const databaseMigrationSchema = z
 
 export const databaseMigrationDetailSchema = z
 	.object({
-		version: z.bigint().optional().describe("The migration version number"),
+		version: z.coerce.bigint().optional().describe("The migration version number"),
 		name: z.string().optional().describe("The migration name"),
 		path: z.string().optional().describe("The path to the migration file in the deploy bundle"),
 		content: z.string().optional().describe("The raw contents of the migration file"),
@@ -612,186 +615,189 @@ export const siteSchema = z.object({
 	prevent_non_git_prod_deploys: z.boolean().optional().default(false),
 });
 
-export const siteSetupSchema = z.object({
-	id: z.string().optional(),
-	state: z.string().optional(),
-	plan: z.string().optional(),
-	name: z.string().optional(),
-	custom_domain: z.string().optional(),
-	domain_aliases: z.array(z.string()).optional(),
-	branch_deploy_custom_domain: z.string().optional(),
-	deploy_preview_custom_domain: z.string().optional(),
-	password: z.string().optional(),
-	notification_email: z.string().optional(),
-	url: z.string().optional(),
-	ssl_url: z.string().optional(),
-	admin_url: z.string().optional(),
-	screenshot_url: z.string().optional(),
-	created_at: z.string().optional(),
-	updated_at: z.string().optional(),
-	user_id: z.string().optional(),
-	session_id: z.string().optional(),
-	ssl: z.boolean().optional(),
-	force_ssl: z.boolean().optional(),
-	managed_dns: z.boolean().optional(),
-	deploy_url: z.string().optional(),
-	published_deploy: z
-		.object({
-			id: z.string().optional(),
-			site_id: z.string().optional(),
-			user_id: z.string().optional(),
-			build_id: z.string().optional(),
-			state: z.string().optional(),
-			name: z.string().optional(),
-			url: z.string().optional(),
-			ssl_url: z.string().optional(),
-			admin_url: z.string().optional(),
-			deploy_url: z.string().optional(),
-			deploy_ssl_url: z.string().optional(),
-			screenshot_url: z.string().optional(),
-			review_id: z.number().optional(),
-			draft: z.boolean().optional(),
-			required: z.array(z.string()).optional(),
-			required_functions: z.array(z.string()).optional(),
-			required_edge_functions: z
-				.array(z.string())
-				.optional()
-				.describe(
-					"An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n",
-				),
-			error_message: z.string().optional(),
-			branch: z.string().optional(),
-			commit_ref: z.string().optional(),
-			commit_url: z.string().optional(),
-			skipped: z.boolean().optional(),
-			created_at: z.string().optional(),
-			updated_at: z.string().optional(),
-			published_at: z.string().optional(),
-			title: z.string().optional(),
-			context: z.string().optional(),
-			locked: z.boolean().optional(),
-			review_url: z.string().optional(),
-			framework: z.string().optional(),
-			skew_protection_token: z.string().optional(),
-			function_schedules: z
-				.array(
-					z.object({
-						name: z.string().optional(),
-						cron: z.string().optional(),
-					}),
-				)
-				.optional(),
-			functions_region: z
-				.string()
-				.optional()
-				.describe("The functions region for this deploy as an airport code.\n"),
-			functions_region_overrides: z
-				.array(
-					z.object({
-						name: z.string().optional(),
-						region: z.string().optional(),
-					}),
-				)
-				.optional()
-				.describe(
-					"Functions in the deploy that explicitly specify their own region\n(airport code).\n",
-				),
-		})
-		.optional(),
-	account_id: z.string().optional(),
-	account_name: z.string().optional(),
-	account_slug: z.string().optional(),
-	git_provider: z.string().optional(),
-	deploy_hook: z.string().optional(),
-	capabilities: z.object({}).catchall(z.object({})).optional(),
-	processing_settings: z
-		.object({
-			html: z
-				.object({
-					pretty_urls: z.boolean().optional(),
-				})
-				.optional(),
-		})
-		.optional(),
-	build_settings: z
-		.object({
-			id: z.int().optional(),
-			provider: z.string().optional(),
-			deploy_key_id: z.string().optional(),
-			repo_path: z.string().optional(),
-			repo_branch: z.string().optional(),
-			dir: z.string().optional(),
-			functions_dir: z
-				.string()
-				.optional()
-				.describe(
-					"The directory where Netlify can find your compiled functions to deploy them. Defaults to netlify/functions if not set. You can also define and override this setting in your project’s netlify.toml file.",
-				),
-			cmd: z
-				.string()
-				.optional()
-				.describe(
-					"The build command to run. This is the command that Netlify runs to build your site. If a site has a netlify.toml file with a build command it will override this value.",
-				),
-			allowed_branches: z.array(z.string()).optional(),
-			public_repo: z.boolean().optional(),
-			private_logs: z.boolean().optional(),
-			repo_url: z.string().optional(),
-			env: z.object({}).catchall(z.string()).optional(),
-			installation_id: z.int().optional(),
-			stop_builds: z
-				.boolean()
-				.optional()
-				.describe(
-					"When true, Netlify will not build your project automatically. You can build locally via the CLI and then publish new deploys manually via the CLI or the API.",
-				),
-		})
-		.optional(),
-	id_domain: z.string().optional(),
-	default_hooks_data: z
-		.object({
-			access_token: z.string().optional(),
-		})
-		.optional(),
-	build_image: z.string().optional(),
-	prerender: z.string().optional(),
-	functions_region: z.string().optional(),
-	prevent_non_git_prod_deploys: z.boolean().optional().default(false),
-	repo: z
-		.object({
-			id: z.int().optional(),
-			provider: z.string().optional(),
-			deploy_key_id: z.string().optional(),
-			repo_path: z.string().optional(),
-			repo_branch: z.string().optional(),
-			dir: z.string().optional(),
-			functions_dir: z
-				.string()
-				.optional()
-				.describe(
-					"The directory where Netlify can find your compiled functions to deploy them. Defaults to netlify/functions if not set. You can also define and override this setting in your project’s netlify.toml file.",
-				),
-			cmd: z
-				.string()
-				.optional()
-				.describe(
-					"The build command to run. This is the command that Netlify runs to build your site. If a site has a netlify.toml file with a build command it will override this value.",
-				),
-			allowed_branches: z.array(z.string()).optional(),
-			public_repo: z.boolean().optional(),
-			private_logs: z.boolean().optional(),
-			repo_url: z.string().optional(),
-			env: z.object({}).catchall(z.string()).optional(),
-			installation_id: z.int().optional(),
-			stop_builds: z
-				.boolean()
-				.optional()
-				.describe(
-					"When true, Netlify will not build your project automatically. You can build locally via the CLI and then publish new deploys manually via the CLI or the API.",
-				),
-		})
-		.optional(),
-});
+export const siteSetupSchema = z
+	.object({
+		id: z.string().optional(),
+		state: z.string().optional(),
+		plan: z.string().optional(),
+		name: z.string().optional(),
+		custom_domain: z.string().optional(),
+		domain_aliases: z.array(z.string()).optional(),
+		branch_deploy_custom_domain: z.string().optional(),
+		deploy_preview_custom_domain: z.string().optional(),
+		password: z.string().optional(),
+		notification_email: z.string().optional(),
+		url: z.string().optional(),
+		ssl_url: z.string().optional(),
+		admin_url: z.string().optional(),
+		screenshot_url: z.string().optional(),
+		created_at: z.string().optional(),
+		updated_at: z.string().optional(),
+		user_id: z.string().optional(),
+		session_id: z.string().optional(),
+		ssl: z.boolean().optional(),
+		force_ssl: z.boolean().optional(),
+		managed_dns: z.boolean().optional(),
+		deploy_url: z.string().optional(),
+		published_deploy: z
+			.object({
+				id: z.string().optional(),
+				site_id: z.string().optional(),
+				user_id: z.string().optional(),
+				build_id: z.string().optional(),
+				state: z.string().optional(),
+				name: z.string().optional(),
+				url: z.string().optional(),
+				ssl_url: z.string().optional(),
+				admin_url: z.string().optional(),
+				deploy_url: z.string().optional(),
+				deploy_ssl_url: z.string().optional(),
+				screenshot_url: z.string().optional(),
+				review_id: z.number().optional(),
+				draft: z.boolean().optional(),
+				required: z.array(z.string()).optional(),
+				required_functions: z.array(z.string()).optional(),
+				required_edge_functions: z
+					.array(z.string())
+					.optional()
+					.describe(
+						"An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n",
+					),
+				error_message: z.string().optional(),
+				branch: z.string().optional(),
+				commit_ref: z.string().optional(),
+				commit_url: z.string().optional(),
+				skipped: z.boolean().optional(),
+				created_at: z.string().optional(),
+				updated_at: z.string().optional(),
+				published_at: z.string().optional(),
+				title: z.string().optional(),
+				context: z.string().optional(),
+				locked: z.boolean().optional(),
+				review_url: z.string().optional(),
+				framework: z.string().optional(),
+				skew_protection_token: z.string().optional(),
+				function_schedules: z
+					.array(
+						z.object({
+							name: z.string().optional(),
+							cron: z.string().optional(),
+						}),
+					)
+					.optional(),
+				functions_region: z
+					.string()
+					.optional()
+					.describe("The functions region for this deploy as an airport code.\n"),
+				functions_region_overrides: z
+					.array(
+						z.object({
+							name: z.string().optional(),
+							region: z.string().optional(),
+						}),
+					)
+					.optional()
+					.describe(
+						"Functions in the deploy that explicitly specify their own region\n(airport code).\n",
+					),
+			})
+			.optional(),
+		account_id: z.string().optional(),
+		account_name: z.string().optional(),
+		account_slug: z.string().optional(),
+		git_provider: z.string().optional(),
+		deploy_hook: z.string().optional(),
+		capabilities: z.object({}).catchall(z.object({})).optional(),
+		processing_settings: z
+			.object({
+				html: z
+					.object({
+						pretty_urls: z.boolean().optional(),
+					})
+					.optional(),
+			})
+			.optional(),
+		build_settings: z
+			.object({
+				id: z.int().optional(),
+				provider: z.string().optional(),
+				deploy_key_id: z.string().optional(),
+				repo_path: z.string().optional(),
+				repo_branch: z.string().optional(),
+				dir: z.string().optional(),
+				functions_dir: z
+					.string()
+					.optional()
+					.describe(
+						"The directory where Netlify can find your compiled functions to deploy them. Defaults to netlify/functions if not set. You can also define and override this setting in your project’s netlify.toml file.",
+					),
+				cmd: z
+					.string()
+					.optional()
+					.describe(
+						"The build command to run. This is the command that Netlify runs to build your site. If a site has a netlify.toml file with a build command it will override this value.",
+					),
+				allowed_branches: z.array(z.string()).optional(),
+				public_repo: z.boolean().optional(),
+				private_logs: z.boolean().optional(),
+				repo_url: z.string().optional(),
+				env: z.object({}).catchall(z.string()).optional(),
+				installation_id: z.int().optional(),
+				stop_builds: z
+					.boolean()
+					.optional()
+					.describe(
+						"When true, Netlify will not build your project automatically. You can build locally via the CLI and then publish new deploys manually via the CLI or the API.",
+					),
+			})
+			.optional(),
+		id_domain: z.string().optional(),
+		default_hooks_data: z
+			.object({
+				access_token: z.string().optional(),
+			})
+			.optional(),
+		build_image: z.string().optional(),
+		prerender: z.string().optional(),
+		functions_region: z.string().optional(),
+		prevent_non_git_prod_deploys: z.boolean().optional().default(false),
+	})
+	.extend({
+		repo: z
+			.object({
+				id: z.int().optional(),
+				provider: z.string().optional(),
+				deploy_key_id: z.string().optional(),
+				repo_path: z.string().optional(),
+				repo_branch: z.string().optional(),
+				dir: z.string().optional(),
+				functions_dir: z
+					.string()
+					.optional()
+					.describe(
+						"The directory where Netlify can find your compiled functions to deploy them. Defaults to netlify/functions if not set. You can also define and override this setting in your project’s netlify.toml file.",
+					),
+				cmd: z
+					.string()
+					.optional()
+					.describe(
+						"The build command to run. This is the command that Netlify runs to build your site. If a site has a netlify.toml file with a build command it will override this value.",
+					),
+				allowed_branches: z.array(z.string()).optional(),
+				public_repo: z.boolean().optional(),
+				private_logs: z.boolean().optional(),
+				repo_url: z.string().optional(),
+				env: z.object({}).catchall(z.string()).optional(),
+				installation_id: z.int().optional(),
+				stop_builds: z
+					.boolean()
+					.optional()
+					.describe(
+						"When true, Netlify will not build your project automatically. You can build locally via the CLI and then publish new deploys manually via the CLI or the API.",
+					),
+			})
+			.optional(),
+	});
 
 export const repoInfoSchema = z.object({
 	id: z.int().optional(),
@@ -962,7 +968,7 @@ export const fileSchema = z.object({
 	path: z.string().optional(),
 	sha: z.string().optional(),
 	mime_type: z.string().optional(),
-	size: z.bigint().optional(),
+	size: z.coerce.bigint().optional(),
 });
 
 export const functionSchema = z.object({
@@ -1237,16 +1243,19 @@ export const pluginRunDataSchema = z.object({
 	text: z.string().optional(),
 });
 
-export const pluginRunSchema = z.object({
-	package: z.string().optional(),
-	version: z.string().optional(),
-	state: z.string().optional(),
-	reporting_event: z.string().optional(),
-	title: z.string().optional(),
-	summary: z.string().optional(),
-	text: z.string().optional(),
-	deploy_id: z.string().optional(),
-});
+export const pluginRunSchema = z
+	.object({
+		package: z.string().optional(),
+		version: z.string().optional(),
+		state: z.string().optional(),
+		reporting_event: z.string().optional(),
+		title: z.string().optional(),
+		summary: z.string().optional(),
+		text: z.string().optional(),
+	})
+	.extend({
+		deploy_id: z.string().optional(),
+	});
 
 export const metadataSchema = z.object({});
 
@@ -1272,8 +1281,8 @@ export const dnsZonesSchema = z.array(
 					hostname: z.string().optional(),
 					type: z.string().optional(),
 					value: z.string().optional(),
-					ttl: z.bigint().optional(),
-					priority: z.bigint().optional(),
+					ttl: z.coerce.bigint().optional(),
+					priority: z.coerce.bigint().optional(),
 					dns_zone_id: z.string().optional(),
 					site_id: z.string().optional(),
 					flag: z.int().optional(),
@@ -1308,8 +1317,8 @@ export const dnsZoneSchema = z.object({
 				hostname: z.string().optional(),
 				type: z.string().optional(),
 				value: z.string().optional(),
-				ttl: z.bigint().optional(),
-				priority: z.bigint().optional(),
+				ttl: z.coerce.bigint().optional(),
+				priority: z.coerce.bigint().optional(),
 				dns_zone_id: z.string().optional(),
 				site_id: z.string().optional(),
 				flag: z.int().optional(),
@@ -1332,11 +1341,11 @@ export const dnsRecordCreateSchema = z.object({
 	type: z.string().optional(),
 	hostname: z.string().optional(),
 	value: z.string().optional(),
-	ttl: z.bigint().optional(),
-	priority: z.bigint().optional(),
-	weight: z.bigint().optional(),
-	port: z.bigint().optional(),
-	flag: z.bigint().optional(),
+	ttl: z.coerce.bigint().optional(),
+	priority: z.coerce.bigint().optional(),
+	weight: z.coerce.bigint().optional(),
+	port: z.coerce.bigint().optional(),
+	flag: z.coerce.bigint().optional(),
 	tag: z.string().optional(),
 });
 
@@ -1346,8 +1355,8 @@ export const dnsRecordsSchema = z.array(
 		hostname: z.string().optional(),
 		type: z.string().optional(),
 		value: z.string().optional(),
-		ttl: z.bigint().optional(),
-		priority: z.bigint().optional(),
+		ttl: z.coerce.bigint().optional(),
+		priority: z.coerce.bigint().optional(),
 		dns_zone_id: z.string().optional(),
 		site_id: z.string().optional(),
 		flag: z.int().optional(),
@@ -1361,8 +1370,8 @@ export const dnsRecordSchema = z.object({
 	hostname: z.string().optional(),
 	type: z.string().optional(),
 	value: z.string().optional(),
-	ttl: z.bigint().optional(),
-	priority: z.bigint().optional(),
+	ttl: z.coerce.bigint().optional(),
+	priority: z.coerce.bigint().optional(),
 	dns_zone_id: z.string().optional(),
 	site_id: z.string().optional(),
 	flag: z.int().optional(),
@@ -1403,7 +1412,7 @@ export const assetSchema = z.object({
 	url: z.string().optional(),
 	key: z.string().optional(),
 	visibility: z.string().optional(),
-	size: z.bigint().optional(),
+	size: z.coerce.bigint().optional(),
 	created_at: z.string().optional(),
 	updated_at: z.string().optional(),
 });
@@ -1431,7 +1440,7 @@ export const assetSignatureSchema = z.object({
 			url: z.string().optional(),
 			key: z.string().optional(),
 			visibility: z.string().optional(),
-			size: z.bigint().optional(),
+			size: z.coerce.bigint().optional(),
 			created_at: z.string().optional(),
 			updated_at: z.string().optional(),
 		})
@@ -1679,18 +1688,21 @@ export const agentRunnerHookSetupSchema = z.object({
 	agent: z.string().optional(),
 });
 
-export const agentRunnerHookCreatedSchema = z.object({
-	id: z.string().optional(),
-	site_id: z.string().optional(),
-	title: z.string().optional(),
-	branch: z.string().optional(),
-	prompt: z.string().optional(),
-	agent: z.string().optional(),
-	url: z.string().optional(),
-	msg: z.string().optional(),
-	created_at: z.string().optional(),
-	secret: z.string().optional(),
-});
+export const agentRunnerHookCreatedSchema = z
+	.object({
+		id: z.string().optional(),
+		site_id: z.string().optional(),
+		title: z.string().optional(),
+		branch: z.string().optional(),
+		prompt: z.string().optional(),
+		agent: z.string().optional(),
+		url: z.string().optional(),
+		msg: z.string().optional(),
+		created_at: z.string().optional(),
+	})
+	.extend({
+		secret: z.string().optional(),
+	});
 
 export const accountUsageCapabilitySchema = z.object({
 	included: z.int().optional(),
@@ -1732,7 +1744,7 @@ export const userSchema = z.object({
 	avatar_url: z.string().optional(),
 	email: z.string().optional(),
 	affiliate_id: z.string().optional(),
-	site_count: z.bigint().optional(),
+	site_count: z.coerce.bigint().optional(),
 	created_at: z.string().optional(),
 	last_login: z.string().optional(),
 	login_providers: z.array(z.string()).optional(),
@@ -1744,12 +1756,12 @@ export const userSchema = z.object({
 });
 
 export const errorSchemaSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
 export const errorResponseSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
@@ -1937,381 +1949,7 @@ export const providerDefinitionSchema = z.object({
 export const aiGatewayTokenSchema = z.object({
 	token: z.string().optional().describe("The AI Gateway authentication token"),
 	url: z.string().optional().describe("AI gateway base url"),
-	expires_at: z.bigint().optional().describe("Unix timestamp when the token expires"),
-});
-
-export const updateSiteMetadataMetadataSchema = z.object({});
-
-export const createSiteSiteSchema = z.object({
-	id: z.string().optional(),
-	state: z.string().optional(),
-	plan: z.string().optional(),
-	name: z.string().optional(),
-	custom_domain: z.string().optional(),
-	domain_aliases: z.array(z.string()).optional(),
-	branch_deploy_custom_domain: z.string().optional(),
-	deploy_preview_custom_domain: z.string().optional(),
-	password: z.string().optional(),
-	notification_email: z.string().optional(),
-	url: z.string().optional(),
-	ssl_url: z.string().optional(),
-	admin_url: z.string().optional(),
-	screenshot_url: z.string().optional(),
-	created_at: z.string().optional(),
-	updated_at: z.string().optional(),
-	user_id: z.string().optional(),
-	session_id: z.string().optional(),
-	ssl: z.boolean().optional(),
-	force_ssl: z.boolean().optional(),
-	managed_dns: z.boolean().optional(),
-	deploy_url: z.string().optional(),
-	published_deploy: z
-		.object({
-			id: z.string().optional(),
-			site_id: z.string().optional(),
-			user_id: z.string().optional(),
-			build_id: z.string().optional(),
-			state: z.string().optional(),
-			name: z.string().optional(),
-			url: z.string().optional(),
-			ssl_url: z.string().optional(),
-			admin_url: z.string().optional(),
-			deploy_url: z.string().optional(),
-			deploy_ssl_url: z.string().optional(),
-			screenshot_url: z.string().optional(),
-			review_id: z.number().optional(),
-			draft: z.boolean().optional(),
-			required: z.array(z.string()).optional(),
-			required_functions: z.array(z.string()).optional(),
-			required_edge_functions: z
-				.array(z.string())
-				.optional()
-				.describe(
-					"An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n",
-				),
-			error_message: z.string().optional(),
-			branch: z.string().optional(),
-			commit_ref: z.string().optional(),
-			commit_url: z.string().optional(),
-			skipped: z.boolean().optional(),
-			created_at: z.string().optional(),
-			updated_at: z.string().optional(),
-			published_at: z.string().optional(),
-			title: z.string().optional(),
-			context: z.string().optional(),
-			locked: z.boolean().optional(),
-			review_url: z.string().optional(),
-			framework: z.string().optional(),
-			skew_protection_token: z.string().optional(),
-			function_schedules: z
-				.array(
-					z.object({
-						name: z.string().optional(),
-						cron: z.string().optional(),
-					}),
-				)
-				.optional(),
-			functions_region: z
-				.string()
-				.optional()
-				.describe("The functions region for this deploy as an airport code.\n"),
-			functions_region_overrides: z
-				.array(
-					z.object({
-						name: z.string().optional(),
-						region: z.string().optional(),
-					}),
-				)
-				.optional()
-				.describe(
-					"Functions in the deploy that explicitly specify their own region\n(airport code).\n",
-				),
-		})
-		.optional(),
-	account_id: z.string().optional(),
-	account_name: z.string().optional(),
-	account_slug: z.string().optional(),
-	git_provider: z.string().optional(),
-	deploy_hook: z.string().optional(),
-	capabilities: z.object({}).catchall(z.object({})).optional(),
-	processing_settings: z
-		.object({
-			html: z
-				.object({
-					pretty_urls: z.boolean().optional(),
-				})
-				.optional(),
-		})
-		.optional(),
-	build_settings: z
-		.object({
-			id: z.int().optional(),
-			provider: z.string().optional(),
-			deploy_key_id: z.string().optional(),
-			repo_path: z.string().optional(),
-			repo_branch: z.string().optional(),
-			dir: z.string().optional(),
-			functions_dir: z
-				.string()
-				.optional()
-				.describe(
-					"The directory where Netlify can find your compiled functions to deploy them. Defaults to netlify/functions if not set. You can also define and override this setting in your project’s netlify.toml file.",
-				),
-			cmd: z
-				.string()
-				.optional()
-				.describe(
-					"The build command to run. This is the command that Netlify runs to build your site. If a site has a netlify.toml file with a build command it will override this value.",
-				),
-			allowed_branches: z.array(z.string()).optional(),
-			public_repo: z.boolean().optional(),
-			private_logs: z.boolean().optional(),
-			repo_url: z.string().optional(),
-			env: z.object({}).catchall(z.string()).optional(),
-			installation_id: z.int().optional(),
-			stop_builds: z
-				.boolean()
-				.optional()
-				.describe(
-					"When true, Netlify will not build your project automatically. You can build locally via the CLI and then publish new deploys manually via the CLI or the API.",
-				),
-		})
-		.optional(),
-	id_domain: z.string().optional(),
-	default_hooks_data: z
-		.object({
-			access_token: z.string().optional(),
-		})
-		.optional(),
-	build_image: z.string().optional(),
-	prerender: z.string().optional(),
-	functions_region: z.string().optional(),
-	prevent_non_git_prod_deploys: z.boolean().optional().default(false),
-	repo: z
-		.object({
-			id: z.int().optional(),
-			provider: z.string().optional(),
-			deploy_key_id: z.string().optional(),
-			repo_path: z.string().optional(),
-			repo_branch: z.string().optional(),
-			dir: z.string().optional(),
-			functions_dir: z
-				.string()
-				.optional()
-				.describe(
-					"The directory where Netlify can find your compiled functions to deploy them. Defaults to netlify/functions if not set. You can also define and override this setting in your project’s netlify.toml file.",
-				),
-			cmd: z
-				.string()
-				.optional()
-				.describe(
-					"The build command to run. This is the command that Netlify runs to build your site. If a site has a netlify.toml file with a build command it will override this value.",
-				),
-			allowed_branches: z.array(z.string()).optional(),
-			public_repo: z.boolean().optional(),
-			private_logs: z.boolean().optional(),
-			repo_url: z.string().optional(),
-			env: z.object({}).catchall(z.string()).optional(),
-			installation_id: z.int().optional(),
-			stop_builds: z
-				.boolean()
-				.optional()
-				.describe(
-					"When true, Netlify will not build your project automatically. You can build locally via the CLI and then publish new deploys manually via the CLI or the API.",
-				),
-		})
-		.optional(),
-});
-
-export const createHookBySiteIdHookSchema = z.object({
-	id: z.string().optional(),
-	site_id: z.string().optional(),
-	type: z.string().optional(),
-	event: z.string().optional(),
-	data: z.object({}).optional(),
-	created_at: z.string().optional(),
-	updated_at: z.string().optional(),
-	disabled: z.boolean().optional(),
-});
-
-export const createSiteSnippetSnippetSchema = z.object({
-	id: z.int().optional(),
-	site_id: z.string().optional(),
-	title: z.string().optional(),
-	general: z.string().optional(),
-	general_position: z.string().optional(),
-	goal: z.string().optional(),
-	goal_position: z.string().optional(),
-});
-
-export const setSiteDatabaseBranchComputeSettingsComputesettingsSchema = z
-	.object({
-		min_cu: z
-			.number()
-			.nullish()
-			.describe("Minimum compute units (0.25 to 16.0). Must be less than or equal to max_cu."),
-		max_cu: z
-			.number()
-			.nullish()
-			.describe(
-				"Maximum compute units (0.25 to 16.0). Must be greater than or equal to min_cu. max_cu - min_cu must not exceed 8.0.",
-			),
-		sleep_timeout_seconds: z
-			.bigint()
-			.nullish()
-			.describe(
-				"Seconds of inactivity before the compute endpoint is suspended. Use -1 for always on, or a non-negative value.",
-			),
-	})
-	.describe(
-		"Request body for setting compute settings. All fields are optional; only provided fields are updated.",
-	);
-
-export const createSiteBuildHookBuildhookSchema = z.object({
-	title: z.string().optional(),
-	branch: z.string().optional(),
-});
-
-export const createSiteDeployDeploySchema = z
-	.object({
-		files: z
-			.object({})
-			.optional()
-			.describe("A hash mapping file paths to SHA1 digests of the file contents."),
-		zip: z
-			.instanceof(File)
-			.optional()
-			.describe(
-				"A zip file containing the site files to deploy. Alternative to 'files'.\nTo use this field, set Content-Type to 'application/json' and include the zip content here.\nAlternatively, you can set Content-Type to 'application/zip' and send the zip as the raw request body (not as JSON).\n",
-			),
-		draft: z.boolean().optional(),
-		async: z.boolean().optional(),
-		functions: z.object({}).optional(),
-		edge_functions: z
-			.object({})
-			.optional()
-			.describe(
-				"A hash mapping edge-function bundle formats to the code_sha of each bundle. The\nresponse's required_edge_functions lists which of these still need to be uploaded.\n",
-			),
-		function_schedules: z
-			.array(
-				z.object({
-					name: z.string().optional(),
-					cron: z.string().optional(),
-				}),
-			)
-			.optional(),
-		functions_config: z
-			.object({})
-			.catchall(
-				z.object({
-					display_name: z.string().optional(),
-					generator: z.string().optional(),
-					build_data: z.object({}).optional(),
-					memory: z
-						.int()
-						.optional()
-						.describe("The function's memory allocation in MB. Mutually exclusive with `vcpu`.\n"),
-					routes: z
-						.array(
-							z.object({
-								pattern: z.string().optional(),
-								literal: z.string().optional(),
-								expression: z.string().optional(),
-								methods: z
-									.array(z.enum(["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"]))
-									.optional(),
-								prefer_static: z.boolean().optional(),
-							}),
-						)
-						.optional(),
-					excluded_routes: z
-						.array(
-							z.object({
-								pattern: z.string().optional(),
-								literal: z.string().optional(),
-								expression: z.string().optional(),
-							}),
-						)
-						.optional(),
-					priority: z.int().optional(),
-					region: z.string().optional(),
-					traffic_rules: z
-						.object({
-							action: z
-								.object({
-									type: z.string().optional(),
-									config: z
-										.object({
-											to: z.string().optional(),
-											rate_limit_config: z
-												.object({
-													algorithm: z.enum(["sliding_window"]).optional(),
-													window_size: z.int().optional(),
-													window_limit: z.int().optional(),
-												})
-												.optional(),
-											aggregate: z
-												.object({
-													keys: z
-														.array(
-															z.object({
-																type: z.enum(["ip", "domain"]).optional(),
-															}),
-														)
-														.optional(),
-												})
-												.optional(),
-										})
-										.optional(),
-								})
-								.optional(),
-						})
-						.optional(),
-					vcpu: z
-						.number()
-						.optional()
-						.describe("Number of vCPUs to provision for the function. Allowed range is\n0.5–2.\n"),
-					event_subscriptions: z.array(z.string()).optional(),
-				}),
-			)
-			.optional(),
-		branch: z.string().optional(),
-		framework: z.string().optional(),
-		framework_version: z.string().optional(),
-		environment: z
-			.array(
-				z.object({
-					key: z.string(),
-					value: z.string(),
-					is_secret: z.boolean(),
-					scopes: z.array(z.enum(["builds", "functions", "runtime", "post-processing"])),
-				}),
-			)
-			.optional()
-			.describe(
-				"A list of deploy-specific environment variable data. Data specified this way applies only\nto this specific deploy and is merged into any existing environment variables set on the\naccount and site.\n\nDeploy-specific environment variable data takes precedence over account and site\nenvironment variable data: For example, a deploy-specific variable with the key `NODE_ENV`\nwill take priority over any existing site- and account-level environment variable data\nwith the key `NODE_ENV`.\n\nEnvironment variable data may be provided at one of two times:\n\n- When creating a new Deploy with deploy files (most common)\n- When finalizing an existing Deploy with deploy files\n\nOnce set, environment variables for a specific deploy cannot be modified. Subsequent\nattempts to modify environment variable data for a deploy will be ignored.\n",
-			),
-	})
-	.describe(
-		"Deploy files can be provided in two ways:\n1. As a JSON object using 'files' (a hash mapping file paths to SHA1 digests), OR\n2. As a zip file using one of these methods:\n   - Set Content-Type to 'application/zip' and send the zip file as the raw request body\n   - Include the zip file content in the 'zip' field of this JSON object with Content-Type 'application/json'\n",
-	);
-
-export const createSplitTestBranchTestsSchema = z.object({
-	branch_tests: z.object({}).optional(),
-});
-
-export const createSiteDevServerHookDevserverhookSchema = z.object({
-	title: z.string().optional(),
-	branch: z.string().optional(),
-	type: z.enum(["new_dev_server", "content_refresh"]).optional(),
-});
-
-export const createSiteAgentRunnerHookAgentrunnerhookSchema = z.object({
-	title: z.string().optional(),
-	branch: z.string().optional(),
-	prompt: z.string().optional(),
-	agent: z.string().optional(),
+	expires_at: z.coerce.bigint().optional().describe("Unix timestamp when the token expires"),
 });
 
 export const listSitesQueryNameSchema = z.string().optional();
@@ -2472,14 +2110,13 @@ export const listSitesStatus200Schema = z.array(
 );
 
 export const listSitesStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const listSitesResponseSchema = z.union([
-	listSitesStatus200Schema,
-	listSitesStatusDefaultSchema,
-]);
+export const listSitesResponseSchema = listSitesStatus200Schema;
+
+export const listSitesErrorSchema = listSitesStatusDefaultSchema;
 
 export const createSiteQueryConfigureDnsSchema = z.boolean().optional();
 
@@ -2631,16 +2268,15 @@ export const createSiteStatus201Schema = z.object({
 });
 
 export const createSiteStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const createSiteResponseSchema = z.union([
-	createSiteStatus201Schema,
-	createSiteStatusDefaultSchema,
-]);
+export const createSiteResponseSchema = createSiteStatus201Schema;
 
-export const createSiteDataSchema = z
+export const createSiteErrorSchema = createSiteStatusDefaultSchema;
+
+export const createSiteBodySchema = z
 	.object({
 		id: z.string().optional(),
 		state: z.string().optional(),
@@ -2786,6 +2422,8 @@ export const createSiteDataSchema = z
 		prerender: z.string().optional(),
 		functions_region: z.string().optional(),
 		prevent_non_git_prod_deploys: z.boolean().optional().default(false),
+	})
+	.extend({
 		repo: z
 			.object({
 				id: z.int().optional(),
@@ -2820,8 +2458,7 @@ export const createSiteDataSchema = z
 					),
 			})
 			.optional(),
-	})
-	.optional();
+	});
 
 export const getSitePathSiteIdSchema = z.string();
 
@@ -2975,11 +2612,13 @@ export const getSiteStatus200Schema = z.object({
 });
 
 export const getSiteStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const getSiteResponseSchema = z.union([getSiteStatus200Schema, getSiteStatusDefaultSchema]);
+export const getSiteResponseSchema = getSiteStatus200Schema;
+
+export const getSiteErrorSchema = getSiteStatusDefaultSchema;
 
 export const updateSitePathSiteIdSchema = z.string();
 
@@ -3131,16 +2770,15 @@ export const updateSiteStatus200Schema = z.object({
 });
 
 export const updateSiteStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const updateSiteResponseSchema = z.union([
-	updateSiteStatus200Schema,
-	updateSiteStatusDefaultSchema,
-]);
+export const updateSiteResponseSchema = updateSiteStatus200Schema;
 
-export const updateSiteDataSchema = z
+export const updateSiteErrorSchema = updateSiteStatusDefaultSchema;
+
+export const updateSiteBodySchema = z
 	.object({
 		id: z.string().optional(),
 		state: z.string().optional(),
@@ -3286,6 +2924,8 @@ export const updateSiteDataSchema = z
 		prerender: z.string().optional(),
 		functions_region: z.string().optional(),
 		prevent_non_git_prod_deploys: z.boolean().optional().default(false),
+	})
+	.extend({
 		repo: z
 			.object({
 				id: z.int().optional(),
@@ -3320,22 +2960,20 @@ export const updateSiteDataSchema = z
 					),
 			})
 			.optional(),
-	})
-	.optional();
+	});
 
 export const deleteSitePathSiteIdSchema = z.string();
 
 export const deleteSiteStatus204Schema = z.unknown();
 
 export const deleteSiteStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const deleteSiteResponseSchema = z.union([
-	deleteSiteStatus204Schema,
-	deleteSiteStatusDefaultSchema,
-]);
+export const deleteSiteResponseSchema = deleteSiteStatus204Schema;
+
+export const deleteSiteErrorSchema = deleteSiteStatusDefaultSchema;
 
 export const provisionSiteTLSCertificatePathSiteIdSchema = z.string();
 
@@ -3365,12 +3003,13 @@ export const provisionSiteTLSCertificateStatus200Schema = z.object({
 export const provisionSiteTLSCertificateStatus422Schema = z.unknown();
 
 export const provisionSiteTLSCertificateStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const provisionSiteTLSCertificateResponseSchema = z.union([
-	provisionSiteTLSCertificateStatus200Schema,
+export const provisionSiteTLSCertificateResponseSchema = provisionSiteTLSCertificateStatus200Schema;
+
+export const provisionSiteTLSCertificateErrorSchema = z.union([
 	provisionSiteTLSCertificateStatus422Schema,
 	provisionSiteTLSCertificateStatusDefaultSchema,
 ]);
@@ -3386,14 +3025,13 @@ export const showSiteTLSCertificateStatus200Schema = z.object({
 });
 
 export const showSiteTLSCertificateStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const showSiteTLSCertificateResponseSchema = z.union([
-	showSiteTLSCertificateStatus200Schema,
-	showSiteTLSCertificateStatusDefaultSchema,
-]);
+export const showSiteTLSCertificateResponseSchema = showSiteTLSCertificateStatus200Schema;
+
+export const showSiteTLSCertificateErrorSchema = showSiteTLSCertificateStatusDefaultSchema;
 
 export const getAllCertificatesPathSiteIdSchema = z.string();
 
@@ -3413,8 +3051,9 @@ export const getAllCertificatesStatus404Schema = z.unknown();
 
 export const getAllCertificatesStatus422Schema = z.unknown();
 
-export const getAllCertificatesResponseSchema = z.union([
-	getAllCertificatesStatus200Schema,
+export const getAllCertificatesResponseSchema = getAllCertificatesStatus200Schema;
+
+export const getAllCertificatesErrorSchema = z.union([
 	getAllCertificatesStatus404Schema,
 	getAllCertificatesStatus422Schema,
 ]);
@@ -3500,14 +3139,13 @@ export const getEnvVarsStatus200Schema = z.array(
 );
 
 export const getEnvVarsStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const getEnvVarsResponseSchema = z.union([
-	getEnvVarsStatus200Schema,
-	getEnvVarsStatusDefaultSchema,
-]);
+export const getEnvVarsResponseSchema = getEnvVarsStatus200Schema;
+
+export const getEnvVarsErrorSchema = getEnvVarsStatusDefaultSchema;
 
 export const createEnvVarsPathAccountIdSchema = z.string().describe("Scope response to account_id");
 
@@ -3580,16 +3218,15 @@ export const createEnvVarsStatus201Schema = z.array(
 );
 
 export const createEnvVarsStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const createEnvVarsResponseSchema = z.union([
-	createEnvVarsStatus201Schema,
-	createEnvVarsStatusDefaultSchema,
-]);
+export const createEnvVarsResponseSchema = createEnvVarsStatus201Schema;
 
-export const createEnvVarsDataSchema = z
+export const createEnvVarsErrorSchema = createEnvVarsStatusDefaultSchema;
+
+export const createEnvVarsBodySchema = z
 	.array(
 		z.object({
 			key: z
@@ -3717,14 +3354,13 @@ export const getSiteEnvVarsStatus200Schema = z.array(
 );
 
 export const getSiteEnvVarsStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const getSiteEnvVarsResponseSchema = z.union([
-	getSiteEnvVarsStatus200Schema,
-	getSiteEnvVarsStatusDefaultSchema,
-]);
+export const getSiteEnvVarsResponseSchema = getSiteEnvVarsStatus200Schema;
+
+export const getSiteEnvVarsErrorSchema = getSiteEnvVarsStatusDefaultSchema;
 
 export const getEnvVarPathAccountIdSchema = z.string().describe("Scope response to account_id");
 
@@ -3803,14 +3439,13 @@ export const getEnvVarStatus200Schema = z
 	.describe("Environment variable model definition");
 
 export const getEnvVarStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const getEnvVarResponseSchema = z.union([
-	getEnvVarStatus200Schema,
-	getEnvVarStatusDefaultSchema,
-]);
+export const getEnvVarResponseSchema = getEnvVarStatus200Schema;
+
+export const getEnvVarErrorSchema = getEnvVarStatusDefaultSchema;
 
 export const updateEnvVarPathAccountIdSchema = z.string().describe("Scope response to account_id");
 
@@ -3887,16 +3522,15 @@ export const updateEnvVarStatus200Schema = z
 	.describe("Environment variable model definition");
 
 export const updateEnvVarStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const updateEnvVarResponseSchema = z.union([
-	updateEnvVarStatus200Schema,
-	updateEnvVarStatusDefaultSchema,
-]);
+export const updateEnvVarResponseSchema = updateEnvVarStatus200Schema;
 
-export const updateEnvVarDataSchema = z
+export const updateEnvVarErrorSchema = updateEnvVarStatusDefaultSchema;
+
+export const updateEnvVarBodySchema = z
 	.object({
 		key: z
 			.string()
@@ -4023,16 +3657,15 @@ export const setEnvVarValueStatus201Schema = z
 	.describe("Environment variable model definition");
 
 export const setEnvVarValueStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const setEnvVarValueResponseSchema = z.union([
-	setEnvVarValueStatus201Schema,
-	setEnvVarValueStatusDefaultSchema,
-]);
+export const setEnvVarValueResponseSchema = setEnvVarValueStatus201Schema;
 
-export const setEnvVarValueDataSchema = z
+export const setEnvVarValueErrorSchema = setEnvVarValueStatusDefaultSchema;
+
+export const setEnvVarValueBodySchema = z
 	.object({
 		context: z
 			.enum(["all", "dev", "dev-server", "branch-deploy", "deploy-preview", "production", "branch"])
@@ -4064,14 +3697,13 @@ export const deleteEnvVarQuerySiteIdSchema = z
 export const deleteEnvVarStatus204Schema = z.unknown();
 
 export const deleteEnvVarStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const deleteEnvVarResponseSchema = z.union([
-	deleteEnvVarStatus204Schema,
-	deleteEnvVarStatusDefaultSchema,
-]);
+export const deleteEnvVarResponseSchema = deleteEnvVarStatus204Schema;
+
+export const deleteEnvVarErrorSchema = deleteEnvVarStatusDefaultSchema;
 
 export const deleteEnvVarValuePathAccountIdSchema = z
 	.string()
@@ -4093,14 +3725,13 @@ export const deleteEnvVarValueQuerySiteIdSchema = z
 export const deleteEnvVarValueStatus204Schema = z.unknown();
 
 export const deleteEnvVarValueStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const deleteEnvVarValueResponseSchema = z.union([
-	deleteEnvVarValueStatus204Schema,
-	deleteEnvVarValueStatusDefaultSchema,
-]);
+export const deleteEnvVarValueResponseSchema = deleteEnvVarValueStatus204Schema;
+
+export const deleteEnvVarValueErrorSchema = deleteEnvVarValueStatusDefaultSchema;
 
 export const searchSiteFunctionsPathSiteIdSchema = z.string();
 
@@ -4118,14 +3749,13 @@ export const searchSiteFunctionsStatus200Schema = z.array(
 );
 
 export const searchSiteFunctionsStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const searchSiteFunctionsResponseSchema = z.union([
-	searchSiteFunctionsStatus200Schema,
-	searchSiteFunctionsStatusDefaultSchema,
-]);
+export const searchSiteFunctionsResponseSchema = searchSiteFunctionsStatus200Schema;
+
+export const searchSiteFunctionsErrorSchema = searchSiteFunctionsStatusDefaultSchema;
 
 export const listSiteFormsPathSiteIdSchema = z.string();
 
@@ -4142,14 +3772,13 @@ export const listSiteFormsStatus200Schema = z.array(
 );
 
 export const listSiteFormsStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const listSiteFormsResponseSchema = z.union([
-	listSiteFormsStatus200Schema,
-	listSiteFormsStatusDefaultSchema,
-]);
+export const listSiteFormsResponseSchema = listSiteFormsStatus200Schema;
+
+export const listSiteFormsErrorSchema = listSiteFormsStatusDefaultSchema;
 
 export const deleteSiteFormPathSiteIdSchema = z.string();
 
@@ -4158,14 +3787,13 @@ export const deleteSiteFormPathFormIdSchema = z.string();
 export const deleteSiteFormStatus204Schema = z.unknown();
 
 export const deleteSiteFormStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const deleteSiteFormResponseSchema = z.union([
-	deleteSiteFormStatus204Schema,
-	deleteSiteFormStatusDefaultSchema,
-]);
+export const deleteSiteFormResponseSchema = deleteSiteFormStatus204Schema;
+
+export const deleteSiteFormErrorSchema = deleteSiteFormStatusDefaultSchema;
 
 export const listSiteSubmissionsPathSiteIdSchema = z.string();
 
@@ -4191,14 +3819,13 @@ export const listSiteSubmissionsStatus200Schema = z.array(
 );
 
 export const listSiteSubmissionsStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const listSiteSubmissionsResponseSchema = z.union([
-	listSiteSubmissionsStatus200Schema,
-	listSiteSubmissionsStatusDefaultSchema,
-]);
+export const listSiteSubmissionsResponseSchema = listSiteSubmissionsStatus200Schema;
+
+export const listSiteSubmissionsErrorSchema = listSiteSubmissionsStatusDefaultSchema;
 
 export const listSiteFilesPathSiteIdSchema = z.string();
 
@@ -4208,19 +3835,18 @@ export const listSiteFilesStatus200Schema = z.array(
 		path: z.string().optional(),
 		sha: z.string().optional(),
 		mime_type: z.string().optional(),
-		size: z.bigint().optional(),
+		size: z.coerce.bigint().optional(),
 	}),
 );
 
 export const listSiteFilesStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const listSiteFilesResponseSchema = z.union([
-	listSiteFilesStatus200Schema,
-	listSiteFilesStatusDefaultSchema,
-]);
+export const listSiteFilesResponseSchema = listSiteFilesStatus200Schema;
+
+export const listSiteFilesErrorSchema = listSiteFilesStatusDefaultSchema;
 
 export const listSiteAssetsPathSiteIdSchema = z.string();
 
@@ -4235,27 +3861,26 @@ export const listSiteAssetsStatus200Schema = z.array(
 		url: z.string().optional(),
 		key: z.string().optional(),
 		visibility: z.string().optional(),
-		size: z.bigint().optional(),
+		size: z.coerce.bigint().optional(),
 		created_at: z.string().optional(),
 		updated_at: z.string().optional(),
 	}),
 );
 
 export const listSiteAssetsStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const listSiteAssetsResponseSchema = z.union([
-	listSiteAssetsStatus200Schema,
-	listSiteAssetsStatusDefaultSchema,
-]);
+export const listSiteAssetsResponseSchema = listSiteAssetsStatus200Schema;
+
+export const listSiteAssetsErrorSchema = listSiteAssetsStatusDefaultSchema;
 
 export const createSiteAssetPathSiteIdSchema = z.string();
 
 export const createSiteAssetQueryNameSchema = z.string();
 
-export const createSiteAssetQuerySizeSchema = z.bigint();
+export const createSiteAssetQuerySizeSchema = z.coerce.bigint();
 
 export const createSiteAssetQueryContentTypeSchema = z.string();
 
@@ -4279,7 +3904,7 @@ export const createSiteAssetStatus201Schema = z.object({
 			url: z.string().optional(),
 			key: z.string().optional(),
 			visibility: z.string().optional(),
-			size: z.bigint().optional(),
+			size: z.coerce.bigint().optional(),
 			created_at: z.string().optional(),
 			updated_at: z.string().optional(),
 		})
@@ -4287,14 +3912,13 @@ export const createSiteAssetStatus201Schema = z.object({
 });
 
 export const createSiteAssetStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const createSiteAssetResponseSchema = z.union([
-	createSiteAssetStatus201Schema,
-	createSiteAssetStatusDefaultSchema,
-]);
+export const createSiteAssetResponseSchema = createSiteAssetStatus201Schema;
+
+export const createSiteAssetErrorSchema = createSiteAssetStatusDefaultSchema;
 
 export const getSiteAssetInfoPathSiteIdSchema = z.string();
 
@@ -4310,20 +3934,19 @@ export const getSiteAssetInfoStatus200Schema = z.object({
 	url: z.string().optional(),
 	key: z.string().optional(),
 	visibility: z.string().optional(),
-	size: z.bigint().optional(),
+	size: z.coerce.bigint().optional(),
 	created_at: z.string().optional(),
 	updated_at: z.string().optional(),
 });
 
 export const getSiteAssetInfoStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const getSiteAssetInfoResponseSchema = z.union([
-	getSiteAssetInfoStatus200Schema,
-	getSiteAssetInfoStatusDefaultSchema,
-]);
+export const getSiteAssetInfoResponseSchema = getSiteAssetInfoStatus200Schema;
+
+export const getSiteAssetInfoErrorSchema = getSiteAssetInfoStatusDefaultSchema;
 
 export const updateSiteAssetPathSiteIdSchema = z.string();
 
@@ -4341,20 +3964,19 @@ export const updateSiteAssetStatus200Schema = z.object({
 	url: z.string().optional(),
 	key: z.string().optional(),
 	visibility: z.string().optional(),
-	size: z.bigint().optional(),
+	size: z.coerce.bigint().optional(),
 	created_at: z.string().optional(),
 	updated_at: z.string().optional(),
 });
 
 export const updateSiteAssetStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const updateSiteAssetResponseSchema = z.union([
-	updateSiteAssetStatus200Schema,
-	updateSiteAssetStatusDefaultSchema,
-]);
+export const updateSiteAssetResponseSchema = updateSiteAssetStatus200Schema;
+
+export const updateSiteAssetErrorSchema = updateSiteAssetStatusDefaultSchema;
 
 export const deleteSiteAssetPathSiteIdSchema = z.string();
 
@@ -4363,14 +3985,13 @@ export const deleteSiteAssetPathAssetIdSchema = z.string();
 export const deleteSiteAssetStatus204Schema = z.unknown();
 
 export const deleteSiteAssetStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const deleteSiteAssetResponseSchema = z.union([
-	deleteSiteAssetStatus204Schema,
-	deleteSiteAssetStatusDefaultSchema,
-]);
+export const deleteSiteAssetResponseSchema = deleteSiteAssetStatus204Schema;
+
+export const deleteSiteAssetErrorSchema = deleteSiteAssetStatusDefaultSchema;
 
 export const getSiteAssetPublicSignaturePathSiteIdSchema = z.string();
 
@@ -4381,14 +4002,14 @@ export const getSiteAssetPublicSignatureStatus200Schema = z.object({
 });
 
 export const getSiteAssetPublicSignatureStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const getSiteAssetPublicSignatureResponseSchema = z.union([
-	getSiteAssetPublicSignatureStatus200Schema,
-	getSiteAssetPublicSignatureStatusDefaultSchema,
-]);
+export const getSiteAssetPublicSignatureResponseSchema = getSiteAssetPublicSignatureStatus200Schema;
+
+export const getSiteAssetPublicSignatureErrorSchema =
+	getSiteAssetPublicSignatureStatusDefaultSchema;
 
 export const getSiteFileByPathNamePathSiteIdSchema = z.string();
 
@@ -4399,18 +4020,17 @@ export const getSiteFileByPathNameStatus200Schema = z.object({
 	path: z.string().optional(),
 	sha: z.string().optional(),
 	mime_type: z.string().optional(),
-	size: z.bigint().optional(),
+	size: z.coerce.bigint().optional(),
 });
 
 export const getSiteFileByPathNameStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const getSiteFileByPathNameResponseSchema = z.union([
-	getSiteFileByPathNameStatus200Schema,
-	getSiteFileByPathNameStatusDefaultSchema,
-]);
+export const getSiteFileByPathNameResponseSchema = getSiteFileByPathNameStatus200Schema;
+
+export const getSiteFileByPathNameErrorSchema = getSiteFileByPathNameStatusDefaultSchema;
 
 export const purgeCacheStatus202Schema = z.unknown();
 
@@ -4418,13 +4038,14 @@ export const purgeCacheStatus400Schema = z.unknown();
 
 export const purgeCacheStatus404Schema = z.unknown();
 
-export const purgeCacheResponseSchema = z.union([
-	purgeCacheStatus202Schema,
+export const purgeCacheResponseSchema = purgeCacheStatus202Schema;
+
+export const purgeCacheErrorSchema = z.union([
 	purgeCacheStatus400Schema,
 	purgeCacheStatus404Schema,
 ]);
 
-export const purgeCacheDataSchema = z.object({
+export const purgeCacheBodySchema = z.object({
 	site_id: z.string().optional(),
 	site_slug: z.string().optional(),
 	cache_tags: z.array(z.string()).optional(),
@@ -4445,14 +4066,13 @@ export const listSiteSnippetsStatus200Schema = z.array(
 );
 
 export const listSiteSnippetsStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const listSiteSnippetsResponseSchema = z.union([
-	listSiteSnippetsStatus200Schema,
-	listSiteSnippetsStatusDefaultSchema,
-]);
+export const listSiteSnippetsResponseSchema = listSiteSnippetsStatus200Schema;
+
+export const listSiteSnippetsErrorSchema = listSiteSnippetsStatusDefaultSchema;
 
 export const createSiteSnippetPathSiteIdSchema = z.string();
 
@@ -4467,26 +4087,23 @@ export const createSiteSnippetStatus201Schema = z.object({
 });
 
 export const createSiteSnippetStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const createSiteSnippetResponseSchema = z.union([
-	createSiteSnippetStatus201Schema,
-	createSiteSnippetStatusDefaultSchema,
-]);
+export const createSiteSnippetResponseSchema = createSiteSnippetStatus201Schema;
 
-export const createSiteSnippetDataSchema = z
-	.object({
-		id: z.int().optional(),
-		site_id: z.string().optional(),
-		title: z.string().optional(),
-		general: z.string().optional(),
-		general_position: z.string().optional(),
-		goal: z.string().optional(),
-		goal_position: z.string().optional(),
-	})
-	.optional();
+export const createSiteSnippetErrorSchema = createSiteSnippetStatusDefaultSchema;
+
+export const createSiteSnippetBodySchema = z.object({
+	id: z.int().optional(),
+	site_id: z.string().optional(),
+	title: z.string().optional(),
+	general: z.string().optional(),
+	general_position: z.string().optional(),
+	goal: z.string().optional(),
+	goal_position: z.string().optional(),
+});
 
 export const getSiteSnippetPathSiteIdSchema = z.string();
 
@@ -4503,14 +4120,13 @@ export const getSiteSnippetStatus200Schema = z.object({
 });
 
 export const getSiteSnippetStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const getSiteSnippetResponseSchema = z.union([
-	getSiteSnippetStatus200Schema,
-	getSiteSnippetStatusDefaultSchema,
-]);
+export const getSiteSnippetResponseSchema = getSiteSnippetStatus200Schema;
+
+export const getSiteSnippetErrorSchema = getSiteSnippetStatusDefaultSchema;
 
 export const updateSiteSnippetPathSiteIdSchema = z.string();
 
@@ -4519,26 +4135,23 @@ export const updateSiteSnippetPathSnippetIdSchema = z.string();
 export const updateSiteSnippetStatus204Schema = z.unknown();
 
 export const updateSiteSnippetStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const updateSiteSnippetResponseSchema = z.union([
-	updateSiteSnippetStatus204Schema,
-	updateSiteSnippetStatusDefaultSchema,
-]);
+export const updateSiteSnippetResponseSchema = updateSiteSnippetStatus204Schema;
 
-export const updateSiteSnippetDataSchema = z
-	.object({
-		id: z.int().optional(),
-		site_id: z.string().optional(),
-		title: z.string().optional(),
-		general: z.string().optional(),
-		general_position: z.string().optional(),
-		goal: z.string().optional(),
-		goal_position: z.string().optional(),
-	})
-	.optional();
+export const updateSiteSnippetErrorSchema = updateSiteSnippetStatusDefaultSchema;
+
+export const updateSiteSnippetBodySchema = z.object({
+	id: z.int().optional(),
+	site_id: z.string().optional(),
+	title: z.string().optional(),
+	general: z.string().optional(),
+	general_position: z.string().optional(),
+	goal: z.string().optional(),
+	goal_position: z.string().optional(),
+});
 
 export const deleteSiteSnippetPathSiteIdSchema = z.string();
 
@@ -4547,44 +4160,41 @@ export const deleteSiteSnippetPathSnippetIdSchema = z.string();
 export const deleteSiteSnippetStatus204Schema = z.unknown();
 
 export const deleteSiteSnippetStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const deleteSiteSnippetResponseSchema = z.union([
-	deleteSiteSnippetStatus204Schema,
-	deleteSiteSnippetStatusDefaultSchema,
-]);
+export const deleteSiteSnippetResponseSchema = deleteSiteSnippetStatus204Schema;
+
+export const deleteSiteSnippetErrorSchema = deleteSiteSnippetStatusDefaultSchema;
 
 export const getSiteMetadataPathSiteIdSchema = z.string();
 
 export const getSiteMetadataStatus200Schema = z.object({});
 
 export const getSiteMetadataStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const getSiteMetadataResponseSchema = z.union([
-	getSiteMetadataStatus200Schema,
-	getSiteMetadataStatusDefaultSchema,
-]);
+export const getSiteMetadataResponseSchema = getSiteMetadataStatus200Schema;
+
+export const getSiteMetadataErrorSchema = getSiteMetadataStatusDefaultSchema;
 
 export const updateSiteMetadataPathSiteIdSchema = z.string();
 
 export const updateSiteMetadataStatus204Schema = z.unknown();
 
 export const updateSiteMetadataStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const updateSiteMetadataResponseSchema = z.union([
-	updateSiteMetadataStatus204Schema,
-	updateSiteMetadataStatusDefaultSchema,
-]);
+export const updateSiteMetadataResponseSchema = updateSiteMetadataStatus204Schema;
 
-export const updateSiteMetadataDataSchema = z.object({}).optional();
+export const updateSiteMetadataErrorSchema = updateSiteMetadataStatusDefaultSchema;
+
+export const updateSiteMetadataBodySchema = z.object({});
 
 export const listSiteBuildHooksPathSiteIdSchema = z.string();
 
@@ -4600,14 +4210,13 @@ export const listSiteBuildHooksStatus200Schema = z.array(
 );
 
 export const listSiteBuildHooksStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const listSiteBuildHooksResponseSchema = z.union([
-	listSiteBuildHooksStatus200Schema,
-	listSiteBuildHooksStatusDefaultSchema,
-]);
+export const listSiteBuildHooksResponseSchema = listSiteBuildHooksStatus200Schema;
+
+export const listSiteBuildHooksErrorSchema = listSiteBuildHooksStatusDefaultSchema;
 
 export const createSiteBuildHookPathSiteIdSchema = z.string();
 
@@ -4621,21 +4230,18 @@ export const createSiteBuildHookStatus201Schema = z.object({
 });
 
 export const createSiteBuildHookStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const createSiteBuildHookResponseSchema = z.union([
-	createSiteBuildHookStatus201Schema,
-	createSiteBuildHookStatusDefaultSchema,
-]);
+export const createSiteBuildHookResponseSchema = createSiteBuildHookStatus201Schema;
 
-export const createSiteBuildHookDataSchema = z
-	.object({
-		title: z.string().optional(),
-		branch: z.string().optional(),
-	})
-	.optional();
+export const createSiteBuildHookErrorSchema = createSiteBuildHookStatusDefaultSchema;
+
+export const createSiteBuildHookBodySchema = z.object({
+	title: z.string().optional(),
+	branch: z.string().optional(),
+});
 
 export const getSiteBuildHookPathSiteIdSchema = z.string();
 
@@ -4651,14 +4257,13 @@ export const getSiteBuildHookStatus200Schema = z.object({
 });
 
 export const getSiteBuildHookStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const getSiteBuildHookResponseSchema = z.union([
-	getSiteBuildHookStatus200Schema,
-	getSiteBuildHookStatusDefaultSchema,
-]);
+export const getSiteBuildHookResponseSchema = getSiteBuildHookStatus200Schema;
+
+export const getSiteBuildHookErrorSchema = getSiteBuildHookStatusDefaultSchema;
 
 export const updateSiteBuildHookPathSiteIdSchema = z.string();
 
@@ -4667,21 +4272,18 @@ export const updateSiteBuildHookPathIdSchema = z.string();
 export const updateSiteBuildHookStatus204Schema = z.unknown();
 
 export const updateSiteBuildHookStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const updateSiteBuildHookResponseSchema = z.union([
-	updateSiteBuildHookStatus204Schema,
-	updateSiteBuildHookStatusDefaultSchema,
-]);
+export const updateSiteBuildHookResponseSchema = updateSiteBuildHookStatus204Schema;
 
-export const updateSiteBuildHookDataSchema = z
-	.object({
-		title: z.string().optional(),
-		branch: z.string().optional(),
-	})
-	.optional();
+export const updateSiteBuildHookErrorSchema = updateSiteBuildHookStatusDefaultSchema;
+
+export const updateSiteBuildHookBodySchema = z.object({
+	title: z.string().optional(),
+	branch: z.string().optional(),
+});
 
 export const deleteSiteBuildHookPathSiteIdSchema = z.string();
 
@@ -4690,14 +4292,13 @@ export const deleteSiteBuildHookPathIdSchema = z.string();
 export const deleteSiteBuildHookStatus204Schema = z.unknown();
 
 export const deleteSiteBuildHookStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const deleteSiteBuildHookResponseSchema = z.union([
-	deleteSiteBuildHookStatus204Schema,
-	deleteSiteBuildHookStatusDefaultSchema,
-]);
+export const deleteSiteBuildHookResponseSchema = deleteSiteBuildHookStatus204Schema;
+
+export const deleteSiteBuildHookErrorSchema = deleteSiteBuildHookStatusDefaultSchema;
 
 export const listSiteDeploysPathSiteIdSchema = z.string();
 
@@ -4798,14 +4399,13 @@ export const listSiteDeploysStatus200Schema = z.array(
 );
 
 export const listSiteDeploysStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const listSiteDeploysResponseSchema = z.union([
-	listSiteDeploysStatus200Schema,
-	listSiteDeploysStatusDefaultSchema,
-]);
+export const listSiteDeploysResponseSchema = listSiteDeploysStatus200Schema;
+
+export const listSiteDeploysErrorSchema = listSiteDeploysStatusDefaultSchema;
 
 export const createSiteDeployPathSiteIdSchema = z.string();
 
@@ -4902,16 +4502,15 @@ export const createSiteDeployStatus200Schema = z.object({
 });
 
 export const createSiteDeployStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const createSiteDeployResponseSchema = z.union([
-	createSiteDeployStatus200Schema,
-	createSiteDeployStatusDefaultSchema,
-]);
+export const createSiteDeployResponseSchema = createSiteDeployStatus200Schema;
 
-export const createSiteDeployDataSchema = z
+export const createSiteDeployErrorSchema = createSiteDeployStatusDefaultSchema;
+
+export const createSiteDeployBodySchema = z
 	.object({
 		files: z
 			.object({})
@@ -5032,7 +4631,6 @@ export const createSiteDeployDataSchema = z
 				"A list of deploy-specific environment variable data. Data specified this way applies only\nto this specific deploy and is merged into any existing environment variables set on the\naccount and site.\n\nDeploy-specific environment variable data takes precedence over account and site\nenvironment variable data: For example, a deploy-specific variable with the key `NODE_ENV`\nwill take priority over any existing site- and account-level environment variable data\nwith the key `NODE_ENV`.\n\nEnvironment variable data may be provided at one of two times:\n\n- When creating a new Deploy with deploy files (most common)\n- When finalizing an existing Deploy with deploy files\n\nOnce set, environment variables for a specific deploy cannot be modified. Subsequent\nattempts to modify environment variable data for a deploy will be ignored.\n",
 			),
 	})
-	.optional()
 	.describe(
 		"Deploy files can be provided in two ways:\n1. As a JSON object using 'files' (a hash mapping file paths to SHA1 digests), OR\n2. As a zip file using one of these methods:\n   - Set Content-Type to 'application/zip' and send the zip file as the raw request body\n   - Include the zip file content in the 'zip' field of this JSON object with Content-Type 'application/json'\n",
 	);
@@ -5104,14 +4702,13 @@ export const getSiteDeployStatus200Schema = z.object({
 });
 
 export const getSiteDeployStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const getSiteDeployResponseSchema = z.union([
-	getSiteDeployStatus200Schema,
-	getSiteDeployStatusDefaultSchema,
-]);
+export const getSiteDeployResponseSchema = getSiteDeployStatus200Schema;
+
+export const getSiteDeployErrorSchema = getSiteDeployStatusDefaultSchema;
 
 export const updateSiteDeployPathSiteIdSchema = z.string();
 
@@ -5182,16 +4779,15 @@ export const updateSiteDeployStatus200Schema = z.object({
 });
 
 export const updateSiteDeployStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const updateSiteDeployResponseSchema = z.union([
-	updateSiteDeployStatus200Schema,
-	updateSiteDeployStatusDefaultSchema,
-]);
+export const updateSiteDeployResponseSchema = updateSiteDeployStatus200Schema;
 
-export const updateSiteDeployDataSchema = z
+export const updateSiteDeployErrorSchema = updateSiteDeployStatusDefaultSchema;
+
+export const updateSiteDeployBodySchema = z
 	.object({
 		files: z
 			.object({})
@@ -5312,7 +4908,6 @@ export const updateSiteDeployDataSchema = z
 				"A list of deploy-specific environment variable data. Data specified this way applies only\nto this specific deploy and is merged into any existing environment variables set on the\naccount and site.\n\nDeploy-specific environment variable data takes precedence over account and site\nenvironment variable data: For example, a deploy-specific variable with the key `NODE_ENV`\nwill take priority over any existing site- and account-level environment variable data\nwith the key `NODE_ENV`.\n\nEnvironment variable data may be provided at one of two times:\n\n- When creating a new Deploy with deploy files (most common)\n- When finalizing an existing Deploy with deploy files\n\nOnce set, environment variables for a specific deploy cannot be modified. Subsequent\nattempts to modify environment variable data for a deploy will be ignored.\n",
 			),
 	})
-	.optional()
 	.describe(
 		"Deploy files can be provided in two ways:\n1. As a JSON object using 'files' (a hash mapping file paths to SHA1 digests), OR\n2. As a zip file using one of these methods:\n   - Set Content-Type to 'application/zip' and send the zip file as the raw request body\n   - Include the zip file content in the 'zip' field of this JSON object with Content-Type 'application/json'\n",
 	);
@@ -5324,14 +4919,13 @@ export const deleteSiteDeployPathSiteIdSchema = z.string();
 export const deleteSiteDeployStatus204Schema = z.unknown();
 
 export const deleteSiteDeployStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const deleteSiteDeployResponseSchema = z.union([
-	deleteSiteDeployStatus204Schema,
-	deleteSiteDeployStatusDefaultSchema,
-]);
+export const deleteSiteDeployResponseSchema = deleteSiteDeployStatus204Schema;
+
+export const deleteSiteDeployErrorSchema = deleteSiteDeployStatusDefaultSchema;
 
 export const cancelSiteDeployPathDeployIdSchema = z.string();
 
@@ -5398,14 +4992,13 @@ export const cancelSiteDeployStatus201Schema = z.object({
 });
 
 export const cancelSiteDeployStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const cancelSiteDeployResponseSchema = z.union([
-	cancelSiteDeployStatus201Schema,
-	cancelSiteDeployStatusDefaultSchema,
-]);
+export const cancelSiteDeployResponseSchema = cancelSiteDeployStatus201Schema;
+
+export const cancelSiteDeployErrorSchema = cancelSiteDeployStatusDefaultSchema;
 
 export const restoreSiteDeployPathSiteIdSchema = z.string();
 
@@ -5474,14 +5067,13 @@ export const restoreSiteDeployStatus201Schema = z.object({
 });
 
 export const restoreSiteDeployStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const restoreSiteDeployResponseSchema = z.union([
-	restoreSiteDeployStatus201Schema,
-	restoreSiteDeployStatusDefaultSchema,
-]);
+export const restoreSiteDeployResponseSchema = restoreSiteDeployStatus201Schema;
+
+export const restoreSiteDeployErrorSchema = restoreSiteDeployStatusDefaultSchema;
 
 export const listSiteBuildsPathSiteIdSchema = z.string();
 
@@ -5501,14 +5093,13 @@ export const listSiteBuildsStatus200Schema = z.array(
 );
 
 export const listSiteBuildsStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const listSiteBuildsResponseSchema = z.union([
-	listSiteBuildsStatus200Schema,
-	listSiteBuildsStatusDefaultSchema,
-]);
+export const listSiteBuildsResponseSchema = listSiteBuildsStatus200Schema;
+
+export const listSiteBuildsErrorSchema = listSiteBuildsStatusDefaultSchema;
 
 export const createSiteBuildPathSiteIdSchema = z.string();
 
@@ -5555,12 +5146,13 @@ export const createSiteBuildStatus404Schema = z.unknown();
 export const createSiteBuildStatus422Schema = z.unknown();
 
 export const createSiteBuildStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const createSiteBuildResponseSchema = z.union([
-	createSiteBuildStatus200Schema,
+export const createSiteBuildResponseSchema = createSiteBuildStatus200Schema;
+
+export const createSiteBuildErrorSchema = z.union([
 	createSiteBuildStatus400Schema,
 	createSiteBuildStatus404Schema,
 	createSiteBuildStatus422Schema,
@@ -5581,14 +5173,13 @@ export const listSiteDeployedBranchesStatus200Schema = z.array(
 );
 
 export const listSiteDeployedBranchesStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const listSiteDeployedBranchesResponseSchema = z.union([
-	listSiteDeployedBranchesStatus200Schema,
-	listSiteDeployedBranchesStatusDefaultSchema,
-]);
+export const listSiteDeployedBranchesResponseSchema = listSiteDeployedBranchesStatus200Schema;
+
+export const listSiteDeployedBranchesErrorSchema = listSiteDeployedBranchesStatusDefaultSchema;
 
 export const unlinkSiteRepoPathSiteIdSchema = z.string();
 
@@ -5741,27 +5332,27 @@ export const unlinkSiteRepoStatus200Schema = z.object({
 
 export const unlinkSiteRepoStatus404Schema = z.unknown();
 
-export const unlinkSiteRepoResponseSchema = z.union([
-	unlinkSiteRepoStatus200Schema,
-	unlinkSiteRepoStatus404Schema,
-]);
+export const unlinkSiteRepoResponseSchema = unlinkSiteRepoStatus200Schema;
+
+export const unlinkSiteRepoErrorSchema = unlinkSiteRepoStatus404Schema;
 
 export const enableSitePathSiteIdSchema = z.string();
 
 export const enableSiteStatus204Schema = z.unknown();
 
 export const enableSiteStatus422Schema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
 export const enableSiteStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const enableSiteResponseSchema = z.union([
-	enableSiteStatus204Schema,
+export const enableSiteResponseSchema = enableSiteStatus204Schema;
+
+export const enableSiteErrorSchema = z.union([
 	enableSiteStatus422Schema,
 	enableSiteStatusDefaultSchema,
 ]);
@@ -5773,14 +5364,13 @@ export const disableSiteQueryReasonSchema = z.string().describe("Reason for disa
 export const disableSiteStatus204Schema = z.unknown();
 
 export const disableSiteStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const disableSiteResponseSchema = z.union([
-	disableSiteStatus204Schema,
-	disableSiteStatusDefaultSchema,
-]);
+export const disableSiteResponseSchema = disableSiteStatus204Schema;
+
+export const disableSiteErrorSchema = disableSiteStatusDefaultSchema;
 
 export const getSiteBuildPathBuildIdSchema = z.string();
 
@@ -5794,28 +5384,34 @@ export const getSiteBuildStatus200Schema = z.object({
 });
 
 export const getSiteBuildStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const getSiteBuildResponseSchema = z.union([
-	getSiteBuildStatus200Schema,
-	getSiteBuildStatusDefaultSchema,
-]);
+export const getSiteBuildResponseSchema = getSiteBuildStatus200Schema;
+
+export const getSiteBuildErrorSchema = getSiteBuildStatusDefaultSchema;
 
 export const updateSiteBuildLogPathBuildIdSchema = z.string();
 
 export const updateSiteBuildLogStatus204Schema = z.unknown();
 
 export const updateSiteBuildLogStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const updateSiteBuildLogResponseSchema = z.union([
-	updateSiteBuildLogStatus204Schema,
-	updateSiteBuildLogStatusDefaultSchema,
-]);
+export const updateSiteBuildLogResponseSchema = updateSiteBuildLogStatus204Schema;
+
+export const updateSiteBuildLogErrorSchema = updateSiteBuildLogStatusDefaultSchema;
+
+export const updateSiteBuildLogBodySchema = z.object({
+	message: z.string().optional(),
+	error: z.boolean().optional(),
+	section: z
+		.enum(["initializing", "building", "deploying", "cleanup", "postprocessing"])
+		.optional(),
+});
 
 export const notifyBuildStartPathBuildIdSchema = z.string();
 
@@ -5828,14 +5424,13 @@ export const notifyBuildStartQueryTaskIdSchema = z.string().optional();
 export const notifyBuildStartStatus204Schema = z.unknown();
 
 export const notifyBuildStartStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const notifyBuildStartResponseSchema = z.union([
-	notifyBuildStartStatus204Schema,
-	notifyBuildStartStatusDefaultSchema,
-]);
+export const notifyBuildStartResponseSchema = notifyBuildStartStatus204Schema;
+
+export const notifyBuildStartErrorSchema = notifyBuildStartStatusDefaultSchema;
 
 export const getAccountBuildStatusPathAccountIdSchema = z.string();
 
@@ -5861,14 +5456,13 @@ export const getAccountBuildStatusStatus200Schema = z.array(
 );
 
 export const getAccountBuildStatusStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const getAccountBuildStatusResponseSchema = z.union([
-	getAccountBuildStatusStatus200Schema,
-	getAccountBuildStatusStatusDefaultSchema,
-]);
+export const getAccountBuildStatusResponseSchema = getAccountBuildStatusStatus200Schema;
+
+export const getAccountBuildStatusErrorSchema = getAccountBuildStatusStatusDefaultSchema;
 
 export const getDNSForSitePathSiteIdSchema = z.string();
 
@@ -5888,8 +5482,8 @@ export const getDNSForSiteStatus200Schema = z.array(
 					hostname: z.string().optional(),
 					type: z.string().optional(),
 					value: z.string().optional(),
-					ttl: z.bigint().optional(),
-					priority: z.bigint().optional(),
+					ttl: z.coerce.bigint().optional(),
+					priority: z.coerce.bigint().optional(),
 					dns_zone_id: z.string().optional(),
 					site_id: z.string().optional(),
 					flag: z.int().optional(),
@@ -5910,14 +5504,13 @@ export const getDNSForSiteStatus200Schema = z.array(
 );
 
 export const getDNSForSiteStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const getDNSForSiteResponseSchema = z.union([
-	getDNSForSiteStatus200Schema,
-	getDNSForSiteStatusDefaultSchema,
-]);
+export const getDNSForSiteResponseSchema = getDNSForSiteStatus200Schema;
+
+export const getDNSForSiteErrorSchema = getDNSForSiteStatusDefaultSchema;
 
 export const configureDNSForSitePathSiteIdSchema = z.string();
 
@@ -5937,8 +5530,8 @@ export const configureDNSForSiteStatus200Schema = z.array(
 					hostname: z.string().optional(),
 					type: z.string().optional(),
 					value: z.string().optional(),
-					ttl: z.bigint().optional(),
-					priority: z.bigint().optional(),
+					ttl: z.coerce.bigint().optional(),
+					priority: z.coerce.bigint().optional(),
 					dns_zone_id: z.string().optional(),
 					site_id: z.string().optional(),
 					flag: z.int().optional(),
@@ -5959,28 +5552,26 @@ export const configureDNSForSiteStatus200Schema = z.array(
 );
 
 export const configureDNSForSiteStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const configureDNSForSiteResponseSchema = z.union([
-	configureDNSForSiteStatus200Schema,
-	configureDNSForSiteStatusDefaultSchema,
-]);
+export const configureDNSForSiteResponseSchema = configureDNSForSiteStatus200Schema;
+
+export const configureDNSForSiteErrorSchema = configureDNSForSiteStatusDefaultSchema;
 
 export const rollbackSiteDeployPathSiteIdSchema = z.string();
 
 export const rollbackSiteDeployStatus204Schema = z.unknown();
 
 export const rollbackSiteDeployStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const rollbackSiteDeployResponseSchema = z.union([
-	rollbackSiteDeployStatus204Schema,
-	rollbackSiteDeployStatusDefaultSchema,
-]);
+export const rollbackSiteDeployResponseSchema = rollbackSiteDeployStatus204Schema;
+
+export const rollbackSiteDeployErrorSchema = rollbackSiteDeployStatusDefaultSchema;
 
 export const getDeployPathDeployIdSchema = z.string();
 
@@ -6047,28 +5638,26 @@ export const getDeployStatus200Schema = z.object({
 });
 
 export const getDeployStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const getDeployResponseSchema = z.union([
-	getDeployStatus200Schema,
-	getDeployStatusDefaultSchema,
-]);
+export const getDeployResponseSchema = getDeployStatus200Schema;
+
+export const getDeployErrorSchema = getDeployStatusDefaultSchema;
 
 export const deleteDeployPathDeployIdSchema = z.string();
 
 export const deleteDeployStatus204Schema = z.unknown();
 
 export const deleteDeployStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const deleteDeployResponseSchema = z.union([
-	deleteDeployStatus204Schema,
-	deleteDeployStatusDefaultSchema,
-]);
+export const deleteDeployResponseSchema = deleteDeployStatus204Schema;
+
+export const deleteDeployErrorSchema = deleteDeployStatusDefaultSchema;
 
 export const updateDeployValidationsPathDeployIdSchema = z
 	.string()
@@ -6090,7 +5679,7 @@ export const updateDeployValidationsStatus200Schema = z.object({
 
 export const updateDeployValidationsResponseSchema = updateDeployValidationsStatus200Schema;
 
-export const updateDeployValidationsDataSchema = z.object({
+export const updateDeployValidationsBodySchema = z.object({
 	secrets_scan: z.object({}).optional(),
 });
 
@@ -6159,14 +5748,13 @@ export const lockDeployStatus200Schema = z.object({
 });
 
 export const lockDeployStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const lockDeployResponseSchema = z.union([
-	lockDeployStatus200Schema,
-	lockDeployStatusDefaultSchema,
-]);
+export const lockDeployResponseSchema = lockDeployStatus200Schema;
+
+export const lockDeployErrorSchema = lockDeployStatusDefaultSchema;
 
 export const unlockDeployPathDeployIdSchema = z.string();
 
@@ -6233,14 +5821,13 @@ export const unlockDeployStatus200Schema = z.object({
 });
 
 export const unlockDeployStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const unlockDeployResponseSchema = z.union([
-	unlockDeployStatus200Schema,
-	unlockDeployStatusDefaultSchema,
-]);
+export const unlockDeployResponseSchema = unlockDeployStatus200Schema;
+
+export const unlockDeployErrorSchema = unlockDeployStatusDefaultSchema;
 
 export const uploadDeployFilePathDeployIdSchema = z.string();
 
@@ -6253,18 +5840,17 @@ export const uploadDeployFileStatus200Schema = z.object({
 	path: z.string().optional(),
 	sha: z.string().optional(),
 	mime_type: z.string().optional(),
-	size: z.bigint().optional(),
+	size: z.coerce.bigint().optional(),
 });
 
 export const uploadDeployFileStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const uploadDeployFileResponseSchema = z.union([
-	uploadDeployFileStatus200Schema,
-	uploadDeployFileStatusDefaultSchema,
-]);
+export const uploadDeployFileResponseSchema = uploadDeployFileStatus200Schema;
+
+export const uploadDeployFileErrorSchema = uploadDeployFileStatusDefaultSchema;
 
 export const uploadDeployFunctionPathDeployIdSchema = z.string();
 
@@ -6288,14 +5874,13 @@ export const uploadDeployFunctionStatus200Schema = z.object({
 });
 
 export const uploadDeployFunctionStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const uploadDeployFunctionResponseSchema = z.union([
-	uploadDeployFunctionStatus200Schema,
-	uploadDeployFunctionStatusDefaultSchema,
-]);
+export const uploadDeployFunctionResponseSchema = uploadDeployFunctionStatus200Schema;
+
+export const uploadDeployFunctionErrorSchema = uploadDeployFunctionStatusDefaultSchema;
 
 export const uploadDeployEdgeFunctionPathDeployIdSchema = z.string();
 
@@ -6306,14 +5891,13 @@ export const uploadDeployEdgeFunctionHeaderXNfRetryCountSchema = z.int().optiona
 export const uploadDeployEdgeFunctionStatus200Schema = z.unknown();
 
 export const uploadDeployEdgeFunctionStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const uploadDeployEdgeFunctionResponseSchema = z.union([
-	uploadDeployEdgeFunctionStatus200Schema,
-	uploadDeployEdgeFunctionStatusDefaultSchema,
-]);
+export const uploadDeployEdgeFunctionResponseSchema = uploadDeployEdgeFunctionStatus200Schema;
+
+export const uploadDeployEdgeFunctionErrorSchema = uploadDeployEdgeFunctionStatusDefaultSchema;
 
 export const getLatestPluginRunsPathSiteIdSchema = z.string();
 
@@ -6322,7 +5906,34 @@ export const getLatestPluginRunsQueryPackagesSchema = z.array(z.string());
 export const getLatestPluginRunsQueryStateSchema = z.string().optional();
 
 export const getLatestPluginRunsStatus200Schema = z.array(
-	z.object({
+	z
+		.object({
+			package: z.string().optional(),
+			version: z.string().optional(),
+			state: z.string().optional(),
+			reporting_event: z.string().optional(),
+			title: z.string().optional(),
+			summary: z.string().optional(),
+			text: z.string().optional(),
+		})
+		.extend({
+			deploy_id: z.string().optional(),
+		}),
+);
+
+export const getLatestPluginRunsStatusDefaultSchema = z.object({
+	code: z.coerce.bigint().optional(),
+	message: z.string(),
+});
+
+export const getLatestPluginRunsResponseSchema = getLatestPluginRunsStatus200Schema;
+
+export const getLatestPluginRunsErrorSchema = getLatestPluginRunsStatusDefaultSchema;
+
+export const createPluginRunPathDeployIdSchema = z.string();
+
+export const createPluginRunStatus201Schema = z
+	.object({
 		package: z.string().optional(),
 		version: z.string().optional(),
 		state: z.string().optional(),
@@ -6330,44 +5941,21 @@ export const getLatestPluginRunsStatus200Schema = z.array(
 		title: z.string().optional(),
 		summary: z.string().optional(),
 		text: z.string().optional(),
+	})
+	.extend({
 		deploy_id: z.string().optional(),
-	}),
-);
-
-export const getLatestPluginRunsStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
-	message: z.string(),
-});
-
-export const getLatestPluginRunsResponseSchema = z.union([
-	getLatestPluginRunsStatus200Schema,
-	getLatestPluginRunsStatusDefaultSchema,
-]);
-
-export const createPluginRunPathDeployIdSchema = z.string();
-
-export const createPluginRunStatus201Schema = z.object({
-	package: z.string().optional(),
-	version: z.string().optional(),
-	state: z.string().optional(),
-	reporting_event: z.string().optional(),
-	title: z.string().optional(),
-	summary: z.string().optional(),
-	text: z.string().optional(),
-	deploy_id: z.string().optional(),
-});
+	});
 
 export const createPluginRunStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const createPluginRunResponseSchema = z.union([
-	createPluginRunStatus201Schema,
-	createPluginRunStatusDefaultSchema,
-]);
+export const createPluginRunResponseSchema = createPluginRunStatus201Schema;
 
-export const createPluginRunDataSchema = z
+export const createPluginRunErrorSchema = createPluginRunStatusDefaultSchema;
+
+export const createPluginRunBodySchema = z
 	.object({
 		package: z.string().optional(),
 		version: z.string().optional(),
@@ -6403,14 +5991,13 @@ export const listFormSubmissionsStatus200Schema = z.array(
 );
 
 export const listFormSubmissionsStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const listFormSubmissionsResponseSchema = z.union([
-	listFormSubmissionsStatus200Schema,
-	listFormSubmissionsStatusDefaultSchema,
-]);
+export const listFormSubmissionsResponseSchema = listFormSubmissionsStatus200Schema;
+
+export const listFormSubmissionsErrorSchema = listFormSubmissionsStatusDefaultSchema;
 
 export const listHooksBySiteIdQuerySiteIdSchema = z.string();
 
@@ -6428,14 +6015,13 @@ export const listHooksBySiteIdStatus200Schema = z.array(
 );
 
 export const listHooksBySiteIdStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const listHooksBySiteIdResponseSchema = z.union([
-	listHooksBySiteIdStatus200Schema,
-	listHooksBySiteIdStatusDefaultSchema,
-]);
+export const listHooksBySiteIdResponseSchema = listHooksBySiteIdStatus200Schema;
+
+export const listHooksBySiteIdErrorSchema = listHooksBySiteIdStatusDefaultSchema;
 
 export const createHookBySiteIdQuerySiteIdSchema = z.string();
 
@@ -6451,27 +6037,24 @@ export const createHookBySiteIdStatus201Schema = z.object({
 });
 
 export const createHookBySiteIdStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const createHookBySiteIdResponseSchema = z.union([
-	createHookBySiteIdStatus201Schema,
-	createHookBySiteIdStatusDefaultSchema,
-]);
+export const createHookBySiteIdResponseSchema = createHookBySiteIdStatus201Schema;
 
-export const createHookBySiteIdDataSchema = z
-	.object({
-		id: z.string().optional(),
-		site_id: z.string().optional(),
-		type: z.string().optional(),
-		event: z.string().optional(),
-		data: z.object({}).optional(),
-		created_at: z.string().optional(),
-		updated_at: z.string().optional(),
-		disabled: z.boolean().optional(),
-	})
-	.optional();
+export const createHookBySiteIdErrorSchema = createHookBySiteIdStatusDefaultSchema;
+
+export const createHookBySiteIdBodySchema = z.object({
+	id: z.string().optional(),
+	site_id: z.string().optional(),
+	type: z.string().optional(),
+	event: z.string().optional(),
+	data: z.object({}).optional(),
+	created_at: z.string().optional(),
+	updated_at: z.string().optional(),
+	disabled: z.boolean().optional(),
+});
 
 export const getHookPathHookIdSchema = z.string();
 
@@ -6487,11 +6070,13 @@ export const getHookStatus200Schema = z.object({
 });
 
 export const getHookStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const getHookResponseSchema = z.union([getHookStatus200Schema, getHookStatusDefaultSchema]);
+export const getHookResponseSchema = getHookStatus200Schema;
+
+export const getHookErrorSchema = getHookStatusDefaultSchema;
 
 export const updateHookPathHookIdSchema = z.string();
 
@@ -6507,27 +6092,24 @@ export const updateHookStatus200Schema = z.object({
 });
 
 export const updateHookStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const updateHookResponseSchema = z.union([
-	updateHookStatus200Schema,
-	updateHookStatusDefaultSchema,
-]);
+export const updateHookResponseSchema = updateHookStatus200Schema;
 
-export const updateHookDataSchema = z
-	.object({
-		id: z.string().optional(),
-		site_id: z.string().optional(),
-		type: z.string().optional(),
-		event: z.string().optional(),
-		data: z.object({}).optional(),
-		created_at: z.string().optional(),
-		updated_at: z.string().optional(),
-		disabled: z.boolean().optional(),
-	})
-	.optional();
+export const updateHookErrorSchema = updateHookStatusDefaultSchema;
+
+export const updateHookBodySchema = z.object({
+	id: z.string().optional(),
+	site_id: z.string().optional(),
+	type: z.string().optional(),
+	event: z.string().optional(),
+	data: z.object({}).optional(),
+	created_at: z.string().optional(),
+	updated_at: z.string().optional(),
+	disabled: z.boolean().optional(),
+});
 
 export const deleteHookPathHookIdSchema = z.string();
 
@@ -6549,14 +6131,13 @@ export const enableHookStatus200Schema = z.object({
 });
 
 export const enableHookStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const enableHookResponseSchema = z.union([
-	enableHookStatus200Schema,
-	enableHookStatusDefaultSchema,
-]);
+export const enableHookResponseSchema = enableHookStatus200Schema;
+
+export const enableHookErrorSchema = enableHookStatusDefaultSchema;
 
 export const listHookTypesStatus200Schema = z.array(
 	z.object({
@@ -6567,14 +6148,13 @@ export const listHookTypesStatus200Schema = z.array(
 );
 
 export const listHookTypesStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const listHookTypesResponseSchema = z.union([
-	listHookTypesStatus200Schema,
-	listHookTypesStatusDefaultSchema,
-]);
+export const listHookTypesResponseSchema = listHookTypesStatus200Schema;
+
+export const listHookTypesErrorSchema = listHookTypesStatusDefaultSchema;
 
 export const createTicketQueryClientIdSchema = z.string();
 
@@ -6586,28 +6166,29 @@ export const createTicketStatus201Schema = z.object({
 });
 
 export const createTicketStatus401Schema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
 export const createTicketStatus422Schema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
 export const createTicketStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const createTicketResponseSchema = z.union([
-	createTicketStatus201Schema,
+export const createTicketResponseSchema = createTicketStatus201Schema;
+
+export const createTicketErrorSchema = z.union([
 	createTicketStatus401Schema,
 	createTicketStatus422Schema,
 	createTicketStatusDefaultSchema,
 ]);
 
-export const createTicketDataSchema = z
+export const createTicketBodySchema = z
 	.object({
 		message: z.string().optional(),
 	})
@@ -6623,14 +6204,13 @@ export const showTicketStatus200Schema = z.object({
 });
 
 export const showTicketStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const showTicketResponseSchema = z.union([
-	showTicketStatus200Schema,
-	showTicketStatusDefaultSchema,
-]);
+export const showTicketResponseSchema = showTicketStatus200Schema;
+
+export const showTicketErrorSchema = showTicketStatusDefaultSchema;
 
 export const exchangeTicketPathTicketIdSchema = z.string();
 
@@ -6643,14 +6223,13 @@ export const exchangeTicketStatus201Schema = z.object({
 });
 
 export const exchangeTicketStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const exchangeTicketResponseSchema = z.union([
-	exchangeTicketStatus201Schema,
-	exchangeTicketStatusDefaultSchema,
-]);
+export const exchangeTicketResponseSchema = exchangeTicketStatus201Schema;
+
+export const exchangeTicketErrorSchema = exchangeTicketStatusDefaultSchema;
 
 export const listDeployKeysStatus200Schema = z.array(
 	z.object({
@@ -6661,14 +6240,13 @@ export const listDeployKeysStatus200Schema = z.array(
 );
 
 export const listDeployKeysStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const listDeployKeysResponseSchema = z.union([
-	listDeployKeysStatus200Schema,
-	listDeployKeysStatusDefaultSchema,
-]);
+export const listDeployKeysResponseSchema = listDeployKeysStatus200Schema;
+
+export const listDeployKeysErrorSchema = listDeployKeysStatusDefaultSchema;
 
 export const createDeployKeyStatus201Schema = z.object({
 	id: z.string().optional(),
@@ -6677,14 +6255,13 @@ export const createDeployKeyStatus201Schema = z.object({
 });
 
 export const createDeployKeyStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const createDeployKeyResponseSchema = z.union([
-	createDeployKeyStatus201Schema,
-	createDeployKeyStatusDefaultSchema,
-]);
+export const createDeployKeyResponseSchema = createDeployKeyStatus201Schema;
+
+export const createDeployKeyErrorSchema = createDeployKeyStatusDefaultSchema;
 
 export const getDeployKeyPathKeyIdSchema = z.string();
 
@@ -6695,28 +6272,26 @@ export const getDeployKeyStatus200Schema = z.object({
 });
 
 export const getDeployKeyStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const getDeployKeyResponseSchema = z.union([
-	getDeployKeyStatus200Schema,
-	getDeployKeyStatusDefaultSchema,
-]);
+export const getDeployKeyResponseSchema = getDeployKeyStatus200Schema;
+
+export const getDeployKeyErrorSchema = getDeployKeyStatusDefaultSchema;
 
 export const deleteDeployKeyPathKeyIdSchema = z.string();
 
 export const deleteDeployKeyStatus204Schema = z.unknown();
 
 export const deleteDeployKeyStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const deleteDeployKeyResponseSchema = z.union([
-	deleteDeployKeyStatus204Schema,
-	deleteDeployKeyStatusDefaultSchema,
-]);
+export const deleteDeployKeyResponseSchema = deleteDeployKeyStatus204Schema;
+
+export const deleteDeployKeyErrorSchema = deleteDeployKeyStatusDefaultSchema;
 
 export const createSiteInTeamQueryConfigureDnsSchema = z.boolean().optional();
 
@@ -6870,16 +6445,15 @@ export const createSiteInTeamStatus201Schema = z.object({
 });
 
 export const createSiteInTeamStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const createSiteInTeamResponseSchema = z.union([
-	createSiteInTeamStatus201Schema,
-	createSiteInTeamStatusDefaultSchema,
-]);
+export const createSiteInTeamResponseSchema = createSiteInTeamStatus201Schema;
 
-export const createSiteInTeamDataSchema = z
+export const createSiteInTeamErrorSchema = createSiteInTeamStatusDefaultSchema;
+
+export const createSiteInTeamBodySchema = z
 	.object({
 		id: z.string().optional(),
 		state: z.string().optional(),
@@ -7025,6 +6599,8 @@ export const createSiteInTeamDataSchema = z
 		prerender: z.string().optional(),
 		functions_region: z.string().optional(),
 		prevent_non_git_prod_deploys: z.boolean().optional().default(false),
+	})
+	.extend({
 		repo: z
 			.object({
 				id: z.int().optional(),
@@ -7220,14 +6796,13 @@ export const listSitesForAccountStatus200Schema = z.array(
 );
 
 export const listSitesForAccountStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const listSitesForAccountResponseSchema = z.union([
-	listSitesForAccountStatus200Schema,
-	listSitesForAccountStatusDefaultSchema,
-]);
+export const listSitesForAccountResponseSchema = listSitesForAccountStatus200Schema;
+
+export const listSitesForAccountErrorSchema = listSitesForAccountStatusDefaultSchema;
 
 export const listMembersForAccountPathAccountSlugSchema = z.string();
 
@@ -7242,14 +6817,13 @@ export const listMembersForAccountStatus200Schema = z.array(
 );
 
 export const listMembersForAccountStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const listMembersForAccountResponseSchema = z.union([
-	listMembersForAccountStatus200Schema,
-	listMembersForAccountStatusDefaultSchema,
-]);
+export const listMembersForAccountResponseSchema = listMembersForAccountStatus200Schema;
+
+export const listMembersForAccountErrorSchema = listMembersForAccountStatusDefaultSchema;
 
 export const addMemberToAccountPathAccountSlugSchema = z.string();
 
@@ -7264,16 +6838,15 @@ export const addMemberToAccountStatus200Schema = z.array(
 );
 
 export const addMemberToAccountStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const addMemberToAccountResponseSchema = z.union([
-	addMemberToAccountStatus200Schema,
-	addMemberToAccountStatusDefaultSchema,
-]);
+export const addMemberToAccountResponseSchema = addMemberToAccountStatus200Schema;
 
-export const addMemberToAccountDataSchema = z.object({
+export const addMemberToAccountErrorSchema = addMemberToAccountStatusDefaultSchema;
+
+export const addMemberToAccountBodySchema = z.object({
 	role: z.enum(["Owner", "Developer", "Billing Admin", "Reviewer"]).optional(),
 	email: z.string().optional(),
 });
@@ -7291,14 +6864,13 @@ export const getAccountMemberStatus200Schema = z.object({
 });
 
 export const getAccountMemberStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const getAccountMemberResponseSchema = z.union([
-	getAccountMemberStatus200Schema,
-	getAccountMemberStatusDefaultSchema,
-]);
+export const getAccountMemberResponseSchema = getAccountMemberStatus200Schema;
+
+export const getAccountMemberErrorSchema = getAccountMemberStatusDefaultSchema;
 
 export const updateAccountMemberPathAccountSlugSchema = z.string();
 
@@ -7313,16 +6885,15 @@ export const updateAccountMemberStatus200Schema = z.object({
 });
 
 export const updateAccountMemberStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const updateAccountMemberResponseSchema = z.union([
-	updateAccountMemberStatus200Schema,
-	updateAccountMemberStatusDefaultSchema,
-]);
+export const updateAccountMemberResponseSchema = updateAccountMemberStatus200Schema;
 
-export const updateAccountMemberDataSchema = z.object({
+export const updateAccountMemberErrorSchema = updateAccountMemberStatusDefaultSchema;
+
+export const updateAccountMemberBodySchema = z.object({
 	role: z.enum(["Owner", "Developer", "Billing Admin", "Reviewer"]).optional(),
 	site_access: z.enum(["all", "none", "selected"]).optional(),
 	site_ids: z.array(z.string()).optional(),
@@ -7335,14 +6906,13 @@ export const removeAccountMemberPathMemberIdSchema = z.string();
 export const removeAccountMemberStatus204Schema = z.unknown();
 
 export const removeAccountMemberStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const removeAccountMemberResponseSchema = z.union([
-	removeAccountMemberStatus204Schema,
-	removeAccountMemberStatusDefaultSchema,
-]);
+export const removeAccountMemberResponseSchema = removeAccountMemberStatus204Schema;
+
+export const removeAccountMemberErrorSchema = removeAccountMemberStatusDefaultSchema;
 
 export const listPaymentMethodsForUserStatus200Schema = z.array(
 	z.object({
@@ -7363,14 +6933,13 @@ export const listPaymentMethodsForUserStatus200Schema = z.array(
 );
 
 export const listPaymentMethodsForUserStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const listPaymentMethodsForUserResponseSchema = z.union([
-	listPaymentMethodsForUserStatus200Schema,
-	listPaymentMethodsForUserStatusDefaultSchema,
-]);
+export const listPaymentMethodsForUserResponseSchema = listPaymentMethodsForUserStatus200Schema;
+
+export const listPaymentMethodsForUserErrorSchema = listPaymentMethodsForUserStatusDefaultSchema;
 
 export const listAccountTypesForUserStatus200Schema = z.array(
 	z.object({
@@ -7386,14 +6955,13 @@ export const listAccountTypesForUserStatus200Schema = z.array(
 );
 
 export const listAccountTypesForUserStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const listAccountTypesForUserResponseSchema = z.union([
-	listAccountTypesForUserStatus200Schema,
-	listAccountTypesForUserStatusDefaultSchema,
-]);
+export const listAccountTypesForUserResponseSchema = listAccountTypesForUserStatus200Schema;
+
+export const listAccountTypesForUserErrorSchema = listAccountTypesForUserStatusDefaultSchema;
 
 export const listAccountsForUserQueryMinimalSchema = z.boolean().optional();
 
@@ -7434,14 +7002,13 @@ export const listAccountsForUserStatus200Schema = z.array(
 );
 
 export const listAccountsForUserStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const listAccountsForUserResponseSchema = z.union([
-	listAccountsForUserStatus200Schema,
-	listAccountsForUserStatusDefaultSchema,
-]);
+export const listAccountsForUserResponseSchema = listAccountsForUserStatus200Schema;
+
+export const listAccountsForUserErrorSchema = listAccountsForUserStatusDefaultSchema;
 
 export const createAccountStatus201Schema = z.object({
 	id: z.string().optional(),
@@ -7478,16 +7045,15 @@ export const createAccountStatus201Schema = z.object({
 });
 
 export const createAccountStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const createAccountResponseSchema = z.union([
-	createAccountStatus201Schema,
-	createAccountStatusDefaultSchema,
-]);
+export const createAccountResponseSchema = createAccountStatus201Schema;
 
-export const createAccountDataSchema = z.object({
+export const createAccountErrorSchema = createAccountStatusDefaultSchema;
+
+export const createAccountBodySchema = z.object({
 	name: z.string(),
 	type_id: z.string(),
 	payment_method_id: z.string().optional(),
@@ -7532,14 +7098,13 @@ export const getAccountStatus200Schema = z.object({
 });
 
 export const getAccountStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const getAccountResponseSchema = z.union([
-	getAccountStatus200Schema,
-	getAccountStatusDefaultSchema,
-]);
+export const getAccountResponseSchema = getAccountStatus200Schema;
+
+export const getAccountErrorSchema = getAccountStatusDefaultSchema;
 
 export const updateAccountPathAccountIdSchema = z.string();
 
@@ -7578,16 +7143,15 @@ export const updateAccountStatus200Schema = z.object({
 });
 
 export const updateAccountStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const updateAccountResponseSchema = z.union([
-	updateAccountStatus200Schema,
-	updateAccountStatusDefaultSchema,
-]);
+export const updateAccountResponseSchema = updateAccountStatus200Schema;
 
-export const updateAccountDataSchema = z
+export const updateAccountErrorSchema = updateAccountStatusDefaultSchema;
+
+export const updateAccountBodySchema = z
 	.object({
 		name: z.string().optional(),
 		slug: z.string().optional(),
@@ -7604,14 +7168,13 @@ export const cancelAccountPathAccountIdSchema = z.string();
 export const cancelAccountStatus204Schema = z.unknown();
 
 export const cancelAccountStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const cancelAccountResponseSchema = z.union([
-	cancelAccountStatus204Schema,
-	cancelAccountStatusDefaultSchema,
-]);
+export const cancelAccountResponseSchema = cancelAccountStatus204Schema;
+
+export const cancelAccountErrorSchema = cancelAccountStatusDefaultSchema;
 
 export const listAccountAuditEventsPathAccountIdSchema = z.string();
 
@@ -7642,14 +7205,13 @@ export const listAccountAuditEventsStatus200Schema = z.array(
 );
 
 export const listAccountAuditEventsStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const listAccountAuditEventsResponseSchema = z.union([
-	listAccountAuditEventsStatus200Schema,
-	listAccountAuditEventsStatusDefaultSchema,
-]);
+export const listAccountAuditEventsResponseSchema = listAccountAuditEventsStatus200Schema;
+
+export const listAccountAuditEventsErrorSchema = listAccountAuditEventsStatusDefaultSchema;
 
 export const listAgentRunnersQueryAccountIdSchema = z.string();
 
@@ -7712,14 +7274,13 @@ export const listAgentRunnersStatus200Schema = z.array(
 );
 
 export const listAgentRunnersStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const listAgentRunnersResponseSchema = z.union([
-	listAgentRunnersStatus200Schema,
-	listAgentRunnersStatusDefaultSchema,
-]);
+export const listAgentRunnersResponseSchema = listAgentRunnersStatus200Schema;
+
+export const listAgentRunnersErrorSchema = listAgentRunnersStatusDefaultSchema;
 
 export const createAgentRunnerQuerySiteIdSchema = z.string();
 
@@ -7782,12 +7343,13 @@ export const createAgentRunnerStatus404Schema = z.unknown();
 export const createAgentRunnerStatus422Schema = z.unknown();
 
 export const createAgentRunnerStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const createAgentRunnerResponseSchema = z.union([
-	createAgentRunnerStatus200Schema,
+export const createAgentRunnerResponseSchema = createAgentRunnerStatus200Schema;
+
+export const createAgentRunnerErrorSchema = z.union([
 	createAgentRunnerStatus404Schema,
 	createAgentRunnerStatus422Schema,
 	createAgentRunnerStatusDefaultSchema,
@@ -7806,12 +7368,13 @@ export const createAgentRunnerUploadUrlStatus400Schema = z.unknown();
 export const createAgentRunnerUploadUrlStatus422Schema = z.unknown();
 
 export const createAgentRunnerUploadUrlStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const createAgentRunnerUploadUrlResponseSchema = z.union([
-	createAgentRunnerUploadUrlStatus200Schema,
+export const createAgentRunnerUploadUrlResponseSchema = createAgentRunnerUploadUrlStatus200Schema;
+
+export const createAgentRunnerUploadUrlErrorSchema = z.union([
 	createAgentRunnerUploadUrlStatus400Schema,
 	createAgentRunnerUploadUrlStatus422Schema,
 	createAgentRunnerUploadUrlStatusDefaultSchema,
@@ -7858,14 +7421,13 @@ export const getAgentRunnerStatus200Schema = z.object({
 });
 
 export const getAgentRunnerStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const getAgentRunnerResponseSchema = z.union([
-	getAgentRunnerStatus200Schema,
-	getAgentRunnerStatusDefaultSchema,
-]);
+export const getAgentRunnerResponseSchema = getAgentRunnerStatus200Schema;
+
+export const getAgentRunnerErrorSchema = getAgentRunnerStatusDefaultSchema;
 
 export const updateAgentRunnerPathAgentRunnerIdSchema = z.string();
 
@@ -7908,28 +7470,26 @@ export const updateAgentRunnerStatus200Schema = z.object({
 });
 
 export const updateAgentRunnerStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const updateAgentRunnerResponseSchema = z.union([
-	updateAgentRunnerStatus200Schema,
-	updateAgentRunnerStatusDefaultSchema,
-]);
+export const updateAgentRunnerResponseSchema = updateAgentRunnerStatus200Schema;
+
+export const updateAgentRunnerErrorSchema = updateAgentRunnerStatusDefaultSchema;
 
 export const deleteAgentRunnerPathAgentRunnerIdSchema = z.string();
 
 export const deleteAgentRunnerStatus202Schema = z.unknown();
 
 export const deleteAgentRunnerStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const deleteAgentRunnerResponseSchema = z.union([
-	deleteAgentRunnerStatus202Schema,
-	deleteAgentRunnerStatusDefaultSchema,
-]);
+export const deleteAgentRunnerResponseSchema = deleteAgentRunnerStatus202Schema;
+
+export const deleteAgentRunnerErrorSchema = deleteAgentRunnerStatusDefaultSchema;
 
 export const archiveAgentRunnerPathAgentRunnerIdSchema = z.string();
 
@@ -7940,12 +7500,13 @@ export const archiveAgentRunnerStatus404Schema = z.unknown();
 export const archiveAgentRunnerStatus422Schema = z.unknown();
 
 export const archiveAgentRunnerStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const archiveAgentRunnerResponseSchema = z.union([
-	archiveAgentRunnerStatus202Schema,
+export const archiveAgentRunnerResponseSchema = archiveAgentRunnerStatus202Schema;
+
+export const archiveAgentRunnerErrorSchema = z.union([
 	archiveAgentRunnerStatus404Schema,
 	archiveAgentRunnerStatus422Schema,
 	archiveAgentRunnerStatusDefaultSchema,
@@ -7962,12 +7523,13 @@ export const agentRunnerPullRequestStatus409Schema = z.unknown();
 export const agentRunnerPullRequestStatus422Schema = z.unknown();
 
 export const agentRunnerPullRequestStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const agentRunnerPullRequestResponseSchema = z.union([
-	agentRunnerPullRequestStatus200Schema,
+export const agentRunnerPullRequestResponseSchema = agentRunnerPullRequestStatus200Schema;
+
+export const agentRunnerPullRequestErrorSchema = z.union([
 	agentRunnerPullRequestStatus400Schema,
 	agentRunnerPullRequestStatus409Schema,
 	agentRunnerPullRequestStatus422Schema,
@@ -7987,12 +7549,13 @@ export const agentRunnerCommitToBranchStatus409Schema = z.unknown();
 export const agentRunnerCommitToBranchStatus422Schema = z.unknown();
 
 export const agentRunnerCommitToBranchStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const agentRunnerCommitToBranchResponseSchema = z.union([
-	agentRunnerCommitToBranchStatus200Schema,
+export const agentRunnerCommitToBranchResponseSchema = agentRunnerCommitToBranchStatus200Schema;
+
+export const agentRunnerCommitToBranchErrorSchema = z.union([
 	agentRunnerCommitToBranchStatus400Schema,
 	agentRunnerCommitToBranchStatus409Schema,
 	agentRunnerCommitToBranchStatus422Schema,
@@ -8059,14 +7622,13 @@ export const listAgentRunnerSessionsStatus200Schema = z.array(
 );
 
 export const listAgentRunnerSessionsStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const listAgentRunnerSessionsResponseSchema = z.union([
-	listAgentRunnerSessionsStatus200Schema,
-	listAgentRunnerSessionsStatusDefaultSchema,
-]);
+export const listAgentRunnerSessionsResponseSchema = listAgentRunnerSessionsStatus200Schema;
+
+export const listAgentRunnerSessionsErrorSchema = listAgentRunnerSessionsStatusDefaultSchema;
 
 export const createAgentRunnerSessionPathAgentRunnerIdSchema = z.string();
 
@@ -8126,12 +7688,13 @@ export const createAgentRunnerSessionStatus404Schema = z.unknown();
 export const createAgentRunnerSessionStatus422Schema = z.unknown();
 
 export const createAgentRunnerSessionStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const createAgentRunnerSessionResponseSchema = z.union([
-	createAgentRunnerSessionStatus200Schema,
+export const createAgentRunnerSessionResponseSchema = createAgentRunnerSessionStatus200Schema;
+
+export const createAgentRunnerSessionErrorSchema = z.union([
 	createAgentRunnerSessionStatus404Schema,
 	createAgentRunnerSessionStatus422Schema,
 	createAgentRunnerSessionStatusDefaultSchema,
@@ -8185,14 +7748,13 @@ export const getAgentRunnerSessionStatus200Schema = z.object({
 });
 
 export const getAgentRunnerSessionStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const getAgentRunnerSessionResponseSchema = z.union([
-	getAgentRunnerSessionStatus200Schema,
-	getAgentRunnerSessionStatusDefaultSchema,
-]);
+export const getAgentRunnerSessionResponseSchema = getAgentRunnerSessionStatus200Schema;
+
+export const getAgentRunnerSessionErrorSchema = getAgentRunnerSessionStatusDefaultSchema;
 
 export const updateAgentRunnerSessionPathAgentRunnerIdSchema = z.string();
 
@@ -8244,14 +7806,13 @@ export const updateAgentRunnerSessionStatus200Schema = z.object({
 });
 
 export const updateAgentRunnerSessionStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const updateAgentRunnerSessionResponseSchema = z.union([
-	updateAgentRunnerSessionStatus200Schema,
-	updateAgentRunnerSessionStatusDefaultSchema,
-]);
+export const updateAgentRunnerSessionResponseSchema = updateAgentRunnerSessionStatus200Schema;
+
+export const updateAgentRunnerSessionErrorSchema = updateAgentRunnerSessionStatusDefaultSchema;
 
 export const deleteAgentRunnerSessionPathAgentRunnerIdSchema = z.string();
 
@@ -8260,14 +7821,13 @@ export const deleteAgentRunnerSessionPathAgentRunnerSessionIdSchema = z.string()
 export const deleteAgentRunnerSessionStatus202Schema = z.unknown();
 
 export const deleteAgentRunnerSessionStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const deleteAgentRunnerSessionResponseSchema = z.union([
-	deleteAgentRunnerSessionStatus202Schema,
-	deleteAgentRunnerSessionStatusDefaultSchema,
-]);
+export const deleteAgentRunnerSessionResponseSchema = deleteAgentRunnerSessionStatus202Schema;
+
+export const deleteAgentRunnerSessionErrorSchema = deleteAgentRunnerSessionStatusDefaultSchema;
 
 export const listFormSubmissionPathSubmissionIdSchema = z.string();
 
@@ -8295,28 +7855,26 @@ export const listFormSubmissionStatus200Schema = z.array(
 );
 
 export const listFormSubmissionStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const listFormSubmissionResponseSchema = z.union([
-	listFormSubmissionStatus200Schema,
-	listFormSubmissionStatusDefaultSchema,
-]);
+export const listFormSubmissionResponseSchema = listFormSubmissionStatus200Schema;
+
+export const listFormSubmissionErrorSchema = listFormSubmissionStatusDefaultSchema;
 
 export const deleteSubmissionPathSubmissionIdSchema = z.string();
 
 export const deleteSubmissionStatus204Schema = z.unknown();
 
 export const deleteSubmissionStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const deleteSubmissionResponseSchema = z.union([
-	deleteSubmissionStatus204Schema,
-	deleteSubmissionStatusDefaultSchema,
-]);
+export const deleteSubmissionResponseSchema = deleteSubmissionStatus204Schema;
+
+export const deleteSubmissionErrorSchema = deleteSubmissionStatusDefaultSchema;
 
 export const listServiceInstancesForSitePathSiteIdSchema = z.string();
 
@@ -8338,14 +7896,14 @@ export const listServiceInstancesForSiteStatus200Schema = z.array(
 );
 
 export const listServiceInstancesForSiteStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const listServiceInstancesForSiteResponseSchema = z.union([
-	listServiceInstancesForSiteStatus200Schema,
-	listServiceInstancesForSiteStatusDefaultSchema,
-]);
+export const listServiceInstancesForSiteResponseSchema = listServiceInstancesForSiteStatus200Schema;
+
+export const listServiceInstancesForSiteErrorSchema =
+	listServiceInstancesForSiteStatusDefaultSchema;
 
 export const createServiceInstancePathSiteIdSchema = z.string();
 
@@ -8367,16 +7925,15 @@ export const createServiceInstanceStatus201Schema = z.object({
 });
 
 export const createServiceInstanceStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const createServiceInstanceResponseSchema = z.union([
-	createServiceInstanceStatus201Schema,
-	createServiceInstanceStatusDefaultSchema,
-]);
+export const createServiceInstanceResponseSchema = createServiceInstanceStatus201Schema;
 
-export const createServiceInstanceDataSchema = z.object({}).optional();
+export const createServiceInstanceErrorSchema = createServiceInstanceStatusDefaultSchema;
+
+export const createServiceInstanceBodySchema = z.object({});
 
 export const showServiceInstancePathSiteIdSchema = z.string();
 
@@ -8400,14 +7957,13 @@ export const showServiceInstanceStatus200Schema = z.object({
 });
 
 export const showServiceInstanceStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const showServiceInstanceResponseSchema = z.union([
-	showServiceInstanceStatus200Schema,
-	showServiceInstanceStatusDefaultSchema,
-]);
+export const showServiceInstanceResponseSchema = showServiceInstanceStatus200Schema;
+
+export const showServiceInstanceErrorSchema = showServiceInstanceStatusDefaultSchema;
 
 export const updateServiceInstancePathSiteIdSchema = z.string();
 
@@ -8418,16 +7974,15 @@ export const updateServiceInstancePathInstanceIdSchema = z.string();
 export const updateServiceInstanceStatus204Schema = z.unknown();
 
 export const updateServiceInstanceStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const updateServiceInstanceResponseSchema = z.union([
-	updateServiceInstanceStatus204Schema,
-	updateServiceInstanceStatusDefaultSchema,
-]);
+export const updateServiceInstanceResponseSchema = updateServiceInstanceStatus204Schema;
 
-export const updateServiceInstanceDataSchema = z.object({}).optional();
+export const updateServiceInstanceErrorSchema = updateServiceInstanceStatusDefaultSchema;
+
+export const updateServiceInstanceBodySchema = z.object({});
 
 export const deleteServiceInstancePathSiteIdSchema = z.string();
 
@@ -8438,14 +7993,13 @@ export const deleteServiceInstancePathInstanceIdSchema = z.string();
 export const deleteServiceInstanceStatus204Schema = z.unknown();
 
 export const deleteServiceInstanceStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const deleteServiceInstanceResponseSchema = z.union([
-	deleteServiceInstanceStatus204Schema,
-	deleteServiceInstanceStatusDefaultSchema,
-]);
+export const deleteServiceInstanceResponseSchema = deleteServiceInstanceStatus204Schema;
+
+export const deleteServiceInstanceErrorSchema = deleteServiceInstanceStatusDefaultSchema;
 
 export const getServicesQuerySearchSchema = z.string().optional();
 
@@ -8468,14 +8022,13 @@ export const getServicesStatus200Schema = z.array(
 );
 
 export const getServicesStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const getServicesResponseSchema = z.union([
-	getServicesStatus200Schema,
-	getServicesStatusDefaultSchema,
-]);
+export const getServicesResponseSchema = getServicesStatus200Schema;
+
+export const getServicesErrorSchema = getServicesStatusDefaultSchema;
 
 export const showServicePathAddonNameSchema = z.string();
 
@@ -8496,28 +8049,26 @@ export const showServiceStatus200Schema = z.object({
 });
 
 export const showServiceStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const showServiceResponseSchema = z.union([
-	showServiceStatus200Schema,
-	showServiceStatusDefaultSchema,
-]);
+export const showServiceResponseSchema = showServiceStatus200Schema;
+
+export const showServiceErrorSchema = showServiceStatusDefaultSchema;
 
 export const showServiceManifestPathAddonNameSchema = z.string();
 
 export const showServiceManifestStatus201Schema = z.object({});
 
 export const showServiceManifestStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const showServiceManifestResponseSchema = z.union([
-	showServiceManifestStatus201Schema,
-	showServiceManifestStatusDefaultSchema,
-]);
+export const showServiceManifestResponseSchema = showServiceManifestStatus201Schema;
+
+export const showServiceManifestErrorSchema = showServiceManifestStatusDefaultSchema;
 
 export const getCurrentUserStatus200Schema = z.object({
 	id: z.string().optional(),
@@ -8526,7 +8077,7 @@ export const getCurrentUserStatus200Schema = z.object({
 	avatar_url: z.string().optional(),
 	email: z.string().optional(),
 	affiliate_id: z.string().optional(),
-	site_count: z.bigint().optional(),
+	site_count: z.coerce.bigint().optional(),
 	created_at: z.string().optional(),
 	last_login: z.string().optional(),
 	login_providers: z.array(z.string()).optional(),
@@ -8538,14 +8089,13 @@ export const getCurrentUserStatus200Schema = z.object({
 });
 
 export const getCurrentUserStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const getCurrentUserResponseSchema = z.union([
-	getCurrentUserStatus200Schema,
-	getCurrentUserStatusDefaultSchema,
-]);
+export const getCurrentUserResponseSchema = getCurrentUserStatus200Schema;
+
+export const getCurrentUserErrorSchema = getCurrentUserStatusDefaultSchema;
 
 export const createSplitTestPathSiteIdSchema = z.string();
 
@@ -8562,20 +8112,17 @@ export const createSplitTestStatus201Schema = z.object({
 });
 
 export const createSplitTestStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const createSplitTestResponseSchema = z.union([
-	createSplitTestStatus201Schema,
-	createSplitTestStatusDefaultSchema,
-]);
+export const createSplitTestResponseSchema = createSplitTestStatus201Schema;
 
-export const createSplitTestDataSchema = z
-	.object({
-		branch_tests: z.object({}).optional(),
-	})
-	.optional();
+export const createSplitTestErrorSchema = createSplitTestStatusDefaultSchema;
+
+export const createSplitTestBodySchema = z.object({
+	branch_tests: z.object({}).optional(),
+});
 
 export const getSplitTestsPathSiteIdSchema = z.string();
 
@@ -8594,14 +8141,13 @@ export const getSplitTestsStatus200Schema = z.array(
 );
 
 export const getSplitTestsStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const getSplitTestsResponseSchema = z.union([
-	getSplitTestsStatus200Schema,
-	getSplitTestsStatusDefaultSchema,
-]);
+export const getSplitTestsResponseSchema = getSplitTestsStatus200Schema;
+
+export const getSplitTestsErrorSchema = getSplitTestsStatusDefaultSchema;
 
 export const updateSplitTestPathSiteIdSchema = z.string();
 
@@ -8620,20 +8166,17 @@ export const updateSplitTestStatus201Schema = z.object({
 });
 
 export const updateSplitTestStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const updateSplitTestResponseSchema = z.union([
-	updateSplitTestStatus201Schema,
-	updateSplitTestStatusDefaultSchema,
-]);
+export const updateSplitTestResponseSchema = updateSplitTestStatus201Schema;
 
-export const updateSplitTestDataSchema = z
-	.object({
-		branch_tests: z.object({}).optional(),
-	})
-	.optional();
+export const updateSplitTestErrorSchema = updateSplitTestStatusDefaultSchema;
+
+export const updateSplitTestBodySchema = z.object({
+	branch_tests: z.object({}).optional(),
+});
 
 export const getSplitTestPathSiteIdSchema = z.string();
 
@@ -8652,14 +8195,13 @@ export const getSplitTestStatus200Schema = z.object({
 });
 
 export const getSplitTestStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const getSplitTestResponseSchema = z.union([
-	getSplitTestStatus200Schema,
-	getSplitTestStatusDefaultSchema,
-]);
+export const getSplitTestResponseSchema = getSplitTestStatus200Schema;
+
+export const getSplitTestErrorSchema = getSplitTestStatusDefaultSchema;
 
 export const enableSplitTestPathSiteIdSchema = z.string();
 
@@ -8668,14 +8210,13 @@ export const enableSplitTestPathSplitTestIdSchema = z.string();
 export const enableSplitTestStatus204Schema = z.unknown();
 
 export const enableSplitTestStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const enableSplitTestResponseSchema = z.union([
-	enableSplitTestStatus204Schema,
-	enableSplitTestStatusDefaultSchema,
-]);
+export const enableSplitTestResponseSchema = enableSplitTestStatus204Schema;
+
+export const enableSplitTestErrorSchema = enableSplitTestStatusDefaultSchema;
 
 export const disableSplitTestPathSiteIdSchema = z.string();
 
@@ -8684,14 +8225,13 @@ export const disableSplitTestPathSplitTestIdSchema = z.string();
 export const disableSplitTestStatus204Schema = z.unknown();
 
 export const disableSplitTestStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const disableSplitTestResponseSchema = z.union([
-	disableSplitTestStatus204Schema,
-	disableSplitTestStatusDefaultSchema,
-]);
+export const disableSplitTestResponseSchema = disableSplitTestStatus204Schema;
+
+export const disableSplitTestErrorSchema = disableSplitTestStatusDefaultSchema;
 
 export const createDnsZoneStatus201Schema = z.object({
 	id: z.string().optional(),
@@ -8708,8 +8248,8 @@ export const createDnsZoneStatus201Schema = z.object({
 				hostname: z.string().optional(),
 				type: z.string().optional(),
 				value: z.string().optional(),
-				ttl: z.bigint().optional(),
-				priority: z.bigint().optional(),
+				ttl: z.coerce.bigint().optional(),
+				priority: z.coerce.bigint().optional(),
 				dns_zone_id: z.string().optional(),
 				site_id: z.string().optional(),
 				flag: z.int().optional(),
@@ -8729,16 +8269,15 @@ export const createDnsZoneStatus201Schema = z.object({
 });
 
 export const createDnsZoneStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const createDnsZoneResponseSchema = z.union([
-	createDnsZoneStatus201Schema,
-	createDnsZoneStatusDefaultSchema,
-]);
+export const createDnsZoneResponseSchema = createDnsZoneStatus201Schema;
 
-export const createDnsZoneDataSchema = z.object({
+export const createDnsZoneErrorSchema = createDnsZoneStatusDefaultSchema;
+
+export const createDnsZoneBodySchema = z.object({
 	account_slug: z.string().optional(),
 	site_id: z.string().optional(),
 	name: z.string().optional(),
@@ -8762,8 +8301,8 @@ export const getDnsZonesStatus200Schema = z.array(
 					hostname: z.string().optional(),
 					type: z.string().optional(),
 					value: z.string().optional(),
-					ttl: z.bigint().optional(),
-					priority: z.bigint().optional(),
+					ttl: z.coerce.bigint().optional(),
+					priority: z.coerce.bigint().optional(),
 					dns_zone_id: z.string().optional(),
 					site_id: z.string().optional(),
 					flag: z.int().optional(),
@@ -8784,14 +8323,13 @@ export const getDnsZonesStatus200Schema = z.array(
 );
 
 export const getDnsZonesStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const getDnsZonesResponseSchema = z.union([
-	getDnsZonesStatus200Schema,
-	getDnsZonesStatusDefaultSchema,
-]);
+export const getDnsZonesResponseSchema = getDnsZonesStatus200Schema;
+
+export const getDnsZonesErrorSchema = getDnsZonesStatusDefaultSchema;
 
 export const getDnsZonePathZoneIdSchema = z.string();
 
@@ -8810,8 +8348,8 @@ export const getDnsZoneStatus200Schema = z.object({
 				hostname: z.string().optional(),
 				type: z.string().optional(),
 				value: z.string().optional(),
-				ttl: z.bigint().optional(),
-				priority: z.bigint().optional(),
+				ttl: z.coerce.bigint().optional(),
+				priority: z.coerce.bigint().optional(),
 				dns_zone_id: z.string().optional(),
 				site_id: z.string().optional(),
 				flag: z.int().optional(),
@@ -8831,28 +8369,26 @@ export const getDnsZoneStatus200Schema = z.object({
 });
 
 export const getDnsZoneStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const getDnsZoneResponseSchema = z.union([
-	getDnsZoneStatus200Schema,
-	getDnsZoneStatusDefaultSchema,
-]);
+export const getDnsZoneResponseSchema = getDnsZoneStatus200Schema;
+
+export const getDnsZoneErrorSchema = getDnsZoneStatusDefaultSchema;
 
 export const deleteDnsZonePathZoneIdSchema = z.string();
 
 export const deleteDnsZoneStatus204Schema = z.unknown();
 
 export const deleteDnsZoneStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const deleteDnsZoneResponseSchema = z.union([
-	deleteDnsZoneStatus204Schema,
-	deleteDnsZoneStatusDefaultSchema,
-]);
+export const deleteDnsZoneResponseSchema = deleteDnsZoneStatus204Schema;
+
+export const deleteDnsZoneErrorSchema = deleteDnsZoneStatusDefaultSchema;
 
 export const transferDnsZonePathZoneIdSchema = z.string();
 
@@ -8883,8 +8419,8 @@ export const transferDnsZoneStatus200Schema = z.object({
 				hostname: z.string().optional(),
 				type: z.string().optional(),
 				value: z.string().optional(),
-				ttl: z.bigint().optional(),
-				priority: z.bigint().optional(),
+				ttl: z.coerce.bigint().optional(),
+				priority: z.coerce.bigint().optional(),
 				dns_zone_id: z.string().optional(),
 				site_id: z.string().optional(),
 				flag: z.int().optional(),
@@ -8904,14 +8440,13 @@ export const transferDnsZoneStatus200Schema = z.object({
 });
 
 export const transferDnsZoneStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const transferDnsZoneResponseSchema = z.union([
-	transferDnsZoneStatus200Schema,
-	transferDnsZoneStatusDefaultSchema,
-]);
+export const transferDnsZoneResponseSchema = transferDnsZoneStatus200Schema;
+
+export const transferDnsZoneErrorSchema = transferDnsZoneStatusDefaultSchema;
 
 export const getDnsRecordsPathZoneIdSchema = z.string();
 
@@ -8921,8 +8456,8 @@ export const getDnsRecordsStatus200Schema = z.array(
 		hostname: z.string().optional(),
 		type: z.string().optional(),
 		value: z.string().optional(),
-		ttl: z.bigint().optional(),
-		priority: z.bigint().optional(),
+		ttl: z.coerce.bigint().optional(),
+		priority: z.coerce.bigint().optional(),
 		dns_zone_id: z.string().optional(),
 		site_id: z.string().optional(),
 		flag: z.int().optional(),
@@ -8932,14 +8467,13 @@ export const getDnsRecordsStatus200Schema = z.array(
 );
 
 export const getDnsRecordsStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const getDnsRecordsResponseSchema = z.union([
-	getDnsRecordsStatus200Schema,
-	getDnsRecordsStatusDefaultSchema,
-]);
+export const getDnsRecordsResponseSchema = getDnsRecordsStatus200Schema;
+
+export const getDnsRecordsErrorSchema = getDnsRecordsStatusDefaultSchema;
 
 export const createDnsRecordPathZoneIdSchema = z.string();
 
@@ -8948,8 +8482,8 @@ export const createDnsRecordStatus201Schema = z.object({
 	hostname: z.string().optional(),
 	type: z.string().optional(),
 	value: z.string().optional(),
-	ttl: z.bigint().optional(),
-	priority: z.bigint().optional(),
+	ttl: z.coerce.bigint().optional(),
+	priority: z.coerce.bigint().optional(),
 	dns_zone_id: z.string().optional(),
 	site_id: z.string().optional(),
 	flag: z.int().optional(),
@@ -8958,24 +8492,23 @@ export const createDnsRecordStatus201Schema = z.object({
 });
 
 export const createDnsRecordStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const createDnsRecordResponseSchema = z.union([
-	createDnsRecordStatus201Schema,
-	createDnsRecordStatusDefaultSchema,
-]);
+export const createDnsRecordResponseSchema = createDnsRecordStatus201Schema;
 
-export const createDnsRecordDataSchema = z.object({
+export const createDnsRecordErrorSchema = createDnsRecordStatusDefaultSchema;
+
+export const createDnsRecordBodySchema = z.object({
 	type: z.string().optional(),
 	hostname: z.string().optional(),
 	value: z.string().optional(),
-	ttl: z.bigint().optional(),
-	priority: z.bigint().optional(),
-	weight: z.bigint().optional(),
-	port: z.bigint().optional(),
-	flag: z.bigint().optional(),
+	ttl: z.coerce.bigint().optional(),
+	priority: z.coerce.bigint().optional(),
+	weight: z.coerce.bigint().optional(),
+	port: z.coerce.bigint().optional(),
+	flag: z.coerce.bigint().optional(),
 	tag: z.string().optional(),
 });
 
@@ -8988,8 +8521,8 @@ export const getIndividualDnsRecordStatus200Schema = z.object({
 	hostname: z.string().optional(),
 	type: z.string().optional(),
 	value: z.string().optional(),
-	ttl: z.bigint().optional(),
-	priority: z.bigint().optional(),
+	ttl: z.coerce.bigint().optional(),
+	priority: z.coerce.bigint().optional(),
 	dns_zone_id: z.string().optional(),
 	site_id: z.string().optional(),
 	flag: z.int().optional(),
@@ -8998,14 +8531,13 @@ export const getIndividualDnsRecordStatus200Schema = z.object({
 });
 
 export const getIndividualDnsRecordStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const getIndividualDnsRecordResponseSchema = z.union([
-	getIndividualDnsRecordStatus200Schema,
-	getIndividualDnsRecordStatusDefaultSchema,
-]);
+export const getIndividualDnsRecordResponseSchema = getIndividualDnsRecordStatus200Schema;
+
+export const getIndividualDnsRecordErrorSchema = getIndividualDnsRecordStatusDefaultSchema;
 
 export const deleteDnsRecordPathZoneIdSchema = z.string();
 
@@ -9014,14 +8546,13 @@ export const deleteDnsRecordPathDnsRecordIdSchema = z.string();
 export const deleteDnsRecordStatus204Schema = z.unknown();
 
 export const deleteDnsRecordStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const deleteDnsRecordResponseSchema = z.union([
-	deleteDnsRecordStatus204Schema,
-	deleteDnsRecordStatusDefaultSchema,
-]);
+export const deleteDnsRecordResponseSchema = deleteDnsRecordStatus204Schema;
+
+export const deleteDnsRecordErrorSchema = deleteDnsRecordStatusDefaultSchema;
 
 export const listSiteDevServersPathSiteIdSchema = z.string();
 
@@ -9047,14 +8578,13 @@ export const listSiteDevServersStatus200Schema = z.array(
 );
 
 export const listSiteDevServersStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const listSiteDevServersResponseSchema = z.union([
-	listSiteDevServersStatus200Schema,
-	listSiteDevServersStatusDefaultSchema,
-]);
+export const listSiteDevServersResponseSchema = listSiteDevServersStatus200Schema;
+
+export const listSiteDevServersErrorSchema = listSiteDevServersStatusDefaultSchema;
 
 export const createSiteDevServerPathSiteIdSchema = z.string();
 
@@ -9078,14 +8608,13 @@ export const createSiteDevServerStatus200Schema = z.array(
 );
 
 export const createSiteDevServerStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const createSiteDevServerResponseSchema = z.union([
-	createSiteDevServerStatus200Schema,
-	createSiteDevServerStatusDefaultSchema,
-]);
+export const createSiteDevServerResponseSchema = createSiteDevServerStatus200Schema;
+
+export const createSiteDevServerErrorSchema = createSiteDevServerStatusDefaultSchema;
 
 export const deleteSiteDevServersPathSiteIdSchema = z.string();
 
@@ -9094,14 +8623,13 @@ export const deleteSiteDevServersQueryBranchSchema = z.string().optional();
 export const deleteSiteDevServersStatus202Schema = z.unknown();
 
 export const deleteSiteDevServersStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const deleteSiteDevServersResponseSchema = z.union([
-	deleteSiteDevServersStatus202Schema,
-	deleteSiteDevServersStatusDefaultSchema,
-]);
+export const deleteSiteDevServersResponseSchema = deleteSiteDevServersStatus202Schema;
+
+export const deleteSiteDevServersErrorSchema = deleteSiteDevServersStatusDefaultSchema;
 
 export const getSiteDevServerPathSiteIdSchema = z.string();
 
@@ -9153,12 +8681,11 @@ export const updateDevServerStateStatus200Schema = z.object({
 
 export const updateDevServerStateStatus409Schema = z.unknown();
 
-export const updateDevServerStateResponseSchema = z.union([
-	updateDevServerStateStatus200Schema,
-	updateDevServerStateStatus409Schema,
-]);
+export const updateDevServerStateResponseSchema = updateDevServerStateStatus200Schema;
 
-export const updateDevServerStateDataSchema = z.object({
+export const updateDevServerStateErrorSchema = updateDevServerStateStatus409Schema;
+
+export const updateDevServerStateBodySchema = z.object({
 	state: z.enum(["starting", "live", "error", "done"]),
 	task_id: z.string().optional(),
 	error: z.string().optional(),
@@ -9179,14 +8706,13 @@ export const listSiteDevServerHooksStatus200Schema = z.array(
 );
 
 export const listSiteDevServerHooksStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const listSiteDevServerHooksResponseSchema = z.union([
-	listSiteDevServerHooksStatus200Schema,
-	listSiteDevServerHooksStatusDefaultSchema,
-]);
+export const listSiteDevServerHooksResponseSchema = listSiteDevServerHooksStatus200Schema;
+
+export const listSiteDevServerHooksErrorSchema = listSiteDevServerHooksStatusDefaultSchema;
 
 export const createSiteDevServerHookPathSiteIdSchema = z.string();
 
@@ -9201,22 +8727,19 @@ export const createSiteDevServerHookStatus201Schema = z.object({
 });
 
 export const createSiteDevServerHookStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const createSiteDevServerHookResponseSchema = z.union([
-	createSiteDevServerHookStatus201Schema,
-	createSiteDevServerHookStatusDefaultSchema,
-]);
+export const createSiteDevServerHookResponseSchema = createSiteDevServerHookStatus201Schema;
 
-export const createSiteDevServerHookDataSchema = z
-	.object({
-		title: z.string().optional(),
-		branch: z.string().optional(),
-		type: z.enum(["new_dev_server", "content_refresh"]).optional(),
-	})
-	.optional();
+export const createSiteDevServerHookErrorSchema = createSiteDevServerHookStatusDefaultSchema;
+
+export const createSiteDevServerHookBodySchema = z.object({
+	title: z.string().optional(),
+	branch: z.string().optional(),
+	type: z.enum(["new_dev_server", "content_refresh"]).optional(),
+});
 
 export const getSiteDevServerHookPathSiteIdSchema = z.string();
 
@@ -9233,14 +8756,13 @@ export const getSiteDevServerHookStatus200Schema = z.object({
 });
 
 export const getSiteDevServerHookStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const getSiteDevServerHookResponseSchema = z.union([
-	getSiteDevServerHookStatus200Schema,
-	getSiteDevServerHookStatusDefaultSchema,
-]);
+export const getSiteDevServerHookResponseSchema = getSiteDevServerHookStatus200Schema;
+
+export const getSiteDevServerHookErrorSchema = getSiteDevServerHookStatusDefaultSchema;
 
 export const updateSiteDevServerHookPathSiteIdSchema = z.string();
 
@@ -9249,22 +8771,19 @@ export const updateSiteDevServerHookPathIdSchema = z.string();
 export const updateSiteDevServerHookStatus204Schema = z.unknown();
 
 export const updateSiteDevServerHookStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const updateSiteDevServerHookResponseSchema = z.union([
-	updateSiteDevServerHookStatus204Schema,
-	updateSiteDevServerHookStatusDefaultSchema,
-]);
+export const updateSiteDevServerHookResponseSchema = updateSiteDevServerHookStatus204Schema;
 
-export const updateSiteDevServerHookDataSchema = z
-	.object({
-		title: z.string().optional(),
-		branch: z.string().optional(),
-		type: z.enum(["new_dev_server", "content_refresh"]).optional(),
-	})
-	.optional();
+export const updateSiteDevServerHookErrorSchema = updateSiteDevServerHookStatusDefaultSchema;
+
+export const updateSiteDevServerHookBodySchema = z.object({
+	title: z.string().optional(),
+	branch: z.string().optional(),
+	type: z.enum(["new_dev_server", "content_refresh"]).optional(),
+});
 
 export const deleteSiteDevServerHookPathSiteIdSchema = z.string();
 
@@ -9273,14 +8792,13 @@ export const deleteSiteDevServerHookPathIdSchema = z.string();
 export const deleteSiteDevServerHookStatus204Schema = z.unknown();
 
 export const deleteSiteDevServerHookStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const deleteSiteDevServerHookResponseSchema = z.union([
-	deleteSiteDevServerHookStatus204Schema,
-	deleteSiteDevServerHookStatusDefaultSchema,
-]);
+export const deleteSiteDevServerHookResponseSchema = deleteSiteDevServerHookStatus204Schema;
+
+export const deleteSiteDevServerHookErrorSchema = deleteSiteDevServerHookStatusDefaultSchema;
 
 export const listSiteAgentRunnerHooksPathSiteIdSchema = z.string();
 
@@ -9299,48 +8817,47 @@ export const listSiteAgentRunnerHooksStatus200Schema = z.array(
 );
 
 export const listSiteAgentRunnerHooksStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const listSiteAgentRunnerHooksResponseSchema = z.union([
-	listSiteAgentRunnerHooksStatus200Schema,
-	listSiteAgentRunnerHooksStatusDefaultSchema,
-]);
+export const listSiteAgentRunnerHooksResponseSchema = listSiteAgentRunnerHooksStatus200Schema;
+
+export const listSiteAgentRunnerHooksErrorSchema = listSiteAgentRunnerHooksStatusDefaultSchema;
 
 export const createSiteAgentRunnerHookPathSiteIdSchema = z.string();
 
-export const createSiteAgentRunnerHookStatus201Schema = z.object({
-	id: z.string().optional(),
-	site_id: z.string().optional(),
-	title: z.string().optional(),
-	branch: z.string().optional(),
-	prompt: z.string().optional(),
-	agent: z.string().optional(),
-	url: z.string().optional(),
-	msg: z.string().optional(),
-	created_at: z.string().optional(),
-	secret: z.string().optional(),
-});
-
-export const createSiteAgentRunnerHookStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
-	message: z.string(),
-});
-
-export const createSiteAgentRunnerHookResponseSchema = z.union([
-	createSiteAgentRunnerHookStatus201Schema,
-	createSiteAgentRunnerHookStatusDefaultSchema,
-]);
-
-export const createSiteAgentRunnerHookDataSchema = z
+export const createSiteAgentRunnerHookStatus201Schema = z
 	.object({
+		id: z.string().optional(),
+		site_id: z.string().optional(),
 		title: z.string().optional(),
 		branch: z.string().optional(),
 		prompt: z.string().optional(),
 		agent: z.string().optional(),
+		url: z.string().optional(),
+		msg: z.string().optional(),
+		created_at: z.string().optional(),
 	})
-	.optional();
+	.extend({
+		secret: z.string().optional(),
+	});
+
+export const createSiteAgentRunnerHookStatusDefaultSchema = z.object({
+	code: z.coerce.bigint().optional(),
+	message: z.string(),
+});
+
+export const createSiteAgentRunnerHookResponseSchema = createSiteAgentRunnerHookStatus201Schema;
+
+export const createSiteAgentRunnerHookErrorSchema = createSiteAgentRunnerHookStatusDefaultSchema;
+
+export const createSiteAgentRunnerHookBodySchema = z.object({
+	title: z.string().optional(),
+	branch: z.string().optional(),
+	prompt: z.string().optional(),
+	agent: z.string().optional(),
+});
 
 export const getSiteAgentRunnerHookPathSiteIdSchema = z.string();
 
@@ -9359,14 +8876,13 @@ export const getSiteAgentRunnerHookStatus200Schema = z.object({
 });
 
 export const getSiteAgentRunnerHookStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const getSiteAgentRunnerHookResponseSchema = z.union([
-	getSiteAgentRunnerHookStatus200Schema,
-	getSiteAgentRunnerHookStatusDefaultSchema,
-]);
+export const getSiteAgentRunnerHookResponseSchema = getSiteAgentRunnerHookStatus200Schema;
+
+export const getSiteAgentRunnerHookErrorSchema = getSiteAgentRunnerHookStatusDefaultSchema;
 
 export const updateSiteAgentRunnerHookPathSiteIdSchema = z.string();
 
@@ -9375,23 +8891,20 @@ export const updateSiteAgentRunnerHookPathIdSchema = z.string();
 export const updateSiteAgentRunnerHookStatus204Schema = z.unknown();
 
 export const updateSiteAgentRunnerHookStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const updateSiteAgentRunnerHookResponseSchema = z.union([
-	updateSiteAgentRunnerHookStatus204Schema,
-	updateSiteAgentRunnerHookStatusDefaultSchema,
-]);
+export const updateSiteAgentRunnerHookResponseSchema = updateSiteAgentRunnerHookStatus204Schema;
 
-export const updateSiteAgentRunnerHookDataSchema = z
-	.object({
-		title: z.string().optional(),
-		branch: z.string().optional(),
-		prompt: z.string().optional(),
-		agent: z.string().optional(),
-	})
-	.optional();
+export const updateSiteAgentRunnerHookErrorSchema = updateSiteAgentRunnerHookStatusDefaultSchema;
+
+export const updateSiteAgentRunnerHookBodySchema = z.object({
+	title: z.string().optional(),
+	branch: z.string().optional(),
+	prompt: z.string().optional(),
+	agent: z.string().optional(),
+});
 
 export const deleteSiteAgentRunnerHookPathSiteIdSchema = z.string();
 
@@ -9400,14 +8913,13 @@ export const deleteSiteAgentRunnerHookPathIdSchema = z.string();
 export const deleteSiteAgentRunnerHookStatus204Schema = z.unknown();
 
 export const deleteSiteAgentRunnerHookStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const deleteSiteAgentRunnerHookResponseSchema = z.union([
-	deleteSiteAgentRunnerHookStatus204Schema,
-	deleteSiteAgentRunnerHookStatusDefaultSchema,
-]);
+export const deleteSiteAgentRunnerHookResponseSchema = deleteSiteAgentRunnerHookStatus204Schema;
+
+export const deleteSiteAgentRunnerHookErrorSchema = deleteSiteAgentRunnerHookStatusDefaultSchema;
 
 export const getAIGatewayProvidersStatus200Schema = z.object({
 	providers: z
@@ -9423,32 +8935,32 @@ export const getAIGatewayProvidersStatus200Schema = z.object({
 });
 
 export const getAIGatewayProvidersStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const getAIGatewayProvidersResponseSchema = z.union([
-	getAIGatewayProvidersStatus200Schema,
-	getAIGatewayProvidersStatusDefaultSchema,
-]);
+export const getAIGatewayProvidersResponseSchema = getAIGatewayProvidersStatus200Schema;
+
+export const getAIGatewayProvidersErrorSchema = getAIGatewayProvidersStatusDefaultSchema;
 
 export const getAIGatewayTokenPathSiteIdSchema = z.string().describe("The site ID");
 
 export const getAIGatewayTokenStatus200Schema = z.object({
 	token: z.string().optional().describe("The AI Gateway authentication token"),
 	url: z.string().optional().describe("AI gateway base url"),
-	expires_at: z.bigint().optional().describe("Unix timestamp when the token expires"),
+	expires_at: z.coerce.bigint().optional().describe("Unix timestamp when the token expires"),
 });
 
 export const getAIGatewayTokenStatus404Schema = z.unknown();
 
 export const getAIGatewayTokenStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const getAIGatewayTokenResponseSchema = z.union([
-	getAIGatewayTokenStatus200Schema,
+export const getAIGatewayTokenResponseSchema = getAIGatewayTokenStatus200Schema;
+
+export const getAIGatewayTokenErrorSchema = z.union([
 	getAIGatewayTokenStatus404Schema,
 	getAIGatewayTokenStatusDefaultSchema,
 ]);
@@ -9458,18 +8970,19 @@ export const getAccountAIGatewayTokenPathAccountIdSchema = z.string().describe("
 export const getAccountAIGatewayTokenStatus200Schema = z.object({
 	token: z.string().optional().describe("The AI Gateway authentication token"),
 	url: z.string().optional().describe("AI gateway base url"),
-	expires_at: z.bigint().optional().describe("Unix timestamp when the token expires"),
+	expires_at: z.coerce.bigint().optional().describe("Unix timestamp when the token expires"),
 });
 
 export const getAccountAIGatewayTokenStatus404Schema = z.unknown();
 
 export const getAccountAIGatewayTokenStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const getAccountAIGatewayTokenResponseSchema = z.union([
-	getAccountAIGatewayTokenStatus200Schema,
+export const getAccountAIGatewayTokenResponseSchema = getAccountAIGatewayTokenStatus200Schema;
+
+export const getAccountAIGatewayTokenErrorSchema = z.union([
 	getAccountAIGatewayTokenStatus404Schema,
 	getAccountAIGatewayTokenStatusDefaultSchema,
 ]);
@@ -9489,17 +9002,18 @@ export const createSiteDatabaseStatus201Schema = z
 	.describe("Response containing the database connection string");
 
 export const createSiteDatabaseStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
 export const createSiteDatabaseResponseSchema = z.union([
 	createSiteDatabaseStatus200Schema,
 	createSiteDatabaseStatus201Schema,
-	createSiteDatabaseStatusDefaultSchema,
 ]);
 
-export const createSiteDatabaseDataSchema = z
+export const createSiteDatabaseErrorSchema = createSiteDatabaseStatusDefaultSchema;
+
+export const createSiteDatabaseBodySchema = z
 	.object({
 		region: z
 			.string()
@@ -9527,28 +9041,26 @@ export const getSiteDatabaseStatus200Schema = z
 	.describe("Response containing the database connection string");
 
 export const getSiteDatabaseStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const getSiteDatabaseResponseSchema = z.union([
-	getSiteDatabaseStatus200Schema,
-	getSiteDatabaseStatusDefaultSchema,
-]);
+export const getSiteDatabaseResponseSchema = getSiteDatabaseStatus200Schema;
+
+export const getSiteDatabaseErrorSchema = getSiteDatabaseStatusDefaultSchema;
 
 export const deleteSiteDatabasePathSiteIdSchema = z.string();
 
 export const deleteSiteDatabaseStatus204Schema = z.unknown();
 
 export const deleteSiteDatabaseStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const deleteSiteDatabaseResponseSchema = z.union([
-	deleteSiteDatabaseStatus204Schema,
-	deleteSiteDatabaseStatusDefaultSchema,
-]);
+export const deleteSiteDatabaseResponseSchema = deleteSiteDatabaseStatus204Schema;
+
+export const deleteSiteDatabaseErrorSchema = deleteSiteDatabaseStatusDefaultSchema;
 
 export const createSiteDatabaseBranchPathSiteIdSchema = z.string();
 
@@ -9581,17 +9093,18 @@ export const createSiteDatabaseBranchStatus201Schema = z
 	.describe("Response containing the database branch connection string");
 
 export const createSiteDatabaseBranchStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
 export const createSiteDatabaseBranchResponseSchema = z.union([
 	createSiteDatabaseBranchStatus200Schema,
 	createSiteDatabaseBranchStatus201Schema,
-	createSiteDatabaseBranchStatusDefaultSchema,
 ]);
 
-export const createSiteDatabaseBranchDataSchema = z
+export const createSiteDatabaseBranchErrorSchema = createSiteDatabaseBranchStatusDefaultSchema;
+
+export const createSiteDatabaseBranchBodySchema = z
 	.object({
 		parent_branch_id: z
 			.string()
@@ -9622,7 +9135,7 @@ export const listSiteDatabaseBranchesStatus200Schema = z
 						.enum(["init", "creating", "resetting", "ready", "archived"])
 						.optional()
 						.describe("The current state of the branch"),
-					logical_size_bytes: z
+					logical_size_bytes: z.coerce
 						.bigint()
 						.optional()
 						.describe("The logical size of the branch in bytes"),
@@ -9643,7 +9156,7 @@ export const listSiteDatabaseBranchesStatus200Schema = z
 								.number()
 								.optional()
 								.describe("Maximum compute units for autoscaling"),
-							suspend_timeout_seconds: z
+							suspend_timeout_seconds: z.coerce
 								.bigint()
 								.optional()
 								.describe("Seconds of inactivity before the compute endpoint is suspended"),
@@ -9667,14 +9180,13 @@ export const listSiteDatabaseBranchesStatus200Schema = z
 	.describe("Response containing a list of database branches");
 
 export const listSiteDatabaseBranchesStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const listSiteDatabaseBranchesResponseSchema = z.union([
-	listSiteDatabaseBranchesStatus200Schema,
-	listSiteDatabaseBranchesStatusDefaultSchema,
-]);
+export const listSiteDatabaseBranchesResponseSchema = listSiteDatabaseBranchesStatus200Schema;
+
+export const listSiteDatabaseBranchesErrorSchema = listSiteDatabaseBranchesStatusDefaultSchema;
 
 export const getSiteDatabaseBranchPathSiteIdSchema = z.string();
 
@@ -9704,12 +9216,13 @@ export const getSiteDatabaseBranchStatus200Schema = z
 export const getSiteDatabaseBranchStatus404Schema = z.unknown();
 
 export const getSiteDatabaseBranchStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const getSiteDatabaseBranchResponseSchema = z.union([
-	getSiteDatabaseBranchStatus200Schema,
+export const getSiteDatabaseBranchResponseSchema = getSiteDatabaseBranchStatus200Schema;
+
+export const getSiteDatabaseBranchErrorSchema = z.union([
 	getSiteDatabaseBranchStatus404Schema,
 	getSiteDatabaseBranchStatusDefaultSchema,
 ]);
@@ -9721,14 +9234,13 @@ export const deleteSiteDatabaseBranchPathBranchIdSchema = z.string().describe("T
 export const deleteSiteDatabaseBranchStatus204Schema = z.unknown();
 
 export const deleteSiteDatabaseBranchStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const deleteSiteDatabaseBranchResponseSchema = z.union([
-	deleteSiteDatabaseBranchStatus204Schema,
-	deleteSiteDatabaseBranchStatusDefaultSchema,
-]);
+export const deleteSiteDatabaseBranchResponseSchema = deleteSiteDatabaseBranchStatus204Schema;
+
+export const deleteSiteDatabaseBranchErrorSchema = deleteSiteDatabaseBranchStatusDefaultSchema;
 
 export const resetSiteDatabaseBranchPathSiteIdSchema = z.string();
 
@@ -9773,18 +9285,19 @@ export const resetSiteDatabaseBranchStatus400Schema = z.unknown();
 export const resetSiteDatabaseBranchStatus404Schema = z.unknown();
 
 export const resetSiteDatabaseBranchStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const resetSiteDatabaseBranchResponseSchema = z.union([
-	resetSiteDatabaseBranchStatus200Schema,
+export const resetSiteDatabaseBranchResponseSchema = resetSiteDatabaseBranchStatus200Schema;
+
+export const resetSiteDatabaseBranchErrorSchema = z.union([
 	resetSiteDatabaseBranchStatus400Schema,
 	resetSiteDatabaseBranchStatus404Schema,
 	resetSiteDatabaseBranchStatusDefaultSchema,
 ]);
 
-export const resetSiteDatabaseBranchDataSchema = z
+export const resetSiteDatabaseBranchBodySchema = z
 	.object({
 		source_branch_id: z
 			.string()
@@ -9806,7 +9319,7 @@ export const setSiteDatabaseBranchComputeSettingsStatus200Schema = z
 	.object({
 		min_cu: z.number().optional().describe("Minimum compute units"),
 		max_cu: z.number().optional().describe("Maximum compute units"),
-		sleep_timeout_seconds: z
+		sleep_timeout_seconds: z.coerce
 			.bigint()
 			.optional()
 			.describe("Seconds of inactivity before suspension"),
@@ -9816,17 +9329,19 @@ export const setSiteDatabaseBranchComputeSettingsStatus200Schema = z
 export const setSiteDatabaseBranchComputeSettingsStatus403Schema = z.unknown();
 
 export const setSiteDatabaseBranchComputeSettingsStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const setSiteDatabaseBranchComputeSettingsResponseSchema = z.union([
-	setSiteDatabaseBranchComputeSettingsStatus200Schema,
+export const setSiteDatabaseBranchComputeSettingsResponseSchema =
+	setSiteDatabaseBranchComputeSettingsStatus200Schema;
+
+export const setSiteDatabaseBranchComputeSettingsErrorSchema = z.union([
 	setSiteDatabaseBranchComputeSettingsStatus403Schema,
 	setSiteDatabaseBranchComputeSettingsStatusDefaultSchema,
 ]);
 
-export const setSiteDatabaseBranchComputeSettingsDataSchema = z
+export const setSiteDatabaseBranchComputeSettingsBodySchema = z
 	.object({
 		min_cu: z
 			.number()
@@ -9838,14 +9353,13 @@ export const setSiteDatabaseBranchComputeSettingsDataSchema = z
 			.describe(
 				"Maximum compute units (0.25 to 16.0). Must be greater than or equal to min_cu. max_cu - min_cu must not exceed 8.0.",
 			),
-		sleep_timeout_seconds: z
+		sleep_timeout_seconds: z.coerce
 			.bigint()
 			.nullish()
 			.describe(
 				"Seconds of inactivity before the compute endpoint is suspended. Use -1 for always on, or a non-negative value.",
 			),
 	})
-	.optional()
 	.describe(
 		"Request body for setting compute settings. All fields are optional; only provided fields are updated.",
 	);
@@ -9856,7 +9370,7 @@ export const setSiteDatabaseComputeSettingsStatus200Schema = z
 	.object({
 		min_cu: z.number().optional().describe("Minimum compute units"),
 		max_cu: z.number().optional().describe("Maximum compute units"),
-		sleep_timeout_seconds: z
+		sleep_timeout_seconds: z.coerce
 			.bigint()
 			.optional()
 			.describe("Seconds of inactivity before suspension"),
@@ -9866,17 +9380,19 @@ export const setSiteDatabaseComputeSettingsStatus200Schema = z
 export const setSiteDatabaseComputeSettingsStatus403Schema = z.unknown();
 
 export const setSiteDatabaseComputeSettingsStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const setSiteDatabaseComputeSettingsResponseSchema = z.union([
-	setSiteDatabaseComputeSettingsStatus200Schema,
+export const setSiteDatabaseComputeSettingsResponseSchema =
+	setSiteDatabaseComputeSettingsStatus200Schema;
+
+export const setSiteDatabaseComputeSettingsErrorSchema = z.union([
 	setSiteDatabaseComputeSettingsStatus403Schema,
 	setSiteDatabaseComputeSettingsStatusDefaultSchema,
 ]);
 
-export const setSiteDatabaseComputeSettingsDataSchema = z
+export const setSiteDatabaseComputeSettingsBodySchema = z
 	.object({
 		min_cu: z
 			.number()
@@ -9888,14 +9404,13 @@ export const setSiteDatabaseComputeSettingsDataSchema = z
 			.describe(
 				"Maximum compute units (0.25 to 16.0). Must be greater than or equal to min_cu. max_cu - min_cu must not exceed 8.0.",
 			),
-		sleep_timeout_seconds: z
+		sleep_timeout_seconds: z.coerce
 			.bigint()
 			.nullish()
 			.describe(
 				"Seconds of inactivity before the compute endpoint is suspended. Use -1 for always on, or a non-negative value.",
 			),
 	})
-	.optional()
 	.describe(
 		"Request body for setting compute settings. All fields are optional; only provided fields are updated.",
 	);
@@ -9906,7 +9421,7 @@ export const getSiteDatabaseComputeSettingsStatus200Schema = z
 	.object({
 		min_cu: z.number().optional().describe("Minimum compute units"),
 		max_cu: z.number().optional().describe("Maximum compute units"),
-		sleep_timeout_seconds: z
+		sleep_timeout_seconds: z.coerce
 			.bigint()
 			.optional()
 			.describe("Seconds of inactivity before suspension"),
@@ -9916,12 +9431,14 @@ export const getSiteDatabaseComputeSettingsStatus200Schema = z
 export const getSiteDatabaseComputeSettingsStatus403Schema = z.unknown();
 
 export const getSiteDatabaseComputeSettingsStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const getSiteDatabaseComputeSettingsResponseSchema = z.union([
-	getSiteDatabaseComputeSettingsStatus200Schema,
+export const getSiteDatabaseComputeSettingsResponseSchema =
+	getSiteDatabaseComputeSettingsStatus200Schema;
+
+export const getSiteDatabaseComputeSettingsErrorSchema = z.union([
 	getSiteDatabaseComputeSettingsStatus403Schema,
 	getSiteDatabaseComputeSettingsStatusDefaultSchema,
 ]);
@@ -9933,12 +9450,14 @@ export const clearSiteDatabaseComputeSettingsStatus204Schema = z.unknown();
 export const clearSiteDatabaseComputeSettingsStatus403Schema = z.unknown();
 
 export const clearSiteDatabaseComputeSettingsStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const clearSiteDatabaseComputeSettingsResponseSchema = z.union([
-	clearSiteDatabaseComputeSettingsStatus204Schema,
+export const clearSiteDatabaseComputeSettingsResponseSchema =
+	clearSiteDatabaseComputeSettingsStatus204Schema;
+
+export const clearSiteDatabaseComputeSettingsErrorSchema = z.union([
 	clearSiteDatabaseComputeSettingsStatus403Schema,
 	clearSiteDatabaseComputeSettingsStatusDefaultSchema,
 ]);
@@ -9955,7 +9474,7 @@ export const listSiteDatabaseMigrationsStatus200Schema = z
 		migrations: z
 			.array(
 				z.object({
-					version: z.bigint().optional().describe("The migration version number"),
+					version: z.coerce.bigint().optional().describe("The migration version number"),
 					name: z.string().optional().describe("The migration name"),
 					path: z
 						.string()
@@ -9977,12 +9496,13 @@ export const listSiteDatabaseMigrationsStatus404Schema = z.unknown();
 export const listSiteDatabaseMigrationsStatus423Schema = z.unknown();
 
 export const listSiteDatabaseMigrationsStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const listSiteDatabaseMigrationsResponseSchema = z.union([
-	listSiteDatabaseMigrationsStatus200Schema,
+export const listSiteDatabaseMigrationsResponseSchema = listSiteDatabaseMigrationsStatus200Schema;
+
+export const listSiteDatabaseMigrationsErrorSchema = z.union([
 	listSiteDatabaseMigrationsStatus404Schema,
 	listSiteDatabaseMigrationsStatus423Schema,
 	listSiteDatabaseMigrationsStatusDefaultSchema,
@@ -10001,7 +9521,7 @@ export const getSiteDatabaseMigrationQueryBranchSchema = z
 
 export const getSiteDatabaseMigrationStatus200Schema = z
 	.object({
-		version: z.bigint().optional().describe("The migration version number"),
+		version: z.coerce.bigint().optional().describe("The migration version number"),
 		name: z.string().optional().describe("The migration name"),
 		path: z.string().optional().describe("The path to the migration file in the deploy bundle"),
 		content: z.string().optional().describe("The raw contents of the migration file"),
@@ -10013,12 +9533,13 @@ export const getSiteDatabaseMigrationStatus404Schema = z.unknown();
 export const getSiteDatabaseMigrationStatus423Schema = z.unknown();
 
 export const getSiteDatabaseMigrationStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const getSiteDatabaseMigrationResponseSchema = z.union([
-	getSiteDatabaseMigrationStatus200Schema,
+export const getSiteDatabaseMigrationResponseSchema = getSiteDatabaseMigrationStatus200Schema;
+
+export const getSiteDatabaseMigrationErrorSchema = z.union([
 	getSiteDatabaseMigrationStatus404Schema,
 	getSiteDatabaseMigrationStatus423Schema,
 	getSiteDatabaseMigrationStatusDefaultSchema,
@@ -10037,18 +9558,19 @@ export const runSiteDatabaseMigrationsStatus409Schema = z.unknown();
 export const runSiteDatabaseMigrationsStatus422Schema = z.unknown();
 
 export const runSiteDatabaseMigrationsStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const runSiteDatabaseMigrationsResponseSchema = z.union([
-	runSiteDatabaseMigrationsStatus200Schema,
+export const runSiteDatabaseMigrationsResponseSchema = runSiteDatabaseMigrationsStatus200Schema;
+
+export const runSiteDatabaseMigrationsErrorSchema = z.union([
 	runSiteDatabaseMigrationsStatus409Schema,
 	runSiteDatabaseMigrationsStatus422Schema,
 	runSiteDatabaseMigrationsStatusDefaultSchema,
 ]);
 
-export const runSiteDatabaseMigrationsDataSchema = z
+export const runSiteDatabaseMigrationsBodySchema = z
 	.object({
 		dry_run: z
 			.boolean()
@@ -10083,16 +9605,15 @@ export const createSiteDatabaseSnapshotStatus201Schema = z
 	.describe("A point-in-time snapshot of a database branch");
 
 export const createSiteDatabaseSnapshotStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const createSiteDatabaseSnapshotResponseSchema = z.union([
-	createSiteDatabaseSnapshotStatus201Schema,
-	createSiteDatabaseSnapshotStatusDefaultSchema,
-]);
+export const createSiteDatabaseSnapshotResponseSchema = createSiteDatabaseSnapshotStatus201Schema;
 
-export const createSiteDatabaseSnapshotDataSchema = z
+export const createSiteDatabaseSnapshotErrorSchema = createSiteDatabaseSnapshotStatusDefaultSchema;
+
+export const createSiteDatabaseSnapshotBodySchema = z
 	.object({
 		branch_id: z
 			.string()
@@ -10149,14 +9670,13 @@ export const listSiteDatabaseSnapshotsStatus200Schema = z
 	.describe("Response containing a list of database snapshots");
 
 export const listSiteDatabaseSnapshotsStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const listSiteDatabaseSnapshotsResponseSchema = z.union([
-	listSiteDatabaseSnapshotsStatus200Schema,
-	listSiteDatabaseSnapshotsStatusDefaultSchema,
-]);
+export const listSiteDatabaseSnapshotsResponseSchema = listSiteDatabaseSnapshotsStatus200Schema;
+
+export const listSiteDatabaseSnapshotsErrorSchema = listSiteDatabaseSnapshotsStatusDefaultSchema;
 
 export const deleteSiteDatabaseSnapshotPathSiteIdSchema = z.string();
 
@@ -10167,14 +9687,13 @@ export const deleteSiteDatabaseSnapshotPathSnapshotIdSchema = z
 export const deleteSiteDatabaseSnapshotStatus204Schema = z.unknown();
 
 export const deleteSiteDatabaseSnapshotStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const deleteSiteDatabaseSnapshotResponseSchema = z.union([
-	deleteSiteDatabaseSnapshotStatus204Schema,
-	deleteSiteDatabaseSnapshotStatusDefaultSchema,
-]);
+export const deleteSiteDatabaseSnapshotResponseSchema = deleteSiteDatabaseSnapshotStatus204Schema;
+
+export const deleteSiteDatabaseSnapshotErrorSchema = deleteSiteDatabaseSnapshotStatusDefaultSchema;
 
 export const restoreSiteDatabaseSnapshotPathSiteIdSchema = z.string();
 
@@ -10185,16 +9704,16 @@ export const restoreSiteDatabaseSnapshotPathSnapshotIdSchema = z
 export const restoreSiteDatabaseSnapshotStatus200Schema = z.unknown();
 
 export const restoreSiteDatabaseSnapshotStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const restoreSiteDatabaseSnapshotResponseSchema = z.union([
-	restoreSiteDatabaseSnapshotStatus200Schema,
-	restoreSiteDatabaseSnapshotStatusDefaultSchema,
-]);
+export const restoreSiteDatabaseSnapshotResponseSchema = restoreSiteDatabaseSnapshotStatus200Schema;
 
-export const restoreSiteDatabaseSnapshotDataSchema = z
+export const restoreSiteDatabaseSnapshotErrorSchema =
+	restoreSiteDatabaseSnapshotStatusDefaultSchema;
+
+export const restoreSiteDatabaseSnapshotBodySchema = z
 	.object({
 		branch_id: z
 			.string()
@@ -10216,16 +9735,15 @@ export const updatePluginStatus200Schema = z.object({
 });
 
 export const updatePluginStatusDefaultSchema = z.object({
-	code: z.bigint().optional(),
+	code: z.coerce.bigint().optional(),
 	message: z.string(),
 });
 
-export const updatePluginResponseSchema = z.union([
-	updatePluginStatus200Schema,
-	updatePluginStatusDefaultSchema,
-]);
+export const updatePluginResponseSchema = updatePluginStatus200Schema;
 
-export const updatePluginDataSchema = z
+export const updatePluginErrorSchema = updatePluginStatusDefaultSchema;
+
+export const updatePluginBodySchema = z
 	.object({
 		pinned_version: z.string().optional(),
 	})

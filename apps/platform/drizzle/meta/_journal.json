@@ -8,6 +8,13 @@
 			"when": 1779003858562,
 			"tag": "0000_funny_stone_men",
 			"breakpoints": true
+		},
+		{
+			"idx": 1,
+			"version": "7",
+			"when": 1787925536273,
+			"tag": "0001_keen_elektra",
+			"breakpoints": true
 		}
 	]
 }

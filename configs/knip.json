@@ -2,7 +2,8 @@
 	"$schema": "https://unpkg.com/knip@5/schema.json",
 	"workspaces": {
 		".": {
-			"entry": ["turbo.json", ".github/workflows/scripts/*.ts"]
+			"entry": ["turbo.json", ".github/workflows/scripts/*.ts"],
+			"ignoreDependencies": ["@typescript/typescript6"]
 		},
 		"apps/website": {
 			"entry": ["app/**/*.{ts,tsx}", "lib/**/*.ts", "components/**/*.tsx"],

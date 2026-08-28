@@ -3,13 +3,6 @@
  * Do not edit manually.
  */
 
-export const chatDetailObjectEnum = {
-	chat: "chat",
-} as const;
-
-export type ChatDetailObjectEnumKey =
-	(typeof chatDetailObjectEnum)[keyof typeof chatDetailObjectEnum];
-
 export const chatDetailPrivacyEnum = {
 	private: "private",
 	public: "public",
@@ -21,13 +14,6 @@ export const chatDetailPrivacyEnum = {
 export type ChatDetailPrivacyEnumKey =
 	(typeof chatDetailPrivacyEnum)[keyof typeof chatDetailPrivacyEnum];
 
-export const chatDetailLatestVersionObjectEnum = {
-	version: "version",
-} as const;
-
-export type ChatDetailLatestVersionObjectEnumKey =
-	(typeof chatDetailLatestVersionObjectEnum)[keyof typeof chatDetailLatestVersionObjectEnum];
-
 export const chatDetailLatestVersionStatusEnum = {
 	completed: "completed",
 	failed: "failed",
@@ -37,28 +23,43 @@ export const chatDetailLatestVersionStatusEnum = {
 export type ChatDetailLatestVersionStatusEnumKey =
 	(typeof chatDetailLatestVersionStatusEnum)[keyof typeof chatDetailLatestVersionStatusEnum];
 
-export const objectEnum = {
+export const chatDetailMessagesTypeEnum = {
+	"added-environment-variables": "added-environment-variables",
+	"added-integration": "added-integration",
+	"answered-questions": "answered-questions",
+	"auto-fix-with-v0": "auto-fix-with-v0",
+	"cloned-repo": "cloned-repo",
+	"deleted-file": "deleted-file",
+	"design-mode": "design-mode",
+	"edited-file": "edited-file",
+	"fix-cve": "fix-cve",
+	"fix-with-v0": "fix-with-v0",
+	"forked-block": "forked-block",
+	"forked-chat": "forked-chat",
+	"manual-commit": "manual-commit",
 	message: "message",
+	"moved-file": "moved-file",
+	"open-in-v0": "open-in-v0",
+	"pull-changes": "pull-changes",
+	refinement: "refinement",
+	"renamed-file": "renamed-file",
+	"replace-src": "replace-src",
+	"reverted-block": "reverted-block",
+	"sync-git": "sync-git",
 } as const;
 
-export type ObjectEnumKey = (typeof objectEnum)[keyof typeof objectEnum];
+export type ChatDetailMessagesTypeEnumKey =
+	(typeof chatDetailMessagesTypeEnum)[keyof typeof chatDetailMessagesTypeEnum];
 
-export const typeEnum = {
-	figma: "figma",
-	screenshot: "screenshot",
-	zip: "zip",
-} as const;
-
-export type TypeEnumKey = (typeof typeEnum)[keyof typeof typeEnum];
-
-export const roleEnum = {
+export const chatDetailMessagesRoleEnum = {
 	assistant: "assistant",
 	user: "user",
 } as const;
 
-export type RoleEnumKey = (typeof roleEnum)[keyof typeof roleEnum];
+export type ChatDetailMessagesRoleEnumKey =
+	(typeof chatDetailMessagesRoleEnum)[keyof typeof chatDetailMessagesRoleEnum];
 
-export const finishReasonEnum = {
+export const chatDetailMessagesFinishReasonEnum = {
 	"content-filter": "content-filter",
 	error: "error",
 	length: "length",
@@ -67,7 +68,17 @@ export const finishReasonEnum = {
 	"tool-calls": "tool-calls",
 } as const;
 
-export type FinishReasonEnumKey = (typeof finishReasonEnum)[keyof typeof finishReasonEnum];
+export type ChatDetailMessagesFinishReasonEnumKey =
+	(typeof chatDetailMessagesFinishReasonEnum)[keyof typeof chatDetailMessagesFinishReasonEnum];
+
+export const chatDetailMessagesAttachmentsTypeEnum = {
+	figma: "figma",
+	screenshot: "screenshot",
+	zip: "zip",
+} as const;
+
+export type ChatDetailMessagesAttachmentsTypeEnumKey =
+	(typeof chatDetailMessagesAttachmentsTypeEnum)[keyof typeof chatDetailMessagesAttachmentsTypeEnum];
 
 export const chatDetailModelConfigurationModelIdEnum = {
 	"v0-auto": "v0-auto",
@@ -81,6 +92,19 @@ export const chatDetailModelConfigurationModelIdEnum = {
 
 export type ChatDetailModelConfigurationModelIdEnumKey =
 	(typeof chatDetailModelConfigurationModelIdEnum)[keyof typeof chatDetailModelConfigurationModelIdEnum];
+
+export const chatDetailModelConfigurationThinkingEffort = {
+	none: "none",
+	minimal: "minimal",
+	low: "low",
+	medium: "medium",
+	high: "high",
+	max: "max",
+	xhigh: "xhigh",
+} as const;
+
+export type ChatDetailModelConfigurationThinkingEffortKey =
+	(typeof chatDetailModelConfigurationThinkingEffort)[keyof typeof chatDetailModelConfigurationThinkingEffort];
 
 /**
  * @description Detailed representation of a chat, including its messages, files, versions, and model configuration.
@@ -96,7 +120,7 @@ export type ChatDetail = {
 	 * @description Fixed value identifying this object as a chat.
 	 * @type string
 	 */
-	object: ChatDetailObjectEnumKey;
+	object: "chat";
 	/**
 	 * @description Indicates whether the chat can be shared via public link.
 	 * @type boolean
@@ -120,6 +144,8 @@ export type ChatDetail = {
 	title?: string | undefined;
 	/**
 	 * @description The ISO timestamp representing when the chat was created.
+	 *
+	 * Format: `date-time`
 	 * @type string
 	 */
 	createdAt: string;
@@ -173,7 +199,7 @@ export type ChatDetail = {
 				 * @description Fixed value identifying this object as a version.
 				 * @type string
 				 */
-				object: ChatDetailLatestVersionObjectEnumKey;
+				object: "version";
 				/**
 				 * @description The current status of the version generation process.
 				 * @type string
@@ -191,11 +217,15 @@ export type ChatDetail = {
 				screenshotUrl?: string | undefined;
 				/**
 				 * @description The date and time when the version was created, in ISO 8601 format.
+				 *
+				 * Format: `date-time`
 				 * @type string
 				 */
 				createdAt: string;
 				/**
 				 * @description The date and time when the version was last updated, in ISO 8601 format.
+				 *
+				 * Format: `date-time`
 				 * @type string | undefined
 				 */
 				updatedAt?: string | undefined;
@@ -208,7 +238,7 @@ export type ChatDetail = {
 					 * @description Fixed value identifying this object as a file.
 					 * @type string
 					 */
-					object: ObjectEnumKey;
+					object: "file";
 					/**
 					 * @description The name of the file, including its extension.
 					 * @type string
@@ -254,7 +284,7 @@ export type ChatDetail = {
 		 * @description Fixed value identifying this object as a message.
 		 * @type string
 		 */
-		object: ObjectEnumKey;
+		object: "message";
 		/**
 		 * @description The main text content of the message.
 		 * @type string
@@ -270,229 +300,61 @@ export type ChatDetail = {
 					| [
 							1,
 							{
-								/**
-								 * @type string
-								 */
 								toJSONSchema: string;
-								/**
-								 * @type string
-								 */
 								def: string;
-								/**
-								 * @type string
-								 */
 								type: string;
-								/**
-								 * @type string
-								 */
 								check: string;
-								/**
-								 * @type string
-								 */
 								with: string;
-								/**
-								 * @type string
-								 */
 								clone: string;
-								/**
-								 * @type string
-								 */
 								brand: string;
-								/**
-								 * @type string
-								 */
 								register: string;
-								/**
-								 * @type string
-								 */
 								parse: string;
-								/**
-								 * @type string
-								 */
 								safeParse: string;
-								/**
-								 * @type string
-								 */
 								parseAsync: string;
-								/**
-								 * @type string
-								 */
 								safeParseAsync: string;
-								/**
-								 * @type string
-								 */
 								spa: string;
-								/**
-								 * @type string
-								 */
 								encode: string;
-								/**
-								 * @type string
-								 */
 								decode: string;
-								/**
-								 * @type string
-								 */
 								encodeAsync: string;
-								/**
-								 * @type string
-								 */
 								decodeAsync: string;
-								/**
-								 * @type string
-								 */
 								safeEncode: string;
-								/**
-								 * @type string
-								 */
 								safeDecode: string;
-								/**
-								 * @type string
-								 */
 								safeEncodeAsync: string;
-								/**
-								 * @type string
-								 */
 								safeDecodeAsync: string;
-								/**
-								 * @type string
-								 */
 								refine: string;
-								/**
-								 * @type string
-								 */
 								superRefine: string;
-								/**
-								 * @type string
-								 */
 								overwrite: string;
-								/**
-								 * @type string
-								 */
 								optional: string;
-								/**
-								 * @type string
-								 */
 								exactOptional: string;
-								/**
-								 * @type string
-								 */
 								nullable: string;
-								/**
-								 * @type string
-								 */
 								nullish: string;
-								/**
-								 * @type string
-								 */
 								nonoptional: string;
-								/**
-								 * @type string
-								 */
 								array: string;
-								/**
-								 * @type string
-								 */
 								or: string;
-								/**
-								 * @type string
-								 */
 								and: string;
-								/**
-								 * @type string
-								 */
 								transform: string;
-								/**
-								 * @type string
-								 */
 								default: string;
-								/**
-								 * @type string
-								 */
 								prefault: string;
-								/**
-								 * @type string
-								 */
 								catch: string;
-								/**
-								 * @type string
-								 */
 								pipe: string;
-								/**
-								 * @type string
-								 */
 								readonly: string;
-								/**
-								 * @type string
-								 */
 								describe: string;
-								/**
-								 * @type string
-								 */
 								meta: string;
-								/**
-								 * @type string
-								 */
 								isOptional: string;
-								/**
-								 * @type string
-								 */
 								isNullable: string;
-								/**
-								 * @type string
-								 */
 								apply: string;
-								/**
-								 * @type string
-								 */
 								keyof: string;
-								/**
-								 * @type string
-								 */
 								catchall: string;
-								/**
-								 * @type string
-								 */
 								passthrough: string;
-								/**
-								 * @type string
-								 */
 								loose: string;
-								/**
-								 * @type string
-								 */
 								strict: string;
-								/**
-								 * @type string
-								 */
 								strip: string;
-								/**
-								 * @type string
-								 */
 								extend: string;
-								/**
-								 * @type string
-								 */
 								safeExtend: string;
-								/**
-								 * @type string
-								 */
 								merge: string;
-								/**
-								 * @type string
-								 */
 								pick: string;
-								/**
-								 * @type string
-								 */
 								omit: string;
-								/**
-								 * @type string
-								 */
 								partial: string;
-								/**
-								 * @type string
-								 */
 								required: string;
 							},
 							...string[],
@@ -506,6 +368,8 @@ export type ChatDetail = {
 		createdAt: string;
 		/**
 		 * @description The ISO timestamp representing when the message was last updated.
+		 *
+		 * Format: `date-time`
 		 * @type string | undefined
 		 */
 		updatedAt?: string | undefined;
@@ -513,17 +377,17 @@ export type ChatDetail = {
 		 * @description Indicates the format or category of the message, such as plain text or code.
 		 * @type string
 		 */
-		type: TypeEnumKey;
+		type: ChatDetailMessagesTypeEnumKey;
 		/**
 		 * @description Specifies whether the message was sent by the user or the assistant.
 		 * @type string
 		 */
-		role: RoleEnumKey;
+		role: ChatDetailMessagesRoleEnumKey;
 		/**
 		 * @description The reason why the message generation finished.
 		 * @type string | undefined
 		 */
-		finishReason?: FinishReasonEnumKey | undefined;
+		finishReason?: ChatDetailMessagesFinishReasonEnumKey | undefined;
 		/**
 		 * @description API URL to access this message via the API.
 		 * @type string
@@ -531,17 +395,14 @@ export type ChatDetail = {
 		apiUrl: string;
 		/**
 		 * @description The ID of the user who sent the message.
-		 * @type null
+		 * @type string
 		 */
-		authorId: null;
+		authorId: string | null;
 		/**
 		 * @description The ID of the parent message.
-		 * @type null | undefined
+		 * @type string | undefined
 		 */
-		parentId?: null | undefined;
-		/**
-		 * @type array | undefined
-		 */
+		parentId?: (string | null) | undefined;
 		attachments?:
 			| {
 					/**
@@ -573,7 +434,7 @@ export type ChatDetail = {
 					 * @description Optional v0-specific attachment type for enhanced processing.
 					 * @type string | undefined
 					 */
-					type?: TypeEnumKey | undefined;
+					type?: ChatDetailMessagesAttachmentsTypeEnumKey | undefined;
 			  }[]
 			| undefined;
 	}[];
@@ -621,7 +482,7 @@ export type ChatDetail = {
 		| {
 				/**
 				 * @description Model to use for the generation. `v0-auto` is deprecated and falls back to `v0-pro`.
-				 * @default "v0-pro"
+				 * @default 'v0-pro'
 				 * @type string | undefined
 				 */
 				modelId?: ChatDetailModelConfigurationModelIdEnumKey | undefined;
@@ -637,18 +498,10 @@ export type ChatDetail = {
 				 * @type boolean | undefined
 				 */
 				thinking?: boolean | undefined;
-				thinkingEffort?:
-					| (("none" | "minimal" | "low" | "medium" | "high" | "max" | "xhigh") | null)
-					| undefined;
-				/**
-				 * @type boolean | undefined
-				 */
+				thinkingEffort?: (ChatDetailModelConfigurationThinkingEffortKey | null) | undefined;
 				fast?: boolean | undefined;
 		  }
 		| undefined;
-	/**
-	 * @type object
-	 */
 	permissions: {
 		/**
 		 * @description If true, the user has write access to the chat.
@@ -657,13 +510,6 @@ export type ChatDetail = {
 		write: boolean;
 	};
 };
-
-export const chatSummaryObjectEnum = {
-	chat: "chat",
-} as const;
-
-export type ChatSummaryObjectEnumKey =
-	(typeof chatSummaryObjectEnum)[keyof typeof chatSummaryObjectEnum];
 
 export const chatSummaryPrivacyEnum = {
 	private: "private",
@@ -675,13 +521,6 @@ export const chatSummaryPrivacyEnum = {
 
 export type ChatSummaryPrivacyEnumKey =
 	(typeof chatSummaryPrivacyEnum)[keyof typeof chatSummaryPrivacyEnum];
-
-export const chatSummaryLatestVersionObjectEnum = {
-	version: "version",
-} as const;
-
-export type ChatSummaryLatestVersionObjectEnumKey =
-	(typeof chatSummaryLatestVersionObjectEnum)[keyof typeof chatSummaryLatestVersionObjectEnum];
 
 export const chatSummaryLatestVersionStatusEnum = {
 	completed: "completed",
@@ -706,7 +545,7 @@ export type ChatSummary = {
 	 * @description Fixed value identifying this object as a chat.
 	 * @type string
 	 */
-	object: ChatSummaryObjectEnumKey;
+	object: "chat";
 	/**
 	 * @description Indicates whether the chat can be shared via public link.
 	 * @type boolean
@@ -730,6 +569,8 @@ export type ChatSummary = {
 	title?: string | undefined;
 	/**
 	 * @description The ISO timestamp representing when the chat was created.
+	 *
+	 * Format: `date-time`
 	 * @type string
 	 */
 	createdAt: string;
@@ -783,7 +624,7 @@ export type ChatSummary = {
 				 * @description Fixed value identifying this object as a version.
 				 * @type string
 				 */
-				object: ChatSummaryLatestVersionObjectEnumKey;
+				object: "version";
 				/**
 				 * @description The current status of the version generation process.
 				 * @type string
@@ -801,11 +642,15 @@ export type ChatSummary = {
 				screenshotUrl?: string | undefined;
 				/**
 				 * @description The date and time when the version was created, in ISO 8601 format.
+				 *
+				 * Format: `date-time`
 				 * @type string
 				 */
 				createdAt: string;
 				/**
 				 * @description The date and time when the version was last updated, in ISO 8601 format.
+				 *
+				 * Format: `date-time`
 				 * @type string | undefined
 				 */
 				updatedAt?: string | undefined;
@@ -820,16 +665,6 @@ export type ChatSummary = {
 	};
 };
 
-export const deploymentDetailObjectEnum = {
-	deployment: "deployment",
-} as const;
-
-export type DeploymentDetailObjectEnumKey =
-	(typeof deploymentDetailObjectEnum)[keyof typeof deploymentDetailObjectEnum];
-
-/**
- * @type object
- */
 export type DeploymentDetail = {
 	/**
 	 * @description A unique identifier for the deployment.
@@ -840,7 +675,7 @@ export type DeploymentDetail = {
 	 * @description Fixed value identifying this object as a deployment.
 	 * @type string
 	 */
-	object: DeploymentDetailObjectEnumKey;
+	object: "deployment";
 	/**
 	 * @description URL to the deployment inspector.
 	 * @type string
@@ -863,26 +698,20 @@ export type DeploymentDetail = {
 	versionId: string;
 	/**
 	 * @description The API endpoint URL for accessing this deployment programmatically.
+	 *
+	 * Format: `uri`
 	 * @type string
 	 */
 	apiUrl: string;
 	/**
 	 * @description The web URL where the deployment can be viewed or managed.
+	 *
+	 * Format: `uri`
 	 * @type string
 	 */
 	webUrl: string;
 };
 
-export const deploymentSummaryObjectEnum = {
-	deployment: "deployment",
-} as const;
-
-export type DeploymentSummaryObjectEnumKey =
-	(typeof deploymentSummaryObjectEnum)[keyof typeof deploymentSummaryObjectEnum];
-
-/**
- * @type object
- */
 export type DeploymentSummary = {
 	/**
 	 * @description A unique identifier for the deployment.
@@ -893,7 +722,7 @@ export type DeploymentSummary = {
 	 * @description Fixed value identifying this object as a deployment.
 	 * @type string
 	 */
-	object: DeploymentSummaryObjectEnumKey;
+	object: "deployment";
 	/**
 	 * @description URL to the deployment inspector.
 	 * @type string
@@ -916,22 +745,19 @@ export type DeploymentSummary = {
 	versionId: string;
 	/**
 	 * @description The API endpoint URL for accessing this deployment programmatically.
+	 *
+	 * Format: `uri`
 	 * @type string
 	 */
 	apiUrl: string;
 	/**
 	 * @description The web URL where the deployment can be viewed or managed.
+	 *
+	 * Format: `uri`
 	 * @type string
 	 */
 	webUrl: string;
 };
-
-export const environmentVariableDetailSchemaObjectEnum = {
-	environment_variable: "environment_variable",
-} as const;
-
-export type EnvironmentVariableDetailSchemaObjectEnumKey =
-	(typeof environmentVariableDetailSchemaObjectEnum)[keyof typeof environmentVariableDetailSchemaObjectEnum];
 
 /**
  * @description Detailed information for an environment variable including its value.
@@ -947,7 +773,7 @@ export type EnvironmentVariableDetailSchema = {
 	 * @description The object type.
 	 * @type string
 	 */
-	object: EnvironmentVariableDetailSchemaObjectEnumKey;
+	object: "environment_variable";
 	/**
 	 * @description The name of the environment variable.
 	 * @type string
@@ -974,13 +800,6 @@ export type EnvironmentVariableDetailSchema = {
 	 */
 	updatedAt?: number | undefined;
 };
-
-export const environmentVariableSummarySchemaObjectEnum = {
-	environment_variable: "environment_variable",
-} as const;
-
-export type EnvironmentVariableSummarySchemaObjectEnumKey =
-	(typeof environmentVariableSummarySchemaObjectEnum)[keyof typeof environmentVariableSummarySchemaObjectEnum];
 
 /**
  * @description Summary information for an environment variable.
@@ -996,7 +815,7 @@ export type EnvironmentVariableSummarySchema = {
 	 * @description The object type.
 	 * @type string
 	 */
-	object: EnvironmentVariableSummarySchemaObjectEnumKey;
+	object: "environment_variable";
 	/**
 	 * @description The name of the environment variable.
 	 * @type string
@@ -1024,13 +843,6 @@ export type EnvironmentVariableSummarySchema = {
 	updatedAt?: number | undefined;
 };
 
-export const environmentVariablesListSchemaObjectEnum = {
-	list: "list",
-} as const;
-
-export type EnvironmentVariablesListSchemaObjectEnumKey =
-	(typeof environmentVariablesListSchemaObjectEnum)[keyof typeof environmentVariablesListSchemaObjectEnum];
-
 /**
  * @description List response containing environment variables.
  * @type object
@@ -1040,7 +852,7 @@ export type EnvironmentVariablesListSchema = {
 	 * @description Fixed value identifying this as a list response.
 	 * @type string
 	 */
-	object: EnvironmentVariablesListSchemaObjectEnumKey;
+	object: "list";
 	/**
 	 * @description Array of environment variable details.
 	 * @type array
@@ -1055,7 +867,7 @@ export type EnvironmentVariablesListSchema = {
 		 * @description The object type.
 		 * @type string
 		 */
-		object: ObjectEnumKey;
+		object: "environment_variable";
 		/**
 		 * @description The name of the environment variable.
 		 * @type string
@@ -1084,13 +896,6 @@ export type EnvironmentVariablesListSchema = {
 	}[];
 };
 
-export const fileDetailObjectEnum = {
-	file: "file",
-} as const;
-
-export type FileDetailObjectEnumKey =
-	(typeof fileDetailObjectEnum)[keyof typeof fileDetailObjectEnum];
-
 /**
  * @description Detailed representation of a file, including its content and lock status.
  * @type object
@@ -1100,7 +905,7 @@ export type FileDetail = {
 	 * @description Fixed value identifying this object as a file.
 	 * @type string
 	 */
-	object: FileDetailObjectEnumKey;
+	object: "file";
 	/**
 	 * @description The name of the file, including its extension.
 	 * @type string
@@ -1118,13 +923,6 @@ export type FileDetail = {
 	locked: boolean;
 };
 
-export const fileSummaryObjectEnum = {
-	file: "file",
-} as const;
-
-export type FileSummaryObjectEnumKey =
-	(typeof fileSummaryObjectEnum)[keyof typeof fileSummaryObjectEnum];
-
 /**
  * @description Basic metadata about a file, such as its type and name.
  * @type object
@@ -1134,20 +932,13 @@ export type FileSummary = {
 	 * @description Fixed value identifying this object as a file.
 	 * @type string
 	 */
-	object: FileSummaryObjectEnumKey;
+	object: "file";
 	/**
 	 * @description The name of the file, including its extension.
 	 * @type string
 	 */
 	name: string;
 };
-
-export const hookDetailObjectEnum = {
-	hook: "hook",
-} as const;
-
-export type HookDetailObjectEnumKey =
-	(typeof hookDetailObjectEnum)[keyof typeof hookDetailObjectEnum];
 
 export const hookDetailEventsEnum = {
 	"chat.created": "chat.created",
@@ -1176,7 +967,7 @@ export type HookDetail = {
 	 * @description Fixed value identifying this object as a webhook.
 	 * @type string
 	 */
-	object: HookDetailObjectEnumKey;
+	object: "hook";
 	/**
 	 * @description A user-defined name to label the webhook.
 	 * @type string
@@ -1198,13 +989,6 @@ export type HookDetail = {
 	 */
 	url: string;
 };
-
-export const hookEventDetailObjectEnum = {
-	hook_event: "hook_event",
-} as const;
-
-export type HookEventDetailObjectEnumKey =
-	(typeof hookEventDetailObjectEnum)[keyof typeof hookEventDetailObjectEnum];
 
 export const hookEventDetailEventEnum = {
 	"chat.created": "chat.created",
@@ -1242,7 +1026,7 @@ export type HookEventDetail = {
 	 * @description Fixed value identifying this object as a webhook event.
 	 * @type string
 	 */
-	object: HookEventDetailObjectEnumKey;
+	object: "hook_event";
 	/**
 	 * @description The type of event that triggered the webhook.
 	 * @type string
@@ -1250,23 +1034,18 @@ export type HookEventDetail = {
 	event: HookEventDetailEventEnumKey;
 	/**
 	 * @description The delivery status of the webhook (e.g., delivered, failed).
-	 * @default "pending"
+	 * @default 'pending'
 	 * @type string | undefined
 	 */
 	status?: HookEventDetailStatusEnumKey | undefined;
 	/**
 	 * @description Timestamp of when the webhook event was triggered.
+	 *
+	 * Format: `date-time`
 	 * @type string
 	 */
 	createdAt: string;
 };
-
-export const hookSummaryObjectEnum = {
-	hook: "hook",
-} as const;
-
-export type HookSummaryObjectEnumKey =
-	(typeof hookSummaryObjectEnum)[keyof typeof hookSummaryObjectEnum];
 
 /**
  * @description Summary of a webhook, including its ID and display name.
@@ -1282,27 +1061,13 @@ export type HookSummary = {
 	 * @description Fixed value identifying this object as a webhook.
 	 * @type string
 	 */
-	object: HookSummaryObjectEnumKey;
+	object: "hook";
 	/**
 	 * @description A user-defined name to label the webhook.
 	 * @type string
 	 */
 	name: string;
 };
-
-export const integrationConnectionDetailSchemaObjectEnum = {
-	integration_connection: "integration_connection",
-} as const;
-
-export type IntegrationConnectionDetailSchemaObjectEnumKey =
-	(typeof integrationConnectionDetailSchemaObjectEnum)[keyof typeof integrationConnectionDetailSchemaObjectEnum];
-
-export const integrationConnectionDetailSchemaIntegrationObjectEnum = {
-	integration: "integration",
-} as const;
-
-export type IntegrationConnectionDetailSchemaIntegrationObjectEnumKey =
-	(typeof integrationConnectionDetailSchemaIntegrationObjectEnum)[keyof typeof integrationConnectionDetailSchemaIntegrationObjectEnum];
 
 /**
  * @description Detailed information about an integration connection to a project.
@@ -1313,7 +1078,7 @@ export type IntegrationConnectionDetailSchema = {
 	 * @description The object type.
 	 * @type string
 	 */
-	object: IntegrationConnectionDetailSchemaObjectEnumKey;
+	object: "integration_connection";
 	/**
 	 * @description The unique ID of the integration connection (format: {projectId}_{integrationId}).
 	 * @type string
@@ -1338,7 +1103,7 @@ export type IntegrationConnectionDetailSchema = {
 		 * @description The object type.
 		 * @type string
 		 */
-		object: IntegrationConnectionDetailSchemaIntegrationObjectEnumKey;
+		object: "integration";
 		/**
 		 * @description The slug of the integration.
 		 * @type string
@@ -1361,13 +1126,6 @@ export type IntegrationConnectionDetailSchema = {
 		| undefined;
 };
 
-export const integrationConnectionListSchemaObjectEnum = {
-	list: "list",
-} as const;
-
-export type IntegrationConnectionListSchemaObjectEnumKey =
-	(typeof integrationConnectionListSchemaObjectEnum)[keyof typeof integrationConnectionListSchemaObjectEnum];
-
 /**
  * @description List response containing integration connections.
  * @type object
@@ -1377,7 +1135,7 @@ export type IntegrationConnectionListSchema = {
 	 * @description Fixed value identifying this as a list response.
 	 * @type string
 	 */
-	object: IntegrationConnectionListSchemaObjectEnumKey;
+	object: "list";
 	/**
 	 * @description Array of integration connection summaries.
 	 * @type array
@@ -1387,7 +1145,7 @@ export type IntegrationConnectionListSchema = {
 		 * @description The object type.
 		 * @type string
 		 */
-		object: ObjectEnumKey;
+		object: "integration_connection";
 		/**
 		 * @description The unique ID of the integration connection (format: {projectId}_{integrationId}).
 		 * @type string
@@ -1412,7 +1170,7 @@ export type IntegrationConnectionListSchema = {
 			 * @description The object type.
 			 * @type string
 			 */
-			object: ObjectEnumKey;
+			object: "integration";
 			/**
 			 * @description The slug of the integration.
 			 * @type string
@@ -1427,20 +1185,6 @@ export type IntegrationConnectionListSchema = {
 	}[];
 };
 
-export const integrationConnectionSummarySchemaObjectEnum = {
-	integration_connection: "integration_connection",
-} as const;
-
-export type IntegrationConnectionSummarySchemaObjectEnumKey =
-	(typeof integrationConnectionSummarySchemaObjectEnum)[keyof typeof integrationConnectionSummarySchemaObjectEnum];
-
-export const integrationConnectionSummarySchemaIntegrationObjectEnum = {
-	integration: "integration",
-} as const;
-
-export type IntegrationConnectionSummarySchemaIntegrationObjectEnumKey =
-	(typeof integrationConnectionSummarySchemaIntegrationObjectEnum)[keyof typeof integrationConnectionSummarySchemaIntegrationObjectEnum];
-
 /**
  * @description Summary information about an integration connection to a project.
  * @type object
@@ -1450,7 +1194,7 @@ export type IntegrationConnectionSummarySchema = {
 	 * @description The object type.
 	 * @type string
 	 */
-	object: IntegrationConnectionSummarySchemaObjectEnumKey;
+	object: "integration_connection";
 	/**
 	 * @description The unique ID of the integration connection (format: {projectId}_{integrationId}).
 	 * @type string
@@ -1475,7 +1219,7 @@ export type IntegrationConnectionSummarySchema = {
 		 * @description The object type.
 		 * @type string
 		 */
-		object: IntegrationConnectionSummarySchemaIntegrationObjectEnumKey;
+		object: "integration";
 		/**
 		 * @description The slug of the integration.
 		 * @type string
@@ -1488,13 +1232,6 @@ export type IntegrationConnectionSummarySchema = {
 		name: string;
 	};
 };
-
-export const integrationDetailSchemaObjectEnum = {
-	integration: "integration",
-} as const;
-
-export type IntegrationDetailSchemaObjectEnumKey =
-	(typeof integrationDetailSchemaObjectEnum)[keyof typeof integrationDetailSchemaObjectEnum];
 
 /**
  * @description Detailed information about an integration.
@@ -1510,7 +1247,7 @@ export type IntegrationDetailSchema = {
 	 * @description The object type.
 	 * @type string
 	 */
-	object: IntegrationDetailSchemaObjectEnumKey;
+	object: "integration";
 	/**
 	 * @description The slug of the integration.
 	 * @type string
@@ -1533,13 +1270,6 @@ export type IntegrationDetailSchema = {
 	iconUrl: string;
 };
 
-export const integrationListSchemaObjectEnum = {
-	list: "list",
-} as const;
-
-export type IntegrationListSchemaObjectEnumKey =
-	(typeof integrationListSchemaObjectEnum)[keyof typeof integrationListSchemaObjectEnum];
-
 /**
  * @description List of available integrations.
  * @type object
@@ -1549,7 +1279,7 @@ export type IntegrationListSchema = {
 	 * @description Fixed value identifying this as a list response.
 	 * @type string
 	 */
-	object: IntegrationListSchemaObjectEnumKey;
+	object: "list";
 	/**
 	 * @description Array of integration details.
 	 * @type array
@@ -1564,7 +1294,7 @@ export type IntegrationListSchema = {
 		 * @description The object type.
 		 * @type string
 		 */
-		object: ObjectEnumKey;
+		object: "integration";
 		/**
 		 * @description The slug of the integration.
 		 * @type string
@@ -1588,13 +1318,6 @@ export type IntegrationListSchema = {
 	}[];
 };
 
-export const integrationSummarySchemaObjectEnum = {
-	integration: "integration",
-} as const;
-
-export type IntegrationSummarySchemaObjectEnumKey =
-	(typeof integrationSummarySchemaObjectEnum)[keyof typeof integrationSummarySchemaObjectEnum];
-
 /**
  * @description Basic information about an integration.
  * @type object
@@ -1609,7 +1332,7 @@ export type IntegrationSummarySchema = {
 	 * @description The object type.
 	 * @type string
 	 */
-	object: IntegrationSummarySchemaObjectEnumKey;
+	object: "integration";
 	/**
 	 * @description The slug of the integration.
 	 * @type string
@@ -1621,13 +1344,6 @@ export type IntegrationSummarySchema = {
 	 */
 	name: string;
 };
-
-export const messageDetailObjectEnum = {
-	message: "message",
-} as const;
-
-export type MessageDetailObjectEnumKey =
-	(typeof messageDetailObjectEnum)[keyof typeof messageDetailObjectEnum];
 
 export const messageDetailTypeEnum = {
 	"added-environment-variables": "added-environment-variables",
@@ -1677,6 +1393,15 @@ export const messageDetailFinishReasonEnum = {
 export type MessageDetailFinishReasonEnumKey =
 	(typeof messageDetailFinishReasonEnum)[keyof typeof messageDetailFinishReasonEnum];
 
+export const messageDetailAttachmentsTypeEnum = {
+	figma: "figma",
+	screenshot: "screenshot",
+	zip: "zip",
+} as const;
+
+export type MessageDetailAttachmentsTypeEnumKey =
+	(typeof messageDetailAttachmentsTypeEnum)[keyof typeof messageDetailAttachmentsTypeEnum];
+
 /**
  * @description Detailed message object extending MessageSummary with chat metadata.
  * @type object
@@ -1691,7 +1416,7 @@ export type MessageDetail = {
 	 * @description Fixed value identifying this object as a message.
 	 * @type string
 	 */
-	object: MessageDetailObjectEnumKey;
+	object: "message";
 	/**
 	 * @description The main text content of the message.
 	 * @type string
@@ -1707,229 +1432,61 @@ export type MessageDetail = {
 				| [
 						1,
 						{
-							/**
-							 * @type string
-							 */
 							toJSONSchema: string;
-							/**
-							 * @type string
-							 */
 							def: string;
-							/**
-							 * @type string
-							 */
 							type: string;
-							/**
-							 * @type string
-							 */
 							check: string;
-							/**
-							 * @type string
-							 */
 							with: string;
-							/**
-							 * @type string
-							 */
 							clone: string;
-							/**
-							 * @type string
-							 */
 							brand: string;
-							/**
-							 * @type string
-							 */
 							register: string;
-							/**
-							 * @type string
-							 */
 							parse: string;
-							/**
-							 * @type string
-							 */
 							safeParse: string;
-							/**
-							 * @type string
-							 */
 							parseAsync: string;
-							/**
-							 * @type string
-							 */
 							safeParseAsync: string;
-							/**
-							 * @type string
-							 */
 							spa: string;
-							/**
-							 * @type string
-							 */
 							encode: string;
-							/**
-							 * @type string
-							 */
 							decode: string;
-							/**
-							 * @type string
-							 */
 							encodeAsync: string;
-							/**
-							 * @type string
-							 */
 							decodeAsync: string;
-							/**
-							 * @type string
-							 */
 							safeEncode: string;
-							/**
-							 * @type string
-							 */
 							safeDecode: string;
-							/**
-							 * @type string
-							 */
 							safeEncodeAsync: string;
-							/**
-							 * @type string
-							 */
 							safeDecodeAsync: string;
-							/**
-							 * @type string
-							 */
 							refine: string;
-							/**
-							 * @type string
-							 */
 							superRefine: string;
-							/**
-							 * @type string
-							 */
 							overwrite: string;
-							/**
-							 * @type string
-							 */
 							optional: string;
-							/**
-							 * @type string
-							 */
 							exactOptional: string;
-							/**
-							 * @type string
-							 */
 							nullable: string;
-							/**
-							 * @type string
-							 */
 							nullish: string;
-							/**
-							 * @type string
-							 */
 							nonoptional: string;
-							/**
-							 * @type string
-							 */
 							array: string;
-							/**
-							 * @type string
-							 */
 							or: string;
-							/**
-							 * @type string
-							 */
 							and: string;
-							/**
-							 * @type string
-							 */
 							transform: string;
-							/**
-							 * @type string
-							 */
 							default: string;
-							/**
-							 * @type string
-							 */
 							prefault: string;
-							/**
-							 * @type string
-							 */
 							catch: string;
-							/**
-							 * @type string
-							 */
 							pipe: string;
-							/**
-							 * @type string
-							 */
 							readonly: string;
-							/**
-							 * @type string
-							 */
 							describe: string;
-							/**
-							 * @type string
-							 */
 							meta: string;
-							/**
-							 * @type string
-							 */
 							isOptional: string;
-							/**
-							 * @type string
-							 */
 							isNullable: string;
-							/**
-							 * @type string
-							 */
 							apply: string;
-							/**
-							 * @type string
-							 */
 							keyof: string;
-							/**
-							 * @type string
-							 */
 							catchall: string;
-							/**
-							 * @type string
-							 */
 							passthrough: string;
-							/**
-							 * @type string
-							 */
 							loose: string;
-							/**
-							 * @type string
-							 */
 							strict: string;
-							/**
-							 * @type string
-							 */
 							strip: string;
-							/**
-							 * @type string
-							 */
 							extend: string;
-							/**
-							 * @type string
-							 */
 							safeExtend: string;
-							/**
-							 * @type string
-							 */
 							merge: string;
-							/**
-							 * @type string
-							 */
 							pick: string;
-							/**
-							 * @type string
-							 */
 							omit: string;
-							/**
-							 * @type string
-							 */
 							partial: string;
-							/**
-							 * @type string
-							 */
 							required: string;
 						},
 						...string[],
@@ -1943,6 +1500,8 @@ export type MessageDetail = {
 	createdAt: string;
 	/**
 	 * @description The ISO timestamp representing when the message was last updated.
+	 *
+	 * Format: `date-time`
 	 * @type string | undefined
 	 */
 	updatedAt?: string | undefined;
@@ -1968,17 +1527,14 @@ export type MessageDetail = {
 	apiUrl: string;
 	/**
 	 * @description The ID of the user who sent the message.
-	 * @type null
+	 * @type string
 	 */
-	authorId: null;
+	authorId: string | null;
 	/**
 	 * @description The ID of the parent message.
-	 * @type null | undefined
+	 * @type string | undefined
 	 */
-	parentId?: null | undefined;
-	/**
-	 * @type array | undefined
-	 */
+	parentId?: (string | null) | undefined;
 	attachments?:
 		| {
 				/**
@@ -2010,7 +1566,7 @@ export type MessageDetail = {
 				 * @description Optional v0-specific attachment type for enhanced processing.
 				 * @type string | undefined
 				 */
-				type?: TypeEnumKey | undefined;
+				type?: MessageDetailAttachmentsTypeEnumKey | undefined;
 		  }[]
 		| undefined;
 	/**
@@ -2019,13 +1575,6 @@ export type MessageDetail = {
 	 */
 	chatId: string;
 };
-
-export const messageSummaryObjectEnum = {
-	message: "message",
-} as const;
-
-export type MessageSummaryObjectEnumKey =
-	(typeof messageSummaryObjectEnum)[keyof typeof messageSummaryObjectEnum];
 
 export const messageSummaryTypeEnum = {
 	"added-environment-variables": "added-environment-variables",
@@ -2075,6 +1624,15 @@ export const messageSummaryFinishReasonEnum = {
 export type MessageSummaryFinishReasonEnumKey =
 	(typeof messageSummaryFinishReasonEnum)[keyof typeof messageSummaryFinishReasonEnum];
 
+export const messageSummaryAttachmentsTypeEnum = {
+	figma: "figma",
+	screenshot: "screenshot",
+	zip: "zip",
+} as const;
+
+export type MessageSummaryAttachmentsTypeEnumKey =
+	(typeof messageSummaryAttachmentsTypeEnum)[keyof typeof messageSummaryAttachmentsTypeEnum];
+
 /**
  * @description Summary of a single message within a chat, including role, content, type, timestamp, and API URL.
  * @type object
@@ -2089,7 +1647,7 @@ export type MessageSummary = {
 	 * @description Fixed value identifying this object as a message.
 	 * @type string
 	 */
-	object: MessageSummaryObjectEnumKey;
+	object: "message";
 	/**
 	 * @description The main text content of the message.
 	 * @type string
@@ -2105,229 +1663,61 @@ export type MessageSummary = {
 				| [
 						1,
 						{
-							/**
-							 * @type string
-							 */
 							toJSONSchema: string;
-							/**
-							 * @type string
-							 */
 							def: string;
-							/**
-							 * @type string
-							 */
 							type: string;
-							/**
-							 * @type string
-							 */
 							check: string;
-							/**
-							 * @type string
-							 */
 							with: string;
-							/**
-							 * @type string
-							 */
 							clone: string;
-							/**
-							 * @type string
-							 */
 							brand: string;
-							/**
-							 * @type string
-							 */
 							register: string;
-							/**
-							 * @type string
-							 */
 							parse: string;
-							/**
-							 * @type string
-							 */
 							safeParse: string;
-							/**
-							 * @type string
-							 */
 							parseAsync: string;
-							/**
-							 * @type string
-							 */
 							safeParseAsync: string;
-							/**
-							 * @type string
-							 */
 							spa: string;
-							/**
-							 * @type string
-							 */
 							encode: string;
-							/**
-							 * @type string
-							 */
 							decode: string;
-							/**
-							 * @type string
-							 */
 							encodeAsync: string;
-							/**
-							 * @type string
-							 */
 							decodeAsync: string;
-							/**
-							 * @type string
-							 */
 							safeEncode: string;
-							/**
-							 * @type string
-							 */
 							safeDecode: string;
-							/**
-							 * @type string
-							 */
 							safeEncodeAsync: string;
-							/**
-							 * @type string
-							 */
 							safeDecodeAsync: string;
-							/**
-							 * @type string
-							 */
 							refine: string;
-							/**
-							 * @type string
-							 */
 							superRefine: string;
-							/**
-							 * @type string
-							 */
 							overwrite: string;
-							/**
-							 * @type string
-							 */
 							optional: string;
-							/**
-							 * @type string
-							 */
 							exactOptional: string;
-							/**
-							 * @type string
-							 */
 							nullable: string;
-							/**
-							 * @type string
-							 */
 							nullish: string;
-							/**
-							 * @type string
-							 */
 							nonoptional: string;
-							/**
-							 * @type string
-							 */
 							array: string;
-							/**
-							 * @type string
-							 */
 							or: string;
-							/**
-							 * @type string
-							 */
 							and: string;
-							/**
-							 * @type string
-							 */
 							transform: string;
-							/**
-							 * @type string
-							 */
 							default: string;
-							/**
-							 * @type string
-							 */
 							prefault: string;
-							/**
-							 * @type string
-							 */
 							catch: string;
-							/**
-							 * @type string
-							 */
 							pipe: string;
-							/**
-							 * @type string
-							 */
 							readonly: string;
-							/**
-							 * @type string
-							 */
 							describe: string;
-							/**
-							 * @type string
-							 */
 							meta: string;
-							/**
-							 * @type string
-							 */
 							isOptional: string;
-							/**
-							 * @type string
-							 */
 							isNullable: string;
-							/**
-							 * @type string
-							 */
 							apply: string;
-							/**
-							 * @type string
-							 */
 							keyof: string;
-							/**
-							 * @type string
-							 */
 							catchall: string;
-							/**
-							 * @type string
-							 */
 							passthrough: string;
-							/**
-							 * @type string
-							 */
 							loose: string;
-							/**
-							 * @type string
-							 */
 							strict: string;
-							/**
-							 * @type string
-							 */
 							strip: string;
-							/**
-							 * @type string
-							 */
 							extend: string;
-							/**
-							 * @type string
-							 */
 							safeExtend: string;
-							/**
-							 * @type string
-							 */
 							merge: string;
-							/**
-							 * @type string
-							 */
 							pick: string;
-							/**
-							 * @type string
-							 */
 							omit: string;
-							/**
-							 * @type string
-							 */
 							partial: string;
-							/**
-							 * @type string
-							 */
 							required: string;
 						},
 						...string[],
@@ -2341,6 +1731,8 @@ export type MessageSummary = {
 	createdAt: string;
 	/**
 	 * @description The ISO timestamp representing when the message was last updated.
+	 *
+	 * Format: `date-time`
 	 * @type string | undefined
 	 */
 	updatedAt?: string | undefined;
@@ -2366,17 +1758,14 @@ export type MessageSummary = {
 	apiUrl: string;
 	/**
 	 * @description The ID of the user who sent the message.
-	 * @type null
+	 * @type string
 	 */
-	authorId: null;
+	authorId: string | null;
 	/**
 	 * @description The ID of the parent message.
-	 * @type null | undefined
+	 * @type string | undefined
 	 */
-	parentId?: null | undefined;
-	/**
-	 * @type array | undefined
-	 */
+	parentId?: (string | null) | undefined;
 	attachments?:
 		| {
 				/**
@@ -2408,17 +1797,67 @@ export type MessageSummary = {
 				 * @description Optional v0-specific attachment type for enhanced processing.
 				 * @type string | undefined
 				 */
-				type?: TypeEnumKey | undefined;
+				type?: MessageSummaryAttachmentsTypeEnumKey | undefined;
 		  }[]
 		| undefined;
 };
 
-export const messageSummaryListObjectEnum = {
-	list: "list",
+export const messageSummaryListDataTypeEnum = {
+	"added-environment-variables": "added-environment-variables",
+	"added-integration": "added-integration",
+	"answered-questions": "answered-questions",
+	"auto-fix-with-v0": "auto-fix-with-v0",
+	"cloned-repo": "cloned-repo",
+	"deleted-file": "deleted-file",
+	"design-mode": "design-mode",
+	"edited-file": "edited-file",
+	"fix-cve": "fix-cve",
+	"fix-with-v0": "fix-with-v0",
+	"forked-block": "forked-block",
+	"forked-chat": "forked-chat",
+	"manual-commit": "manual-commit",
+	message: "message",
+	"moved-file": "moved-file",
+	"open-in-v0": "open-in-v0",
+	"pull-changes": "pull-changes",
+	refinement: "refinement",
+	"renamed-file": "renamed-file",
+	"replace-src": "replace-src",
+	"reverted-block": "reverted-block",
+	"sync-git": "sync-git",
 } as const;
 
-export type MessageSummaryListObjectEnumKey =
-	(typeof messageSummaryListObjectEnum)[keyof typeof messageSummaryListObjectEnum];
+export type MessageSummaryListDataTypeEnumKey =
+	(typeof messageSummaryListDataTypeEnum)[keyof typeof messageSummaryListDataTypeEnum];
+
+export const messageSummaryListDataRoleEnum = {
+	assistant: "assistant",
+	user: "user",
+} as const;
+
+export type MessageSummaryListDataRoleEnumKey =
+	(typeof messageSummaryListDataRoleEnum)[keyof typeof messageSummaryListDataRoleEnum];
+
+export const messageSummaryListDataFinishReasonEnum = {
+	"content-filter": "content-filter",
+	error: "error",
+	length: "length",
+	other: "other",
+	stop: "stop",
+	"tool-calls": "tool-calls",
+} as const;
+
+export type MessageSummaryListDataFinishReasonEnumKey =
+	(typeof messageSummaryListDataFinishReasonEnum)[keyof typeof messageSummaryListDataFinishReasonEnum];
+
+export const messageSummaryListDataAttachmentsTypeEnum = {
+	figma: "figma",
+	screenshot: "screenshot",
+	zip: "zip",
+} as const;
+
+export type MessageSummaryListDataAttachmentsTypeEnumKey =
+	(typeof messageSummaryListDataAttachmentsTypeEnum)[keyof typeof messageSummaryListDataAttachmentsTypeEnum];
 
 /**
  * @description List response containing multiple message summaries with cursor-based pagination.
@@ -2429,7 +1868,7 @@ export type MessageSummaryList = {
 	 * @description Fixed value identifying this as a list response.
 	 * @type string
 	 */
-	object: MessageSummaryListObjectEnumKey;
+	object: "list";
 	/**
 	 * @description Array of message summaries in this page of results.
 	 * @type array
@@ -2444,7 +1883,7 @@ export type MessageSummaryList = {
 		 * @description Fixed value identifying this object as a message.
 		 * @type string
 		 */
-		object: ObjectEnumKey;
+		object: "message";
 		/**
 		 * @description The main text content of the message.
 		 * @type string
@@ -2460,229 +1899,61 @@ export type MessageSummaryList = {
 					| [
 							1,
 							{
-								/**
-								 * @type string
-								 */
 								toJSONSchema: string;
-								/**
-								 * @type string
-								 */
 								def: string;
-								/**
-								 * @type string
-								 */
 								type: string;
-								/**
-								 * @type string
-								 */
 								check: string;
-								/**
-								 * @type string
-								 */
 								with: string;
-								/**
-								 * @type string
-								 */
 								clone: string;
-								/**
-								 * @type string
-								 */
 								brand: string;
-								/**
-								 * @type string
-								 */
 								register: string;
-								/**
-								 * @type string
-								 */
 								parse: string;
-								/**
-								 * @type string
-								 */
 								safeParse: string;
-								/**
-								 * @type string
-								 */
 								parseAsync: string;
-								/**
-								 * @type string
-								 */
 								safeParseAsync: string;
-								/**
-								 * @type string
-								 */
 								spa: string;
-								/**
-								 * @type string
-								 */
 								encode: string;
-								/**
-								 * @type string
-								 */
 								decode: string;
-								/**
-								 * @type string
-								 */
 								encodeAsync: string;
-								/**
-								 * @type string
-								 */
 								decodeAsync: string;
-								/**
-								 * @type string
-								 */
 								safeEncode: string;
-								/**
-								 * @type string
-								 */
 								safeDecode: string;
-								/**
-								 * @type string
-								 */
 								safeEncodeAsync: string;
-								/**
-								 * @type string
-								 */
 								safeDecodeAsync: string;
-								/**
-								 * @type string
-								 */
 								refine: string;
-								/**
-								 * @type string
-								 */
 								superRefine: string;
-								/**
-								 * @type string
-								 */
 								overwrite: string;
-								/**
-								 * @type string
-								 */
 								optional: string;
-								/**
-								 * @type string
-								 */
 								exactOptional: string;
-								/**
-								 * @type string
-								 */
 								nullable: string;
-								/**
-								 * @type string
-								 */
 								nullish: string;
-								/**
-								 * @type string
-								 */
 								nonoptional: string;
-								/**
-								 * @type string
-								 */
 								array: string;
-								/**
-								 * @type string
-								 */
 								or: string;
-								/**
-								 * @type string
-								 */
 								and: string;
-								/**
-								 * @type string
-								 */
 								transform: string;
-								/**
-								 * @type string
-								 */
 								default: string;
-								/**
-								 * @type string
-								 */
 								prefault: string;
-								/**
-								 * @type string
-								 */
 								catch: string;
-								/**
-								 * @type string
-								 */
 								pipe: string;
-								/**
-								 * @type string
-								 */
 								readonly: string;
-								/**
-								 * @type string
-								 */
 								describe: string;
-								/**
-								 * @type string
-								 */
 								meta: string;
-								/**
-								 * @type string
-								 */
 								isOptional: string;
-								/**
-								 * @type string
-								 */
 								isNullable: string;
-								/**
-								 * @type string
-								 */
 								apply: string;
-								/**
-								 * @type string
-								 */
 								keyof: string;
-								/**
-								 * @type string
-								 */
 								catchall: string;
-								/**
-								 * @type string
-								 */
 								passthrough: string;
-								/**
-								 * @type string
-								 */
 								loose: string;
-								/**
-								 * @type string
-								 */
 								strict: string;
-								/**
-								 * @type string
-								 */
 								strip: string;
-								/**
-								 * @type string
-								 */
 								extend: string;
-								/**
-								 * @type string
-								 */
 								safeExtend: string;
-								/**
-								 * @type string
-								 */
 								merge: string;
-								/**
-								 * @type string
-								 */
 								pick: string;
-								/**
-								 * @type string
-								 */
 								omit: string;
-								/**
-								 * @type string
-								 */
 								partial: string;
-								/**
-								 * @type string
-								 */
 								required: string;
 							},
 							...string[],
@@ -2696,6 +1967,8 @@ export type MessageSummaryList = {
 		createdAt: string;
 		/**
 		 * @description The ISO timestamp representing when the message was last updated.
+		 *
+		 * Format: `date-time`
 		 * @type string | undefined
 		 */
 		updatedAt?: string | undefined;
@@ -2703,17 +1976,17 @@ export type MessageSummaryList = {
 		 * @description Indicates the format or category of the message, such as plain text or code.
 		 * @type string
 		 */
-		type: TypeEnumKey;
+		type: MessageSummaryListDataTypeEnumKey;
 		/**
 		 * @description Specifies whether the message was sent by the user or the assistant.
 		 * @type string
 		 */
-		role: RoleEnumKey;
+		role: MessageSummaryListDataRoleEnumKey;
 		/**
 		 * @description The reason why the message generation finished.
 		 * @type string | undefined
 		 */
-		finishReason?: FinishReasonEnumKey | undefined;
+		finishReason?: MessageSummaryListDataFinishReasonEnumKey | undefined;
 		/**
 		 * @description API URL to access this message via the API.
 		 * @type string
@@ -2721,17 +1994,14 @@ export type MessageSummaryList = {
 		apiUrl: string;
 		/**
 		 * @description The ID of the user who sent the message.
-		 * @type null
+		 * @type string
 		 */
-		authorId: null;
+		authorId: string | null;
 		/**
 		 * @description The ID of the parent message.
-		 * @type null | undefined
+		 * @type string | undefined
 		 */
-		parentId?: null | undefined;
-		/**
-		 * @type array | undefined
-		 */
+		parentId?: (string | null) | undefined;
 		attachments?:
 			| {
 					/**
@@ -2763,7 +2033,7 @@ export type MessageSummaryList = {
 					 * @description Optional v0-specific attachment type for enhanced processing.
 					 * @type string | undefined
 					 */
-					type?: TypeEnumKey | undefined;
+					type?: MessageSummaryListDataAttachmentsTypeEnumKey | undefined;
 			  }[]
 			| undefined;
 	}[];
@@ -2807,13 +2077,6 @@ export type NotificationPreferenceSchema = {
 	pushNotifications: boolean;
 };
 
-export const productDetailSchemaObjectEnum = {
-	product: "product",
-} as const;
-
-export type ProductDetailSchemaObjectEnumKey =
-	(typeof productDetailSchemaObjectEnum)[keyof typeof productDetailSchemaObjectEnum];
-
 export const productDetailSchemaV0AvailabilityEnum = {
 	"in-review": "in-review",
 	published: "published",
@@ -2831,7 +2094,7 @@ export type ProductDetailSchema = {
 	 * @description The object type.
 	 * @type string
 	 */
-	object: ProductDetailSchemaObjectEnumKey;
+	object: "product";
 	/**
 	 * @description The unique ID of the product.
 	 * @type string
@@ -2869,19 +2132,13 @@ export type ProductDetailSchema = {
 	iconBackgroundColor?: string | undefined;
 };
 
-export const productListSchemaObjectEnum = {
-	list: "list",
-} as const;
-
-export type ProductListSchemaObjectEnumKey =
-	(typeof productListSchemaObjectEnum)[keyof typeof productListSchemaObjectEnum];
-
-export const V0AvailabilityEnum = {
+export const productListSchemaDataV0AvailabilityEnum = {
 	"in-review": "in-review",
 	published: "published",
 } as const;
 
-export type V0AvailabilityEnumKey = (typeof V0AvailabilityEnum)[keyof typeof V0AvailabilityEnum];
+export type ProductListSchemaDataV0AvailabilityEnumKey =
+	(typeof productListSchemaDataV0AvailabilityEnum)[keyof typeof productListSchemaDataV0AvailabilityEnum];
 
 /**
  * @description List of available marketplace and store products.
@@ -2892,7 +2149,7 @@ export type ProductListSchema = {
 	 * @description Fixed value identifying this as a list response.
 	 * @type string
 	 */
-	object: ProductListSchemaObjectEnumKey;
+	object: "list";
 	/**
 	 * @description Array of product summaries.
 	 * @type array
@@ -2902,7 +2159,7 @@ export type ProductListSchema = {
 		 * @description The object type.
 		 * @type string
 		 */
-		object: ObjectEnumKey;
+		object: "product";
 		/**
 		 * @description The unique ID of the product.
 		 * @type string
@@ -2932,16 +2189,9 @@ export type ProductListSchema = {
 		 * @description The product\'s availability in v0. \'in-review\' products only appear for teams with the review view and should be rendered as such.
 		 * @type string | undefined
 		 */
-		v0Availability?: V0AvailabilityEnumKey | undefined;
+		v0Availability?: ProductListSchemaDataV0AvailabilityEnumKey | undefined;
 	}[];
 };
-
-export const productSummarySchemaObjectEnum = {
-	product: "product",
-} as const;
-
-export type ProductSummarySchemaObjectEnumKey =
-	(typeof productSummarySchemaObjectEnum)[keyof typeof productSummarySchemaObjectEnum];
 
 export const productSummarySchemaV0AvailabilityEnum = {
 	"in-review": "in-review",
@@ -2960,7 +2210,7 @@ export type ProductSummarySchema = {
 	 * @description The object type.
 	 * @type string
 	 */
-	object: ProductSummarySchemaObjectEnumKey;
+	object: "product";
 	/**
 	 * @description The unique ID of the product.
 	 * @type string
@@ -2993,13 +2243,6 @@ export type ProductSummarySchema = {
 	v0Availability?: ProductSummarySchemaV0AvailabilityEnumKey | undefined;
 };
 
-export const projectDetailObjectEnum = {
-	project: "project",
-} as const;
-
-export type ProjectDetailObjectEnumKey =
-	(typeof projectDetailObjectEnum)[keyof typeof projectDetailObjectEnum];
-
 export const projectDetailPrivacyEnum = {
 	private: "private",
 	team: "team",
@@ -3008,7 +2251,7 @@ export const projectDetailPrivacyEnum = {
 export type ProjectDetailPrivacyEnumKey =
 	(typeof projectDetailPrivacyEnum)[keyof typeof projectDetailPrivacyEnum];
 
-export const privacyEnum = {
+export const projectDetailChatsPrivacyEnum = {
 	private: "private",
 	public: "public",
 	team: "team",
@@ -3016,15 +2259,17 @@ export const privacyEnum = {
 	unlisted: "unlisted",
 } as const;
 
-export type PrivacyEnumKey = (typeof privacyEnum)[keyof typeof privacyEnum];
+export type ProjectDetailChatsPrivacyEnumKey =
+	(typeof projectDetailChatsPrivacyEnum)[keyof typeof projectDetailChatsPrivacyEnum];
 
-export const statusEnum = {
+export const projectDetailChatsLatestVersionStatusEnum = {
 	completed: "completed",
 	failed: "failed",
 	pending: "pending",
 } as const;
 
-export type StatusEnumKey = (typeof statusEnum)[keyof typeof statusEnum];
+export type ProjectDetailChatsLatestVersionStatusEnumKey =
+	(typeof projectDetailChatsLatestVersionStatusEnum)[keyof typeof projectDetailChatsLatestVersionStatusEnum];
 
 /**
  * @description Full representation of a project, including its associated chats.
@@ -3040,7 +2285,7 @@ export type ProjectDetail = {
 	 * @description Fixed value identifying this object as a project.
 	 * @type string
 	 */
-	object: ProjectDetailObjectEnumKey;
+	object: "project";
 	/**
 	 * @description The name of the project as defined by the user.
 	 * @type string
@@ -3058,21 +2303,29 @@ export type ProjectDetail = {
 	vercelProjectId?: string | undefined;
 	/**
 	 * @description The ISO timestamp representing when the project was created.
+	 *
+	 * Format: `date-time`
 	 * @type string
 	 */
 	createdAt: string;
 	/**
 	 * @description The ISO timestamp of the most recent update, if available.
+	 *
+	 * Format: `date-time`
 	 * @type string | undefined
 	 */
 	updatedAt?: string | undefined;
 	/**
 	 * @description The API endpoint URL for accessing this project programmatically.
+	 *
+	 * Format: `uri`
 	 * @type string
 	 */
 	apiUrl: string;
 	/**
 	 * @description The web URL where the project can be viewed or managed.
+	 *
+	 * Format: `uri`
 	 * @type string
 	 */
 	webUrl: string;
@@ -3100,7 +2353,7 @@ export type ProjectDetail = {
 		 * @description Fixed value identifying this object as a chat.
 		 * @type string
 		 */
-		object: ObjectEnumKey;
+		object: "chat";
 		/**
 		 * @description Indicates whether the chat can be shared via public link.
 		 * @type boolean
@@ -3110,7 +2363,7 @@ export type ProjectDetail = {
 		 * @description Defines the visibility of the chat—private, team-only, or public.
 		 * @type string
 		 */
-		privacy: PrivacyEnumKey;
+		privacy: ProjectDetailChatsPrivacyEnumKey;
 		/**
 		 * @description An optional name assigned to the chat by the user.
 		 * @type string | undefined
@@ -3124,6 +2377,8 @@ export type ProjectDetail = {
 		title?: string | undefined;
 		/**
 		 * @description The ISO timestamp representing when the chat was created.
+		 *
+		 * Format: `date-time`
 		 * @type string
 		 */
 		createdAt: string;
@@ -3177,12 +2432,12 @@ export type ProjectDetail = {
 					 * @description Fixed value identifying this object as a version.
 					 * @type string
 					 */
-					object: ObjectEnumKey;
+					object: "version";
 					/**
 					 * @description The current status of the version generation process.
 					 * @type string
 					 */
-					status: StatusEnumKey;
+					status: ProjectDetailChatsLatestVersionStatusEnumKey;
 					/**
 					 * @description Optional URL for previewing the generated output.
 					 * @type string | undefined
@@ -3195,11 +2450,15 @@ export type ProjectDetail = {
 					screenshotUrl?: string | undefined;
 					/**
 					 * @description The date and time when the version was created, in ISO 8601 format.
+					 *
+					 * Format: `date-time`
 					 * @type string
 					 */
 					createdAt: string;
 					/**
 					 * @description The date and time when the version was last updated, in ISO 8601 format.
+					 *
+					 * Format: `date-time`
 					 * @type string | undefined
 					 */
 					updatedAt?: string | undefined;
@@ -3214,13 +2473,6 @@ export type ProjectDetail = {
 		};
 	}[];
 };
-
-export const projectSummaryObjectEnum = {
-	project: "project",
-} as const;
-
-export type ProjectSummaryObjectEnumKey =
-	(typeof projectSummaryObjectEnum)[keyof typeof projectSummaryObjectEnum];
 
 export const projectSummaryPrivacyEnum = {
 	private: "private",
@@ -3244,7 +2496,7 @@ export type ProjectSummary = {
 	 * @description Fixed value identifying this object as a project.
 	 * @type string
 	 */
-	object: ProjectSummaryObjectEnumKey;
+	object: "project";
 	/**
 	 * @description The name of the project as defined by the user.
 	 * @type string
@@ -3262,32 +2514,33 @@ export type ProjectSummary = {
 	vercelProjectId?: string | undefined;
 	/**
 	 * @description The ISO timestamp representing when the project was created.
+	 *
+	 * Format: `date-time`
 	 * @type string
 	 */
 	createdAt: string;
 	/**
 	 * @description The ISO timestamp of the most recent update, if available.
+	 *
+	 * Format: `date-time`
 	 * @type string | undefined
 	 */
 	updatedAt?: string | undefined;
 	/**
 	 * @description The API endpoint URL for accessing this project programmatically.
+	 *
+	 * Format: `uri`
 	 * @type string
 	 */
 	apiUrl: string;
 	/**
 	 * @description The web URL where the project can be viewed or managed.
+	 *
+	 * Format: `uri`
 	 * @type string
 	 */
 	webUrl: string;
 };
-
-export const scopeSummaryObjectEnum = {
-	scope: "scope",
-} as const;
-
-export type ScopeSummaryObjectEnumKey =
-	(typeof scopeSummaryObjectEnum)[keyof typeof scopeSummaryObjectEnum];
 
 /**
  * @description Basic information about a workspace or identity context for projects and chats.
@@ -3303,7 +2556,7 @@ export type ScopeSummary = {
 	 * @description Fixed value identifying this object as a scope.
 	 * @type string
 	 */
-	object: ScopeSummaryObjectEnumKey;
+	object: "scope";
 	/**
 	 * @description An optional human-readable name for the scope.
 	 * @type string | undefined
@@ -3341,11 +2594,15 @@ export type SearchResultItem = {
 	name: string;
 	/**
 	 * @description The ISO timestamp representing when the item was created.
+	 *
+	 * Format: `date-time`
 	 * @type string
 	 */
 	createdAt: string;
 	/**
 	 * @description The ISO timestamp of the last update to the item.
+	 *
+	 * Format: `date-time`
 	 * @type string | undefined
 	 */
 	updatedAt?: string | undefined;
@@ -3361,16 +2618,6 @@ export type SearchResultItem = {
 	webUrl: string;
 };
 
-export const userDetailSchemaObjectEnum = {
-	user: "user",
-} as const;
-
-export type UserDetailSchemaObjectEnumKey =
-	(typeof userDetailSchemaObjectEnum)[keyof typeof userDetailSchemaObjectEnum];
-
-/**
- * @type object
- */
 export type UserDetailSchema = {
 	/**
 	 * @description A unique identifier for the user.
@@ -3381,7 +2628,7 @@ export type UserDetailSchema = {
 	 * @description Fixed value identifying this object as a user.
 	 * @type string
 	 */
-	object: UserDetailSchemaObjectEnumKey;
+	object: "user";
 	/**
 	 * @description Optional full name of the user.
 	 * @type string | undefined
@@ -3399,22 +2646,19 @@ export type UserDetailSchema = {
 	avatar: string;
 	/**
 	 * @description The ISO timestamp representing when the user was created.
+	 *
+	 * Format: `date-time`
 	 * @type string
 	 */
 	createdAt: string;
 	/**
 	 * @description The ISO timestamp of the last update to the user.
+	 *
+	 * Format: `date-time`
 	 * @type string | undefined
 	 */
 	updatedAt?: string | undefined;
 };
-
-export const userPreferencesPostResponseSchemaObjectEnum = {
-	user_preferences: "user_preferences",
-} as const;
-
-export type UserPreferencesPostResponseSchemaObjectEnumKey =
-	(typeof userPreferencesPostResponseSchemaObjectEnum)[keyof typeof userPreferencesPostResponseSchemaObjectEnum];
 
 /**
  * @description Response schema for updating user preferences.
@@ -3425,7 +2669,7 @@ export type UserPreferencesPostResponseSchema = {
 	 * @description Object type identifier.
 	 * @type string
 	 */
-	object: UserPreferencesPostResponseSchemaObjectEnumKey;
+	object: "user_preferences";
 	/**
 	 * @description The updated preferences if successful, or null if failed.
 	 */
@@ -3449,13 +2693,6 @@ export type UserPreferencesPostResponseSchema = {
 	} | null;
 };
 
-export const userPreferencesResponseSchemaObjectEnum = {
-	user_preferences: "user_preferences",
-} as const;
-
-export type UserPreferencesResponseSchemaObjectEnumKey =
-	(typeof userPreferencesResponseSchemaObjectEnum)[keyof typeof userPreferencesResponseSchemaObjectEnum];
-
 /**
  * @description Response schema for retrieving user preferences.
  * @type object
@@ -3465,7 +2702,7 @@ export type UserPreferencesResponseSchema = {
 	 * @description Object type identifier.
 	 * @type string
 	 */
-	object: UserPreferencesResponseSchemaObjectEnumKey;
+	object: "user_preferences";
 	/**
 	 * @description The user\'s current preferences, or null if errored.
 	 */
@@ -3512,13 +2749,6 @@ export type UserPreferencesSchema = {
 	};
 };
 
-export const userSummarySchemaObjectEnum = {
-	user: "user",
-} as const;
-
-export type UserSummarySchemaObjectEnumKey =
-	(typeof userSummarySchemaObjectEnum)[keyof typeof userSummarySchemaObjectEnum];
-
 /**
  * @description Details of the authenticated user, including profile and contact information.
  * @type object
@@ -3533,7 +2763,7 @@ export type UserSummarySchema = {
 	 * @description Fixed value identifying this object as a user.
 	 * @type string
 	 */
-	object: UserSummarySchemaObjectEnumKey;
+	object: "user";
 	/**
 	 * @description Optional full name of the user.
 	 * @type string | undefined
@@ -3551,26 +2781,20 @@ export type UserSummarySchema = {
 	avatar: string;
 	/**
 	 * @description The ISO timestamp representing when the user was created.
+	 *
+	 * Format: `date-time`
 	 * @type string
 	 */
 	createdAt: string;
 	/**
 	 * @description The ISO timestamp of the last update to the user.
+	 *
+	 * Format: `date-time`
 	 * @type string | undefined
 	 */
 	updatedAt?: string | undefined;
 };
 
-export const vercelProjectDetailObjectEnum = {
-	vercel_project: "vercel_project",
-} as const;
-
-export type VercelProjectDetailObjectEnumKey =
-	(typeof vercelProjectDetailObjectEnum)[keyof typeof vercelProjectDetailObjectEnum];
-
-/**
- * @type object
- */
 export type VercelProjectDetail = {
 	/**
 	 * @description A unique identifier for the linked Vercel project.
@@ -3581,20 +2805,13 @@ export type VercelProjectDetail = {
 	 * @description Fixed value identifying this object as a Vercel project.
 	 * @type string
 	 */
-	object: VercelProjectDetailObjectEnumKey;
+	object: "vercel_project";
 	/**
 	 * @description The name of the Vercel project.
 	 * @type string
 	 */
 	name: string;
 };
-
-export const vercelProjectSummaryObjectEnum = {
-	vercel_project: "vercel_project",
-} as const;
-
-export type VercelProjectSummaryObjectEnumKey =
-	(typeof vercelProjectSummaryObjectEnum)[keyof typeof vercelProjectSummaryObjectEnum];
 
 /**
  * @description Basic metadata about a Vercel project connected to a v0 project.
@@ -3610,20 +2827,13 @@ export type VercelProjectSummary = {
 	 * @description Fixed value identifying this object as a Vercel project.
 	 * @type string
 	 */
-	object: VercelProjectSummaryObjectEnumKey;
+	object: "vercel_project";
 	/**
 	 * @description The name of the Vercel project.
 	 * @type string
 	 */
 	name: string;
 };
-
-export const versionDetailObjectEnum = {
-	version: "version",
-} as const;
-
-export type VersionDetailObjectEnumKey =
-	(typeof versionDetailObjectEnum)[keyof typeof versionDetailObjectEnum];
 
 export const versionDetailStatusEnum = {
 	completed: "completed",
@@ -3648,7 +2858,7 @@ export type VersionDetail = {
 	 * @description Fixed value identifying this object as a version.
 	 * @type string
 	 */
-	object: VersionDetailObjectEnumKey;
+	object: "version";
 	/**
 	 * @description The current status of the version generation process.
 	 * @type string
@@ -3666,11 +2876,15 @@ export type VersionDetail = {
 	screenshotUrl?: string | undefined;
 	/**
 	 * @description The date and time when the version was created, in ISO 8601 format.
+	 *
+	 * Format: `date-time`
 	 * @type string
 	 */
 	createdAt: string;
 	/**
 	 * @description The date and time when the version was last updated, in ISO 8601 format.
+	 *
+	 * Format: `date-time`
 	 * @type string | undefined
 	 */
 	updatedAt?: string | undefined;
@@ -3683,7 +2897,7 @@ export type VersionDetail = {
 		 * @description Fixed value identifying this object as a file.
 		 * @type string
 		 */
-		object: ObjectEnumKey;
+		object: "file";
 		/**
 		 * @description The name of the file, including its extension.
 		 * @type string
@@ -3701,13 +2915,6 @@ export type VersionDetail = {
 		locked: boolean;
 	}[];
 };
-
-export const versionSummaryObjectEnum = {
-	version: "version",
-} as const;
-
-export type VersionSummaryObjectEnumKey =
-	(typeof versionSummaryObjectEnum)[keyof typeof versionSummaryObjectEnum];
 
 export const versionSummaryStatusEnum = {
 	completed: "completed",
@@ -3732,7 +2939,7 @@ export type VersionSummary = {
 	 * @description Fixed value identifying this object as a version.
 	 * @type string
 	 */
-	object: VersionSummaryObjectEnumKey;
+	object: "version";
 	/**
 	 * @description The current status of the version generation process.
 	 * @type string
@@ -3750,22 +2957,28 @@ export type VersionSummary = {
 	screenshotUrl?: string | undefined;
 	/**
 	 * @description The date and time when the version was created, in ISO 8601 format.
+	 *
+	 * Format: `date-time`
 	 * @type string
 	 */
 	createdAt: string;
 	/**
 	 * @description The date and time when the version was last updated, in ISO 8601 format.
+	 *
+	 * Format: `date-time`
 	 * @type string | undefined
 	 */
 	updatedAt?: string | undefined;
 };
 
-export const versionSummaryListObjectEnum = {
-	list: "list",
+export const versionSummaryListDataStatusEnum = {
+	completed: "completed",
+	failed: "failed",
+	pending: "pending",
 } as const;
 
-export type VersionSummaryListObjectEnumKey =
-	(typeof versionSummaryListObjectEnum)[keyof typeof versionSummaryListObjectEnum];
+export type VersionSummaryListDataStatusEnumKey =
+	(typeof versionSummaryListDataStatusEnum)[keyof typeof versionSummaryListDataStatusEnum];
 
 /**
  * @description List response containing multiple version summaries with cursor-based pagination.
@@ -3776,7 +2989,7 @@ export type VersionSummaryList = {
 	 * @description Fixed value identifying this as a list response.
 	 * @type string
 	 */
-	object: VersionSummaryListObjectEnumKey;
+	object: "list";
 	/**
 	 * @description Array of version summaries in this page of results.
 	 * @type array
@@ -3791,12 +3004,12 @@ export type VersionSummaryList = {
 		 * @description Fixed value identifying this object as a version.
 		 * @type string
 		 */
-		object: ObjectEnumKey;
+		object: "version";
 		/**
 		 * @description The current status of the version generation process.
 		 * @type string
 		 */
-		status: StatusEnumKey;
+		status: VersionSummaryListDataStatusEnumKey;
 		/**
 		 * @description Optional URL for previewing the generated output.
 		 * @type string | undefined
@@ -3809,11 +3022,15 @@ export type VersionSummaryList = {
 		screenshotUrl?: string | undefined;
 		/**
 		 * @description The date and time when the version was created, in ISO 8601 format.
+		 *
+		 * Format: `date-time`
 		 * @type string
 		 */
 		createdAt: string;
 		/**
 		 * @description The date and time when the version was last updated, in ISO 8601 format.
+		 *
+		 * Format: `date-time`
 		 * @type string | undefined
 		 */
 		updatedAt?: string | undefined;
@@ -3841,276 +3058,87 @@ export type VersionSummaryList = {
 	};
 };
 
-export const unauthorizedErrorErrorTypeEnum = {
-	unauthorized_error: "unauthorized_error",
-} as const;
-
-export type UnauthorizedErrorErrorTypeEnumKey =
-	(typeof unauthorizedErrorErrorTypeEnum)[keyof typeof unauthorizedErrorErrorTypeEnum];
-
-/**
- * @type object
- */
 export type UnauthorizedError = {
-	/**
-	 * @type object
-	 */
 	error: {
-		/**
-		 * @type string
-		 */
 		message: string;
-		/**
-		 * @type string
-		 */
-		type: UnauthorizedErrorErrorTypeEnumKey;
+		type: "unauthorized_error";
 	};
 };
 
-export const forbiddenErrorErrorTypeEnum = {
-	forbidden_error: "forbidden_error",
-} as const;
-
-export type ForbiddenErrorErrorTypeEnumKey =
-	(typeof forbiddenErrorErrorTypeEnum)[keyof typeof forbiddenErrorErrorTypeEnum];
-
-/**
- * @type object
- */
 export type ForbiddenError = {
-	/**
-	 * @type object
-	 */
 	error: {
-		/**
-		 * @type string
-		 */
 		message: string;
-		/**
-		 * @type string
-		 */
-		type: ForbiddenErrorErrorTypeEnumKey;
+		type: "forbidden_error";
 	};
 };
 
-export const notFoundErrorErrorTypeEnum = {
-	not_found_error: "not_found_error",
-} as const;
-
-export type NotFoundErrorErrorTypeEnumKey =
-	(typeof notFoundErrorErrorTypeEnum)[keyof typeof notFoundErrorErrorTypeEnum];
-
-/**
- * @type object
- */
 export type NotFoundError = {
-	/**
-	 * @type object
-	 */
 	error: {
-		/**
-		 * @type string
-		 */
 		message: string;
-		/**
-		 * @type string
-		 */
-		type: NotFoundErrorErrorTypeEnumKey;
+		type: "not_found_error";
 	};
 };
 
-export const conflictErrorErrorTypeEnum = {
-	conflict_error: "conflict_error",
-} as const;
-
-export type ConflictErrorErrorTypeEnumKey =
-	(typeof conflictErrorErrorTypeEnum)[keyof typeof conflictErrorErrorTypeEnum];
-
-/**
- * @type object
- */
 export type ConflictError = {
-	/**
-	 * @type object
-	 */
 	error: {
-		/**
-		 * @type string
-		 */
 		message: string;
-		/**
-		 * @type string
-		 */
-		type: ConflictErrorErrorTypeEnumKey;
+		type: "conflict_error";
 	};
 };
 
-export const payloadTooLargeErrorErrorTypeEnum = {
-	payload_too_large_error: "payload_too_large_error",
-} as const;
-
-export type PayloadTooLargeErrorErrorTypeEnumKey =
-	(typeof payloadTooLargeErrorErrorTypeEnum)[keyof typeof payloadTooLargeErrorErrorTypeEnum];
-
-/**
- * @type object
- */
 export type PayloadTooLargeError = {
-	/**
-	 * @type object
-	 */
 	error: {
-		/**
-		 * @type string
-		 */
 		message: string;
-		/**
-		 * @type string
-		 */
-		type: PayloadTooLargeErrorErrorTypeEnumKey;
+		type: "payload_too_large_error";
 	};
 };
 
-export const unprocessableEntityErrorErrorTypeEnum = {
-	unprocessable_entity_error: "unprocessable_entity_error",
-} as const;
-
-export type UnprocessableEntityErrorErrorTypeEnumKey =
-	(typeof unprocessableEntityErrorErrorTypeEnum)[keyof typeof unprocessableEntityErrorErrorTypeEnum];
-
-/**
- * @type object
- */
 export type UnprocessableEntityError = {
-	/**
-	 * @type object
-	 */
 	error: {
-		/**
-		 * @type string
-		 */
 		message: string;
-		/**
-		 * @type string
-		 */
-		type: UnprocessableEntityErrorErrorTypeEnumKey;
+		type: "unprocessable_entity_error";
 	};
 };
 
-export const tooManyRequestsErrorErrorTypeEnum = {
-	too_many_requests_error: "too_many_requests_error",
-} as const;
-
-export type TooManyRequestsErrorErrorTypeEnumKey =
-	(typeof tooManyRequestsErrorErrorTypeEnum)[keyof typeof tooManyRequestsErrorErrorTypeEnum];
-
-/**
- * @type object
- */
 export type TooManyRequestsError = {
-	/**
-	 * @type object
-	 */
 	error: {
-		/**
-		 * @type string
-		 */
 		message: string;
-		/**
-		 * @type string
-		 */
-		type: TooManyRequestsErrorErrorTypeEnumKey;
+		type: "too_many_requests_error";
 	};
 };
 
-export const internalServerErrorErrorTypeEnum = {
-	internal_server_error: "internal_server_error",
-} as const;
-
-export type InternalServerErrorErrorTypeEnumKey =
-	(typeof internalServerErrorErrorTypeEnum)[keyof typeof internalServerErrorErrorTypeEnum];
-
-/**
- * @type object
- */
 export type InternalServerError = {
-	/**
-	 * @type object
-	 */
 	error: {
-		/**
-		 * @type string
-		 */
 		message: string;
-		/**
-		 * @type string
-		 */
-		type: InternalServerErrorErrorTypeEnumKey;
+		type: "internal_server_error";
 	};
 };
 
-/**
- * @type unknown
- */
 export type ChatsCreateStatus200 = unknown;
 
-/**
- * @type unknown
- */
 export type ChatsCreateStatus401 = unknown;
 
-/**
- * @type unknown
- */
 export type ChatsCreateStatus403 = unknown;
 
-/**
- * @type unknown
- */
 export type ChatsCreateStatus404 = unknown;
 
-/**
- * @type unknown
- */
 export type ChatsCreateStatus409 = unknown;
 
-/**
- * @type unknown
- */
 export type ChatsCreateStatus413 = unknown;
 
-/**
- * @type unknown
- */
 export type ChatsCreateStatus422 = unknown;
 
-/**
- * @type unknown
- */
 export type ChatsCreateStatus429 = unknown;
 
-/**
- * @type unknown
- */
 export type ChatsCreateStatus500 = unknown;
 
-/**
- * @type object
- */
-export type ChatsCreateRequestConfig = {
-	data?: never | undefined;
-	pathParams?: never | undefined;
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: "/chats";
+export type ChatsCreateOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type ChatsCreateResponses = {
 	"200": ChatsCreateStatus200;
 	"401": ChatsCreateStatus401;
@@ -4137,123 +3165,78 @@ export type ChatsCreateResponse =
 	| ChatsCreateStatus429
 	| ChatsCreateStatus500;
 
-/**
- * @description Specifies the maximum number of chat records to return in a single response. Useful for paginating results when there are many chats.
- * @maxLength 60
- * @default 60
- * @type number | undefined
- */
-export type ChatsFindQueryLimit = number | undefined;
+export const chatsFindIsFavorite = {
+	true: "true",
+	false: "false",
+} as const;
 
-/**
- * @description Determines the starting point for pagination. Used in conjunction with limit to retrieve a specific page of chat results.
- * @default 0
- * @type number | undefined
- */
-export type ChatsFindQueryOffset = number | undefined;
+export type ChatsFindIsFavoriteKey = (typeof chatsFindIsFavorite)[keyof typeof chatsFindIsFavorite];
 
-/**
- * @description Filters chats by their \"favorite\" status. Accepts `\"true\"` or `\"false\"` (as strings, not booleans).\n\n- `\"true\"`: returns only chats marked as favorites.\n- `\"false\"`: returns only non-favorite chats.
- * @type string | undefined
- */
-export type ChatsFindQueryIsFavorite = ("true" | "false") | undefined;
-
-/**
- * @description Filters chats by the linked Vercel project ID. Only returns chats associated with the specified Vercel project.
- * @type string | undefined
- */
-export type ChatsFindQueryVercelProjectId = string | undefined;
-
-/**
- * @description Filters chats by the Git branch name. Only returns chats that have an active Git connection with the specified branch as the head.
- * @type string | undefined
- */
-export type ChatsFindQueryBranch = string | undefined;
-
-/**
- * @description Filters chats by metadata. Returns chats matching every supplied key-value pair.
- * @type object | undefined
- */
-export type ChatsFindQueryMetadata =
-	| {
-			[key: string]: string;
-	  }
-	| undefined;
-
-/**
- * @type unknown
- */
-export type ChatsFindStatus200 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsFindStatus401 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsFindStatus403 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsFindStatus404 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsFindStatus409 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsFindStatus413 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsFindStatus422 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsFindStatus429 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsFindStatus500 = unknown;
-
-/**
- * @type object
- */
-export type ChatsFindRequestConfig = {
-	data?: never | undefined;
-	pathParams?: never | undefined;
+export type ChatsFindQuery = {
 	/**
+	 * @description Specifies the maximum number of chat records to return in a single response. Useful for paginating results when there are many chats.
+	 * @maxLength 60
+	 * @default 60
+	 * @type number | undefined
+	 */
+	limit?: number | undefined;
+	/**
+	 * @description Determines the starting point for pagination. Used in conjunction with limit to retrieve a specific page of chat results.
+	 * @default 0
+	 * @type number | undefined
+	 */
+	offset?: number | undefined;
+	/**
+	 * @description Filters chats by their \"favorite\" status. Accepts `\"true\"` or `\"false\"` (as strings, not booleans).\n\n- `\"true\"`: returns only chats marked as favorites.\n- `\"false\"`: returns only non-favorite chats.
+	 * @type string | undefined
+	 */
+	isFavorite?: ChatsFindIsFavoriteKey | undefined;
+	/**
+	 * @description Filters chats by the linked Vercel project ID. Only returns chats associated with the specified Vercel project.
+	 * @type string | undefined
+	 */
+	vercelProjectId?: string | undefined;
+	/**
+	 * @description Filters chats by the Git branch name. Only returns chats that have an active Git connection with the specified branch as the head.
+	 * @type string | undefined
+	 */
+	branch?: string | undefined;
+	/**
+	 * @description Filters chats by metadata. Returns chats matching every supplied key-value pair.
 	 * @type object | undefined
 	 */
-	queryParams?:
+	metadata?:
 		| {
-				limit?: ChatsFindQueryLimit | undefined;
-				offset?: ChatsFindQueryOffset | undefined;
-				isFavorite?: ChatsFindQueryIsFavorite | undefined;
-				vercelProjectId?: ChatsFindQueryVercelProjectId | undefined;
-				branch?: ChatsFindQueryBranch | undefined;
-				metadata?: ChatsFindQueryMetadata | undefined;
+				[key: string]: string;
 		  }
 		| undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: "/chats";
 };
 
-/**
- * @type object
- */
+export type ChatsFindStatus200 = unknown;
+
+export type ChatsFindStatus401 = unknown;
+
+export type ChatsFindStatus403 = unknown;
+
+export type ChatsFindStatus404 = unknown;
+
+export type ChatsFindStatus409 = unknown;
+
+export type ChatsFindStatus413 = unknown;
+
+export type ChatsFindStatus422 = unknown;
+
+export type ChatsFindStatus429 = unknown;
+
+export type ChatsFindStatus500 = unknown;
+
+export type ChatsFindOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query?: ChatsFindQuery | undefined;
+	headers?: never | undefined;
+};
+
 export type ChatsFindResponses = {
 	"200": ChatsFindStatus200;
 	"401": ChatsFindStatus401;
@@ -4280,68 +3263,31 @@ export type ChatsFindResponse =
 	| ChatsFindStatus429
 	| ChatsFindStatus500;
 
-/**
- * @type unknown
- */
 export type ChatsInitStatus200 = unknown;
 
-/**
- * @type unknown
- */
 export type ChatsInitStatus401 = unknown;
 
-/**
- * @type unknown
- */
 export type ChatsInitStatus403 = unknown;
 
-/**
- * @type unknown
- */
 export type ChatsInitStatus404 = unknown;
 
-/**
- * @type unknown
- */
 export type ChatsInitStatus409 = unknown;
 
-/**
- * @type unknown
- */
 export type ChatsInitStatus413 = unknown;
 
-/**
- * @type unknown
- */
 export type ChatsInitStatus422 = unknown;
 
-/**
- * @type unknown
- */
 export type ChatsInitStatus429 = unknown;
 
-/**
- * @type unknown
- */
 export type ChatsInitStatus500 = unknown;
 
-/**
- * @type object
- */
-export type ChatsInitRequestConfig = {
-	data?: never | undefined;
-	pathParams?: never | undefined;
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: "/chats/init";
+export type ChatsInitOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type ChatsInitResponses = {
 	"200": ChatsInitStatus200;
 	"401": ChatsInitStatus401;
@@ -4368,79 +3314,39 @@ export type ChatsInitResponse =
 	| ChatsInitStatus429
 	| ChatsInitStatus500;
 
-/**
- * @description The unique identifier of the chat to delete. This must be passed as a path parameter in the URL.
- * @type string
- */
-export type ChatsDeletePathChatId = string;
-
-/**
- * @type unknown
- */
-export type ChatsDeleteStatus200 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsDeleteStatus401 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsDeleteStatus403 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsDeleteStatus404 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsDeleteStatus409 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsDeleteStatus413 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsDeleteStatus422 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsDeleteStatus429 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsDeleteStatus500 = unknown;
-
-/**
- * @type object
- */
-export type ChatsDeleteRequestConfig = {
-	data?: never | undefined;
+export type ChatsDeletePath = {
 	/**
-	 * @type object
-	 */
-	pathParams: {
-		chatId: ChatsDeletePathChatId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
+	 * @description The unique identifier of the chat to delete. This must be passed as a path parameter in the URL.
 	 * @type string
 	 */
-	url: `/chats/${string}`;
+	chatId: string;
 };
 
-/**
- * @type object
- */
+export type ChatsDeleteStatus200 = unknown;
+
+export type ChatsDeleteStatus401 = unknown;
+
+export type ChatsDeleteStatus403 = unknown;
+
+export type ChatsDeleteStatus404 = unknown;
+
+export type ChatsDeleteStatus409 = unknown;
+
+export type ChatsDeleteStatus413 = unknown;
+
+export type ChatsDeleteStatus422 = unknown;
+
+export type ChatsDeleteStatus429 = unknown;
+
+export type ChatsDeleteStatus500 = unknown;
+
+export type ChatsDeleteOptions = {
+	body?: never | undefined;
+	path: ChatsDeletePath;
+	query?: never | undefined;
+	headers?: never | undefined;
+};
+
 export type ChatsDeleteResponses = {
 	"200": ChatsDeleteStatus200;
 	"401": ChatsDeleteStatus401;
@@ -4467,79 +3373,39 @@ export type ChatsDeleteResponse =
 	| ChatsDeleteStatus429
 	| ChatsDeleteStatus500;
 
-/**
- * @description The unique identifier of the chat to retrieve. Must be provided as a path parameter.
- * @type string
- */
-export type ChatsGetByIdPathChatId = string;
-
-/**
- * @type unknown
- */
-export type ChatsGetByIdStatus200 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsGetByIdStatus401 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsGetByIdStatus403 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsGetByIdStatus404 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsGetByIdStatus409 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsGetByIdStatus413 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsGetByIdStatus422 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsGetByIdStatus429 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsGetByIdStatus500 = unknown;
-
-/**
- * @type object
- */
-export type ChatsGetByIdRequestConfig = {
-	data?: never | undefined;
+export type ChatsGetByIdPath = {
 	/**
-	 * @type object
-	 */
-	pathParams: {
-		chatId: ChatsGetByIdPathChatId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
+	 * @description The unique identifier of the chat to retrieve. Must be provided as a path parameter.
 	 * @type string
 	 */
-	url: `/chats/${string}`;
+	chatId: string;
 };
 
-/**
- * @type object
- */
+export type ChatsGetByIdStatus200 = unknown;
+
+export type ChatsGetByIdStatus401 = unknown;
+
+export type ChatsGetByIdStatus403 = unknown;
+
+export type ChatsGetByIdStatus404 = unknown;
+
+export type ChatsGetByIdStatus409 = unknown;
+
+export type ChatsGetByIdStatus413 = unknown;
+
+export type ChatsGetByIdStatus422 = unknown;
+
+export type ChatsGetByIdStatus429 = unknown;
+
+export type ChatsGetByIdStatus500 = unknown;
+
+export type ChatsGetByIdOptions = {
+	body?: never | undefined;
+	path: ChatsGetByIdPath;
+	query?: never | undefined;
+	headers?: never | undefined;
+};
+
 export type ChatsGetByIdResponses = {
 	"200": ChatsGetByIdStatus200;
 	"401": ChatsGetByIdStatus401;
@@ -4566,79 +3432,39 @@ export type ChatsGetByIdResponse =
 	| ChatsGetByIdStatus429
 	| ChatsGetByIdStatus500;
 
-/**
- * @description The unique identifier of the chat to update. Provided as a path parameter.
- * @type string
- */
-export type ChatsUpdatePathChatId = string;
-
-/**
- * @type unknown
- */
-export type ChatsUpdateStatus200 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsUpdateStatus401 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsUpdateStatus403 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsUpdateStatus404 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsUpdateStatus409 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsUpdateStatus413 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsUpdateStatus422 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsUpdateStatus429 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsUpdateStatus500 = unknown;
-
-/**
- * @type object
- */
-export type ChatsUpdateRequestConfig = {
-	data?: never | undefined;
+export type ChatsUpdatePath = {
 	/**
-	 * @type object
-	 */
-	pathParams: {
-		chatId: ChatsUpdatePathChatId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
+	 * @description The unique identifier of the chat to update. Provided as a path parameter.
 	 * @type string
 	 */
-	url: `/chats/${string}`;
+	chatId: string;
 };
 
-/**
- * @type object
- */
+export type ChatsUpdateStatus200 = unknown;
+
+export type ChatsUpdateStatus401 = unknown;
+
+export type ChatsUpdateStatus403 = unknown;
+
+export type ChatsUpdateStatus404 = unknown;
+
+export type ChatsUpdateStatus409 = unknown;
+
+export type ChatsUpdateStatus413 = unknown;
+
+export type ChatsUpdateStatus422 = unknown;
+
+export type ChatsUpdateStatus429 = unknown;
+
+export type ChatsUpdateStatus500 = unknown;
+
+export type ChatsUpdateOptions = {
+	body?: never | undefined;
+	path: ChatsUpdatePath;
+	query?: never | undefined;
+	headers?: never | undefined;
+};
+
 export type ChatsUpdateResponses = {
 	"200": ChatsUpdateStatus200;
 	"401": ChatsUpdateStatus401;
@@ -4665,79 +3491,39 @@ export type ChatsUpdateResponse =
 	| ChatsUpdateStatus429
 	| ChatsUpdateStatus500;
 
-/**
- * @description The unique identifier of the chat to update. Provided as a path parameter.
- * @type string
- */
-export type ChatsFavoritePathChatId = string;
-
-/**
- * @type unknown
- */
-export type ChatsFavoriteStatus200 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsFavoriteStatus401 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsFavoriteStatus403 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsFavoriteStatus404 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsFavoriteStatus409 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsFavoriteStatus413 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsFavoriteStatus422 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsFavoriteStatus429 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsFavoriteStatus500 = unknown;
-
-/**
- * @type object
- */
-export type ChatsFavoriteRequestConfig = {
-	data?: never | undefined;
+export type ChatsFavoritePath = {
 	/**
-	 * @type object
-	 */
-	pathParams: {
-		chatId: ChatsFavoritePathChatId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
+	 * @description The unique identifier of the chat to update. Provided as a path parameter.
 	 * @type string
 	 */
-	url: `/chats/${string}/favorite`;
+	chatId: string;
 };
 
-/**
- * @type object
- */
+export type ChatsFavoriteStatus200 = unknown;
+
+export type ChatsFavoriteStatus401 = unknown;
+
+export type ChatsFavoriteStatus403 = unknown;
+
+export type ChatsFavoriteStatus404 = unknown;
+
+export type ChatsFavoriteStatus409 = unknown;
+
+export type ChatsFavoriteStatus413 = unknown;
+
+export type ChatsFavoriteStatus422 = unknown;
+
+export type ChatsFavoriteStatus429 = unknown;
+
+export type ChatsFavoriteStatus500 = unknown;
+
+export type ChatsFavoriteOptions = {
+	body?: never | undefined;
+	path: ChatsFavoritePath;
+	query?: never | undefined;
+	headers?: never | undefined;
+};
+
 export type ChatsFavoriteResponses = {
 	"200": ChatsFavoriteStatus200;
 	"401": ChatsFavoriteStatus401;
@@ -4764,79 +3550,39 @@ export type ChatsFavoriteResponse =
 	| ChatsFavoriteStatus429
 	| ChatsFavoriteStatus500;
 
-/**
- * @description The unique identifier of the chat to fork. Provided as a path parameter.
- * @type string
- */
-export type ChatsForkPathChatId = string;
-
-/**
- * @type unknown
- */
-export type ChatsForkStatus200 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsForkStatus401 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsForkStatus403 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsForkStatus404 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsForkStatus409 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsForkStatus413 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsForkStatus422 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsForkStatus429 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsForkStatus500 = unknown;
-
-/**
- * @type object
- */
-export type ChatsForkRequestConfig = {
-	data?: never | undefined;
+export type ChatsForkPath = {
 	/**
-	 * @type object
-	 */
-	pathParams: {
-		chatId: ChatsForkPathChatId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
+	 * @description The unique identifier of the chat to fork. Provided as a path parameter.
 	 * @type string
 	 */
-	url: `/chats/${string}/fork`;
+	chatId: string;
 };
 
-/**
- * @type object
- */
+export type ChatsForkStatus200 = unknown;
+
+export type ChatsForkStatus401 = unknown;
+
+export type ChatsForkStatus403 = unknown;
+
+export type ChatsForkStatus404 = unknown;
+
+export type ChatsForkStatus409 = unknown;
+
+export type ChatsForkStatus413 = unknown;
+
+export type ChatsForkStatus422 = unknown;
+
+export type ChatsForkStatus429 = unknown;
+
+export type ChatsForkStatus500 = unknown;
+
+export type ChatsForkOptions = {
+	body?: never | undefined;
+	path: ChatsForkPath;
+	query?: never | undefined;
+	headers?: never | undefined;
+};
+
 export type ChatsForkResponses = {
 	"200": ChatsForkStatus200;
 	"401": ChatsForkStatus401;
@@ -4863,79 +3609,39 @@ export type ChatsForkResponse =
 	| ChatsForkStatus429
 	| ChatsForkStatus500;
 
-/**
- * @description The ID of the chat to retrieve the associated project for.
- * @type string
- */
-export type ProjectsGetByChatIdPathChatId = string;
-
-/**
- * @type unknown
- */
-export type ProjectsGetByChatIdStatus200 = unknown;
-
-/**
- * @type unknown
- */
-export type ProjectsGetByChatIdStatus401 = unknown;
-
-/**
- * @type unknown
- */
-export type ProjectsGetByChatIdStatus403 = unknown;
-
-/**
- * @type unknown
- */
-export type ProjectsGetByChatIdStatus404 = unknown;
-
-/**
- * @type unknown
- */
-export type ProjectsGetByChatIdStatus409 = unknown;
-
-/**
- * @type unknown
- */
-export type ProjectsGetByChatIdStatus413 = unknown;
-
-/**
- * @type unknown
- */
-export type ProjectsGetByChatIdStatus422 = unknown;
-
-/**
- * @type unknown
- */
-export type ProjectsGetByChatIdStatus429 = unknown;
-
-/**
- * @type unknown
- */
-export type ProjectsGetByChatIdStatus500 = unknown;
-
-/**
- * @type object
- */
-export type ProjectsGetByChatIdRequestConfig = {
-	data?: never | undefined;
+export type ProjectsGetByChatIdPath = {
 	/**
-	 * @type object
-	 */
-	pathParams: {
-		chatId: ProjectsGetByChatIdPathChatId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
+	 * @description The ID of the chat to retrieve the associated project for.
 	 * @type string
 	 */
-	url: `/chats/${string}/project`;
+	chatId: string;
 };
 
-/**
- * @type object
- */
+export type ProjectsGetByChatIdStatus200 = unknown;
+
+export type ProjectsGetByChatIdStatus401 = unknown;
+
+export type ProjectsGetByChatIdStatus403 = unknown;
+
+export type ProjectsGetByChatIdStatus404 = unknown;
+
+export type ProjectsGetByChatIdStatus409 = unknown;
+
+export type ProjectsGetByChatIdStatus413 = unknown;
+
+export type ProjectsGetByChatIdStatus422 = unknown;
+
+export type ProjectsGetByChatIdStatus429 = unknown;
+
+export type ProjectsGetByChatIdStatus500 = unknown;
+
+export type ProjectsGetByChatIdOptions = {
+	body?: never | undefined;
+	path: ProjectsGetByChatIdPath;
+	query?: never | undefined;
+	headers?: never | undefined;
+};
+
 export type ProjectsGetByChatIdResponses = {
 	"200": ProjectsGetByChatIdStatus200;
 	"401": ProjectsGetByChatIdStatus401;
@@ -4962,102 +3668,55 @@ export type ProjectsGetByChatIdResponse =
 	| ProjectsGetByChatIdStatus429
 	| ProjectsGetByChatIdStatus500;
 
-/**
- * @description The unique identifier of the chat to retrieve messages for. Provided as a path parameter.
- * @type string
- */
-export type ChatsFindMessagesPathChatId = string;
-
-/**
- * @description Specifies the maximum number of message records to return in a single response. Useful for paginating results when there are many messages.
- * @minLength 1
- * @maxLength 150
- * @default 20
- * @type number | undefined
- */
-export type ChatsFindMessagesQueryLimit = number | undefined;
-
-/**
- * @description Base64 encoded cursor containing pagination data
- * @type string | undefined
- */
-export type ChatsFindMessagesQueryCursor = string | undefined;
-
-/**
- * @type unknown
- */
-export type ChatsFindMessagesStatus200 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsFindMessagesStatus401 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsFindMessagesStatus403 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsFindMessagesStatus404 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsFindMessagesStatus409 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsFindMessagesStatus413 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsFindMessagesStatus422 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsFindMessagesStatus429 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsFindMessagesStatus500 = unknown;
-
-/**
- * @type object
- */
-export type ChatsFindMessagesRequestConfig = {
-	data?: never | undefined;
+export type ChatsFindMessagesPath = {
 	/**
-	 * @type object
-	 */
-	pathParams: {
-		chatId: ChatsFindMessagesPathChatId;
-	};
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				limit?: ChatsFindMessagesQueryLimit | undefined;
-				cursor?: ChatsFindMessagesQueryCursor | undefined;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
-	/**
+	 * @description The unique identifier of the chat to retrieve messages for. Provided as a path parameter.
 	 * @type string
 	 */
-	url: `/chats/${string}/messages`;
+	chatId: string;
 };
 
-/**
- * @type object
- */
+export type ChatsFindMessagesQuery = {
+	/**
+	 * @description Specifies the maximum number of message records to return in a single response. Useful for paginating results when there are many messages.
+	 * @minLength 1
+	 * @maxLength 150
+	 * @default 20
+	 * @type number | undefined
+	 */
+	limit?: number | undefined;
+	/**
+	 * @description Base64 encoded cursor containing pagination data
+	 * @type string | undefined
+	 */
+	cursor?: string | undefined;
+};
+
+export type ChatsFindMessagesStatus200 = unknown;
+
+export type ChatsFindMessagesStatus401 = unknown;
+
+export type ChatsFindMessagesStatus403 = unknown;
+
+export type ChatsFindMessagesStatus404 = unknown;
+
+export type ChatsFindMessagesStatus409 = unknown;
+
+export type ChatsFindMessagesStatus413 = unknown;
+
+export type ChatsFindMessagesStatus422 = unknown;
+
+export type ChatsFindMessagesStatus429 = unknown;
+
+export type ChatsFindMessagesStatus500 = unknown;
+
+export type ChatsFindMessagesOptions = {
+	body?: never | undefined;
+	path: ChatsFindMessagesPath;
+	query?: ChatsFindMessagesQuery | undefined;
+	headers?: never | undefined;
+};
+
 export type ChatsFindMessagesResponses = {
 	"200": ChatsFindMessagesStatus200;
 	"401": ChatsFindMessagesStatus401;
@@ -5084,79 +3743,39 @@ export type ChatsFindMessagesResponse =
 	| ChatsFindMessagesStatus429
 	| ChatsFindMessagesStatus500;
 
-/**
- * @description The unique identifier of the chat to send the message to. Provided as a path parameter.
- * @type string
- */
-export type ChatsSendMessagePathChatId = string;
-
-/**
- * @type unknown
- */
-export type ChatsSendMessageStatus200 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsSendMessageStatus401 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsSendMessageStatus403 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsSendMessageStatus404 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsSendMessageStatus409 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsSendMessageStatus413 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsSendMessageStatus422 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsSendMessageStatus429 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsSendMessageStatus500 = unknown;
-
-/**
- * @type object
- */
-export type ChatsSendMessageRequestConfig = {
-	data?: never | undefined;
+export type ChatsSendMessagePath = {
 	/**
-	 * @type object
-	 */
-	pathParams: {
-		chatId: ChatsSendMessagePathChatId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
+	 * @description The unique identifier of the chat to send the message to. Provided as a path parameter.
 	 * @type string
 	 */
-	url: `/chats/${string}/messages`;
+	chatId: string;
 };
 
-/**
- * @type object
- */
+export type ChatsSendMessageStatus200 = unknown;
+
+export type ChatsSendMessageStatus401 = unknown;
+
+export type ChatsSendMessageStatus403 = unknown;
+
+export type ChatsSendMessageStatus404 = unknown;
+
+export type ChatsSendMessageStatus409 = unknown;
+
+export type ChatsSendMessageStatus413 = unknown;
+
+export type ChatsSendMessageStatus422 = unknown;
+
+export type ChatsSendMessageStatus429 = unknown;
+
+export type ChatsSendMessageStatus500 = unknown;
+
+export type ChatsSendMessageOptions = {
+	body?: never | undefined;
+	path: ChatsSendMessagePath;
+	query?: never | undefined;
+	headers?: never | undefined;
+};
+
 export type ChatsSendMessageResponses = {
 	"200": ChatsSendMessageStatus200;
 	"401": ChatsSendMessageStatus401;
@@ -5183,86 +3802,44 @@ export type ChatsSendMessageResponse =
 	| ChatsSendMessageStatus429
 	| ChatsSendMessageStatus500;
 
-/**
- * @description The unique identifier of the chat containing the message. Provided as a path parameter.
- * @type string
- */
-export type ChatsGetMessagePathChatId = string;
-
-/**
- * @description The unique identifier of the message to retrieve. Provided as a path parameter.
- * @type string
- */
-export type ChatsGetMessagePathMessageId = string;
-
-/**
- * @type unknown
- */
-export type ChatsGetMessageStatus200 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsGetMessageStatus401 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsGetMessageStatus403 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsGetMessageStatus404 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsGetMessageStatus409 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsGetMessageStatus413 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsGetMessageStatus422 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsGetMessageStatus429 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsGetMessageStatus500 = unknown;
-
-/**
- * @type object
- */
-export type ChatsGetMessageRequestConfig = {
-	data?: never | undefined;
+export type ChatsGetMessagePath = {
 	/**
-	 * @type object
-	 */
-	pathParams: {
-		chatId: ChatsGetMessagePathChatId;
-		messageId: ChatsGetMessagePathMessageId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
+	 * @description The unique identifier of the chat containing the message. Provided as a path parameter.
 	 * @type string
 	 */
-	url: `/chats/${string}/messages/${string}`;
+	chatId: string;
+	/**
+	 * @description The unique identifier of the message to retrieve. Provided as a path parameter.
+	 * @type string
+	 */
+	messageId: string;
 };
 
-/**
- * @type object
- */
+export type ChatsGetMessageStatus200 = unknown;
+
+export type ChatsGetMessageStatus401 = unknown;
+
+export type ChatsGetMessageStatus403 = unknown;
+
+export type ChatsGetMessageStatus404 = unknown;
+
+export type ChatsGetMessageStatus409 = unknown;
+
+export type ChatsGetMessageStatus413 = unknown;
+
+export type ChatsGetMessageStatus422 = unknown;
+
+export type ChatsGetMessageStatus429 = unknown;
+
+export type ChatsGetMessageStatus500 = unknown;
+
+export type ChatsGetMessageOptions = {
+	body?: never | undefined;
+	path: ChatsGetMessagePath;
+	query?: never | undefined;
+	headers?: never | undefined;
+};
+
 export type ChatsGetMessageResponses = {
 	"200": ChatsGetMessageStatus200;
 	"401": ChatsGetMessageStatus401;
@@ -5289,102 +3866,55 @@ export type ChatsGetMessageResponse =
 	| ChatsGetMessageStatus429
 	| ChatsGetMessageStatus500;
 
-/**
- * @description The unique identifier of the chat to retrieve versions for. Provided as a path parameter.
- * @type string
- */
-export type ChatsFindVersionsPathChatId = string;
-
-/**
- * @description Specifies the maximum number of version records to return in a single response. Useful for paginating results when there are many versions.
- * @minLength 1
- * @maxLength 150
- * @default 20
- * @type number | undefined
- */
-export type ChatsFindVersionsQueryLimit = number | undefined;
-
-/**
- * @description Base64 encoded cursor containing pagination data
- * @type string | undefined
- */
-export type ChatsFindVersionsQueryCursor = string | undefined;
-
-/**
- * @type unknown
- */
-export type ChatsFindVersionsStatus200 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsFindVersionsStatus401 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsFindVersionsStatus403 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsFindVersionsStatus404 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsFindVersionsStatus409 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsFindVersionsStatus413 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsFindVersionsStatus422 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsFindVersionsStatus429 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsFindVersionsStatus500 = unknown;
-
-/**
- * @type object
- */
-export type ChatsFindVersionsRequestConfig = {
-	data?: never | undefined;
+export type ChatsFindVersionsPath = {
 	/**
-	 * @type object
-	 */
-	pathParams: {
-		chatId: ChatsFindVersionsPathChatId;
-	};
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				limit?: ChatsFindVersionsQueryLimit | undefined;
-				cursor?: ChatsFindVersionsQueryCursor | undefined;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
-	/**
+	 * @description The unique identifier of the chat to retrieve versions for. Provided as a path parameter.
 	 * @type string
 	 */
-	url: `/chats/${string}/versions`;
+	chatId: string;
 };
 
-/**
- * @type object
- */
+export type ChatsFindVersionsQuery = {
+	/**
+	 * @description Specifies the maximum number of version records to return in a single response. Useful for paginating results when there are many versions.
+	 * @minLength 1
+	 * @maxLength 150
+	 * @default 20
+	 * @type number | undefined
+	 */
+	limit?: number | undefined;
+	/**
+	 * @description Base64 encoded cursor containing pagination data
+	 * @type string | undefined
+	 */
+	cursor?: string | undefined;
+};
+
+export type ChatsFindVersionsStatus200 = unknown;
+
+export type ChatsFindVersionsStatus401 = unknown;
+
+export type ChatsFindVersionsStatus403 = unknown;
+
+export type ChatsFindVersionsStatus404 = unknown;
+
+export type ChatsFindVersionsStatus409 = unknown;
+
+export type ChatsFindVersionsStatus413 = unknown;
+
+export type ChatsFindVersionsStatus422 = unknown;
+
+export type ChatsFindVersionsStatus429 = unknown;
+
+export type ChatsFindVersionsStatus500 = unknown;
+
+export type ChatsFindVersionsOptions = {
+	body?: never | undefined;
+	path: ChatsFindVersionsPath;
+	query?: ChatsFindVersionsQuery | undefined;
+	headers?: never | undefined;
+};
+
 export type ChatsFindVersionsResponses = {
 	"200": ChatsFindVersionsStatus200;
 	"401": ChatsFindVersionsStatus401;
@@ -5411,99 +3941,60 @@ export type ChatsFindVersionsResponse =
 	| ChatsFindVersionsStatus429
 	| ChatsFindVersionsStatus500;
 
-/**
- * @description The unique identifier of the chat containing the version. Provided as a path parameter.
- * @type string
- */
-export type ChatsGetVersionPathChatId = string;
-
-/**
- * @description The unique identifier of the version to retrieve. Provided as a path parameter.
- * @type string
- */
-export type ChatsGetVersionPathVersionId = string;
-
-/**
- * @description When true, includes all default files (package.json, configuration files, etc.) that would be part of a ZIP download. When false or omitted, returns only the generated source files.
- * @type string | undefined
- */
-export type ChatsGetVersionQueryIncludeDefaultFiles = ("true" | "false") | undefined;
-
-/**
- * @type unknown
- */
-export type ChatsGetVersionStatus200 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsGetVersionStatus401 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsGetVersionStatus403 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsGetVersionStatus404 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsGetVersionStatus409 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsGetVersionStatus413 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsGetVersionStatus422 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsGetVersionStatus429 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsGetVersionStatus500 = unknown;
-
-/**
- * @type object
- */
-export type ChatsGetVersionRequestConfig = {
-	data?: never | undefined;
+export type ChatsGetVersionPath = {
 	/**
-	 * @type object
-	 */
-	pathParams: {
-		chatId: ChatsGetVersionPathChatId;
-		versionId: ChatsGetVersionPathVersionId;
-	};
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				includeDefaultFiles?: ChatsGetVersionQueryIncludeDefaultFiles | undefined;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
-	/**
+	 * @description The unique identifier of the chat containing the version. Provided as a path parameter.
 	 * @type string
 	 */
-	url: `/chats/${string}/versions/${string}`;
+	chatId: string;
+	/**
+	 * @description The unique identifier of the version to retrieve. Provided as a path parameter.
+	 * @type string
+	 */
+	versionId: string;
 };
 
-/**
- * @type object
- */
+export const chatsGetVersionIncludeDefaultFiles = {
+	true: "true",
+	false: "false",
+} as const;
+
+export type ChatsGetVersionIncludeDefaultFilesKey =
+	(typeof chatsGetVersionIncludeDefaultFiles)[keyof typeof chatsGetVersionIncludeDefaultFiles];
+
+export type ChatsGetVersionQuery = {
+	/**
+	 * @description When true, includes all default files (package.json, configuration files, etc.) that would be part of a ZIP download. When false or omitted, returns only the generated source files.
+	 * @type string | undefined
+	 */
+	includeDefaultFiles?: ChatsGetVersionIncludeDefaultFilesKey | undefined;
+};
+
+export type ChatsGetVersionStatus200 = unknown;
+
+export type ChatsGetVersionStatus401 = unknown;
+
+export type ChatsGetVersionStatus403 = unknown;
+
+export type ChatsGetVersionStatus404 = unknown;
+
+export type ChatsGetVersionStatus409 = unknown;
+
+export type ChatsGetVersionStatus413 = unknown;
+
+export type ChatsGetVersionStatus422 = unknown;
+
+export type ChatsGetVersionStatus429 = unknown;
+
+export type ChatsGetVersionStatus500 = unknown;
+
+export type ChatsGetVersionOptions = {
+	body?: never | undefined;
+	path: ChatsGetVersionPath;
+	query?: ChatsGetVersionQuery | undefined;
+	headers?: never | undefined;
+};
+
 export type ChatsGetVersionResponses = {
 	"200": ChatsGetVersionStatus200;
 	"401": ChatsGetVersionStatus401;
@@ -5530,86 +4021,44 @@ export type ChatsGetVersionResponse =
 	| ChatsGetVersionStatus429
 	| ChatsGetVersionStatus500;
 
-/**
- * @description The unique identifier of the chat containing the version to update. Provided as a path parameter.
- * @type string
- */
-export type ChatsUpdateVersionPathChatId = string;
-
-/**
- * @description The unique identifier of the version (block) to update. Provided as a path parameter.
- * @type string
- */
-export type ChatsUpdateVersionPathVersionId = string;
-
-/**
- * @type unknown
- */
-export type ChatsUpdateVersionStatus200 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsUpdateVersionStatus401 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsUpdateVersionStatus403 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsUpdateVersionStatus404 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsUpdateVersionStatus409 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsUpdateVersionStatus413 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsUpdateVersionStatus422 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsUpdateVersionStatus429 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsUpdateVersionStatus500 = unknown;
-
-/**
- * @type object
- */
-export type ChatsUpdateVersionRequestConfig = {
-	data?: never | undefined;
+export type ChatsUpdateVersionPath = {
 	/**
-	 * @type object
-	 */
-	pathParams: {
-		chatId: ChatsUpdateVersionPathChatId;
-		versionId: ChatsUpdateVersionPathVersionId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
+	 * @description The unique identifier of the chat containing the version to update. Provided as a path parameter.
 	 * @type string
 	 */
-	url: `/chats/${string}/versions/${string}`;
+	chatId: string;
+	/**
+	 * @description The unique identifier of the version (block) to update. Provided as a path parameter.
+	 * @type string
+	 */
+	versionId: string;
 };
 
-/**
- * @type object
- */
+export type ChatsUpdateVersionStatus200 = unknown;
+
+export type ChatsUpdateVersionStatus401 = unknown;
+
+export type ChatsUpdateVersionStatus403 = unknown;
+
+export type ChatsUpdateVersionStatus404 = unknown;
+
+export type ChatsUpdateVersionStatus409 = unknown;
+
+export type ChatsUpdateVersionStatus413 = unknown;
+
+export type ChatsUpdateVersionStatus422 = unknown;
+
+export type ChatsUpdateVersionStatus429 = unknown;
+
+export type ChatsUpdateVersionStatus500 = unknown;
+
+export type ChatsUpdateVersionOptions = {
+	body?: never | undefined;
+	path: ChatsUpdateVersionPath;
+	query?: never | undefined;
+	headers?: never | undefined;
+};
+
 export type ChatsUpdateVersionResponses = {
 	"200": ChatsUpdateVersionStatus200;
 	"401": ChatsUpdateVersionStatus401;
@@ -5636,107 +4085,74 @@ export type ChatsUpdateVersionResponse =
 	| ChatsUpdateVersionStatus429
 	| ChatsUpdateVersionStatus500;
 
-/**
- * @description The unique identifier of the chat containing the version. Provided as a path parameter.
- * @type string
- */
-export type ChatsDownloadVersionPathChatId = string;
-
-/**
- * @description The unique identifier of the version to download. Provided as a path parameter.
- * @type string
- */
-export type ChatsDownloadVersionPathVersionId = string;
-
-/**
- * @description The archive format for the download. Choose \"zip\" for broad compatibility or \"tarball\" for Unix/Linux systems.
- * @default "zip"
- * @type string | undefined
- */
-export type ChatsDownloadVersionQueryFormat = ("zip" | "tarball") | undefined;
-
-/**
- * @description When true, includes all default files (package.json, configuration files, etc.) that would be part of a complete deployment. When false or omitted, returns only the generated source files.
- * @type string | undefined
- */
-export type ChatsDownloadVersionQueryIncludeDefaultFiles = ("true" | "false") | undefined;
-
-/**
- * @type unknown
- */
-export type ChatsDownloadVersionStatus200 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsDownloadVersionStatus401 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsDownloadVersionStatus403 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsDownloadVersionStatus404 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsDownloadVersionStatus409 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsDownloadVersionStatus413 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsDownloadVersionStatus422 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsDownloadVersionStatus429 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsDownloadVersionStatus500 = unknown;
-
-/**
- * @type object
- */
-export type ChatsDownloadVersionRequestConfig = {
-	data?: never | undefined;
+export type ChatsDownloadVersionPath = {
 	/**
-	 * @type object
-	 */
-	pathParams: {
-		chatId: ChatsDownloadVersionPathChatId;
-		versionId: ChatsDownloadVersionPathVersionId;
-	};
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				format?: ChatsDownloadVersionQueryFormat | undefined;
-				includeDefaultFiles?: ChatsDownloadVersionQueryIncludeDefaultFiles | undefined;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
-	/**
+	 * @description The unique identifier of the chat containing the version. Provided as a path parameter.
 	 * @type string
 	 */
-	url: `/chats/${string}/versions/${string}/download`;
+	chatId: string;
+	/**
+	 * @description The unique identifier of the version to download. Provided as a path parameter.
+	 * @type string
+	 */
+	versionId: string;
 };
 
-/**
- * @type object
- */
+export const chatsDownloadVersionFormat = {
+	zip: "zip",
+	tarball: "tarball",
+} as const;
+
+export type ChatsDownloadVersionFormatKey =
+	(typeof chatsDownloadVersionFormat)[keyof typeof chatsDownloadVersionFormat];
+
+export const chatsDownloadVersionIncludeDefaultFiles = {
+	true: "true",
+	false: "false",
+} as const;
+
+export type ChatsDownloadVersionIncludeDefaultFilesKey =
+	(typeof chatsDownloadVersionIncludeDefaultFiles)[keyof typeof chatsDownloadVersionIncludeDefaultFiles];
+
+export type ChatsDownloadVersionQuery = {
+	/**
+	 * @description The archive format for the download. Choose \"zip\" for broad compatibility or \"tarball\" for Unix/Linux systems.
+	 * @default 'zip'
+	 * @type string | undefined
+	 */
+	format?: ChatsDownloadVersionFormatKey | undefined;
+	/**
+	 * @description When true, includes all default files (package.json, configuration files, etc.) that would be part of a complete deployment. When false or omitted, returns only the generated source files.
+	 * @type string | undefined
+	 */
+	includeDefaultFiles?: ChatsDownloadVersionIncludeDefaultFilesKey | undefined;
+};
+
+export type ChatsDownloadVersionStatus200 = unknown;
+
+export type ChatsDownloadVersionStatus401 = unknown;
+
+export type ChatsDownloadVersionStatus403 = unknown;
+
+export type ChatsDownloadVersionStatus404 = unknown;
+
+export type ChatsDownloadVersionStatus409 = unknown;
+
+export type ChatsDownloadVersionStatus413 = unknown;
+
+export type ChatsDownloadVersionStatus422 = unknown;
+
+export type ChatsDownloadVersionStatus429 = unknown;
+
+export type ChatsDownloadVersionStatus500 = unknown;
+
+export type ChatsDownloadVersionOptions = {
+	body?: never | undefined;
+	path: ChatsDownloadVersionPath;
+	query?: ChatsDownloadVersionQuery | undefined;
+	headers?: never | undefined;
+};
+
 export type ChatsDownloadVersionResponses = {
 	"200": ChatsDownloadVersionStatus200;
 	"401": ChatsDownloadVersionStatus401;
@@ -5763,86 +4179,44 @@ export type ChatsDownloadVersionResponse =
 	| ChatsDownloadVersionStatus429
 	| ChatsDownloadVersionStatus500;
 
-/**
- * @description The unique identifier of the chat containing the version to delete files from.
- * @type string
- */
-export type ChatsDeleteVersionFilesPathChatId = string;
-
-/**
- * @description The unique identifier of the version (block) to delete files from.
- * @type string
- */
-export type ChatsDeleteVersionFilesPathVersionId = string;
-
-/**
- * @type unknown
- */
-export type ChatsDeleteVersionFilesStatus200 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsDeleteVersionFilesStatus401 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsDeleteVersionFilesStatus403 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsDeleteVersionFilesStatus404 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsDeleteVersionFilesStatus409 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsDeleteVersionFilesStatus413 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsDeleteVersionFilesStatus422 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsDeleteVersionFilesStatus429 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsDeleteVersionFilesStatus500 = unknown;
-
-/**
- * @type object
- */
-export type ChatsDeleteVersionFilesRequestConfig = {
-	data?: never | undefined;
+export type ChatsDeleteVersionFilesPath = {
 	/**
-	 * @type object
-	 */
-	pathParams: {
-		chatId: ChatsDeleteVersionFilesPathChatId;
-		versionId: ChatsDeleteVersionFilesPathVersionId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
+	 * @description The unique identifier of the chat containing the version to delete files from.
 	 * @type string
 	 */
-	url: `/chats/${string}/versions/${string}/files/delete`;
+	chatId: string;
+	/**
+	 * @description The unique identifier of the version (block) to delete files from.
+	 * @type string
+	 */
+	versionId: string;
 };
 
-/**
- * @type object
- */
+export type ChatsDeleteVersionFilesStatus200 = unknown;
+
+export type ChatsDeleteVersionFilesStatus401 = unknown;
+
+export type ChatsDeleteVersionFilesStatus403 = unknown;
+
+export type ChatsDeleteVersionFilesStatus404 = unknown;
+
+export type ChatsDeleteVersionFilesStatus409 = unknown;
+
+export type ChatsDeleteVersionFilesStatus413 = unknown;
+
+export type ChatsDeleteVersionFilesStatus422 = unknown;
+
+export type ChatsDeleteVersionFilesStatus429 = unknown;
+
+export type ChatsDeleteVersionFilesStatus500 = unknown;
+
+export type ChatsDeleteVersionFilesOptions = {
+	body?: never | undefined;
+	path: ChatsDeleteVersionFilesPath;
+	query?: never | undefined;
+	headers?: never | undefined;
+};
+
 export type ChatsDeleteVersionFilesResponses = {
 	"200": ChatsDeleteVersionFilesStatus200;
 	"401": ChatsDeleteVersionFilesStatus401;
@@ -5869,86 +4243,44 @@ export type ChatsDeleteVersionFilesResponse =
 	| ChatsDeleteVersionFilesStatus429
 	| ChatsDeleteVersionFilesStatus500;
 
-/**
- * @description The unique identifier of the chat containing the message to resume. Provided as a path parameter.
- * @type string
- */
-export type ChatsResumePathChatId = string;
-
-/**
- * @description The identifier of the specific message to resume. Provided as a path parameter.
- * @type string
- */
-export type ChatsResumePathMessageId = string;
-
-/**
- * @type unknown
- */
-export type ChatsResumeStatus200 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsResumeStatus401 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsResumeStatus403 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsResumeStatus404 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsResumeStatus409 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsResumeStatus413 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsResumeStatus422 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsResumeStatus429 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsResumeStatus500 = unknown;
-
-/**
- * @type object
- */
-export type ChatsResumeRequestConfig = {
-	data?: never | undefined;
+export type ChatsResumePath = {
 	/**
-	 * @type object
-	 */
-	pathParams: {
-		chatId: ChatsResumePathChatId;
-		messageId: ChatsResumePathMessageId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
+	 * @description The unique identifier of the chat containing the message to resume. Provided as a path parameter.
 	 * @type string
 	 */
-	url: `/chats/${string}/messages/${string}/resume`;
+	chatId: string;
+	/**
+	 * @description The identifier of the specific message to resume. Provided as a path parameter.
+	 * @type string
+	 */
+	messageId: string;
 };
 
-/**
- * @type object
- */
+export type ChatsResumeStatus200 = unknown;
+
+export type ChatsResumeStatus401 = unknown;
+
+export type ChatsResumeStatus403 = unknown;
+
+export type ChatsResumeStatus404 = unknown;
+
+export type ChatsResumeStatus409 = unknown;
+
+export type ChatsResumeStatus413 = unknown;
+
+export type ChatsResumeStatus422 = unknown;
+
+export type ChatsResumeStatus429 = unknown;
+
+export type ChatsResumeStatus500 = unknown;
+
+export type ChatsResumeOptions = {
+	body?: never | undefined;
+	path: ChatsResumePath;
+	query?: never | undefined;
+	headers?: never | undefined;
+};
+
 export type ChatsResumeResponses = {
 	"200": ChatsResumeStatus200;
 	"401": ChatsResumeStatus401;
@@ -5975,86 +4307,44 @@ export type ChatsResumeResponse =
 	| ChatsResumeStatus429
 	| ChatsResumeStatus500;
 
-/**
- * @description The unique identifier of the chat containing the message to stop. Provided as a path parameter.
- * @type string
- */
-export type ChatsStopPathChatId = string;
-
-/**
- * @description The identifier of the specific message to stop. Provided as a path parameter.
- * @type string
- */
-export type ChatsStopPathMessageId = string;
-
-/**
- * @type unknown
- */
-export type ChatsStopStatus200 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsStopStatus401 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsStopStatus403 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsStopStatus404 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsStopStatus409 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsStopStatus413 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsStopStatus422 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsStopStatus429 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsStopStatus500 = unknown;
-
-/**
- * @type object
- */
-export type ChatsStopRequestConfig = {
-	data?: never | undefined;
+export type ChatsStopPath = {
 	/**
-	 * @type object
-	 */
-	pathParams: {
-		chatId: ChatsStopPathChatId;
-		messageId: ChatsStopPathMessageId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
+	 * @description The unique identifier of the chat containing the message to stop. Provided as a path parameter.
 	 * @type string
 	 */
-	url: `/chats/${string}/messages/${string}/stop`;
+	chatId: string;
+	/**
+	 * @description The identifier of the specific message to stop. Provided as a path parameter.
+	 * @type string
+	 */
+	messageId: string;
 };
 
-/**
- * @type object
- */
+export type ChatsStopStatus200 = unknown;
+
+export type ChatsStopStatus401 = unknown;
+
+export type ChatsStopStatus403 = unknown;
+
+export type ChatsStopStatus404 = unknown;
+
+export type ChatsStopStatus409 = unknown;
+
+export type ChatsStopStatus413 = unknown;
+
+export type ChatsStopStatus422 = unknown;
+
+export type ChatsStopStatus429 = unknown;
+
+export type ChatsStopStatus500 = unknown;
+
+export type ChatsStopOptions = {
+	body?: never | undefined;
+	path: ChatsStopPath;
+	query?: never | undefined;
+	headers?: never | undefined;
+};
+
 export type ChatsStopResponses = {
 	"200": ChatsStopStatus200;
 	"401": ChatsStopStatus401;
@@ -6081,79 +4371,39 @@ export type ChatsStopResponse =
 	| ChatsStopStatus429
 	| ChatsStopStatus500;
 
-/**
- * @description The unique identifier of the chat containing the pending task. Provided as a path parameter.
- * @type string
- */
-export type ChatsResolveTaskPathChatId = string;
-
-/**
- * @type unknown
- */
-export type ChatsResolveTaskStatus200 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsResolveTaskStatus401 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsResolveTaskStatus403 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsResolveTaskStatus404 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsResolveTaskStatus409 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsResolveTaskStatus413 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsResolveTaskStatus422 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsResolveTaskStatus429 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsResolveTaskStatus500 = unknown;
-
-/**
- * @type object
- */
-export type ChatsResolveTaskRequestConfig = {
-	data?: never | undefined;
+export type ChatsResolveTaskPath = {
 	/**
-	 * @type object
-	 */
-	pathParams: {
-		chatId: ChatsResolveTaskPathChatId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
+	 * @description The unique identifier of the chat containing the pending task. Provided as a path parameter.
 	 * @type string
 	 */
-	url: `/chats/${string}/tasks/resolve`;
+	chatId: string;
 };
 
-/**
- * @type object
- */
+export type ChatsResolveTaskStatus200 = unknown;
+
+export type ChatsResolveTaskStatus401 = unknown;
+
+export type ChatsResolveTaskStatus403 = unknown;
+
+export type ChatsResolveTaskStatus404 = unknown;
+
+export type ChatsResolveTaskStatus409 = unknown;
+
+export type ChatsResolveTaskStatus413 = unknown;
+
+export type ChatsResolveTaskStatus422 = unknown;
+
+export type ChatsResolveTaskStatus429 = unknown;
+
+export type ChatsResolveTaskStatus500 = unknown;
+
+export type ChatsResolveTaskOptions = {
+	body?: never | undefined;
+	path: ChatsResolveTaskPath;
+	query?: never | undefined;
+	headers?: never | undefined;
+};
+
 export type ChatsResolveTaskResponses = {
 	"200": ChatsResolveTaskStatus200;
 	"401": ChatsResolveTaskStatus401;
@@ -6180,95 +4430,49 @@ export type ChatsResolveTaskResponse =
 	| ChatsResolveTaskStatus429
 	| ChatsResolveTaskStatus500;
 
-/**
- * @description The ID of the project to find deployments for
- * @type string | undefined
- */
-export type DeploymentsFindQueryProjectId = string | undefined;
-
-/**
- * @description The ID of the chat to find deployments for
- * @type string
- */
-export type DeploymentsFindQueryChatId = string;
-
-/**
- * @description The ID of the version to find deployments for
- * @type string
- */
-export type DeploymentsFindQueryVersionId = string;
-
-/**
- * @type unknown
- */
-export type DeploymentsFindStatus200 = unknown;
-
-/**
- * @type unknown
- */
-export type DeploymentsFindStatus401 = unknown;
-
-/**
- * @type unknown
- */
-export type DeploymentsFindStatus403 = unknown;
-
-/**
- * @type unknown
- */
-export type DeploymentsFindStatus404 = unknown;
-
-/**
- * @type unknown
- */
-export type DeploymentsFindStatus409 = unknown;
-
-/**
- * @type unknown
- */
-export type DeploymentsFindStatus413 = unknown;
-
-/**
- * @type unknown
- */
-export type DeploymentsFindStatus422 = unknown;
-
-/**
- * @type unknown
- */
-export type DeploymentsFindStatus429 = unknown;
-
-/**
- * @type unknown
- */
-export type DeploymentsFindStatus500 = unknown;
-
-/**
- * @type object
- */
-export type DeploymentsFindRequestConfig = {
-	data?: never | undefined;
-	pathParams?: never | undefined;
+export type DeploymentsFindQuery = {
 	/**
-	 * @type object | undefined
+	 * @description The ID of the project to find deployments for
+	 * @type string | undefined
 	 */
-	queryParams?:
-		| {
-				projectId?: DeploymentsFindQueryProjectId | undefined;
-				chatId: DeploymentsFindQueryChatId;
-				versionId: DeploymentsFindQueryVersionId;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
+	projectId?: string | undefined;
 	/**
+	 * @description The ID of the chat to find deployments for
 	 * @type string
 	 */
-	url: "/deployments";
+	chatId: string;
+	/**
+	 * @description The ID of the version to find deployments for
+	 * @type string
+	 */
+	versionId: string;
 };
 
-/**
- * @type object
- */
+export type DeploymentsFindStatus200 = unknown;
+
+export type DeploymentsFindStatus401 = unknown;
+
+export type DeploymentsFindStatus403 = unknown;
+
+export type DeploymentsFindStatus404 = unknown;
+
+export type DeploymentsFindStatus409 = unknown;
+
+export type DeploymentsFindStatus413 = unknown;
+
+export type DeploymentsFindStatus422 = unknown;
+
+export type DeploymentsFindStatus429 = unknown;
+
+export type DeploymentsFindStatus500 = unknown;
+
+export type DeploymentsFindOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query: DeploymentsFindQuery;
+	headers?: never | undefined;
+};
+
 export type DeploymentsFindResponses = {
 	"200": DeploymentsFindStatus200;
 	"401": DeploymentsFindStatus401;
@@ -6295,68 +4499,31 @@ export type DeploymentsFindResponse =
 	| DeploymentsFindStatus429
 	| DeploymentsFindStatus500;
 
-/**
- * @type unknown
- */
 export type DeploymentsCreateStatus200 = unknown;
 
-/**
- * @type unknown
- */
 export type DeploymentsCreateStatus401 = unknown;
 
-/**
- * @type unknown
- */
 export type DeploymentsCreateStatus403 = unknown;
 
-/**
- * @type unknown
- */
 export type DeploymentsCreateStatus404 = unknown;
 
-/**
- * @type unknown
- */
 export type DeploymentsCreateStatus409 = unknown;
 
-/**
- * @type unknown
- */
 export type DeploymentsCreateStatus413 = unknown;
 
-/**
- * @type unknown
- */
 export type DeploymentsCreateStatus422 = unknown;
 
-/**
- * @type unknown
- */
 export type DeploymentsCreateStatus429 = unknown;
 
-/**
- * @type unknown
- */
 export type DeploymentsCreateStatus500 = unknown;
 
-/**
- * @type object
- */
-export type DeploymentsCreateRequestConfig = {
-	data?: never | undefined;
-	pathParams?: never | undefined;
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: "/deployments";
+export type DeploymentsCreateOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type DeploymentsCreateResponses = {
 	"200": DeploymentsCreateStatus200;
 	"401": DeploymentsCreateStatus401;
@@ -6383,79 +4550,39 @@ export type DeploymentsCreateResponse =
 	| DeploymentsCreateStatus429
 	| DeploymentsCreateStatus500;
 
-/**
- * @description Path parameter \"deploymentId\"
- * @type string
- */
-export type DeploymentsGetByIdPathDeploymentId = string;
-
-/**
- * @type unknown
- */
-export type DeploymentsGetByIdStatus200 = unknown;
-
-/**
- * @type unknown
- */
-export type DeploymentsGetByIdStatus401 = unknown;
-
-/**
- * @type unknown
- */
-export type DeploymentsGetByIdStatus403 = unknown;
-
-/**
- * @type unknown
- */
-export type DeploymentsGetByIdStatus404 = unknown;
-
-/**
- * @type unknown
- */
-export type DeploymentsGetByIdStatus409 = unknown;
-
-/**
- * @type unknown
- */
-export type DeploymentsGetByIdStatus413 = unknown;
-
-/**
- * @type unknown
- */
-export type DeploymentsGetByIdStatus422 = unknown;
-
-/**
- * @type unknown
- */
-export type DeploymentsGetByIdStatus429 = unknown;
-
-/**
- * @type unknown
- */
-export type DeploymentsGetByIdStatus500 = unknown;
-
-/**
- * @type object
- */
-export type DeploymentsGetByIdRequestConfig = {
-	data?: never | undefined;
+export type DeploymentsGetByIdPath = {
 	/**
-	 * @type object
-	 */
-	pathParams: {
-		deploymentId: DeploymentsGetByIdPathDeploymentId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
+	 * @description Path parameter \"deploymentId\"
 	 * @type string
 	 */
-	url: `/deployments/${string}`;
+	deploymentId: string;
 };
 
-/**
- * @type object
- */
+export type DeploymentsGetByIdStatus200 = unknown;
+
+export type DeploymentsGetByIdStatus401 = unknown;
+
+export type DeploymentsGetByIdStatus403 = unknown;
+
+export type DeploymentsGetByIdStatus404 = unknown;
+
+export type DeploymentsGetByIdStatus409 = unknown;
+
+export type DeploymentsGetByIdStatus413 = unknown;
+
+export type DeploymentsGetByIdStatus422 = unknown;
+
+export type DeploymentsGetByIdStatus429 = unknown;
+
+export type DeploymentsGetByIdStatus500 = unknown;
+
+export type DeploymentsGetByIdOptions = {
+	body?: never | undefined;
+	path: DeploymentsGetByIdPath;
+	query?: never | undefined;
+	headers?: never | undefined;
+};
+
 export type DeploymentsGetByIdResponses = {
 	"200": DeploymentsGetByIdStatus200;
 	"401": DeploymentsGetByIdStatus401;
@@ -6482,79 +4609,39 @@ export type DeploymentsGetByIdResponse =
 	| DeploymentsGetByIdStatus429
 	| DeploymentsGetByIdStatus500;
 
-/**
- * @description Path parameter \"deploymentId\"
- * @type string
- */
-export type DeploymentsDeletePathDeploymentId = string;
-
-/**
- * @type unknown
- */
-export type DeploymentsDeleteStatus200 = unknown;
-
-/**
- * @type unknown
- */
-export type DeploymentsDeleteStatus401 = unknown;
-
-/**
- * @type unknown
- */
-export type DeploymentsDeleteStatus403 = unknown;
-
-/**
- * @type unknown
- */
-export type DeploymentsDeleteStatus404 = unknown;
-
-/**
- * @type unknown
- */
-export type DeploymentsDeleteStatus409 = unknown;
-
-/**
- * @type unknown
- */
-export type DeploymentsDeleteStatus413 = unknown;
-
-/**
- * @type unknown
- */
-export type DeploymentsDeleteStatus422 = unknown;
-
-/**
- * @type unknown
- */
-export type DeploymentsDeleteStatus429 = unknown;
-
-/**
- * @type unknown
- */
-export type DeploymentsDeleteStatus500 = unknown;
-
-/**
- * @type object
- */
-export type DeploymentsDeleteRequestConfig = {
-	data?: never | undefined;
+export type DeploymentsDeletePath = {
 	/**
-	 * @type object
-	 */
-	pathParams: {
-		deploymentId: DeploymentsDeletePathDeploymentId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
+	 * @description Path parameter \"deploymentId\"
 	 * @type string
 	 */
-	url: `/deployments/${string}`;
+	deploymentId: string;
 };
 
-/**
- * @type object
- */
+export type DeploymentsDeleteStatus200 = unknown;
+
+export type DeploymentsDeleteStatus401 = unknown;
+
+export type DeploymentsDeleteStatus403 = unknown;
+
+export type DeploymentsDeleteStatus404 = unknown;
+
+export type DeploymentsDeleteStatus409 = unknown;
+
+export type DeploymentsDeleteStatus413 = unknown;
+
+export type DeploymentsDeleteStatus422 = unknown;
+
+export type DeploymentsDeleteStatus429 = unknown;
+
+export type DeploymentsDeleteStatus500 = unknown;
+
+export type DeploymentsDeleteOptions = {
+	body?: never | undefined;
+	path: DeploymentsDeletePath;
+	query?: never | undefined;
+	headers?: never | undefined;
+};
+
 export type DeploymentsDeleteResponses = {
 	"200": DeploymentsDeleteStatus200;
 	"401": DeploymentsDeleteStatus401;
@@ -6581,92 +4668,47 @@ export type DeploymentsDeleteResponse =
 	| DeploymentsDeleteStatus429
 	| DeploymentsDeleteStatus500;
 
-/**
- * @description The unique identifier of the deployment to retrieve logs for. Provided as a path parameter.
- * @type string
- */
-export type DeploymentsFindLogsPathDeploymentId = string;
-
-/**
- * @description A UNIX timestamp (in seconds) used to filter logs. Returns only log entries generated after the specified time.
- * @type number | undefined
- */
-export type DeploymentsFindLogsQuerySince = number | undefined;
-
-/**
- * @type unknown
- */
-export type DeploymentsFindLogsStatus200 = unknown;
-
-/**
- * @type unknown
- */
-export type DeploymentsFindLogsStatus401 = unknown;
-
-/**
- * @type unknown
- */
-export type DeploymentsFindLogsStatus403 = unknown;
-
-/**
- * @type unknown
- */
-export type DeploymentsFindLogsStatus404 = unknown;
-
-/**
- * @type unknown
- */
-export type DeploymentsFindLogsStatus409 = unknown;
-
-/**
- * @type unknown
- */
-export type DeploymentsFindLogsStatus413 = unknown;
-
-/**
- * @type unknown
- */
-export type DeploymentsFindLogsStatus422 = unknown;
-
-/**
- * @type unknown
- */
-export type DeploymentsFindLogsStatus429 = unknown;
-
-/**
- * @type unknown
- */
-export type DeploymentsFindLogsStatus500 = unknown;
-
-/**
- * @type object
- */
-export type DeploymentsFindLogsRequestConfig = {
-	data?: never | undefined;
+export type DeploymentsFindLogsPath = {
 	/**
-	 * @type object
-	 */
-	pathParams: {
-		deploymentId: DeploymentsFindLogsPathDeploymentId;
-	};
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				since?: DeploymentsFindLogsQuerySince | undefined;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
-	/**
+	 * @description The unique identifier of the deployment to retrieve logs for. Provided as a path parameter.
 	 * @type string
 	 */
-	url: `/deployments/${string}/logs`;
+	deploymentId: string;
 };
 
-/**
- * @type object
- */
+export type DeploymentsFindLogsQuery = {
+	/**
+	 * @description A UNIX timestamp (in seconds) used to filter logs. Returns only log entries generated after the specified time.
+	 * @type number | undefined
+	 */
+	since?: number | undefined;
+};
+
+export type DeploymentsFindLogsStatus200 = unknown;
+
+export type DeploymentsFindLogsStatus401 = unknown;
+
+export type DeploymentsFindLogsStatus403 = unknown;
+
+export type DeploymentsFindLogsStatus404 = unknown;
+
+export type DeploymentsFindLogsStatus409 = unknown;
+
+export type DeploymentsFindLogsStatus413 = unknown;
+
+export type DeploymentsFindLogsStatus422 = unknown;
+
+export type DeploymentsFindLogsStatus429 = unknown;
+
+export type DeploymentsFindLogsStatus500 = unknown;
+
+export type DeploymentsFindLogsOptions = {
+	body?: never | undefined;
+	path: DeploymentsFindLogsPath;
+	query?: DeploymentsFindLogsQuery | undefined;
+	headers?: never | undefined;
+};
+
 export type DeploymentsFindLogsResponses = {
 	"200": DeploymentsFindLogsStatus200;
 	"401": DeploymentsFindLogsStatus401;
@@ -6693,79 +4735,39 @@ export type DeploymentsFindLogsResponse =
 	| DeploymentsFindLogsStatus429
 	| DeploymentsFindLogsStatus500;
 
-/**
- * @description The unique identifier of the deployment to inspect for errors. Provided as a path parameter.
- * @type string
- */
-export type DeploymentsFindErrorsPathDeploymentId = string;
-
-/**
- * @type unknown
- */
-export type DeploymentsFindErrorsStatus200 = unknown;
-
-/**
- * @type unknown
- */
-export type DeploymentsFindErrorsStatus401 = unknown;
-
-/**
- * @type unknown
- */
-export type DeploymentsFindErrorsStatus403 = unknown;
-
-/**
- * @type unknown
- */
-export type DeploymentsFindErrorsStatus404 = unknown;
-
-/**
- * @type unknown
- */
-export type DeploymentsFindErrorsStatus409 = unknown;
-
-/**
- * @type unknown
- */
-export type DeploymentsFindErrorsStatus413 = unknown;
-
-/**
- * @type unknown
- */
-export type DeploymentsFindErrorsStatus422 = unknown;
-
-/**
- * @type unknown
- */
-export type DeploymentsFindErrorsStatus429 = unknown;
-
-/**
- * @type unknown
- */
-export type DeploymentsFindErrorsStatus500 = unknown;
-
-/**
- * @type object
- */
-export type DeploymentsFindErrorsRequestConfig = {
-	data?: never | undefined;
+export type DeploymentsFindErrorsPath = {
 	/**
-	 * @type object
-	 */
-	pathParams: {
-		deploymentId: DeploymentsFindErrorsPathDeploymentId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
+	 * @description The unique identifier of the deployment to inspect for errors. Provided as a path parameter.
 	 * @type string
 	 */
-	url: `/deployments/${string}/errors`;
+	deploymentId: string;
 };
 
-/**
- * @type object
- */
+export type DeploymentsFindErrorsStatus200 = unknown;
+
+export type DeploymentsFindErrorsStatus401 = unknown;
+
+export type DeploymentsFindErrorsStatus403 = unknown;
+
+export type DeploymentsFindErrorsStatus404 = unknown;
+
+export type DeploymentsFindErrorsStatus409 = unknown;
+
+export type DeploymentsFindErrorsStatus413 = unknown;
+
+export type DeploymentsFindErrorsStatus422 = unknown;
+
+export type DeploymentsFindErrorsStatus429 = unknown;
+
+export type DeploymentsFindErrorsStatus500 = unknown;
+
+export type DeploymentsFindErrorsOptions = {
+	body?: never | undefined;
+	path: DeploymentsFindErrorsPath;
+	query?: never | undefined;
+	headers?: never | undefined;
+};
+
 export type DeploymentsFindErrorsResponses = {
 	"200": DeploymentsFindErrorsStatus200;
 	"401": DeploymentsFindErrorsStatus401;
@@ -6792,68 +4794,31 @@ export type DeploymentsFindErrorsResponse =
 	| DeploymentsFindErrorsStatus429
 	| DeploymentsFindErrorsStatus500;
 
-/**
- * @type unknown
- */
 export type HooksFindStatus200 = unknown;
 
-/**
- * @type unknown
- */
 export type HooksFindStatus401 = unknown;
 
-/**
- * @type unknown
- */
 export type HooksFindStatus403 = unknown;
 
-/**
- * @type unknown
- */
 export type HooksFindStatus404 = unknown;
 
-/**
- * @type unknown
- */
 export type HooksFindStatus409 = unknown;
 
-/**
- * @type unknown
- */
 export type HooksFindStatus413 = unknown;
 
-/**
- * @type unknown
- */
 export type HooksFindStatus422 = unknown;
 
-/**
- * @type unknown
- */
 export type HooksFindStatus429 = unknown;
 
-/**
- * @type unknown
- */
 export type HooksFindStatus500 = unknown;
 
-/**
- * @type object
- */
-export type HooksFindRequestConfig = {
-	data?: never | undefined;
-	pathParams?: never | undefined;
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: "/hooks";
+export type HooksFindOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type HooksFindResponses = {
 	"200": HooksFindStatus200;
 	"401": HooksFindStatus401;
@@ -6880,68 +4845,31 @@ export type HooksFindResponse =
 	| HooksFindStatus429
 	| HooksFindStatus500;
 
-/**
- * @type unknown
- */
 export type HooksCreateStatus200 = unknown;
 
-/**
- * @type unknown
- */
 export type HooksCreateStatus401 = unknown;
 
-/**
- * @type unknown
- */
 export type HooksCreateStatus403 = unknown;
 
-/**
- * @type unknown
- */
 export type HooksCreateStatus404 = unknown;
 
-/**
- * @type unknown
- */
 export type HooksCreateStatus409 = unknown;
 
-/**
- * @type unknown
- */
 export type HooksCreateStatus413 = unknown;
 
-/**
- * @type unknown
- */
 export type HooksCreateStatus422 = unknown;
 
-/**
- * @type unknown
- */
 export type HooksCreateStatus429 = unknown;
 
-/**
- * @type unknown
- */
 export type HooksCreateStatus500 = unknown;
 
-/**
- * @type object
- */
-export type HooksCreateRequestConfig = {
-	data?: never | undefined;
-	pathParams?: never | undefined;
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: "/hooks";
+export type HooksCreateOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type HooksCreateResponses = {
 	"200": HooksCreateStatus200;
 	"401": HooksCreateStatus401;
@@ -6968,79 +4896,39 @@ export type HooksCreateResponse =
 	| HooksCreateStatus429
 	| HooksCreateStatus500;
 
-/**
- * @description The unique identifier of the hook to retrieve.
- * @type string
- */
-export type HooksGetByIdPathHookId = string;
-
-/**
- * @type unknown
- */
-export type HooksGetByIdStatus200 = unknown;
-
-/**
- * @type unknown
- */
-export type HooksGetByIdStatus401 = unknown;
-
-/**
- * @type unknown
- */
-export type HooksGetByIdStatus403 = unknown;
-
-/**
- * @type unknown
- */
-export type HooksGetByIdStatus404 = unknown;
-
-/**
- * @type unknown
- */
-export type HooksGetByIdStatus409 = unknown;
-
-/**
- * @type unknown
- */
-export type HooksGetByIdStatus413 = unknown;
-
-/**
- * @type unknown
- */
-export type HooksGetByIdStatus422 = unknown;
-
-/**
- * @type unknown
- */
-export type HooksGetByIdStatus429 = unknown;
-
-/**
- * @type unknown
- */
-export type HooksGetByIdStatus500 = unknown;
-
-/**
- * @type object
- */
-export type HooksGetByIdRequestConfig = {
-	data?: never | undefined;
+export type HooksGetByIdPath = {
 	/**
-	 * @type object
-	 */
-	pathParams: {
-		hookId: HooksGetByIdPathHookId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
+	 * @description The unique identifier of the hook to retrieve.
 	 * @type string
 	 */
-	url: `/hooks/${string}`;
+	hookId: string;
 };
 
-/**
- * @type object
- */
+export type HooksGetByIdStatus200 = unknown;
+
+export type HooksGetByIdStatus401 = unknown;
+
+export type HooksGetByIdStatus403 = unknown;
+
+export type HooksGetByIdStatus404 = unknown;
+
+export type HooksGetByIdStatus409 = unknown;
+
+export type HooksGetByIdStatus413 = unknown;
+
+export type HooksGetByIdStatus422 = unknown;
+
+export type HooksGetByIdStatus429 = unknown;
+
+export type HooksGetByIdStatus500 = unknown;
+
+export type HooksGetByIdOptions = {
+	body?: never | undefined;
+	path: HooksGetByIdPath;
+	query?: never | undefined;
+	headers?: never | undefined;
+};
+
 export type HooksGetByIdResponses = {
 	"200": HooksGetByIdStatus200;
 	"401": HooksGetByIdStatus401;
@@ -7067,79 +4955,39 @@ export type HooksGetByIdResponse =
 	| HooksGetByIdStatus429
 	| HooksGetByIdStatus500;
 
-/**
- * @description The ID of the webhook to update. Provided as a path parameter.
- * @type string
- */
-export type HooksUpdatePathHookId = string;
-
-/**
- * @type unknown
- */
-export type HooksUpdateStatus200 = unknown;
-
-/**
- * @type unknown
- */
-export type HooksUpdateStatus401 = unknown;
-
-/**
- * @type unknown
- */
-export type HooksUpdateStatus403 = unknown;
-
-/**
- * @type unknown
- */
-export type HooksUpdateStatus404 = unknown;
-
-/**
- * @type unknown
- */
-export type HooksUpdateStatus409 = unknown;
-
-/**
- * @type unknown
- */
-export type HooksUpdateStatus413 = unknown;
-
-/**
- * @type unknown
- */
-export type HooksUpdateStatus422 = unknown;
-
-/**
- * @type unknown
- */
-export type HooksUpdateStatus429 = unknown;
-
-/**
- * @type unknown
- */
-export type HooksUpdateStatus500 = unknown;
-
-/**
- * @type object
- */
-export type HooksUpdateRequestConfig = {
-	data?: never | undefined;
+export type HooksUpdatePath = {
 	/**
-	 * @type object
-	 */
-	pathParams: {
-		hookId: HooksUpdatePathHookId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
+	 * @description The ID of the webhook to update. Provided as a path parameter.
 	 * @type string
 	 */
-	url: `/hooks/${string}`;
+	hookId: string;
 };
 
-/**
- * @type object
- */
+export type HooksUpdateStatus200 = unknown;
+
+export type HooksUpdateStatus401 = unknown;
+
+export type HooksUpdateStatus403 = unknown;
+
+export type HooksUpdateStatus404 = unknown;
+
+export type HooksUpdateStatus409 = unknown;
+
+export type HooksUpdateStatus413 = unknown;
+
+export type HooksUpdateStatus422 = unknown;
+
+export type HooksUpdateStatus429 = unknown;
+
+export type HooksUpdateStatus500 = unknown;
+
+export type HooksUpdateOptions = {
+	body?: never | undefined;
+	path: HooksUpdatePath;
+	query?: never | undefined;
+	headers?: never | undefined;
+};
+
 export type HooksUpdateResponses = {
 	"200": HooksUpdateStatus200;
 	"401": HooksUpdateStatus401;
@@ -7166,79 +5014,39 @@ export type HooksUpdateResponse =
 	| HooksUpdateStatus429
 	| HooksUpdateStatus500;
 
-/**
- * @description The ID of the webhook to delete. Provided as a path parameter.
- * @type string
- */
-export type HooksDeletePathHookId = string;
-
-/**
- * @type unknown
- */
-export type HooksDeleteStatus200 = unknown;
-
-/**
- * @type unknown
- */
-export type HooksDeleteStatus401 = unknown;
-
-/**
- * @type unknown
- */
-export type HooksDeleteStatus403 = unknown;
-
-/**
- * @type unknown
- */
-export type HooksDeleteStatus404 = unknown;
-
-/**
- * @type unknown
- */
-export type HooksDeleteStatus409 = unknown;
-
-/**
- * @type unknown
- */
-export type HooksDeleteStatus413 = unknown;
-
-/**
- * @type unknown
- */
-export type HooksDeleteStatus422 = unknown;
-
-/**
- * @type unknown
- */
-export type HooksDeleteStatus429 = unknown;
-
-/**
- * @type unknown
- */
-export type HooksDeleteStatus500 = unknown;
-
-/**
- * @type object
- */
-export type HooksDeleteRequestConfig = {
-	data?: never | undefined;
+export type HooksDeletePath = {
 	/**
-	 * @type object
-	 */
-	pathParams: {
-		hookId: HooksDeletePathHookId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
+	 * @description The ID of the webhook to delete. Provided as a path parameter.
 	 * @type string
 	 */
-	url: `/hooks/${string}`;
+	hookId: string;
 };
 
-/**
- * @type object
- */
+export type HooksDeleteStatus200 = unknown;
+
+export type HooksDeleteStatus401 = unknown;
+
+export type HooksDeleteStatus403 = unknown;
+
+export type HooksDeleteStatus404 = unknown;
+
+export type HooksDeleteStatus409 = unknown;
+
+export type HooksDeleteStatus413 = unknown;
+
+export type HooksDeleteStatus422 = unknown;
+
+export type HooksDeleteStatus429 = unknown;
+
+export type HooksDeleteStatus500 = unknown;
+
+export type HooksDeleteOptions = {
+	body?: never | undefined;
+	path: HooksDeletePath;
+	query?: never | undefined;
+	headers?: never | undefined;
+};
+
 export type HooksDeleteResponses = {
 	"200": HooksDeleteStatus200;
 	"401": HooksDeleteStatus401;
@@ -7265,68 +5073,31 @@ export type HooksDeleteResponse =
 	| HooksDeleteStatus429
 	| HooksDeleteStatus500;
 
-/**
- * @type unknown
- */
 export type IntegrationsVercelProjectsFindStatus200 = unknown;
 
-/**
- * @type unknown
- */
 export type IntegrationsVercelProjectsFindStatus401 = unknown;
 
-/**
- * @type unknown
- */
 export type IntegrationsVercelProjectsFindStatus403 = unknown;
 
-/**
- * @type unknown
- */
 export type IntegrationsVercelProjectsFindStatus404 = unknown;
 
-/**
- * @type unknown
- */
 export type IntegrationsVercelProjectsFindStatus409 = unknown;
 
-/**
- * @type unknown
- */
 export type IntegrationsVercelProjectsFindStatus413 = unknown;
 
-/**
- * @type unknown
- */
 export type IntegrationsVercelProjectsFindStatus422 = unknown;
 
-/**
- * @type unknown
- */
 export type IntegrationsVercelProjectsFindStatus429 = unknown;
 
-/**
- * @type unknown
- */
 export type IntegrationsVercelProjectsFindStatus500 = unknown;
 
-/**
- * @type object
- */
-export type IntegrationsVercelProjectsFindRequestConfig = {
-	data?: never | undefined;
-	pathParams?: never | undefined;
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: "/integrations/vercel/projects";
+export type IntegrationsVercelProjectsFindOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type IntegrationsVercelProjectsFindResponses = {
 	"200": IntegrationsVercelProjectsFindStatus200;
 	"401": IntegrationsVercelProjectsFindStatus401;
@@ -7353,68 +5124,31 @@ export type IntegrationsVercelProjectsFindResponse =
 	| IntegrationsVercelProjectsFindStatus429
 	| IntegrationsVercelProjectsFindStatus500;
 
-/**
- * @type unknown
- */
 export type IntegrationsVercelProjectsCreateStatus200 = unknown;
 
-/**
- * @type unknown
- */
 export type IntegrationsVercelProjectsCreateStatus401 = unknown;
 
-/**
- * @type unknown
- */
 export type IntegrationsVercelProjectsCreateStatus403 = unknown;
 
-/**
- * @type unknown
- */
 export type IntegrationsVercelProjectsCreateStatus404 = unknown;
 
-/**
- * @type unknown
- */
 export type IntegrationsVercelProjectsCreateStatus409 = unknown;
 
-/**
- * @type unknown
- */
 export type IntegrationsVercelProjectsCreateStatus413 = unknown;
 
-/**
- * @type unknown
- */
 export type IntegrationsVercelProjectsCreateStatus422 = unknown;
 
-/**
- * @type unknown
- */
 export type IntegrationsVercelProjectsCreateStatus429 = unknown;
 
-/**
- * @type unknown
- */
 export type IntegrationsVercelProjectsCreateStatus500 = unknown;
 
-/**
- * @type object
- */
-export type IntegrationsVercelProjectsCreateRequestConfig = {
-	data?: never | undefined;
-	pathParams?: never | undefined;
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: "/integrations/vercel/projects";
+export type IntegrationsVercelProjectsCreateOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type IntegrationsVercelProjectsCreateResponses = {
 	"200": IntegrationsVercelProjectsCreateStatus200;
 	"401": IntegrationsVercelProjectsCreateStatus401;
@@ -7441,68 +5175,31 @@ export type IntegrationsVercelProjectsCreateResponse =
 	| IntegrationsVercelProjectsCreateStatus429
 	| IntegrationsVercelProjectsCreateStatus500;
 
-/**
- * @type unknown
- */
 export type ProjectsFindStatus200 = unknown;
 
-/**
- * @type unknown
- */
 export type ProjectsFindStatus401 = unknown;
 
-/**
- * @type unknown
- */
 export type ProjectsFindStatus403 = unknown;
 
-/**
- * @type unknown
- */
 export type ProjectsFindStatus404 = unknown;
 
-/**
- * @type unknown
- */
 export type ProjectsFindStatus409 = unknown;
 
-/**
- * @type unknown
- */
 export type ProjectsFindStatus413 = unknown;
 
-/**
- * @type unknown
- */
 export type ProjectsFindStatus422 = unknown;
 
-/**
- * @type unknown
- */
 export type ProjectsFindStatus429 = unknown;
 
-/**
- * @type unknown
- */
 export type ProjectsFindStatus500 = unknown;
 
-/**
- * @type object
- */
-export type ProjectsFindRequestConfig = {
-	data?: never | undefined;
-	pathParams?: never | undefined;
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: "/projects";
+export type ProjectsFindOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type ProjectsFindResponses = {
 	"200": ProjectsFindStatus200;
 	"401": ProjectsFindStatus401;
@@ -7529,68 +5226,31 @@ export type ProjectsFindResponse =
 	| ProjectsFindStatus429
 	| ProjectsFindStatus500;
 
-/**
- * @type unknown
- */
 export type ProjectsCreateStatus200 = unknown;
 
-/**
- * @type unknown
- */
 export type ProjectsCreateStatus401 = unknown;
 
-/**
- * @type unknown
- */
 export type ProjectsCreateStatus403 = unknown;
 
-/**
- * @type unknown
- */
 export type ProjectsCreateStatus404 = unknown;
 
-/**
- * @type unknown
- */
 export type ProjectsCreateStatus409 = unknown;
 
-/**
- * @type unknown
- */
 export type ProjectsCreateStatus413 = unknown;
 
-/**
- * @type unknown
- */
 export type ProjectsCreateStatus422 = unknown;
 
-/**
- * @type unknown
- */
 export type ProjectsCreateStatus429 = unknown;
 
-/**
- * @type unknown
- */
 export type ProjectsCreateStatus500 = unknown;
 
-/**
- * @type object
- */
-export type ProjectsCreateRequestConfig = {
-	data?: never | undefined;
-	pathParams?: never | undefined;
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: "/projects";
+export type ProjectsCreateOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type ProjectsCreateResponses = {
 	"200": ProjectsCreateStatus200;
 	"401": ProjectsCreateStatus401;
@@ -7617,79 +5277,39 @@ export type ProjectsCreateResponse =
 	| ProjectsCreateStatus429
 	| ProjectsCreateStatus500;
 
-/**
- * @description The unique identifier of the project to retrieve.
- * @type string
- */
-export type ProjectsGetByIdPathProjectId = string;
-
-/**
- * @type unknown
- */
-export type ProjectsGetByIdStatus200 = unknown;
-
-/**
- * @type unknown
- */
-export type ProjectsGetByIdStatus401 = unknown;
-
-/**
- * @type unknown
- */
-export type ProjectsGetByIdStatus403 = unknown;
-
-/**
- * @type unknown
- */
-export type ProjectsGetByIdStatus404 = unknown;
-
-/**
- * @type unknown
- */
-export type ProjectsGetByIdStatus409 = unknown;
-
-/**
- * @type unknown
- */
-export type ProjectsGetByIdStatus413 = unknown;
-
-/**
- * @type unknown
- */
-export type ProjectsGetByIdStatus422 = unknown;
-
-/**
- * @type unknown
- */
-export type ProjectsGetByIdStatus429 = unknown;
-
-/**
- * @type unknown
- */
-export type ProjectsGetByIdStatus500 = unknown;
-
-/**
- * @type object
- */
-export type ProjectsGetByIdRequestConfig = {
-	data?: never | undefined;
+export type ProjectsGetByIdPath = {
 	/**
-	 * @type object
-	 */
-	pathParams: {
-		projectId: ProjectsGetByIdPathProjectId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
+	 * @description The unique identifier of the project to retrieve.
 	 * @type string
 	 */
-	url: `/projects/${string}`;
+	projectId: string;
 };
 
-/**
- * @type object
- */
+export type ProjectsGetByIdStatus200 = unknown;
+
+export type ProjectsGetByIdStatus401 = unknown;
+
+export type ProjectsGetByIdStatus403 = unknown;
+
+export type ProjectsGetByIdStatus404 = unknown;
+
+export type ProjectsGetByIdStatus409 = unknown;
+
+export type ProjectsGetByIdStatus413 = unknown;
+
+export type ProjectsGetByIdStatus422 = unknown;
+
+export type ProjectsGetByIdStatus429 = unknown;
+
+export type ProjectsGetByIdStatus500 = unknown;
+
+export type ProjectsGetByIdOptions = {
+	body?: never | undefined;
+	path: ProjectsGetByIdPath;
+	query?: never | undefined;
+	headers?: never | undefined;
+};
+
 export type ProjectsGetByIdResponses = {
 	"200": ProjectsGetByIdStatus200;
 	"401": ProjectsGetByIdStatus401;
@@ -7716,79 +5336,39 @@ export type ProjectsGetByIdResponse =
 	| ProjectsGetByIdStatus429
 	| ProjectsGetByIdStatus500;
 
-/**
- * @description The unique identifier of the project to update. Provided as a path parameter.
- * @type string
- */
-export type ProjectsUpdatePathProjectId = string;
-
-/**
- * @type unknown
- */
-export type ProjectsUpdateStatus200 = unknown;
-
-/**
- * @type unknown
- */
-export type ProjectsUpdateStatus401 = unknown;
-
-/**
- * @type unknown
- */
-export type ProjectsUpdateStatus403 = unknown;
-
-/**
- * @type unknown
- */
-export type ProjectsUpdateStatus404 = unknown;
-
-/**
- * @type unknown
- */
-export type ProjectsUpdateStatus409 = unknown;
-
-/**
- * @type unknown
- */
-export type ProjectsUpdateStatus413 = unknown;
-
-/**
- * @type unknown
- */
-export type ProjectsUpdateStatus422 = unknown;
-
-/**
- * @type unknown
- */
-export type ProjectsUpdateStatus429 = unknown;
-
-/**
- * @type unknown
- */
-export type ProjectsUpdateStatus500 = unknown;
-
-/**
- * @type object
- */
-export type ProjectsUpdateRequestConfig = {
-	data?: never | undefined;
+export type ProjectsUpdatePath = {
 	/**
-	 * @type object
-	 */
-	pathParams: {
-		projectId: ProjectsUpdatePathProjectId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
+	 * @description The unique identifier of the project to update. Provided as a path parameter.
 	 * @type string
 	 */
-	url: `/projects/${string}`;
+	projectId: string;
 };
 
-/**
- * @type object
- */
+export type ProjectsUpdateStatus200 = unknown;
+
+export type ProjectsUpdateStatus401 = unknown;
+
+export type ProjectsUpdateStatus403 = unknown;
+
+export type ProjectsUpdateStatus404 = unknown;
+
+export type ProjectsUpdateStatus409 = unknown;
+
+export type ProjectsUpdateStatus413 = unknown;
+
+export type ProjectsUpdateStatus422 = unknown;
+
+export type ProjectsUpdateStatus429 = unknown;
+
+export type ProjectsUpdateStatus500 = unknown;
+
+export type ProjectsUpdateOptions = {
+	body?: never | undefined;
+	path: ProjectsUpdatePath;
+	query?: never | undefined;
+	headers?: never | undefined;
+};
+
 export type ProjectsUpdateResponses = {
 	"200": ProjectsUpdateStatus200;
 	"401": ProjectsUpdateStatus401;
@@ -7815,93 +5395,56 @@ export type ProjectsUpdateResponse =
 	| ProjectsUpdateStatus429
 	| ProjectsUpdateStatus500;
 
-/**
- * @description The unique identifier of the project to delete. This must be passed as a path parameter in the URL.
- * @type string
- */
-export type ProjectsDeletePathProjectId = string;
-
-/**
- * @description If true, deletes all the chats associated with the given project ID. Deleting is permanent. Defaults to false.
- * @default "false"
- * @type string | undefined
- */
-export type ProjectsDeleteQueryDeleteAllChats = ("true" | "false") | undefined;
-
-/**
- * @type unknown
- */
-export type ProjectsDeleteStatus200 = unknown;
-
-/**
- * @type unknown
- */
-export type ProjectsDeleteStatus401 = unknown;
-
-/**
- * @type unknown
- */
-export type ProjectsDeleteStatus403 = unknown;
-
-/**
- * @type unknown
- */
-export type ProjectsDeleteStatus404 = unknown;
-
-/**
- * @type unknown
- */
-export type ProjectsDeleteStatus409 = unknown;
-
-/**
- * @type unknown
- */
-export type ProjectsDeleteStatus413 = unknown;
-
-/**
- * @type unknown
- */
-export type ProjectsDeleteStatus422 = unknown;
-
-/**
- * @type unknown
- */
-export type ProjectsDeleteStatus429 = unknown;
-
-/**
- * @type unknown
- */
-export type ProjectsDeleteStatus500 = unknown;
-
-/**
- * @type object
- */
-export type ProjectsDeleteRequestConfig = {
-	data?: never | undefined;
+export type ProjectsDeletePath = {
 	/**
-	 * @type object
-	 */
-	pathParams: {
-		projectId: ProjectsDeletePathProjectId;
-	};
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				deleteAllChats?: ProjectsDeleteQueryDeleteAllChats | undefined;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
-	/**
+	 * @description The unique identifier of the project to delete. This must be passed as a path parameter in the URL.
 	 * @type string
 	 */
-	url: `/projects/${string}`;
+	projectId: string;
 };
 
-/**
- * @type object
- */
+export const projectsDeleteDeleteAllChats = {
+	true: "true",
+	false: "false",
+} as const;
+
+export type ProjectsDeleteDeleteAllChatsKey =
+	(typeof projectsDeleteDeleteAllChats)[keyof typeof projectsDeleteDeleteAllChats];
+
+export type ProjectsDeleteQuery = {
+	/**
+	 * @description If true, deletes all the chats associated with the given project ID. Deleting is permanent. Defaults to false.
+	 * @default 'false'
+	 * @type string | undefined
+	 */
+	deleteAllChats?: ProjectsDeleteDeleteAllChatsKey | undefined;
+};
+
+export type ProjectsDeleteStatus200 = unknown;
+
+export type ProjectsDeleteStatus401 = unknown;
+
+export type ProjectsDeleteStatus403 = unknown;
+
+export type ProjectsDeleteStatus404 = unknown;
+
+export type ProjectsDeleteStatus409 = unknown;
+
+export type ProjectsDeleteStatus413 = unknown;
+
+export type ProjectsDeleteStatus422 = unknown;
+
+export type ProjectsDeleteStatus429 = unknown;
+
+export type ProjectsDeleteStatus500 = unknown;
+
+export type ProjectsDeleteOptions = {
+	body?: never | undefined;
+	path: ProjectsDeletePath;
+	query?: ProjectsDeleteQuery | undefined;
+	headers?: never | undefined;
+};
+
 export type ProjectsDeleteResponses = {
 	"200": ProjectsDeleteStatus200;
 	"401": ProjectsDeleteStatus401;
@@ -7928,79 +5471,39 @@ export type ProjectsDeleteResponse =
 	| ProjectsDeleteStatus429
 	| ProjectsDeleteStatus500;
 
-/**
- * @description The ID of the project to assign.
- * @type string
- */
-export type ProjectsAssignPathProjectId = string;
-
-/**
- * @type unknown
- */
-export type ProjectsAssignStatus200 = unknown;
-
-/**
- * @type unknown
- */
-export type ProjectsAssignStatus401 = unknown;
-
-/**
- * @type unknown
- */
-export type ProjectsAssignStatus403 = unknown;
-
-/**
- * @type unknown
- */
-export type ProjectsAssignStatus404 = unknown;
-
-/**
- * @type unknown
- */
-export type ProjectsAssignStatus409 = unknown;
-
-/**
- * @type unknown
- */
-export type ProjectsAssignStatus413 = unknown;
-
-/**
- * @type unknown
- */
-export type ProjectsAssignStatus422 = unknown;
-
-/**
- * @type unknown
- */
-export type ProjectsAssignStatus429 = unknown;
-
-/**
- * @type unknown
- */
-export type ProjectsAssignStatus500 = unknown;
-
-/**
- * @type object
- */
-export type ProjectsAssignRequestConfig = {
-	data?: never | undefined;
+export type ProjectsAssignPath = {
 	/**
-	 * @type object
-	 */
-	pathParams: {
-		projectId: ProjectsAssignPathProjectId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
+	 * @description The ID of the project to assign.
 	 * @type string
 	 */
-	url: `/projects/${string}/assign`;
+	projectId: string;
 };
 
-/**
- * @type object
- */
+export type ProjectsAssignStatus200 = unknown;
+
+export type ProjectsAssignStatus401 = unknown;
+
+export type ProjectsAssignStatus403 = unknown;
+
+export type ProjectsAssignStatus404 = unknown;
+
+export type ProjectsAssignStatus409 = unknown;
+
+export type ProjectsAssignStatus413 = unknown;
+
+export type ProjectsAssignStatus422 = unknown;
+
+export type ProjectsAssignStatus429 = unknown;
+
+export type ProjectsAssignStatus500 = unknown;
+
+export type ProjectsAssignOptions = {
+	body?: never | undefined;
+	path: ProjectsAssignPath;
+	query?: never | undefined;
+	headers?: never | undefined;
+};
+
 export type ProjectsAssignResponses = {
 	"200": ProjectsAssignStatus200;
 	"401": ProjectsAssignStatus401;
@@ -8027,92 +5530,55 @@ export type ProjectsAssignResponse =
 	| ProjectsAssignStatus429
 	| ProjectsAssignStatus500;
 
-/**
- * @description The unique identifier of the project whose environment variables should be retrieved.
- * @type string
- */
-export type ProjectsFindEnvVarsPathProjectId = string;
-
-/**
- * @description Whether to return decrypted values. Defaults to false (encrypted).
- * @type string | undefined
- */
-export type ProjectsFindEnvVarsQueryDecrypted = ("true" | "false") | undefined;
-
-/**
- * @type unknown
- */
-export type ProjectsFindEnvVarsStatus200 = unknown;
-
-/**
- * @type unknown
- */
-export type ProjectsFindEnvVarsStatus401 = unknown;
-
-/**
- * @type unknown
- */
-export type ProjectsFindEnvVarsStatus403 = unknown;
-
-/**
- * @type unknown
- */
-export type ProjectsFindEnvVarsStatus404 = unknown;
-
-/**
- * @type unknown
- */
-export type ProjectsFindEnvVarsStatus409 = unknown;
-
-/**
- * @type unknown
- */
-export type ProjectsFindEnvVarsStatus413 = unknown;
-
-/**
- * @type unknown
- */
-export type ProjectsFindEnvVarsStatus422 = unknown;
-
-/**
- * @type unknown
- */
-export type ProjectsFindEnvVarsStatus429 = unknown;
-
-/**
- * @type unknown
- */
-export type ProjectsFindEnvVarsStatus500 = unknown;
-
-/**
- * @type object
- */
-export type ProjectsFindEnvVarsRequestConfig = {
-	data?: never | undefined;
+export type ProjectsFindEnvVarsPath = {
 	/**
-	 * @type object
-	 */
-	pathParams: {
-		projectId: ProjectsFindEnvVarsPathProjectId;
-	};
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				decrypted?: ProjectsFindEnvVarsQueryDecrypted | undefined;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
-	/**
+	 * @description The unique identifier of the project whose environment variables should be retrieved.
 	 * @type string
 	 */
-	url: `/projects/${string}/env-vars`;
+	projectId: string;
 };
 
-/**
- * @type object
- */
+export const projectsFindEnvVarsDecrypted = {
+	true: "true",
+	false: "false",
+} as const;
+
+export type ProjectsFindEnvVarsDecryptedKey =
+	(typeof projectsFindEnvVarsDecrypted)[keyof typeof projectsFindEnvVarsDecrypted];
+
+export type ProjectsFindEnvVarsQuery = {
+	/**
+	 * @description Whether to return decrypted values. Defaults to false (encrypted).
+	 * @type string | undefined
+	 */
+	decrypted?: ProjectsFindEnvVarsDecryptedKey | undefined;
+};
+
+export type ProjectsFindEnvVarsStatus200 = unknown;
+
+export type ProjectsFindEnvVarsStatus401 = unknown;
+
+export type ProjectsFindEnvVarsStatus403 = unknown;
+
+export type ProjectsFindEnvVarsStatus404 = unknown;
+
+export type ProjectsFindEnvVarsStatus409 = unknown;
+
+export type ProjectsFindEnvVarsStatus413 = unknown;
+
+export type ProjectsFindEnvVarsStatus422 = unknown;
+
+export type ProjectsFindEnvVarsStatus429 = unknown;
+
+export type ProjectsFindEnvVarsStatus500 = unknown;
+
+export type ProjectsFindEnvVarsOptions = {
+	body?: never | undefined;
+	path: ProjectsFindEnvVarsPath;
+	query?: ProjectsFindEnvVarsQuery | undefined;
+	headers?: never | undefined;
+};
+
 export type ProjectsFindEnvVarsResponses = {
 	"200": ProjectsFindEnvVarsStatus200;
 	"401": ProjectsFindEnvVarsStatus401;
@@ -8139,92 +5605,55 @@ export type ProjectsFindEnvVarsResponse =
 	| ProjectsFindEnvVarsStatus429
 	| ProjectsFindEnvVarsStatus500;
 
-/**
- * @description The unique identifier of the project where environment variables should be created.
- * @type string
- */
-export type ProjectsCreateEnvVarsPathProjectId = string;
-
-/**
- * @description Whether to return decrypted values. Defaults to false (encrypted).
- * @type string | undefined
- */
-export type ProjectsCreateEnvVarsQueryDecrypted = ("true" | "false") | undefined;
-
-/**
- * @type unknown
- */
-export type ProjectsCreateEnvVarsStatus200 = unknown;
-
-/**
- * @type unknown
- */
-export type ProjectsCreateEnvVarsStatus401 = unknown;
-
-/**
- * @type unknown
- */
-export type ProjectsCreateEnvVarsStatus403 = unknown;
-
-/**
- * @type unknown
- */
-export type ProjectsCreateEnvVarsStatus404 = unknown;
-
-/**
- * @type unknown
- */
-export type ProjectsCreateEnvVarsStatus409 = unknown;
-
-/**
- * @type unknown
- */
-export type ProjectsCreateEnvVarsStatus413 = unknown;
-
-/**
- * @type unknown
- */
-export type ProjectsCreateEnvVarsStatus422 = unknown;
-
-/**
- * @type unknown
- */
-export type ProjectsCreateEnvVarsStatus429 = unknown;
-
-/**
- * @type unknown
- */
-export type ProjectsCreateEnvVarsStatus500 = unknown;
-
-/**
- * @type object
- */
-export type ProjectsCreateEnvVarsRequestConfig = {
-	data?: never | undefined;
+export type ProjectsCreateEnvVarsPath = {
 	/**
-	 * @type object
-	 */
-	pathParams: {
-		projectId: ProjectsCreateEnvVarsPathProjectId;
-	};
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				decrypted?: ProjectsCreateEnvVarsQueryDecrypted | undefined;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
-	/**
+	 * @description The unique identifier of the project where environment variables should be created.
 	 * @type string
 	 */
-	url: `/projects/${string}/env-vars`;
+	projectId: string;
 };
 
-/**
- * @type object
- */
+export const projectsCreateEnvVarsDecrypted = {
+	true: "true",
+	false: "false",
+} as const;
+
+export type ProjectsCreateEnvVarsDecryptedKey =
+	(typeof projectsCreateEnvVarsDecrypted)[keyof typeof projectsCreateEnvVarsDecrypted];
+
+export type ProjectsCreateEnvVarsQuery = {
+	/**
+	 * @description Whether to return decrypted values. Defaults to false (encrypted).
+	 * @type string | undefined
+	 */
+	decrypted?: ProjectsCreateEnvVarsDecryptedKey | undefined;
+};
+
+export type ProjectsCreateEnvVarsStatus200 = unknown;
+
+export type ProjectsCreateEnvVarsStatus401 = unknown;
+
+export type ProjectsCreateEnvVarsStatus403 = unknown;
+
+export type ProjectsCreateEnvVarsStatus404 = unknown;
+
+export type ProjectsCreateEnvVarsStatus409 = unknown;
+
+export type ProjectsCreateEnvVarsStatus413 = unknown;
+
+export type ProjectsCreateEnvVarsStatus422 = unknown;
+
+export type ProjectsCreateEnvVarsStatus429 = unknown;
+
+export type ProjectsCreateEnvVarsStatus500 = unknown;
+
+export type ProjectsCreateEnvVarsOptions = {
+	body?: never | undefined;
+	path: ProjectsCreateEnvVarsPath;
+	query?: ProjectsCreateEnvVarsQuery | undefined;
+	headers?: never | undefined;
+};
+
 export type ProjectsCreateEnvVarsResponses = {
 	"200": ProjectsCreateEnvVarsStatus200;
 	"401": ProjectsCreateEnvVarsStatus401;
@@ -8251,92 +5680,55 @@ export type ProjectsCreateEnvVarsResponse =
 	| ProjectsCreateEnvVarsStatus429
 	| ProjectsCreateEnvVarsStatus500;
 
-/**
- * @description The unique identifier of the project whose environment variables should be updated.
- * @type string
- */
-export type ProjectsUpdateEnvVarsPathProjectId = string;
-
-/**
- * @description Whether to return decrypted values. Defaults to false (encrypted).
- * @type string | undefined
- */
-export type ProjectsUpdateEnvVarsQueryDecrypted = ("true" | "false") | undefined;
-
-/**
- * @type unknown
- */
-export type ProjectsUpdateEnvVarsStatus200 = unknown;
-
-/**
- * @type unknown
- */
-export type ProjectsUpdateEnvVarsStatus401 = unknown;
-
-/**
- * @type unknown
- */
-export type ProjectsUpdateEnvVarsStatus403 = unknown;
-
-/**
- * @type unknown
- */
-export type ProjectsUpdateEnvVarsStatus404 = unknown;
-
-/**
- * @type unknown
- */
-export type ProjectsUpdateEnvVarsStatus409 = unknown;
-
-/**
- * @type unknown
- */
-export type ProjectsUpdateEnvVarsStatus413 = unknown;
-
-/**
- * @type unknown
- */
-export type ProjectsUpdateEnvVarsStatus422 = unknown;
-
-/**
- * @type unknown
- */
-export type ProjectsUpdateEnvVarsStatus429 = unknown;
-
-/**
- * @type unknown
- */
-export type ProjectsUpdateEnvVarsStatus500 = unknown;
-
-/**
- * @type object
- */
-export type ProjectsUpdateEnvVarsRequestConfig = {
-	data?: never | undefined;
+export type ProjectsUpdateEnvVarsPath = {
 	/**
-	 * @type object
-	 */
-	pathParams: {
-		projectId: ProjectsUpdateEnvVarsPathProjectId;
-	};
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				decrypted?: ProjectsUpdateEnvVarsQueryDecrypted | undefined;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
-	/**
+	 * @description The unique identifier of the project whose environment variables should be updated.
 	 * @type string
 	 */
-	url: `/projects/${string}/env-vars`;
+	projectId: string;
 };
 
-/**
- * @type object
- */
+export const projectsUpdateEnvVarsDecrypted = {
+	true: "true",
+	false: "false",
+} as const;
+
+export type ProjectsUpdateEnvVarsDecryptedKey =
+	(typeof projectsUpdateEnvVarsDecrypted)[keyof typeof projectsUpdateEnvVarsDecrypted];
+
+export type ProjectsUpdateEnvVarsQuery = {
+	/**
+	 * @description Whether to return decrypted values. Defaults to false (encrypted).
+	 * @type string | undefined
+	 */
+	decrypted?: ProjectsUpdateEnvVarsDecryptedKey | undefined;
+};
+
+export type ProjectsUpdateEnvVarsStatus200 = unknown;
+
+export type ProjectsUpdateEnvVarsStatus401 = unknown;
+
+export type ProjectsUpdateEnvVarsStatus403 = unknown;
+
+export type ProjectsUpdateEnvVarsStatus404 = unknown;
+
+export type ProjectsUpdateEnvVarsStatus409 = unknown;
+
+export type ProjectsUpdateEnvVarsStatus413 = unknown;
+
+export type ProjectsUpdateEnvVarsStatus422 = unknown;
+
+export type ProjectsUpdateEnvVarsStatus429 = unknown;
+
+export type ProjectsUpdateEnvVarsStatus500 = unknown;
+
+export type ProjectsUpdateEnvVarsOptions = {
+	body?: never | undefined;
+	path: ProjectsUpdateEnvVarsPath;
+	query?: ProjectsUpdateEnvVarsQuery | undefined;
+	headers?: never | undefined;
+};
+
 export type ProjectsUpdateEnvVarsResponses = {
 	"200": ProjectsUpdateEnvVarsStatus200;
 	"401": ProjectsUpdateEnvVarsStatus401;
@@ -8363,79 +5755,39 @@ export type ProjectsUpdateEnvVarsResponse =
 	| ProjectsUpdateEnvVarsStatus429
 	| ProjectsUpdateEnvVarsStatus500;
 
-/**
- * @description The unique identifier of the project whose environment variables should be deleted.
- * @type string
- */
-export type ProjectsDeleteEnvVarsPathProjectId = string;
-
-/**
- * @type unknown
- */
-export type ProjectsDeleteEnvVarsStatus200 = unknown;
-
-/**
- * @type unknown
- */
-export type ProjectsDeleteEnvVarsStatus401 = unknown;
-
-/**
- * @type unknown
- */
-export type ProjectsDeleteEnvVarsStatus403 = unknown;
-
-/**
- * @type unknown
- */
-export type ProjectsDeleteEnvVarsStatus404 = unknown;
-
-/**
- * @type unknown
- */
-export type ProjectsDeleteEnvVarsStatus409 = unknown;
-
-/**
- * @type unknown
- */
-export type ProjectsDeleteEnvVarsStatus413 = unknown;
-
-/**
- * @type unknown
- */
-export type ProjectsDeleteEnvVarsStatus422 = unknown;
-
-/**
- * @type unknown
- */
-export type ProjectsDeleteEnvVarsStatus429 = unknown;
-
-/**
- * @type unknown
- */
-export type ProjectsDeleteEnvVarsStatus500 = unknown;
-
-/**
- * @type object
- */
-export type ProjectsDeleteEnvVarsRequestConfig = {
-	data?: never | undefined;
+export type ProjectsDeleteEnvVarsPath = {
 	/**
-	 * @type object
-	 */
-	pathParams: {
-		projectId: ProjectsDeleteEnvVarsPathProjectId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
+	 * @description The unique identifier of the project whose environment variables should be deleted.
 	 * @type string
 	 */
-	url: `/projects/${string}/env-vars/delete`;
+	projectId: string;
 };
 
-/**
- * @type object
- */
+export type ProjectsDeleteEnvVarsStatus200 = unknown;
+
+export type ProjectsDeleteEnvVarsStatus401 = unknown;
+
+export type ProjectsDeleteEnvVarsStatus403 = unknown;
+
+export type ProjectsDeleteEnvVarsStatus404 = unknown;
+
+export type ProjectsDeleteEnvVarsStatus409 = unknown;
+
+export type ProjectsDeleteEnvVarsStatus413 = unknown;
+
+export type ProjectsDeleteEnvVarsStatus422 = unknown;
+
+export type ProjectsDeleteEnvVarsStatus429 = unknown;
+
+export type ProjectsDeleteEnvVarsStatus500 = unknown;
+
+export type ProjectsDeleteEnvVarsOptions = {
+	body?: never | undefined;
+	path: ProjectsDeleteEnvVarsPath;
+	query?: never | undefined;
+	headers?: never | undefined;
+};
+
 export type ProjectsDeleteEnvVarsResponses = {
 	"200": ProjectsDeleteEnvVarsStatus200;
 	"401": ProjectsDeleteEnvVarsStatus401;
@@ -8462,99 +5814,60 @@ export type ProjectsDeleteEnvVarsResponse =
 	| ProjectsDeleteEnvVarsStatus429
 	| ProjectsDeleteEnvVarsStatus500;
 
-/**
- * @description The unique identifier of the project that owns the environment variable.
- * @type string
- */
-export type ProjectsGetEnvVarPathProjectId = string;
-
-/**
- * @description The unique identifier of the environment variable to retrieve.
- * @type string
- */
-export type ProjectsGetEnvVarPathEnvironmentVariableId = string;
-
-/**
- * @description Whether to return decrypted values. Defaults to false (encrypted).
- * @type string | undefined
- */
-export type ProjectsGetEnvVarQueryDecrypted = ("true" | "false") | undefined;
-
-/**
- * @type unknown
- */
-export type ProjectsGetEnvVarStatus200 = unknown;
-
-/**
- * @type unknown
- */
-export type ProjectsGetEnvVarStatus401 = unknown;
-
-/**
- * @type unknown
- */
-export type ProjectsGetEnvVarStatus403 = unknown;
-
-/**
- * @type unknown
- */
-export type ProjectsGetEnvVarStatus404 = unknown;
-
-/**
- * @type unknown
- */
-export type ProjectsGetEnvVarStatus409 = unknown;
-
-/**
- * @type unknown
- */
-export type ProjectsGetEnvVarStatus413 = unknown;
-
-/**
- * @type unknown
- */
-export type ProjectsGetEnvVarStatus422 = unknown;
-
-/**
- * @type unknown
- */
-export type ProjectsGetEnvVarStatus429 = unknown;
-
-/**
- * @type unknown
- */
-export type ProjectsGetEnvVarStatus500 = unknown;
-
-/**
- * @type object
- */
-export type ProjectsGetEnvVarRequestConfig = {
-	data?: never | undefined;
+export type ProjectsGetEnvVarPath = {
 	/**
-	 * @type object
-	 */
-	pathParams: {
-		projectId: ProjectsGetEnvVarPathProjectId;
-		environmentVariableId: ProjectsGetEnvVarPathEnvironmentVariableId;
-	};
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				decrypted?: ProjectsGetEnvVarQueryDecrypted | undefined;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
-	/**
+	 * @description The unique identifier of the project that owns the environment variable.
 	 * @type string
 	 */
-	url: `/projects/${string}/env-vars/${string}`;
+	projectId: string;
+	/**
+	 * @description The unique identifier of the environment variable to retrieve.
+	 * @type string
+	 */
+	environmentVariableId: string;
 };
 
-/**
- * @type object
- */
+export const projectsGetEnvVarDecrypted = {
+	true: "true",
+	false: "false",
+} as const;
+
+export type ProjectsGetEnvVarDecryptedKey =
+	(typeof projectsGetEnvVarDecrypted)[keyof typeof projectsGetEnvVarDecrypted];
+
+export type ProjectsGetEnvVarQuery = {
+	/**
+	 * @description Whether to return decrypted values. Defaults to false (encrypted).
+	 * @type string | undefined
+	 */
+	decrypted?: ProjectsGetEnvVarDecryptedKey | undefined;
+};
+
+export type ProjectsGetEnvVarStatus200 = unknown;
+
+export type ProjectsGetEnvVarStatus401 = unknown;
+
+export type ProjectsGetEnvVarStatus403 = unknown;
+
+export type ProjectsGetEnvVarStatus404 = unknown;
+
+export type ProjectsGetEnvVarStatus409 = unknown;
+
+export type ProjectsGetEnvVarStatus413 = unknown;
+
+export type ProjectsGetEnvVarStatus422 = unknown;
+
+export type ProjectsGetEnvVarStatus429 = unknown;
+
+export type ProjectsGetEnvVarStatus500 = unknown;
+
+export type ProjectsGetEnvVarOptions = {
+	body?: never | undefined;
+	path: ProjectsGetEnvVarPath;
+	query?: ProjectsGetEnvVarQuery | undefined;
+	headers?: never | undefined;
+};
+
 export type ProjectsGetEnvVarResponses = {
 	"200": ProjectsGetEnvVarStatus200;
 	"401": ProjectsGetEnvVarStatus401;
@@ -8581,81 +5894,39 @@ export type ProjectsGetEnvVarResponse =
 	| ProjectsGetEnvVarStatus429
 	| ProjectsGetEnvVarStatus500;
 
-/**
- * @description The context or namespace to check rate limits for (e.g., a project slug or feature area).
- * @type string | undefined
- */
-export type RateLimitsFindQueryScope = string | undefined;
-
-/**
- * @type unknown
- */
-export type RateLimitsFindStatus200 = unknown;
-
-/**
- * @type unknown
- */
-export type RateLimitsFindStatus401 = unknown;
-
-/**
- * @type unknown
- */
-export type RateLimitsFindStatus403 = unknown;
-
-/**
- * @type unknown
- */
-export type RateLimitsFindStatus404 = unknown;
-
-/**
- * @type unknown
- */
-export type RateLimitsFindStatus409 = unknown;
-
-/**
- * @type unknown
- */
-export type RateLimitsFindStatus413 = unknown;
-
-/**
- * @type unknown
- */
-export type RateLimitsFindStatus422 = unknown;
-
-/**
- * @type unknown
- */
-export type RateLimitsFindStatus429 = unknown;
-
-/**
- * @type unknown
- */
-export type RateLimitsFindStatus500 = unknown;
-
-/**
- * @type object
- */
-export type RateLimitsFindRequestConfig = {
-	data?: never | undefined;
-	pathParams?: never | undefined;
+export type RateLimitsFindQuery = {
 	/**
-	 * @type object | undefined
+	 * @description The context or namespace to check rate limits for (e.g., a project slug or feature area).
+	 * @type string | undefined
 	 */
-	queryParams?:
-		| {
-				scope?: RateLimitsFindQueryScope | undefined;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: "/rate-limits";
+	scope?: string | undefined;
 };
 
-/**
- * @type object
- */
+export type RateLimitsFindStatus200 = unknown;
+
+export type RateLimitsFindStatus401 = unknown;
+
+export type RateLimitsFindStatus403 = unknown;
+
+export type RateLimitsFindStatus404 = unknown;
+
+export type RateLimitsFindStatus409 = unknown;
+
+export type RateLimitsFindStatus413 = unknown;
+
+export type RateLimitsFindStatus422 = unknown;
+
+export type RateLimitsFindStatus429 = unknown;
+
+export type RateLimitsFindStatus500 = unknown;
+
+export type RateLimitsFindOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query?: RateLimitsFindQuery | undefined;
+	headers?: never | undefined;
+};
+
 export type RateLimitsFindResponses = {
 	"200": RateLimitsFindStatus200;
 	"401": RateLimitsFindStatus401;
@@ -8682,68 +5953,31 @@ export type RateLimitsFindResponse =
 	| RateLimitsFindStatus429
 	| RateLimitsFindStatus500;
 
-/**
- * @type unknown
- */
 export type UserGetStatus200 = unknown;
 
-/**
- * @type unknown
- */
 export type UserGetStatus401 = unknown;
 
-/**
- * @type unknown
- */
 export type UserGetStatus403 = unknown;
 
-/**
- * @type unknown
- */
 export type UserGetStatus404 = unknown;
 
-/**
- * @type unknown
- */
 export type UserGetStatus409 = unknown;
 
-/**
- * @type unknown
- */
 export type UserGetStatus413 = unknown;
 
-/**
- * @type unknown
- */
 export type UserGetStatus422 = unknown;
 
-/**
- * @type unknown
- */
 export type UserGetStatus429 = unknown;
 
-/**
- * @type unknown
- */
 export type UserGetStatus500 = unknown;
 
-/**
- * @type object
- */
-export type UserGetRequestConfig = {
-	data?: never | undefined;
-	pathParams?: never | undefined;
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: "/user";
+export type UserGetOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type UserGetResponses = {
 	"200": UserGetStatus200;
 	"401": UserGetStatus401;
@@ -8770,81 +6004,39 @@ export type UserGetResponse =
 	| UserGetStatus429
 	| UserGetStatus500;
 
-/**
- * @description Filters billing data by a specific scope, such as a project ID or slug.
- * @type string | undefined
- */
-export type UserGetBillingQueryScope = string | undefined;
-
-/**
- * @type unknown
- */
-export type UserGetBillingStatus200 = unknown;
-
-/**
- * @type unknown
- */
-export type UserGetBillingStatus401 = unknown;
-
-/**
- * @type unknown
- */
-export type UserGetBillingStatus403 = unknown;
-
-/**
- * @type unknown
- */
-export type UserGetBillingStatus404 = unknown;
-
-/**
- * @type unknown
- */
-export type UserGetBillingStatus409 = unknown;
-
-/**
- * @type unknown
- */
-export type UserGetBillingStatus413 = unknown;
-
-/**
- * @type unknown
- */
-export type UserGetBillingStatus422 = unknown;
-
-/**
- * @type unknown
- */
-export type UserGetBillingStatus429 = unknown;
-
-/**
- * @type unknown
- */
-export type UserGetBillingStatus500 = unknown;
-
-/**
- * @type object
- */
-export type UserGetBillingRequestConfig = {
-	data?: never | undefined;
-	pathParams?: never | undefined;
+export type UserGetBillingQuery = {
 	/**
-	 * @type object | undefined
+	 * @description Filters billing data by a specific scope, such as a project ID or slug.
+	 * @type string | undefined
 	 */
-	queryParams?:
-		| {
-				scope?: UserGetBillingQueryScope | undefined;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: "/user/billing";
+	scope?: string | undefined;
 };
 
-/**
- * @type object
- */
+export type UserGetBillingStatus200 = unknown;
+
+export type UserGetBillingStatus401 = unknown;
+
+export type UserGetBillingStatus403 = unknown;
+
+export type UserGetBillingStatus404 = unknown;
+
+export type UserGetBillingStatus409 = unknown;
+
+export type UserGetBillingStatus413 = unknown;
+
+export type UserGetBillingStatus422 = unknown;
+
+export type UserGetBillingStatus429 = unknown;
+
+export type UserGetBillingStatus500 = unknown;
+
+export type UserGetBillingOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query?: UserGetBillingQuery | undefined;
+	headers?: never | undefined;
+};
+
 export type UserGetBillingResponses = {
 	"200": UserGetBillingStatus200;
 	"401": UserGetBillingStatus401;
@@ -8871,68 +6063,31 @@ export type UserGetBillingResponse =
 	| UserGetBillingStatus429
 	| UserGetBillingStatus500;
 
-/**
- * @type unknown
- */
 export type UserGetPlanStatus200 = unknown;
 
-/**
- * @type unknown
- */
 export type UserGetPlanStatus401 = unknown;
 
-/**
- * @type unknown
- */
 export type UserGetPlanStatus403 = unknown;
 
-/**
- * @type unknown
- */
 export type UserGetPlanStatus404 = unknown;
 
-/**
- * @type unknown
- */
 export type UserGetPlanStatus409 = unknown;
 
-/**
- * @type unknown
- */
 export type UserGetPlanStatus413 = unknown;
 
-/**
- * @type unknown
- */
 export type UserGetPlanStatus422 = unknown;
 
-/**
- * @type unknown
- */
 export type UserGetPlanStatus429 = unknown;
 
-/**
- * @type unknown
- */
 export type UserGetPlanStatus500 = unknown;
 
-/**
- * @type object
- */
-export type UserGetPlanRequestConfig = {
-	data?: never | undefined;
-	pathParams?: never | undefined;
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: "/user/plan";
+export type UserGetPlanOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type UserGetPlanResponses = {
 	"200": UserGetPlanStatus200;
 	"401": UserGetPlanStatus401;
@@ -8959,68 +6114,31 @@ export type UserGetPlanResponse =
 	| UserGetPlanStatus429
 	| UserGetPlanStatus500;
 
-/**
- * @type unknown
- */
 export type UserGetScopesStatus200 = unknown;
 
-/**
- * @type unknown
- */
 export type UserGetScopesStatus401 = unknown;
 
-/**
- * @type unknown
- */
 export type UserGetScopesStatus403 = unknown;
 
-/**
- * @type unknown
- */
 export type UserGetScopesStatus404 = unknown;
 
-/**
- * @type unknown
- */
 export type UserGetScopesStatus409 = unknown;
 
-/**
- * @type unknown
- */
 export type UserGetScopesStatus413 = unknown;
 
-/**
- * @type unknown
- */
 export type UserGetScopesStatus422 = unknown;
 
-/**
- * @type unknown
- */
 export type UserGetScopesStatus429 = unknown;
 
-/**
- * @type unknown
- */
 export type UserGetScopesStatus500 = unknown;
 
-/**
- * @type object
- */
-export type UserGetScopesRequestConfig = {
-	data?: never | undefined;
-	pathParams?: never | undefined;
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: "/user/scopes";
+export type UserGetScopesOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type UserGetScopesResponses = {
 	"200": UserGetScopesStatus200;
 	"401": UserGetScopesStatus401;
@@ -9047,86 +6165,44 @@ export type UserGetScopesResponse =
 	| UserGetScopesStatus429
 	| UserGetScopesStatus500;
 
-/**
- * @description The unique identifier of the chat containing the version to restore.
- * @type string
- */
-export type ChatsRestorePathChatId = string;
-
-/**
- * @description The unique identifier of the version to restore.
- * @type string
- */
-export type ChatsRestorePathVersionId = string;
-
-/**
- * @type unknown
- */
-export type ChatsRestoreStatus200 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsRestoreStatus401 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsRestoreStatus403 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsRestoreStatus404 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsRestoreStatus409 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsRestoreStatus413 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsRestoreStatus422 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsRestoreStatus429 = unknown;
-
-/**
- * @type unknown
- */
-export type ChatsRestoreStatus500 = unknown;
-
-/**
- * @type object
- */
-export type ChatsRestoreRequestConfig = {
-	data?: never | undefined;
+export type ChatsRestorePath = {
 	/**
-	 * @type object
-	 */
-	pathParams: {
-		chatId: ChatsRestorePathChatId;
-		versionId: ChatsRestorePathVersionId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
+	 * @description The unique identifier of the chat containing the version to restore.
 	 * @type string
 	 */
-	url: `/chats/${string}/versions/${string}/restore`;
+	chatId: string;
+	/**
+	 * @description The unique identifier of the version to restore.
+	 * @type string
+	 */
+	versionId: string;
 };
 
-/**
- * @type object
- */
+export type ChatsRestoreStatus200 = unknown;
+
+export type ChatsRestoreStatus401 = unknown;
+
+export type ChatsRestoreStatus403 = unknown;
+
+export type ChatsRestoreStatus404 = unknown;
+
+export type ChatsRestoreStatus409 = unknown;
+
+export type ChatsRestoreStatus413 = unknown;
+
+export type ChatsRestoreStatus422 = unknown;
+
+export type ChatsRestoreStatus429 = unknown;
+
+export type ChatsRestoreStatus500 = unknown;
+
+export type ChatsRestoreOptions = {
+	body?: never | undefined;
+	path: ChatsRestorePath;
+	query?: never | undefined;
+	headers?: never | undefined;
+};
+
 export type ChatsRestoreResponses = {
 	"200": ChatsRestoreStatus200;
 	"401": ChatsRestoreStatus401;
@@ -9153,126 +6229,76 @@ export type ChatsRestoreResponse =
 	| ChatsRestoreStatus429
 	| ChatsRestoreStatus500;
 
-/**
- * @description Query parameter \"startDate\"
- * @type string | undefined
- */
-export type ReportsGetUsageQueryStartDate = string | undefined;
-
-/**
- * @description Query parameter \"endDate\"
- * @type string | undefined
- */
-export type ReportsGetUsageQueryEndDate = string | undefined;
-
-/**
- * @description Query parameter \"chatId\"
- * @type string | undefined
- */
-export type ReportsGetUsageQueryChatId = string | undefined;
-
-/**
- * @description Query parameter \"messageId\"
- * @type string | undefined
- */
-export type ReportsGetUsageQueryMessageId = string | undefined;
-
-/**
- * @description Query parameter \"userId\"
- * @type string | undefined
- */
-export type ReportsGetUsageQueryUserId = string | undefined;
-
-/**
- * @description Bounds the raw billing transactions scanned per ledger group and page. A page can contain more events than this value (large teams are scanned in parallel ledger groups), and a filtered page (chatId, userId, or messageId) can contain fewer or zero events while more data remains. Events are sorted newest-first within a page but not across pages on large teams. Always paginate with `pagination.hasMore` and `pagination.nextCursor` rather than stopping on an empty page.
- * @minLength 1
- * @maxLength 150
- * @default 20
- * @type number | undefined
- */
-export type ReportsGetUsageQueryLimit = number | undefined;
-
-/**
- * @description Base64 encoded cursor containing pagination data
- * @type string | undefined
- */
-export type ReportsGetUsageQueryCursor = string | undefined;
-
-/**
- * @type unknown
- */
-export type ReportsGetUsageStatus200 = unknown;
-
-/**
- * @type unknown
- */
-export type ReportsGetUsageStatus401 = unknown;
-
-/**
- * @type unknown
- */
-export type ReportsGetUsageStatus403 = unknown;
-
-/**
- * @type unknown
- */
-export type ReportsGetUsageStatus404 = unknown;
-
-/**
- * @type unknown
- */
-export type ReportsGetUsageStatus409 = unknown;
-
-/**
- * @type unknown
- */
-export type ReportsGetUsageStatus413 = unknown;
-
-/**
- * @type unknown
- */
-export type ReportsGetUsageStatus422 = unknown;
-
-/**
- * @type unknown
- */
-export type ReportsGetUsageStatus429 = unknown;
-
-/**
- * @type unknown
- */
-export type ReportsGetUsageStatus500 = unknown;
-
-/**
- * @type object
- */
-export type ReportsGetUsageRequestConfig = {
-	data?: never | undefined;
-	pathParams?: never | undefined;
+export type ReportsGetUsageQuery = {
 	/**
-	 * @type object | undefined
+	 * @description Query parameter \"startDate\"
+	 *
+	 * Format: `date-time`
+	 * @type string | undefined
 	 */
-	queryParams?:
-		| {
-				startDate?: ReportsGetUsageQueryStartDate | undefined;
-				endDate?: ReportsGetUsageQueryEndDate | undefined;
-				chatId?: ReportsGetUsageQueryChatId | undefined;
-				messageId?: ReportsGetUsageQueryMessageId | undefined;
-				userId?: ReportsGetUsageQueryUserId | undefined;
-				limit?: ReportsGetUsageQueryLimit | undefined;
-				cursor?: ReportsGetUsageQueryCursor | undefined;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
+	startDate?: string | undefined;
 	/**
-	 * @type string
+	 * @description Query parameter \"endDate\"
+	 *
+	 * Format: `date-time`
+	 * @type string | undefined
 	 */
-	url: "/reports/usage";
+	endDate?: string | undefined;
+	/**
+	 * @description Query parameter \"chatId\"
+	 * @type string | undefined
+	 */
+	chatId?: string | undefined;
+	/**
+	 * @description Query parameter \"messageId\"
+	 * @type string | undefined
+	 */
+	messageId?: string | undefined;
+	/**
+	 * @description Query parameter \"userId\"
+	 * @type string | undefined
+	 */
+	userId?: string | undefined;
+	/**
+	 * @description Bounds the raw billing transactions scanned per ledger group and page. A page can contain more events than this value (large teams are scanned in parallel ledger groups), and a filtered page (chatId, userId, or messageId) can contain fewer or zero events while more data remains. Events are sorted newest-first within a page but not across pages on large teams. Always paginate with `pagination.hasMore` and `pagination.nextCursor` rather than stopping on an empty page.
+	 * @minLength 1
+	 * @maxLength 150
+	 * @default 20
+	 * @type number | undefined
+	 */
+	limit?: number | undefined;
+	/**
+	 * @description Base64 encoded cursor containing pagination data
+	 * @type string | undefined
+	 */
+	cursor?: string | undefined;
 };
 
-/**
- * @type object
- */
+export type ReportsGetUsageStatus200 = unknown;
+
+export type ReportsGetUsageStatus401 = unknown;
+
+export type ReportsGetUsageStatus403 = unknown;
+
+export type ReportsGetUsageStatus404 = unknown;
+
+export type ReportsGetUsageStatus409 = unknown;
+
+export type ReportsGetUsageStatus413 = unknown;
+
+export type ReportsGetUsageStatus422 = unknown;
+
+export type ReportsGetUsageStatus429 = unknown;
+
+export type ReportsGetUsageStatus500 = unknown;
+
+export type ReportsGetUsageOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query?: ReportsGetUsageQuery | undefined;
+	headers?: never | undefined;
+};
+
 export type ReportsGetUsageResponses = {
 	"200": ReportsGetUsageStatus200;
 	"401": ReportsGetUsageStatus401;
@@ -9299,105 +6325,61 @@ export type ReportsGetUsageResponse =
 	| ReportsGetUsageStatus429
 	| ReportsGetUsageStatus500;
 
-/**
- * @description Inclusive start datetime filter.
- * @type string | undefined
- */
-export type ReportsGetAIUsageQueryStart = string | undefined;
-
-/**
- * @description Exclusive end datetime filter.
- * @type string | undefined
- */
-export type ReportsGetAIUsageQueryEnd = string | undefined;
-
-/**
- * @description Opaque cursor returned by a previous request for forward pagination.
- * @type string | undefined
- */
-export type ReportsGetAIUsageQueryCursor = string | undefined;
-
-/**
- * @description Maximum number of rows to return.
- * @minLength 1
- * @maxLength 5000
- * @default 1000
- * @type integer | undefined
- */
-export type ReportsGetAIUsageQueryLimit = number | undefined;
-
-/**
- * @type unknown
- */
-export type ReportsGetAIUsageStatus200 = unknown;
-
-/**
- * @type unknown
- */
-export type ReportsGetAIUsageStatus401 = unknown;
-
-/**
- * @type unknown
- */
-export type ReportsGetAIUsageStatus403 = unknown;
-
-/**
- * @type unknown
- */
-export type ReportsGetAIUsageStatus404 = unknown;
-
-/**
- * @type unknown
- */
-export type ReportsGetAIUsageStatus409 = unknown;
-
-/**
- * @type unknown
- */
-export type ReportsGetAIUsageStatus413 = unknown;
-
-/**
- * @type unknown
- */
-export type ReportsGetAIUsageStatus422 = unknown;
-
-/**
- * @type unknown
- */
-export type ReportsGetAIUsageStatus429 = unknown;
-
-/**
- * @type unknown
- */
-export type ReportsGetAIUsageStatus500 = unknown;
-
-/**
- * @type object
- */
-export type ReportsGetAIUsageRequestConfig = {
-	data?: never | undefined;
-	pathParams?: never | undefined;
+export type ReportsGetAIUsageQuery = {
 	/**
-	 * @type object | undefined
+	 * @description Inclusive start datetime filter.
+	 *
+	 * Format: `date-time`
+	 * @type string | undefined
 	 */
-	queryParams?:
-		| {
-				start?: ReportsGetAIUsageQueryStart | undefined;
-				end?: ReportsGetAIUsageQueryEnd | undefined;
-				cursor?: ReportsGetAIUsageQueryCursor | undefined;
-				limit?: ReportsGetAIUsageQueryLimit | undefined;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
+	start?: string | undefined;
 	/**
-	 * @type string
+	 * @description Exclusive end datetime filter.
+	 *
+	 * Format: `date-time`
+	 * @type string | undefined
 	 */
-	url: "/reports/usage/ai";
+	end?: string | undefined;
+	/**
+	 * @description Opaque cursor returned by a previous request for forward pagination.
+	 * @type string | undefined
+	 */
+	cursor?: string | undefined;
+	/**
+	 * @description Maximum number of rows to return.
+	 * @minLength 1
+	 * @maxLength 5000
+	 * @default 1000
+	 * @type integer | undefined
+	 */
+	limit?: number | undefined;
 };
 
-/**
- * @type object
- */
+export type ReportsGetAIUsageStatus200 = unknown;
+
+export type ReportsGetAIUsageStatus401 = unknown;
+
+export type ReportsGetAIUsageStatus403 = unknown;
+
+export type ReportsGetAIUsageStatus404 = unknown;
+
+export type ReportsGetAIUsageStatus409 = unknown;
+
+export type ReportsGetAIUsageStatus413 = unknown;
+
+export type ReportsGetAIUsageStatus422 = unknown;
+
+export type ReportsGetAIUsageStatus429 = unknown;
+
+export type ReportsGetAIUsageStatus500 = unknown;
+
+export type ReportsGetAIUsageOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query?: ReportsGetAIUsageQuery | undefined;
+	headers?: never | undefined;
+};
+
 export type ReportsGetAIUsageResponses = {
 	"200": ReportsGetAIUsageStatus200;
 	"401": ReportsGetAIUsageStatus401;
@@ -9424,88 +6406,48 @@ export type ReportsGetAIUsageResponse =
 	| ReportsGetAIUsageStatus429
 	| ReportsGetAIUsageStatus500;
 
-/**
- * @description Inclusive ISO timestamp lower bound for activity.
- * @type string | undefined
- */
-export type ReportsGetUserActivityQueryStartDate = string | undefined;
-
-/**
- * @description Exclusive ISO timestamp upper bound for activity. Pass the end of the last day (e.g. 23:59:59.999) to include it.
- * @type string | undefined
- */
-export type ReportsGetUserActivityQueryEndDate = string | undefined;
-
-/**
- * @type unknown
- */
-export type ReportsGetUserActivityStatus200 = unknown;
-
-/**
- * @type unknown
- */
-export type ReportsGetUserActivityStatus401 = unknown;
-
-/**
- * @type unknown
- */
-export type ReportsGetUserActivityStatus403 = unknown;
-
-/**
- * @type unknown
- */
-export type ReportsGetUserActivityStatus404 = unknown;
-
-/**
- * @type unknown
- */
-export type ReportsGetUserActivityStatus409 = unknown;
-
-/**
- * @type unknown
- */
-export type ReportsGetUserActivityStatus413 = unknown;
-
-/**
- * @type unknown
- */
-export type ReportsGetUserActivityStatus422 = unknown;
-
-/**
- * @type unknown
- */
-export type ReportsGetUserActivityStatus429 = unknown;
-
-/**
- * @type unknown
- */
-export type ReportsGetUserActivityStatus500 = unknown;
-
-/**
- * @type object
- */
-export type ReportsGetUserActivityRequestConfig = {
-	data?: never | undefined;
-	pathParams?: never | undefined;
+export type ReportsGetUserActivityQuery = {
 	/**
-	 * @type object | undefined
+	 * @description Inclusive ISO timestamp lower bound for activity.
+	 *
+	 * Format: `date-time`
+	 * @type string | undefined
 	 */
-	queryParams?:
-		| {
-				startDate?: ReportsGetUserActivityQueryStartDate | undefined;
-				endDate?: ReportsGetUserActivityQueryEndDate | undefined;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
+	startDate?: string | undefined;
 	/**
-	 * @type string
+	 * @description Exclusive ISO timestamp upper bound for activity. Pass the end of the last day (e.g. 23:59:59.999) to include it.
+	 *
+	 * Format: `date-time`
+	 * @type string | undefined
 	 */
-	url: "/reports/user-activity";
+	endDate?: string | undefined;
 };
 
-/**
- * @type object
- */
+export type ReportsGetUserActivityStatus200 = unknown;
+
+export type ReportsGetUserActivityStatus401 = unknown;
+
+export type ReportsGetUserActivityStatus403 = unknown;
+
+export type ReportsGetUserActivityStatus404 = unknown;
+
+export type ReportsGetUserActivityStatus409 = unknown;
+
+export type ReportsGetUserActivityStatus413 = unknown;
+
+export type ReportsGetUserActivityStatus422 = unknown;
+
+export type ReportsGetUserActivityStatus429 = unknown;
+
+export type ReportsGetUserActivityStatus500 = unknown;
+
+export type ReportsGetUserActivityOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query?: ReportsGetUserActivityQuery | undefined;
+	headers?: never | undefined;
+};
+
 export type ReportsGetUserActivityResponses = {
 	"200": ReportsGetUserActivityStatus200;
 	"401": ReportsGetUserActivityStatus401;
@@ -9532,68 +6474,31 @@ export type ReportsGetUserActivityResponse =
 	| ReportsGetUserActivityStatus429
 	| ReportsGetUserActivityStatus500;
 
-/**
- * @type unknown
- */
 export type McpServersFindStatus200 = unknown;
 
-/**
- * @type unknown
- */
 export type McpServersFindStatus401 = unknown;
 
-/**
- * @type unknown
- */
 export type McpServersFindStatus403 = unknown;
 
-/**
- * @type unknown
- */
 export type McpServersFindStatus404 = unknown;
 
-/**
- * @type unknown
- */
 export type McpServersFindStatus409 = unknown;
 
-/**
- * @type unknown
- */
 export type McpServersFindStatus413 = unknown;
 
-/**
- * @type unknown
- */
 export type McpServersFindStatus422 = unknown;
 
-/**
- * @type unknown
- */
 export type McpServersFindStatus429 = unknown;
 
-/**
- * @type unknown
- */
 export type McpServersFindStatus500 = unknown;
 
-/**
- * @type object
- */
-export type McpServersFindRequestConfig = {
-	data?: never | undefined;
-	pathParams?: never | undefined;
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: "/mcp-servers";
+export type McpServersFindOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type McpServersFindResponses = {
 	"200": McpServersFindStatus200;
 	"401": McpServersFindStatus401;
@@ -9620,68 +6525,31 @@ export type McpServersFindResponse =
 	| McpServersFindStatus429
 	| McpServersFindStatus500;
 
-/**
- * @type unknown
- */
 export type McpServersCreateStatus200 = unknown;
 
-/**
- * @type unknown
- */
 export type McpServersCreateStatus401 = unknown;
 
-/**
- * @type unknown
- */
 export type McpServersCreateStatus403 = unknown;
 
-/**
- * @type unknown
- */
 export type McpServersCreateStatus404 = unknown;
 
-/**
- * @type unknown
- */
 export type McpServersCreateStatus409 = unknown;
 
-/**
- * @type unknown
- */
 export type McpServersCreateStatus413 = unknown;
 
-/**
- * @type unknown
- */
 export type McpServersCreateStatus422 = unknown;
 
-/**
- * @type unknown
- */
 export type McpServersCreateStatus429 = unknown;
 
-/**
- * @type unknown
- */
 export type McpServersCreateStatus500 = unknown;
 
-/**
- * @type object
- */
-export type McpServersCreateRequestConfig = {
-	data?: never | undefined;
-	pathParams?: never | undefined;
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: "/mcp-servers";
+export type McpServersCreateOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type McpServersCreateResponses = {
 	"200": McpServersCreateStatus200;
 	"401": McpServersCreateStatus401;
@@ -9708,79 +6576,39 @@ export type McpServersCreateResponse =
 	| McpServersCreateStatus429
 	| McpServersCreateStatus500;
 
-/**
- * @description The ID of the MCP server to retrieve.
- * @type string
- */
-export type McpServersGetByIdPathMcpServerId = string;
-
-/**
- * @type unknown
- */
-export type McpServersGetByIdStatus200 = unknown;
-
-/**
- * @type unknown
- */
-export type McpServersGetByIdStatus401 = unknown;
-
-/**
- * @type unknown
- */
-export type McpServersGetByIdStatus403 = unknown;
-
-/**
- * @type unknown
- */
-export type McpServersGetByIdStatus404 = unknown;
-
-/**
- * @type unknown
- */
-export type McpServersGetByIdStatus409 = unknown;
-
-/**
- * @type unknown
- */
-export type McpServersGetByIdStatus413 = unknown;
-
-/**
- * @type unknown
- */
-export type McpServersGetByIdStatus422 = unknown;
-
-/**
- * @type unknown
- */
-export type McpServersGetByIdStatus429 = unknown;
-
-/**
- * @type unknown
- */
-export type McpServersGetByIdStatus500 = unknown;
-
-/**
- * @type object
- */
-export type McpServersGetByIdRequestConfig = {
-	data?: never | undefined;
+export type McpServersGetByIdPath = {
 	/**
-	 * @type object
-	 */
-	pathParams: {
-		mcpServerId: McpServersGetByIdPathMcpServerId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
+	 * @description The ID of the MCP server to retrieve.
 	 * @type string
 	 */
-	url: `/mcp-servers/${string}`;
+	mcpServerId: string;
 };
 
-/**
- * @type object
- */
+export type McpServersGetByIdStatus200 = unknown;
+
+export type McpServersGetByIdStatus401 = unknown;
+
+export type McpServersGetByIdStatus403 = unknown;
+
+export type McpServersGetByIdStatus404 = unknown;
+
+export type McpServersGetByIdStatus409 = unknown;
+
+export type McpServersGetByIdStatus413 = unknown;
+
+export type McpServersGetByIdStatus422 = unknown;
+
+export type McpServersGetByIdStatus429 = unknown;
+
+export type McpServersGetByIdStatus500 = unknown;
+
+export type McpServersGetByIdOptions = {
+	body?: never | undefined;
+	path: McpServersGetByIdPath;
+	query?: never | undefined;
+	headers?: never | undefined;
+};
+
 export type McpServersGetByIdResponses = {
 	"200": McpServersGetByIdStatus200;
 	"401": McpServersGetByIdStatus401;
@@ -9807,79 +6635,39 @@ export type McpServersGetByIdResponse =
 	| McpServersGetByIdStatus429
 	| McpServersGetByIdStatus500;
 
-/**
- * @description The ID of the MCP server to update.
- * @type string
- */
-export type McpServersUpdatePathMcpServerId = string;
-
-/**
- * @type unknown
- */
-export type McpServersUpdateStatus200 = unknown;
-
-/**
- * @type unknown
- */
-export type McpServersUpdateStatus401 = unknown;
-
-/**
- * @type unknown
- */
-export type McpServersUpdateStatus403 = unknown;
-
-/**
- * @type unknown
- */
-export type McpServersUpdateStatus404 = unknown;
-
-/**
- * @type unknown
- */
-export type McpServersUpdateStatus409 = unknown;
-
-/**
- * @type unknown
- */
-export type McpServersUpdateStatus413 = unknown;
-
-/**
- * @type unknown
- */
-export type McpServersUpdateStatus422 = unknown;
-
-/**
- * @type unknown
- */
-export type McpServersUpdateStatus429 = unknown;
-
-/**
- * @type unknown
- */
-export type McpServersUpdateStatus500 = unknown;
-
-/**
- * @type object
- */
-export type McpServersUpdateRequestConfig = {
-	data?: never | undefined;
+export type McpServersUpdatePath = {
 	/**
-	 * @type object
-	 */
-	pathParams: {
-		mcpServerId: McpServersUpdatePathMcpServerId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
+	 * @description The ID of the MCP server to update.
 	 * @type string
 	 */
-	url: `/mcp-servers/${string}`;
+	mcpServerId: string;
 };
 
-/**
- * @type object
- */
+export type McpServersUpdateStatus200 = unknown;
+
+export type McpServersUpdateStatus401 = unknown;
+
+export type McpServersUpdateStatus403 = unknown;
+
+export type McpServersUpdateStatus404 = unknown;
+
+export type McpServersUpdateStatus409 = unknown;
+
+export type McpServersUpdateStatus413 = unknown;
+
+export type McpServersUpdateStatus422 = unknown;
+
+export type McpServersUpdateStatus429 = unknown;
+
+export type McpServersUpdateStatus500 = unknown;
+
+export type McpServersUpdateOptions = {
+	body?: never | undefined;
+	path: McpServersUpdatePath;
+	query?: never | undefined;
+	headers?: never | undefined;
+};
+
 export type McpServersUpdateResponses = {
 	"200": McpServersUpdateStatus200;
 	"401": McpServersUpdateStatus401;
@@ -9906,79 +6694,39 @@ export type McpServersUpdateResponse =
 	| McpServersUpdateStatus429
 	| McpServersUpdateStatus500;
 
-/**
- * @description The ID of the MCP server to delete.
- * @type string
- */
-export type McpServersDeletePathMcpServerId = string;
-
-/**
- * @type unknown
- */
-export type McpServersDeleteStatus200 = unknown;
-
-/**
- * @type unknown
- */
-export type McpServersDeleteStatus401 = unknown;
-
-/**
- * @type unknown
- */
-export type McpServersDeleteStatus403 = unknown;
-
-/**
- * @type unknown
- */
-export type McpServersDeleteStatus404 = unknown;
-
-/**
- * @type unknown
- */
-export type McpServersDeleteStatus409 = unknown;
-
-/**
- * @type unknown
- */
-export type McpServersDeleteStatus413 = unknown;
-
-/**
- * @type unknown
- */
-export type McpServersDeleteStatus422 = unknown;
-
-/**
- * @type unknown
- */
-export type McpServersDeleteStatus429 = unknown;
-
-/**
- * @type unknown
- */
-export type McpServersDeleteStatus500 = unknown;
-
-/**
- * @type object
- */
-export type McpServersDeleteRequestConfig = {
-	data?: never | undefined;
+export type McpServersDeletePath = {
 	/**
-	 * @type object
-	 */
-	pathParams: {
-		mcpServerId: McpServersDeletePathMcpServerId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
+	 * @description The ID of the MCP server to delete.
 	 * @type string
 	 */
-	url: `/mcp-servers/${string}`;
+	mcpServerId: string;
 };
 
-/**
- * @type object
- */
+export type McpServersDeleteStatus200 = unknown;
+
+export type McpServersDeleteStatus401 = unknown;
+
+export type McpServersDeleteStatus403 = unknown;
+
+export type McpServersDeleteStatus404 = unknown;
+
+export type McpServersDeleteStatus409 = unknown;
+
+export type McpServersDeleteStatus413 = unknown;
+
+export type McpServersDeleteStatus422 = unknown;
+
+export type McpServersDeleteStatus429 = unknown;
+
+export type McpServersDeleteStatus500 = unknown;
+
+export type McpServersDeleteOptions = {
+	body?: never | undefined;
+	path: McpServersDeletePath;
+	query?: never | undefined;
+	headers?: never | undefined;
+};
+
 export type McpServersDeleteResponses = {
 	"200": McpServersDeleteStatus200;
 	"401": McpServersDeleteStatus401;
@@ -10005,79 +6753,39 @@ export type McpServersDeleteResponse =
 	| McpServersDeleteStatus429
 	| McpServersDeleteStatus500;
 
-/**
- * @description The ID of the OAuth MCP server to authorize.
- * @type string
- */
-export type McpServersCreateOAuthAuthorizationUrlPathMcpServerId = string;
-
-/**
- * @type unknown
- */
-export type McpServersCreateOAuthAuthorizationUrlStatus200 = unknown;
-
-/**
- * @type unknown
- */
-export type McpServersCreateOAuthAuthorizationUrlStatus401 = unknown;
-
-/**
- * @type unknown
- */
-export type McpServersCreateOAuthAuthorizationUrlStatus403 = unknown;
-
-/**
- * @type unknown
- */
-export type McpServersCreateOAuthAuthorizationUrlStatus404 = unknown;
-
-/**
- * @type unknown
- */
-export type McpServersCreateOAuthAuthorizationUrlStatus409 = unknown;
-
-/**
- * @type unknown
- */
-export type McpServersCreateOAuthAuthorizationUrlStatus413 = unknown;
-
-/**
- * @type unknown
- */
-export type McpServersCreateOAuthAuthorizationUrlStatus422 = unknown;
-
-/**
- * @type unknown
- */
-export type McpServersCreateOAuthAuthorizationUrlStatus429 = unknown;
-
-/**
- * @type unknown
- */
-export type McpServersCreateOAuthAuthorizationUrlStatus500 = unknown;
-
-/**
- * @type object
- */
-export type McpServersCreateOAuthAuthorizationUrlRequestConfig = {
-	data?: never | undefined;
+export type McpServersCreateOAuthAuthorizationUrlPath = {
 	/**
-	 * @type object
-	 */
-	pathParams: {
-		mcpServerId: McpServersCreateOAuthAuthorizationUrlPathMcpServerId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
+	 * @description The ID of the OAuth MCP server to authorize.
 	 * @type string
 	 */
-	url: `/mcp-servers/${string}/oauth/authorize`;
+	mcpServerId: string;
 };
 
-/**
- * @type object
- */
+export type McpServersCreateOAuthAuthorizationUrlStatus200 = unknown;
+
+export type McpServersCreateOAuthAuthorizationUrlStatus401 = unknown;
+
+export type McpServersCreateOAuthAuthorizationUrlStatus403 = unknown;
+
+export type McpServersCreateOAuthAuthorizationUrlStatus404 = unknown;
+
+export type McpServersCreateOAuthAuthorizationUrlStatus409 = unknown;
+
+export type McpServersCreateOAuthAuthorizationUrlStatus413 = unknown;
+
+export type McpServersCreateOAuthAuthorizationUrlStatus422 = unknown;
+
+export type McpServersCreateOAuthAuthorizationUrlStatus429 = unknown;
+
+export type McpServersCreateOAuthAuthorizationUrlStatus500 = unknown;
+
+export type McpServersCreateOAuthAuthorizationUrlOptions = {
+	body?: never | undefined;
+	path: McpServersCreateOAuthAuthorizationUrlPath;
+	query?: never | undefined;
+	headers?: never | undefined;
+};
+
 export type McpServersCreateOAuthAuthorizationUrlResponses = {
 	"200": McpServersCreateOAuthAuthorizationUrlStatus200;
 	"401": McpServersCreateOAuthAuthorizationUrlStatus401;

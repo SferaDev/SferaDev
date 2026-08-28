@@ -202,63 +202,71 @@ Only the TypeScript one turns CI red; the `@kubb` one is an unmet peer that no g
 other holds survived. `grep -n "KEEP-BACK" -A6 pnpm-workspace.yaml` and compare each value, then
 verify what actually resolved (an override can defeat a re-pin — see `pin-governance.md`).
 
-The TypeScript hold is still required as of 2026-08-28: bunchee 7.0.1 (still the latest) fails all
-12 package builds on TS 7.0.2 with "Detected TypeScript 7.0.2 … install `@typescript/typescript6`".
-Do not take bunchee's own suggested escape hatch as a weekly fix: adopting `@typescript/typescript6`
-means running the whole repo on TS 7, and **`tsc` is not in CI**, so the bump would be entirely
-unverified. Note `@kubb/plugin-ts` also depends on `typescript: ^6.0.3`.
+**All three of those holds were released on 2026-08-28 (#635)** — TypeScript 7 via the
+`@typescript/typescript6` shim, the `@kubb/*` family to 5.0.3 stable, and `better-auth` to 1.7.2
+with a schema migration. `pin-governance.md` records what each release cost. The *class* below is
+what survives; the specific packages are history.
 
-### A KEEP-BACK on a *set* of packages fragments instead of jumping cleanly
+### A "not all published" family blocks a whole major — check for a local replacement
 
-*Seen 2026-08-28 (#635), the `@kubb/*` family.* Worth its own entry because the symptom is
-different from a single stranded pin: the bot bumped `adapter-oas`/`cli`/`core`/`renderer-jsx`/
-`kubb` to 5.0.2, `plugin-ts` to 5.0.0 and `plugin-zod` to 5.1.0, while **`plugin-client` stayed at
-5.0.0-beta.10** — because `@kubb/plugin-client`'s npm `latest` is still on the 4.x line (4.39.3),
-which is semver-lower than a 5.0.0 prerelease, so `--latest` had nowhere to move it.
+*Seen 2026-08-28 (#635): the `@kubb/*` 5.x migration.*
 
-`@kubb/*` packages depend on each other by **exact** version, and `@kubb/plugin-client@5.0.0-beta.10`
-hard-depends on core/plugin-ts/plugin-zod/renderer-jsx at beta.10 — so the split puts **two
-`@kubb/core` copies** in the tree. `packages/openapi-utils/src/kubb/**` imports types from all of
-them in single files, which is the historical "dual-version resolution" breakage.
+The blocker was one package: `@kubb/plugin-client` never shipped a stable 5.x (npm `latest` is
+still 4.39.3). Holding the whole family on a beta for that is the expensive reading. The cheap one:
+**ask what that package actually did for you.** Here it was a ~35-line plugin shell — the two
+generators it hosted were already ours — so it was replaced by a local `plugin.ts` and the family
+went stable. `xataio/frontend@4c5d294` had solved the same problem the same way.
 
-**The generalisation:** when a keep-back covers a family that must move in lockstep, check *every*
-member of the family, not just the one the comment happens to sit above — and make the comment name
-the whole set. A partially-bumped set is easy to miss because each individual line looks plausible.
+The v5 restructure also collapsed the family behind one entry point, which is the shape to expect
+from a monorepo major:
+
+| v4 / beta | v5 stable |
+| --- | --- |
+| `@kubb/core` | `kubb/kit` |
+| `@kubb/renderer-jsx` (+ `/types`) | `kubb/jsx` |
+| `@kubb/cli` | bundled in `kubb` |
+| `@kubb/plugin-client` | no stable release — replace locally |
+| `resolver.resolveFile(e, {root, output, group})` | `resolver.file({...e, root, output})` |
+| `resolver.resolveName(x)` | `resolver.name(x)` |
+| `resolver.resolveBanner(inputNode, ctx)` | `resolver.default.banner(ctx.meta, ctx)` |
+| `tsResolver.resolveResponseName(n)` | `tsResolver.response.response(n)` |
+| `ctx.getPlugin(name)` | `ctx.requirePlugin(name)` |
+| `output.extension: {'.ts': ''}` | moved to `parserTs`, and it is the default |
+| `input: { data: doc }` | `input: doc` |
+
+Two traps worth naming:
+
+- **`input: { data: doc }` silently produced an empty build** in early v5. kubb now hard-errors
+  (*"The `input` option uses the v4 `{ path }` / `{ data }` wrapper"*), but that is the shape of
+  thing to look for whenever a codegen tool crosses a major: a config key that changed meaning
+  rather than name.
+- **Regenerating mixes tool changes with upstream spec drift**, because every `kubb.config.ts`
+  fetches a live spec. To review the tool's effect you must hold the spec constant: regenerate on a
+  `main` worktree *at the same moment*, then diff the two generated trees. Diffing against the
+  committed output instead attributes weeks of upstream API churn to the bump.
+
+The generated-surface delta was ~90 fewer exported type names per client — `*RequestConfig` →
+`*Options`, per-parameter types (`FooPathBarId`) → grouped (`FooPath`), some single-value enums
+inlined. **The client functions were byte-identical**, which is what made it a `minor` rather than
+a `major`: check the emitted function set before deciding severity.
 
 ```bash
-grep -nE "^  '?@?kubb" pnpm-workspace.yaml          # every member must show the same version
-grep -oE "^  '@kubb/[a-z-]+@[0-9a-zA-Z.-]+" pnpm-lock.yaml | sort -u   # one version, not two
+grep -oE "^export async function [a-zA-Z0-9_]+" <pkg>/src/generated/components.ts | sort
 ```
 
-Release the hold only when `@kubb/plugin-client` publishes a stable 5.x.
+### kubb's `format: "biome"` does not sort imports
 
----
+*Seen 2026-08-28.* kubb's output hook runs `biome format --write`, but CI gates on `biome check`,
+whose `organizeImports` **assist** also sorts named imports. So a fresh generation is red the
+moment it lands. Fixed in `openapi-utils`' shared config with an output `postGenerate` hook:
 
-## Tests
-
-### `ai-gateway-proxy` integration tests fail locally with `GatewayAuthenticationError`
-
-*Seen 2026-08.* `packages/ai-gateway-proxy/vitest.config.ts` calls dotenv's `config()`, so an
-untracked `packages/ai-gateway-proxy/.env` is loaded even when the shell has no
-`AI_GATEWAY_API_KEY`. A stale key in that file flips `hasApiKey` to true, the
-`describe.skipIf(!hasApiKey)` block runs, and 11 tests fail — 8 with
-`GatewayAuthenticationError`, 3 with downstream `expected 0 to be greater than 0` /
-`AI_NoOutputGeneratedError` from streams that never produced tokens.
-
-**This is local-only and not a regression** — CI has no `.env` and no secret, so it reports
-`13 skipped` and goes green. Confirm which you are looking at before blaming an `ai` /
-`@ai-sdk/*` bump:
-
-```bash
-ls -la packages/ai-gateway-proxy/.env
-mv packages/ai-gateway-proxy/.env packages/ai-gateway-proxy/.env.localbak
-pnpm --filter ai-gateway-proxy test    # expect "13 skipped" — matches CI
-mv packages/ai-gateway-proxy/.env.localbak packages/ai-gateway-proxy/.env
+```ts
+postGenerate: [`biome check --write ${outputPath}`]
 ```
 
-The corollary is the uncomfortable one: an expired key looks exactly like a broken bump, and a
-*valid* key is the only thing that distinguishes them. Absent one, the AI SDK bump is unverified —
-say so rather than reading the skips as a pass.
+Same class as `drizzle-kit generate`, which writes `drizzle/meta/*.json` with 2-space indent while
+this repo commits tabs — run `biome check --write apps/platform/drizzle` after generating a
+migration.
 
 ---
 
@@ -291,8 +299,40 @@ ls apps/platform/drizzle/
 
 Apply the same suspicion to any bump of `drizzle-orm`, `better-auth`, or a plugin of theirs:
 **does the new version want a column, index or table that the committed schema does not have?**
-If yes, keep it back — migration first, bump second — and say so in the PR description, because a
-green board is actively misleading here.
+If yes, either keep it back or do the migration in the same PR — and say which, because a green
+board is actively misleading here.
+
+**Doing the migration (what #635 ended up doing).** Four steps, and the last two are the ones that
+are usually skipped:
+
+1. **Diff the shipped table definitions, don't read the changelog.** `npm pack` both versions and
+   diff. For better-auth 1.6.29 → 1.7.2 the entire delta across every table this repo uses was
+   four lines — `account.issuer`, its unique index, and two optional `jwks` columns — which is a
+   far smaller and more actionable answer than the release notes' twenty breaking-change bullets.
+   Remember plugin tables live in their own files (`dist/plugins/<name>/schema.mjs`).
+2. **Read the *value* the library writes, not just the column.** A required new column needs a
+   backfill, and the backfill has to match what the library itself would have written or the rows
+   are silently unreachable. Here: `createLocalAccountIssuer` → `local:credential` and
+   `createOAuthAccountIssuer` → `local:oauth:<providerId>`, with only `generic-oauth` providers
+   carrying a real issuer.
+3. **Hand-edit the generated migration.** `drizzle-kit generate` emits
+   `ADD COLUMN "x" text NOT NULL` with no default, which **fails on any populated table**. Rewrite
+   as add-nullable → backfill → `SET NOT NULL` → add constraint, and keep the reasoning in a
+   comment at the top of the `.sql`.
+4. **Prove it on a populated database.** This is cheap and it is the only real evidence:
+
+   ```bash
+   docker run -d --name mig-test -e POSTGRES_PASSWORD=test -e POSTGRES_DB=platform \
+     -p 55433:5432 postgres:17-alpine
+   docker exec -i mig-test psql -U postgres -d platform < apps/platform/drizzle/0000_*.sql
+   # seed a row per provider shape, then run the new migration with ON_ERROR_STOP=1
+   ```
+
+   Then run the app's real auth against it — `tsx` a script that imports `apps/platform/src/auth.ts`
+   and calls `auth.api.signUpEmail` / `signInEmail`. #635 did this and the fresh row better-auth
+   wrote carried `local:credential`, **byte-identical to the backfill**, which is the actual proof
+   the backfill convention is right rather than plausible. Confirm the naive migration fails first,
+   so you know the fix was load-bearing.
 
 ---
 

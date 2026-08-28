@@ -13,12 +13,9 @@ catalog:
   '@biomejs/biome': 2.5.10
   '@changesets/cli': 3.0.1
   '@hono/node-server': ^2.1.1
-  '@kubb/adapter-oas': 5.0.0-beta.10
-  '@kubb/cli': 5.0.0-beta.10
-  '@kubb/core': 5.0.0-beta.10
-  '@kubb/plugin-client': 5.0.0-beta.10
-  '@kubb/plugin-ts': 5.0.0-beta.10
-  '@kubb/plugin-zod': 5.0.0-beta.10
+  '@kubb/adapter-oas': 5.0.3
+  '@kubb/plugin-ts': 5.0.0
+  '@kubb/plugin-zod': 5.1.1
   '@next/third-parties': 16.3.3
   '@radix-ui/react-alert-dialog': 1.1.23
   '@radix-ui/react-avatar': 1.2.6
@@ -48,16 +45,7 @@ catalog:
   '@vscode/vsce': 3.9.2
   '@xyflow/react': 12.11.5
   ai: 7.0.83
-  # KEEP-BACK: better-auth 1.7.0 rescoped account identity onto (issuer, accountId).
-  # @better-auth/core's table definition now marks `account.issuer` as required and adds a
-  # unique index on ("issuer", "accountId") — see get-tables.mjs in the installed package.
-  # apps/platform's `accounts` drizzle table (src/db/schema.ts) has no `issuer` column and
-  # there is no migration for one, and 1.7 also needs the documented account-identity
-  # backfill before deploy. Nothing in CI catches this: it compiles and only fails when
-  # better-auth queries the table at runtime. 1.7 also renamed `experimental.joins` and
-  # reworked the generic-OAuth/MCP/SCIM plugins. Moving to 1.7 is its own PR — schema
-  # migration, backfill, then bump. `pnpm update --latest` will bump past this every week.
-  better-auth: 1.6.29
+  better-auth: 1.7.2
   bonjour-service: ^1.4.4
   bunchee: 7.0.1
   case: 1.6.3
@@ -81,7 +69,7 @@ catalog:
   jszip: 3.10.1
   knip: 6.32.3
   konva: 10.3.2
-  kubb: 5.0.0-beta.10
+  kubb: 5.0.3
   lefthook: 2.1.10
   lru-cache: ^11.5.2
   lucide-react: 1.34.0
@@ -109,25 +97,17 @@ catalog:
   tsx: 4.23.12
   turbo: 2.10.12
   tw-animate-css: 1.4.0
-  # KEEP-BACK: TypeScript 7 dropped the JavaScript compiler API that bunchee uses to
-  # emit type declarations, so every package build fails with "Detected TypeScript
-  # 7.0.2 ... install `@typescript/typescript6`". bunchee's peer range already claims
-  # ^7.0, so the range is not a reliable signal — test a package build before releasing
-  # this. Moving to TS 7 is its own PR, not a weekly bump.
-  typescript: 6.0.3
+  # TypeScript 7 dropped the JavaScript compiler API that bunchee uses to emit type
+  # declarations. `@typescript/typescript6` is the compatibility shim bunchee looks for
+  # ("install `@typescript/typescript6` as dev dependency to keep building types"); it must
+  # stay installed at the workspace root for as long as bunchee has no native TS 7 path.
+  # Do not remove it when bunchee bumps — verify a package build emits .d.ts first. The two
+  # versions are deliberately paired, so they sit together rather than in alphabetical order.
+  typescript: 7.0.2
+  '@typescript/typescript6': 6.0.2
   vitest: 4.1.11
   yaml: 2.9.0
   zod: 4.4.3
-  # KEEP-BACK: every @kubb/* entry (plus `kubb` itself) must carry the SAME version.
-  # They depend on each other by exact version and packages/openapi-utils imports types
-  # from core/plugin-client/plugin-ts/plugin-zod/renderer-jsx in one file, so a split set
-  # puts two @kubb/core copies in the tree. The set is held at 5.0.0-beta.10 because
-  # @kubb/plugin-client has no 5.0.x stable release — its `latest` is still 4.39.3 — and
-  # 5.0.0-beta.10 hard-depends on core/plugin-ts/plugin-zod/renderer-jsx at beta.10.
-  # `pnpm update --latest` resolves each entry independently and will scatter them across
-  # 5.0.0/5.0.2/5.1.0 while leaving plugin-client behind; re-pin the whole set every week.
-  # Release this only when @kubb/plugin-client publishes a matching stable version.
-  '@kubb/renderer-jsx': 5.0.0-beta.10
 catalogMode: strict
 cleanupUnusedCatalogs: true
 allowBuilds:

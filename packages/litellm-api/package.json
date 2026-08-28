@@ -23,7 +23,6 @@
 		"zod": "catalog:"
 	},
 	"devDependencies": {
-		"@kubb/cli": "catalog:",
 		"kubb": "catalog:",
 		"@sferadev/openapi-utils": "workspace:*",
 		"@sferadev/tsconfig": "workspace:*",

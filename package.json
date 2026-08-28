@@ -25,6 +25,7 @@
 		"lefthook": "catalog:",
 		"tsx": "catalog:",
 		"turbo": "catalog:",
+		"@typescript/typescript6": "catalog:",
 		"typescript": "catalog:",
 		"zod": "catalog:"
 	},
