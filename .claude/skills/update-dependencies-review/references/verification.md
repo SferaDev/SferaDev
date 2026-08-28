@@ -21,11 +21,8 @@ own dependencies. See the two `vsce` entries in `failure-modes.md` for what the 
 the `@types/vscode` ↔ `engines.vscode` coupling is the recurring one.
 
 `tsc` currently reports pre-existing errors in this app (`@types/node` missing from its tsconfig).
-Compare counts before and after rather than reading the raw number:
-
-```bash
-pnpm --filter vscode-extension-vercel-ai exec tsc --noEmit 2>&1 | grep -c "error TS"
-```
+Compare against `main` rather than reading the raw number — see section 2b, which covers the whole
+repo at once and is the better version of this check.
 
 ---
 
@@ -39,6 +36,37 @@ git status --short          # must be clean
 Two assertions in one: the build works, **and** it produced no git churn. Churn means something
 re-ran codegen during the build (see `failure-modes.md` → Build), which is both a network
 dependency and a source of spurious diffs.
+
+---
+
+## 2b. `pnpm tsc` — the gate that exists but never runs
+
+`turbo run tsc` is a real task in `turbo.json`, and **CI does not run it**: `pnpm check` is
+`biome + knip + is-tree-shakable` only. So type regressions from a bump are invisible to the board.
+Run it — but only ever as a **diff against `main`**, because it is already failing.
+
+Two traps, both hit on 2026-08-28:
+
+1. **Use `--continue`.** Turbo stops the whole run at the first failing package, so without it the
+   PR and the control stop at *different* packages and the two error lists are not comparable.
+2. **Build first.** `tsc` does not depend on `build`, so on a fresh worktree the API clients fail
+   with `Cannot find module '@sferadev/openapi-utils/effect'` — an artefact of the clean tree, not
+   a regression.
+
+```bash
+# control (see "Before blaming a bump" below for the worktree setup)
+cd ../SferaDev-control && pnpm install --frozen-lockfile && pnpm turbo run build >/dev/null
+TURBO_FORCE=true pnpm turbo run tsc --continue 2>&1 | grep "error TS" | sed 's/^[^:]*:tsc: //' | sort -u > /tmp/main-tsc.txt
+
+# PR branch, same two commands
+TURBO_FORCE=true pnpm turbo run tsc --continue 2>&1 | grep "error TS" | sed 's/^[^:]*:tsc: //' | sort -u > /tmp/pr-tsc.txt
+diff /tmp/main-tsc.txt /tmp/pr-tsc.txt
+```
+
+**Baseline as of 2026-08-28: 67 errors on `main`**, all in `apps/vscode-ai-gateway` (missing
+`@types/node`, plus two `LanguageModelChatCapabilities` properties that exist in no `@types/vscode`
+version) and in generated API-client sources. An identical list on both sides is the pass
+condition; treat the count as a fingerprint to re-measure, not a number to trust.
 
 ---
 

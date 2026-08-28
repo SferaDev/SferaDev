@@ -13,12 +13,12 @@ catalog:
   '@biomejs/biome': 2.5.10
   '@changesets/cli': 3.0.1
   '@hono/node-server': ^2.1.1
-  '@kubb/adapter-oas': 5.0.2
-  '@kubb/cli': 5.0.2
-  '@kubb/core': 5.0.2
+  '@kubb/adapter-oas': 5.0.0-beta.10
+  '@kubb/cli': 5.0.0-beta.10
+  '@kubb/core': 5.0.0-beta.10
   '@kubb/plugin-client': 5.0.0-beta.10
-  '@kubb/plugin-ts': 5.0.0
-  '@kubb/plugin-zod': 5.1.0
+  '@kubb/plugin-ts': 5.0.0-beta.10
+  '@kubb/plugin-zod': 5.0.0-beta.10
   '@next/third-parties': 16.3.3
   '@radix-ui/react-alert-dialog': 1.1.23
   '@radix-ui/react-avatar': 1.2.6
@@ -48,7 +48,16 @@ catalog:
   '@vscode/vsce': 3.9.2
   '@xyflow/react': 12.11.5
   ai: 7.0.83
-  better-auth: 1.7.2
+  # KEEP-BACK: better-auth 1.7.0 rescoped account identity onto (issuer, accountId).
+  # @better-auth/core's table definition now marks `account.issuer` as required and adds a
+  # unique index on ("issuer", "accountId") — see get-tables.mjs in the installed package.
+  # apps/platform's `accounts` drizzle table (src/db/schema.ts) has no `issuer` column and
+  # there is no migration for one, and 1.7 also needs the documented account-identity
+  # backfill before deploy. Nothing in CI catches this: it compiles and only fails when
+  # better-auth queries the table at runtime. 1.7 also renamed `experimental.joins` and
+  # reworked the generic-OAuth/MCP/SCIM plugins. Moving to 1.7 is its own PR — schema
+  # migration, backfill, then bump. `pnpm update --latest` will bump past this every week.
+  better-auth: 1.6.29
   bonjour-service: ^1.4.4
   bunchee: 7.0.1
   case: 1.6.3
@@ -72,7 +81,7 @@ catalog:
   jszip: 3.10.1
   knip: 6.32.3
   konva: 10.3.2
-  kubb: 5.0.2
+  kubb: 5.0.0-beta.10
   lefthook: 2.1.10
   lru-cache: ^11.5.2
   lucide-react: 1.34.0
@@ -105,15 +114,20 @@ catalog:
   # 7.0.2 ... install `@typescript/typescript6`". bunchee's peer range already claims
   # ^7.0, so the range is not a reliable signal — test a package build before releasing
   # this. Moving to TS 7 is its own PR, not a weekly bump.
-  typescript: 7.0.2
+  typescript: 6.0.3
   vitest: 4.1.11
   yaml: 2.9.0
   zod: 4.4.3
-  # Must track the other @kubb packages above, not its own latest. kubb publishes
-  # renderer-jsx ahead of adapter-oas/core, and @kubb/core peer-requires the exact
-  # matching version — a newer renderer-jsx here means an unmet peer. `pnpm update
-  # --latest` will bump it past this; re-pin it to match when reviewing the weekly PR.
-  '@kubb/renderer-jsx': 5.0.2
+  # KEEP-BACK: every @kubb/* entry (plus `kubb` itself) must carry the SAME version.
+  # They depend on each other by exact version and packages/openapi-utils imports types
+  # from core/plugin-client/plugin-ts/plugin-zod/renderer-jsx in one file, so a split set
+  # puts two @kubb/core copies in the tree. The set is held at 5.0.0-beta.10 because
+  # @kubb/plugin-client has no 5.0.x stable release — its `latest` is still 4.39.3 — and
+  # 5.0.0-beta.10 hard-depends on core/plugin-ts/plugin-zod/renderer-jsx at beta.10.
+  # `pnpm update --latest` resolves each entry independently and will scatter them across
+  # 5.0.0/5.0.2/5.1.0 while leaving plugin-client behind; re-pin the whole set every week.
+  # Release this only when @kubb/plugin-client publishes a matching stable version.
+  '@kubb/renderer-jsx': 5.0.0-beta.10
 catalogMode: strict
 cleanupUnusedCatalogs: true
 allowBuilds:
@@ -131,28 +145,15 @@ allowBuilds:
   prisma: false
   puppeteer: false
   sharp: false
-minimumReleaseAgeExclude:
-  - path-to-regexp@6.3.0
-  - esbuild@0.24.3 || 0.28.1
-  - next-auth@5.0.0-beta.30 || 5.0.0
-  - hono@4.11.7 || 4.11.10 || 4.12.4 || 4.12.7 || 4.12.12 || 4.12.14 || 4.12.16 || 4.12.18 || 4.12.21 || 4.12.25 || 4.12.27 || 4.12.34
-  - rollup@4.59.0
-  - '@hono/node-server@1.19.10 || 1.19.13 || 2.0.5'
-  - effect@3.20.0
-  - lodash@4.17.23 || 4.17.24
-  - vite@7.3.2 || 7.3.5
-  - postcss@8.5.10 || 8.5.12 || 8.5.18 || 8.5.23
-  - qs@6.15.2
-  - tar@7.5.16 || 7.5.17 || 7.5.18 || 7.5.19 || 7.5.21
-  - js-yaml@4.1.2 || 4.3.0 || 4.3.1
-  - adm-zip@0.6.0
-  - axios@1.18.0
-  - sharp@0.35.0
-  - '@auth/core@0.41.3'
-  - valibot@1.4.2
-  - brace-expansion@5.0.8
-  - fast-uri@3.1.5
-  - ip-address@10.2.1 || 10.2.2 || 10.3.1
+# minimumReleaseAgeExclude: intentionally empty.
+# Each exclude un-gates ONE pinned version from pnpm's minimumReleaseAge window (1 day by
+# default on pnpm 11; this repo does not set it explicitly). Once that version is older than
+# the window the line is inert, and on 2026-08-28 every one of the 21 entries was — the
+# youngest was 25 days old, and four named versions that were never published at all
+# (esbuild@0.24.3, next-auth@5.0.0, lodash@4.17.24, js-yaml@4.1.2). Removing them left
+# pnpm-lock.yaml byte-identical. `pnpm audit --fix` appends new entries every week; retire
+# the aged-out ones each review rather than letting the list become permanent.
+minimumReleaseAgeExclude: []
 overrides:
   '@auth/core@<=0.41.2': ^0.41.3
   '@auth/core@>=0.1.0 <0.41.3': ^0.41.3

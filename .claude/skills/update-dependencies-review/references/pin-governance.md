@@ -81,21 +81,29 @@ straight past them and leaves the comment behind, still reading as if the hold w
 grep -n "KEEP-BACK" -A5 pnpm-workspace.yaml
 ```
 
-Current holds (2026-07 — verify against the file, not this list):
+Current holds (2026-08-28 — verify against the file, not this list):
 
 - **`typescript`** at 6.x. TypeScript 7 dropped the JavaScript compiler API `bunchee` uses to emit
   declarations, so every package build fails with *"Detected TypeScript 7.0.2 … install
   `@typescript/typescript6`"*. Note bunchee's peer range already advertises `^7.0`, so the peer
   range is not evidence — build a package before releasing this hold.
 
-  Re-confirmed 2026-08 on **bunchee 7.0.0**, which the bot bumped in the same PR: the hold is
-  independent of bunchee's major. bunchee 7 peer-accepts `^5.0 || ^6.0 || ^7.0` and builds all 12
-  packages fine against TypeScript 6.0.3, so take the bunchee major and keep the TS pin — they are
-  separate decisions. Releasing the TS hold still means adopting `@typescript/typescript6`, which
-  is its own PR.
-- **`@kubb/renderer-jsx`** must track the other `@kubb/*` entries rather than its own latest; kubb
-  publishes it ahead of `adapter-oas`/`core`, and `@kubb/core` peer-requires the exact matching
-  version.
+  Re-confirmed 2026-08-28 on **bunchee 7.0.1**, still the latest: the hold is independent of
+  bunchee's major, and bunchee builds all 12 packages fine against TypeScript 6.0.3. Releasing the
+  hold means adopting `@typescript/typescript6` and running the repo on TS 7 — its own PR, and note
+  `pnpm tsc` is not in CI, so that PR needs the `verification.md` §2b diff as its evidence.
+  `@kubb/plugin-ts` also depends on `typescript: ^6.0.3`.
+- **The whole `@kubb/*` family** at `5.0.0-beta.10` — `adapter-oas`, `cli`, `core`, `plugin-client`,
+  `plugin-ts`, `plugin-zod`, `renderer-jsx` and `kubb` itself. They pin each other by exact version
+  and `packages/openapi-utils` imports types from several in one file, so the set must move as one.
+  The binding constraint is **`@kubb/plugin-client`, which has no stable 5.x** (npm `latest` is
+  still 4.39.3), and its beta.10 build hard-depends on the rest at beta.10. `--latest` scatters the
+  set every week — see the `@kubb` entry in `failure-modes.md`. Release only when `plugin-client`
+  ships a matching stable.
+- **`better-auth`** at 1.6.29. 1.7.0 rescoped account identity onto `(issuer, accountId)` and
+  requires an `account.issuer` column plus a unique index that `apps/platform`'s drizzle schema does
+  not have, on top of a documented backfill. Nothing in CI catches it — see the *Runtime* section of
+  `failure-modes.md`. Migration PR first, bump second.
 - **`@types/vscode`** — see the section below; it is coupled to `engines.vscode`.
 
 ## The `@kubb/renderer-jsx` override (released 2026-07)

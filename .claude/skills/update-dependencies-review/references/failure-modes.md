@@ -194,16 +194,43 @@ Purely cosmetic to pnpm — verify with a byte-identical `pnpm-lock.yaml` after
 **every** pin and leaves the explaining comment stranded above the now-wrong value. Re-pinning is a
 default step of this review, not a contingency.
 
-Identical in #594, #601 and #626: `typescript` 6.0.3 → 7.0.2 **and** `@kubb/renderer-jsx`
-beta.10 → beta.35, together, every time.
+Identical in #594, #601, #626 and #635: `typescript` 6.0.3 → 7.0.2 **and** the `@kubb/*` set,
+together, every time.
 
 Only the TypeScript one turns CI red; the `@kubb` one is an unmet peer that no gate catches — so
 **re-check every pin, not just whichever one broke the build.** A green `Check` is not evidence the
 other holds survived. `grep -n "KEEP-BACK" -A6 pnpm-workspace.yaml` and compare each value, then
 verify what actually resolved (an override can defeat a re-pin — see `pin-governance.md`).
 
-The TypeScript hold is still required as of 2026-08-17: bunchee 7.0.1 fails all 12 package builds
-on TS 7.0.2 with "Detected TypeScript 7.0.2 … install `@typescript/typescript6`".
+The TypeScript hold is still required as of 2026-08-28: bunchee 7.0.1 (still the latest) fails all
+12 package builds on TS 7.0.2 with "Detected TypeScript 7.0.2 … install `@typescript/typescript6`".
+Do not take bunchee's own suggested escape hatch as a weekly fix: adopting `@typescript/typescript6`
+means running the whole repo on TS 7, and **`tsc` is not in CI**, so the bump would be entirely
+unverified. Note `@kubb/plugin-ts` also depends on `typescript: ^6.0.3`.
+
+### A KEEP-BACK on a *set* of packages fragments instead of jumping cleanly
+
+*Seen 2026-08-28 (#635), the `@kubb/*` family.* Worth its own entry because the symptom is
+different from a single stranded pin: the bot bumped `adapter-oas`/`cli`/`core`/`renderer-jsx`/
+`kubb` to 5.0.2, `plugin-ts` to 5.0.0 and `plugin-zod` to 5.1.0, while **`plugin-client` stayed at
+5.0.0-beta.10** — because `@kubb/plugin-client`'s npm `latest` is still on the 4.x line (4.39.3),
+which is semver-lower than a 5.0.0 prerelease, so `--latest` had nowhere to move it.
+
+`@kubb/*` packages depend on each other by **exact** version, and `@kubb/plugin-client@5.0.0-beta.10`
+hard-depends on core/plugin-ts/plugin-zod/renderer-jsx at beta.10 — so the split puts **two
+`@kubb/core` copies** in the tree. `packages/openapi-utils/src/kubb/**` imports types from all of
+them in single files, which is the historical "dual-version resolution" breakage.
+
+**The generalisation:** when a keep-back covers a family that must move in lockstep, check *every*
+member of the family, not just the one the comment happens to sit above — and make the comment name
+the whole set. A partially-bumped set is easy to miss because each individual line looks plausible.
+
+```bash
+grep -nE "^  '?@?kubb" pnpm-workspace.yaml          # every member must show the same version
+grep -oE "^  '@kubb/[a-z-]+@[0-9a-zA-Z.-]+" pnpm-lock.yaml | sort -u   # one version, not two
+```
+
+Release the hold only when `@kubb/plugin-client` publishes a stable 5.x.
 
 ---
 
@@ -232,6 +259,40 @@ mv packages/ai-gateway-proxy/.env.localbak packages/ai-gateway-proxy/.env
 The corollary is the uncomfortable one: an expired key looks exactly like a broken bump, and a
 *valid* key is the only thing that distinguishes them. Absent one, the AI SDK bump is unverified —
 say so rather than reading the skips as a pass.
+
+---
+
+## Runtime — a bump that needs a database migration
+
+### A minor bump requires a schema change nothing in CI can see
+
+*Seen 2026-08-28 (#635): `better-auth` 1.6.29 → **1.7.2**.*
+
+The most dangerous shape in this review: a **minor** version step that carries breaking changes and
+a **database migration**. It compiles, `pnpm check` and `pnpm test` are green, the Vercel preview
+deploys — and the app fails the first time the library touches the table.
+
+better-auth 1.7.0 rescoped account identity onto `(issuer, accountId)`. `@better-auth/core`'s table
+definition marks `account.issuer` as `required: true` and adds a unique index on
+`["issuer", "accountId"]`. `apps/platform/src/db/schema.ts` defines `accounts` with no `issuer`
+column, `apps/platform/drizzle/` has no migration adding one, and 1.7 additionally documents an
+account-identity **backfill** to run before deploying. Held at 1.6.29.
+
+**The generalisable move — read the installed artifact, not the changelog.** For any library that
+owns a schema, the shipped table definition is the authoritative answer and takes one grep:
+
+```bash
+# what the new version actually requires
+grep -rn "issuer\|required: true" node_modules/.pnpm/@better-auth+core@*/node_modules/@better-auth/core/dist/db/get-tables.mjs
+# what the repo actually has
+grep -n -A20 "pgTable(\"accounts\"" apps/platform/src/db/schema.ts
+ls apps/platform/drizzle/
+```
+
+Apply the same suspicion to any bump of `drizzle-orm`, `better-auth`, or a plugin of theirs:
+**does the new version want a column, index or table that the committed schema does not have?**
+If yes, keep it back — migration first, bump second — and say so in the PR description, because a
+green board is actively misleading here.
 
 ---
 
