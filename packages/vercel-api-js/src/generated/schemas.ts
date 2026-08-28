@@ -205,6 +205,12 @@ export const networkSchema = z.object({
 			"The date at which the Network was created, represented as a UNIX timestamp since EPOCH.",
 		),
 	egressIpAddresses: z.array(z.string()).optional(),
+	reservedEgressIpAddresses: z
+		.array(z.string())
+		.optional()
+		.describe(
+			"The BYOIP egress (NAT gateway) IP addresses pre-allocated for this network from the region's egress IPAM pool. Present in regions that have an egress pool. Customers can allowlist these addresses before egress is switched over to them, since they are reserved ahead of the switch.",
+		),
 	egressCidrBlock: z
 		.string()
 		.optional()
@@ -243,6 +249,961 @@ export const networkSchema = z.object({
 	teamId: z.string().describe("The unique identifier of the Team that owns the Network."),
 	vpcId: z.string().optional().describe("The ID of the VPC which hosts the network."),
 });
+
+export const connectTriggerConfigurationSchema = z
+	.object({
+		enabled: z
+			.union([z.literal(false), z.literal(true)])
+			.describe("Whether incoming triggers are enabled for the connector."),
+	})
+	.describe("Incoming trigger configuration. Only present when enabled.");
+
+export const connectTriggerDestinationSchema = z
+	.object({
+		projectId: z.string().describe("Vercel project that receives matching trigger requests."),
+		customEnvironmentId: z
+			.string()
+			.optional()
+			.describe(
+				"Stable custom-environment ID to route this destination to. Mutually exclusive with `branch`; omitted destinations keep the legacy production behavior.",
+			),
+		branch: z.string().optional().describe("Git branch used to select a preview deployment."),
+		path: z.string().optional().describe("Route path that receives the forwarded trigger request."),
+	})
+	.describe(
+		"Destinations that incoming triggers should be forwarded to. Limited to 3 entries. Set the initial destination with `triggerDestination` during creation. Replace the complete set with `PATCH /v1/connect/connectors/{connector}/trigger-destinations`.",
+	);
+
+export const connectConnectorCreateResultSchema = z
+	.object({
+		id: z
+			.string()
+			.describe("Stable `scl_` connector ID. Use this value directly in `{connector}`."),
+		uid: z
+			.string()
+			.describe("Team-scoped UID. URL-encode this value before using it in `{connector}`."),
+		defaultInstallationId: z
+			.string()
+			.optional()
+			.describe("Installation used when a token request does not specify an installation."),
+		createdAt: z.number().describe("Creation time in epoch milliseconds."),
+		updatedAt: z.number().describe("Last update time in epoch milliseconds."),
+		reinstallAt: z
+			.number()
+			.optional()
+			.describe(
+				"Time when this connector started requiring reinstallation because an installation-affecting app-token grant changed.",
+			),
+		createdBy: z
+			.union([
+				z
+					.object({
+						type: z.enum(["user"]).describe("Principal kind."),
+						id: z.string().describe("Vercel user ID."),
+					})
+					.strict(),
+				z
+					.object({
+						type: z.enum(["project"]).describe("Principal kind."),
+						id: z.string().describe("Vercel project ID."),
+						environment: z.string().describe("Deployment environment of the project principal."),
+					})
+					.strict(),
+			])
+			.optional()
+			.describe("Principal that created the connector."),
+		updatedBy: z
+			.union([
+				z
+					.object({
+						type: z.enum(["user"]).describe("Principal kind."),
+						id: z.string().describe("Vercel user ID."),
+					})
+					.strict(),
+				z
+					.object({
+						type: z.enum(["project"]).describe("Principal kind."),
+						id: z.string().describe("Vercel project ID."),
+						environment: z.string().describe("Deployment environment of the project principal."),
+					})
+					.strict(),
+			])
+			.optional()
+			.describe("Principal that most recently updated the connector."),
+		creationMode: z
+			.enum(["managed", "manual"])
+			.optional()
+			.describe(
+				"How the connector row was originally created. New create paths stamp this explicitly; older rows may omit it.",
+			),
+		managed: z
+			.object({
+				sync: z
+					.union([z.literal(false), z.literal(true)])
+					.optional()
+					.describe("Whether Vercel synchronizes provider-side configuration."),
+			})
+			.optional()
+			.describe(
+				"Managed connector metadata exposed without leaking the manager connector or installation identifiers.",
+			),
+		type: z
+			.enum([
+				"api-key",
+				"custom",
+				"discord",
+				"github",
+				"linear",
+				"linq",
+				"microsoft-entra",
+				"microsoft-teams",
+				"oauth",
+				"photon",
+				"salesforce",
+				"sendblue",
+				"slack",
+				"snowflake",
+				"snowflake-wif",
+			])
+			.describe("Connector implementation type."),
+		service: z
+			.string()
+			.describe(
+				"Best-effort identifier of the third-party service this connector represents, independent of `type`. Examples: `'slack'`, `'mcp.linear.app'`, and `'auth.example.com'`. Always present in API responses.",
+			),
+		connectionMethod: z
+			.string()
+			.optional()
+			.describe(
+				"The connection method this connector was created from, when the create request named one.",
+			),
+		target: z
+			.string()
+			.optional()
+			.describe("Which of the service's products/surfaces this connector points at."),
+		name: z.string().describe("Connector name within the owning team."),
+		displayName: z.string().describe("Human-readable connector name."),
+		clientUrl: z
+			.string()
+			.nullish()
+			.describe(
+				"Provider-side URL for viewing or managing the resource represented by the connector. The destination can be an app, account, phone line, or service instance, depending on the connector type.",
+			),
+		redirectUri: z
+			.string()
+			.optional()
+			.describe(
+				"Redirect URI registered with the third-party service for this connector, if any. Used by `startAuthorization`/`startInstallation` to replay the exact URI back to the provider's token endpoint. Absent on connectors created before this field was introduced; those callers fall back to the `https://connect.vercel.com/callback` default.",
+			),
+		typeName: z.string().describe("Human-readable name of the connector type."),
+		typeIcon: z.string().optional().describe("Icon identifier supplied by the connector type."),
+		website: z.string().optional().describe("Public website for the connected service."),
+		devsite: z.string().optional().describe("Developer website for the connected service."),
+		docsite: z.string().optional().describe("Developer documentation for the connected service."),
+		icon: z
+			.string()
+			.optional()
+			.describe(
+				"Connector branding icon. SHA-1 hash that resolves to the uploaded icon through the Vercel avatar service. Consumers render this with `https://vercel.com/api/www/avatar/{icon}`.",
+			),
+		backgroundColor: z
+			.string()
+			.optional()
+			.describe("Hex background color (e.g., `#000000`) for branding."),
+		accentColor: z.string().optional().describe("Hex accent color (e.g., `#000000`) for branding."),
+		supportedSubjectTypes: z
+			.array(z.string())
+			.describe("Token subject types supported by the connector."),
+		appTokens: z
+			.object({
+				crossInstallation: z
+					.union([z.literal(false), z.literal(true)])
+					.describe("Whether one app token can be used across installations."),
+				supportsRefinement: z
+					.union([z.literal(false), z.literal(true)])
+					.describe("Whether callers can narrow app-token grants per request."),
+				requiresReinstallation: z
+					.union([z.literal(false), z.literal(true)])
+					.optional()
+					.describe(
+						"True when changing app token grants requires reinstalling the app, so tokens cannot be partitioned independently by requester environment.",
+					),
+				scopes: z
+					.array(z.string())
+					.optional()
+					.describe(
+						"Known allowed app-level scopes. For Slack this is the bot scope set configured on the app; for OAuth it is the connector's enabled `clientCredentials.scopes` configuration.",
+					),
+				supportedAuthorizationDetails: z
+					.array(z.string())
+					.optional()
+					.describe("Supported OAuth authorization-detail type names."),
+				permissionsUrl: z
+					.string()
+					.optional()
+					.describe(
+						"Link to the page on the service where this connector's app-level permissions are declared and granted, when the service has one and it differs from `clientUrl`.",
+					),
+			})
+			.optional()
+			.describe("App-token capabilities and known grants for the connector."),
+		userTokens: z
+			.object({
+				crossInstallation: z
+					.union([z.literal(false), z.literal(true)])
+					.describe("Whether one user token can be used across installations."),
+				supportsRefinement: z
+					.union([z.literal(false), z.literal(true)])
+					.describe("Whether callers can narrow user-token grants per request."),
+				scopes: z
+					.array(z.string())
+					.optional()
+					.describe(
+						"Known allowed user-level scopes. For Slack this is the user scope set configured on the app; for OAuth it is the connector's enabled `userAuthorization.scopes` configuration.",
+					),
+				supportedAuthorizationDetails: z
+					.array(z.string())
+					.optional()
+					.describe("Supported OAuth authorization-detail type names."),
+				manualCredentialInput: z
+					.union([z.literal(false), z.literal(true)])
+					.optional()
+					.describe(
+						"User authorization is completed by the Connect consent screen submitting a credential instead of an OAuth redirect.",
+					),
+			})
+			.optional()
+			.describe("User-token capabilities and known grants for the connector."),
+		supportsInstallation: z
+			.union([z.literal(false), z.literal(true)])
+			.describe("Whether the connector supports an installation flow."),
+		supportsRevocation: z
+			.union([z.literal(false), z.literal(true)])
+			.describe("Whether Connect can revoke tokens for this connector."),
+		supportsTriggers: z
+			.union([z.literal(false), z.literal(true)])
+			.describe(
+				"Whether this connector type supports trigger webhooks. Derived from the type definition; indicates that `triggers` and `triggerDestinations` may be meaningful for this connector.",
+			),
+		supportsIcon: z
+			.enum([false, "maybe", true])
+			.describe("Whether the connector icon can propagate to the provider."),
+		triggers: z.unknown().optional().describe("Incoming trigger configuration for the connector."),
+		events: z
+			.array(z.string())
+			.optional()
+			.describe(
+				"Known events this connector subscribes to (e.g. Slack bot events, GitHub webhook events). Names are type-specific and validated by the managed-create flow when forwarded to the third-party service.",
+			),
+		triggerDestinations: z
+			.array(z.unknown())
+			.optional()
+			.describe(
+				"Destinations that incoming triggers should be forwarded to. Limited to 3 entries. Set the initial destination with `triggerDestination` during creation. Replace the complete set with `PATCH /v1/connect/connectors/{connector}/trigger-destinations`.",
+			),
+	})
+	.describe("Connector created by the request.");
+
+export const connectConnectorCreateDataSchema = z
+	.union([
+		z
+			.object({
+				serverUrl: z
+					.string()
+					.optional()
+					.describe("Authorization server base URL used for discovery."),
+				serverConfig: z
+					.object({
+						issuer: z.string().optional().describe("Authorization server issuer URL."),
+						authorizationEndpoint: z
+							.string()
+							.optional()
+							.describe("OAuth authorization endpoint URL."),
+						tokenEndpoint: z.string().optional().describe("OAuth token endpoint URL."),
+						userinfoEndpoint: z
+							.string()
+							.optional()
+							.describe("OpenID Connect UserInfo endpoint URL."),
+						jwksUri: z
+							.string()
+							.optional()
+							.describe("URL of the authorization server JSON Web Key Set."),
+						jwks: z
+							.object({
+								keys: z
+									.array(
+										z
+											.object({
+												kty: z.string().describe("JSON Web Key type."),
+												kid: z.string().optional().describe("JSON Web Key identifier."),
+												use: z
+													.enum(["sig", "enc"])
+													.optional()
+													.describe("Intended key use: signing or encryption."),
+												keyOps: z
+													.array(z.string())
+													.optional()
+													.describe("Operations permitted for this key."),
+												alg: z.string().optional().describe("Algorithm intended for this key."),
+											})
+											.catchall(z.unknown()),
+									)
+									.describe("JSON Web Keys published by the authorization server."),
+							})
+							.catchall(z.unknown())
+							.optional()
+							.describe("Inline authorization server JSON Web Key Set."),
+						revocationEndpoint: z
+							.string()
+							.optional()
+							.describe("OAuth token revocation endpoint URL."),
+						introspectionEndpoint: z
+							.string()
+							.optional()
+							.describe("OAuth token introspection endpoint URL."),
+						endSessionEndpoint: z
+							.string()
+							.optional()
+							.describe("OpenID Connect session termination endpoint URL."),
+						deviceAuthorizationEndpoint: z
+							.string()
+							.optional()
+							.describe("OAuth device authorization endpoint URL."),
+						registrationEndpoint: z
+							.string()
+							.optional()
+							.describe("OAuth dynamic client registration endpoint URL."),
+						responseTypesSupported: z
+							.array(z.string())
+							.optional()
+							.describe("OAuth response types supported by the server."),
+						tokenEndpointAuthMethodsSupported: z
+							.array(z.string())
+							.optional()
+							.describe("Token endpoint client authentication methods supported by the server."),
+						tokenEndpointAuthSigningAlgValuesSupported: z
+							.array(z.string())
+							.optional()
+							.describe("Signing algorithms supported for token endpoint authentication."),
+						scopesSupported: z
+							.array(z.string())
+							.optional()
+							.describe("OAuth scopes supported by the server."),
+						grantTypesSupported: z
+							.array(z.string())
+							.optional()
+							.describe("OAuth grant types supported by the server."),
+						responseModesSupported: z
+							.array(z.string())
+							.optional()
+							.describe("OAuth response modes supported by the server."),
+						subjectTypesSupported: z
+							.array(z.string())
+							.optional()
+							.describe("OpenID Connect subject identifier types supported by the server."),
+						idTokenSigningAlgValuesSupported: z
+							.array(z.string())
+							.optional()
+							.describe("Signing algorithms supported for ID tokens."),
+						idTokenEncryptionAlgValuesSupported: z
+							.array(z.string())
+							.optional()
+							.describe("Key management algorithms supported for encrypted ID tokens."),
+						idTokenEncryptionEncValuesSupported: z
+							.array(z.string())
+							.optional()
+							.describe("Content encryption algorithms supported for encrypted ID tokens."),
+						claimTypesSupported: z
+							.array(z.string())
+							.optional()
+							.describe("OpenID Connect claim value types supported by the server."),
+						claimsSupported: z
+							.array(z.string())
+							.optional()
+							.describe("Claims that the authorization server can return."),
+						codeChallengeMethodsSupported: z
+							.array(z.string())
+							.optional()
+							.describe("PKCE code challenge methods supported by the server."),
+						promptValuesSupported: z
+							.array(z.string())
+							.optional()
+							.describe("Authorization prompt values supported by the server."),
+						claimsParameterSupported: z
+							.boolean()
+							.optional()
+							.describe("Whether authorization requests can use the claims parameter."),
+						requestParameterSupported: z
+							.boolean()
+							.optional()
+							.describe("Whether authorization requests can use signed request objects."),
+						requestUriParameterSupported: z
+							.boolean()
+							.optional()
+							.describe("Whether authorization requests can use request_uri."),
+						requireRequestUriRegistration: z
+							.boolean()
+							.optional()
+							.describe("Whether request_uri values must be registered in advance."),
+						serviceDocumentation: z
+							.string()
+							.optional()
+							.describe("Authorization server documentation URL."),
+						opPolicyUri: z.string().optional().describe("Authorization server privacy policy URL."),
+						opTosUri: z.string().optional().describe("Authorization server terms of service URL."),
+						logoUri: z.string().optional().describe("Authorization server logo URL."),
+						clientIdMetadataDocumentSupported: z
+							.boolean()
+							.optional()
+							.describe("Whether the server supports OAuth client ID metadata documents."),
+						authorizationDetailsTypesSupported: z
+							.array(z.string())
+							.optional()
+							.describe("OAuth authorization-detail types supported by the server."),
+					})
+					.catchall(z.unknown())
+					.optional()
+					.default({})
+					.describe(
+						"Authorization server metadata. Values override discovered metadata. Empty known string fields remove their stored overrides.",
+					),
+				clientId: z.string().describe("OAuth client ID assigned by the provider."),
+				clientName: z.string().optional().describe("OAuth client name."),
+				clientSecret: z.string().optional().describe("OAuth client secret."),
+				tokenEndpointAuthMethod: z
+					.string()
+					.optional()
+					.describe(
+						"OAuth token endpoint authentication method. Common values are client_secret_post, client_secret_basic, none, and private_key_jwt. If omitted, Vercel selects a supported method from serverConfig and otherwise uses client_secret_post.",
+					),
+				responseType: z
+					.string()
+					.optional()
+					.describe(
+						"OAuth authorization response type. Defaults to code. Other provider-supported values are accepted. An empty string clears the configured type.",
+					),
+				pkceRequired: z.boolean().optional().describe("Whether user authorization must use PKCE."),
+				codeChallengeMethod: z
+					.string()
+					.optional()
+					.describe(
+						"PKCE code challenge method. Supported values are S256 and plain. Vercel prefers S256 when the provider supports it. An empty string clears the configured method.",
+					),
+				userAuthorization: z
+					.object({
+						enabled: z.boolean().describe("Whether this OAuth grant is enabled."),
+						scopes: z
+							.array(z.string())
+							.optional()
+							.describe('Default scopes to request when token params specify scopes: [\\"*\\"].'),
+					})
+					.strict()
+					.optional()
+					.describe("User authorization grant settings."),
+				refreshTokens: z
+					.object({
+						enabled: z.boolean().describe("Whether this OAuth grant is enabled."),
+					})
+					.strict()
+					.optional()
+					.describe("Refresh token settings."),
+				clientCredentials: z
+					.object({
+						enabled: z.boolean().describe("Whether this OAuth grant is enabled."),
+						scopes: z
+							.array(z.string())
+							.optional()
+							.describe('Default scopes to request when token params specify scopes: [\\"*\\"].'),
+					})
+					.strict()
+					.optional()
+					.describe("Client credentials grant settings."),
+				forwardedClaims: z
+					.object({
+						idToken: z
+							.array(z.string())
+							.optional()
+							.describe("ID token claim names that Connect can expose."),
+					})
+					.strict()
+					.optional()
+					.describe(
+						"Allow-list of extra claims to propagate, keyed by source (idToken). Only claims named here and present in that source are exposed.",
+					),
+				defaultAudience: z
+					.string()
+					.optional()
+					.describe(
+						"Default audience used when a token request omits one. An empty string clears the default.",
+					),
+				defaultTokenExpiresIn: z
+					.number()
+					.min(60)
+					.optional()
+					.describe(
+						"Default token lifetime in seconds to use when the token response omits expires_in.",
+					),
+				authorizationUrlParams: z
+					.object({})
+					.catchall(z.string())
+					.optional()
+					.describe("Extra query parameters added to authorization URLs."),
+				jwtBearer: z
+					.object({
+						enabled: z.boolean().optional().describe("Whether JWT bearer grants are enabled."),
+						scopes: z
+							.array(z.string())
+							.optional()
+							.describe('Default scopes to request when token params specify scopes: [\\"*\\"].'),
+						sub: z.string().optional().describe("Default JWT subject claim."),
+						iss: z.string().optional().describe("Default JWT issuer claim."),
+						aud: z.string().optional().describe("Default JWT audience claim."),
+						additionalClaims: z
+							.object({})
+							.catchall(z.unknown())
+							.optional()
+							.describe("Additional claims included in generated JWT assertions."),
+						ttl: z.number().min(0).optional().describe("JWT lifetime in seconds."),
+						useClientCredentials: z
+							.boolean()
+							.optional()
+							.describe("Whether JWT bearer requests also use client credentials."),
+					})
+					.strict()
+					.optional()
+					.describe("JWT bearer grant settings."),
+				clientAssertion: z
+					.object({
+						type: z
+							.string()
+							.optional()
+							.describe(
+								"OAuth client assertion type. Defaults to urn:ietf:params:oauth:client-assertion-type:jwt-bearer. An empty string clears the configured type.",
+							),
+						ttl: z.number().min(0).optional().describe("Client assertion lifetime in seconds."),
+						claims: z
+							.object({})
+							.catchall(z.unknown())
+							.optional()
+							.describe("Additional claims included in the client assertion."),
+					})
+					.strict()
+					.optional()
+					.describe("`private_key_jwt` client assertion settings."),
+			})
+			.strict(),
+		z
+			.object({
+				subjectType: z
+					.enum(["app", "user"])
+					.optional()
+					.describe(
+						'Which subject the connector issues tokens for. Defaults to \\"app\\" (connector-level keys). \\"user\\" connectors store no connector-level values; each user supplies their own key during authorization.',
+					),
+				values: z
+					.array(
+						z
+							.object({
+								value: z.string().describe("API key value."),
+								scope: z
+									.string()
+									.optional()
+									.describe("Optional scope associated with the API key value."),
+								expiresAt: z
+									.int()
+									.min(0)
+									.optional()
+									.describe("The timestamp when the API key value expires in milliseconds."),
+							})
+							.strict(),
+					)
+					.optional()
+					.describe("Initial API key values stored by the connector."),
+				serviceUrls: z
+					.array(z.url())
+					.min(1)
+					.max(8)
+					.optional()
+					.describe("The HTTPS resources the API key authenticates against."),
+			})
+			.strict(),
+		z
+			.object({
+				appId: z.int().min(0).describe("GitHub App numeric ID."),
+				appSlug: z.string().describe("GitHub App slug."),
+				appName: z.string().describe("GitHub App display name."),
+				clientId: z.string().describe("OAuth client ID assigned by GitHub."),
+				owner: z
+					.object({
+						type: z
+							.enum(["user", "organization", "User", "Organization"])
+							.describe("GitHub App owner type."),
+						id: z.int().describe("GitHub App owner numeric ID."),
+						slug: z.string().describe("GitHub App owner login."),
+						name: z.string().optional().describe("GitHub App owner display name."),
+					})
+					.strict()
+					.optional()
+					.describe("GitHub App owner."),
+				clientSecret: z.string().optional().describe("GitHub App OAuth client secret."),
+				privateKeyPem: z.string().optional().describe("GitHub App private key in PEM format."),
+				webhookSecret: z.string().optional().describe("GitHub App webhook secret."),
+				extras: z
+					.object({})
+					.catchall(z.unknown())
+					.optional()
+					.describe("Additional provider metadata stored with the connector."),
+			})
+			.strict(),
+		z
+			.object({
+				appId: z.string().optional().describe("Linear application ID."),
+				appName: z.string().optional().describe("Linear application name."),
+				clientId: z.string().describe("OAuth client ID assigned by Linear."),
+				clientSecret: z.string().describe("Linear OAuth client secret."),
+				webhookSecret: z.string().optional().describe("Linear webhook verification secret."),
+				appScopes: z
+					.array(z.string())
+					.optional()
+					.describe("OAuth scopes requested for Linear application tokens."),
+				userScopes: z
+					.array(z.string())
+					.optional()
+					.describe("OAuth scopes requested for Linear user tokens."),
+				ownerOrganization: z
+					.object({
+						id: z.string().describe("Linear organization ID."),
+						slug: z.string().describe("Linear organization slug."),
+						name: z.string().describe("Linear organization name."),
+						logoUrl: z.string().nullish().describe("Linear organization logo URL."),
+					})
+					.strict()
+					.optional()
+					.describe("Linear organization that owns the OAuth application."),
+				application: z
+					.object({
+						id: z.string().describe("Linear OAuth application ID."),
+						clientId: z.string().describe("Linear OAuth client ID."),
+						name: z.string().describe("Linear OAuth application name."),
+						description: z.string().nullish().describe("Linear OAuth application description."),
+						developer: z.string().nullish().describe("Linear OAuth application developer name."),
+						developerUrl: z.string().nullish().describe("Linear OAuth application developer URL."),
+						imageUrl: z.string().nullish().describe("Linear OAuth application image URL."),
+						redirectUris: z
+							.array(z.string())
+							.optional()
+							.describe("Registered redirect URIs for the Linear OAuth application."),
+						distribution: z
+							.string()
+							.nullish()
+							.describe("Linear OAuth application distribution mode."),
+						webhookResourceTypes: z
+							.array(z.string())
+							.optional()
+							.describe("Linear resource types delivered to the webhook."),
+						webhookUrl: z.string().nullish().describe("Linear webhook URL."),
+						webhookEnabled: z
+							.boolean()
+							.optional()
+							.describe("Whether the Linear webhook is enabled."),
+						createdAt: z
+							.string()
+							.optional()
+							.describe("Linear OAuth application creation timestamp."),
+						updatedAt: z.string().optional().describe("Linear OAuth application update timestamp."),
+					})
+					.strict()
+					.optional()
+					.describe("Linear OAuth application metadata."),
+				extras: z
+					.object({})
+					.catchall(z.unknown())
+					.optional()
+					.describe("Additional provider metadata stored with the connector."),
+			})
+			.strict(),
+		z
+			.object({
+				apiToken: z.string().describe("Linq partner API token for the shared line."),
+				phoneNumbers: z.array(z.string().regex(/^\\+[1-9]\\d{1,14}$/)).optional(),
+			})
+			.strict(),
+		z
+			.object({
+				consumerKey: z.string().describe("Salesforce connected app consumer key."),
+				consumerSecret: z.string().describe("Salesforce connected app consumer secret."),
+				loginHost: z.string().describe("Salesforce login host, such as login.salesforce.com."),
+			})
+			.strict(),
+		z
+			.object({
+				apiKeyId: z.string().describe("Sendblue API key id (`sb-api-key-id`)."),
+				apiSecretKey: z.string().describe("Sendblue API secret key (`sb-api-secret-key`)."),
+				phoneNumbers: z
+					.array(z.string().regex(/^\\+[1-9]\\d{1,14}$/))
+					.optional()
+					.describe(
+						"E.164 Sendblue lines this connector sends and receives on. Used as the connector's display name, and the only lines its webhooks are registered for; an empty array clears them, which also removes the webhook subscription.",
+					),
+			})
+			.strict(),
+		z
+			.object({
+				appId: z.string().describe("Slack app ID."),
+				appName: z.string().describe("Slack app display name."),
+				clientId: z.string().describe("OAuth client ID assigned by Slack."),
+				clientSecret: z.string().describe("Slack app OAuth client secret."),
+				slackTeam: z
+					.object({
+						id: z.string().describe("Slack workspace ID."),
+						name: z.string().optional().describe("Slack workspace name."),
+						domain: z.string().optional().describe("Slack workspace domain."),
+					})
+					.strict()
+					.optional()
+					.describe("Slack workspace metadata."),
+				signingSecret: z.string().optional().describe("Slack request signing secret."),
+				verificationToken: z
+					.string()
+					.optional()
+					.describe("Legacy Slack webhook verification token."),
+				botScopes: z
+					.array(z.string())
+					.optional()
+					.describe("OAuth scopes requested for Slack bot tokens."),
+				userScopes: z
+					.array(z.string())
+					.optional()
+					.describe("OAuth scopes requested for Slack user tokens."),
+				extras: z
+					.object({})
+					.catchall(z.unknown())
+					.optional()
+					.describe("Additional provider metadata stored with the connector."),
+			})
+			.strict(),
+		z
+			.object({
+				clientName: z.string().optional().describe("Snowflake OAuth client name."),
+				accountIdentifier: z.string().describe("Snowflake account identifier."),
+				defaultSessionRole: z
+					.string()
+					.optional()
+					.describe("Default Snowflake role for created sessions."),
+				extras: z
+					.object({})
+					.catchall(z.unknown())
+					.optional()
+					.describe("Additional provider metadata stored with the connector."),
+			})
+			.strict(),
+		z
+			.object({
+				clientName: z.string().optional().describe("Snowflake client name."),
+				accountIdentifier: z.string().optional().describe("Snowflake account identifier."),
+				extras: z
+					.object({})
+					.catchall(z.unknown())
+					.optional()
+					.describe("Additional provider metadata stored with the connector."),
+			})
+			.strict(),
+		z
+			.object({
+				projectId: z.string().describe("Photon project ID."),
+				projectSecret: z.string().describe("Photon project secret."),
+				webhookSecret: z.string().optional().describe("Photon webhook verification secret."),
+			})
+			.strict(),
+		z.object({}).catchall(z.unknown()),
+	])
+	.describe(
+		"Provider configuration. With type, provide the complete configuration for that type. With service and connectionMethod, provide only credentials and preferences; Connect supplies the type, endpoints, templates, and defaults. Other connector types accept an arbitrary object.",
+	);
+
+export const connectCreateConnectorRequestSchema = z
+	.union([z.unknown(), z.unknown()])
+	.and(
+		z.object({
+			data: z
+				.unknown()
+				.describe("Provider configuration for the selected connector type or connection method."),
+			icon: z
+				.string()
+				.regex(/^[0-9a-fA-F]{40}$/)
+				.optional()
+				.describe(
+					"SHA-1 digest of a PNG or JPEG icon that is at least 640 by 640 pixels. This field does not accept a URL or image bytes.\n\nFirst compute the digest and upload the raw image with [POST /v2/files](https://vercel.com/docs/rest-api/deployments/upload-deployment-files). Send `Content-Length` and the same 40-character digest in `x-vercel-digest`. Then set `icon` to that digest.\n\n```js\nimport { createHash } from 'node:crypto';\nimport { readFile } from 'node:fs/promises';\n\nconst VERCEL_TOKEN = process.env.VERCEL_TOKEN;\nconst connectorId = 'scl_...';\nconst bytes = await readFile('icon.png');\nconst digest = createHash('sha1').update(bytes).digest('hex');\n\nawait fetch('https://api.vercel.com/v2/files', {\n  method: 'POST',\n  headers: {\n    Authorization: `Bearer ${VERCEL_TOKEN}`,\n    'Content-Type': 'application/octet-stream',\n    'Content-Length': String(bytes.length),\n    'x-vercel-digest': digest,\n  },\n  body: bytes,\n});\n\nawait fetch(`https://api.vercel.com/v2/connect/connectors/${connectorId}`, {\n  method: 'PATCH',\n  headers: {\n    Authorization: `Bearer ${VERCEL_TOKEN}`,\n    'Content-Type': 'application/json',\n  },\n  body: JSON.stringify({ icon: digest }),\n});\n```\n",
+				),
+			backgroundColor: z
+				.string()
+				.regex(/^#[0-9a-fA-F]{6}$/)
+				.optional()
+				.describe("Branding background color (6-digit hex, for example"),
+			accentColor: z
+				.string()
+				.regex(/^#[0-9a-fA-F]{6}$/)
+				.optional()
+				.describe("Branding accent color (6-digit hex, for example"),
+			type: z
+				.string()
+				.optional()
+				.describe(
+					"Connector implementation type for full configuration. Known types: api-key, discord, github, linear, linq, microsoft-entra, oauth, photon, salesforce, sendblue, slack, snowflake, snowflake-wif. Optional when service and connectionMethod select the type.",
+				),
+			service: z
+				.string()
+				.optional()
+				.describe(
+					"Service slug or URL for which the connector is used. Required when connectionMethod is set. Service alone does not enable preset configuration.",
+				),
+			connectionMethod: z
+				.string()
+				.max(64)
+				.optional()
+				.describe(
+					"Connection method slug of the service. Use it with service to select preset configuration.",
+				),
+			params: z
+				.object({})
+				.catchall(z.string().max(256))
+				.optional()
+				.describe(
+					"Values for the selected connection method's template fields. Requires connectionMethod.",
+				),
+			target: z
+				.string()
+				.max(64)
+				.optional()
+				.describe(
+					'Which of the service\'s targets this connector is for. Requires \\"connectionMethod\\" and must be one that method serves. Optional.',
+				),
+			uid: z
+				.string()
+				.optional()
+				.describe(
+					"Optional team-scoped unique identifier for the connector. If omitted or empty, Connect generates a value.",
+				),
+			name: z
+				.string()
+				.optional()
+				.describe(
+					"Connector name. The value is trimmed and cannot contain control characters. If omitted or empty, the project name is used. A name or projectId is required. API key connectors require name.",
+				),
+			projectId: z
+				.string()
+				.optional()
+				.describe(
+					"Project to connect during creation. If environments is omitted, the connection uses development, preview, and production.",
+				),
+			environments: z
+				.array(z.string().regex(/^env_/))
+				.min(1)
+				.optional()
+				.describe(
+					"Environments for the project connection. Requires projectId. Use one or more built-in environment names or stable custom environment IDs that belong to the project. Duplicate values are accepted and removed.",
+				),
+			triggers: z
+				.boolean()
+				.optional()
+				.describe("Whether the triggers are enabled for this connector."),
+			triggerDestination: z
+				.union([
+					z
+						.object({
+							projectId: z
+								.string()
+								.min(1)
+								.optional()
+								.describe(
+									"Project that receives triggers. During connector creation, omit it to use the top-level projectId.",
+								),
+							path: z
+								.string()
+								.min(1)
+								.max(2048)
+								.optional()
+								.describe(
+									"Route path on the linked project that receives forwarded trigger requests.",
+								),
+						})
+						.strict(),
+					z
+						.object({
+							projectId: z
+								.string()
+								.min(1)
+								.optional()
+								.describe(
+									"Project that receives triggers. During connector creation, omit it to use the top-level projectId.",
+								),
+							branch: z
+								.string()
+								.min(1)
+								.max(250)
+								.describe("Git branch used to select a preview deployment."),
+							path: z
+								.string()
+								.min(1)
+								.max(2048)
+								.optional()
+								.describe(
+									"Route path on the linked project that receives forwarded trigger requests.",
+								),
+						})
+						.strict(),
+					z
+						.object({
+							projectId: z
+								.string()
+								.min(1)
+								.optional()
+								.describe(
+									"Project that receives triggers. During connector creation, omit it to use the top-level projectId.",
+								),
+							customEnvironmentId: z
+								.string()
+								.regex(/^env_/)
+								.describe("Stable custom environment ID that belongs to the destination project."),
+							path: z
+								.string()
+								.min(1)
+								.max(2048)
+								.optional()
+								.describe(
+									"Route path on the linked project that receives forwarded trigger requests.",
+								),
+						})
+						.strict(),
+				])
+				.optional()
+				.describe(
+					"Initial trigger destination. Requires triggers to be enabled and a projectId here or at the top level. Connector responses expose the resulting set as triggerDestinations. Replace the complete set with PATCH /v1/connect/connectors/{connector}/trigger-destinations.",
+				),
+			events: z.array(z.string()).optional().describe("Default trigger events for this connector."),
+		}),
+	)
+	.describe(
+		"Create a connector with full provider configuration or with a known service connection method.",
+	);
+
+export const connectErrorSchema = z
+	.object({
+		error: z
+			.object({
+				code: z.string().describe("Stable machine-readable error code."),
+				message: z.string().describe("Human-readable error message."),
+			})
+			.catchall(z.unknown())
+			.describe("Error details."),
+	})
+	.strict()
+	.describe("Error response returned by a Connect API operation.");
+
+export const connectEnvironmentSchema = z
+	.string()
+	.regex(/^env_/)
+	.describe("A built-in Vercel environment or a stable custom environment ID.");
 
 export const flagJSONValueSchema = z
 	.union([
@@ -930,6 +1891,7 @@ export const userEventSchema = z
 				"domain-custom-ns-change",
 				"domain-delegated",
 				"domain-delete",
+				"domain-ech-change",
 				"domain-move-in",
 				"domain-move-out",
 				"domain-move-out-request-sent",
@@ -1022,6 +1984,7 @@ export const userEventSchema = z
 				"global-config-transfer-out",
 				"global-config-updated",
 				"instant-rollback-created",
+				"integration-configuration-credential-revoked",
 				"integration-configuration-credential-rotated",
 				"integration-configuration-owner-changed",
 				"integration-configuration-scope-change-confirmed",
@@ -1361,6 +2324,8 @@ export const userEventSchema = z
 				"user-emu-account-archived",
 				"user-emu-account-deleted",
 				"user-emu-account-recovered",
+				"user-emu-account-update-opted-in",
+				"user-emu-account-update-opted-out",
 				"user-emu-recovery-email-sent",
 				"user-emu-recovery-initiated",
 				"user-emu-toggled",
@@ -1457,9 +2422,9 @@ export const userEventSchema = z
 			.object({
 				slug: z.string().optional(),
 				avatar: z.string(),
-				uid: z.string(),
 				email: z.string(),
 				username: z.string(),
+				uid: z.string(),
 			})
 			.optional()
 			.describe("Metadata for {@link userId}."),
@@ -1576,6 +2541,7 @@ export const userEventSchema = z
 						action: z.enum(["created", "deleted", "transitioned", "updated"]),
 						id: z.string(),
 						name: z.string(),
+						slug: z.string(),
 						state: z.string(),
 						projectId: z.string(),
 						projectName: z.string().optional(),
@@ -2845,8 +3811,8 @@ export const userEventSchema = z
 				z
 					.object({
 						team: z.object({
-							id: z.string(),
 							name: z.string(),
+							id: z.string(),
 						}),
 						configuration: z.object({
 							id: z.string(),
@@ -2862,8 +3828,8 @@ export const userEventSchema = z
 				z
 					.object({
 						team: z.object({
-							id: z.string(),
 							name: z.string(),
+							id: z.string(),
 						}),
 						configuration: z.object({
 							id: z.string(),
@@ -2880,8 +3846,8 @@ export const userEventSchema = z
 				z
 					.object({
 						team: z.object({
-							id: z.string(),
 							name: z.string(),
+							id: z.string(),
 						}),
 						configuration: z.object({
 							id: z.string(),
@@ -2896,8 +3862,8 @@ export const userEventSchema = z
 				z
 					.object({
 						team: z.object({
-							id: z.string(),
 							name: z.string(),
+							id: z.string(),
 						}),
 						configuration: z.object({
 							id: z.string(),
@@ -4014,8 +4980,8 @@ export const userEventSchema = z
 				z
 					.object({
 						deployment: z.object({
-							id: z.string(),
 							name: z.string(),
+							id: z.string(),
 							meta: z.object({}).catchall(z.string()),
 							url: z.string(),
 						}),
@@ -4163,6 +5129,13 @@ export const userEventSchema = z
 				z
 					.object({
 						domain: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						domain: z.string(),
+						echMode: z.enum(["auto", "disabled", "enabled"]),
+						previousEchMode: z.enum(["auto", "disabled", "enabled"]),
 					})
 					.strict(),
 				z
@@ -4750,7 +5723,7 @@ export const userEventSchema = z
 					.strict(),
 				z
 					.object({
-						provider: z.enum(["bitbucket", "github", "gitlab"]),
+						provider: z.enum(["bitbucket", "cursor-origin", "github", "gitlab"]),
 						actorLogin: z
 							.string()
 							.nullable()
@@ -5060,8 +6033,8 @@ export const userEventSchema = z
 								removedEdgeConfigsAt: z.number().optional(),
 								resourceConfig: z
 									.object({
-										nodeType: z.string().optional(),
 										concurrentBuilds: z.number().optional(),
+										nodeType: z.string().optional(),
 										elasticConcurrencyEnabled: z
 											.union([z.literal(false), z.literal(true)])
 											.optional(),
@@ -5785,6 +6758,12 @@ export const userEventSchema = z
 											.optional()
 											.describe(
 												"Tracks the last time a `blockThresholdV2` breach was reported for this owner. Re-arms on the same rolling window as `hobbyWarningV2SlackSentAt`.",
+											),
+										hobbyPolicySlackThreadTs: z
+											.string()
+											.optional()
+											.describe(
+												"Slack `ts` of the thread root holding this owner's new-Hobby-policy alerts. Every later alert for the owner is posted as a reply to it, so the channel carries one entry per owner rather than one per alert. Replaced if Slack reports the root as gone.",
 											),
 									})
 									.optional()
@@ -7556,8 +8535,8 @@ export const userEventSchema = z
 				z
 					.object({
 						team: z.object({
-							id: z.string(),
 							name: z.string(),
+							id: z.string(),
 						}),
 						project: z.object({
 							id: z.string(),
@@ -8146,6 +9125,12 @@ export const userEventSchema = z
 				z
 					.object({
 						projectId: z.string(),
+						projectName: z
+							.string()
+							.optional()
+							.describe(
+								"Display name for Activity links. Optional for events stored before it was published.",
+							),
 						reasonCode: z.enum(["BACKOFFICE", "BUDGET_REACHED", "PUBLIC_API"]).optional(),
 					})
 					.strict(),
@@ -8476,6 +9461,12 @@ export const userEventSchema = z
 				z
 					.object({
 						projectId: z.string(),
+						projectName: z
+							.string()
+							.optional()
+							.describe(
+								"Display name for Activity links. Optional for events stored before it was published.",
+							),
 						reasonCode: z.enum(["BACKOFFICE", "PUBLIC_API"]).optional(),
 					})
 					.strict(),
@@ -8849,6 +9840,87 @@ export const userEventSchema = z
 							})
 							.describe("Represents a budget for tracking and notifying teams on their spending."),
 						webhookUrl: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						budget: z
+							.object({
+								type: z.enum(["fixed"]).describe("The budget type"),
+								fixedBudget: z.number().describe("Budget amount (USD / dollars)"),
+								previousSpend: z
+									.array(z.number())
+									.describe("Array of the last 3 months of spend data"),
+								notifiedAt: z
+									.array(z.number())
+									.describe("Array of 50, 75, 100 to keep track of notifications sent out"),
+								webhookId: z
+									.string()
+									.optional()
+									.describe(
+										"Webhook id that corresponds to a webhook in Cosmos webhook collection",
+									),
+								webhookNotified: z
+									.union([z.literal(false), z.literal(true)])
+									.optional()
+									.describe("Keep track if the webhook has been called for the month"),
+								createdAt: z.number().describe("Date time when budget is created"),
+								updatedAt: z.number().optional().describe("Date time when budget is updated last"),
+								isActive: z
+									.union([z.literal(false), z.literal(true)])
+									.describe("Is the budget currently active for a customer"),
+								pauseProjects: z
+									.union([z.literal(false), z.literal(true)])
+									.optional()
+									.describe("Should all projects be paused if budget is exceeded"),
+								pricingPlan: z
+									.enum(["flex", "legacy", "platform", "plus", "unbundled"])
+									.optional()
+									.describe("The acive pricing plan the team is billed with"),
+								teamId: z.string().describe("Partition key"),
+								id: z.string().describe("Sort key that needs to be unique per teamId"),
+							})
+							.describe("Represents a budget for tracking and notifying teams on their spending."),
+						prevBudget: z
+							.object({
+								type: z.enum(["fixed"]).describe("The budget type"),
+								fixedBudget: z.number().describe("Budget amount (USD / dollars)"),
+								previousSpend: z
+									.array(z.number())
+									.describe("Array of the last 3 months of spend data"),
+								notifiedAt: z
+									.array(z.number())
+									.describe("Array of 50, 75, 100 to keep track of notifications sent out"),
+								webhookId: z
+									.string()
+									.optional()
+									.describe(
+										"Webhook id that corresponds to a webhook in Cosmos webhook collection",
+									),
+								webhookNotified: z
+									.union([z.literal(false), z.literal(true)])
+									.optional()
+									.describe("Keep track if the webhook has been called for the month"),
+								createdAt: z.number().describe("Date time when budget is created"),
+								updatedAt: z.number().optional().describe("Date time when budget is updated last"),
+								isActive: z
+									.union([z.literal(false), z.literal(true)])
+									.describe("Is the budget currently active for a customer"),
+								pauseProjects: z
+									.union([z.literal(false), z.literal(true)])
+									.optional()
+									.describe("Should all projects be paused if budget is exceeded"),
+								pricingPlan: z
+									.enum(["flex", "legacy", "platform", "plus", "unbundled"])
+									.optional()
+									.describe("The acive pricing plan the team is billed with"),
+								teamId: z.string().describe("Partition key"),
+								id: z.string().describe("Sort key that needs to be unique per teamId"),
+							})
+							.optional()
+							.describe("Represents a budget for tracking and notifying teams on their spending."),
+						webhookUrl: z.string().optional(),
+						prevWebhookUrl: z.string().optional(),
 					})
 					.strict(),
 				z
@@ -9644,6 +10716,17 @@ export const userEventSchema = z
 					.strict(),
 				z
 					.object({
+						teamName: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						teamId: z.string(),
+						teamName: z.string(),
+					})
+					.strict(),
+				z
+					.object({
 						actorId: z.string(),
 						actorType: z.enum(["admin"]),
 						reason: z.string().optional(),
@@ -9875,8 +10958,8 @@ export const userEventSchema = z
 				z
 					.object({
 						team: z.object({
-							id: z.string(),
 							name: z.string(),
+							id: z.string(),
 						}),
 						configuration: z.object({
 							id: z.string(),
@@ -9893,8 +10976,8 @@ export const userEventSchema = z
 				z
 					.object({
 						team: z.object({
-							id: z.string(),
 							name: z.string(),
+							id: z.string(),
 						}),
 						configuration: z.object({
 							id: z.string(),
@@ -9909,8 +10992,8 @@ export const userEventSchema = z
 				z
 					.object({
 						team: z.object({
-							id: z.string(),
 							name: z.string(),
+							id: z.string(),
 						}),
 						configuration: z.object({
 							id: z.string(),
@@ -10600,6 +11683,7 @@ export const listEventTypeSchema = z
 				"domain-custom-ns-change",
 				"domain-delegated",
 				"domain-delete",
+				"domain-ech-change",
 				"domain-move-in",
 				"domain-move-out",
 				"domain-move-out-request-sent",
@@ -10692,6 +11776,7 @@ export const listEventTypeSchema = z
 				"global-config-transfer-out",
 				"global-config-updated",
 				"instant-rollback-created",
+				"integration-configuration-credential-revoked",
 				"integration-configuration-credential-rotated",
 				"integration-configuration-owner-changed",
 				"integration-configuration-scope-change-confirmed",
@@ -11031,6 +12116,8 @@ export const listEventTypeSchema = z
 				"user-emu-account-archived",
 				"user-emu-account-deleted",
 				"user-emu-account-recovered",
+				"user-emu-account-update-opted-in",
+				"user-emu-account-update-opted-out",
 				"user-emu-recovery-email-sent",
 				"user-emu-recovery-initiated",
 				"user-emu-toggled",
@@ -11294,6 +12381,7 @@ export const listEventTypeSchema = z
 					"domain-custom-ns-change",
 					"domain-delegated",
 					"domain-delete",
+					"domain-ech-change",
 					"domain-move-in",
 					"domain-move-out",
 					"domain-move-out-request-sent",
@@ -11386,6 +12474,7 @@ export const listEventTypeSchema = z
 					"global-config-transfer-out",
 					"global-config-updated",
 					"instant-rollback-created",
+					"integration-configuration-credential-revoked",
 					"integration-configuration-credential-rotated",
 					"integration-configuration-owner-changed",
 					"integration-configuration-scope-change-confirmed",
@@ -11725,6 +12814,8 @@ export const listEventTypeSchema = z
 					"user-emu-account-archived",
 					"user-emu-account-deleted",
 					"user-emu-account-recovered",
+					"user-emu-account-update-opted-in",
+					"user-emu-account-update-opted-out",
 					"user-emu-recovery-email-sent",
 					"user-emu-recovery-initiated",
 					"user-emu-toggled",
@@ -12254,7 +13345,7 @@ export const flagsSdkKeyWithSecretsSchema = z
 			.string()
 			.optional()
 			.describe(
-				"Cleartext value of the Edge Config token, when the project has an Edge Config connection.",
+				"Cleartext value of the Global Config token, when the project has a Global Config connection.",
 			),
 	})
 	.describe(
@@ -13821,14 +14912,14 @@ export const authUserSchema = z
 			.describe("An object containing billing infomation associated with the User account."),
 		resourceConfig: z
 			.object({
-				nodeType: z
-					.string()
+				concurrentBuilds: z
+					.number()
 					.optional()
 					.describe(
 						"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
 					),
-				concurrentBuilds: z
-					.number()
+				nodeType: z
+					.string()
 					.optional()
 					.describe(
 						"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
@@ -16713,6 +17804,20 @@ export const readNetworkResponseSchema = z.union([
 	readNetworkStatus410Schema,
 ]);
 
+export const createConnectorQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe(
+		"The team ID that scopes the request. Do not send it with slug. If both are omitted, Vercel uses the team associated with the token or the authenticated user's default team. The request returns 401 if no team can be selected.",
+	);
+
+export const createConnectorQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe(
+		"The team slug that scopes the request. Do not send it with teamId. If both are omitted, Vercel uses the team associated with the token or the authenticated user's default team. The request returns 401 if no team can be selected.",
+	);
+
 export const createConnectorStatus201Schema = z.unknown();
 
 export const createConnectorStatus400Schema = z.unknown();
@@ -16775,32 +17880,6 @@ export const getConnectorTokenResponseSchema = z.union([
 	getConnectorTokenStatus429Schema,
 ]);
 
-export const importConnectorTokensPathConnectorSchema = z.string();
-
-export const importConnectorTokensStatus200Schema = z.unknown();
-
-export const importConnectorTokensStatus400Schema = z.unknown();
-
-export const importConnectorTokensStatus401Schema = z.unknown();
-
-export const importConnectorTokensStatus403Schema = z.unknown();
-
-export const importConnectorTokensStatus404Schema = z.unknown();
-
-export const importConnectorTokensStatus410Schema = z.unknown();
-
-export const importConnectorTokensStatus422Schema = z.unknown();
-
-export const importConnectorTokensResponseSchema = z.union([
-	importConnectorTokensStatus200Schema,
-	importConnectorTokensStatus400Schema,
-	importConnectorTokensStatus401Schema,
-	importConnectorTokensStatus403Schema,
-	importConnectorTokensStatus404Schema,
-	importConnectorTokensStatus410Schema,
-	importConnectorTokensStatus422Schema,
-]);
-
 export const createConnectorAuthorizationRequestPathConnectorSchema = z.string();
 
 export const createConnectorAuthorizationRequestStatus200Schema = z.unknown();
@@ -16822,32 +17901,6 @@ export const createConnectorAuthorizationRequestResponseSchema = z.union([
 	createConnectorAuthorizationRequestStatus403Schema,
 	createConnectorAuthorizationRequestStatus404Schema,
 	createConnectorAuthorizationRequestStatus410Schema,
-]);
-
-export const createConnectorInstallationRequestPathConnectorSchema = z.string();
-
-export const createConnectorInstallationRequestStatus200Schema = z.unknown();
-
-export const createConnectorInstallationRequestStatus400Schema = z.unknown();
-
-export const createConnectorInstallationRequestStatus401Schema = z.unknown();
-
-export const createConnectorInstallationRequestStatus403Schema = z.unknown();
-
-export const createConnectorInstallationRequestStatus404Schema = z.unknown();
-
-export const createConnectorInstallationRequestStatus410Schema = z.unknown();
-
-export const createConnectorInstallationRequestStatus422Schema = z.unknown();
-
-export const createConnectorInstallationRequestResponseSchema = z.union([
-	createConnectorInstallationRequestStatus200Schema,
-	createConnectorInstallationRequestStatus400Schema,
-	createConnectorInstallationRequestStatus401Schema,
-	createConnectorInstallationRequestStatus403Schema,
-	createConnectorInstallationRequestStatus404Schema,
-	createConnectorInstallationRequestStatus410Schema,
-	createConnectorInstallationRequestStatus422Schema,
 ]);
 
 export const getDeploymentEventsPathIdOrUrlSchema = z
@@ -20919,6 +21972,32 @@ export const rotateInstallationCredentialResponseSchema = z.union([
 	rotateInstallationCredentialStatus410Schema,
 ]);
 
+export const revokeInstallationCredentialPathIntegrationConfigurationIdSchema = z.string();
+
+export const revokeInstallationCredentialStatus200Schema = z.unknown();
+
+export const revokeInstallationCredentialStatus400Schema = z.unknown();
+
+export const revokeInstallationCredentialStatus401Schema = z.unknown();
+
+export const revokeInstallationCredentialStatus403Schema = z.unknown();
+
+export const revokeInstallationCredentialStatus404Schema = z.unknown();
+
+export const revokeInstallationCredentialStatus409Schema = z.unknown();
+
+export const revokeInstallationCredentialStatus410Schema = z.unknown();
+
+export const revokeInstallationCredentialResponseSchema = z.union([
+	revokeInstallationCredentialStatus200Schema,
+	revokeInstallationCredentialStatus400Schema,
+	revokeInstallationCredentialStatus401Schema,
+	revokeInstallationCredentialStatus403Schema,
+	revokeInstallationCredentialStatus404Schema,
+	revokeInstallationCredentialStatus409Schema,
+	revokeInstallationCredentialStatus410Schema,
+]);
+
 export const createEventPathIntegrationConfigurationIdSchema = z.string();
 
 export const createEventStatus201Schema = z.unknown();
@@ -23014,12 +24093,12 @@ export const getProjectsQueryExcludeReposSchema = z
 export const getProjectsQueryEdgeConfigIdSchema = z
 	.string()
 	.optional()
-	.describe("Filter results by connected Edge Config ID");
+	.describe("Filter results by connected Global Config ID");
 
 export const getProjectsQueryEdgeConfigTokenIdSchema = z
 	.string()
 	.optional()
-	.describe("Filter results by connected Edge Config Token ID");
+	.describe("Filter results by connected Global Config Token ID");
 
 export const getProjectsQueryDeprecatedSchema = z.boolean().optional();
 
@@ -25602,6 +26681,14 @@ export const deleteSandboxQueryProjectIdSchema = z
 		"The project ID that owns the named sandbox. When provided, takes precedence over OIDC project context.",
 	);
 
+export const deleteSandboxQueryDeleteOrphanSnapshotsSchema = z
+	.boolean()
+	.optional()
+	.default(false)
+	.describe(
+		"When true, snapshots of the deleted sandbox that are not referenced by any other sandbox are also deleted asynchronously. Defaults to false.",
+	);
+
 export const deleteSandboxQueryTeamIdSchema = z
 	.string()
 	.optional()
@@ -26853,6 +27940,16 @@ export const getSecurityFirewallEventsQueryStartTimestampSchema = z.number().opt
 export const getSecurityFirewallEventsQueryEndTimestampSchema = z.number().optional();
 
 export const getSecurityFirewallEventsQueryHostsSchema = z.string().optional();
+
+export const getSecurityFirewallEventsQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe("The Team identifier to perform the request on behalf of.");
+
+export const getSecurityFirewallEventsQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.");
 
 export const getSecurityFirewallEventsStatus200Schema = z.unknown();
 

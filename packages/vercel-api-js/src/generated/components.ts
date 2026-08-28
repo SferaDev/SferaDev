@@ -218,13 +218,6 @@ import type {
 	CreateConnectorAuthorizationRequestStatus403,
 	CreateConnectorAuthorizationRequestStatus404,
 	CreateConnectorAuthorizationRequestStatus410,
-	CreateConnectorInstallationRequestResponse,
-	CreateConnectorInstallationRequestStatus400,
-	CreateConnectorInstallationRequestStatus401,
-	CreateConnectorInstallationRequestStatus403,
-	CreateConnectorInstallationRequestStatus404,
-	CreateConnectorInstallationRequestStatus410,
-	CreateConnectorInstallationRequestStatus422,
 	CreateConnectorResponse,
 	CreateConnectorStatus400,
 	CreateConnectorStatus401,
@@ -1658,13 +1651,6 @@ import type {
 	GitNamespacesStatus410,
 	GitNamespacesStatus429,
 	GitNamespacesStatus500,
-	ImportConnectorTokensResponse,
-	ImportConnectorTokensStatus400,
-	ImportConnectorTokensStatus401,
-	ImportConnectorTokensStatus403,
-	ImportConnectorTokensStatus404,
-	ImportConnectorTokensStatus410,
-	ImportConnectorTokensStatus422,
 	ImportResourceResponse,
 	ImportResourceStatus400,
 	ImportResourceStatus401,
@@ -2177,6 +2163,13 @@ import type {
 	RestoreRedirectsStatus404,
 	RestoreRedirectsStatus410,
 	RestoreRedirectsStatus500,
+	RevokeInstallationCredentialResponse,
+	RevokeInstallationCredentialStatus400,
+	RevokeInstallationCredentialStatus401,
+	RevokeInstallationCredentialStatus403,
+	RevokeInstallationCredentialStatus404,
+	RevokeInstallationCredentialStatus409,
+	RevokeInstallationCredentialStatus410,
 	RevokeKmsSigningKeyResponse,
 	RevokeKmsSigningKeyStatus400,
 	RevokeKmsSigningKeyStatus401,
@@ -5200,11 +5193,17 @@ export async function readNetwork(
 
 /**
  * @summary Create a connector
- * @description Create a connector from type-specific configuration and optionally link it to a project during creation.
+ * @description Create a connector and optionally link it to a project. Use `type` with complete provider data, or use `service` with `connectionMethod` so Connect can supply the type, endpoints, templates, and defaults.
  * @link /v1/connect/connectors
  */
 export async function createConnector(
-	{ config }: { config?: Partial<FetcherConfig> & { client?: typeof defaultClient } } = {} as any,
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
 ) {
 	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
@@ -5223,11 +5222,12 @@ export async function createConnector(
 		>,
 		null,
 		Record<string, string>,
-		Record<string, string>,
+		{ teamId?: string; slug?: string },
 		Record<string, string>
 	>({
 		method: "POST",
 		url: `/v1/connect/connectors`,
+		queryParams,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
 	});
@@ -5280,49 +5280,6 @@ export async function getConnectorToken(
 }
 
 /**
- * @summary Import Connect tokens
- * @description Import access and refresh tokens for a connector identified by the path parameter.
- * @link /v1/connect/token/{connector}/import
- */
-export async function importConnectorTokens(
-	{
-		pathParams,
-		config,
-	}: {
-		pathParams: { connector: string };
-		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-	} = {} as any,
-) {
-	const { client: request = defaultClient, ...requestConfig } = config ?? {};
-
-	if (!pathParams.connector) {
-		throw new Error(`Missing required path parameter: connector`);
-	}
-	const data = await request<
-		ImportConnectorTokensResponse,
-		ErrorWrapper<
-			| ImportConnectorTokensStatus400
-			| ImportConnectorTokensStatus401
-			| ImportConnectorTokensStatus403
-			| ImportConnectorTokensStatus404
-			| ImportConnectorTokensStatus410
-			| ImportConnectorTokensStatus422
-		>,
-		null,
-		Record<string, string>,
-		Record<string, string>,
-		{ connector: string }
-	>({
-		method: "POST",
-		url: `/v1/connect/token/${pathParams.connector}/import`,
-		...requestConfig,
-		headers: { ...requestConfig.headers },
-	});
-
-	return data;
-}
-
-/**
  * @summary Create a Connect authorization request
  * @description Create an authorization request for a connector and return the URL and verifier details needed to complete the flow.
  * @link /v1/connect/authorize/{connector}
@@ -5357,49 +5314,6 @@ export async function createConnectorAuthorizationRequest(
 	>({
 		method: "POST",
 		url: `/v1/connect/authorize/${pathParams.connector}`,
-		...requestConfig,
-		headers: { ...requestConfig.headers },
-	});
-
-	return data;
-}
-
-/**
- * @summary Create a Connect installation request
- * @description Create an installation request for a connector and return the URL and verifier details needed to complete the flow.
- * @link /v1/connect/install/{connector}
- */
-export async function createConnectorInstallationRequest(
-	{
-		pathParams,
-		config,
-	}: {
-		pathParams: { connector: string };
-		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-	} = {} as any,
-) {
-	const { client: request = defaultClient, ...requestConfig } = config ?? {};
-
-	if (!pathParams.connector) {
-		throw new Error(`Missing required path parameter: connector`);
-	}
-	const data = await request<
-		CreateConnectorInstallationRequestResponse,
-		ErrorWrapper<
-			| CreateConnectorInstallationRequestStatus400
-			| CreateConnectorInstallationRequestStatus401
-			| CreateConnectorInstallationRequestStatus403
-			| CreateConnectorInstallationRequestStatus404
-			| CreateConnectorInstallationRequestStatus410
-			| CreateConnectorInstallationRequestStatus422
-		>,
-		null,
-		Record<string, string>,
-		Record<string, string>,
-		{ connector: string }
-	>({
-		method: "POST",
-		url: `/v1/connect/install/${pathParams.connector}`,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
 	});
@@ -10450,6 +10364,49 @@ export async function rotateInstallationCredential(
 }
 
 /**
+ * @summary Revoke Installation Credential
+ * @description Retires a superseded installation credential, so a partner can complete a rotation it started with `POST /credentials/rotate` — the leaked credential stops working without the customer having to reinstall. Authenticated by a live installation credential plus the integration's client secret. The credential to retire is named in the body rather than being the one that authenticates, so the ordinary flow is: rotate, store the replacement, then authenticate with the replacement and revoke the old one. Refuses to retire an installation's last live credential. Rotation exists so remediation is not customer-visible; revoking the only credential would undo that and leave the install needing a reinstall.
+ * @link /v1/installations/{integrationConfigurationId}/credentials/revoke
+ */
+export async function revokeInstallationCredential(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { integrationConfigurationId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.integrationConfigurationId) {
+		throw new Error(`Missing required path parameter: integrationConfigurationId`);
+	}
+	const data = await request<
+		RevokeInstallationCredentialResponse,
+		ErrorWrapper<
+			| RevokeInstallationCredentialStatus400
+			| RevokeInstallationCredentialStatus401
+			| RevokeInstallationCredentialStatus403
+			| RevokeInstallationCredentialStatus404
+			| RevokeInstallationCredentialStatus409
+			| RevokeInstallationCredentialStatus410
+		>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		{ integrationConfigurationId: string }
+	>({
+		method: "POST",
+		url: `/v1/installations/${pathParams.integrationConfigurationId}/credentials/revoke`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
  * @summary Create Event
  * @description Partner notifies Vercel of any changes made to an Installation or a Resource. Vercel is expected to use `list-resources` and other read APIs to get the new state.<br/> <br/> `resource.updated` event should be dispatched when any state of a resource linked to Vercel is modified by the partner.<br/> `installation.updated` event should be dispatched when an installation's billing plan is changed via the provider instead of Vercel.<br/> <br/> Resource update use cases: <br/> <br/> - The user renames a database in the partner’s application. The partner should dispatch a `resource.updated` event to notify Vercel to update the resource in Vercel’s datastores.<br/> - A resource has been suspended due to a lack of use. The partner should dispatch a `resource.updated` event to notify Vercel to update the resource's status in Vercel's datastores.<br/>
  * @link /v1/installations/{integrationConfigurationId}/events
@@ -11771,7 +11728,7 @@ export async function revokeKmsSigningKey(
 
 /**
  * @summary Get an issuer
- * @description Retrieve a single KMS issuer by its ID.
+ * @description Retrieve a single KMS issuer by its ID. Accepts either a team bearer token (existing path) or an OIDC token authorized by one of the issuer's policies (e.g. a connex-grant token). The OIDC path returns the issuer without policies, since a policy token only proves signing access, not management access.
  * @link /v1/kms/issuers/{issuerId}
  */
 export async function getKmsIssuer(
@@ -16126,7 +16083,12 @@ export async function deleteSandbox(
 		config,
 	}: {
 		pathParams: { name: string };
-		queryParams?: { projectId?: string; teamId?: string; slug?: string };
+		queryParams?: {
+			projectId?: string;
+			deleteOrphanSnapshots?: boolean;
+			teamId?: string;
+			slug?: string;
+		};
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
 ) {
@@ -16147,7 +16109,7 @@ export async function deleteSandbox(
 		>,
 		null,
 		Record<string, string>,
-		{ projectId?: string; teamId?: string; slug?: string },
+		{ projectId?: string; deleteOrphanSnapshots?: boolean; teamId?: string; slug?: string },
 		{ name: string }
 	>({
 		method: "DELETE",
@@ -17460,7 +17422,7 @@ export async function removeBypassIp(
 
 /**
  * @summary Read Firewall Actions by Project
- * @description Retrieve firewall actions for a project
+ * @description Retrieve firewall actions for a project Rule names are resolved against the project's *current* active firewall configuration and the team's active rulesets, so a rule that has since been renamed reports its new name and one that has been deleted reports `null`. System rules such as `sys_dos_mitigation` and `ip_blocking` have no configured name and always report `null`.
  * @link /v1/security/firewall/events
  */
 export async function getSecurityFirewallEvents(
@@ -17473,6 +17435,8 @@ export async function getSecurityFirewallEvents(
 			startTimestamp?: number;
 			endTimestamp?: number;
 			hosts?: string;
+			teamId?: string;
+			slug?: string;
 		};
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
@@ -17491,7 +17455,14 @@ export async function getSecurityFirewallEvents(
 		>,
 		null,
 		Record<string, string>,
-		{ projectId?: string; startTimestamp?: number; endTimestamp?: number; hosts?: string },
+		{
+			projectId?: string;
+			startTimestamp?: number;
+			endTimestamp?: number;
+			hosts?: string;
+			teamId?: string;
+			slug?: string;
+		},
 		Record<string, string>
 	>({
 		method: "GET",
@@ -21271,9 +21242,7 @@ export const operationsByPath = {
 	"GET /v1/connect/networks/{networkId}": readNetwork,
 	"POST /v1/connect/connectors": createConnector,
 	"POST /v1/connect/token/{connector}": getConnectorToken,
-	"POST /v1/connect/token/{connector}/import": importConnectorTokens,
 	"POST /v1/connect/authorize/{connector}": createConnectorAuthorizationRequest,
-	"POST /v1/connect/install/{connector}": createConnectorInstallationRequest,
 	"GET /v3/deployments/{idOrUrl}/events": getDeploymentEvents,
 	"PATCH /v1/deployments/{deploymentId}/integrations/{integrationConfigurationId}/resources/{resourceId}/actions/{action}":
 		updateIntegrationDeploymentAction,
@@ -21388,6 +21357,8 @@ export const operationsByPath = {
 	"GET /v1/installations/{integrationConfigurationId}/member/{memberId}": getMember,
 	"POST /v1/installations/{integrationConfigurationId}/credentials/rotate":
 		rotateInstallationCredential,
+	"POST /v1/installations/{integrationConfigurationId}/credentials/revoke":
+		revokeInstallationCredential,
 	"POST /v1/installations/{integrationConfigurationId}/events": createEvent,
 	"GET /v1/installations/{integrationConfigurationId}/resources": getIntegrationResources,
 	"GET /v1/installations/{integrationConfigurationId}/resources/{resourceId}":
@@ -21726,9 +21697,7 @@ export const operationsByTag = {
 	connect: {
 		createConnector,
 		getConnectorToken,
-		importConnectorTokens,
 		createConnectorAuthorizationRequest,
-		createConnectorInstallationRequest,
 	},
 	deployments: {
 		getDeploymentEvents,
@@ -21880,6 +21849,7 @@ export const operationsByTag = {
 		getAccountInfo,
 		getMember,
 		rotateInstallationCredential,
+		revokeInstallationCredential,
 		createEvent,
 		getIntegrationResources,
 		getIntegrationResource,
@@ -22191,13 +22161,7 @@ export const tagDictionary = {
 		PATCH: ["updateNetwork", "updateStaticIps"],
 	},
 	connect: {
-		POST: [
-			"createConnector",
-			"getConnectorToken",
-			"importConnectorTokens",
-			"createConnectorAuthorizationRequest",
-			"createConnectorInstallationRequest",
-		],
+		POST: ["createConnector", "getConnectorToken", "createConnectorAuthorizationRequest"],
 	},
 	deployments: {
 		GET: [
@@ -22355,6 +22319,7 @@ export const tagDictionary = {
 		],
 		POST: [
 			"rotateInstallationCredential",
+			"revokeInstallationCredential",
 			"createEvent",
 			"submitBillingData",
 			"submitInvoice",
