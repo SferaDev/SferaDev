@@ -16,7 +16,9 @@ export type AccountConfig = {
 	gactionsHomePin: string;
 	/**
 	 * @description The opt enabled date
-	 * @type string | undefined, date-time
+	 *
+	 * Format: `date-time`
+	 * @type string | undefined
 	 */
 	otpEnabledDate?: string | undefined;
 };
@@ -78,16 +80,17 @@ export const termsOfUseStateEnum = {
 export type TermsOfUseStateEnumKey = (typeof termsOfUseStateEnum)[keyof typeof termsOfUseStateEnum];
 
 export type TermsOfUse = {
-	/**
-	 * @type string | undefined
-	 */
 	state?: TermsOfUseStateEnumKey | undefined;
 	/**
-	 * @type string | undefined, date-time
+	 * @description
+	 * Format: `date-time`
+	 * @type string | undefined
 	 */
 	publishDate?: string | undefined;
 	/**
-	 * @type string | undefined, date-time
+	 * @description
+	 * Format: `date-time`
+	 * @type string | undefined
 	 */
 	acceptanceDate?: string | undefined;
 };
@@ -105,14 +108,16 @@ export type AccountShsSubscriptionTypeEnumKey =
 export type Account = {
 	/**
 	 * @description The account id
-	 * @type integer, int32
+	 *
+	 * Format: `int32`
+	 * @type integer
 	 */
 	accountId: number;
 	/**
 	 * @description The type: 0 .. user, 1 .. company, 2 .. caretaker
-	 * @minLength 0
-	 * @maxLength 2
-	 * @type integer, int32
+	 *
+	 * Format: `int32`
+	 * @type integer
 	 */
 	type: number;
 	/**
@@ -132,55 +137,59 @@ export type Account = {
 	name: string;
 	/**
 	 * @description The master account id if it\'s a sub account
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	masterAccountId?: number | undefined;
 	/**
 	 * @description The rights bitmask if it\'s a sub account: 1 .. manage smartlock, 2 .. operate smartlock, 4 .. manage smartlock config, 8 .. manage smartlock authorizations, 16 .. view smartlock logs, 32 .. manage sub accounts, 64 .. create smartlocks
-	 * @minLength 0
-	 * @maxLength 127
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	rights?: number | undefined;
 	/**
 	 * @description The language code
+	 * @example de
 	 * @type string | undefined
 	 */
 	language?: string | undefined;
 	/**
+	 * @description The optional config
 	 * @type object | undefined
 	 */
 	config?: AccountConfig | undefined;
 	/**
+	 * @description The optional profile
 	 * @type object | undefined
 	 */
 	profile?: AccountProfile | undefined;
 	/**
 	 * @description The creation date
-	 * @type string, date-time
+	 *
+	 * Format: `date-time`
+	 * @type string
 	 */
 	creationDate: string;
 	/**
 	 * @description The update date
-	 * @type string, date-time
+	 *
+	 * Format: `date-time`
+	 * @type string
 	 */
 	updateDate: string;
 	/**
+	 * @description Set, if your account is not a standard Nuki Web account
 	 * @type object | undefined
 	 */
-	descent?: AccountDescent | undefined;
+	readonly descent?: AccountDescent | undefined;
 	/**
 	 * @description subscription type of the account (b2b)
 	 * @type string | undefined
 	 */
 	shsSubscriptionType?: AccountShsSubscriptionTypeEnumKey | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	b2bActive?: boolean | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	apiTermsOfUse?: TermsOfUse | undefined;
 };
 
@@ -218,7 +227,9 @@ export type AccountIntegration = {
 	subAccountName?: string | undefined;
 	/**
 	 * @description Id of the sub-account or null if there is none, which is associated with this token
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	subAccountId?: number | undefined;
 	/**
@@ -238,12 +249,16 @@ export type AccountIntegration = {
 	description?: string | undefined;
 	/**
 	 * @description First creation date of the token
-	 * @type string | undefined, date-time
+	 *
+	 * Format: `date-time`
+	 * @type string | undefined
 	 */
 	createdAt?: string | undefined;
 	/**
 	 * @description Last refresh date of the token
-	 * @type string | undefined, date-time
+	 *
+	 * Format: `date-time`
+	 * @type string | undefined
 	 */
 	lastActiveAt?: string | undefined;
 	/**
@@ -278,7 +293,9 @@ export type AccountIntegration = {
 	clientId: string;
 	/**
 	 * @description Sort order by which the entry should be sorted, is being set by the vendor key enum
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	sortOrder?: number | undefined;
 	/**
@@ -297,28 +314,18 @@ export type AccountOtpEnable = {
 };
 
 export type AccountPasswordReset = {
-	/**
-	 * @type string
-	 */
 	email: string;
-	/**
-	 * @type boolean | undefined
-	 */
 	deleteApiTokens?: boolean | undefined;
 };
 
 export type StaleDevice = {
 	/**
-	 * @type integer | undefined, int64
+	 * @description
+	 * Format: `int64`
+	 * @type integer | undefined
 	 */
-	smartlockId?: number | undefined;
-	/**
-	 * @type string | undefined
-	 */
+	smartlockId?: bigint | undefined;
 	name?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	read?: boolean | undefined;
 };
 
@@ -358,6 +365,7 @@ export type AccountSettingWeb = {
 	nukiClubDismissed?: boolean | undefined;
 	/**
 	 * @description Additional generic settings. Key/Value Pair, key consists of a prefix (DNS subdomain) and a name (can contains alphanumeric characters with dashes, underscores and dots in between) separated by a dash (\"/\")
+	 * @example {"web.nuki.io/nfcBannerDismissed": true}
 	 * @type object | undefined
 	 */
 	annotations?:
@@ -379,6 +387,7 @@ export type AccountSettingWeb = {
 
 export type AccountSetting = {
 	/**
+	 * @description The account settings for Nuki Web
 	 * @type object | undefined
 	 */
 	web?: AccountSettingWeb | undefined;
@@ -387,6 +396,7 @@ export type AccountSetting = {
 export type AccountSubCreate = {
 	/**
 	 * @description The email address
+	 * @example test@test.at
 	 * @type string
 	 */
 	email: string;
@@ -402,17 +412,19 @@ export type AccountSubCreate = {
 	name: string;
 	/**
 	 * @description The right bitmask of the sub account: 1 .. operate smartlock, 2 .. change smartlock config, 4 .. manage smartlock users, 8 .. view smartlock logs, 16 .. manage sub accounts
-	 * @minLength 0
-	 * @maxLength 31
-	 * @type integer, int32
+	 *
+	 * Format: `int32`
+	 * @type integer
 	 */
 	rights: number;
 	/**
 	 * @description The language code
+	 * @example de
 	 * @type string
 	 */
 	language: string;
 	/**
+	 * @description The optional profile
 	 * @type object | undefined
 	 */
 	profile?: AccountProfile | undefined;
@@ -421,6 +433,7 @@ export type AccountSubCreate = {
 export type AccountSubUpdate = {
 	/**
 	 * @description The new email address
+	 * @example test@test.at
 	 * @type string | undefined
 	 */
 	email?: string | undefined;
@@ -436,21 +449,24 @@ export type AccountSubUpdate = {
 	name?: string | undefined;
 	/**
 	 * @description The new right bitmask of the sub account: 1 .. operate smartlock, 2 .. change smartlock config, 4 .. manage smartlock users, 8 .. view smartlock logs, 16 .. manage sub accounts, 32 .. manage sub accounts, 64 .. create smartlocks
-	 * @minLength 0
-	 * @maxLength 127
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	rights?: number | undefined;
 	/**
 	 * @description The language code
+	 * @example de
 	 * @type string
 	 */
 	language: string;
 	/**
+	 * @description The optional config
 	 * @type object | undefined
 	 */
 	config?: AccountConfig | undefined;
 	/**
+	 * @description The optional profile
 	 * @type object | undefined
 	 */
 	profile?: AccountProfile | undefined;
@@ -459,6 +475,7 @@ export type AccountSubUpdate = {
 export type AccountUpdate = {
 	/**
 	 * @description The new email address
+	 * @example test@test.at
 	 * @type string | undefined
 	 */
 	email?: string | undefined;
@@ -474,14 +491,17 @@ export type AccountUpdate = {
 	name?: string | undefined;
 	/**
 	 * @description The language code
+	 * @example de
 	 * @type string
 	 */
 	language: string;
 	/**
+	 * @description The optional config
 	 * @type object | undefined
 	 */
 	config?: AccountConfig | undefined;
 	/**
+	 * @description The optional profile
 	 * @type object | undefined
 	 */
 	profile?: AccountProfile | undefined;
@@ -490,19 +510,23 @@ export type AccountUpdate = {
 export type AccountUser = {
 	/**
 	 * @description The account user id
-	 * @type integer, int32
+	 *
+	 * Format: `int32`
+	 * @type integer
 	 */
 	accountUserId: number;
 	/**
 	 * @description The account id
-	 * @type integer, int32
+	 *
+	 * Format: `int32`
+	 * @type integer
 	 */
 	accountId: number;
 	/**
 	 * @description The optional type: 0 .. user, 1 .. company
-	 * @minLength 0
-	 * @maxLength 1
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	type?: number | undefined;
 	/**
@@ -517,6 +541,7 @@ export type AccountUser = {
 	name: string;
 	/**
 	 * @description The language code
+	 * @example de
 	 * @type string | undefined
 	 */
 	language?: string | undefined;
@@ -527,12 +552,16 @@ export type AccountUser = {
 	readonly operationId?: string | undefined;
 	/**
 	 * @description The creation date
-	 * @type string, date-time
+	 *
+	 * Format: `date-time`
+	 * @type string
 	 */
 	creationDate: string;
 	/**
 	 * @description The update date
-	 * @type string, date-time
+	 *
+	 * Format: `date-time`
+	 * @type string
 	 */
 	updateDate: string;
 };
@@ -554,9 +583,9 @@ export type AccountUserCreateLanguageEnumKey =
 export type AccountUserCreate = {
 	/**
 	 * @description The optional type - only allowed for caretakers: 0 .. user, 1 .. company
-	 * @minLength 0
-	 * @maxLength 1
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	type?: number | undefined;
 	/**
@@ -593,6 +622,7 @@ export type AccountUserUpdateLanguageEnumKey =
 export type AccountUserUpdate = {
 	/**
 	 * @description The new email address
+	 * @example test@test.at
 	 * @type string | undefined
 	 */
 	email?: string | undefined;
@@ -619,12 +649,16 @@ export type AddressServiceIdEnumKey =
 export type Address = {
 	/**
 	 * @description The address id
-	 * @type integer, int32
+	 *
+	 * Format: `int32`
+	 * @type integer
 	 */
 	addressId: number;
 	/**
 	 * @description The account id
-	 * @type integer, int32
+	 *
+	 * Format: `int32`
+	 * @type integer
 	 */
 	accountId: number;
 	/**
@@ -636,7 +670,7 @@ export type Address = {
 	 * @description The smartlocks for this address
 	 * @type array
 	 */
-	smartlockIds: number[];
+	smartlockIds: bigint[];
 	/**
 	 * @description The optional service id if the address is from an partner service
 	 * @type string | undefined
@@ -649,12 +683,16 @@ export type Address = {
 	timeZone?: string | undefined;
 	/**
 	 * @description The optional check in time (minutes of the day)
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	checkInTime?: number | undefined;
 	/**
 	 * @description The optional check out time (minutes of the day)
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	checkOutTime?: number | undefined;
 	/**
@@ -668,12 +706,16 @@ export type Address = {
 		| undefined;
 	/**
 	 * @description The creation date
-	 * @type string, date-time
+	 *
+	 * Format: `date-time`
+	 * @type string
 	 */
 	creationDate: string;
 	/**
 	 * @description The update date
-	 * @type string, date-time
+	 *
+	 * Format: `date-time`
+	 * @type string
 	 */
 	updateDate: string;
 };
@@ -688,7 +730,7 @@ export type AddressCreate = {
 	 * @description The smartlocks for this address
 	 * @type array
 	 */
-	smartlockIds: number[];
+	smartlockIds: bigint[];
 };
 
 export const addressReservationStateEnum = {
@@ -715,12 +757,16 @@ export type AddressReservation = {
 	id: string;
 	/**
 	 * @description The address id
-	 * @type integer, int32
+	 *
+	 * Format: `int32`
+	 * @type integer
 	 */
 	addressId: number;
 	/**
 	 * @description The account id
-	 * @type integer, int32
+	 *
+	 * Format: `int32`
+	 * @type integer
 	 */
 	accountId: number;
 	/**
@@ -735,12 +781,16 @@ export type AddressReservation = {
 	name: string;
 	/**
 	 * @description The number of guests
-	 * @type integer, int32
+	 *
+	 * Format: `int32`
+	 * @type integer
 	 */
 	guests: number;
 	/**
 	 * @description The number of guests issued
-	 * @type integer, int32
+	 *
+	 * Format: `int32`
+	 * @type integer
 	 */
 	guestsIssued: number;
 	/**
@@ -765,7 +815,9 @@ export type AddressReservation = {
 	reference?: string | undefined;
 	/**
 	 * @description The automation state
-	 * @type integer, int32
+	 *
+	 * Format: `int32`
+	 * @type integer
 	 */
 	automation: number;
 	/**
@@ -775,38 +827,29 @@ export type AddressReservation = {
 	checkedIn?: boolean | undefined;
 	/**
 	 * @description The start date
-	 * @type string, date-time
+	 *
+	 * Format: `date-time`
+	 * @type string
 	 */
 	startDate: string;
 	/**
 	 * @description The end date
-	 * @type string, date-time
+	 *
+	 * Format: `date-time`
+	 * @type string
 	 */
 	endDate: string;
 	/**
 	 * @description The update date
-	 * @type string, date-time
+	 *
+	 * Format: `date-time`
+	 * @type string
 	 */
 	updateDate: string;
-	/**
-	 * @type boolean
-	 */
 	isCurrentlyIssuingAuth: boolean;
-	/**
-	 * @type boolean
-	 */
 	isCurrentlyRevokingAuth: boolean;
-	/**
-	 * @type boolean
-	 */
 	hasCustomAccessTimes: boolean;
-	/**
-	 * @type boolean | undefined
-	 */
 	currentlyIssuingAuth?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	currentlyRevokingAuth?: boolean | undefined;
 };
 
@@ -826,22 +869,30 @@ export type AddressToken = {
 	id: string;
 	/**
 	 * @description The address id
-	 * @type integer, int32
+	 *
+	 * Format: `int32`
+	 * @type integer
 	 */
 	addressId: number;
 	/**
 	 * @description The creation date
-	 * @type string, date-time
+	 *
+	 * Format: `date-time`
+	 * @type string
 	 */
 	creationDate: string;
 	/**
 	 * @description The redeem date
-	 * @type string, date-time
+	 *
+	 * Format: `date-time`
+	 * @type string
 	 */
 	redeemDate: string;
 	/**
 	 * @description The redeem account id
-	 * @type integer, int32
+	 *
+	 * Format: `int32`
+	 * @type integer
 	 */
 	redeemAccountId: number;
 	/**
@@ -887,7 +938,9 @@ export type AddressUnit = {
 	name: string;
 	/**
 	 * @description The address id
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	readonly addressId?: number | undefined;
 	/**
@@ -923,7 +976,9 @@ export type AddressUnitResponse = {
 	name: string;
 	/**
 	 * @description The address id
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	readonly addressId?: number | undefined;
 	/**
@@ -938,12 +993,16 @@ export type AddressUnitResponse = {
 	readonly operationId?: string | undefined;
 	/**
 	 * @description The creation date
-	 * @type string, date-time
+	 *
+	 * Format: `date-time`
+	 * @type string
 	 */
 	creationDate: string;
 	/**
 	 * @description The redeem date
-	 * @type string, date-time
+	 *
+	 * Format: `date-time`
+	 * @type string
 	 */
 	redeemDate: string;
 	/**
@@ -963,7 +1022,7 @@ export type AddressUpdate = {
 	 * @description The smartlocks for this address
 	 * @type array | undefined
 	 */
-	smartlockIds?: number[] | undefined;
+	smartlockIds?: bigint[] | undefined;
 	/**
 	 * @description The optional settings
 	 * @type object | undefined
@@ -1079,12 +1138,16 @@ export type AdvancedApiKey = {
 	status: AdvancedApiKeyStatusEnumKey;
 	/**
 	 * @description The creation date
-	 * @type string, date-time
+	 *
+	 * Format: `date-time`
+	 * @type string
 	 */
 	creationDate: string;
 	/**
 	 * @description The update date
-	 * @type string, date-time
+	 *
+	 * Format: `date-time`
+	 * @type string
 	 */
 	updateDate: string;
 };
@@ -1214,12 +1277,16 @@ export type AdvancedConfirmationResponse = {
 export type ApiKey = {
 	/**
 	 * @description The id
-	 * @type integer, int32
+	 *
+	 * Format: `int32`
+	 * @type integer
 	 */
 	apiKeyId: number;
 	/**
 	 * @description The account id
-	 * @type integer, int32
+	 *
+	 * Format: `int32`
+	 * @type integer
 	 */
 	accountId: number;
 	/**
@@ -1234,7 +1301,9 @@ export type ApiKey = {
 	redirectUris?: string[] | undefined;
 	/**
 	 * @description The creation date
-	 * @type string, date-time
+	 *
+	 * Format: `date-time`
+	 * @type string
 	 */
 	creationDate: string;
 	/**
@@ -1286,77 +1355,53 @@ export type ApiKeyAdvancedWebhookStatusEnumKey =
 	(typeof apiKeyAdvancedWebhookStatusEnum)[keyof typeof apiKeyAdvancedWebhookStatusEnum];
 
 export type ApiKeyAdvanced = {
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	country?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	description?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	type?: ApiKeyAdvancedTypeEnumKey | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	email?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	webhookFeatures?: ApiKeyAdvancedWebhookFeaturesEnumKey[] | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	webhookUrl?: string | undefined;
 	/**
-	 * @type integer | undefined, int32
+	 * @description
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	webhookSentSuccessfully?: number | undefined;
 	/**
-	 * @type integer | undefined, int32
+	 * @description
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	webhookSentErroneous?: number | undefined;
 	/**
-	 * @type string | undefined, date-time
+	 * @description
+	 * Format: `date-time`
+	 * @type string | undefined
 	 */
 	lastSuccessfulPost?: string | undefined;
 	/**
-	 * @type integer | undefined, int64
+	 * @description
+	 * Format: `int64`
+	 * @type integer | undefined
 	 */
-	lastPostDuration?: number | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
+	lastPostDuration?: bigint | undefined;
 	lastPostSuccesful?: boolean | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	status?: ApiKeyAdvancedStatusEnumKey | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	webhookStatus?: ApiKeyAdvancedWebhookStatusEnumKey | undefined;
 	/**
-	 * @type string | undefined, date-time
+	 * @description
+	 * Format: `date-time`
+	 * @type string | undefined
 	 */
 	creationDate?: string | undefined;
 	/**
-	 * @type string | undefined, date-time
+	 * @description
+	 * Format: `date-time`
+	 * @type string | undefined
 	 */
 	updateDate?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	restricted?: boolean | undefined;
 };
 
@@ -1374,28 +1419,18 @@ export type ApiKeyCreate = {
 };
 
 export type CompletableFutureListApiKey = {
-	/**
-	 * @type boolean | undefined
-	 */
 	completedExceptionally?: boolean | undefined;
 	/**
-	 * @type integer | undefined, int32
+	 * @description
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	numberOfDependents?: number | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	done?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	cancelled?: boolean | undefined;
 };
 
 export type ApiKeyService = {
-	/**
-	 * @type object | undefined
-	 */
 	byActiveWebhook?: CompletableFutureListApiKey | undefined;
 };
 
@@ -1407,7 +1442,9 @@ export type ApiKeyToken = {
 	id: string;
 	/**
 	 * @description The account id
-	 * @type integer, int32
+	 *
+	 * Format: `int32`
+	 * @type integer
 	 */
 	accountId: number;
 	/**
@@ -1427,7 +1464,9 @@ export type ApiKeyToken = {
 	scopes: string[];
 	/**
 	 * @description The creation date
-	 * @type string, date-time
+	 *
+	 * Format: `date-time`
+	 * @type string
 	 */
 	creationDate: string;
 };
@@ -1474,17 +1513,8 @@ export type ApiKeyUpdate = {
 export type Filter = object;
 
 export type Level = {
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	resourceBundleName?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	localizedName?: string | undefined;
 };
 
@@ -1493,186 +1523,63 @@ export type Formatter = object;
 export type ErrorManager = object;
 
 export type Handler = {
-	/**
-	 * @type object | undefined
-	 */
 	filter?: Filter | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	formatter?: Formatter | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	errorManager?: ErrorManager | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	encoding?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	level?: Level | undefined;
 };
 
 export type Locale = {
-	/**
-	 * @type string | undefined
-	 */
 	language?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	displayName?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	country?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	variant?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	script?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	unicodeLocaleAttributes?: string[] | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	unicodeLocaleKeys?: string[] | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	displayLanguage?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	displayScript?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	displayCountry?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	displayVariant?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	extensionKeys?: string[] | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	iso3Language?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	iso3Country?: string | undefined;
 };
 
 export type EnumerationString = object;
 
 export type ResourceBundle = {
-	/**
-	 * @type object | undefined
-	 */
 	locale?: Locale | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	keys?: EnumerationString | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	baseBundleName?: string | undefined;
 };
 
 export type Logger = {
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	parent?: Logger | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	filter?: Filter | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	level?: Level | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	resourceBundleName?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	handlers?: Handler[] | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	useParentHandlers?: boolean | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	resourceBundle?: ResourceBundle | undefined;
 };
 
 export type Restlet = {
-	/**
-	 * @type string | undefined
-	 */
 	author?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	context?: Context | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	description?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	owner?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	started?: boolean | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	logger?: Logger | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	stopped?: boolean | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	application?: Application | undefined;
+	stopped?: boolean | undefined;
 };
 
 export type Parameter = {
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	value?: string | undefined;
 };
 
@@ -1681,807 +1588,283 @@ export type Enroler = object;
 export type Verifier = object;
 
 export type ScheduledExecutorService = {
-	/**
-	 * @type boolean | undefined
-	 */
 	terminated?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	shutdown?: boolean | undefined;
 };
 
 export type Context = {
-	/**
-	 * @type object | undefined
-	 */
 	clientDispatcher?: Restlet | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	serverDispatcher?: Restlet | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	attributes?:
 		| {
 				[key: string]: object;
 		  }
 		| undefined;
-	/**
-	 * @type object | undefined
-	 */
 	logger?: Logger | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	parameters?: Parameter[] | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	defaultEnroler?: Enroler | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	defaultVerifier?: Verifier | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	executorService?: ScheduledExecutorService | undefined;
 };
 
 export type Role = {
-	/**
-	 * @type object | undefined
-	 */
 	application?: Application | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	childRoles?: Role[] | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	description?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
 };
 
 export type Service = {
-	/**
-	 * @type object | undefined
-	 */
 	context?: Context | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	enabled?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	started?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	stopped?: boolean | undefined;
 };
 
 export type ConnegService = {
-	/**
-	 * @type object | undefined
-	 */
 	context?: Context | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	enabled?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	started?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	strict?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	stopped?: boolean | undefined;
 };
 
 export type ConverterService = {
-	/**
-	 * @type object | undefined
-	 */
 	context?: Context | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	enabled?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	started?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	stopped?: boolean | undefined;
 };
 
-export type Protocol = {
-	/**
-	 * @type boolean | undefined
-	 */
-	confidential?: boolean | undefined;
-	/**
-	 * @type integer | undefined, int32
-	 */
-	defaultPort?: number | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	description?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	schemeName?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	technicalName?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	version?: string | undefined;
-};
-
-export type Reference = {
-	/**
-	 * @type object | undefined
-	 */
-	baseRef?: Reference | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	absolute?: boolean | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	scheme?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	opaque?: boolean | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	authority?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	relative?: boolean | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	query?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	path?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	userInfo?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	schemeSpecificPart?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	fragment?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	extensions?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	identifier?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	matrix?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
-	matrixAsForm?: Parameter[] | undefined;
-	/**
-	 * @type array | undefined
-	 */
-	queryAsForm?: Parameter[] | undefined;
-	/**
-	 * @type array | undefined
-	 */
-	extensionsAsArray?: string[] | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	hierarchicalPart?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	hostDomain?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	hostIdentifier?: string | undefined;
-	/**
-	 * @type integer | undefined, int32
-	 */
-	hostPort?: number | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	lastSegment?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	parentRef?: Reference | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	relativePart?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	relativeRef?: Reference | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	remainingPart?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	schemeProtocol?: Protocol | undefined;
-	/**
-	 * @type array | undefined
-	 */
-	segments?: string[] | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	targetRef?: Reference | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	hierarchical?: boolean | undefined;
-};
-
 export type Metadata = {
-	/**
-	 * @type string | undefined
-	 */
 	description?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	parent?: Metadata | undefined;
 };
 
 export type CharacterSet = {
-	/**
-	 * @type string | undefined
-	 */
 	description?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	parent?: Metadata | undefined;
 };
 
 export type Encoding = {
-	/**
-	 * @type string | undefined
-	 */
 	description?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	parent?: Metadata | undefined;
 };
 
 export type Language = {
-	/**
-	 * @type string | undefined
-	 */
 	description?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	subTags?: string[] | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	parent?: Language | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	primaryTag?: string | undefined;
 };
 
 export type MediaType = {
-	/**
-	 * @type string | undefined
-	 */
 	description?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	parameters?: Parameter[] | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	parent?: MediaType | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	mainType?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	concrete?: boolean | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	subType?: string | undefined;
 };
 
 export type MetadataService = {
-	/**
-	 * @type object | undefined
-	 */
 	context?: Context | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	enabled?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	started?: boolean | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	defaultCharacterSet?: CharacterSet | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	defaultEncoding?: Encoding | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	defaultLanguage?: Language | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	defaultMediaType?: MediaType | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	allEncodingExtensionNames?: string[] | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	allCharacterSetExtensionNames?: string[] | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	allExtensionNames?: string[] | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	allLanguageExtensionNames?: string[] | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	allMediaTypeExtensionNames?: string[] | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	stopped?: boolean | undefined;
-};
-
-export type StatusService = {
-	/**
-	 * @type object | undefined
-	 */
-	context?: Context | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	enabled?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	started?: boolean | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	connegService?: ConnegService | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	contactEmail?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	converterService?: ConverterService | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	homeRef?: Reference | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	metadataService?: MetadataService | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	overwriting?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	stopped?: boolean | undefined;
 };
 
 export type RangeService = {
-	/**
-	 * @type object | undefined
-	 */
 	context?: Context | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	enabled?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	started?: boolean | undefined;
+	stopped?: boolean | undefined;
+};
+
+export type Protocol = {
+	confidential?: boolean | undefined;
 	/**
-	 * @type boolean | undefined
+	 * @description
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
+	defaultPort?: number | undefined;
+	description?: string | undefined;
+	name?: string | undefined;
+	schemeName?: string | undefined;
+	technicalName?: string | undefined;
+	version?: string | undefined;
+};
+
+export type Reference = {
+	baseRef?: Reference | undefined;
+	absolute?: boolean | undefined;
+	scheme?: string | undefined;
+	opaque?: boolean | undefined;
+	authority?: string | undefined;
+	relative?: boolean | undefined;
+	query?: string | undefined;
+	path?: string | undefined;
+	userInfo?: string | undefined;
+	schemeSpecificPart?: string | undefined;
+	fragment?: string | undefined;
+	extensions?: string | undefined;
+	extensionsAsArray?: string[] | undefined;
+	hierarchicalPart?: string | undefined;
+	hostDomain?: string | undefined;
+	hostIdentifier?: string | undefined;
+	/**
+	 * @description
+	 * Format: `int32`
+	 * @type integer | undefined
+	 */
+	hostPort?: number | undefined;
+	lastSegment?: string | undefined;
+	parentRef?: Reference | undefined;
+	relativePart?: string | undefined;
+	relativeRef?: Reference | undefined;
+	remainingPart?: string | undefined;
+	schemeProtocol?: Protocol | undefined;
+	segments?: string[] | undefined;
+	targetRef?: Reference | undefined;
+	hierarchical?: boolean | undefined;
+	identifier?: string | undefined;
+	matrix?: string | undefined;
+	matrixAsForm?: Parameter[] | undefined;
+	queryAsForm?: Parameter[] | undefined;
+};
+
+export type StatusService = {
+	context?: Context | undefined;
+	enabled?: boolean | undefined;
+	started?: boolean | undefined;
+	connegService?: ConnegService | undefined;
+	contactEmail?: string | undefined;
+	converterService?: ConverterService | undefined;
+	homeRef?: Reference | undefined;
+	metadataService?: MetadataService | undefined;
+	overwriting?: boolean | undefined;
 	stopped?: boolean | undefined;
 };
 
 export type TaskService = {
-	/**
-	 * @type object | undefined
-	 */
 	context?: Context | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	enabled?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	started?: boolean | undefined;
 	/**
-	 * @type integer | undefined, int32
+	 * @description
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	corePoolSize?: number | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	daemon?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	shutdownAllowed?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	terminated?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	shutdown?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	stopped?: boolean | undefined;
 };
 
 export type TunnelService = {
-	/**
-	 * @type object | undefined
-	 */
 	context?: Context | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	enabled?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	started?: boolean | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	characterSetParameter?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	encodingParameter?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	extensionsTunnel?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	headersTunnel?: boolean | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	languageParameter?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	mediaTypeParameter?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	methodHeader?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	methodParameter?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	methodTunnel?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	preferencesTunnel?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	queryTunnel?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	userAgentTunnel?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	stopped?: boolean | undefined;
 };
 
 export type ConnectorService = {
-	/**
-	 * @type object | undefined
-	 */
 	context?: Context | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	enabled?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	started?: boolean | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	clientProtocols?: Protocol[] | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	serverProtocols?: Protocol[] | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	stopped?: boolean | undefined;
 };
 
 export type DecoderService = {
-	/**
-	 * @type object | undefined
-	 */
 	context?: Context | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	enabled?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	started?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	stopped?: boolean | undefined;
 };
 
 export type EncoderService = {
-	/**
-	 * @type object | undefined
-	 */
 	context?: Context | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	enabled?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	started?: boolean | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	acceptedMediaTypes?: MediaType[] | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	ignoredMediaTypes?: MediaType[] | undefined;
 	/**
-	 * @type integer | undefined, int64
+	 * @description
+	 * Format: `int64`
+	 * @type integer | undefined
 	 */
-	minimumSize?: number | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
+	minimumSize?: bigint | undefined;
 	stopped?: boolean | undefined;
 };
 
 export type Application = {
-	/**
-	 * @type string | undefined
-	 */
 	author?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	context?: Context | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	description?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	owner?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	started?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	debugging?: boolean | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	inboundRoot?: Restlet | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	outboundRoot?: Restlet | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	roles?: Role[] | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	services?: Service[] | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	statusService?: StatusService | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	connegService?: ConnegService | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	metadataService?: MetadataService | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	converterService?: ConverterService | undefined;
-	/**
-	 * @type object | undefined
-	 */
+	metadataService?: MetadataService | undefined;
 	rangeService?: RangeService | undefined;
-	/**
-	 * @type object | undefined
-	 */
+	statusService?: StatusService | undefined;
 	taskService?: TaskService | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	tunnelService?: TunnelService | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	connectorService?: ConnectorService | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	decoderService?: DecoderService | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	encoderService?: EncoderService | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	logger?: Logger | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	stopped?: boolean | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	application?: Application | undefined;
+	stopped?: boolean | undefined;
 };
 
 export type AuthenticationInfo = {
-	/**
-	 * @type string | undefined
-	 */
 	nextServerNonce?: string | undefined;
 	/**
-	 * @type integer | undefined, int32
+	 * @description
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	nonceCount?: number | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	clientNonce?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	quality?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	responseDigest?: string | undefined;
 };
 
@@ -2500,550 +1883,268 @@ export type SmartlockWebConfig = {
 
 export type WebConfigRequest = {
 	/**
-	 * @type integer | undefined, int64
+	 * @description
+	 * Format: `int64`
+	 * @type integer | undefined
 	 */
-	smartlockId?: number | undefined;
-	/**
-	 * @type object | undefined
-	 */
+	smartlockId?: bigint | undefined;
 	webConfig?: SmartlockWebConfig | undefined;
 };
 
 export type BulkWebConfigRequest = {
-	/**
-	 * @type array | undefined
-	 */
 	webConfigRequests?: WebConfigRequest[] | undefined;
 };
 
 export type CacheDirective = {
-	/**
-	 * @type boolean | undefined
-	 */
 	digit?: boolean | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	value?: string | undefined;
 };
 
 export type PublicKey = {
-	/**
-	 * @type array | undefined
-	 */
 	encoded?: string[] | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	format?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	algorithm?: string | undefined;
 };
 
 export type Certificate = {
-	/**
-	 * @type string | undefined
-	 */
 	type?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	encoded?: string[] | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	publicKey?: PublicKey | undefined;
 };
 
 export type ChallengeScheme = {
-	/**
-	 * @type string | undefined
-	 */
 	description?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	technicalName?: string | undefined;
 };
 
 export type ChallengeRequest = {
-	/**
-	 * @type string | undefined
-	 */
 	rawValue?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	parameters?: Parameter[] | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	scheme?: ChallengeScheme | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	serverNonce?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	realm?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	opaque?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	digestAlgorithm?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	qualityOptions?: string[] | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	domainRefs?: Reference[] | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	stale?: boolean | undefined;
 };
 
 export type Principal = {
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
 };
 
 export type ChallengeResponse = {
-	/**
-	 * @type string | undefined
-	 */
 	rawValue?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	parameters?: Parameter[] | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	scheme?: ChallengeScheme | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	serverNonce?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	realm?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	opaque?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	digestAlgorithm?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	clientNonce?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	digestRef?: Reference | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	identifier?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	quality?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	secret?: string[] | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	secretAlgorithm?: string | undefined;
 	/**
-	 * @type integer | undefined, int32
+	 * @description
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	serverNounceCount?: number | undefined;
 	/**
-	 * @type integer | undefined, int64
+	 * @description
+	 * Format: `int64`
+	 * @type integer | undefined
 	 */
-	timeIssued?: number | undefined;
-	/**
-	 * @type object | undefined
-	 */
+	timeIssued?: bigint | undefined;
 	principal?: Principal | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	serverNounceCountAsHex?: string | undefined;
 };
 
 export type PreferenceCharacterSet = {
-	/**
-	 * @type object | undefined
-	 */
 	metadata?: CharacterSet | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	parameters?: Parameter[] | undefined;
 	/**
-	 * @type number | undefined, float
+	 * @description
+	 * Format: `float`
+	 * @type number | undefined
 	 */
 	quality?: number | undefined;
 };
 
 export type PreferenceEncoding = {
-	/**
-	 * @type object | undefined
-	 */
 	metadata?: Encoding | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	parameters?: Parameter[] | undefined;
 	/**
-	 * @type number | undefined, float
+	 * @description
+	 * Format: `float`
+	 * @type number | undefined
 	 */
 	quality?: number | undefined;
 };
 
 export type PreferenceLanguage = {
-	/**
-	 * @type object | undefined
-	 */
 	metadata?: Language | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	parameters?: Parameter[] | undefined;
 	/**
-	 * @type number | undefined, float
+	 * @description
+	 * Format: `float`
+	 * @type number | undefined
 	 */
 	quality?: number | undefined;
 };
 
 export type PreferenceMediaType = {
-	/**
-	 * @type object | undefined
-	 */
 	metadata?: MediaType | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	parameters?: Parameter[] | undefined;
 	/**
-	 * @type number | undefined, float
+	 * @description
+	 * Format: `float`
+	 * @type number | undefined
 	 */
 	quality?: number | undefined;
 };
 
 export type Product = {
-	/**
-	 * @type string | undefined
-	 */
 	comment?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	version?: string | undefined;
 };
 
 export type Expectation = {
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	parameters?: Parameter[] | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	value?: string | undefined;
 };
 
 export type User = {
-	/**
-	 * @type string | undefined
-	 */
 	email?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	firstName?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	identifier?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	lastName?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	secret?: string[] | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
 };
 
 export type ClientInfo = {
-	/**
-	 * @type array | undefined
-	 */
 	acceptedCharacterSets?: PreferenceCharacterSet[] | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	acceptedEncodings?: PreferenceEncoding[] | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	acceptedLanguages?: PreferenceLanguage[] | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	acceptedMediaTypes?: PreferenceMediaType[] | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	acceptedPatches?: PreferenceMediaType[] | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	address?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	agent?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	agentAttributes?:
 		| {
 				[key: string]: string;
 		  }
 		| undefined;
-	/**
-	 * @type array | undefined
-	 */
 	agentProducts?: Product[] | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	authenticated?: boolean | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	certificates?: Certificate[] | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	cipherSuite?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	expectations?: Expectation[] | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	forwardedAddresses?: string[] | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	from?: string | undefined;
 	/**
-	 * @type integer | undefined, int32
+	 * @description
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	port?: number | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	principals?: Principal[] | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	roles?: Role[] | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	user?: User | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	upstreamAddress?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	agentName?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	agentVersion?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	mainAgentProduct?: Product | undefined;
+	upstreamAddress?: string | undefined;
 };
 
 export type Company = {
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	email?: string | undefined;
 };
 
 export type CompletableFuture = {
-	/**
-	 * @type boolean | undefined
-	 */
 	completedExceptionally?: boolean | undefined;
 	/**
-	 * @type integer | undefined, int32
+	 * @description
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	numberOfDependents?: number | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	done?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	cancelled?: boolean | undefined;
 };
 
 export type Tag = {
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	weak?: boolean | undefined;
 };
 
 export type Conditions = {
-	/**
-	 * @type array | undefined
-	 */
 	match?: Tag[] | undefined;
 	/**
-	 * @type string | undefined, date-time
+	 * @description
+	 * Format: `date-time`
+	 * @type string | undefined
 	 */
 	modifiedSince?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	noneMatch?: Tag[] | undefined;
 	/**
-	 * @type string | undefined, date-time
+	 * @description
+	 * Format: `date-time`
+	 * @type string | undefined
 	 */
 	rangeDate?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	rangeTag?: Tag | undefined;
 	/**
-	 * @type string | undefined, date-time
+	 * @description
+	 * Format: `date-time`
+	 * @type string | undefined
 	 */
 	unmodifiedSince?: string | undefined;
 };
 
 export type Cookie = {
-	/**
-	 * @type string | undefined
-	 */
 	domain?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	path?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	value?: string | undefined;
 	/**
-	 * @type integer | undefined, int32
+	 * @description
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	version?: number | undefined;
 };
 
 export type CookieSetting = {
-	/**
-	 * @type string | undefined
-	 */
 	domain?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	path?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	value?: string | undefined;
 	/**
-	 * @type integer | undefined, int32
+	 * @description
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	version?: number | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	accessRestricted?: boolean | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	comment?: string | undefined;
 	/**
-	 * @type integer | undefined, int32
+	 * @description
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	maxAge?: number | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	secure?: boolean | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	description?: string | undefined;
 };
 
@@ -3062,7 +2163,9 @@ export type DecentralWebhookWebhookFeaturesEnumKey =
 export type DecentralWebhook = {
 	/**
 	 * @description The identifier
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	readonly id?: number | undefined;
 	/**
@@ -3083,70 +2186,31 @@ export type DecentralWebhook = {
 };
 
 export type Digest = {
-	/**
-	 * @type string | undefined
-	 */
 	algorithm?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	value?: string[] | undefined;
 };
 
 export type Disposition = {
-	/**
-	 * @type array | undefined
-	 */
 	parameters?: Parameter[] | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	type?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	filename?: string | undefined;
 };
 
 export type Enumeration = object;
 
 export type Header = {
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	value?: string | undefined;
 };
 
 export type InputStream = object;
 
 export type Method = {
-	/**
-	 * @type string | undefined
-	 */
 	description?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	idempotent?: boolean | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	replying?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	safe?: boolean | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	uri?: string | undefined;
 };
 
@@ -3163,14 +2227,16 @@ export type MyAccountShsSubscriptionTypeEnumKey =
 export type MyAccount = {
 	/**
 	 * @description The account id
-	 * @type integer, int32
+	 *
+	 * Format: `int32`
+	 * @type integer
 	 */
 	accountId: number;
 	/**
 	 * @description The type: 0 .. user, 1 .. company, 2 .. caretaker
-	 * @minLength 0
-	 * @maxLength 2
-	 * @type integer, int32
+	 *
+	 * Format: `int32`
+	 * @type integer
 	 */
 	type: number;
 	/**
@@ -3190,26 +2256,31 @@ export type MyAccount = {
 	name: string;
 	/**
 	 * @description The master account id if it\'s a sub account
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	masterAccountId?: number | undefined;
 	/**
 	 * @description The rights bitmask if it\'s a sub account: 1 .. manage smartlock, 2 .. operate smartlock, 4 .. manage smartlock config, 8 .. manage smartlock authorizations, 16 .. view smartlock logs, 32 .. manage sub accounts, 64 .. create smartlocks
-	 * @minLength 0
-	 * @maxLength 127
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	rights?: number | undefined;
 	/**
 	 * @description The language code
+	 * @example de
 	 * @type string | undefined
 	 */
 	language?: string | undefined;
 	/**
+	 * @description The optional config
 	 * @type object | undefined
 	 */
 	config?: AccountConfig | undefined;
 	/**
+	 * @description The optional profile
 	 * @type object | undefined
 	 */
 	profile?: AccountProfile | undefined;
@@ -3220,61 +2291,50 @@ export type MyAccount = {
 	secret?: string[] | undefined;
 	/**
 	 * @description The creation date
-	 * @type string, date-time
+	 *
+	 * Format: `date-time`
+	 * @type string
 	 */
 	creationDate: string;
 	/**
 	 * @description The update date
-	 * @type string, date-time
+	 *
+	 * Format: `date-time`
+	 * @type string
 	 */
 	updateDate: string;
 	/**
+	 * @description Set, if your account is not a standard Nuki Web account
 	 * @type object | undefined
 	 */
-	descent?: AccountDescent | undefined;
+	readonly descent?: AccountDescent | undefined;
 	/**
 	 * @description subscription type of the account (b2b)
 	 * @type string | undefined
 	 */
 	shsSubscriptionType?: MyAccountShsSubscriptionTypeEnumKey | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	b2bActive?: boolean | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	apiTermsOfUse?: TermsOfUse | undefined;
 };
 
 export type NamedValue = {
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	value?: object | undefined;
 };
 
 export type NamedValueString = {
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	value?: string | undefined;
 };
 
 export type NotificationSetting = {
 	/**
 	 * @description The smartlock ID, if not set all Smart Locks of the account  are enabled for push notifications
-	 * @type integer | undefined, int64
+	 *
+	 * Format: `int64`
+	 * @type integer | undefined
 	 */
-	smartlockId?: number | undefined;
+	smartlockId?: bigint | undefined;
 	/**
 	 * @description A set on which push notifications should be triggered: lock, unlock, unlatch, lockngo, open, ring, doorsensor, warnings, smartlock
 	 * @type array
@@ -3305,12 +2365,15 @@ export type Notification = {
 	pushId: string;
 	/**
 	 * @description The 40 byte hex string to sign the checksumof the POST payload if the notification is webhook (os=2)
+	 * @example 8d41a187c3954f886f9de3a88c2ef22df0eac190
 	 * @type string | undefined
 	 */
 	secret?: string | undefined;
 	/**
 	 * @description The operating system: 0 .. Android, 1 .. iOS, 2 .. web hook
-	 * @type integer, int32
+	 *
+	 * Format: `int32`
+	 * @type integer
 	 */
 	os: number;
 	/**
@@ -3320,12 +2383,16 @@ export type Notification = {
 	language?: string | undefined;
 	/**
 	 * @description Current state: 0 .. init, 1 .. active, 2 .. failed
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	status?: number | undefined;
 	/**
 	 * @description The last active date
-	 * @type string | undefined, date-time
+	 *
+	 * Format: `date-time`
+	 * @type string | undefined
 	 */
 	lastActiveDate?: string | undefined;
 	/**
@@ -3337,39 +2404,55 @@ export type Notification = {
 
 export type ObjectId = {
 	/**
-	 * @type integer | undefined, int32
+	 * @description
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	timestamp?: number | undefined;
 	/**
-	 * @type integer | undefined, int32
+	 * @description
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	counter?: number | undefined;
 	/**
-	 * @type integer | undefined, int64
+	 * @description
+	 * Format: `int64`
+	 * @type integer | undefined
 	 */
-	time?: number | undefined;
+	time?: bigint | undefined;
 	/**
-	 * @type string | undefined, date-time
+	 * @description
+	 * Format: `date-time`
+	 * @type string | undefined
 	 */
 	date?: string | undefined;
 	/**
-	 * @type integer | undefined, int32
+	 * @description
+	 * Format: `int32`
+	 * @type integer | undefined
+	 */
+	machineIdentifier?: number | undefined;
+	/**
+	 * @description
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	processIdentifier?: number | undefined;
 	/**
-	 * @type integer | undefined, int32
+	 * @description
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	timeSecond?: number | undefined;
-	/**
-	 * @type integer | undefined, int32
-	 */
-	machineIdentifier?: number | undefined;
 };
 
 export type OpenerIntercomBrand = {
 	/**
 	 * @description The brand ID
-	 * @type integer, int32
+	 *
+	 * Format: `int32`
+	 * @type integer
 	 */
 	brandId: number;
 	/**
@@ -3382,17 +2465,23 @@ export type OpenerIntercomBrand = {
 export type OpenerIntercomModel = {
 	/**
 	 * @description The intercom ID
-	 * @type integer, int32
+	 *
+	 * Format: `int32`
+	 * @type integer
 	 */
 	intercomId: number;
 	/**
 	 * @description The related brand ID
-	 * @type integer, int32
+	 *
+	 * Format: `int32`
+	 * @type integer
 	 */
 	brandId: number;
 	/**
 	 * @description The type of the model
-	 * @type integer, int32
+	 *
+	 * Format: `int32`
+	 * @type integer
 	 */
 	type: number;
 	/**
@@ -3402,7 +2491,9 @@ export type OpenerIntercomModel = {
 	model: string;
 	/**
 	 * @description Verified Nuki intercom: 1 .. verified to work, 2 .. may be compatible, but not verified, 3 .. not compatible
-	 * @type integer, int32
+	 *
+	 * Format: `int32`
+	 * @type integer
 	 */
 	verified: number;
 	/**
@@ -3442,580 +2533,326 @@ export type OpenerIntercomModel = {
 	conGndAnalogue: string;
 	/**
 	 * @description Settings value for BUS mode switch
-	 * @type integer, int32
+	 *
+	 * Format: `int32`
+	 * @type integer
 	 */
 	busModeSwitch: number;
 	/**
 	 * @description Settings value for BUS mode switch short cicuit duration
-	 * @type integer, int32
+	 *
+	 * Format: `int32`
+	 * @type integer
 	 */
 	busModeSwitchShortCircuitDuration: number;
 	/**
 	 * @description The creation date
-	 * @type string | undefined, date-time
+	 *
+	 * Format: `date-time`
+	 * @type string | undefined
 	 */
 	creationDate?: string | undefined;
 	/**
 	 * @description The update date
-	 * @type string | undefined, date-time
+	 *
+	 * Format: `date-time`
+	 * @type string | undefined
 	 */
 	updateDate?: string | undefined;
 };
 
 export type Pagination = {
 	/**
-	 * @type integer | undefined, int64
+	 * @description
+	 * Format: `int64`
+	 * @type integer | undefined
 	 */
-	totalItems?: number | undefined;
+	totalItems?: bigint | undefined;
 	/**
-	 * @type integer | undefined, int32
+	 * @description
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	totalPages?: number | undefined;
 	/**
-	 * @type integer | undefined, int32
+	 * @description
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	currentPage?: number | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	nextPage?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	prevPage?: string | undefined;
 	/**
-	 * @type integer | undefined, int32
+	 * @description
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	pageSize?: number | undefined;
 };
 
 export type PaginatedResponse = {
-	/**
-	 * @type array | undefined
-	 */
 	results?: object[] | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	pagination?: Pagination | undefined;
 };
 
 export type Preference = {
-	/**
-	 * @type object | undefined
-	 */
 	metadata?: Metadata | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	parameters?: Parameter[] | undefined;
 	/**
-	 * @type number | undefined, float
+	 * @description
+	 * Format: `float`
+	 * @type number | undefined
 	 */
 	quality?: number | undefined;
 };
 
 export type Range = {
 	/**
-	 * @type integer | undefined, int64
+	 * @description
+	 * Format: `int64`
+	 * @type integer | undefined
 	 */
-	index?: number | undefined;
+	index?: bigint | undefined;
 	/**
-	 * @type integer | undefined, int64
+	 * @description
+	 * Format: `int64`
+	 * @type integer | undefined
 	 */
-	instanceSize?: number | undefined;
+	instanceSize?: bigint | undefined;
 	/**
-	 * @type integer | undefined, int64
+	 * @description
+	 * Format: `int64`
+	 * @type integer | undefined
 	 */
-	size?: number | undefined;
-	/**
-	 * @type string | undefined
-	 */
+	size?: bigint | undefined;
 	unitName?: string | undefined;
 };
 
 export type ReadableByteChannel = {
-	/**
-	 * @type boolean | undefined
-	 */
 	open?: boolean | undefined;
 };
 
 export type Reader = object;
 
 export type RecipientInfo = {
-	/**
-	 * @type object | undefined
-	 */
 	protocol?: Protocol | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	comment?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
 };
 
 export type SelectionListener = object;
 
 export type SelectableChannel = {
-	/**
-	 * @type boolean | undefined
-	 */
 	registered?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	blocking?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	open?: boolean | undefined;
 };
 
 export type WakeupListener = object;
 
 export type SelectionRegistration = {
-	/**
-	 * @type boolean | undefined
-	 */
 	canceling?: boolean | undefined;
 	/**
-	 * @type integer | undefined, int32
+	 * @description
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	interestOperations?: number | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	selectionListener?: SelectionListener | undefined;
 	/**
-	 * @type integer | undefined, int32
+	 * @description
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	readyOperations?: number | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	selectableChannel?: SelectableChannel | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	wakeupListener?: WakeupListener | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	readable?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	writable?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	connectable?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	interestReady?: boolean | undefined;
 };
 
 export type Representation = {
-	/**
-	 * @type object | undefined
-	 */
 	characterSet?: CharacterSet | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	encodings?: Encoding[] | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	locationRef?: Reference | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	languages?: Language[] | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	mediaType?: MediaType | undefined;
 	/**
-	 * @type string | undefined, date-time
-	 */
-	modificationDate?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	tag?: Tag | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	available?: boolean | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	digest?: Digest | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	disposition?: Disposition | undefined;
-	/**
-	 * @type string | undefined, date-time
-	 */
-	expirationDate?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	range?: Range | undefined;
-	/**
-	 * @type integer | undefined, int64
-	 */
-	size?: number | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	empty?: boolean | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	channel?: ReadableByteChannel | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	transient?: boolean | undefined;
-	/**
+	 * @description
+	 * Format: `date-time`
 	 * @type string | undefined
 	 */
-	text?: string | undefined;
+	modificationDate?: string | undefined;
+	tag?: Tag | undefined;
+	available?: boolean | undefined;
+	digest?: Digest | undefined;
+	disposition?: Disposition | undefined;
 	/**
-	 * @type object | undefined
+	 * @description
+	 * Format: `date-time`
+	 * @type string | undefined
 	 */
+	expirationDate?: string | undefined;
+	range?: Range | undefined;
+	/**
+	 * @description
+	 * Format: `int64`
+	 * @type integer | undefined
+	 */
+	size?: bigint | undefined;
+	empty?: boolean | undefined;
+	channel?: ReadableByteChannel | undefined;
+	transient?: boolean | undefined;
+	text?: string | undefined;
 	reader?: Reader | undefined;
 	/**
-	 * @type integer | undefined, int64
+	 * @description
+	 * Format: `int64`
+	 * @type integer | undefined
 	 */
-	availableSize?: number | undefined;
-	/**
-	 * @type object | undefined
-	 */
+	availableSize?: bigint | undefined;
 	registration?: SelectionRegistration | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	stream?: InputStream | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	selectable?: boolean | undefined;
 };
 
 export type Uniform = object;
 
 export type StackTraceElement = {
-	/**
-	 * @type string | undefined
-	 */
 	classLoaderName?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	moduleName?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	moduleVersion?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	methodName?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	fileName?: string | undefined;
 	/**
-	 * @type integer | undefined, int32
+	 * @description
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	lineNumber?: number | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	className?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	nativeMethod?: boolean | undefined;
 };
 
 export type Throwable = {
-	/**
-	 * @type object | undefined
-	 */
 	cause?: Throwable | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	stackTrace?: StackTraceElement[] | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	message?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	suppressed?: Throwable[] | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	localizedMessage?: string | undefined;
 };
 
 export type Status = {
 	/**
-	 * @type integer | undefined, int32
+	 * @description
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	code?: number | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	description?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	reasonPhrase?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	throwable?: Throwable | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	uri?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	error?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	success?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	serverError?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	connectorError?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	clientError?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	globalError?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	informational?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	redirection?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	recoverableError?: boolean | undefined;
+	serverError?: boolean | undefined;
+	connectorError?: boolean | undefined;
+	clientError?: boolean | undefined;
 };
 
 export type Warning = {
-	/**
-	 * @type string | undefined
-	 */
 	agent?: string | undefined;
 	/**
-	 * @type string | undefined, date-time
-	 */
-	date?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	status?: Status | undefined;
-	/**
+	 * @description
+	 * Format: `date-time`
 	 * @type string | undefined
 	 */
+	date?: string | undefined;
+	status?: Status | undefined;
 	text?: string | undefined;
 };
 
 export type Request = {
-	/**
-	 * @type object | undefined
-	 */
 	attributes?:
 		| {
 				[key: string]: object;
 		  }
 		| undefined;
-	/**
-	 * @type array | undefined
-	 */
 	cacheDirectives?: CacheDirective[] | undefined;
 	/**
-	 * @type string | undefined, date-time
-	 */
-	date?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	entity?: Representation | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	onError?: Uniform | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	onSent?: Uniform | undefined;
-	/**
-	 * @type array | undefined
-	 */
-	recipientsInfo?: RecipientInfo[] | undefined;
-	/**
-	 * @type array | undefined
-	 */
-	warnings?: Warning[] | undefined;
-	/**
-	 * @type array | undefined
-	 */
-	accessControlRequestHeaders?: string[] | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	accessControlRequestMethod?: Method | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	challengeResponse?: ChallengeResponse | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	clientInfo?: ClientInfo | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	conditions?: Conditions | undefined;
-	/**
-	 * @type array | undefined
-	 */
-	cookies?: Cookie[] | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	hostRef?: Reference | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	loggable?: boolean | undefined;
-	/**
-	 * @type integer | undefined, int32
-	 */
-	maxForwards?: number | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	method?: Method | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	onResponse?: Uniform | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	originalRef?: Reference | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	protocol?: Protocol | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	proxyChallengeResponse?: ChallengeResponse | undefined;
-	/**
-	 * @type array | undefined
-	 */
-	ranges?: Range[] | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	referrerRef?: Reference | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	resourceRef?: Reference | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	rootRef?: Reference | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	confidential?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	asynchronous?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	entityAvailable?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	expectingResponse?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	synchronous?: boolean | undefined;
-	/**
-	 * @type array | undefined
-	 */
-	headers?: Header[] | undefined;
-	/**
+	 * @description
+	 * Format: `date-time`
 	 * @type string | undefined
 	 */
+	date?: string | undefined;
+	entity?: Representation | undefined;
+	onError?: Uniform | undefined;
+	onSent?: Uniform | undefined;
+	recipientsInfo?: RecipientInfo[] | undefined;
+	warnings?: Warning[] | undefined;
+	accessControlRequestHeaders?: string[] | undefined;
+	accessControlRequestMethod?: Method | undefined;
+	challengeResponse?: ChallengeResponse | undefined;
+	clientInfo?: ClientInfo | undefined;
+	conditions?: Conditions | undefined;
+	cookies?: Cookie[] | undefined;
+	hostRef?: Reference | undefined;
+	loggable?: boolean | undefined;
+	/**
+	 * @description
+	 * Format: `int32`
+	 * @type integer | undefined
+	 */
+	maxForwards?: number | undefined;
+	method?: Method | undefined;
+	onResponse?: Uniform | undefined;
+	originalRef?: Reference | undefined;
+	protocol?: Protocol | undefined;
+	proxyChallengeResponse?: ChallengeResponse | undefined;
+	ranges?: Range[] | undefined;
+	referrerRef?: Reference | undefined;
+	resourceRef?: Reference | undefined;
+	rootRef?: Reference | undefined;
+	asynchronous?: boolean | undefined;
+	entityAvailable?: boolean | undefined;
+	expectingResponse?: boolean | undefined;
+	synchronous?: boolean | undefined;
+	confidential?: boolean | undefined;
 	entityAsText?: string | undefined;
+	headers?: Header[] | undefined;
 };
 
 export type ReservationAccessTimesUpdate = {
 	/**
 	 * @description Custom check in time in minutes from midnight
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	checkInTime?: number | undefined;
 	/**
 	 * @description Custom check out time in minutes from midnight
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	checkOutTime?: number | undefined;
 };
 
 export type ServerInfo = {
-	/**
-	 * @type boolean | undefined
-	 */
 	acceptingRanges?: boolean | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	address?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	agent?: string | undefined;
 	/**
-	 * @type integer | undefined, int32
+	 * @description
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	port?: number | undefined;
 };
@@ -4037,146 +2874,64 @@ export type ResponseDimensionsEnumKey =
 	(typeof responseDimensionsEnum)[keyof typeof responseDimensionsEnum];
 
 export type Response = {
-	/**
-	 * @type object | undefined
-	 */
 	attributes?:
 		| {
 				[key: string]: object;
 		  }
 		| undefined;
-	/**
-	 * @type array | undefined
-	 */
 	cacheDirectives?: CacheDirective[] | undefined;
 	/**
-	 * @type string | undefined, date-time
-	 */
-	date?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	entity?: Representation | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	onError?: Uniform | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	onSent?: Uniform | undefined;
-	/**
-	 * @type array | undefined
-	 */
-	recipientsInfo?: RecipientInfo[] | undefined;
-	/**
-	 * @type array | undefined
-	 */
-	warnings?: Warning[] | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	accessControlAllowCredentials?: boolean | undefined;
-	/**
-	 * @type array | undefined
-	 */
-	accessControlAllowHeaders?: string[] | undefined;
-	/**
-	 * @type array | undefined
-	 */
-	accessControlAllowMethods?: Method[] | undefined;
-	/**
+	 * @description
+	 * Format: `date-time`
 	 * @type string | undefined
 	 */
+	date?: string | undefined;
+	entity?: Representation | undefined;
+	onError?: Uniform | undefined;
+	onSent?: Uniform | undefined;
+	recipientsInfo?: RecipientInfo[] | undefined;
+	warnings?: Warning[] | undefined;
+	accessControlAllowCredentials?: boolean | undefined;
+	accessControlAllowHeaders?: string[] | undefined;
+	accessControlAllowMethods?: Method[] | undefined;
 	accessControlAllowOrigin?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	accessControlExposeHeaders?: string[] | undefined;
 	/**
-	 * @type integer | undefined, int32
+	 * @description
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	accessControlMaxAge?: number | undefined;
 	/**
-	 * @type integer | undefined, int32
+	 * @description
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	age?: number | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	allowedMethods?: Method[] | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	authenticationInfo?: AuthenticationInfo | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	autoCommitting?: boolean | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	challengeRequests?: ChallengeRequest[] | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	committed?: boolean | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	cookieSettings?: CookieSetting[] | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	dimensions?: ResponseDimensionsEnumKey[] | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	locationRef?: Reference | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	proxyChallengeRequests?: ChallengeRequest[] | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	request?: Request | undefined;
 	/**
-	 * @type string | undefined, date-time
-	 */
-	retryAfter?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	serverInfo?: ServerInfo | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	status?: Status | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	final?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	confidential?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	provisional?: boolean | undefined;
-	/**
-	 * @type array | undefined
-	 */
-	headers?: Header[] | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	entityAvailable?: boolean | undefined;
-	/**
+	 * @description
+	 * Format: `date-time`
 	 * @type string | undefined
 	 */
+	retryAfter?: string | undefined;
+	serverInfo?: ServerInfo | undefined;
+	status?: Status | undefined;
+	final?: boolean | undefined;
+	provisional?: boolean | undefined;
+	confidential?: boolean | undefined;
+	entityAvailable?: boolean | undefined;
 	entityAsText?: string | undefined;
+	headers?: Header[] | undefined;
 };
 
 export const shsSubscriptionTypeEnum = {
@@ -4211,44 +2966,34 @@ export type ShsSubscriptionShsSubscriptionTypeEnumKey =
 	(typeof shsSubscriptionShsSubscriptionTypeEnum)[keyof typeof shsSubscriptionShsSubscriptionTypeEnum];
 
 export type ShsSubscription = {
-	/**
-	 * @type string | undefined
-	 */
 	type?: ShsSubscriptionTypeEnumKey | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	state?: ShsSubscriptionStateEnumKey | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	shsSubscriptionType?: ShsSubscriptionShsSubscriptionTypeEnumKey | undefined;
 	/**
-	 * @type string | undefined, date-time
+	 * @description
+	 * Format: `date-time`
+	 * @type string | undefined
 	 */
 	updateDate?: string | undefined;
 	/**
-	 * @type string | undefined, date-time
+	 * @description
+	 * Format: `date-time`
+	 * @type string | undefined
 	 */
 	creationDate?: string | undefined;
 	/**
-	 * @type string | undefined, date-time
+	 * @description
+	 * Format: `date-time`
+	 * @type string | undefined
 	 */
 	expirationDate?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	isInGracePeriod?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	isGracePeriodWarningDismissed?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	gracePeriodWarningEmailSent?: boolean | undefined;
 	/**
-	 * @type string | undefined, uuid
+	 * @description
+	 * Format: `uuid`
+	 * @type string | undefined
 	 */
 	contractId?: string | undefined;
 };
@@ -4261,19 +3006,23 @@ export type SmartlockConfig = {
 	name: string;
 	/**
 	 * @description The latitude of the smartlock position
-	 * @type number, float
+	 *
+	 * Format: `float`
+	 * @type number
 	 */
 	latitude: number;
 	/**
 	 * @description The longitude of the smartlock position
-	 * @type number, float
+	 *
+	 * Format: `float`
+	 * @type number
 	 */
 	longitude: number;
 	/**
 	 * @description The capabilities indicate whether door opening via app is possible, RTO is possible or both: 0 .. only door opening possible, 1 .. both possible, 2 .. only RTO possible (only for type=2)
-	 * @minLength 0
-	 * @maxLength 2
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	readonly capabilities?: number | undefined;
 	/**
@@ -4303,17 +3052,23 @@ export type SmartlockConfig = {
 	ledEnabled?: boolean | undefined;
 	/**
 	 * @description The brightness of the LED: 0 .. off, 5 .. max (only for type=1 and type=3)
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	ledBrightness?: number | undefined;
 	/**
 	 * @description [deprecated] The timezone offset (in minutes)
-	 * @type integer, int32
+	 *
+	 * Format: `int32`
+	 * @type integer
 	 */
 	timezoneOffset: number;
 	/**
 	 * @description [deprecated] The daylight saving mode: 0 .. off, 1 .. european
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	daylightSavingMode?: number | undefined;
 	/**
@@ -4323,23 +3078,23 @@ export type SmartlockConfig = {
 	readonly fobPaired?: boolean | undefined;
 	/**
 	 * @description The fob action if button is pressed once: type=0/3/4: 0 .. none, 1 .. unlock, 2 .. lock, 3 .. lock \'n\' go, 4 .. intelligent (lock/unlocked based on the current state); type=2: 0 .. none, 1 .. toggle ring to open, 2 .. activate ring to open, 3 .. deactivate ring to open, 7 .. open (electric strike actuation), 8 .. ring
-	 * @minLength 0
-	 * @maxLength 8
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	readonly fobAction1?: number | undefined;
 	/**
 	 * @description The fob action if button is pressed twice: type=0/3/4: 0 .. none, 1 .. unlock, 2 .. lock, 3 .. lock \'n\' go, 4 .. intelligent (lock/unlocked based on the current state); type=2: 0 .. none, 1 .. toggle ring to open, 2 .. activate ring to open, 3 .. deactivate ring to open, 7 .. open (electric strike actuation), 8 .. ring
-	 * @minLength 0
-	 * @maxLength 8
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	readonly fobAction2?: number | undefined;
 	/**
 	 * @description The fob action if button is pressed 3 times: type=0/3/4: 0 .. none, 1 .. unlock, 2 .. lock, 3 .. lock \'n\' go, 4 .. intelligent (lock/unlocked based on the current state); type=2: 0 .. none, 1 .. toggle ring to open, 2 .. activate ring to open, 3 .. deactivate ring to open, 7 .. open (electric strike actuation), 8 .. ring
-	 * @minLength 0
-	 * @maxLength 8
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	readonly fobAction3?: number | undefined;
 	/**
@@ -4349,14 +3104,16 @@ export type SmartlockConfig = {
 	singleLock: boolean;
 	/**
 	 * @description The operating mode of the opener (only for type=2): 0x00 .. generic door opener, 0x01 .. analogue intercom, 0x02 .. digital intercom, 0x03 .. digital intercom Siedle, 0x04 .. digital intercom TCS, 0x05 .. digital intercom Bticino, 0x06 .. analog intercom Siedle HTS, 0x07 .. digital intercom STR, 0x08 .. digital intercom Ritto, 0x09 .. digital intercom Fermax, 0x0A .. digital intercom Comelit, 0x0B .. digital intercom Urmet BiBus, 0x0C .. digital intercom Urmet 2Voice, 0x0D .. digital intercom Golmar, 0x0E .. digital intercom SKS, 0x0F .. digital intercom Spare
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	readonly operatingMode?: number | undefined;
 	/**
 	 * @description The advertising mode (battery saving): 0 .. automatic, 1 .. normal, 2 .. slow, 3 .. slowest
-	 * @minLength 0
-	 * @maxLength 3
-	 * @type integer, int32
+	 *
+	 * Format: `int32`
+	 * @type integer
 	 */
 	advertisingMode: number;
 	/**
@@ -4371,28 +3128,30 @@ export type SmartlockConfig = {
 	readonly keypad2Paired?: boolean | undefined;
 	/**
 	 * @description The homekit state: 0 .. unavailable, 1 .. disabled, 2 .. enabled, 3 .. enabled & paired
-	 * @minLength 0
-	 * @maxLength 3
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	readonly homekitState?: number | undefined;
 	/**
 	 * @description The matter state: 0 .. not available, 1 .. disabled and no certificate available, 2 .. disabled, 3 .. enabled, 4 .. enabled & paired
-	 * @minLength 0
-	 * @maxLength 4
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	readonly matterState?: number | undefined;
 	/**
 	 * @description The timezone id (check https://developer.nuki.io for ids)
-	 * @minLength 0
-	 * @maxLength 45
-	 * @type integer, int32
+	 *
+	 * Format: `int32`
+	 * @type integer
 	 */
 	timezoneId: number;
 	/**
 	 * @description The device type of a Nuki device
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	readonly deviceType?: number | undefined;
 	/**
@@ -4407,54 +3166,33 @@ export type SmartlockConfig = {
 	readonly operationId?: string | undefined;
 	/**
 	 * @description The product variant for Smartlock 5: 1 .. Go, 2 .. Pro, 3 .. Ultra
-	 * @minLength 1
-	 * @maxLength 3
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	readonly productVariant?: number | undefined;
 };
 
-export const smartlockAdvancedConfigLngTimeoutEnum = {
-	"5": 5,
-	"10": 10,
-	"15": 15,
-	"20": 20,
-	"30": 30,
-	"45": 45,
-	"60": 60,
-} as const;
-
-export type SmartlockAdvancedConfigLngTimeoutEnumKey =
-	(typeof smartlockAdvancedConfigLngTimeoutEnum)[keyof typeof smartlockAdvancedConfigLngTimeoutEnum];
-
-export const smartlockAdvancedConfigUnlatchDurationEnum = {
-	"1": 1,
-	"3": 3,
-	"5": 5,
-	"7": 7,
-	"10": 10,
-	"15": 15,
-	"20": 20,
-	"30": 30,
-} as const;
-
-export type SmartlockAdvancedConfigUnlatchDurationEnumKey =
-	(typeof smartlockAdvancedConfigUnlatchDurationEnum)[keyof typeof smartlockAdvancedConfigUnlatchDurationEnum];
-
 export type SmartlockAdvancedConfig = {
 	/**
 	 * @description Timeout in seconds for lock ‘n’ go
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
-	lngTimeout?: SmartlockAdvancedConfigLngTimeoutEnumKey | undefined;
+	lngTimeout?: number | undefined;
 	/**
 	 * @description The desired action, if the button is pressed once: 0 .. no action, 1 .. intelligent, 2 .. unlock, 3 .. lock, 4 .. unlatch, 5 .. lock \'n\' go, 6 .. show status
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	singleButtonPressAction?: number | undefined;
 	/**
 	 * @description The desired action, if the button is pressed twice: 0 .. no action, 1 .. intelligent, 2 .. unlock, 3 .. lock, 4 .. unlatch, 5 .. lock \'n\' go, 6 .. show status
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	doubleButtonPressAction?: number | undefined;
 	/**
@@ -4464,9 +3202,11 @@ export type SmartlockAdvancedConfig = {
 	automaticBatteryTypeDetection?: boolean | undefined;
 	/**
 	 * @description Duration in seconds for holding the latch in unlatched position
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
-	unlatchDuration?: SmartlockAdvancedConfigUnlatchDurationEnumKey | undefined;
+	unlatchDuration?: number | undefined;
 	/**
 	 * @description The operation id - if set it\'s locked for another operation
 	 * @type string | undefined
@@ -4474,27 +3214,37 @@ export type SmartlockAdvancedConfig = {
 	readonly operationId?: string | undefined;
 	/**
 	 * @description The absolute total position in degrees that has been reached during calibration
-	 * @type integer, int32
+	 *
+	 * Format: `int32`
+	 * @type integer
 	 */
 	readonly totalDegrees: number;
 	/**
 	 * @description Offset that alters the single locked position
-	 * @type integer, int32
+	 *
+	 * Format: `int32`
+	 * @type integer
 	 */
 	singleLockedPositionOffsetDegrees: number;
 	/**
 	 * @description Offset that alters the position where transition from unlocked to locked happens
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	unlockedToLockedTransitionOffsetDegrees?: number | undefined;
 	/**
 	 * @description Offset that alters the unlocked position
-	 * @type integer, int32
+	 *
+	 * Format: `int32`
+	 * @type integer
 	 */
 	unlockedPositionOffsetDegrees: number;
 	/**
 	 * @description Offset that alters the locked position
-	 * @type integer, int32
+	 *
+	 * Format: `int32`
+	 * @type integer
 	 */
 	lockedPositionOffsetDegrees: number;
 	/**
@@ -4504,7 +3254,9 @@ export type SmartlockAdvancedConfig = {
 	detachedCylinder?: boolean | undefined;
 	/**
 	 * @description The type of the batteries present in the smart lock: 0 .. alkali, 1 .. accumulator, 2 .. lithium
-	 * @type integer, int32
+	 *
+	 * Format: `int32`
+	 * @type integer
 	 */
 	batteryType: number;
 	/**
@@ -4514,7 +3266,9 @@ export type SmartlockAdvancedConfig = {
 	autoLock?: boolean | undefined;
 	/**
 	 * @description Seconds until the smart lock relocks itself after it has been unlocked. FW < 2.7.8/1.9.1: No auto relock if value is 0, FW >= 2.7.8/1.9.1: has to be >=2 (defaults to 2 for values <2 if autoLock is set to true)
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	autoLockTimeout?: number | undefined;
 	/**
@@ -4524,7 +3278,9 @@ export type SmartlockAdvancedConfig = {
 	autoUpdateEnabled?: boolean | undefined;
 	/**
 	 * @description Field used for setting the motor speed. 0x00 ... standard, 0x01 ... fast, 0x02 ... slow
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	motorSpeed?: number | undefined;
 	/**
@@ -4534,81 +3290,33 @@ export type SmartlockAdvancedConfig = {
 	enableSlowSpeedDuringNightmode?: boolean | undefined;
 };
 
-export const smartlockOpenerAdvancedConfigBusModeSwitchEnum = {
-	"0": 0,
-	"1": 1,
-} as const;
-
-export type SmartlockOpenerAdvancedConfigBusModeSwitchEnumKey =
-	(typeof smartlockOpenerAdvancedConfigBusModeSwitchEnum)[keyof typeof smartlockOpenerAdvancedConfigBusModeSwitchEnum];
-
-export const smartlockOpenerAdvancedConfigSoundRingEnum = {
-	"0": 0,
-	"1": 1,
-	"2": 2,
-	"3": 3,
-} as const;
-
-export type SmartlockOpenerAdvancedConfigSoundRingEnumKey =
-	(typeof smartlockOpenerAdvancedConfigSoundRingEnum)[keyof typeof smartlockOpenerAdvancedConfigSoundRingEnum];
-
-export const smartlockOpenerAdvancedConfigSoundOpenEnum = {
-	"0": 0,
-	"1": 1,
-	"2": 2,
-	"3": 3,
-} as const;
-
-export type SmartlockOpenerAdvancedConfigSoundOpenEnumKey =
-	(typeof smartlockOpenerAdvancedConfigSoundOpenEnum)[keyof typeof smartlockOpenerAdvancedConfigSoundOpenEnum];
-
-export const smartlockOpenerAdvancedConfigSoundRtoEnum = {
-	"0": 0,
-	"1": 1,
-	"2": 2,
-	"3": 3,
-} as const;
-
-export type SmartlockOpenerAdvancedConfigSoundRtoEnumKey =
-	(typeof smartlockOpenerAdvancedConfigSoundRtoEnum)[keyof typeof smartlockOpenerAdvancedConfigSoundRtoEnum];
-
-export const smartlockOpenerAdvancedConfigSoundCmEnum = {
-	"0": 0,
-	"1": 1,
-	"2": 2,
-	"3": 3,
-} as const;
-
-export type SmartlockOpenerAdvancedConfigSoundCmEnumKey =
-	(typeof smartlockOpenerAdvancedConfigSoundCmEnum)[keyof typeof smartlockOpenerAdvancedConfigSoundCmEnum];
-
-export const smartlockOpenerAdvancedConfigSoundConfirmationEnum = {
-	"0": 0,
-	"1": 1,
-} as const;
-
-export type SmartlockOpenerAdvancedConfigSoundConfirmationEnumKey =
-	(typeof smartlockOpenerAdvancedConfigSoundConfirmationEnum)[keyof typeof smartlockOpenerAdvancedConfigSoundConfirmationEnum];
-
 export type SmartlockOpenerAdvancedConfig = {
 	/**
 	 * @description The database ID of the connected intercom
-	 * @type integer, int32
+	 *
+	 * Format: `int32`
+	 * @type integer
 	 */
 	readonly intercomId: number;
 	/**
 	 * @description Method to switch between data and analogue mode
-	 * @type integer, int32
+	 *
+	 * Format: `int32`
+	 * @type integer
 	 */
-	readonly busModeSwitch: SmartlockOpenerAdvancedConfigBusModeSwitchEnumKey;
+	readonly busModeSwitch: number;
 	/**
 	 * @description Duration of the short circuit for BUS mode switching in ms
-	 * @type integer, int32
+	 *
+	 * Format: `int32`
+	 * @type integer
 	 */
 	shortCircuitDuration: number;
 	/**
 	 * @description Delay of electric strike activation in ms after lock action 3 \'electric strike actuation\'
-	 * @type integer, int32
+	 *
+	 * Format: `int32`
+	 * @type integer
 	 */
 	electricStrikeDelay: number;
 	/**
@@ -4618,7 +3326,9 @@ export type SmartlockOpenerAdvancedConfig = {
 	randomElectricStrikeDelay: boolean;
 	/**
 	 * @description Duration in ms of electric strike actuation lock action 3 \'electric strike actuation\'
-	 * @type integer, int32
+	 *
+	 * Format: `int32`
+	 * @type integer
 	 */
 	electricStrikeDuration: number;
 	/**
@@ -4628,62 +3338,86 @@ export type SmartlockOpenerAdvancedConfig = {
 	disableRtoAfterRing: boolean;
 	/**
 	 * @description After this period of time in minutes, RTO gets deactivated automatically
-	 * @type integer, int32
+	 *
+	 * Format: `int32`
+	 * @type integer
 	 */
 	rtoTimeout: number;
 	/**
 	 * @description The doorbell supression bitmask: first bit (least significant) .. whenever the doorbell rings and CM and RTO are inactive, second bit .. RTO is active, third bit .. CM is active
-	 * @type integer, int32
+	 *
+	 * Format: `int32`
+	 * @type integer
 	 */
 	doorbellSuppression: number;
 	/**
 	 * @description Duration in ms of doorbell suppression (only in Operating mode 2 \'digital Intercom\')
-	 * @type integer, int32
+	 *
+	 * Format: `int32`
+	 * @type integer
 	 */
 	doorbellSuppressionDuration: number;
 	/**
 	 * @description The sound for ring: 0 .. no sound, 1 .. Sound1, 2 .. Sound2, 3 .. Sound3
-	 * @type integer, int32
+	 *
+	 * Format: `int32`
+	 * @type integer
 	 */
-	soundRing: SmartlockOpenerAdvancedConfigSoundRingEnumKey;
+	soundRing: number;
 	/**
 	 * @description The sound for open: 0 .. no sound, 1 .. Sound1, 2 .. Sound2, 3 .. Sound3
-	 * @type integer, int32
+	 *
+	 * Format: `int32`
+	 * @type integer
 	 */
-	soundOpen: SmartlockOpenerAdvancedConfigSoundOpenEnumKey;
+	soundOpen: number;
 	/**
 	 * @description The sound for RTO: 0 .. no sound, 1 .. Sound1, 2 .. Sound2, 3 .. Sound3
-	 * @type integer, int32
+	 *
+	 * Format: `int32`
+	 * @type integer
 	 */
-	soundRto: SmartlockOpenerAdvancedConfigSoundRtoEnumKey;
+	soundRto: number;
 	/**
 	 * @description The sound for CM: 0 .. no sound, 1 .. Sound1, 2 .. Sound2, 3 .. Sound3
-	 * @type integer, int32
+	 *
+	 * Format: `int32`
+	 * @type integer
 	 */
-	soundCm: SmartlockOpenerAdvancedConfigSoundCmEnumKey;
+	soundCm: number;
 	/**
 	 * @description The sound confirmation: 0 .. no sound, 1 .. sound
-	 * @type integer, int32
+	 *
+	 * Format: `int32`
+	 * @type integer
 	 */
-	soundConfirmation: SmartlockOpenerAdvancedConfigSoundConfirmationEnumKey;
+	soundConfirmation: number;
 	/**
 	 * @description The sound level
-	 * @type integer, int32
+	 *
+	 * Format: `int32`
+	 * @type integer
 	 */
 	soundLevel: number;
 	/**
 	 * @description The desired action, if the button is pressed once: 0 .. no action, 1 .. toggle RTO, 2 .. activate RTO, 3 .. deactivate RTO, 4 .. toggle CM, 5 .. activate CM, 6 .. deactivate CM, 7 .. open
-	 * @type integer, int32
+	 *
+	 * Format: `int32`
+	 * @type integer
 	 */
 	singleButtonPressAction: number;
 	/**
 	 * @description The desired action, if the button is pressed twice: 0 .. no action, 1 .. toggle RTO, 2 .. activate RTO, 3 .. deactivate RTO, 4 .. toggle CM, 5 .. activate CM, 6 .. deactivate CM, 7 .. open
-	 * @type integer, int32
+	 *
+	 * Format: `int32`
+	 * @type integer
 	 */
 	doubleButtonPressAction: number;
 	/**
 	 * @description The type of the batteries present in the smart lock: 0 .. alkali, 1 .. accumulator, 2 .. lithium, 3 .. fixed
-	 * @type integer, int32
+	 *
+	 * Format: `int32`
+	 * @type integer
 	 */
 	batteryType: number;
 	/**
@@ -4703,56 +3437,26 @@ export type SmartlockOpenerAdvancedConfig = {
 	readonly operationId?: string | undefined;
 };
 
-export const smartlockSmartdoorAdvancedConfigLngTimeoutEnum = {
-	"5": 5,
-	"10": 10,
-	"15": 15,
-	"20": 20,
-	"30": 30,
-	"45": 45,
-	"60": 60,
-} as const;
-
-export type SmartlockSmartdoorAdvancedConfigLngTimeoutEnumKey =
-	(typeof smartlockSmartdoorAdvancedConfigLngTimeoutEnum)[keyof typeof smartlockSmartdoorAdvancedConfigLngTimeoutEnum];
-
-export const smartlockSmartdoorAdvancedConfigUnlatchDurationEnum = {
-	"1": 1,
-	"3": 3,
-	"5": 5,
-	"7": 7,
-	"10": 10,
-	"15": 15,
-	"20": 20,
-	"30": 30,
-} as const;
-
-export type SmartlockSmartdoorAdvancedConfigUnlatchDurationEnumKey =
-	(typeof smartlockSmartdoorAdvancedConfigUnlatchDurationEnum)[keyof typeof smartlockSmartdoorAdvancedConfigUnlatchDurationEnum];
-
-export const smartlockSmartdoorAdvancedConfigBuzzerVolumeEnum = {
-	"0": 0,
-	"1": 1,
-	"2": 2,
-} as const;
-
-export type SmartlockSmartdoorAdvancedConfigBuzzerVolumeEnumKey =
-	(typeof smartlockSmartdoorAdvancedConfigBuzzerVolumeEnum)[keyof typeof smartlockSmartdoorAdvancedConfigBuzzerVolumeEnum];
-
 export type SmartlockSmartdoorAdvancedConfig = {
 	/**
 	 * @description Timeout in seconds for lock ‘n’ go
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
-	lngTimeout?: SmartlockSmartdoorAdvancedConfigLngTimeoutEnumKey | undefined;
+	lngTimeout?: number | undefined;
 	/**
 	 * @description The desired action, if the button is pressed once: 0 .. no action, 1 .. intelligent, 2 .. unlock, 3 .. lock, 4 .. unlatch, 5 .. lock \'n\' go, 6 .. show status
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	singleButtonPressAction?: number | undefined;
 	/**
 	 * @description The desired action, if the button is pressed twice: 0 .. no action, 1 .. intelligent, 2 .. unlock, 3 .. lock, 4 .. unlatch, 5 .. lock \'n\' go, 6 .. show status
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	doubleButtonPressAction?: number | undefined;
 	/**
@@ -4762,9 +3466,11 @@ export type SmartlockSmartdoorAdvancedConfig = {
 	automaticBatteryTypeDetection?: boolean | undefined;
 	/**
 	 * @description Duration in seconds for holding the latch in unlatched position
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
-	unlatchDuration?: SmartlockSmartdoorAdvancedConfigUnlatchDurationEnumKey | undefined;
+	unlatchDuration?: number | undefined;
 	/**
 	 * @description The operation id - if set it\'s locked for another operation
 	 * @type string | undefined
@@ -4772,9 +3478,11 @@ export type SmartlockSmartdoorAdvancedConfig = {
 	readonly operationId?: string | undefined;
 	/**
 	 * @description The volume of the buzzer: 0 .. off, 1 .. low, 2 .. normal
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
-	buzzerVolume?: SmartlockSmartdoorAdvancedConfigBuzzerVolumeEnumKey | undefined;
+	buzzerVolume?: number | undefined;
 	/**
 	 * @description Set of supported battery types: 0 .. alkali, 1 .. accumulator, 2 .. lithium, 3 .. fixed, 254 .. automatic, 255 .. unknown
 	 * @type array | undefined
@@ -4782,12 +3490,16 @@ export type SmartlockSmartdoorAdvancedConfig = {
 	readonly supportedBatteryTypes?: number[] | undefined;
 	/**
 	 * @description The type of the batteries present in the smart lock: 0 .. alkali, 1 .. accumulator, 2 .. lithium, 3 .. fixed, 255 .. unknown
-	 * @type integer, int32
+	 *
+	 * Format: `int32`
+	 * @type integer
 	 */
 	batteryType: number;
 	/**
 	 * @description Seconds until the smart lock relocks itself after it has been unlocked. No auto relock if value is 0
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	autoLockTimeout?: number | undefined;
 	/**
@@ -4800,30 +3512,30 @@ export type SmartlockSmartdoorAdvancedConfig = {
 export type SmartlockState = {
 	/**
 	 * @description The smartlock mode: 0 .. uninitialized, 1 .. pairing, 2 .. door (default), 3 .. continuous (type=2 only), 4 .. maintenance, 5 .. off-door charging
-	 * @minLength 0
-	 * @maxLength 4
-	 * @type integer, int32
+	 *
+	 * Format: `int32`
+	 * @type integer
 	 */
 	mode: number;
 	/**
 	 * @description The smartlock state: type=0/3/4: 0 .. uncalibrated, 1 .. locked, 2 .. unlocking, 3 .. unlocked, 4 .. locking, 5 .. unlatched, 6 .. unlocked (lock \'n\' go), 7 .. unlatching, 224 .. Error wrong entry code, 225 .. Error wrong Fingerprint, 254 .. motor blocked, 255 .. undefined; type=2: 0 .. untrained, 1 .. online, 3 .. ring to open active, 5 .. open, 7 .. opening, 253 .. boot run, 255 .. undefined
-	 * @minLength 0
-	 * @maxLength 255
-	 * @type integer, int32
+	 *
+	 * Format: `int32`
+	 * @type integer
 	 */
 	state: number;
 	/**
 	 * @description  The state trigger: 0 .. system, 1 .. manual, 2 .. button, 3 .. automatic, 4 .. web (type=1 only), 5 .. app (type=1 only), 6 .. continuous mode (type=2 only), 7 .. accessory (type=3 only)
-	 * @minLength 0
-	 * @maxLength 6
-	 * @type integer, int32
+	 *
+	 * Format: `int32`
+	 * @type integer
 	 */
 	trigger: number;
 	/**
 	 * @description The action: type=0/3/4: 1 .. unlock, 2 .. lock, 3 .. unlatch, 4 .. lock \'n\' go, 5 .. lock \'n\' go with unlatch; type=1: 1 .. unlock; type=2: 1 .. activate ring to open, 2 .. deactivate ring to open, 3 .. open (electric strike actuation)
-	 * @minLength 0
-	 * @maxLength 5
-	 * @type integer, int32
+	 *
+	 * Format: `int32`
+	 * @type integer
 	 */
 	lastAction: number;
 	/**
@@ -4838,9 +3550,9 @@ export type SmartlockState = {
 	batteryCharging?: boolean | undefined;
 	/**
 	 * @description Remaining capacity of a Nuki battery pack in %
-	 * @minLength 0
-	 * @maxLength 100
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	batteryCharge?: number | undefined;
 	/**
@@ -4855,21 +3567,23 @@ export type SmartlockState = {
 	doorsensorBatteryCritical?: boolean | undefined;
 	/**
 	 * @description The door state: 0 .. unavailable/not paired, 1 .. deactivated, 2 .. door closed, 3 .. door opened, 4 .. door state unknown, 5 .. calibrating, 16 .. uncalibrated, 240 .. removed, 255 .. unknown
-	 * @minLength 0
-	 * @maxLength 255
-	 * @type integer, int32
+	 *
+	 * Format: `int32`
+	 * @type integer
 	 */
 	doorState: number;
 	/**
 	 * @description [deprecated] Remaining ring to open time; 0 if ring to open is not active (type=2 only)
-	 * @minLength 0
-	 * @maxLength 65535
-	 * @type integer, int32
+	 *
+	 * Format: `int32`
+	 * @type integer
 	 */
 	ringToOpenTimer: number;
 	/**
 	 * @description End date of ring to open timeout; null if ring to open is not active (type=2 only)
-	 * @type string | undefined, date-time
+	 *
+	 * Format: `date-time`
+	 * @type string | undefined
 	 */
 	ringToOpenEnd?: string | undefined;
 	/**
@@ -4887,27 +3601,37 @@ export type SmartlockState = {
 export type Smartlock = {
 	/**
 	 * @description The smartlock id
-	 * @type integer, int64
+	 *
+	 * Format: `int64`
+	 * @type integer
 	 */
-	smartlockId: number;
+	smartlockId: bigint;
 	/**
 	 * @description The account id
-	 * @type integer, int32
+	 *
+	 * Format: `int32`
+	 * @type integer
 	 */
 	accountId: number;
 	/**
 	 * @description The type: 0 .. Smartlock 1/2, 1 .. Box, 2 .. Opener, 3 .. Smartdoor, 4 .. Smartlock 3/4, 5 .. Smartlock 5
-	 * @type integer, int32
+	 *
+	 * Format: `int32`
+	 * @type integer
 	 */
 	type: number;
 	/**
 	 * @description The lock mechanism used in the smart door lock: 1 .. MyEVO, 2 .. KFV Genius (only for type = 3)
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	lmType?: number | undefined;
 	/**
 	 * @description The authorization id
-	 * @type integer, int32
+	 *
+	 * Format: `int32`
+	 * @type integer
 	 */
 	authId: number;
 	/**
@@ -4921,37 +3645,47 @@ export type Smartlock = {
 	 */
 	favorite: boolean;
 	/**
+	 * @description The config
 	 * @type object | undefined
 	 */
 	config?: SmartlockConfig | undefined;
 	/**
+	 * @description The advanced config
 	 * @type object | undefined
 	 */
 	advancedConfig?: SmartlockAdvancedConfig | undefined;
 	/**
+	 * @description The opener advanced config
 	 * @type object | undefined
 	 */
 	openerAdvancedConfig?: SmartlockOpenerAdvancedConfig | undefined;
 	/**
+	 * @description The smartdoor advanced config
 	 * @type object | undefined
 	 */
 	smartdoorAdvancedConfig?: SmartlockSmartdoorAdvancedConfig | undefined;
 	/**
+	 * @description The web config
 	 * @type object | undefined
 	 */
 	webConfig?: SmartlockWebConfig | undefined;
 	/**
+	 * @description The state
 	 * @type object | undefined
 	 */
 	state?: SmartlockState | undefined;
 	/**
 	 * @description The firmware version
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	readonly firmwareVersion?: number | undefined;
 	/**
 	 * @description The hardware version
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	readonly hardwareVersion?: number | undefined;
 	/**
@@ -4961,16 +3695,16 @@ export type Smartlock = {
 	readonly operationId?: string | undefined;
 	/**
 	 * @description The server state: 0 .. ok, 1 .. unregistered, 2 .. auth uuid invalid, 3 .. auth invalid, 4 .. offline
-	 * @minLength 0
-	 * @maxLength 4
-	 * @type integer, int32
+	 *
+	 * Format: `int32`
+	 * @type integer
 	 */
 	serverState: number;
 	/**
 	 * @description The admin pin state: 0 .. ok, 1 .. missing, 2 .. invalid
-	 * @minLength 0
-	 * @maxLength 2
-	 * @type integer, int32
+	 *
+	 * Format: `int32`
+	 * @type integer
 	 */
 	adminPinState: number;
 	/**
@@ -4980,12 +3714,16 @@ export type Smartlock = {
 	readonly virtualDevice?: boolean | undefined;
 	/**
 	 * @description The creation date
-	 * @type string | undefined, date-time
+	 *
+	 * Format: `date-time`
+	 * @type string | undefined
 	 */
 	creationDate?: string | undefined;
 	/**
 	 * @description The update date
-	 * @type string | undefined, date-time
+	 *
+	 * Format: `date-time`
+	 * @type string | undefined
 	 */
 	updateDate?: string | undefined;
 	/**
@@ -4999,50 +3737,43 @@ export type Smartlock = {
 	 */
 	readonly previousSubscriptions?: ShsSubscription[] | undefined;
 	/**
+	 * @description Current Subscription
 	 * @type object | undefined
 	 */
-	currentSubscription?: ShsSubscription | undefined;
+	readonly currentSubscription?: ShsSubscription | undefined;
 	/**
 	 * @description The region
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	region?: number | undefined;
 	/**
 	 * @description The mounting variant
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	mountingVariant?: number | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	opener?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	box?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	smartDoor?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	keyturner?: boolean | undefined;
 };
 
 export type SmartlockAction = {
 	/**
 	 * @description The action: type=0/3/4: 1 .. unlock, 2 .. lock, 3 .. unlatch, 4 .. lock \'n\' go, 5 .. lock \'n\' go with unlatch; type=1: 1 .. unlock; type=2: 1 activate ring to open, 2 .. deactivate ring to open, 3 .. open (electric strike actuation), 6 ... activate continuous mode, 7 ... deactivate continuous mode
-	 * @minLength 0
-	 * @maxLength 7
-	 * @type integer, int32
+	 *
+	 * Format: `int32`
+	 * @type integer
 	 */
 	action: number;
 	/**
 	 * @description The option mask: 0 .. none, 2 .. force, 4 .. full lock
-	 * @minLength 0
-	 * @maxLength 7
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	option?: number | undefined;
 };
@@ -5050,9 +3781,9 @@ export type SmartlockAction = {
 export type SmartlockAdminPinUpdate = {
 	/**
 	 * @description The admin pin
-	 * @minLength 0
-	 * @maxLength 9999
-	 * @type integer, int32
+	 *
+	 * Format: `int32`
+	 * @type integer
 	 */
 	adminPin: number;
 };
@@ -5065,27 +3796,32 @@ export type SmartlockAuth = {
 	id: string;
 	/**
 	 * @description The smartlock id
-	 * @type integer, int64
+	 *
+	 * Format: `int64`
+	 * @type integer
 	 */
-	smartlockId: number;
+	smartlockId: bigint;
 	/**
 	 * @description The id of the linked account user
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	accountUserId?: number | undefined;
 	/**
 	 * @description The smartlock authorization id
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	authId?: number | undefined;
 	/**
 	 * @description The keypad code (only for type keypad)
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	code?: number | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	fingerprints?:
 		| {
 				[key: string]: string;
@@ -5093,9 +3829,9 @@ export type SmartlockAuth = {
 		| undefined;
 	/**
 	 * @description The type of the authorization: 0 .. app, 1 .. bridge, 2 .. fob, 3 .. keypad, 13 .. keypad code, 14 .. z-key, 15 .. virtual
-	 * @minLength 0
-	 * @maxLength 2
-	 * @type integer, int32
+	 *
+	 * Format: `int32`
+	 * @type integer
 	 */
 	readonly type: number;
 	/**
@@ -5115,55 +3851,72 @@ export type SmartlockAuth = {
 	remoteAllowed: boolean;
 	/**
 	 * @description The lock count
-	 * @type integer, int32
+	 *
+	 * Format: `int32`
+	 * @type integer
 	 */
 	lockCount: number;
 	/**
 	 * @description The allowed from date
-	 * @type string | undefined, date-time
+	 *
+	 * Format: `date-time`
+	 * @type string | undefined
 	 */
 	allowedFromDate?: string | undefined;
 	/**
 	 * @description The allowed until date
-	 * @type string | undefined, date-time
+	 *
+	 * Format: `date-time`
+	 * @type string | undefined
 	 */
 	allowedUntilDate?: string | undefined;
 	/**
 	 * @description The allowed weekdays bitmask: 64 .. monday, 32 .. tuesday, 16 .. wednesday, 8 .. thursday, 4 .. friday, 2 .. saturday, 1 .. sunday
-	 * @minLength 0
-	 * @maxLength 127
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	allowedWeekDays?: number | undefined;
 	/**
 	 * @description The allowed from time (in minutes from midnight)
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	allowedFromTime?: number | undefined;
 	/**
 	 * @description The allowed until time (in minutes from midnight)
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	allowedUntilTime?: number | undefined;
 	/**
 	 * @description The last active date
-	 * @type string | undefined, date-time
+	 *
+	 * Format: `date-time`
+	 * @type string | undefined
 	 */
 	lastActiveDate?: string | undefined;
 	/**
 	 * @description The creation date
-	 * @type string | undefined, date-time
+	 *
+	 * Format: `date-time`
+	 * @type string | undefined
 	 */
 	creationDate?: string | undefined;
 	/**
 	 * @description The update date
-	 * @type string | undefined, date-time
+	 *
+	 * Format: `date-time`
+	 * @type string | undefined
 	 */
 	updateDate?: string | undefined;
 	/**
+	 * @description The operation id - if set the auth is locked for another operations.
 	 * @type object | undefined
 	 */
-	operationId?: ObjectId | undefined;
+	readonly operationId?: ObjectId | undefined;
 	/**
 	 * @description In case of any error, it contains the error message
 	 * @type string | undefined
@@ -5171,12 +3924,11 @@ export type SmartlockAuth = {
 	error?: string | undefined;
 	/**
 	 * @description The ID of the Nuki App
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	appId?: number | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	authTypeAsString?: string | undefined;
 };
 
@@ -5188,34 +3940,44 @@ export type SmartlockAuthCreate = {
 	name: string;
 	/**
 	 * @description The allowed from date
-	 * @type string | undefined, date-time
+	 *
+	 * Format: `date-time`
+	 * @type string | undefined
 	 */
 	allowedFromDate?: string | undefined;
 	/**
 	 * @description The allowed until date
-	 * @type string | undefined, date-time
+	 *
+	 * Format: `date-time`
+	 * @type string | undefined
 	 */
 	allowedUntilDate?: string | undefined;
 	/**
 	 * @description The allowed weekdays bitmask: 64 .. monday, 32 .. tuesday, 16 .. wednesday, 8 .. thursday, 4 .. friday, 2 .. saturday, 1 .. sunday
-	 * @minLength 0
-	 * @maxLength 127
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	allowedWeekDays?: number | undefined;
 	/**
 	 * @description The allowed from time (in minutes from midnight)
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	allowedFromTime?: number | undefined;
 	/**
 	 * @description The allowed until time (in minutes from midnight)
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	allowedUntilTime?: number | undefined;
 	/**
 	 * @description The id of the linked account user (required if type is NOT 13 .. keypad)
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	accountUserId?: number | undefined;
 	/**
@@ -5230,12 +3992,16 @@ export type SmartlockAuthCreate = {
 	smartActionsEnabled?: boolean | undefined;
 	/**
 	 * @description The optional type of the auth 0 .. app (default), 2 .. fob, 13 .. keypad
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	type?: number | undefined;
 	/**
 	 * @description The code of the keypad authorization (only for keypad)
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	code?: number | undefined;
 };
@@ -5248,34 +4014,44 @@ export type SmartlockAuthMultiUpdate = {
 	name: string;
 	/**
 	 * @description The allowed from date
-	 * @type string | undefined, date-time
+	 *
+	 * Format: `date-time`
+	 * @type string | undefined
 	 */
 	allowedFromDate?: string | undefined;
 	/**
 	 * @description The allowed until date
-	 * @type string | undefined, date-time
+	 *
+	 * Format: `date-time`
+	 * @type string | undefined
 	 */
 	allowedUntilDate?: string | undefined;
 	/**
 	 * @description The allowed weekdays bitmask: 64 .. monday, 32 .. tuesday, 16 .. wednesday, 8 .. thursday, 4 .. friday, 2 .. saturday, 1 .. sunday
-	 * @minLength 0
-	 * @maxLength 127
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	allowedWeekDays?: number | undefined;
 	/**
 	 * @description The allowed from time (in minutes from midnight)
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	allowedFromTime?: number | undefined;
 	/**
 	 * @description The allowed until time (in minutes from midnight)
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	allowedUntilTime?: number | undefined;
 	/**
 	 * @description The id of the linked account user
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	accountUserId?: number | undefined;
 	/**
@@ -5290,7 +4066,9 @@ export type SmartlockAuthMultiUpdate = {
 	remoteAllowed?: boolean | undefined;
 	/**
 	 * @description The code of the keypad authorization (only for keypad)
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	code?: number | undefined;
 	/**
@@ -5308,34 +4086,44 @@ export type SmartlockAuthUpdate = {
 	name: string;
 	/**
 	 * @description The allowed from date
-	 * @type string | undefined, date-time
+	 *
+	 * Format: `date-time`
+	 * @type string | undefined
 	 */
 	allowedFromDate?: string | undefined;
 	/**
 	 * @description The allowed until date
-	 * @type string | undefined, date-time
+	 *
+	 * Format: `date-time`
+	 * @type string | undefined
 	 */
 	allowedUntilDate?: string | undefined;
 	/**
 	 * @description The allowed weekdays bitmask: 64 .. monday, 32 .. tuesday, 16 .. wednesday, 8 .. thursday, 4 .. friday, 2 .. saturday, 1 .. sunday
-	 * @minLength 0
-	 * @maxLength 127
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	allowedWeekDays?: number | undefined;
 	/**
 	 * @description The allowed from time (in minutes from midnight)
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	allowedFromTime?: number | undefined;
 	/**
 	 * @description The allowed until time (in minutes from midnight)
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	allowedUntilTime?: number | undefined;
 	/**
 	 * @description The id of the linked account user
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	accountUserId?: number | undefined;
 	/**
@@ -5350,7 +4138,9 @@ export type SmartlockAuthUpdate = {
 	remoteAllowed?: boolean | undefined;
 	/**
 	 * @description The code of the keypad authorization (only for keypad)
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	code?: number | undefined;
 };
@@ -5363,34 +4153,44 @@ export type SmartlockAuthWithSharedKeyCreate = {
 	name: string;
 	/**
 	 * @description The allowed from date
-	 * @type string | undefined, date-time
+	 *
+	 * Format: `date-time`
+	 * @type string | undefined
 	 */
 	allowedFromDate?: string | undefined;
 	/**
 	 * @description The allowed until date
-	 * @type string | undefined, date-time
+	 *
+	 * Format: `date-time`
+	 * @type string | undefined
 	 */
 	allowedUntilDate?: string | undefined;
 	/**
 	 * @description The allowed weekdays bitmask: 64 .. monday, 32 .. tuesday, 16 .. wednesday, 8 .. thursday, 4 .. friday, 2 .. saturday, 1 .. sunday
-	 * @minLength 0
-	 * @maxLength 127
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	allowedWeekDays?: number | undefined;
 	/**
 	 * @description The allowed from time (in minutes from midnight)
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	allowedFromTime?: number | undefined;
 	/**
 	 * @description The allowed until time (in minutes from midnight)
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	allowedUntilTime?: number | undefined;
 	/**
 	 * @description The id of the linked account user
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	accountUserId?: number | undefined;
 };
@@ -5408,9 +4208,9 @@ export type SmartlockLogOpenerLog = {
 	activeRto: boolean;
 	/**
 	 * @description The cause of the activation of ring to open or continuous mode: 0 .. doorbell, 1 .. timecontrol, 2 .. app, 3 .. button, 4 .. fob, 5 .. bridge, 6 .. keypad
-	 * @minLength 0
-	 * @maxLength 6
-	 * @type integer, int32
+	 *
+	 * Format: `int32`
+	 * @type integer
 	 */
 	source: number;
 	/**
@@ -5430,17 +4230,6 @@ export type SmartlockLogOpenerLog = {
 	flagDoorbellSuppression: boolean;
 };
 
-export const smartlockLogDeviceTypeEnum = {
-	"0": 0,
-	"2": 2,
-	"3": 3,
-	"4": 4,
-	"5": 5,
-} as const;
-
-export type SmartlockLogDeviceTypeEnumKey =
-	(typeof smartlockLogDeviceTypeEnum)[keyof typeof smartlockLogDeviceTypeEnum];
-
 export type SmartlockLog = {
 	/**
 	 * @description The unique id for the smartlock log
@@ -5449,17 +4238,23 @@ export type SmartlockLog = {
 	id: string;
 	/**
 	 * @description The smartlock id
-	 * @type integer, int64
+	 *
+	 * Format: `int64`
+	 * @type integer
 	 */
-	smartlockId: number;
+	smartlockId: bigint;
 	/**
 	 * @description The device type: 0 .. Smartlock 1/2 + Box, 2 .. Opener, 3 .. Smartdoor, 4 .. Smartlock 3/4, 5 .. Smartlock 5
-	 * @type integer, int32
+	 *
+	 * Format: `int32`
+	 * @type integer
 	 */
-	deviceType: SmartlockLogDeviceTypeEnumKey;
+	deviceType: number;
 	/**
 	 * @description The id of the linked account user
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	accountUserId?: number | undefined;
 	/**
@@ -5474,23 +4269,23 @@ export type SmartlockLog = {
 	name: string;
 	/**
 	 * @description The action: 1 .. unlock, 2 .. lock, 3 .. unlatch, 4 .. lock\'n\'go, 5 .. lock\'n\'go with unlatch, 11 .. Restore reset to default setting, 208 .. door warning ajar, 209 door warning status mismatch, 224 .. doorbell recognition (only Opener), 240 .. door opened, 241 .. door closed, 242 .. door sensor jammed, 243 .. firmware update, 250 .. door log enabled, 251 .. door log disabled, 252 .. initialization, 253 .. calibration, 254 .. log enabled, 255 .. log disabled
-	 * @minLength 1
-	 * @maxLength 255
-	 * @type integer, int32
+	 *
+	 * Format: `int32`
+	 * @type integer
 	 */
 	action: number;
 	/**
 	 * @description The trigger: 0 .. system, 1 .. manual, 2 .. button, 3 .. automatic, 4 .. web, 5 .. app, 6 .. auto lock, 7 .. accessory, 253 .. keypad error, 254 .. nuki mode, 255 .. keypad
-	 * @minLength 0
-	 * @maxLength 255
-	 * @type integer, int32
+	 *
+	 * Format: `int32`
+	 * @type integer
 	 */
 	trigger: number;
 	/**
 	 * @description The completion state: 0 .. Success, 1 .. Motor blocked, 2 .. Canceled, 3 .. Too recent, 4 .. Busy, 5 .. Low motor voltage, 6 .. Clutch failure, 7 .. Motor power failure, 8 .. Incomplete, 9 .. Rejected, 10 .. Rejected night mode, 224 .. Invalid Code, 225 .. Invalid Fingerprint, 226 .. Invalid NFC Tag, 254 .. Other error, 255 .. Unknown error\nFor source=3 and trigger=253 the following states are used: 0 .. Access document revoked, 1 .. Send NFC failed, 2 .. Control flow, 3 .. Command time expired, 7 .. Invalid data content, 37 .. Invalid access rights, 255 .. Unknown
-	 * @minLength 1
-	 * @maxLength 255
-	 * @type integer, int32
+	 *
+	 * Format: `int32`
+	 * @type integer
 	 */
 	state: number;
 	/**
@@ -5500,21 +4295,28 @@ export type SmartlockLog = {
 	autoUnlock: boolean;
 	/**
 	 * @description The log date
-	 * @type string, date-time
+	 *
+	 * Format: `date-time`
+	 * @type string
 	 */
 	date: string;
 	/**
+	 * @description The opener specific log
 	 * @type object | undefined
 	 */
 	openerLog?: SmartlockLogOpenerLog | undefined;
 	/**
 	 * @description The door sensor warning ajar timeout (in minutes, only for action = 208)
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	ajarTimeout?: number | undefined;
 	/**
 	 * @description The source of action: 1 .. Keypad code, 2 .. Fingerprint, 3 .. Tap to Unlock, 0 .. Default
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	source?: number | undefined;
 	/**
@@ -5545,41 +4347,51 @@ export type SmartlocksAuthAdvancedCreate = {
 	name: string;
 	/**
 	 * @description The allowed from date
-	 * @type string | undefined, date-time
+	 *
+	 * Format: `date-time`
+	 * @type string | undefined
 	 */
 	allowedFromDate?: string | undefined;
 	/**
 	 * @description The allowed until date
-	 * @type string | undefined, date-time
+	 *
+	 * Format: `date-time`
+	 * @type string | undefined
 	 */
 	allowedUntilDate?: string | undefined;
 	/**
 	 * @description The allowed weekdays bitmask: 64 .. monday, 32 .. tuesday, 16 .. wednesday, 8 .. thursday, 4 .. friday, 2 .. saturday, 1 .. sunday
-	 * @minLength 0
-	 * @maxLength 127
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	allowedWeekDays?: number | undefined;
 	/**
 	 * @description The allowed from time (in minutes from midnight)
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	allowedFromTime?: number | undefined;
 	/**
 	 * @description The allowed until time (in minutes from midnight)
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	allowedUntilTime?: number | undefined;
 	/**
 	 * @description The id of the linked account user
-	 * @type integer, int32
+	 *
+	 * Format: `int32`
+	 * @type integer
 	 */
 	accountUserId: number;
 	/**
 	 * @description The list of smartlock ids
 	 * @type array
 	 */
-	smartlockIds: number[];
+	smartlockIds: bigint[];
 	/**
 	 * @description True if the auth has remote access
 	 * @type boolean
@@ -5600,41 +4412,51 @@ export type SmartlocksAuthCreate = {
 	name: string;
 	/**
 	 * @description The allowed from date
-	 * @type string | undefined, date-time
+	 *
+	 * Format: `date-time`
+	 * @type string | undefined
 	 */
 	allowedFromDate?: string | undefined;
 	/**
 	 * @description The allowed until date
-	 * @type string | undefined, date-time
+	 *
+	 * Format: `date-time`
+	 * @type string | undefined
 	 */
 	allowedUntilDate?: string | undefined;
 	/**
 	 * @description The allowed weekdays bitmask: 64 .. monday, 32 .. tuesday, 16 .. wednesday, 8 .. thursday, 4 .. friday, 2 .. saturday, 1 .. sunday
-	 * @minLength 0
-	 * @maxLength 127
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	allowedWeekDays?: number | undefined;
 	/**
 	 * @description The allowed from time (in minutes from midnight)
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	allowedFromTime?: number | undefined;
 	/**
 	 * @description The allowed until time (in minutes from midnight)
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	allowedUntilTime?: number | undefined;
 	/**
 	 * @description The id of the linked account user (required if type is NOT 13 .. keypad)
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	accountUserId?: number | undefined;
 	/**
 	 * @description The list of smartlock ids
 	 * @type array | undefined
 	 */
-	smartlockIds?: number[] | undefined;
+	smartlockIds?: bigint[] | undefined;
 	/**
 	 * @description True if the auth has remote access
 	 * @type boolean
@@ -5647,36 +4469,25 @@ export type SmartlocksAuthCreate = {
 	smartActionsEnabled?: boolean | undefined;
 	/**
 	 * @description The optional type of the auth 0 .. app (default), 2 .. fob, 13 .. keypad
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	type?: number | undefined;
 	/**
 	 * @description The code of the keypad authorization (only for keypad)
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	code?: number | undefined;
 };
 
 export type Variant = {
-	/**
-	 * @type object | undefined
-	 */
 	characterSet?: CharacterSet | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	encodings?: Encoding[] | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	locationRef?: Reference | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	languages?: Language[] | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	mediaType?: MediaType | undefined;
 };
 
@@ -5699,7 +4510,9 @@ export type WebhookMessage = {
 		| undefined;
 	/**
 	 * @description The timestamp when the message was created
-	 * @type string | undefined, date-time
+	 *
+	 * Format: `date-time`
+	 * @type string | undefined
 	 */
 	timestamp?: string | undefined;
 	/**
@@ -5727,62 +4540,82 @@ export type WebhookLog = {
 	succeeded?: boolean | undefined;
 	/**
 	 * @description Http Status code of the webhook response
-	 * @type integer | undefined, int32
+	 *
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
 	responseStatus?: number | undefined;
 	/**
 	 * @description The duration of the webhook in milli seconds
-	 * @type integer | undefined, int64
+	 *
+	 * Format: `int64`
+	 * @type integer | undefined
 	 */
-	duration?: number | undefined;
+	duration?: bigint | undefined;
 	/**
 	 * @description The account id
-	 * @type integer, int32
+	 *
+	 * Format: `int32`
+	 * @type integer
 	 */
 	accountId: number;
 	/**
+	 * @description Only set if webhook triggered by user
 	 * @type object | undefined
 	 */
 	request?: WebhookMessage | undefined;
 	/**
+	 * @description Set if webhook sent
 	 * @type object | undefined
 	 */
 	response?: WebhookMessage | undefined;
 	/**
 	 * @description Used Api Key for the webhook
-	 * @type integer, int32
+	 *
+	 * Format: `int32`
+	 * @type integer
 	 */
 	apiKeyId: number;
 	/**
 	 * @description last updated time
-	 * @type string, date-time
+	 *
+	 * Format: `date-time`
+	 * @type string
 	 */
 	updated: string;
 	/**
 	 * @description Creation Date
-	 * @type string, date-time
+	 *
+	 * Format: `date-time`
+	 * @type string
 	 */
 	created: string;
 };
 
-/**
- * @description successful operation
- */
-export type GetAccountsResource200 = unknown;
+export type GetAccountsResourceStatus200 = MyAccount;
 
-/**
- * @description Not authorized
- */
-export type GetAccountsResource401 = unknown;
+export type GetAccountsResourceStatus401 = unknown;
 
-export type GetAccountsResourceQueryResponse = GetAccountsResource200;
-
-export type GetAccountsResourceQuery = {
-	Response: GetAccountsResource200;
-	Errors: GetAccountsResource401;
+export type GetAccountsResourceOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-export type PostAccountsResourceQueryParams = {
+export type GetAccountsResourceResponses = {
+	"200": GetAccountsResourceStatus200;
+	"401": GetAccountsResourceStatus401;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetAccountsResourceResponse =
+	| GetAccountsResourceStatus200
+	| GetAccountsResourceStatus401;
+
+export type PostAccountsResourceQuery = {
 	/**
 	 * @description If false existing API tokens are not deleted if the password is changed
 	 * @default true
@@ -5791,141 +4624,158 @@ export type PostAccountsResourceQueryParams = {
 	deleteApiTokens?: boolean | undefined;
 };
 
-/**
- * @description Ok
- */
-export type PostAccountsResource204 = unknown;
+export type PostAccountsResourceStatus204 = unknown;
 
-/**
- * @description Invalid email address or name supplied
- */
-export type PostAccountsResource400 = unknown;
+export type PostAccountsResourceStatus400 = unknown;
 
-/**
- * @description Not authorized
- */
-export type PostAccountsResource401 = unknown;
+export type PostAccountsResourceStatus401 = unknown;
 
-/**
- * @description Email address already exists
- */
-export type PostAccountsResource409 = unknown;
+export type PostAccountsResourceStatus409 = unknown;
 
 /**
  * @description Account update representation
+ * @type object
  */
-export type PostAccountsResourceMutationRequest = AccountUpdate;
+export type PostAccountsResourceBody = AccountUpdate;
 
-export type PostAccountsResourceMutationResponse = PostAccountsResource204;
+export type PostAccountsResourceOptions = {
+	body: PostAccountsResourceBody;
+	path?: never | undefined;
+	query?: PostAccountsResourceQuery | undefined;
+	headers?: never | undefined;
+};
 
-export type PostAccountsResourceMutation = {
-	Response: PostAccountsResource204;
-	Request: PostAccountsResourceMutationRequest;
-	QueryParams: PostAccountsResourceQueryParams;
-	Errors: PostAccountsResource400 | PostAccountsResource401 | PostAccountsResource409;
+export type PostAccountsResourceResponses = {
+	"204": PostAccountsResourceStatus204;
+	"400": PostAccountsResourceStatus400;
+	"401": PostAccountsResourceStatus401;
+	"409": PostAccountsResourceStatus409;
 };
 
 /**
- * @description Ok
+ * @description Union of all possible responses
  */
-export type DeleteAccountsResource204 = unknown;
+export type PostAccountsResourceResponse =
+	| PostAccountsResourceStatus204
+	| PostAccountsResourceStatus400
+	| PostAccountsResourceStatus401
+	| PostAccountsResourceStatus409;
 
-/**
- * @description Not authorized
- */
-export type DeleteAccountsResource401 = unknown;
+export type DeleteAccountsResourceStatus204 = unknown;
 
-export type DeleteAccountsResourceMutationResponse = DeleteAccountsResource204;
+export type DeleteAccountsResourceStatus401 = unknown;
 
-export type DeleteAccountsResourceMutation = {
-	Response: DeleteAccountsResource204;
-	Errors: DeleteAccountsResource401;
+export type DeleteAccountsResourceOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query?: never | undefined;
+	headers?: never | undefined;
+};
+
+export type DeleteAccountsResourceResponses = {
+	"204": DeleteAccountsResourceStatus204;
+	"401": DeleteAccountsResourceStatus401;
 };
 
 /**
- * @description Ok
+ * @description Union of all possible responses
  */
-export type PostAccountEmailChangeResource204 = unknown;
+export type DeleteAccountsResourceResponse =
+	| DeleteAccountsResourceStatus204
+	| DeleteAccountsResourceStatus401;
 
-/**
- * @description Email not in valid format
- */
-export type PostAccountEmailChangeResource400 = unknown;
+export type PostAccountEmailChangeResourceStatus204 = unknown;
 
-/**
- * @description Not authorized
- */
-export type PostAccountEmailChangeResource401 = unknown;
+export type PostAccountEmailChangeResourceStatus400 = unknown;
 
-/**
- * @description Other account is already using the email
- */
-export type PostAccountEmailChangeResource409 = unknown;
+export type PostAccountEmailChangeResourceStatus401 = unknown;
+
+export type PostAccountEmailChangeResourceStatus409 = unknown;
 
 /**
  * @description Account email change representation
+ * @type object
  */
-export type PostAccountEmailChangeResourceMutationRequest = AccountEmailChange;
+export type PostAccountEmailChangeResourceBody = AccountEmailChange;
 
-export type PostAccountEmailChangeResourceMutationResponse = PostAccountEmailChangeResource204;
+export type PostAccountEmailChangeResourceOptions = {
+	body: PostAccountEmailChangeResourceBody;
+	path?: never | undefined;
+	query?: never | undefined;
+	headers?: never | undefined;
+};
 
-export type PostAccountEmailChangeResourceMutation = {
-	Response: PostAccountEmailChangeResource204;
-	Request: PostAccountEmailChangeResourceMutationRequest;
-	Errors:
-		| PostAccountEmailChangeResource400
-		| PostAccountEmailChangeResource401
-		| PostAccountEmailChangeResource409;
+export type PostAccountEmailChangeResourceResponses = {
+	"204": PostAccountEmailChangeResourceStatus204;
+	"400": PostAccountEmailChangeResourceStatus400;
+	"401": PostAccountEmailChangeResourceStatus401;
+	"409": PostAccountEmailChangeResourceStatus409;
 };
 
 /**
- * @description Ok
+ * @description Union of all possible responses
  */
-export type PostAccountEmailVerifyResource204 = unknown;
+export type PostAccountEmailChangeResourceResponse =
+	| PostAccountEmailChangeResourceStatus204
+	| PostAccountEmailChangeResourceStatus400
+	| PostAccountEmailChangeResourceStatus401
+	| PostAccountEmailChangeResourceStatus409;
 
-/**
- * @description Email not in valid format
- */
-export type PostAccountEmailVerifyResource400 = unknown;
+export type PostAccountEmailVerifyResourceStatus204 = unknown;
 
-/**
- * @description Not authorized
- */
-export type PostAccountEmailVerifyResource401 = unknown;
+export type PostAccountEmailVerifyResourceStatus400 = unknown;
 
-/**
- * @description Other account is already using the email
- */
-export type PostAccountEmailVerifyResource409 = unknown;
+export type PostAccountEmailVerifyResourceStatus401 = unknown;
 
-export type PostAccountEmailVerifyResourceMutationResponse = PostAccountEmailVerifyResource204;
+export type PostAccountEmailVerifyResourceStatus409 = unknown;
 
-export type PostAccountEmailVerifyResourceMutation = {
-	Response: PostAccountEmailVerifyResource204;
-	Errors:
-		| PostAccountEmailVerifyResource400
-		| PostAccountEmailVerifyResource401
-		| PostAccountEmailVerifyResource409;
+export type PostAccountEmailVerifyResourceOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query?: never | undefined;
+	headers?: never | undefined;
+};
+
+export type PostAccountEmailVerifyResourceResponses = {
+	"204": PostAccountEmailVerifyResourceStatus204;
+	"400": PostAccountEmailVerifyResourceStatus400;
+	"401": PostAccountEmailVerifyResourceStatus401;
+	"409": PostAccountEmailVerifyResourceStatus409;
 };
 
 /**
- * @description successful operation
+ * @description Union of all possible responses
  */
-export type GetAccountIntegrationsResource200 = unknown;
+export type PostAccountEmailVerifyResourceResponse =
+	| PostAccountEmailVerifyResourceStatus204
+	| PostAccountEmailVerifyResourceStatus400
+	| PostAccountEmailVerifyResourceStatus401
+	| PostAccountEmailVerifyResourceStatus409;
 
-/**
- * @description Not authorized
- */
-export type GetAccountIntegrationsResource401 = unknown;
+export type GetAccountIntegrationsResourceStatus200 = AccountIntegration[];
 
-export type GetAccountIntegrationsResourceQueryResponse = GetAccountIntegrationsResource200;
+export type GetAccountIntegrationsResourceStatus401 = unknown;
 
-export type GetAccountIntegrationsResourceQuery = {
-	Response: GetAccountIntegrationsResource200;
-	Errors: GetAccountIntegrationsResource401;
+export type GetAccountIntegrationsResourceOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-export type DeleteAccountIntegrationsResourceQueryParams = {
+export type GetAccountIntegrationsResourceResponses = {
+	"200": GetAccountIntegrationsResourceStatus200;
+	"401": GetAccountIntegrationsResourceStatus401;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetAccountIntegrationsResourceResponse =
+	| GetAccountIntegrationsResourceStatus200
+	| GetAccountIntegrationsResourceStatus401;
+
+export type DeleteAccountIntegrationsResourceQuery = {
 	/**
 	 * @description The api key id to delete (this also removes all tokens if no specific tokenId is given)
 	 * @type integer | undefined
@@ -5938,196 +4788,233 @@ export type DeleteAccountIntegrationsResourceQueryParams = {
 	tokenId?: number | undefined;
 };
 
-/**
- * @description Ok
- */
-export type DeleteAccountIntegrationsResource204 = unknown;
+export type DeleteAccountIntegrationsResourceStatus204 = unknown;
 
-/**
- * @description Not authorized
- */
-export type DeleteAccountIntegrationsResource401 = unknown;
+export type DeleteAccountIntegrationsResourceStatus401 = unknown;
 
-export type DeleteAccountIntegrationsResourceMutationResponse =
-	DeleteAccountIntegrationsResource204;
+export type DeleteAccountIntegrationsResourceOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query?: DeleteAccountIntegrationsResourceQuery | undefined;
+	headers?: never | undefined;
+};
 
-export type DeleteAccountIntegrationsResourceMutation = {
-	Response: DeleteAccountIntegrationsResource204;
-	QueryParams: DeleteAccountIntegrationsResourceQueryParams;
-	Errors: DeleteAccountIntegrationsResource401;
+export type DeleteAccountIntegrationsResourceResponses = {
+	"204": DeleteAccountIntegrationsResourceStatus204;
+	"401": DeleteAccountIntegrationsResourceStatus401;
 };
 
 /**
- * @description Ok
+ * @description Union of all possible responses
  */
-export type PostAccountOtpResource204 = unknown;
+export type DeleteAccountIntegrationsResourceResponse =
+	| DeleteAccountIntegrationsResourceStatus204
+	| DeleteAccountIntegrationsResourceStatus401;
 
-/**
- * @description One-time password empty
- */
-export type PostAccountOtpResource400 = unknown;
+export type PostAccountOtpResourceStatus204 = unknown;
 
-/**
- * @description Not authorized or one-time password wrong
- */
-export type PostAccountOtpResource401 = unknown;
+export type PostAccountOtpResourceStatus400 = unknown;
 
-/**
- * @description Too many failed attempts
- */
-export type PostAccountOtpResource429 = unknown;
+export type PostAccountOtpResourceStatus401 = unknown;
+
+export type PostAccountOtpResourceStatus429 = unknown;
 
 /**
  * @description Account one time password enable representation
+ * @type object
  */
-export type PostAccountOtpResourceMutationRequest = AccountOtpEnable;
+export type PostAccountOtpResourceBody = AccountOtpEnable;
 
-export type PostAccountOtpResourceMutationResponse = PostAccountOtpResource204;
+export type PostAccountOtpResourceOptions = {
+	body: PostAccountOtpResourceBody;
+	path?: never | undefined;
+	query?: never | undefined;
+	headers?: never | undefined;
+};
 
-export type PostAccountOtpResourceMutation = {
-	Response: PostAccountOtpResource204;
-	Request: PostAccountOtpResourceMutationRequest;
-	Errors: PostAccountOtpResource400 | PostAccountOtpResource401 | PostAccountOtpResource429;
+export type PostAccountOtpResourceResponses = {
+	"204": PostAccountOtpResourceStatus204;
+	"400": PostAccountOtpResourceStatus400;
+	"401": PostAccountOtpResourceStatus401;
+	"429": PostAccountOtpResourceStatus429;
 };
 
 /**
- * @description Ok
+ * @description Union of all possible responses
  */
-export type PutAccountOtpResource200 = unknown;
+export type PostAccountOtpResourceResponse =
+	| PostAccountOtpResourceStatus204
+	| PostAccountOtpResourceStatus400
+	| PostAccountOtpResourceStatus401
+	| PostAccountOtpResourceStatus429;
 
-/**
- * @description One-time password is already enabled
- */
-export type PutAccountOtpResource405 = unknown;
+export type PutAccountOtpResourceStatus200 = string;
 
-export type PutAccountOtpResourceMutationResponse = PutAccountOtpResource200;
+export type PutAccountOtpResourceStatus405 = unknown;
 
-export type PutAccountOtpResourceMutation = {
-	Response: PutAccountOtpResource200;
-	Errors: PutAccountOtpResource405;
+export type PutAccountOtpResourceOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query?: never | undefined;
+	headers?: never | undefined;
+};
+
+export type PutAccountOtpResourceResponses = {
+	"200": PutAccountOtpResourceStatus200;
+	"405": PutAccountOtpResourceStatus405;
 };
 
 /**
- * @description Ok
+ * @description Union of all possible responses
  */
-export type DeleteAccountOtpResource204 = unknown;
+export type PutAccountOtpResourceResponse =
+	| PutAccountOtpResourceStatus200
+	| PutAccountOtpResourceStatus405;
 
-/**
- * @description Not authorized
- */
-export type DeleteAccountOtpResource401 = unknown;
+export type DeleteAccountOtpResourceStatus204 = unknown;
 
-export type DeleteAccountOtpResourceMutationResponse = DeleteAccountOtpResource204;
+export type DeleteAccountOtpResourceStatus401 = unknown;
 
-export type DeleteAccountOtpResourceMutation = {
-	Response: DeleteAccountOtpResource204;
-	Errors: DeleteAccountOtpResource401;
+export type DeleteAccountOtpResourceOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query?: never | undefined;
+	headers?: never | undefined;
+};
+
+export type DeleteAccountOtpResourceResponses = {
+	"204": DeleteAccountOtpResourceStatus204;
+	"401": DeleteAccountOtpResourceStatus401;
 };
 
 /**
- * @description Ok
+ * @description Union of all possible responses
  */
-export type PostAccountPasswordResetResource204 = unknown;
+export type DeleteAccountOtpResourceResponse =
+	| DeleteAccountOtpResourceStatus204
+	| DeleteAccountOtpResourceStatus401;
 
-/**
- * @description Not authorized
- */
-export type PostAccountPasswordResetResource401 = unknown;
+export type PostAccountPasswordResetResourceStatus204 = unknown;
+
+export type PostAccountPasswordResetResourceStatus401 = unknown;
 
 /**
  * @description Account password reset representation
+ * @type object
  */
-export type PostAccountPasswordResetResourceMutationRequest = AccountPasswordReset;
+export type PostAccountPasswordResetResourceBody = AccountPasswordReset;
 
-export type PostAccountPasswordResetResourceMutationResponse = PostAccountPasswordResetResource204;
+export type PostAccountPasswordResetResourceOptions = {
+	body: PostAccountPasswordResetResourceBody;
+	path?: never | undefined;
+	query?: never | undefined;
+	headers?: never | undefined;
+};
 
-export type PostAccountPasswordResetResourceMutation = {
-	Response: PostAccountPasswordResetResource204;
-	Request: PostAccountPasswordResetResourceMutationRequest;
-	Errors: PostAccountPasswordResetResource401;
+export type PostAccountPasswordResetResourceResponses = {
+	"204": PostAccountPasswordResetResourceStatus204;
+	"401": PostAccountPasswordResetResourceStatus401;
 };
 
 /**
- * @description successful operation
+ * @description Union of all possible responses
  */
-export type GetAccountSettingResource200 = unknown;
+export type PostAccountPasswordResetResourceResponse =
+	| PostAccountPasswordResetResourceStatus204
+	| PostAccountPasswordResetResourceStatus401;
 
-/**
- * @description Not authorized
- */
-export type GetAccountSettingResource401 = unknown;
+export type GetAccountSettingResourceStatus200 = AccountSetting;
 
-/**
- * @description Forbidden
- */
-export type GetAccountSettingResource403 = unknown;
+export type GetAccountSettingResourceStatus401 = unknown;
 
-/**
- * @description Not found
- */
-export type GetAccountSettingResource404 = unknown;
+export type GetAccountSettingResourceStatus403 = unknown;
 
-export type GetAccountSettingResourceQueryResponse = GetAccountSettingResource200;
+export type GetAccountSettingResourceStatus404 = unknown;
 
-export type GetAccountSettingResourceQuery = {
-	Response: GetAccountSettingResource200;
-	Errors:
-		| GetAccountSettingResource401
-		| GetAccountSettingResource403
-		| GetAccountSettingResource404;
+export type GetAccountSettingResourceOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query?: never | undefined;
+	headers?: never | undefined;
+};
+
+export type GetAccountSettingResourceResponses = {
+	"200": GetAccountSettingResourceStatus200;
+	"401": GetAccountSettingResourceStatus401;
+	"403": GetAccountSettingResourceStatus403;
+	"404": GetAccountSettingResourceStatus404;
 };
 
 /**
- * @description successful operation
+ * @description Union of all possible responses
  */
-export type PutAccountSettingResource200 = unknown;
+export type GetAccountSettingResourceResponse =
+	| GetAccountSettingResourceStatus200
+	| GetAccountSettingResourceStatus401
+	| GetAccountSettingResourceStatus403
+	| GetAccountSettingResourceStatus404;
 
-/**
- * @description Bad parameter
- */
-export type PutAccountSettingResource400 = unknown;
+export type PutAccountSettingResourceStatus200 = AccountSetting;
 
-/**
- * @description Not authorized
- */
-export type PutAccountSettingResource401 = unknown;
+export type PutAccountSettingResourceStatus400 = unknown;
+
+export type PutAccountSettingResourceStatus401 = unknown;
 
 /**
  * @description Account setting representation
+ * @type object
  */
-export type PutAccountSettingResourceMutationRequest = AccountSetting;
+export type PutAccountSettingResourceBody = AccountSetting;
 
-export type PutAccountSettingResourceMutationResponse = PutAccountSettingResource200;
+export type PutAccountSettingResourceOptions = {
+	body: PutAccountSettingResourceBody;
+	path?: never | undefined;
+	query?: never | undefined;
+	headers?: never | undefined;
+};
 
-export type PutAccountSettingResourceMutation = {
-	Response: PutAccountSettingResource200;
-	Request: PutAccountSettingResourceMutationRequest;
-	Errors: PutAccountSettingResource400 | PutAccountSettingResource401;
+export type PutAccountSettingResourceResponses = {
+	"200": PutAccountSettingResourceStatus200;
+	"400": PutAccountSettingResourceStatus400;
+	"401": PutAccountSettingResourceStatus401;
 };
 
 /**
- * @description Ok
+ * @description Union of all possible responses
  */
-export type DeleteAccountSettingResource204 = unknown;
+export type PutAccountSettingResourceResponse =
+	| PutAccountSettingResourceStatus200
+	| PutAccountSettingResourceStatus400
+	| PutAccountSettingResourceStatus401;
 
-/**
- * @description Not authorized
- */
-export type DeleteAccountSettingResource401 = unknown;
+export type DeleteAccountSettingResourceStatus204 = unknown;
 
-/**
- * @description Forbidden
- */
-export type DeleteAccountSettingResource403 = unknown;
+export type DeleteAccountSettingResourceStatus401 = unknown;
 
-export type DeleteAccountSettingResourceMutationResponse = DeleteAccountSettingResource204;
+export type DeleteAccountSettingResourceStatus403 = unknown;
 
-export type DeleteAccountSettingResourceMutation = {
-	Response: DeleteAccountSettingResource204;
-	Errors: DeleteAccountSettingResource401 | DeleteAccountSettingResource403;
+export type DeleteAccountSettingResourceOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-export type GetAccountSubsResourceQueryParams = {
+export type DeleteAccountSettingResourceResponses = {
+	"204": DeleteAccountSettingResourceStatus204;
+	"401": DeleteAccountSettingResourceStatus401;
+	"403": DeleteAccountSettingResourceStatus403;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type DeleteAccountSettingResourceResponse =
+	| DeleteAccountSettingResourceStatus204
+	| DeleteAccountSettingResourceStatus401
+	| DeleteAccountSettingResourceStatus403;
+
+export type GetAccountSubsResourceQuery = {
 	/**
 	 * @description The optional email (regex)
 	 * @type string | undefined
@@ -6135,48 +5022,59 @@ export type GetAccountSubsResourceQueryParams = {
 	email?: string | undefined;
 };
 
-/**
- * @description successful operation
- */
-export type GetAccountSubsResource200 = unknown;
+export type GetAccountSubsResourceStatus200 = Account;
 
-/**
- * @description Not authorized
- */
-export type GetAccountSubsResource401 = unknown;
+export type GetAccountSubsResourceStatus401 = unknown;
 
-export type GetAccountSubsResourceQueryResponse = GetAccountSubsResource200;
+export type GetAccountSubsResourceOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query?: GetAccountSubsResourceQuery | undefined;
+	headers?: never | undefined;
+};
 
-export type GetAccountSubsResourceQuery = {
-	Response: GetAccountSubsResource200;
-	QueryParams: GetAccountSubsResourceQueryParams;
-	Errors: GetAccountSubsResource401;
+export type GetAccountSubsResourceResponses = {
+	"200": GetAccountSubsResourceStatus200;
+	"401": GetAccountSubsResourceStatus401;
 };
 
 /**
- * @description Ok
+ * @description Union of all possible responses
  */
-export type PutAccountSubsResource200 = unknown;
+export type GetAccountSubsResourceResponse =
+	| GetAccountSubsResourceStatus200
+	| GetAccountSubsResourceStatus401;
 
-/**
- * @description Invalid parameter supplied
- */
-export type PutAccountSubsResource400 = unknown;
+export type PutAccountSubsResourceStatus200 = MyAccount;
+
+export type PutAccountSubsResourceStatus400 = unknown;
 
 /**
  * @description Account sub create representation
+ * @type object
  */
-export type PutAccountSubsResourceMutationRequest = AccountSubCreate;
+export type PutAccountSubsResourceBody = AccountSubCreate;
 
-export type PutAccountSubsResourceMutationResponse = PutAccountSubsResource200;
-
-export type PutAccountSubsResourceMutation = {
-	Response: PutAccountSubsResource200;
-	Request: PutAccountSubsResourceMutationRequest;
-	Errors: PutAccountSubsResource400;
+export type PutAccountSubsResourceOptions = {
+	body: PutAccountSubsResourceBody;
+	path?: never | undefined;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-export type GetAccountSubResourcePathParams = {
+export type PutAccountSubsResourceResponses = {
+	"200": PutAccountSubsResourceStatus200;
+	"400": PutAccountSubsResourceStatus400;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type PutAccountSubsResourceResponse =
+	| PutAccountSubsResourceStatus200
+	| PutAccountSubsResourceStatus400;
+
+export type GetAccountSubResourcePath = {
 	/**
 	 * @description The account ID
 	 * @type integer
@@ -6184,25 +5082,30 @@ export type GetAccountSubResourcePathParams = {
 	accountId: number;
 };
 
-/**
- * @description successful operation
- */
-export type GetAccountSubResource200 = unknown;
+export type GetAccountSubResourceStatus200 = Account;
 
-/**
- * @description Not authorized
- */
-export type GetAccountSubResource401 = unknown;
+export type GetAccountSubResourceStatus401 = unknown;
 
-export type GetAccountSubResourceQueryResponse = GetAccountSubResource200;
-
-export type GetAccountSubResourceQuery = {
-	Response: GetAccountSubResource200;
-	PathParams: GetAccountSubResourcePathParams;
-	Errors: GetAccountSubResource401;
+export type GetAccountSubResourceOptions = {
+	body?: never | undefined;
+	path: GetAccountSubResourcePath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-export type PostAccountSubResourcePathParams = {
+export type GetAccountSubResourceResponses = {
+	"200": GetAccountSubResourceStatus200;
+	"401": GetAccountSubResourceStatus401;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetAccountSubResourceResponse =
+	| GetAccountSubResourceStatus200
+	| GetAccountSubResourceStatus401;
+
+export type PostAccountSubResourcePath = {
 	/**
 	 * @description The account ID
 	 * @type integer
@@ -6210,41 +5113,44 @@ export type PostAccountSubResourcePathParams = {
 	accountId: number;
 };
 
-/**
- * @description Ok
- */
-export type PostAccountSubResource204 = unknown;
+export type PostAccountSubResourceStatus204 = unknown;
 
-/**
- * @description Invalid parameter supplied
- */
-export type PostAccountSubResource400 = unknown;
+export type PostAccountSubResourceStatus400 = unknown;
 
-/**
- * @description Not authorized
- */
-export type PostAccountSubResource401 = unknown;
+export type PostAccountSubResourceStatus401 = unknown;
 
-/**
- * @description Email address already exists
- */
-export type PostAccountSubResource409 = unknown;
+export type PostAccountSubResourceStatus409 = unknown;
 
 /**
  * @description Account update representation
+ * @type object
  */
-export type PostAccountSubResourceMutationRequest = AccountSubUpdate;
+export type PostAccountSubResourceBody = AccountSubUpdate;
 
-export type PostAccountSubResourceMutationResponse = PostAccountSubResource204;
-
-export type PostAccountSubResourceMutation = {
-	Response: PostAccountSubResource204;
-	Request: PostAccountSubResourceMutationRequest;
-	PathParams: PostAccountSubResourcePathParams;
-	Errors: PostAccountSubResource400 | PostAccountSubResource401 | PostAccountSubResource409;
+export type PostAccountSubResourceOptions = {
+	body: PostAccountSubResourceBody;
+	path: PostAccountSubResourcePath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-export type DeleteAccountSubResourcePathParams = {
+export type PostAccountSubResourceResponses = {
+	"204": PostAccountSubResourceStatus204;
+	"400": PostAccountSubResourceStatus400;
+	"401": PostAccountSubResourceStatus401;
+	"409": PostAccountSubResourceStatus409;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type PostAccountSubResourceResponse =
+	| PostAccountSubResourceStatus204
+	| PostAccountSubResourceStatus400
+	| PostAccountSubResourceStatus401
+	| PostAccountSubResourceStatus409;
+
+export type DeleteAccountSubResourcePath = {
 	/**
 	 * @description The account ID
 	 * @type integer
@@ -6252,25 +5158,30 @@ export type DeleteAccountSubResourcePathParams = {
 	accountId: number;
 };
 
-/**
- * @description Ok
- */
-export type DeleteAccountSubResource204 = unknown;
+export type DeleteAccountSubResourceStatus204 = unknown;
 
-/**
- * @description Not authorized
- */
-export type DeleteAccountSubResource401 = unknown;
+export type DeleteAccountSubResourceStatus401 = unknown;
 
-export type DeleteAccountSubResourceMutationResponse = DeleteAccountSubResource204;
-
-export type DeleteAccountSubResourceMutation = {
-	Response: DeleteAccountSubResource204;
-	PathParams: DeleteAccountSubResourcePathParams;
-	Errors: DeleteAccountSubResource401;
+export type DeleteAccountSubResourceOptions = {
+	body?: never | undefined;
+	path: DeleteAccountSubResourcePath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-export type GetAccountUsersResourceQueryParams = {
+export type DeleteAccountSubResourceResponses = {
+	"204": DeleteAccountSubResourceStatus204;
+	"401": DeleteAccountSubResourceStatus401;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type DeleteAccountSubResourceResponse =
+	| DeleteAccountSubResourceStatus204
+	| DeleteAccountSubResourceStatus401;
+
+export type GetAccountUsersResourceQuery = {
 	/**
 	 * @description Filter for email
 	 * @type string | undefined
@@ -6288,48 +5199,59 @@ export type GetAccountUsersResourceQueryParams = {
 	limit?: number | undefined;
 };
 
-/**
- * @description successful operation
- */
-export type GetAccountUsersResource200 = unknown;
+export type GetAccountUsersResourceStatus200 = AccountUser[];
 
-/**
- * @description Not authorized
- */
-export type GetAccountUsersResource401 = unknown;
+export type GetAccountUsersResourceStatus401 = unknown;
 
-export type GetAccountUsersResourceQueryResponse = GetAccountUsersResource200;
+export type GetAccountUsersResourceOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query?: GetAccountUsersResourceQuery | undefined;
+	headers?: never | undefined;
+};
 
-export type GetAccountUsersResourceQuery = {
-	Response: GetAccountUsersResource200;
-	QueryParams: GetAccountUsersResourceQueryParams;
-	Errors: GetAccountUsersResource401;
+export type GetAccountUsersResourceResponses = {
+	"200": GetAccountUsersResourceStatus200;
+	"401": GetAccountUsersResourceStatus401;
 };
 
 /**
- * @description Ok
+ * @description Union of all possible responses
  */
-export type PutAccountUsersResource200 = unknown;
+export type GetAccountUsersResourceResponse =
+	| GetAccountUsersResourceStatus200
+	| GetAccountUsersResourceStatus401;
 
-/**
- * @description Invalid email address or name supplied
- */
-export type PutAccountUsersResource400 = unknown;
+export type PutAccountUsersResourceStatus200 = AccountUser;
+
+export type PutAccountUsersResourceStatus400 = unknown;
 
 /**
  * @description Account sub create representation
+ * @type object
  */
-export type PutAccountUsersResourceMutationRequest = AccountUserCreate;
+export type PutAccountUsersResourceBody = AccountUserCreate;
 
-export type PutAccountUsersResourceMutationResponse = PutAccountUsersResource200;
-
-export type PutAccountUsersResourceMutation = {
-	Response: PutAccountUsersResource200;
-	Request: PutAccountUsersResourceMutationRequest;
-	Errors: PutAccountUsersResource400;
+export type PutAccountUsersResourceOptions = {
+	body: PutAccountUsersResourceBody;
+	path?: never | undefined;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-export type GetAccountUserResourcePathParams = {
+export type PutAccountUsersResourceResponses = {
+	"200": PutAccountUsersResourceStatus200;
+	"400": PutAccountUsersResourceStatus400;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type PutAccountUsersResourceResponse =
+	| PutAccountUsersResourceStatus200
+	| PutAccountUsersResourceStatus400;
+
+export type GetAccountUserResourcePath = {
 	/**
 	 * @description The account user ID
 	 * @type integer
@@ -6337,25 +5259,30 @@ export type GetAccountUserResourcePathParams = {
 	accountUserId: number;
 };
 
-/**
- * @description successful operation
- */
-export type GetAccountUserResource200 = unknown;
+export type GetAccountUserResourceStatus200 = AccountUser;
 
-/**
- * @description Not authorized
- */
-export type GetAccountUserResource401 = unknown;
+export type GetAccountUserResourceStatus401 = unknown;
 
-export type GetAccountUserResourceQueryResponse = GetAccountUserResource200;
-
-export type GetAccountUserResourceQuery = {
-	Response: GetAccountUserResource200;
-	PathParams: GetAccountUserResourcePathParams;
-	Errors: GetAccountUserResource401;
+export type GetAccountUserResourceOptions = {
+	body?: never | undefined;
+	path: GetAccountUserResourcePath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-export type PostAccountUserResourcePathParams = {
+export type GetAccountUserResourceResponses = {
+	"200": GetAccountUserResourceStatus200;
+	"401": GetAccountUserResourceStatus401;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetAccountUserResourceResponse =
+	| GetAccountUserResourceStatus200
+	| GetAccountUserResourceStatus401;
+
+export type PostAccountUserResourcePath = {
 	/**
 	 * @description The account user ID
 	 * @type integer
@@ -6363,48 +5290,48 @@ export type PostAccountUserResourcePathParams = {
 	accountUserId: number;
 };
 
-/**
- * @description successful operation
- */
-export type PostAccountUserResource200 = unknown;
+export type PostAccountUserResourceStatus200 = AccountUser;
 
-/**
- * @description Ok
- */
-export type PostAccountUserResource204 = unknown;
+export type PostAccountUserResourceStatus204 = unknown;
 
-/**
- * @description Invalid email address or name supplied
- */
-export type PostAccountUserResource400 = unknown;
+export type PostAccountUserResourceStatus400 = unknown;
 
-/**
- * @description Not authorized
- */
-export type PostAccountUserResource401 = unknown;
+export type PostAccountUserResourceStatus401 = unknown;
 
-/**
- * @description Email address already exists
- */
-export type PostAccountUserResource409 = unknown;
+export type PostAccountUserResourceStatus409 = unknown;
 
 /**
  * @description Account update representation
+ * @type object
  */
-export type PostAccountUserResourceMutationRequest = AccountUserUpdate;
+export type PostAccountUserResourceBody = AccountUserUpdate;
 
-export type PostAccountUserResourceMutationResponse =
-	| PostAccountUserResource200
-	| PostAccountUserResource204;
-
-export type PostAccountUserResourceMutation = {
-	Response: PostAccountUserResource200 | PostAccountUserResource204;
-	Request: PostAccountUserResourceMutationRequest;
-	PathParams: PostAccountUserResourcePathParams;
-	Errors: PostAccountUserResource400 | PostAccountUserResource401 | PostAccountUserResource409;
+export type PostAccountUserResourceOptions = {
+	body: PostAccountUserResourceBody;
+	path: PostAccountUserResourcePath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-export type DeleteAccountUserResourcePathParams = {
+export type PostAccountUserResourceResponses = {
+	"200": PostAccountUserResourceStatus200;
+	"204": PostAccountUserResourceStatus204;
+	"400": PostAccountUserResourceStatus400;
+	"401": PostAccountUserResourceStatus401;
+	"409": PostAccountUserResourceStatus409;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type PostAccountUserResourceResponse =
+	| PostAccountUserResourceStatus200
+	| PostAccountUserResourceStatus204
+	| PostAccountUserResourceStatus400
+	| PostAccountUserResourceStatus401
+	| PostAccountUserResourceStatus409;
+
+export type DeleteAccountUserResourcePath = {
 	/**
 	 * @description The account user ID
 	 * @type integer
@@ -6412,75 +5339,90 @@ export type DeleteAccountUserResourcePathParams = {
 	accountUserId: number;
 };
 
-/**
- * @description Ok
- */
-export type DeleteAccountUserResource204 = unknown;
+export type DeleteAccountUserResourceStatus204 = unknown;
 
-/**
- * @description Not authorized
- */
-export type DeleteAccountUserResource401 = unknown;
+export type DeleteAccountUserResourceStatus401 = unknown;
 
-/**
- * @description Locked
- */
-export type DeleteAccountUserResource423 = unknown;
+export type DeleteAccountUserResourceStatus423 = unknown;
 
-export type DeleteAccountUserResourceMutationResponse = DeleteAccountUserResource204;
+export type DeleteAccountUserResourceOptions = {
+	body?: never | undefined;
+	path: DeleteAccountUserResourcePath;
+	query?: never | undefined;
+	headers?: never | undefined;
+};
 
-export type DeleteAccountUserResourceMutation = {
-	Response: DeleteAccountUserResource204;
-	PathParams: DeleteAccountUserResourcePathParams;
-	Errors: DeleteAccountUserResource401 | DeleteAccountUserResource423;
+export type DeleteAccountUserResourceResponses = {
+	"204": DeleteAccountUserResourceStatus204;
+	"401": DeleteAccountUserResourceStatus401;
+	"423": DeleteAccountUserResourceStatus423;
 };
 
 /**
- * @description successful operation
+ * @description Union of all possible responses
  */
-export type GetAddressesResource200 = unknown;
+export type DeleteAccountUserResourceResponse =
+	| DeleteAccountUserResourceStatus204
+	| DeleteAccountUserResourceStatus401
+	| DeleteAccountUserResourceStatus423;
 
-/**
- * @description Not authorized
- */
-export type GetAddressesResource401 = unknown;
+export type GetAddressesResourceStatus200 = Address[];
 
-export type GetAddressesResourceQueryResponse = GetAddressesResource200;
+export type GetAddressesResourceStatus401 = unknown;
 
-export type GetAddressesResourceQuery = {
-	Response: GetAddressesResource200;
-	Errors: GetAddressesResource401;
+export type GetAddressesResourceOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query?: never | undefined;
+	headers?: never | undefined;
+};
+
+export type GetAddressesResourceResponses = {
+	"200": GetAddressesResourceStatus200;
+	"401": GetAddressesResourceStatus401;
 };
 
 /**
- * @description Ok
+ * @description Union of all possible responses
  */
-export type PutAddressesResource200 = unknown;
+export type GetAddressesResourceResponse =
+	| GetAddressesResourceStatus200
+	| GetAddressesResourceStatus401;
 
-/**
- * @description Bad parameter
- */
-export type PutAddressesResource400 = unknown;
+export type PutAddressesResourceStatus200 = Address;
 
-/**
- * @description Not authorized
- */
-export type PutAddressesResource401 = unknown;
+export type PutAddressesResourceStatus400 = unknown;
+
+export type PutAddressesResourceStatus401 = unknown;
 
 /**
  * @description Address create representation
+ * @type object
  */
-export type PutAddressesResourceMutationRequest = AddressCreate;
+export type PutAddressesResourceBody = AddressCreate;
 
-export type PutAddressesResourceMutationResponse = PutAddressesResource200;
-
-export type PutAddressesResourceMutation = {
-	Response: PutAddressesResource200;
-	Request: PutAddressesResourceMutationRequest;
-	Errors: PutAddressesResource400 | PutAddressesResource401;
+export type PutAddressesResourceOptions = {
+	body: PutAddressesResourceBody;
+	path?: never | undefined;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-export type GetAddressTokenResourcePathParams = {
+export type PutAddressesResourceResponses = {
+	"200": PutAddressesResourceStatus200;
+	"400": PutAddressesResourceStatus400;
+	"401": PutAddressesResourceStatus401;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type PutAddressesResourceResponse =
+	| PutAddressesResourceStatus200
+	| PutAddressesResourceStatus400
+	| PutAddressesResourceStatus401;
+
+export type GetAddressTokenResourcePath = {
 	/**
 	 * @description The token ID
 	 * @type string
@@ -6488,30 +5430,34 @@ export type GetAddressTokenResourcePathParams = {
 	id: string;
 };
 
-/**
- * @description successful operation
- */
-export type GetAddressTokenResource200 = unknown;
+export type GetAddressTokenResourceStatus200 = AddressTokenInfo;
 
-/**
- * @description Not authorized
- */
-export type GetAddressTokenResource401 = unknown;
+export type GetAddressTokenResourceStatus401 = unknown;
 
-/**
- * @description Token not found
- */
-export type GetAddressTokenResource404 = unknown;
+export type GetAddressTokenResourceStatus404 = unknown;
 
-export type GetAddressTokenResourceQueryResponse = GetAddressTokenResource200;
-
-export type GetAddressTokenResourceQuery = {
-	Response: GetAddressTokenResource200;
-	PathParams: GetAddressTokenResourcePathParams;
-	Errors: GetAddressTokenResource401 | GetAddressTokenResource404;
+export type GetAddressTokenResourceOptions = {
+	body?: never | undefined;
+	path: GetAddressTokenResourcePath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-export type GetAddressTokenRedeemResourcePathParams = {
+export type GetAddressTokenResourceResponses = {
+	"200": GetAddressTokenResourceStatus200;
+	"401": GetAddressTokenResourceStatus401;
+	"404": GetAddressTokenResourceStatus404;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetAddressTokenResourceResponse =
+	| GetAddressTokenResourceStatus200
+	| GetAddressTokenResourceStatus401
+	| GetAddressTokenResourceStatus404;
+
+export type GetAddressTokenRedeemResourcePath = {
 	/**
 	 * @description The token ID
 	 * @type string
@@ -6519,30 +5465,34 @@ export type GetAddressTokenRedeemResourcePathParams = {
 	id: string;
 };
 
-/**
- * @description successful operation
- */
-export type GetAddressTokenRedeemResource200 = unknown;
+export type GetAddressTokenRedeemResourceStatus200 = AddressToken;
 
-/**
- * @description Not authorized
- */
-export type GetAddressTokenRedeemResource401 = unknown;
+export type GetAddressTokenRedeemResourceStatus401 = unknown;
 
-/**
- * @description Token not found
- */
-export type GetAddressTokenRedeemResource404 = unknown;
+export type GetAddressTokenRedeemResourceStatus404 = unknown;
 
-export type GetAddressTokenRedeemResourceQueryResponse = GetAddressTokenRedeemResource200;
-
-export type GetAddressTokenRedeemResourceQuery = {
-	Response: GetAddressTokenRedeemResource200;
-	PathParams: GetAddressTokenRedeemResourcePathParams;
-	Errors: GetAddressTokenRedeemResource401 | GetAddressTokenRedeemResource404;
+export type GetAddressTokenRedeemResourceOptions = {
+	body?: never | undefined;
+	path: GetAddressTokenRedeemResourcePath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-export type PostAddressTokenRedeemResourcePathParams = {
+export type GetAddressTokenRedeemResourceResponses = {
+	"200": GetAddressTokenRedeemResourceStatus200;
+	"401": GetAddressTokenRedeemResourceStatus401;
+	"404": GetAddressTokenRedeemResourceStatus404;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetAddressTokenRedeemResourceResponse =
+	| GetAddressTokenRedeemResourceStatus200
+	| GetAddressTokenRedeemResourceStatus401
+	| GetAddressTokenRedeemResourceStatus404;
+
+export type PostAddressTokenRedeemResourcePath = {
 	/**
 	 * @description The token ID
 	 * @type string
@@ -6550,7 +5500,7 @@ export type PostAddressTokenRedeemResourcePathParams = {
 	id: string;
 };
 
-export type PostAddressTokenRedeemResourceQueryParams = {
+export type PostAddressTokenRedeemResourceQuery = {
 	/**
 	 * @description If false, no email will be sent
 	 * @type boolean | undefined
@@ -6558,39 +5508,38 @@ export type PostAddressTokenRedeemResourceQueryParams = {
 	email?: boolean | undefined;
 };
 
-/**
- * @description Ok
- */
-export type PostAddressTokenRedeemResource204 = unknown;
+export type PostAddressTokenRedeemResourceStatus204 = unknown;
 
-/**
- * @description Invalid parameter given
- */
-export type PostAddressTokenRedeemResource400 = unknown;
+export type PostAddressTokenRedeemResourceStatus400 = unknown;
 
-/**
- * @description Not authorized
- */
-export type PostAddressTokenRedeemResource401 = unknown;
+export type PostAddressTokenRedeemResourceStatus401 = unknown;
 
-/**
- * @description Token not found
- */
-export type PostAddressTokenRedeemResource404 = unknown;
+export type PostAddressTokenRedeemResourceStatus404 = unknown;
 
-export type PostAddressTokenRedeemResourceMutationResponse = PostAddressTokenRedeemResource204;
-
-export type PostAddressTokenRedeemResourceMutation = {
-	Response: PostAddressTokenRedeemResource204;
-	PathParams: PostAddressTokenRedeemResourcePathParams;
-	QueryParams: PostAddressTokenRedeemResourceQueryParams;
-	Errors:
-		| PostAddressTokenRedeemResource400
-		| PostAddressTokenRedeemResource401
-		| PostAddressTokenRedeemResource404;
+export type PostAddressTokenRedeemResourceOptions = {
+	body?: never | undefined;
+	path: PostAddressTokenRedeemResourcePath;
+	query?: PostAddressTokenRedeemResourceQuery | undefined;
+	headers?: never | undefined;
 };
 
-export type PostAddressResourcePathParams = {
+export type PostAddressTokenRedeemResourceResponses = {
+	"204": PostAddressTokenRedeemResourceStatus204;
+	"400": PostAddressTokenRedeemResourceStatus400;
+	"401": PostAddressTokenRedeemResourceStatus401;
+	"404": PostAddressTokenRedeemResourceStatus404;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type PostAddressTokenRedeemResourceResponse =
+	| PostAddressTokenRedeemResourceStatus204
+	| PostAddressTokenRedeemResourceStatus400
+	| PostAddressTokenRedeemResourceStatus401
+	| PostAddressTokenRedeemResourceStatus404;
+
+export type PostAddressResourcePath = {
 	/**
 	 * @description The address ID
 	 * @type integer
@@ -6598,41 +5547,44 @@ export type PostAddressResourcePathParams = {
 	addressId: number;
 };
 
-/**
- * @description Ok
- */
-export type PostAddressResource204 = unknown;
+export type PostAddressResourceStatus204 = unknown;
 
-/**
- * @description Bad parameter
- */
-export type PostAddressResource400 = unknown;
+export type PostAddressResourceStatus400 = unknown;
 
-/**
- * @description Not authorized
- */
-export type PostAddressResource401 = unknown;
+export type PostAddressResourceStatus401 = unknown;
 
-/**
- * @description Forbidden
- */
-export type PostAddressResource403 = unknown;
+export type PostAddressResourceStatus403 = unknown;
 
 /**
  * @description Address update representation
+ * @type object
  */
-export type PostAddressResourceMutationRequest = AddressUpdate;
+export type PostAddressResourceBody = AddressUpdate;
 
-export type PostAddressResourceMutationResponse = PostAddressResource204;
-
-export type PostAddressResourceMutation = {
-	Response: PostAddressResource204;
-	Request: PostAddressResourceMutationRequest;
-	PathParams: PostAddressResourcePathParams;
-	Errors: PostAddressResource400 | PostAddressResource401 | PostAddressResource403;
+export type PostAddressResourceOptions = {
+	body: PostAddressResourceBody;
+	path: PostAddressResourcePath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-export type DeleteAddressResourcePathParams = {
+export type PostAddressResourceResponses = {
+	"204": PostAddressResourceStatus204;
+	"400": PostAddressResourceStatus400;
+	"401": PostAddressResourceStatus401;
+	"403": PostAddressResourceStatus403;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type PostAddressResourceResponse =
+	| PostAddressResourceStatus204
+	| PostAddressResourceStatus400
+	| PostAddressResourceStatus401
+	| PostAddressResourceStatus403;
+
+export type DeleteAddressResourcePath = {
 	/**
 	 * @description The address ID
 	 * @type integer
@@ -6640,30 +5592,34 @@ export type DeleteAddressResourcePathParams = {
 	addressId: number;
 };
 
-/**
- * @description Ok
- */
-export type DeleteAddressResource204 = unknown;
+export type DeleteAddressResourceStatus204 = unknown;
 
-/**
- * @description Not authorized
- */
-export type DeleteAddressResource401 = unknown;
+export type DeleteAddressResourceStatus401 = unknown;
 
-/**
- * @description Forbidden
- */
-export type DeleteAddressResource403 = unknown;
+export type DeleteAddressResourceStatus403 = unknown;
 
-export type DeleteAddressResourceMutationResponse = DeleteAddressResource204;
-
-export type DeleteAddressResourceMutation = {
-	Response: DeleteAddressResource204;
-	PathParams: DeleteAddressResourcePathParams;
-	Errors: DeleteAddressResource401 | DeleteAddressResource403;
+export type DeleteAddressResourceOptions = {
+	body?: never | undefined;
+	path: DeleteAddressResourcePath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-export type GetAddressReservationsResourcePathParams = {
+export type DeleteAddressResourceResponses = {
+	"204": DeleteAddressResourceStatus204;
+	"401": DeleteAddressResourceStatus401;
+	"403": DeleteAddressResourceStatus403;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type DeleteAddressResourceResponse =
+	| DeleteAddressResourceStatus204
+	| DeleteAddressResourceStatus401
+	| DeleteAddressResourceStatus403;
+
+export type GetAddressReservationsResourcePath = {
 	/**
 	 * @description The address ID
 	 * @type integer
@@ -6671,62 +5627,30 @@ export type GetAddressReservationsResourcePathParams = {
 	addressId: number;
 };
 
-/**
- * @description successful operation
- */
-export type GetAddressReservationsResource200 = unknown;
+export type GetAddressReservationsResourceStatus200 = AddressReservation[];
 
-/**
- * @description Not authorized
- */
-export type GetAddressReservationsResource401 = unknown;
+export type GetAddressReservationsResourceStatus401 = unknown;
 
-export type GetAddressReservationsResourceQueryResponse = GetAddressReservationsResource200;
-
-export type GetAddressReservationsResourceQuery = {
-	Response: GetAddressReservationsResource200;
-	PathParams: GetAddressReservationsResourcePathParams;
-	Errors: GetAddressReservationsResource401;
+export type GetAddressReservationsResourceOptions = {
+	body?: never | undefined;
+	path: GetAddressReservationsResourcePath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-export type PostAddressReservationIssueResourcePathParams = {
-	/**
-	 * @description The address ID
-	 * @type integer
-	 */
-	addressId: number;
-	/**
-	 * @description The address reservation ID
-	 * @type string
-	 */
-	id: string;
+export type GetAddressReservationsResourceResponses = {
+	"200": GetAddressReservationsResourceStatus200;
+	"401": GetAddressReservationsResourceStatus401;
 };
 
 /**
- * @description Ok
+ * @description Union of all possible responses
  */
-export type PostAddressReservationIssueResource204 = unknown;
+export type GetAddressReservationsResourceResponse =
+	| GetAddressReservationsResourceStatus200
+	| GetAddressReservationsResourceStatus401;
 
-/**
- * @description Bad parameter
- */
-export type PostAddressReservationIssueResource400 = unknown;
-
-/**
- * @description Not authorized
- */
-export type PostAddressReservationIssueResource401 = unknown;
-
-export type PostAddressReservationIssueResourceMutationResponse =
-	PostAddressReservationIssueResource204;
-
-export type PostAddressReservationIssueResourceMutation = {
-	Response: PostAddressReservationIssueResource204;
-	PathParams: PostAddressReservationIssueResourcePathParams;
-	Errors: PostAddressReservationIssueResource400 | PostAddressReservationIssueResource401;
-};
-
-export type PostAddressReservationRevokeResourcePathParams = {
+export type PostAddressReservationIssueResourcePath = {
 	/**
 	 * @description The address ID
 	 * @type integer
@@ -6739,31 +5663,74 @@ export type PostAddressReservationRevokeResourcePathParams = {
 	id: string;
 };
 
-/**
- * @description Ok
- */
-export type PostAddressReservationRevokeResource204 = unknown;
+export type PostAddressReservationIssueResourceStatus204 = unknown;
 
-/**
- * @description Bad parameter
- */
-export type PostAddressReservationRevokeResource400 = unknown;
+export type PostAddressReservationIssueResourceStatus400 = unknown;
 
-/**
- * @description Not authorized
- */
-export type PostAddressReservationRevokeResource401 = unknown;
+export type PostAddressReservationIssueResourceStatus401 = unknown;
 
-export type PostAddressReservationRevokeResourceMutationResponse =
-	PostAddressReservationRevokeResource204;
-
-export type PostAddressReservationRevokeResourceMutation = {
-	Response: PostAddressReservationRevokeResource204;
-	PathParams: PostAddressReservationRevokeResourcePathParams;
-	Errors: PostAddressReservationRevokeResource400 | PostAddressReservationRevokeResource401;
+export type PostAddressReservationIssueResourceOptions = {
+	body?: never | undefined;
+	path: PostAddressReservationIssueResourcePath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-export type PostReservationAccessTimesUpdateResourcePathParams = {
+export type PostAddressReservationIssueResourceResponses = {
+	"204": PostAddressReservationIssueResourceStatus204;
+	"400": PostAddressReservationIssueResourceStatus400;
+	"401": PostAddressReservationIssueResourceStatus401;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type PostAddressReservationIssueResourceResponse =
+	| PostAddressReservationIssueResourceStatus204
+	| PostAddressReservationIssueResourceStatus400
+	| PostAddressReservationIssueResourceStatus401;
+
+export type PostAddressReservationRevokeResourcePath = {
+	/**
+	 * @description The address ID
+	 * @type integer
+	 */
+	addressId: number;
+	/**
+	 * @description The address reservation ID
+	 * @type string
+	 */
+	id: string;
+};
+
+export type PostAddressReservationRevokeResourceStatus204 = unknown;
+
+export type PostAddressReservationRevokeResourceStatus400 = unknown;
+
+export type PostAddressReservationRevokeResourceStatus401 = unknown;
+
+export type PostAddressReservationRevokeResourceOptions = {
+	body?: never | undefined;
+	path: PostAddressReservationRevokeResourcePath;
+	query?: never | undefined;
+	headers?: never | undefined;
+};
+
+export type PostAddressReservationRevokeResourceResponses = {
+	"204": PostAddressReservationRevokeResourceStatus204;
+	"400": PostAddressReservationRevokeResourceStatus400;
+	"401": PostAddressReservationRevokeResourceStatus401;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type PostAddressReservationRevokeResourceResponse =
+	| PostAddressReservationRevokeResourceStatus204
+	| PostAddressReservationRevokeResourceStatus400
+	| PostAddressReservationRevokeResourceStatus401;
+
+export type PostReservationAccessTimesUpdateResourcePath = {
 	/**
 	 * @description The address ID
 	 * @type integer
@@ -6776,37 +5743,40 @@ export type PostReservationAccessTimesUpdateResourcePathParams = {
 	id: string;
 };
 
-/**
- * @description Ok
- */
-export type PostReservationAccessTimesUpdateResource204 = unknown;
+export type PostReservationAccessTimesUpdateResourceStatus204 = unknown;
 
-/**
- * @description Bad parameter
- */
-export type PostReservationAccessTimesUpdateResource400 = unknown;
+export type PostReservationAccessTimesUpdateResourceStatus400 = unknown;
 
-/**
- * @description Not authorized
- */
-export type PostReservationAccessTimesUpdateResource401 = unknown;
+export type PostReservationAccessTimesUpdateResourceStatus401 = unknown;
 
 /**
  * @description Reservation access times update representation
+ * @type object
  */
-export type PostReservationAccessTimesUpdateResourceMutationRequest = ReservationAccessTimesUpdate;
+export type PostReservationAccessTimesUpdateResourceBody = ReservationAccessTimesUpdate;
 
-export type PostReservationAccessTimesUpdateResourceMutationResponse =
-	PostReservationAccessTimesUpdateResource204;
-
-export type PostReservationAccessTimesUpdateResourceMutation = {
-	Response: PostReservationAccessTimesUpdateResource204;
-	Request: PostReservationAccessTimesUpdateResourceMutationRequest;
-	PathParams: PostReservationAccessTimesUpdateResourcePathParams;
-	Errors: PostReservationAccessTimesUpdateResource400 | PostReservationAccessTimesUpdateResource401;
+export type PostReservationAccessTimesUpdateResourceOptions = {
+	body: PostReservationAccessTimesUpdateResourceBody;
+	path: PostReservationAccessTimesUpdateResourcePath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-export type GetAddressTokensResourcePathParams = {
+export type PostReservationAccessTimesUpdateResourceResponses = {
+	"204": PostReservationAccessTimesUpdateResourceStatus204;
+	"400": PostReservationAccessTimesUpdateResourceStatus400;
+	"401": PostReservationAccessTimesUpdateResourceStatus401;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type PostReservationAccessTimesUpdateResourceResponse =
+	| PostReservationAccessTimesUpdateResourceStatus204
+	| PostReservationAccessTimesUpdateResourceStatus400
+	| PostReservationAccessTimesUpdateResourceStatus401;
+
+export type GetAddressTokensResourcePath = {
 	/**
 	 * @description The address ID
 	 * @type integer
@@ -6814,30 +5784,34 @@ export type GetAddressTokensResourcePathParams = {
 	addressId: number;
 };
 
-/**
- * @description successful operation
- */
-export type GetAddressTokensResource200 = unknown;
+export type GetAddressTokensResourceStatus200 = AddressToken[];
 
-/**
- * @description Bad parameter
- */
-export type GetAddressTokensResource400 = unknown;
+export type GetAddressTokensResourceStatus400 = unknown;
 
-/**
- * @description Not authorized
- */
-export type GetAddressTokensResource401 = unknown;
+export type GetAddressTokensResourceStatus401 = unknown;
 
-export type GetAddressTokensResourceQueryResponse = GetAddressTokensResource200;
-
-export type GetAddressTokensResourceQuery = {
-	Response: GetAddressTokensResource200;
-	PathParams: GetAddressTokensResourcePathParams;
-	Errors: GetAddressTokensResource400 | GetAddressTokensResource401;
+export type GetAddressTokensResourceOptions = {
+	body?: never | undefined;
+	path: GetAddressTokensResourcePath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-export type GetAddressUnitsResourcePathParams = {
+export type GetAddressTokensResourceResponses = {
+	"200": GetAddressTokensResourceStatus200;
+	"400": GetAddressTokensResourceStatus400;
+	"401": GetAddressTokensResourceStatus401;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetAddressTokensResourceResponse =
+	| GetAddressTokensResourceStatus200
+	| GetAddressTokensResourceStatus400
+	| GetAddressTokensResourceStatus401;
+
+export type GetAddressUnitsResourcePath = {
 	/**
 	 * @description The address ID
 	 * @type integer
@@ -6845,30 +5819,34 @@ export type GetAddressUnitsResourcePathParams = {
 	addressId: number;
 };
 
-/**
- * @description successful operation
- */
-export type GetAddressUnitsResource200 = unknown;
+export type GetAddressUnitsResourceStatus200 = AddressUnitResponse[];
 
-/**
- * @description Bad parameter
- */
-export type GetAddressUnitsResource400 = unknown;
+export type GetAddressUnitsResourceStatus400 = unknown;
 
-/**
- * @description Not authorized
- */
-export type GetAddressUnitsResource401 = unknown;
+export type GetAddressUnitsResourceStatus401 = unknown;
 
-export type GetAddressUnitsResourceQueryResponse = GetAddressUnitsResource200;
-
-export type GetAddressUnitsResourceQuery = {
-	Response: GetAddressUnitsResource200;
-	PathParams: GetAddressUnitsResourcePathParams;
-	Errors: GetAddressUnitsResource400 | GetAddressUnitsResource401;
+export type GetAddressUnitsResourceOptions = {
+	body?: never | undefined;
+	path: GetAddressUnitsResourcePath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-export type PutAddressUnitsResourcePathParams = {
+export type GetAddressUnitsResourceResponses = {
+	"200": GetAddressUnitsResourceStatus200;
+	"400": GetAddressUnitsResourceStatus400;
+	"401": GetAddressUnitsResourceStatus401;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetAddressUnitsResourceResponse =
+	| GetAddressUnitsResourceStatus200
+	| GetAddressUnitsResourceStatus400
+	| GetAddressUnitsResourceStatus401;
+
+export type PutAddressUnitsResourcePath = {
 	/**
 	 * @description The address ID
 	 * @type integer
@@ -6876,44 +5854,47 @@ export type PutAddressUnitsResourcePathParams = {
 	addressId: number;
 };
 
-/**
- * @description Ok
- */
-export type PutAddressUnitsResource200 = unknown;
+export type PutAddressUnitsResourceStatus200 = AddressUnitResponse;
 
-/**
- * @description Bad parameter
- */
-export type PutAddressUnitsResource400 = unknown;
+export type PutAddressUnitsResourceStatus400 = unknown;
 
-/**
- * @description Not authorized
- */
-export type PutAddressUnitsResource401 = unknown;
+export type PutAddressUnitsResourceStatus401 = unknown;
 
-/**
- * @description Forbidden
- */
-export type PutAddressUnitsResource403 = unknown;
+export type PutAddressUnitsResourceStatus403 = unknown;
 
 /**
  * @description Address unit representation
+ * @type object
  */
-export type PutAddressUnitsResourceMutationRequest = Omit<
+export type PutAddressUnitsResourceBody = Omit<
 	NonNullable<AddressUnit>,
 	"id" | "addressId" | "addressTokenId" | "operationId"
 >;
 
-export type PutAddressUnitsResourceMutationResponse = PutAddressUnitsResource200;
-
-export type PutAddressUnitsResourceMutation = {
-	Response: PutAddressUnitsResource200;
-	Request: PutAddressUnitsResourceMutationRequest;
-	PathParams: PutAddressUnitsResourcePathParams;
-	Errors: PutAddressUnitsResource400 | PutAddressUnitsResource401 | PutAddressUnitsResource403;
+export type PutAddressUnitsResourceOptions = {
+	body: PutAddressUnitsResourceBody;
+	path: PutAddressUnitsResourcePath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-export type DeleteAddressUnitsResourcePathParams = {
+export type PutAddressUnitsResourceResponses = {
+	"200": PutAddressUnitsResourceStatus200;
+	"400": PutAddressUnitsResourceStatus400;
+	"401": PutAddressUnitsResourceStatus401;
+	"403": PutAddressUnitsResourceStatus403;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type PutAddressUnitsResourceResponse =
+	| PutAddressUnitsResourceStatus200
+	| PutAddressUnitsResourceStatus400
+	| PutAddressUnitsResourceStatus401
+	| PutAddressUnitsResourceStatus403;
+
+export type DeleteAddressUnitsResourcePath = {
 	/**
 	 * @description The address ID
 	 * @type integer
@@ -6921,50 +5902,48 @@ export type DeleteAddressUnitsResourcePathParams = {
 	addressId: number;
 };
 
-/**
- * @description Ok
- */
-export type DeleteAddressUnitsResource200 = unknown;
+export type DeleteAddressUnitsResourceStatus200 = AdvancedConfirmationResponse;
 
-/**
- * @description Bad parameter
- */
-export type DeleteAddressUnitsResource400 = unknown;
+export type DeleteAddressUnitsResourceStatus400 = unknown;
 
-/**
- * @description Not authorized
- */
-export type DeleteAddressUnitsResource401 = unknown;
+export type DeleteAddressUnitsResourceStatus401 = unknown;
 
-/**
- * @description Forbidden
- */
-export type DeleteAddressUnitsResource403 = unknown;
+export type DeleteAddressUnitsResourceStatus403 = unknown;
 
-/**
- * @description Locked
- */
-export type DeleteAddressUnitsResource423 = unknown;
+export type DeleteAddressUnitsResourceStatus423 = unknown;
 
 /**
  * @description Address unit IDs to delete
+ * @type array
  */
-export type DeleteAddressUnitsResourceMutationRequest = string[];
+export type DeleteAddressUnitsResourceBody = string[];
 
-export type DeleteAddressUnitsResourceMutationResponse = DeleteAddressUnitsResource200;
-
-export type DeleteAddressUnitsResourceMutation = {
-	Response: DeleteAddressUnitsResource200;
-	Request: DeleteAddressUnitsResourceMutationRequest;
-	PathParams: DeleteAddressUnitsResourcePathParams;
-	Errors:
-		| DeleteAddressUnitsResource400
-		| DeleteAddressUnitsResource401
-		| DeleteAddressUnitsResource403
-		| DeleteAddressUnitsResource423;
+export type DeleteAddressUnitsResourceOptions = {
+	body: DeleteAddressUnitsResourceBody;
+	path: DeleteAddressUnitsResourcePath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-export type DeleteAddressUnitResourcePathParams = {
+export type DeleteAddressUnitsResourceResponses = {
+	"200": DeleteAddressUnitsResourceStatus200;
+	"400": DeleteAddressUnitsResourceStatus400;
+	"401": DeleteAddressUnitsResourceStatus401;
+	"403": DeleteAddressUnitsResourceStatus403;
+	"423": DeleteAddressUnitsResourceStatus423;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type DeleteAddressUnitsResourceResponse =
+	| DeleteAddressUnitsResourceStatus200
+	| DeleteAddressUnitsResourceStatus400
+	| DeleteAddressUnitsResourceStatus401
+	| DeleteAddressUnitsResourceStatus403
+	| DeleteAddressUnitsResourceStatus423;
+
+export type DeleteAddressUnitResourcePath = {
 	/**
 	 * @description The address ID
 	 * @type integer
@@ -6977,99 +5956,102 @@ export type DeleteAddressUnitResourcePathParams = {
 	id: string;
 };
 
-/**
- * @description Ok
- */
-export type DeleteAddressUnitResource200 = unknown;
+export type DeleteAddressUnitResourceStatus200 = AdvancedConfirmationResponse;
 
-/**
- * @description Not authorized
- */
-export type DeleteAddressUnitResource401 = unknown;
+export type DeleteAddressUnitResourceStatus401 = unknown;
 
-/**
- * @description Forbidden
- */
-export type DeleteAddressUnitResource403 = unknown;
+export type DeleteAddressUnitResourceStatus403 = unknown;
 
-/**
- * @description Locked
- */
-export type DeleteAddressUnitResource423 = unknown;
+export type DeleteAddressUnitResourceStatus423 = unknown;
 
-export type DeleteAddressUnitResourceMutationResponse = DeleteAddressUnitResource200;
+export type DeleteAddressUnitResourceOptions = {
+	body?: never | undefined;
+	path: DeleteAddressUnitResourcePath;
+	query?: never | undefined;
+	headers?: never | undefined;
+};
 
-export type DeleteAddressUnitResourceMutation = {
-	Response: DeleteAddressUnitResource200;
-	PathParams: DeleteAddressUnitResourcePathParams;
-	Errors:
-		| DeleteAddressUnitResource401
-		| DeleteAddressUnitResource403
-		| DeleteAddressUnitResource423;
+export type DeleteAddressUnitResourceResponses = {
+	"200": DeleteAddressUnitResourceStatus200;
+	"401": DeleteAddressUnitResourceStatus401;
+	"403": DeleteAddressUnitResourceStatus403;
+	"423": DeleteAddressUnitResourceStatus423;
 };
 
 /**
- * @description successful operation
+ * @description Union of all possible responses
  */
-export type GetDecentralWebhooksResource200 = unknown;
+export type DeleteAddressUnitResourceResponse =
+	| DeleteAddressUnitResourceStatus200
+	| DeleteAddressUnitResourceStatus401
+	| DeleteAddressUnitResourceStatus403
+	| DeleteAddressUnitResourceStatus423;
 
-/**
- * @description Not authorized
- */
-export type GetDecentralWebhooksResource401 = unknown;
+export type GetDecentralWebhooksResourceStatus200 = DecentralWebhook[];
 
-/**
- * @description Forbidden
- */
-export type GetDecentralWebhooksResource403 = unknown;
+export type GetDecentralWebhooksResourceStatus401 = unknown;
 
-export type GetDecentralWebhooksResourceQueryResponse = GetDecentralWebhooksResource200;
+export type GetDecentralWebhooksResourceStatus403 = unknown;
 
-export type GetDecentralWebhooksResourceQuery = {
-	Response: GetDecentralWebhooksResource200;
-	Errors: GetDecentralWebhooksResource401 | GetDecentralWebhooksResource403;
+export type GetDecentralWebhooksResourceOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query?: never | undefined;
+	headers?: never | undefined;
+};
+
+export type GetDecentralWebhooksResourceResponses = {
+	"200": GetDecentralWebhooksResourceStatus200;
+	"401": GetDecentralWebhooksResourceStatus401;
+	"403": GetDecentralWebhooksResourceStatus403;
 };
 
 /**
- * @description successful operation
+ * @description Union of all possible responses
  */
-export type PutDecentralWebhooksResource200 = unknown;
+export type GetDecentralWebhooksResourceResponse =
+	| GetDecentralWebhooksResourceStatus200
+	| GetDecentralWebhooksResourceStatus401
+	| GetDecentralWebhooksResourceStatus403;
 
-/**
- * @description Bad parameter
- */
-export type PutDecentralWebhooksResource400 = unknown;
+export type PutDecentralWebhooksResourceStatus200 = DecentralWebhook;
 
-/**
- * @description Not authorized
- */
-export type PutDecentralWebhooksResource401 = unknown;
+export type PutDecentralWebhooksResourceStatus400 = unknown;
 
-/**
- * @description Forbidden
- */
-export type PutDecentralWebhooksResource403 = unknown;
+export type PutDecentralWebhooksResourceStatus401 = unknown;
+
+export type PutDecentralWebhooksResourceStatus403 = unknown;
 
 /**
  * @description Decentral webhook representation
+ * @type object
  */
-export type PutDecentralWebhooksResourceMutationRequest = Omit<
-	NonNullable<DecentralWebhook>,
-	"id" | "secret"
->;
+export type PutDecentralWebhooksResourceBody = Omit<NonNullable<DecentralWebhook>, "id" | "secret">;
 
-export type PutDecentralWebhooksResourceMutationResponse = PutDecentralWebhooksResource200;
-
-export type PutDecentralWebhooksResourceMutation = {
-	Response: PutDecentralWebhooksResource200;
-	Request: PutDecentralWebhooksResourceMutationRequest;
-	Errors:
-		| PutDecentralWebhooksResource400
-		| PutDecentralWebhooksResource401
-		| PutDecentralWebhooksResource403;
+export type PutDecentralWebhooksResourceOptions = {
+	body: PutDecentralWebhooksResourceBody;
+	path?: never | undefined;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-export type DeleteDecentralWebhookResourcePathParams = {
+export type PutDecentralWebhooksResourceResponses = {
+	"200": PutDecentralWebhooksResourceStatus200;
+	"400": PutDecentralWebhooksResourceStatus400;
+	"401": PutDecentralWebhooksResourceStatus401;
+	"403": PutDecentralWebhooksResourceStatus403;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type PutDecentralWebhooksResourceResponse =
+	| PutDecentralWebhooksResourceStatus200
+	| PutDecentralWebhooksResourceStatus400
+	| PutDecentralWebhooksResourceStatus401
+	| PutDecentralWebhooksResourceStatus403;
+
+export type DeleteDecentralWebhookResourcePath = {
 	/**
 	 * @description The ID of the decentral webhook
 	 * @type integer
@@ -7077,75 +6059,88 @@ export type DeleteDecentralWebhookResourcePathParams = {
 	id: number;
 };
 
-/**
- * @description Ok
- */
-export type DeleteDecentralWebhookResource204 = unknown;
+export type DeleteDecentralWebhookResourceStatus204 = unknown;
 
-/**
- * @description Not authorized
- */
-export type DeleteDecentralWebhookResource401 = unknown;
+export type DeleteDecentralWebhookResourceStatus401 = unknown;
 
-/**
- * @description Forbidden
- */
-export type DeleteDecentralWebhookResource403 = unknown;
+export type DeleteDecentralWebhookResourceStatus403 = unknown;
 
-export type DeleteDecentralWebhookResourceMutationResponse = DeleteDecentralWebhookResource204;
+export type DeleteDecentralWebhookResourceOptions = {
+	body?: never | undefined;
+	path: DeleteDecentralWebhookResourcePath;
+	query?: never | undefined;
+	headers?: never | undefined;
+};
 
-export type DeleteDecentralWebhookResourceMutation = {
-	Response: DeleteDecentralWebhookResource204;
-	PathParams: DeleteDecentralWebhookResourcePathParams;
-	Errors: DeleteDecentralWebhookResource401 | DeleteDecentralWebhookResource403;
+export type DeleteDecentralWebhookResourceResponses = {
+	"204": DeleteDecentralWebhookResourceStatus204;
+	"401": DeleteDecentralWebhookResourceStatus401;
+	"403": DeleteDecentralWebhookResourceStatus403;
 };
 
 /**
- * @description successful operation
+ * @description Union of all possible responses
  */
-export type GetApiKeysResource200 = unknown;
+export type DeleteDecentralWebhookResourceResponse =
+	| DeleteDecentralWebhookResourceStatus204
+	| DeleteDecentralWebhookResourceStatus401
+	| DeleteDecentralWebhookResourceStatus403;
 
-/**
- * @description Not authorized
- */
-export type GetApiKeysResource401 = unknown;
+export type GetApiKeysResourceStatus200 = ApiKey[];
 
-export type GetApiKeysResourceQueryResponse = GetApiKeysResource200;
+export type GetApiKeysResourceStatus401 = unknown;
 
-export type GetApiKeysResourceQuery = {
-	Response: GetApiKeysResource200;
-	Errors: GetApiKeysResource401;
+export type GetApiKeysResourceOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query?: never | undefined;
+	headers?: never | undefined;
+};
+
+export type GetApiKeysResourceResponses = {
+	"200": GetApiKeysResourceStatus200;
+	"401": GetApiKeysResourceStatus401;
 };
 
 /**
- * @description Ok
+ * @description Union of all possible responses
  */
-export type PutApiKeysResource200 = unknown;
+export type GetApiKeysResourceResponse = GetApiKeysResourceStatus200 | GetApiKeysResourceStatus401;
 
-/**
- * @description Bad parameter
- */
-export type PutApiKeysResource400 = unknown;
+export type PutApiKeysResourceStatus200 = ApiKey;
 
-/**
- * @description Not authorized
- */
-export type PutApiKeysResource401 = unknown;
+export type PutApiKeysResourceStatus400 = unknown;
+
+export type PutApiKeysResourceStatus401 = unknown;
 
 /**
  * @description Api key create representation
+ * @type object
  */
-export type PutApiKeysResourceMutationRequest = ApiKeyCreate;
+export type PutApiKeysResourceBody = ApiKeyCreate;
 
-export type PutApiKeysResourceMutationResponse = PutApiKeysResource200;
-
-export type PutApiKeysResourceMutation = {
-	Response: PutApiKeysResource200;
-	Request: PutApiKeysResourceMutationRequest;
-	Errors: PutApiKeysResource400 | PutApiKeysResource401;
+export type PutApiKeysResourceOptions = {
+	body: PutApiKeysResourceBody;
+	path?: never | undefined;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-export type PostApiKeyResourcePathParams = {
+export type PutApiKeysResourceResponses = {
+	"200": PutApiKeysResourceStatus200;
+	"400": PutApiKeysResourceStatus400;
+	"401": PutApiKeysResourceStatus401;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type PutApiKeysResourceResponse =
+	| PutApiKeysResourceStatus200
+	| PutApiKeysResourceStatus400
+	| PutApiKeysResourceStatus401;
+
+export type PostApiKeyResourcePath = {
 	/**
 	 * @description The API key ID
 	 * @type integer
@@ -7153,36 +6148,44 @@ export type PostApiKeyResourcePathParams = {
 	apiKeyId: number;
 };
 
-/**
- * @description Ok
- */
-export type PostApiKeyResource204 = unknown;
+export type PostApiKeyResourceStatus204 = unknown;
 
-/**
- * @description Invalid parameter given
- */
-export type PostApiKeyResource400 = unknown;
+export type PostApiKeyResourceStatus400 = unknown;
 
-/**
- * @description Not authorized
- */
-export type PostApiKeyResource401 = unknown;
+export type PostApiKeyResourceStatus401 = unknown;
+
+export type PostApiKeyResourceStatus503 = unknown;
 
 /**
  * @description Api key update representation
+ * @type object
  */
-export type PostApiKeyResourceMutationRequest = ApiKeyUpdate;
+export type PostApiKeyResourceBody = ApiKeyUpdate;
 
-export type PostApiKeyResourceMutationResponse = PostApiKeyResource204;
-
-export type PostApiKeyResourceMutation = {
-	Response: PostApiKeyResource204;
-	Request: PostApiKeyResourceMutationRequest;
-	PathParams: PostApiKeyResourcePathParams;
-	Errors: PostApiKeyResource400 | PostApiKeyResource401;
+export type PostApiKeyResourceOptions = {
+	body: PostApiKeyResourceBody;
+	path: PostApiKeyResourcePath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-export type DeleteApiKeyResourcePathParams = {
+export type PostApiKeyResourceResponses = {
+	"204": PostApiKeyResourceStatus204;
+	"400": PostApiKeyResourceStatus400;
+	"401": PostApiKeyResourceStatus401;
+	"503": PostApiKeyResourceStatus503;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type PostApiKeyResourceResponse =
+	| PostApiKeyResourceStatus204
+	| PostApiKeyResourceStatus400
+	| PostApiKeyResourceStatus401
+	| PostApiKeyResourceStatus503;
+
+export type DeleteApiKeyResourcePath = {
 	/**
 	 * @description The API key ID
 	 * @type integer
@@ -7190,25 +6193,30 @@ export type DeleteApiKeyResourcePathParams = {
 	apiKeyId: number;
 };
 
-/**
- * @description Ok
- */
-export type DeleteApiKeyResource204 = unknown;
+export type DeleteApiKeyResourceStatus204 = unknown;
 
-/**
- * @description Not authorized
- */
-export type DeleteApiKeyResource401 = unknown;
+export type DeleteApiKeyResourceStatus401 = unknown;
 
-export type DeleteApiKeyResourceMutationResponse = DeleteApiKeyResource204;
-
-export type DeleteApiKeyResourceMutation = {
-	Response: DeleteApiKeyResource204;
-	PathParams: DeleteApiKeyResourcePathParams;
-	Errors: DeleteApiKeyResource401;
+export type DeleteApiKeyResourceOptions = {
+	body?: never | undefined;
+	path: DeleteApiKeyResourcePath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-export type GetApiKeyAdvancedResourcePathParams = {
+export type DeleteApiKeyResourceResponses = {
+	"204": DeleteApiKeyResourceStatus204;
+	"401": DeleteApiKeyResourceStatus401;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type DeleteApiKeyResourceResponse =
+	| DeleteApiKeyResourceStatus204
+	| DeleteApiKeyResourceStatus401;
+
+export type GetApiKeyAdvancedResourcePath = {
 	/**
 	 * @description The API key ID
 	 * @type integer
@@ -7216,38 +6224,38 @@ export type GetApiKeyAdvancedResourcePathParams = {
 	apiKeyId: number;
 };
 
-/**
- * @description successful operation
- */
-export type GetApiKeyAdvancedResource200 = unknown;
+export type GetApiKeyAdvancedResourceStatus200 = AdvancedApiKey;
 
-/**
- * @description Not authorized
- */
-export type GetApiKeyAdvancedResource401 = unknown;
+export type GetApiKeyAdvancedResourceStatus401 = unknown;
 
-/**
- * @description Forbidden
- */
-export type GetApiKeyAdvancedResource403 = unknown;
+export type GetApiKeyAdvancedResourceStatus403 = unknown;
 
-/**
- * @description Not found
- */
-export type GetApiKeyAdvancedResource404 = unknown;
+export type GetApiKeyAdvancedResourceStatus404 = unknown;
 
-export type GetApiKeyAdvancedResourceQueryResponse = GetApiKeyAdvancedResource200;
-
-export type GetApiKeyAdvancedResourceQuery = {
-	Response: GetApiKeyAdvancedResource200;
-	PathParams: GetApiKeyAdvancedResourcePathParams;
-	Errors:
-		| GetApiKeyAdvancedResource401
-		| GetApiKeyAdvancedResource403
-		| GetApiKeyAdvancedResource404;
+export type GetApiKeyAdvancedResourceOptions = {
+	body?: never | undefined;
+	path: GetApiKeyAdvancedResourcePath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-export type PostApiKeyAdvancedResourcePathParams = {
+export type GetApiKeyAdvancedResourceResponses = {
+	"200": GetApiKeyAdvancedResourceStatus200;
+	"401": GetApiKeyAdvancedResourceStatus401;
+	"403": GetApiKeyAdvancedResourceStatus403;
+	"404": GetApiKeyAdvancedResourceStatus404;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetApiKeyAdvancedResourceResponse =
+	| GetApiKeyAdvancedResourceStatus200
+	| GetApiKeyAdvancedResourceStatus401
+	| GetApiKeyAdvancedResourceStatus403
+	| GetApiKeyAdvancedResourceStatus404;
+
+export type PostApiKeyAdvancedResourcePath = {
 	/**
 	 * @description The API key ID
 	 * @type integer
@@ -7255,36 +6263,40 @@ export type PostApiKeyAdvancedResourcePathParams = {
 	apiKeyId: number;
 };
 
-/**
- * @description Ok
- */
-export type PostApiKeyAdvancedResource204 = unknown;
+export type PostApiKeyAdvancedResourceStatus204 = unknown;
 
-/**
- * @description Bad parameter
- */
-export type PostApiKeyAdvancedResource400 = unknown;
+export type PostApiKeyAdvancedResourceStatus400 = unknown;
 
-/**
- * @description Not authorized
- */
-export type PostApiKeyAdvancedResource401 = unknown;
+export type PostApiKeyAdvancedResourceStatus401 = unknown;
 
 /**
  * @description Update for advaced api key representation
+ * @type object
  */
-export type PostApiKeyAdvancedResourceMutationRequest = AdvancedApiKeyUpdate;
+export type PostApiKeyAdvancedResourceBody = AdvancedApiKeyUpdate;
 
-export type PostApiKeyAdvancedResourceMutationResponse = PostApiKeyAdvancedResource204;
-
-export type PostApiKeyAdvancedResourceMutation = {
-	Response: PostApiKeyAdvancedResource204;
-	Request: PostApiKeyAdvancedResourceMutationRequest;
-	PathParams: PostApiKeyAdvancedResourcePathParams;
-	Errors: PostApiKeyAdvancedResource400 | PostApiKeyAdvancedResource401;
+export type PostApiKeyAdvancedResourceOptions = {
+	body: PostApiKeyAdvancedResourceBody;
+	path: PostApiKeyAdvancedResourcePath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-export type PutApiKeyAdvancedResourcePathParams = {
+export type PostApiKeyAdvancedResourceResponses = {
+	"204": PostApiKeyAdvancedResourceStatus204;
+	"400": PostApiKeyAdvancedResourceStatus400;
+	"401": PostApiKeyAdvancedResourceStatus401;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type PostApiKeyAdvancedResourceResponse =
+	| PostApiKeyAdvancedResourceStatus204
+	| PostApiKeyAdvancedResourceStatus400
+	| PostApiKeyAdvancedResourceStatus401;
+
+export type PutApiKeyAdvancedResourcePath = {
 	/**
 	 * @description The API key ID
 	 * @type integer
@@ -7292,39 +6304,43 @@ export type PutApiKeyAdvancedResourcePathParams = {
 	apiKeyId: number;
 };
 
-/**
- * @description Ok
- */
-export type PutApiKeyAdvancedResource204 = unknown;
+export type PutApiKeyAdvancedResourceStatus204 = unknown;
 
-/**
- * @description Bad parameter
- */
-export type PutApiKeyAdvancedResource400 = unknown;
+export type PutApiKeyAdvancedResourceStatus400 = unknown;
 
-/**
- * @description Not authorized
- */
-export type PutApiKeyAdvancedResource401 = unknown;
+export type PutApiKeyAdvancedResourceStatus401 = unknown;
 
 /**
  * @description Apply for advaced api key representation
+ * @type object
  */
-export type PutApiKeyAdvancedResourceMutationRequest = Omit<
+export type PutApiKeyAdvancedResourceBody = Omit<
 	NonNullable<AdvancedApiKeyCreate>,
 	"webhookStatus"
 >;
 
-export type PutApiKeyAdvancedResourceMutationResponse = PutApiKeyAdvancedResource204;
-
-export type PutApiKeyAdvancedResourceMutation = {
-	Response: PutApiKeyAdvancedResource204;
-	Request: PutApiKeyAdvancedResourceMutationRequest;
-	PathParams: PutApiKeyAdvancedResourcePathParams;
-	Errors: PutApiKeyAdvancedResource400 | PutApiKeyAdvancedResource401;
+export type PutApiKeyAdvancedResourceOptions = {
+	body: PutApiKeyAdvancedResourceBody;
+	path: PutApiKeyAdvancedResourcePath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-export type DeleteApiKeyAdvancedResourcePathParams = {
+export type PutApiKeyAdvancedResourceResponses = {
+	"204": PutApiKeyAdvancedResourceStatus204;
+	"400": PutApiKeyAdvancedResourceStatus400;
+	"401": PutApiKeyAdvancedResourceStatus401;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type PutApiKeyAdvancedResourceResponse =
+	| PutApiKeyAdvancedResourceStatus204
+	| PutApiKeyAdvancedResourceStatus400
+	| PutApiKeyAdvancedResourceStatus401;
+
+export type DeleteApiKeyAdvancedResourcePath = {
 	/**
 	 * @description The API key ID
 	 * @type integer
@@ -7332,25 +6348,30 @@ export type DeleteApiKeyAdvancedResourcePathParams = {
 	apiKeyId: number;
 };
 
-/**
- * @description Ok
- */
-export type DeleteApiKeyAdvancedResource204 = unknown;
+export type DeleteApiKeyAdvancedResourceStatus204 = unknown;
 
-/**
- * @description Not authorized
- */
-export type DeleteApiKeyAdvancedResource401 = unknown;
+export type DeleteApiKeyAdvancedResourceStatus401 = unknown;
 
-export type DeleteApiKeyAdvancedResourceMutationResponse = DeleteApiKeyAdvancedResource204;
-
-export type DeleteApiKeyAdvancedResourceMutation = {
-	Response: DeleteApiKeyAdvancedResource204;
-	PathParams: DeleteApiKeyAdvancedResourcePathParams;
-	Errors: DeleteApiKeyAdvancedResource401;
+export type DeleteApiKeyAdvancedResourceOptions = {
+	body?: never | undefined;
+	path: DeleteApiKeyAdvancedResourcePath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-export type PostApiKeyAdvancedReactivateResourcePathParams = {
+export type DeleteApiKeyAdvancedResourceResponses = {
+	"204": DeleteApiKeyAdvancedResourceStatus204;
+	"401": DeleteApiKeyAdvancedResourceStatus401;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type DeleteApiKeyAdvancedResourceResponse =
+	| DeleteApiKeyAdvancedResourceStatus204
+	| DeleteApiKeyAdvancedResourceStatus401;
+
+export type PostApiKeyAdvancedReactivateResourcePath = {
 	/**
 	 * @description The API key ID
 	 * @type integer
@@ -7358,31 +6379,34 @@ export type PostApiKeyAdvancedReactivateResourcePathParams = {
 	apiKeyId: number;
 };
 
-/**
- * @description Ok
- */
-export type PostApiKeyAdvancedReactivateResource204 = unknown;
+export type PostApiKeyAdvancedReactivateResourceStatus204 = unknown;
 
-/**
- * @description Bad parameter
- */
-export type PostApiKeyAdvancedReactivateResource400 = unknown;
+export type PostApiKeyAdvancedReactivateResourceStatus400 = unknown;
 
-/**
- * @description Not authorized
- */
-export type PostApiKeyAdvancedReactivateResource401 = unknown;
+export type PostApiKeyAdvancedReactivateResourceStatus401 = unknown;
 
-export type PostApiKeyAdvancedReactivateResourceMutationResponse =
-	PostApiKeyAdvancedReactivateResource204;
-
-export type PostApiKeyAdvancedReactivateResourceMutation = {
-	Response: PostApiKeyAdvancedReactivateResource204;
-	PathParams: PostApiKeyAdvancedReactivateResourcePathParams;
-	Errors: PostApiKeyAdvancedReactivateResource400 | PostApiKeyAdvancedReactivateResource401;
+export type PostApiKeyAdvancedReactivateResourceOptions = {
+	body?: never | undefined;
+	path: PostApiKeyAdvancedReactivateResourcePath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-export type GetApiKeyTokensResourcePathParams = {
+export type PostApiKeyAdvancedReactivateResourceResponses = {
+	"204": PostApiKeyAdvancedReactivateResourceStatus204;
+	"400": PostApiKeyAdvancedReactivateResourceStatus400;
+	"401": PostApiKeyAdvancedReactivateResourceStatus401;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type PostApiKeyAdvancedReactivateResourceResponse =
+	| PostApiKeyAdvancedReactivateResourceStatus204
+	| PostApiKeyAdvancedReactivateResourceStatus400
+	| PostApiKeyAdvancedReactivateResourceStatus401;
+
+export type GetApiKeyTokensResourcePath = {
 	/**
 	 * @description The API key ID
 	 * @type integer
@@ -7390,25 +6414,30 @@ export type GetApiKeyTokensResourcePathParams = {
 	apiKeyId: number;
 };
 
-/**
- * @description successful operation
- */
-export type GetApiKeyTokensResource200 = unknown;
+export type GetApiKeyTokensResourceStatus200 = ApiKeyToken[];
 
-/**
- * @description Not authorized
- */
-export type GetApiKeyTokensResource401 = unknown;
+export type GetApiKeyTokensResourceStatus401 = unknown;
 
-export type GetApiKeyTokensResourceQueryResponse = GetApiKeyTokensResource200;
-
-export type GetApiKeyTokensResourceQuery = {
-	Response: GetApiKeyTokensResource200;
-	PathParams: GetApiKeyTokensResourcePathParams;
-	Errors: GetApiKeyTokensResource401;
+export type GetApiKeyTokensResourceOptions = {
+	body?: never | undefined;
+	path: GetApiKeyTokensResourcePath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-export type PutApiKeyTokensResourcePathParams = {
+export type GetApiKeyTokensResourceResponses = {
+	"200": GetApiKeyTokensResourceStatus200;
+	"401": GetApiKeyTokensResourceStatus401;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetApiKeyTokensResourceResponse =
+	| GetApiKeyTokensResourceStatus200
+	| GetApiKeyTokensResourceStatus401;
+
+export type PutApiKeyTokensResourcePath = {
 	/**
 	 * @description The API key ID
 	 * @type integer
@@ -7416,36 +6445,40 @@ export type PutApiKeyTokensResourcePathParams = {
 	apiKeyId: number;
 };
 
-/**
- * @description Ok
- */
-export type PutApiKeyTokensResource200 = unknown;
+export type PutApiKeyTokensResourceStatus200 = ApiKeyToken;
 
-/**
- * @description Bad parameter
- */
-export type PutApiKeyTokensResource400 = unknown;
+export type PutApiKeyTokensResourceStatus400 = unknown;
 
-/**
- * @description Not authorized
- */
-export type PutApiKeyTokensResource401 = unknown;
+export type PutApiKeyTokensResourceStatus401 = unknown;
 
 /**
  * @description Api key token create representation
+ * @type object
  */
-export type PutApiKeyTokensResourceMutationRequest = ApiKeyTokenCreate;
+export type PutApiKeyTokensResourceBody = ApiKeyTokenCreate;
 
-export type PutApiKeyTokensResourceMutationResponse = PutApiKeyTokensResource200;
-
-export type PutApiKeyTokensResourceMutation = {
-	Response: PutApiKeyTokensResource200;
-	Request: PutApiKeyTokensResourceMutationRequest;
-	PathParams: PutApiKeyTokensResourcePathParams;
-	Errors: PutApiKeyTokensResource400 | PutApiKeyTokensResource401;
+export type PutApiKeyTokensResourceOptions = {
+	body: PutApiKeyTokensResourceBody;
+	path: PutApiKeyTokensResourcePath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-export type PostApiKeyTokenResourcePathParams = {
+export type PutApiKeyTokensResourceResponses = {
+	"200": PutApiKeyTokensResourceStatus200;
+	"400": PutApiKeyTokensResourceStatus400;
+	"401": PutApiKeyTokensResourceStatus401;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type PutApiKeyTokensResourceResponse =
+	| PutApiKeyTokensResourceStatus200
+	| PutApiKeyTokensResourceStatus400
+	| PutApiKeyTokensResourceStatus401;
+
+export type PostApiKeyTokenResourcePath = {
 	/**
 	 * @description The API key ID
 	 * @type integer
@@ -7458,36 +6491,40 @@ export type PostApiKeyTokenResourcePathParams = {
 	id: string;
 };
 
-/**
- * @description Ok
- */
-export type PostApiKeyTokenResource204 = unknown;
+export type PostApiKeyTokenResourceStatus204 = unknown;
 
-/**
- * @description Invalid parameter given
- */
-export type PostApiKeyTokenResource400 = unknown;
+export type PostApiKeyTokenResourceStatus400 = unknown;
 
-/**
- * @description Not authorized
- */
-export type PostApiKeyTokenResource401 = unknown;
+export type PostApiKeyTokenResourceStatus401 = unknown;
 
 /**
  * @description Api key token update representation
+ * @type object
  */
-export type PostApiKeyTokenResourceMutationRequest = ApiKeyTokenUpdate;
+export type PostApiKeyTokenResourceBody = ApiKeyTokenUpdate;
 
-export type PostApiKeyTokenResourceMutationResponse = PostApiKeyTokenResource204;
-
-export type PostApiKeyTokenResourceMutation = {
-	Response: PostApiKeyTokenResource204;
-	Request: PostApiKeyTokenResourceMutationRequest;
-	PathParams: PostApiKeyTokenResourcePathParams;
-	Errors: PostApiKeyTokenResource400 | PostApiKeyTokenResource401;
+export type PostApiKeyTokenResourceOptions = {
+	body: PostApiKeyTokenResourceBody;
+	path: PostApiKeyTokenResourcePath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-export type DeleteApiKeyTokenResourcePathParams = {
+export type PostApiKeyTokenResourceResponses = {
+	"204": PostApiKeyTokenResourceStatus204;
+	"400": PostApiKeyTokenResourceStatus400;
+	"401": PostApiKeyTokenResourceStatus401;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type PostApiKeyTokenResourceResponse =
+	| PostApiKeyTokenResourceStatus204
+	| PostApiKeyTokenResourceStatus400
+	| PostApiKeyTokenResourceStatus401;
+
+export type DeleteApiKeyTokenResourcePath = {
 	/**
 	 * @description The API key ID
 	 * @type integer
@@ -7500,25 +6537,30 @@ export type DeleteApiKeyTokenResourcePathParams = {
 	id: string;
 };
 
-/**
- * @description Ok
- */
-export type DeleteApiKeyTokenResource204 = unknown;
+export type DeleteApiKeyTokenResourceStatus204 = unknown;
 
-/**
- * @description Not authorized
- */
-export type DeleteApiKeyTokenResource401 = unknown;
+export type DeleteApiKeyTokenResourceStatus401 = unknown;
 
-export type DeleteApiKeyTokenResourceMutationResponse = DeleteApiKeyTokenResource204;
-
-export type DeleteApiKeyTokenResourceMutation = {
-	Response: DeleteApiKeyTokenResource204;
-	PathParams: DeleteApiKeyTokenResourcePathParams;
-	Errors: DeleteApiKeyTokenResource401;
+export type DeleteApiKeyTokenResourceOptions = {
+	body?: never | undefined;
+	path: DeleteApiKeyTokenResourcePath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-export type GetWebhookLogsResourcePathParams = {
+export type DeleteApiKeyTokenResourceResponses = {
+	"204": DeleteApiKeyTokenResourceStatus204;
+	"401": DeleteApiKeyTokenResourceStatus401;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type DeleteApiKeyTokenResourceResponse =
+	| DeleteApiKeyTokenResourceStatus204
+	| DeleteApiKeyTokenResourceStatus401;
+
+export type GetWebhookLogsResourcePath = {
 	/**
 	 * @description The API key ID
 	 * @type integer
@@ -7526,7 +6568,7 @@ export type GetWebhookLogsResourcePathParams = {
 	apiKeyId: number;
 };
 
-export type GetWebhookLogsResourceQueryParams = {
+export type GetWebhookLogsResourceQuery = {
 	/**
 	 * @description Optionally filter for older logs
 	 * @type string | undefined
@@ -7540,77 +6582,90 @@ export type GetWebhookLogsResourceQueryParams = {
 	limit?: number | undefined;
 };
 
-/**
- * @description successful operation
- */
-export type GetWebhookLogsResource200 = unknown;
+export type GetWebhookLogsResourceStatus200 = WebhookLog[];
 
-/**
- * @description Not authorized
- */
-export type GetWebhookLogsResource401 = unknown;
+export type GetWebhookLogsResourceStatus401 = unknown;
 
-export type GetWebhookLogsResourceQueryResponse = GetWebhookLogsResource200;
+export type GetWebhookLogsResourceOptions = {
+	body?: never | undefined;
+	path: GetWebhookLogsResourcePath;
+	query?: GetWebhookLogsResourceQuery | undefined;
+	headers?: never | undefined;
+};
 
-export type GetWebhookLogsResourceQuery = {
-	Response: GetWebhookLogsResource200;
-	PathParams: GetWebhookLogsResourcePathParams;
-	QueryParams: GetWebhookLogsResourceQueryParams;
-	Errors: GetWebhookLogsResource401;
+export type GetWebhookLogsResourceResponses = {
+	"200": GetWebhookLogsResourceStatus200;
+	"401": GetWebhookLogsResourceStatus401;
 };
 
 /**
- * @description Ok
+ * @description Union of all possible responses
  */
-export type PostSmartlockBulkWebConfigResource204 = unknown;
+export type GetWebhookLogsResourceResponse =
+	| GetWebhookLogsResourceStatus200
+	| GetWebhookLogsResourceStatus401;
 
-/**
- * @description Bad parameter
- */
-export type PostSmartlockBulkWebConfigResource400 = unknown;
+export type PostSmartlockBulkWebConfigResourceStatus204 = unknown;
 
-/**
- * @description Not authorized
- */
-export type PostSmartlockBulkWebConfigResource401 = unknown;
+export type PostSmartlockBulkWebConfigResourceStatus400 = unknown;
+
+export type PostSmartlockBulkWebConfigResourceStatus401 = unknown;
 
 /**
  * @description Smartlocks web config update representation
+ * @type object
  */
-export type PostSmartlockBulkWebConfigResourceMutationRequest = BulkWebConfigRequest;
+export type PostSmartlockBulkWebConfigResourceBody = BulkWebConfigRequest;
 
-export type PostSmartlockBulkWebConfigResourceMutationResponse =
-	PostSmartlockBulkWebConfigResource204;
+export type PostSmartlockBulkWebConfigResourceOptions = {
+	body: PostSmartlockBulkWebConfigResourceBody;
+	path?: never | undefined;
+	query?: never | undefined;
+	headers?: never | undefined;
+};
 
-export type PostSmartlockBulkWebConfigResourceMutation = {
-	Response: PostSmartlockBulkWebConfigResource204;
-	Request: PostSmartlockBulkWebConfigResourceMutationRequest;
-	Errors: PostSmartlockBulkWebConfigResource400 | PostSmartlockBulkWebConfigResource401;
+export type PostSmartlockBulkWebConfigResourceResponses = {
+	"204": PostSmartlockBulkWebConfigResourceStatus204;
+	"400": PostSmartlockBulkWebConfigResourceStatus400;
+	"401": PostSmartlockBulkWebConfigResourceStatus401;
 };
 
 /**
- * @description successful operation
+ * @description Union of all possible responses
  */
-export type GetCompaniesResource200 = unknown;
+export type PostSmartlockBulkWebConfigResourceResponse =
+	| PostSmartlockBulkWebConfigResourceStatus204
+	| PostSmartlockBulkWebConfigResourceStatus400
+	| PostSmartlockBulkWebConfigResourceStatus401;
 
-/**
- * @description Not authorized
- */
-export type GetCompaniesResource401 = unknown;
+export type GetCompaniesResourceStatus200 = Company[];
 
-/**
- * @description Not allowed
- */
-export type GetCompaniesResource403 = unknown;
+export type GetCompaniesResourceStatus401 = unknown;
 
-export type GetCompaniesResourceQueryResponse = GetCompaniesResource200;
+export type GetCompaniesResourceStatus403 = unknown;
 
-export type GetCompaniesResourceQuery = {
-	Response: GetCompaniesResource200;
-	Errors: GetCompaniesResource401 | GetCompaniesResource403;
+export type GetCompaniesResourceOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-export type GetNotificationsResourceQueryParams = {
+export type GetCompaniesResourceResponses = {
+	"200": GetCompaniesResourceStatus200;
+	"401": GetCompaniesResourceStatus401;
+	"403": GetCompaniesResourceStatus403;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetCompaniesResourceResponse =
+	| GetCompaniesResourceStatus200
+	| GetCompaniesResourceStatus401
+	| GetCompaniesResourceStatus403;
+
+export type GetNotificationsResourceQuery = {
 	/**
 	 * @description The reference ID to the third party system
 	 * @type string | undefined
@@ -7618,58 +6673,67 @@ export type GetNotificationsResourceQueryParams = {
 	referenceId?: string | undefined;
 };
 
-/**
- * @description successful operation
- */
-export type GetNotificationsResource200 = unknown;
+export type GetNotificationsResourceStatus200 = Notification[];
 
-/**
- * @description Not authorized
- */
-export type GetNotificationsResource401 = unknown;
+export type GetNotificationsResourceStatus401 = unknown;
 
-export type GetNotificationsResourceQueryResponse = GetNotificationsResource200;
+export type GetNotificationsResourceOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query?: GetNotificationsResourceQuery | undefined;
+	headers?: never | undefined;
+};
 
-export type GetNotificationsResourceQuery = {
-	Response: GetNotificationsResource200;
-	QueryParams: GetNotificationsResourceQueryParams;
-	Errors: GetNotificationsResource401;
+export type GetNotificationsResourceResponses = {
+	"200": GetNotificationsResourceStatus200;
+	"401": GetNotificationsResourceStatus401;
 };
 
 /**
- * @description successful operation
+ * @description Union of all possible responses
  */
-export type PutNotificationsResource200 = unknown;
+export type GetNotificationsResourceResponse =
+	| GetNotificationsResourceStatus200
+	| GetNotificationsResourceStatus401;
 
-/**
- * @description Bad parameter
- */
-export type PutNotificationsResource400 = unknown;
+export type PutNotificationsResourceStatus200 = Notification;
 
-/**
- * @description Not authorized
- */
-export type PutNotificationsResource401 = unknown;
+export type PutNotificationsResourceStatus400 = unknown;
 
-/**
- * @description Forbidden
- */
-export type PutNotificationsResource403 = unknown;
+export type PutNotificationsResourceStatus401 = unknown;
+
+export type PutNotificationsResourceStatus403 = unknown;
 
 /**
  * @description Notification representation
+ * @type object
  */
-export type PutNotificationsResourceMutationRequest = Notification;
+export type PutNotificationsResourceBody = Notification;
 
-export type PutNotificationsResourceMutationResponse = PutNotificationsResource200;
-
-export type PutNotificationsResourceMutation = {
-	Response: PutNotificationsResource200;
-	Request: PutNotificationsResourceMutationRequest;
-	Errors: PutNotificationsResource400 | PutNotificationsResource401 | PutNotificationsResource403;
+export type PutNotificationsResourceOptions = {
+	body: PutNotificationsResourceBody;
+	path?: never | undefined;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-export type GetNotificationResourcePathParams = {
+export type PutNotificationsResourceResponses = {
+	"200": PutNotificationsResourceStatus200;
+	"400": PutNotificationsResourceStatus400;
+	"401": PutNotificationsResourceStatus401;
+	"403": PutNotificationsResourceStatus403;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type PutNotificationsResourceResponse =
+	| PutNotificationsResourceStatus200
+	| PutNotificationsResourceStatus400
+	| PutNotificationsResourceStatus401
+	| PutNotificationsResourceStatus403;
+
+export type GetNotificationResourcePath = {
 	/**
 	 * @description The unique notification ID
 	 * @type string
@@ -7677,35 +6741,38 @@ export type GetNotificationResourcePathParams = {
 	notificationId: string;
 };
 
-/**
- * @description successful operation
- */
-export type GetNotificationResource200 = unknown;
+export type GetNotificationResourceStatus200 = Notification;
 
-/**
- * @description Not authorized
- */
-export type GetNotificationResource401 = unknown;
+export type GetNotificationResourceStatus401 = unknown;
 
-/**
- * @description Forbidden
- */
-export type GetNotificationResource403 = unknown;
+export type GetNotificationResourceStatus403 = unknown;
 
-/**
- * @description Not found
- */
-export type GetNotificationResource404 = unknown;
+export type GetNotificationResourceStatus404 = unknown;
 
-export type GetNotificationResourceQueryResponse = GetNotificationResource200;
-
-export type GetNotificationResourceQuery = {
-	Response: GetNotificationResource200;
-	PathParams: GetNotificationResourcePathParams;
-	Errors: GetNotificationResource401 | GetNotificationResource403 | GetNotificationResource404;
+export type GetNotificationResourceOptions = {
+	body?: never | undefined;
+	path: GetNotificationResourcePath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-export type PostNotificationResourcePathParams = {
+export type GetNotificationResourceResponses = {
+	"200": GetNotificationResourceStatus200;
+	"401": GetNotificationResourceStatus401;
+	"403": GetNotificationResourceStatus403;
+	"404": GetNotificationResourceStatus404;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetNotificationResourceResponse =
+	| GetNotificationResourceStatus200
+	| GetNotificationResourceStatus401
+	| GetNotificationResourceStatus403
+	| GetNotificationResourceStatus404;
+
+export type PostNotificationResourcePath = {
 	/**
 	 * @description The unique notification ID
 	 * @type string
@@ -7713,41 +6780,44 @@ export type PostNotificationResourcePathParams = {
 	notificationId: string;
 };
 
-/**
- * @description successful operation
- */
-export type PostNotificationResource200 = unknown;
+export type PostNotificationResourceStatus200 = Notification;
 
-/**
- * @description Invalid parameter given
- */
-export type PostNotificationResource400 = unknown;
+export type PostNotificationResourceStatus400 = unknown;
 
-/**
- * @description Not authorized
- */
-export type PostNotificationResource401 = unknown;
+export type PostNotificationResourceStatus401 = unknown;
 
-/**
- * @description Forbidden
- */
-export type PostNotificationResource403 = unknown;
+export type PostNotificationResourceStatus403 = unknown;
 
 /**
  * @description Notification update representation
+ * @type object
  */
-export type PostNotificationResourceMutationRequest = Notification;
+export type PostNotificationResourceBody = Notification;
 
-export type PostNotificationResourceMutationResponse = PostNotificationResource200;
-
-export type PostNotificationResourceMutation = {
-	Response: PostNotificationResource200;
-	Request: PostNotificationResourceMutationRequest;
-	PathParams: PostNotificationResourcePathParams;
-	Errors: PostNotificationResource400 | PostNotificationResource401 | PostNotificationResource403;
+export type PostNotificationResourceOptions = {
+	body: PostNotificationResourceBody;
+	path: PostNotificationResourcePath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-export type DeleteNotificationResourcePathParams = {
+export type PostNotificationResourceResponses = {
+	"200": PostNotificationResourceStatus200;
+	"400": PostNotificationResourceStatus400;
+	"401": PostNotificationResourceStatus401;
+	"403": PostNotificationResourceStatus403;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type PostNotificationResourceResponse =
+	| PostNotificationResourceStatus200
+	| PostNotificationResourceStatus400
+	| PostNotificationResourceStatus401
+	| PostNotificationResourceStatus403;
+
+export type DeleteNotificationResourcePath = {
 	/**
 	 * @description The unique notification ID
 	 * @type string
@@ -7755,50 +6825,56 @@ export type DeleteNotificationResourcePathParams = {
 	notificationId: string;
 };
 
-/**
- * @description Ok
- */
-export type DeleteNotificationResource204 = unknown;
+export type DeleteNotificationResourceStatus204 = unknown;
 
-/**
- * @description Not authorized
- */
-export type DeleteNotificationResource401 = unknown;
+export type DeleteNotificationResourceStatus401 = unknown;
 
-/**
- * @description Forbidden
- */
-export type DeleteNotificationResource403 = unknown;
+export type DeleteNotificationResourceStatus403 = unknown;
 
-/**
- * @description Not allowed
- */
-export type DeleteNotificationResource405 = unknown;
+export type DeleteNotificationResourceStatus405 = unknown;
 
-export type DeleteNotificationResourceMutationResponse = DeleteNotificationResource204;
+export type DeleteNotificationResourceOptions = {
+	body?: never | undefined;
+	path: DeleteNotificationResourcePath;
+	query?: never | undefined;
+	headers?: never | undefined;
+};
 
-export type DeleteNotificationResourceMutation = {
-	Response: DeleteNotificationResource204;
-	PathParams: DeleteNotificationResourcePathParams;
-	Errors:
-		| DeleteNotificationResource401
-		| DeleteNotificationResource403
-		| DeleteNotificationResource405;
+export type DeleteNotificationResourceResponses = {
+	"204": DeleteNotificationResourceStatus204;
+	"401": DeleteNotificationResourceStatus401;
+	"403": DeleteNotificationResourceStatus403;
+	"405": DeleteNotificationResourceStatus405;
 };
 
 /**
- * @description successful operation
+ * @description Union of all possible responses
  */
-export type GetOpenerBrandsResource200 = unknown;
+export type DeleteNotificationResourceResponse =
+	| DeleteNotificationResourceStatus204
+	| DeleteNotificationResourceStatus401
+	| DeleteNotificationResourceStatus403
+	| DeleteNotificationResourceStatus405;
 
-export type GetOpenerBrandsResourceQueryResponse = GetOpenerBrandsResource200;
+export type GetOpenerBrandsResourceStatus200 = OpenerIntercomBrand[];
 
-export type GetOpenerBrandsResourceQuery = {
-	Response: GetOpenerBrandsResource200;
-	Errors: any;
+export type GetOpenerBrandsResourceOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-export type GetOpenerBrandResourcePathParams = {
+export type GetOpenerBrandsResourceResponses = {
+	"200": GetOpenerBrandsResourceStatus200;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetOpenerBrandsResourceResponse = GetOpenerBrandsResourceStatus200;
+
+export type GetOpenerBrandResourcePath = {
 	/**
 	 * @description The brand ID
 	 * @type integer
@@ -7806,20 +6882,25 @@ export type GetOpenerBrandResourcePathParams = {
 	brandId: number;
 };
 
-/**
- * @description successful operation
- */
-export type GetOpenerBrandResource200 = unknown;
+export type GetOpenerBrandResourceStatus200 = OpenerIntercomBrand;
 
-export type GetOpenerBrandResourceQueryResponse = GetOpenerBrandResource200;
-
-export type GetOpenerBrandResourceQuery = {
-	Response: GetOpenerBrandResource200;
-	PathParams: GetOpenerBrandResourcePathParams;
-	Errors: any;
+export type GetOpenerBrandResourceOptions = {
+	body?: never | undefined;
+	path: GetOpenerBrandResourcePath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-export type GetOpenerIntercomsResourceQueryParams = {
+export type GetOpenerBrandResourceResponses = {
+	"200": GetOpenerBrandResourceStatus200;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetOpenerBrandResourceResponse = GetOpenerBrandResourceStatus200;
+
+export type GetOpenerIntercomsResourceQuery = {
 	/**
 	 * @description Filter for brandId. Required if \'recentlyChanged\' is not set
 	 * @type integer | undefined
@@ -7837,20 +6918,25 @@ export type GetOpenerIntercomsResourceQueryParams = {
 	recentlyChanged?: boolean | undefined;
 };
 
-/**
- * @description successful operation
- */
-export type GetOpenerIntercomsResource200 = unknown;
+export type GetOpenerIntercomsResourceStatus200 = OpenerIntercomModel[];
 
-export type GetOpenerIntercomsResourceQueryResponse = GetOpenerIntercomsResource200;
-
-export type GetOpenerIntercomsResourceQuery = {
-	Response: GetOpenerIntercomsResource200;
-	QueryParams: GetOpenerIntercomsResourceQueryParams;
-	Errors: any;
+export type GetOpenerIntercomsResourceOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query?: GetOpenerIntercomsResourceQuery | undefined;
+	headers?: never | undefined;
 };
 
-export type GetOpenerIntercomResourcePathParams = {
+export type GetOpenerIntercomsResourceResponses = {
+	"200": GetOpenerIntercomsResourceStatus200;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetOpenerIntercomsResourceResponse = GetOpenerIntercomsResourceStatus200;
+
+export type GetOpenerIntercomResourcePath = {
 	/**
 	 * @description The intercom ID
 	 * @type integer
@@ -7858,20 +6944,25 @@ export type GetOpenerIntercomResourcePathParams = {
 	intercomId: number;
 };
 
-/**
- * @description successful operation
- */
-export type GetOpenerIntercomResource200 = unknown;
+export type GetOpenerIntercomResourceStatus200 = OpenerIntercomModel;
 
-export type GetOpenerIntercomResourceQueryResponse = GetOpenerIntercomResource200;
-
-export type GetOpenerIntercomResourceQuery = {
-	Response: GetOpenerIntercomResource200;
-	PathParams: GetOpenerIntercomResourcePathParams;
-	Errors: any;
+export type GetOpenerIntercomResourceOptions = {
+	body?: never | undefined;
+	path: GetOpenerIntercomResourcePath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-export type GetServicesResourceQueryParams = {
+export type GetOpenerIntercomResourceResponses = {
+	"200": GetOpenerIntercomResourceStatus200;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetOpenerIntercomResourceResponse = GetOpenerIntercomResourceStatus200;
+
+export type GetServicesResourceQuery = {
 	/**
 	 * @description Filter for service IDs (comma-separated eg: airbnb,guesty,smoobu)
 	 * @type string | undefined
@@ -7879,25 +6970,30 @@ export type GetServicesResourceQueryParams = {
 	serviceIds?: string | undefined;
 };
 
-/**
- * @description successful operation
- */
-export type GetServicesResource200 = unknown;
+export type GetServicesResourceStatus200 = Service[];
 
-/**
- * @description Not authorized
- */
-export type GetServicesResource401 = unknown;
+export type GetServicesResourceStatus401 = unknown;
 
-export type GetServicesResourceQueryResponse = GetServicesResource200;
-
-export type GetServicesResourceQuery = {
-	Response: GetServicesResource200;
-	QueryParams: GetServicesResourceQueryParams;
-	Errors: GetServicesResource401;
+export type GetServicesResourceOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query?: GetServicesResourceQuery | undefined;
+	headers?: never | undefined;
 };
 
-export type GetServiceResourcePathParams = {
+export type GetServicesResourceResponses = {
+	"200": GetServicesResourceStatus200;
+	"401": GetServicesResourceStatus401;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetServicesResourceResponse =
+	| GetServicesResourceStatus200
+	| GetServicesResourceStatus401;
+
+export type GetServiceResourcePath = {
 	/**
 	 * @description The service ID
 	 * @type string
@@ -7905,25 +7001,28 @@ export type GetServiceResourcePathParams = {
 	serviceId: string;
 };
 
-/**
- * @description successful operation
- */
-export type GetServiceResource200 = unknown;
+export type GetServiceResourceStatus200 = Service;
 
-/**
- * @description Not authorized
- */
-export type GetServiceResource401 = unknown;
+export type GetServiceResourceStatus401 = unknown;
 
-export type GetServiceResourceQueryResponse = GetServiceResource200;
-
-export type GetServiceResourceQuery = {
-	Response: GetServiceResource200;
-	PathParams: GetServiceResourcePathParams;
-	Errors: GetServiceResource401;
+export type GetServiceResourceOptions = {
+	body?: never | undefined;
+	path: GetServiceResourcePath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-export type PostServiceLinkResourcePathParams = {
+export type GetServiceResourceResponses = {
+	"200": GetServiceResourceStatus200;
+	"401": GetServiceResourceStatus401;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetServiceResourceResponse = GetServiceResourceStatus200 | GetServiceResourceStatus401;
+
+export type PostServiceLinkResourcePath = {
 	/**
 	 * @description The service ID
 	 * @type string
@@ -7931,30 +7030,34 @@ export type PostServiceLinkResourcePathParams = {
 	serviceId: string;
 };
 
-/**
- * @description Ok
- */
-export type PostServiceLinkResource200 = unknown;
+export type PostServiceLinkResourceStatus200 = string;
 
-/**
- * @description Bad parameter
- */
-export type PostServiceLinkResource400 = unknown;
+export type PostServiceLinkResourceStatus400 = unknown;
 
-/**
- * @description Not authorized
- */
-export type PostServiceLinkResource401 = unknown;
+export type PostServiceLinkResourceStatus401 = unknown;
 
-export type PostServiceLinkResourceMutationResponse = PostServiceLinkResource200;
-
-export type PostServiceLinkResourceMutation = {
-	Response: PostServiceLinkResource200;
-	PathParams: PostServiceLinkResourcePathParams;
-	Errors: PostServiceLinkResource400 | PostServiceLinkResource401;
+export type PostServiceLinkResourceOptions = {
+	body?: never | undefined;
+	path: PostServiceLinkResourcePath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-export type PostServiceSyncResourcePathParams = {
+export type PostServiceLinkResourceResponses = {
+	"200": PostServiceLinkResourceStatus200;
+	"400": PostServiceLinkResourceStatus400;
+	"401": PostServiceLinkResourceStatus401;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type PostServiceLinkResourceResponse =
+	| PostServiceLinkResourceStatus200
+	| PostServiceLinkResourceStatus400
+	| PostServiceLinkResourceStatus401;
+
+export type PostServiceSyncResourcePath = {
 	/**
 	 * @description The service ID
 	 * @type string
@@ -7962,30 +7065,34 @@ export type PostServiceSyncResourcePathParams = {
 	serviceId: string;
 };
 
-/**
- * @description Ok
- */
-export type PostServiceSyncResource204 = unknown;
+export type PostServiceSyncResourceStatus204 = unknown;
 
-/**
- * @description Bad parameter
- */
-export type PostServiceSyncResource400 = unknown;
+export type PostServiceSyncResourceStatus400 = unknown;
 
-/**
- * @description Not authorized
- */
-export type PostServiceSyncResource401 = unknown;
+export type PostServiceSyncResourceStatus401 = unknown;
 
-export type PostServiceSyncResourceMutationResponse = PostServiceSyncResource204;
-
-export type PostServiceSyncResourceMutation = {
-	Response: PostServiceSyncResource204;
-	PathParams: PostServiceSyncResourcePathParams;
-	Errors: PostServiceSyncResource400 | PostServiceSyncResource401;
+export type PostServiceSyncResourceOptions = {
+	body?: never | undefined;
+	path: PostServiceSyncResourcePath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-export type PostServiceUnlinkResourcePathParams = {
+export type PostServiceSyncResourceResponses = {
+	"204": PostServiceSyncResourceStatus204;
+	"400": PostServiceSyncResourceStatus400;
+	"401": PostServiceSyncResourceStatus401;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type PostServiceSyncResourceResponse =
+	| PostServiceSyncResourceStatus204
+	| PostServiceSyncResourceStatus400
+	| PostServiceSyncResourceStatus401;
+
+export type PostServiceUnlinkResourcePath = {
 	/**
 	 * @description The service ID
 	 * @type string
@@ -7993,30 +7100,34 @@ export type PostServiceUnlinkResourcePathParams = {
 	serviceId: string;
 };
 
-/**
- * @description Ok
- */
-export type PostServiceUnlinkResource204 = unknown;
+export type PostServiceUnlinkResourceStatus204 = unknown;
 
-/**
- * @description Bad parameter
- */
-export type PostServiceUnlinkResource400 = unknown;
+export type PostServiceUnlinkResourceStatus400 = unknown;
 
-/**
- * @description Not authorized
- */
-export type PostServiceUnlinkResource401 = unknown;
+export type PostServiceUnlinkResourceStatus401 = unknown;
 
-export type PostServiceUnlinkResourceMutationResponse = PostServiceUnlinkResource204;
-
-export type PostServiceUnlinkResourceMutation = {
-	Response: PostServiceUnlinkResource204;
-	PathParams: PostServiceUnlinkResourcePathParams;
-	Errors: PostServiceUnlinkResource400 | PostServiceUnlinkResource401;
+export type PostServiceUnlinkResourceOptions = {
+	body?: never | undefined;
+	path: PostServiceUnlinkResourcePath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-export type GetSmartlocksResourceQueryParams = {
+export type PostServiceUnlinkResourceResponses = {
+	"204": PostServiceUnlinkResourceStatus204;
+	"400": PostServiceUnlinkResourceStatus400;
+	"401": PostServiceUnlinkResourceStatus401;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type PostServiceUnlinkResourceResponse =
+	| PostServiceUnlinkResourceStatus204
+	| PostServiceUnlinkResourceStatus400
+	| PostServiceUnlinkResourceStatus401;
+
+export type GetSmartlocksResourceQuery = {
 	/**
 	 * @description Filter for authId
 	 * @type integer | undefined
@@ -8029,25 +7140,30 @@ export type GetSmartlocksResourceQueryParams = {
 	type?: number | undefined;
 };
 
-/**
- * @description successful operation
- */
-export type GetSmartlocksResource200 = unknown;
+export type GetSmartlocksResourceStatus200 = Smartlock[];
 
-/**
- * @description Not authorized
- */
-export type GetSmartlocksResource401 = unknown;
+export type GetSmartlocksResourceStatus401 = unknown;
 
-export type GetSmartlocksResourceQueryResponse = GetSmartlocksResource200;
-
-export type GetSmartlocksResourceQuery = {
-	Response: GetSmartlocksResource200;
-	QueryParams: GetSmartlocksResourceQueryParams;
-	Errors: GetSmartlocksResource401;
+export type GetSmartlocksResourceOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query?: GetSmartlocksResourceQuery | undefined;
+	headers?: never | undefined;
 };
 
-export type GetSmartlocksAuthsResourceQueryParams = {
+export type GetSmartlocksResourceResponses = {
+	"200": GetSmartlocksResourceStatus200;
+	"401": GetSmartlocksResourceStatus401;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetSmartlocksResourceResponse =
+	| GetSmartlocksResourceStatus200
+	| GetSmartlocksResourceStatus401;
+
+export type GetSmartlocksAuthsResourceQuery = {
 	/**
 	 * @description Filter for account users:  set to a positive number will filter for authorizations with this specific accountUserId, set to a negative number will filter without set accountUserId
 	 * @type integer | undefined
@@ -8060,200 +7176,198 @@ export type GetSmartlocksAuthsResourceQueryParams = {
 	types?: string | undefined;
 };
 
-/**
- * @description successful operation
- */
-export type GetSmartlocksAuthsResource200 = unknown;
+export type GetSmartlocksAuthsResourceStatus200 = SmartlockAuth[];
 
-/**
- * @description Not authorized
- */
-export type GetSmartlocksAuthsResource401 = unknown;
+export type GetSmartlocksAuthsResourceStatus401 = unknown;
 
-export type GetSmartlocksAuthsResourceQueryResponse = GetSmartlocksAuthsResource200;
+export type GetSmartlocksAuthsResourceOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query?: GetSmartlocksAuthsResourceQuery | undefined;
+	headers?: never | undefined;
+};
 
-export type GetSmartlocksAuthsResourceQuery = {
-	Response: GetSmartlocksAuthsResource200;
-	QueryParams: GetSmartlocksAuthsResourceQueryParams;
-	Errors: GetSmartlocksAuthsResource401;
+export type GetSmartlocksAuthsResourceResponses = {
+	"200": GetSmartlocksAuthsResourceStatus200;
+	"401": GetSmartlocksAuthsResourceStatus401;
 };
 
 /**
- * @description Ok
+ * @description Union of all possible responses
  */
-export type PostSmartlocksAuthsResource204 = unknown;
+export type GetSmartlocksAuthsResourceResponse =
+	| GetSmartlocksAuthsResourceStatus200
+	| GetSmartlocksAuthsResourceStatus401;
 
-/**
- * @description Bad parameter
- */
-export type PostSmartlocksAuthsResource400 = unknown;
+export type PostSmartlocksAuthsResourceStatus204 = unknown;
 
-/**
- * @description Not authorized
- */
-export type PostSmartlocksAuthsResource401 = unknown;
+export type PostSmartlocksAuthsResourceStatus400 = unknown;
 
-/**
- * @description Forbidden
- */
-export type PostSmartlocksAuthsResource403 = unknown;
+export type PostSmartlocksAuthsResourceStatus401 = unknown;
 
-/**
- * @description Parameter conflicts
- */
-export type PostSmartlocksAuthsResource409 = unknown;
+export type PostSmartlocksAuthsResourceStatus403 = unknown;
 
-/**
- * @description Locked
- */
-export type PostSmartlocksAuthsResource423 = unknown;
+export type PostSmartlocksAuthsResourceStatus409 = unknown;
+
+export type PostSmartlocksAuthsResourceStatus423 = unknown;
 
 /**
  * @description Smartlock authorization update representations
+ * @type array
  */
-export type PostSmartlocksAuthsResourceMutationRequest = SmartlockAuthMultiUpdate[];
+export type PostSmartlocksAuthsResourceBody = SmartlockAuthMultiUpdate[];
 
-export type PostSmartlocksAuthsResourceMutationResponse = PostSmartlocksAuthsResource204;
+export type PostSmartlocksAuthsResourceOptions = {
+	body: PostSmartlocksAuthsResourceBody;
+	path?: never | undefined;
+	query?: never | undefined;
+	headers?: never | undefined;
+};
 
-export type PostSmartlocksAuthsResourceMutation = {
-	Response: PostSmartlocksAuthsResource204;
-	Request: PostSmartlocksAuthsResourceMutationRequest;
-	Errors:
-		| PostSmartlocksAuthsResource400
-		| PostSmartlocksAuthsResource401
-		| PostSmartlocksAuthsResource403
-		| PostSmartlocksAuthsResource409
-		| PostSmartlocksAuthsResource423;
+export type PostSmartlocksAuthsResourceResponses = {
+	"204": PostSmartlocksAuthsResourceStatus204;
+	"400": PostSmartlocksAuthsResourceStatus400;
+	"401": PostSmartlocksAuthsResourceStatus401;
+	"403": PostSmartlocksAuthsResourceStatus403;
+	"409": PostSmartlocksAuthsResourceStatus409;
+	"423": PostSmartlocksAuthsResourceStatus423;
 };
 
 /**
- * @description Ok
+ * @description Union of all possible responses
  */
-export type PutSmartlocksAuthsResource204 = unknown;
+export type PostSmartlocksAuthsResourceResponse =
+	| PostSmartlocksAuthsResourceStatus204
+	| PostSmartlocksAuthsResourceStatus400
+	| PostSmartlocksAuthsResourceStatus401
+	| PostSmartlocksAuthsResourceStatus403
+	| PostSmartlocksAuthsResourceStatus409
+	| PostSmartlocksAuthsResourceStatus423;
 
-/**
- * @description Bad parameter
- */
-export type PutSmartlocksAuthsResource400 = unknown;
+export type PutSmartlocksAuthsResourceStatus204 = unknown;
 
-/**
- * @description Account not paid
- */
-export type PutSmartlocksAuthsResource402 = unknown;
+export type PutSmartlocksAuthsResourceStatus400 = unknown;
 
-/**
- * @description Parameter conflicts
- */
-export type PutSmartlocksAuthsResource409 = unknown;
+export type PutSmartlocksAuthsResourceStatus402 = unknown;
 
-/**
- * @description Account upgrade required
- */
-export type PutSmartlocksAuthsResource426 = unknown;
+export type PutSmartlocksAuthsResourceStatus409 = unknown;
+
+export type PutSmartlocksAuthsResourceStatus426 = unknown;
 
 /**
  * @description Smartlock authorization create representation
+ * @type object
  */
-export type PutSmartlocksAuthsResourceMutationRequest = SmartlocksAuthCreate;
+export type PutSmartlocksAuthsResourceBody = SmartlocksAuthCreate;
 
-export type PutSmartlocksAuthsResourceMutationResponse = PutSmartlocksAuthsResource204;
+export type PutSmartlocksAuthsResourceOptions = {
+	body: PutSmartlocksAuthsResourceBody;
+	path?: never | undefined;
+	query?: never | undefined;
+	headers?: never | undefined;
+};
 
-export type PutSmartlocksAuthsResourceMutation = {
-	Response: PutSmartlocksAuthsResource204;
-	Request: PutSmartlocksAuthsResourceMutationRequest;
-	Errors:
-		| PutSmartlocksAuthsResource400
-		| PutSmartlocksAuthsResource402
-		| PutSmartlocksAuthsResource409
-		| PutSmartlocksAuthsResource426;
+export type PutSmartlocksAuthsResourceResponses = {
+	"204": PutSmartlocksAuthsResourceStatus204;
+	"400": PutSmartlocksAuthsResourceStatus400;
+	"402": PutSmartlocksAuthsResourceStatus402;
+	"409": PutSmartlocksAuthsResourceStatus409;
+	"426": PutSmartlocksAuthsResourceStatus426;
 };
 
 /**
- * @description Ok
+ * @description Union of all possible responses
  */
-export type DeleteSmartlocksAuthsResource204 = unknown;
+export type PutSmartlocksAuthsResourceResponse =
+	| PutSmartlocksAuthsResourceStatus204
+	| PutSmartlocksAuthsResourceStatus400
+	| PutSmartlocksAuthsResourceStatus402
+	| PutSmartlocksAuthsResourceStatus409
+	| PutSmartlocksAuthsResourceStatus426;
 
-/**
- * @description Bad parameter
- */
-export type DeleteSmartlocksAuthsResource400 = unknown;
+export type DeleteSmartlocksAuthsResourceStatus204 = unknown;
 
-/**
- * @description Not authorized
- */
-export type DeleteSmartlocksAuthsResource401 = unknown;
+export type DeleteSmartlocksAuthsResourceStatus400 = unknown;
 
-/**
- * @description Forbidden
- */
-export type DeleteSmartlocksAuthsResource403 = unknown;
+export type DeleteSmartlocksAuthsResourceStatus401 = unknown;
 
-/**
- * @description Locked
- */
-export type DeleteSmartlocksAuthsResource423 = unknown;
+export type DeleteSmartlocksAuthsResourceStatus403 = unknown;
+
+export type DeleteSmartlocksAuthsResourceStatus423 = unknown;
 
 /**
  * @description Smartlock authorization IDs to delete
+ * @type array
  */
-export type DeleteSmartlocksAuthsResourceMutationRequest = string[];
+export type DeleteSmartlocksAuthsResourceBody = string[];
 
-export type DeleteSmartlocksAuthsResourceMutationResponse = DeleteSmartlocksAuthsResource204;
+export type DeleteSmartlocksAuthsResourceOptions = {
+	body: DeleteSmartlocksAuthsResourceBody;
+	path?: never | undefined;
+	query?: never | undefined;
+	headers?: never | undefined;
+};
 
-export type DeleteSmartlocksAuthsResourceMutation = {
-	Response: DeleteSmartlocksAuthsResource204;
-	Request: DeleteSmartlocksAuthsResourceMutationRequest;
-	Errors:
-		| DeleteSmartlocksAuthsResource400
-		| DeleteSmartlocksAuthsResource401
-		| DeleteSmartlocksAuthsResource403
-		| DeleteSmartlocksAuthsResource423;
+export type DeleteSmartlocksAuthsResourceResponses = {
+	"204": DeleteSmartlocksAuthsResourceStatus204;
+	"400": DeleteSmartlocksAuthsResourceStatus400;
+	"401": DeleteSmartlocksAuthsResourceStatus401;
+	"403": DeleteSmartlocksAuthsResourceStatus403;
+	"423": DeleteSmartlocksAuthsResourceStatus423;
 };
 
 /**
- * @description Ok
+ * @description Union of all possible responses
  */
-export type PutSmartlockAuthsAdvancedResource200 = unknown;
+export type DeleteSmartlocksAuthsResourceResponse =
+	| DeleteSmartlocksAuthsResourceStatus204
+	| DeleteSmartlocksAuthsResourceStatus400
+	| DeleteSmartlocksAuthsResourceStatus401
+	| DeleteSmartlocksAuthsResourceStatus403
+	| DeleteSmartlocksAuthsResourceStatus423;
 
-/**
- * @description Bad parameter
- */
-export type PutSmartlockAuthsAdvancedResource400 = unknown;
+export type PutSmartlockAuthsAdvancedResourceStatus200 = AdvancedConfirmationResponse;
 
-/**
- * @description Account not paid
- */
-export type PutSmartlockAuthsAdvancedResource402 = unknown;
+export type PutSmartlockAuthsAdvancedResourceStatus400 = unknown;
 
-/**
- * @description Parameter conflicts
- */
-export type PutSmartlockAuthsAdvancedResource409 = unknown;
+export type PutSmartlockAuthsAdvancedResourceStatus402 = unknown;
 
-/**
- * @description Account upgrade required
- */
-export type PutSmartlockAuthsAdvancedResource426 = unknown;
+export type PutSmartlockAuthsAdvancedResourceStatus409 = unknown;
+
+export type PutSmartlockAuthsAdvancedResourceStatus426 = unknown;
 
 /**
  * @description Smartlock authorization create representation
+ * @type object
  */
-export type PutSmartlockAuthsAdvancedResourceMutationRequest = SmartlocksAuthAdvancedCreate;
+export type PutSmartlockAuthsAdvancedResourceBody = SmartlocksAuthAdvancedCreate;
 
-export type PutSmartlockAuthsAdvancedResourceMutationResponse =
-	PutSmartlockAuthsAdvancedResource200;
-
-export type PutSmartlockAuthsAdvancedResourceMutation = {
-	Response: PutSmartlockAuthsAdvancedResource200;
-	Request: PutSmartlockAuthsAdvancedResourceMutationRequest;
-	Errors:
-		| PutSmartlockAuthsAdvancedResource400
-		| PutSmartlockAuthsAdvancedResource402
-		| PutSmartlockAuthsAdvancedResource409
-		| PutSmartlockAuthsAdvancedResource426;
+export type PutSmartlockAuthsAdvancedResourceOptions = {
+	body: PutSmartlockAuthsAdvancedResourceBody;
+	path?: never | undefined;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-export type GetSmartlocksAuthsPaginatedResourceQueryParams = {
+export type PutSmartlockAuthsAdvancedResourceResponses = {
+	"200": PutSmartlockAuthsAdvancedResourceStatus200;
+	"400": PutSmartlockAuthsAdvancedResourceStatus400;
+	"402": PutSmartlockAuthsAdvancedResourceStatus402;
+	"409": PutSmartlockAuthsAdvancedResourceStatus409;
+	"426": PutSmartlockAuthsAdvancedResourceStatus426;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type PutSmartlockAuthsAdvancedResourceResponse =
+	| PutSmartlockAuthsAdvancedResourceStatus200
+	| PutSmartlockAuthsAdvancedResourceStatus400
+	| PutSmartlockAuthsAdvancedResourceStatus402
+	| PutSmartlockAuthsAdvancedResourceStatus409
+	| PutSmartlockAuthsAdvancedResourceStatus426;
+
+export type GetSmartlocksAuthsPaginatedResourceQuery = {
 	/**
 	 * @description The page number, starting from 0
 	 * @default 0
@@ -8278,26 +7392,30 @@ export type GetSmartlocksAuthsPaginatedResourceQueryParams = {
 	types?: string | undefined;
 };
 
-/**
- * @description successful operation
- */
-export type GetSmartlocksAuthsPaginatedResource200 = unknown;
+export type GetSmartlocksAuthsPaginatedResourceStatus200 = PaginatedResponse;
 
-/**
- * @description Not authorized
- */
-export type GetSmartlocksAuthsPaginatedResource401 = unknown;
+export type GetSmartlocksAuthsPaginatedResourceStatus401 = unknown;
 
-export type GetSmartlocksAuthsPaginatedResourceQueryResponse =
-	GetSmartlocksAuthsPaginatedResource200;
-
-export type GetSmartlocksAuthsPaginatedResourceQuery = {
-	Response: GetSmartlocksAuthsPaginatedResource200;
-	QueryParams: GetSmartlocksAuthsPaginatedResourceQueryParams;
-	Errors: GetSmartlocksAuthsPaginatedResource401;
+export type GetSmartlocksAuthsPaginatedResourceOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query?: GetSmartlocksAuthsPaginatedResourceQuery | undefined;
+	headers?: never | undefined;
 };
 
-export type GetSmartlocksLogsResourceQueryParams = {
+export type GetSmartlocksAuthsPaginatedResourceResponses = {
+	"200": GetSmartlocksAuthsPaginatedResourceStatus200;
+	"401": GetSmartlocksAuthsPaginatedResourceStatus401;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetSmartlocksAuthsPaginatedResourceResponse =
+	| GetSmartlocksAuthsPaginatedResourceStatus200
+	| GetSmartlocksAuthsPaginatedResourceStatus401;
+
+export type GetSmartlocksLogsResourceQuery = {
 	/**
 	 * @description Filter for account users
 	 * @type integer | undefined
@@ -8331,25 +7449,30 @@ export type GetSmartlocksLogsResourceQueryParams = {
 	limit?: number | undefined;
 };
 
-/**
- * @description successful operation
- */
-export type GetSmartlocksLogsResource200 = unknown;
+export type GetSmartlocksLogsResourceStatus200 = SmartlockLog[];
 
-/**
- * @description Not authorized
- */
-export type GetSmartlocksLogsResource401 = unknown;
+export type GetSmartlocksLogsResourceStatus401 = unknown;
 
-export type GetSmartlocksLogsResourceQueryResponse = GetSmartlocksLogsResource200;
-
-export type GetSmartlocksLogsResourceQuery = {
-	Response: GetSmartlocksLogsResource200;
-	QueryParams: GetSmartlocksLogsResourceQueryParams;
-	Errors: GetSmartlocksLogsResource401;
+export type GetSmartlocksLogsResourceOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query?: GetSmartlocksLogsResourceQuery | undefined;
+	headers?: never | undefined;
 };
 
-export type GetSmartlockResourcePathParams = {
+export type GetSmartlocksLogsResourceResponses = {
+	"200": GetSmartlocksLogsResourceStatus200;
+	"401": GetSmartlocksLogsResourceStatus401;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetSmartlocksLogsResourceResponse =
+	| GetSmartlocksLogsResourceStatus200
+	| GetSmartlocksLogsResourceStatus401;
+
+export type GetSmartlockResourcePath = {
 	/**
 	 * @description The smartlock ID
 	 * @type integer
@@ -8357,35 +7480,38 @@ export type GetSmartlockResourcePathParams = {
 	smartlockId: number;
 };
 
-/**
- * @description successful operation
- */
-export type GetSmartlockResource200 = unknown;
+export type GetSmartlockResourceStatus200 = Smartlock;
 
-/**
- * @description Not authorized
- */
-export type GetSmartlockResource401 = unknown;
+export type GetSmartlockResourceStatus401 = unknown;
 
-/**
- * @description Forbidden
- */
-export type GetSmartlockResource403 = unknown;
+export type GetSmartlockResourceStatus403 = unknown;
 
-/**
- * @description Not found
- */
-export type GetSmartlockResource404 = unknown;
+export type GetSmartlockResourceStatus404 = unknown;
 
-export type GetSmartlockResourceQueryResponse = GetSmartlockResource200;
-
-export type GetSmartlockResourceQuery = {
-	Response: GetSmartlockResource200;
-	PathParams: GetSmartlockResourcePathParams;
-	Errors: GetSmartlockResource401 | GetSmartlockResource403 | GetSmartlockResource404;
+export type GetSmartlockResourceOptions = {
+	body?: never | undefined;
+	path: GetSmartlockResourcePath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-export type PostSmartlockResourcePathParams = {
+export type GetSmartlockResourceResponses = {
+	"200": GetSmartlockResourceStatus200;
+	"401": GetSmartlockResourceStatus401;
+	"403": GetSmartlockResourceStatus403;
+	"404": GetSmartlockResourceStatus404;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetSmartlockResourceResponse =
+	| GetSmartlockResourceStatus200
+	| GetSmartlockResourceStatus401
+	| GetSmartlockResourceStatus403
+	| GetSmartlockResourceStatus404;
+
+export type PostSmartlockResourcePath = {
 	/**
 	 * @description The smartlock ID
 	 * @type integer
@@ -8393,41 +7519,44 @@ export type PostSmartlockResourcePathParams = {
 	smartlockId: number;
 };
 
-/**
- * @description Ok
- */
-export type PostSmartlockResource204 = unknown;
+export type PostSmartlockResourceStatus204 = unknown;
 
-/**
- * @description Invalid parameter given
- */
-export type PostSmartlockResource400 = unknown;
+export type PostSmartlockResourceStatus400 = unknown;
 
-/**
- * @description Not authorized
- */
-export type PostSmartlockResource401 = unknown;
+export type PostSmartlockResourceStatus401 = unknown;
 
-/**
- * @description Forbidden
- */
-export type PostSmartlockResource403 = unknown;
+export type PostSmartlockResourceStatus403 = unknown;
 
 /**
  * @description Smartlock update representation
+ * @type object
  */
-export type PostSmartlockResourceMutationRequest = SmartlockUpdate;
+export type PostSmartlockResourceBody = SmartlockUpdate;
 
-export type PostSmartlockResourceMutationResponse = PostSmartlockResource204;
-
-export type PostSmartlockResourceMutation = {
-	Response: PostSmartlockResource204;
-	Request: PostSmartlockResourceMutationRequest;
-	PathParams: PostSmartlockResourcePathParams;
-	Errors: PostSmartlockResource400 | PostSmartlockResource401 | PostSmartlockResource403;
+export type PostSmartlockResourceOptions = {
+	body: PostSmartlockResourceBody;
+	path: PostSmartlockResourcePath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-export type DeleteSmartlockResourcePathParams = {
+export type PostSmartlockResourceResponses = {
+	"204": PostSmartlockResourceStatus204;
+	"400": PostSmartlockResourceStatus400;
+	"401": PostSmartlockResourceStatus401;
+	"403": PostSmartlockResourceStatus403;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type PostSmartlockResourceResponse =
+	| PostSmartlockResourceStatus204
+	| PostSmartlockResourceStatus400
+	| PostSmartlockResourceStatus401
+	| PostSmartlockResourceStatus403;
+
+export type DeleteSmartlockResourcePath = {
 	/**
 	 * @description The smartlock ID
 	 * @type integer
@@ -8435,35 +7564,38 @@ export type DeleteSmartlockResourcePathParams = {
 	smartlockId: number;
 };
 
-/**
- * @description Ok
- */
-export type DeleteSmartlockResource204 = unknown;
+export type DeleteSmartlockResourceStatus204 = unknown;
 
-/**
- * @description Bad parameter
- */
-export type DeleteSmartlockResource400 = unknown;
+export type DeleteSmartlockResourceStatus400 = unknown;
 
-/**
- * @description Not authorized
- */
-export type DeleteSmartlockResource401 = unknown;
+export type DeleteSmartlockResourceStatus401 = unknown;
 
-/**
- * @description Forbidden
- */
-export type DeleteSmartlockResource403 = unknown;
+export type DeleteSmartlockResourceStatus403 = unknown;
 
-export type DeleteSmartlockResourceMutationResponse = DeleteSmartlockResource204;
-
-export type DeleteSmartlockResourceMutation = {
-	Response: DeleteSmartlockResource204;
-	PathParams: DeleteSmartlockResourcePathParams;
-	Errors: DeleteSmartlockResource400 | DeleteSmartlockResource401 | DeleteSmartlockResource403;
+export type DeleteSmartlockResourceOptions = {
+	body?: never | undefined;
+	path: DeleteSmartlockResourcePath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-export type PostSmartlockActionResourcePathParams = {
+export type DeleteSmartlockResourceResponses = {
+	"204": DeleteSmartlockResourceStatus204;
+	"400": DeleteSmartlockResourceStatus400;
+	"401": DeleteSmartlockResourceStatus401;
+	"403": DeleteSmartlockResourceStatus403;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type DeleteSmartlockResourceResponse =
+	| DeleteSmartlockResourceStatus204
+	| DeleteSmartlockResourceStatus400
+	| DeleteSmartlockResourceStatus401
+	| DeleteSmartlockResourceStatus403;
+
+export type PostSmartlockActionResourcePath = {
 	/**
 	 * @description The smartlock ID
 	 * @type string
@@ -8471,38 +7603,44 @@ export type PostSmartlockActionResourcePathParams = {
 	smartlockId: string;
 };
 
-/**
- * @description Ok
- */
-export type PostSmartlockActionResource204 = unknown;
+export type PostSmartlockActionResourceStatus204 = unknown;
+
+export type PostSmartlockActionResourceStatus400 = unknown;
+
+export type PostSmartlockActionResourceStatus401 = unknown;
+
+export type PostSmartlockActionResourceStatus402 = unknown;
 
 /**
- * @description Bad parameter
+ * @description Smartlock action representation
+ * @type object
  */
-export type PostSmartlockActionResource400 = unknown;
+export type PostSmartlockActionResourceBody = SmartlockAction;
 
-/**
- * @description Not authorized
- */
-export type PostSmartlockActionResource401 = unknown;
-
-/**
- * @description Account not paid
- */
-export type PostSmartlockActionResource402 = unknown;
-
-export type PostSmartlockActionResourceMutationResponse = PostSmartlockActionResource204;
-
-export type PostSmartlockActionResourceMutation = {
-	Response: PostSmartlockActionResource204;
-	PathParams: PostSmartlockActionResourcePathParams;
-	Errors:
-		| PostSmartlockActionResource400
-		| PostSmartlockActionResource401
-		| PostSmartlockActionResource402;
+export type PostSmartlockActionResourceOptions = {
+	body: PostSmartlockActionResourceBody;
+	path: PostSmartlockActionResourcePath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-export type PostSmartlockActionAdvancedResourcePathParams = {
+export type PostSmartlockActionResourceResponses = {
+	"204": PostSmartlockActionResourceStatus204;
+	"400": PostSmartlockActionResourceStatus400;
+	"401": PostSmartlockActionResourceStatus401;
+	"402": PostSmartlockActionResourceStatus402;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type PostSmartlockActionResourceResponse =
+	| PostSmartlockActionResourceStatus204
+	| PostSmartlockActionResourceStatus400
+	| PostSmartlockActionResourceStatus401
+	| PostSmartlockActionResourceStatus402;
+
+export type PostSmartlockActionAdvancedResourcePath = {
 	/**
 	 * @description The smartlock ID
 	 * @type string
@@ -8510,45 +7648,48 @@ export type PostSmartlockActionAdvancedResourcePathParams = {
 	smartlockId: string;
 };
 
-/**
- * @description Ok
- */
-export type PostSmartlockActionAdvancedResource200 = unknown;
+export type PostSmartlockActionAdvancedResourceStatus200 = AdvancedConfirmationResponse;
+
+export type PostSmartlockActionAdvancedResourceStatus400 = unknown;
+
+export type PostSmartlockActionAdvancedResourceStatus402 = unknown;
+
+export type PostSmartlockActionAdvancedResourceStatus409 = unknown;
+
+export type PostSmartlockActionAdvancedResourceStatus426 = unknown;
 
 /**
- * @description Bad parameter
+ * @description Smartlock action representation
+ * @type object
  */
-export type PostSmartlockActionAdvancedResource400 = unknown;
+export type PostSmartlockActionAdvancedResourceBody = SmartlockAction;
 
-/**
- * @description Account not paid
- */
-export type PostSmartlockActionAdvancedResource402 = unknown;
-
-/**
- * @description Parameter conflicts
- */
-export type PostSmartlockActionAdvancedResource409 = unknown;
-
-/**
- * @description Account upgrade required
- */
-export type PostSmartlockActionAdvancedResource426 = unknown;
-
-export type PostSmartlockActionAdvancedResourceMutationResponse =
-	PostSmartlockActionAdvancedResource200;
-
-export type PostSmartlockActionAdvancedResourceMutation = {
-	Response: PostSmartlockActionAdvancedResource200;
-	PathParams: PostSmartlockActionAdvancedResourcePathParams;
-	Errors:
-		| PostSmartlockActionAdvancedResource400
-		| PostSmartlockActionAdvancedResource402
-		| PostSmartlockActionAdvancedResource409
-		| PostSmartlockActionAdvancedResource426;
+export type PostSmartlockActionAdvancedResourceOptions = {
+	body: PostSmartlockActionAdvancedResourceBody;
+	path: PostSmartlockActionAdvancedResourcePath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-export type PostSmartlockLockActionResourcePathParams = {
+export type PostSmartlockActionAdvancedResourceResponses = {
+	"200": PostSmartlockActionAdvancedResourceStatus200;
+	"400": PostSmartlockActionAdvancedResourceStatus400;
+	"402": PostSmartlockActionAdvancedResourceStatus402;
+	"409": PostSmartlockActionAdvancedResourceStatus409;
+	"426": PostSmartlockActionAdvancedResourceStatus426;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type PostSmartlockActionAdvancedResourceResponse =
+	| PostSmartlockActionAdvancedResourceStatus200
+	| PostSmartlockActionAdvancedResourceStatus400
+	| PostSmartlockActionAdvancedResourceStatus402
+	| PostSmartlockActionAdvancedResourceStatus409
+	| PostSmartlockActionAdvancedResourceStatus426;
+
+export type PostSmartlockLockActionResourcePath = {
 	/**
 	 * @description The smartlock ID
 	 * @type string
@@ -8556,38 +7697,38 @@ export type PostSmartlockLockActionResourcePathParams = {
 	smartlockId: string;
 };
 
-/**
- * @description Ok
- */
-export type PostSmartlockLockActionResource204 = unknown;
+export type PostSmartlockLockActionResourceStatus204 = unknown;
 
-/**
- * @description Bad parameter
- */
-export type PostSmartlockLockActionResource400 = unknown;
+export type PostSmartlockLockActionResourceStatus400 = unknown;
 
-/**
- * @description Not authorized
- */
-export type PostSmartlockLockActionResource401 = unknown;
+export type PostSmartlockLockActionResourceStatus401 = unknown;
 
-/**
- * @description Not allowed
- */
-export type PostSmartlockLockActionResource405 = unknown;
+export type PostSmartlockLockActionResourceStatus405 = unknown;
 
-export type PostSmartlockLockActionResourceMutationResponse = PostSmartlockLockActionResource204;
-
-export type PostSmartlockLockActionResourceMutation = {
-	Response: PostSmartlockLockActionResource204;
-	PathParams: PostSmartlockLockActionResourcePathParams;
-	Errors:
-		| PostSmartlockLockActionResource400
-		| PostSmartlockLockActionResource401
-		| PostSmartlockLockActionResource405;
+export type PostSmartlockLockActionResourceOptions = {
+	body?: never | undefined;
+	path: PostSmartlockLockActionResourcePath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-export type PostSmartlockLockActionAdvancedResourcePathParams = {
+export type PostSmartlockLockActionResourceResponses = {
+	"204": PostSmartlockLockActionResourceStatus204;
+	"400": PostSmartlockLockActionResourceStatus400;
+	"401": PostSmartlockLockActionResourceStatus401;
+	"405": PostSmartlockLockActionResourceStatus405;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type PostSmartlockLockActionResourceResponse =
+	| PostSmartlockLockActionResourceStatus204
+	| PostSmartlockLockActionResourceStatus400
+	| PostSmartlockLockActionResourceStatus401
+	| PostSmartlockLockActionResourceStatus405;
+
+export type PostSmartlockLockActionAdvancedResourcePath = {
 	/**
 	 * @description The smartlock ID
 	 * @type string
@@ -8595,39 +7736,38 @@ export type PostSmartlockLockActionAdvancedResourcePathParams = {
 	smartlockId: string;
 };
 
-/**
- * @description Ok
- */
-export type PostSmartlockLockActionAdvancedResource200 = unknown;
+export type PostSmartlockLockActionAdvancedResourceStatus200 = AdvancedConfirmationResponse;
 
-/**
- * @description Bad parameter
- */
-export type PostSmartlockLockActionAdvancedResource400 = unknown;
+export type PostSmartlockLockActionAdvancedResourceStatus400 = unknown;
 
-/**
- * @description Not authorized
- */
-export type PostSmartlockLockActionAdvancedResource401 = unknown;
+export type PostSmartlockLockActionAdvancedResourceStatus401 = unknown;
 
-/**
- * @description Not allowed
- */
-export type PostSmartlockLockActionAdvancedResource405 = unknown;
+export type PostSmartlockLockActionAdvancedResourceStatus405 = unknown;
 
-export type PostSmartlockLockActionAdvancedResourceMutationResponse =
-	PostSmartlockLockActionAdvancedResource200;
-
-export type PostSmartlockLockActionAdvancedResourceMutation = {
-	Response: PostSmartlockLockActionAdvancedResource200;
-	PathParams: PostSmartlockLockActionAdvancedResourcePathParams;
-	Errors:
-		| PostSmartlockLockActionAdvancedResource400
-		| PostSmartlockLockActionAdvancedResource401
-		| PostSmartlockLockActionAdvancedResource405;
+export type PostSmartlockLockActionAdvancedResourceOptions = {
+	body?: never | undefined;
+	path: PostSmartlockLockActionAdvancedResourcePath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-export type PostSmartlockUnlockActionResourcePathParams = {
+export type PostSmartlockLockActionAdvancedResourceResponses = {
+	"200": PostSmartlockLockActionAdvancedResourceStatus200;
+	"400": PostSmartlockLockActionAdvancedResourceStatus400;
+	"401": PostSmartlockLockActionAdvancedResourceStatus401;
+	"405": PostSmartlockLockActionAdvancedResourceStatus405;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type PostSmartlockLockActionAdvancedResourceResponse =
+	| PostSmartlockLockActionAdvancedResourceStatus200
+	| PostSmartlockLockActionAdvancedResourceStatus400
+	| PostSmartlockLockActionAdvancedResourceStatus401
+	| PostSmartlockLockActionAdvancedResourceStatus405;
+
+export type PostSmartlockUnlockActionResourcePath = {
 	/**
 	 * @description The smartlock ID
 	 * @type string
@@ -8635,39 +7775,38 @@ export type PostSmartlockUnlockActionResourcePathParams = {
 	smartlockId: string;
 };
 
-/**
- * @description Ok
- */
-export type PostSmartlockUnlockActionResource204 = unknown;
+export type PostSmartlockUnlockActionResourceStatus204 = unknown;
 
-/**
- * @description Bad parameter
- */
-export type PostSmartlockUnlockActionResource400 = unknown;
+export type PostSmartlockUnlockActionResourceStatus400 = unknown;
 
-/**
- * @description Not authorized
- */
-export type PostSmartlockUnlockActionResource401 = unknown;
+export type PostSmartlockUnlockActionResourceStatus401 = unknown;
 
-/**
- * @description Not allowed
- */
-export type PostSmartlockUnlockActionResource405 = unknown;
+export type PostSmartlockUnlockActionResourceStatus405 = unknown;
 
-export type PostSmartlockUnlockActionResourceMutationResponse =
-	PostSmartlockUnlockActionResource204;
-
-export type PostSmartlockUnlockActionResourceMutation = {
-	Response: PostSmartlockUnlockActionResource204;
-	PathParams: PostSmartlockUnlockActionResourcePathParams;
-	Errors:
-		| PostSmartlockUnlockActionResource400
-		| PostSmartlockUnlockActionResource401
-		| PostSmartlockUnlockActionResource405;
+export type PostSmartlockUnlockActionResourceOptions = {
+	body?: never | undefined;
+	path: PostSmartlockUnlockActionResourcePath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-export type PostSmartlockUnlockActionAdvancedResourcePathParams = {
+export type PostSmartlockUnlockActionResourceResponses = {
+	"204": PostSmartlockUnlockActionResourceStatus204;
+	"400": PostSmartlockUnlockActionResourceStatus400;
+	"401": PostSmartlockUnlockActionResourceStatus401;
+	"405": PostSmartlockUnlockActionResourceStatus405;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type PostSmartlockUnlockActionResourceResponse =
+	| PostSmartlockUnlockActionResourceStatus204
+	| PostSmartlockUnlockActionResourceStatus400
+	| PostSmartlockUnlockActionResourceStatus401
+	| PostSmartlockUnlockActionResourceStatus405;
+
+export type PostSmartlockUnlockActionAdvancedResourcePath = {
 	/**
 	 * @description The smartlock ID
 	 * @type string
@@ -8675,39 +7814,38 @@ export type PostSmartlockUnlockActionAdvancedResourcePathParams = {
 	smartlockId: string;
 };
 
-/**
- * @description Ok
- */
-export type PostSmartlockUnlockActionAdvancedResource200 = unknown;
+export type PostSmartlockUnlockActionAdvancedResourceStatus200 = AdvancedConfirmationResponse;
 
-/**
- * @description Bad parameter
- */
-export type PostSmartlockUnlockActionAdvancedResource400 = unknown;
+export type PostSmartlockUnlockActionAdvancedResourceStatus400 = unknown;
 
-/**
- * @description Not authorized
- */
-export type PostSmartlockUnlockActionAdvancedResource401 = unknown;
+export type PostSmartlockUnlockActionAdvancedResourceStatus401 = unknown;
 
-/**
- * @description Not allowed
- */
-export type PostSmartlockUnlockActionAdvancedResource405 = unknown;
+export type PostSmartlockUnlockActionAdvancedResourceStatus405 = unknown;
 
-export type PostSmartlockUnlockActionAdvancedResourceMutationResponse =
-	PostSmartlockUnlockActionAdvancedResource200;
-
-export type PostSmartlockUnlockActionAdvancedResourceMutation = {
-	Response: PostSmartlockUnlockActionAdvancedResource200;
-	PathParams: PostSmartlockUnlockActionAdvancedResourcePathParams;
-	Errors:
-		| PostSmartlockUnlockActionAdvancedResource400
-		| PostSmartlockUnlockActionAdvancedResource401
-		| PostSmartlockUnlockActionAdvancedResource405;
+export type PostSmartlockUnlockActionAdvancedResourceOptions = {
+	body?: never | undefined;
+	path: PostSmartlockUnlockActionAdvancedResourcePath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-export type PostSmartlockAdminPinResourcePathParams = {
+export type PostSmartlockUnlockActionAdvancedResourceResponses = {
+	"200": PostSmartlockUnlockActionAdvancedResourceStatus200;
+	"400": PostSmartlockUnlockActionAdvancedResourceStatus400;
+	"401": PostSmartlockUnlockActionAdvancedResourceStatus401;
+	"405": PostSmartlockUnlockActionAdvancedResourceStatus405;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type PostSmartlockUnlockActionAdvancedResourceResponse =
+	| PostSmartlockUnlockActionAdvancedResourceStatus200
+	| PostSmartlockUnlockActionAdvancedResourceStatus400
+	| PostSmartlockUnlockActionAdvancedResourceStatus401
+	| PostSmartlockUnlockActionAdvancedResourceStatus405;
+
+export type PostSmartlockAdminPinResourcePath = {
 	/**
 	 * @description The smartlock ID
 	 * @type integer
@@ -8715,36 +7853,40 @@ export type PostSmartlockAdminPinResourcePathParams = {
 	smartlockId: number;
 };
 
-/**
- * @description Ok
- */
-export type PostSmartlockAdminPinResource204 = unknown;
+export type PostSmartlockAdminPinResourceStatus204 = unknown;
 
-/**
- * @description Bad parameter
- */
-export type PostSmartlockAdminPinResource400 = unknown;
+export type PostSmartlockAdminPinResourceStatus400 = unknown;
 
-/**
- * @description Not authorized
- */
-export type PostSmartlockAdminPinResource401 = unknown;
+export type PostSmartlockAdminPinResourceStatus401 = unknown;
 
 /**
  * @description Smartlock admin pin update representation
+ * @type object
  */
-export type PostSmartlockAdminPinResourceMutationRequest = SmartlockAdminPinUpdate;
+export type PostSmartlockAdminPinResourceBody = SmartlockAdminPinUpdate;
 
-export type PostSmartlockAdminPinResourceMutationResponse = PostSmartlockAdminPinResource204;
-
-export type PostSmartlockAdminPinResourceMutation = {
-	Response: PostSmartlockAdminPinResource204;
-	Request: PostSmartlockAdminPinResourceMutationRequest;
-	PathParams: PostSmartlockAdminPinResourcePathParams;
-	Errors: PostSmartlockAdminPinResource400 | PostSmartlockAdminPinResource401;
+export type PostSmartlockAdminPinResourceOptions = {
+	body: PostSmartlockAdminPinResourceBody;
+	path: PostSmartlockAdminPinResourcePath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-export type PostSmartlockAdvancedConfigResourcePathParams = {
+export type PostSmartlockAdminPinResourceResponses = {
+	"204": PostSmartlockAdminPinResourceStatus204;
+	"400": PostSmartlockAdminPinResourceStatus400;
+	"401": PostSmartlockAdminPinResourceStatus401;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type PostSmartlockAdminPinResourceResponse =
+	| PostSmartlockAdminPinResourceStatus204
+	| PostSmartlockAdminPinResourceStatus400
+	| PostSmartlockAdminPinResourceStatus401;
+
+export type PostSmartlockAdvancedConfigResourcePath = {
 	/**
 	 * @description The smartlock ID
 	 * @type integer
@@ -8752,40 +7894,43 @@ export type PostSmartlockAdvancedConfigResourcePathParams = {
 	smartlockId: number;
 };
 
-/**
- * @description Ok
- */
-export type PostSmartlockAdvancedConfigResource204 = unknown;
+export type PostSmartlockAdvancedConfigResourceStatus204 = unknown;
 
-/**
- * @description Bad parameter
- */
-export type PostSmartlockAdvancedConfigResource400 = unknown;
+export type PostSmartlockAdvancedConfigResourceStatus400 = unknown;
 
-/**
- * @description Not authorized
- */
-export type PostSmartlockAdvancedConfigResource401 = unknown;
+export type PostSmartlockAdvancedConfigResourceStatus401 = unknown;
 
 /**
  * @description Smartlock config update representation
+ * @type object
  */
-export type PostSmartlockAdvancedConfigResourceMutationRequest = Omit<
+export type PostSmartlockAdvancedConfigResourceBody = Omit<
 	NonNullable<SmartlockAdvancedConfig>,
 	"operationId" | "totalDegrees"
 >;
 
-export type PostSmartlockAdvancedConfigResourceMutationResponse =
-	PostSmartlockAdvancedConfigResource204;
-
-export type PostSmartlockAdvancedConfigResourceMutation = {
-	Response: PostSmartlockAdvancedConfigResource204;
-	Request: PostSmartlockAdvancedConfigResourceMutationRequest;
-	PathParams: PostSmartlockAdvancedConfigResourcePathParams;
-	Errors: PostSmartlockAdvancedConfigResource400 | PostSmartlockAdvancedConfigResource401;
+export type PostSmartlockAdvancedConfigResourceOptions = {
+	body: PostSmartlockAdvancedConfigResourceBody;
+	path: PostSmartlockAdvancedConfigResourcePath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-export type PostSmartlockOpenerAdvancedConfigResourcePathParams = {
+export type PostSmartlockAdvancedConfigResourceResponses = {
+	"204": PostSmartlockAdvancedConfigResourceStatus204;
+	"400": PostSmartlockAdvancedConfigResourceStatus400;
+	"401": PostSmartlockAdvancedConfigResourceStatus401;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type PostSmartlockAdvancedConfigResourceResponse =
+	| PostSmartlockAdvancedConfigResourceStatus204
+	| PostSmartlockAdvancedConfigResourceStatus400
+	| PostSmartlockAdvancedConfigResourceStatus401;
+
+export type PostSmartlockOpenerAdvancedConfigResourcePath = {
 	/**
 	 * @description The smartlock (opener) ID
 	 * @type integer
@@ -8793,42 +7938,43 @@ export type PostSmartlockOpenerAdvancedConfigResourcePathParams = {
 	smartlockId: number;
 };
 
-/**
- * @description Ok
- */
-export type PostSmartlockOpenerAdvancedConfigResource204 = unknown;
+export type PostSmartlockOpenerAdvancedConfigResourceStatus204 = unknown;
 
-/**
- * @description Bad parameter
- */
-export type PostSmartlockOpenerAdvancedConfigResource400 = unknown;
+export type PostSmartlockOpenerAdvancedConfigResourceStatus400 = unknown;
 
-/**
- * @description Not authorized
- */
-export type PostSmartlockOpenerAdvancedConfigResource401 = unknown;
+export type PostSmartlockOpenerAdvancedConfigResourceStatus401 = unknown;
 
 /**
  * @description Opener advanced config update representation
+ * @type object
  */
-export type PostSmartlockOpenerAdvancedConfigResourceMutationRequest = Omit<
+export type PostSmartlockOpenerAdvancedConfigResourceBody = Omit<
 	NonNullable<SmartlockOpenerAdvancedConfig>,
 	"intercomId" | "busModeSwitch" | "operationId"
 >;
 
-export type PostSmartlockOpenerAdvancedConfigResourceMutationResponse =
-	PostSmartlockOpenerAdvancedConfigResource204;
-
-export type PostSmartlockOpenerAdvancedConfigResourceMutation = {
-	Response: PostSmartlockOpenerAdvancedConfigResource204;
-	Request: PostSmartlockOpenerAdvancedConfigResourceMutationRequest;
-	PathParams: PostSmartlockOpenerAdvancedConfigResourcePathParams;
-	Errors:
-		| PostSmartlockOpenerAdvancedConfigResource400
-		| PostSmartlockOpenerAdvancedConfigResource401;
+export type PostSmartlockOpenerAdvancedConfigResourceOptions = {
+	body: PostSmartlockOpenerAdvancedConfigResourceBody;
+	path: PostSmartlockOpenerAdvancedConfigResourcePath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-export type PostSmartdoorAdvancedConfigResourcePathParams = {
+export type PostSmartlockOpenerAdvancedConfigResourceResponses = {
+	"204": PostSmartlockOpenerAdvancedConfigResourceStatus204;
+	"400": PostSmartlockOpenerAdvancedConfigResourceStatus400;
+	"401": PostSmartlockOpenerAdvancedConfigResourceStatus401;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type PostSmartlockOpenerAdvancedConfigResourceResponse =
+	| PostSmartlockOpenerAdvancedConfigResourceStatus204
+	| PostSmartlockOpenerAdvancedConfigResourceStatus400
+	| PostSmartlockOpenerAdvancedConfigResourceStatus401;
+
+export type PostSmartdoorAdvancedConfigResourcePath = {
 	/**
 	 * @description The smartdoor ID
 	 * @type integer
@@ -8836,40 +7982,43 @@ export type PostSmartdoorAdvancedConfigResourcePathParams = {
 	smartlockId: number;
 };
 
-/**
- * @description Ok
- */
-export type PostSmartdoorAdvancedConfigResource204 = unknown;
+export type PostSmartdoorAdvancedConfigResourceStatus204 = unknown;
 
-/**
- * @description Bad parameter
- */
-export type PostSmartdoorAdvancedConfigResource400 = unknown;
+export type PostSmartdoorAdvancedConfigResourceStatus400 = unknown;
 
-/**
- * @description Not authorized
- */
-export type PostSmartdoorAdvancedConfigResource401 = unknown;
+export type PostSmartdoorAdvancedConfigResourceStatus401 = unknown;
 
 /**
  * @description Smartdoor advanced config update representation
+ * @type object
  */
-export type PostSmartdoorAdvancedConfigResourceMutationRequest = Omit<
+export type PostSmartdoorAdvancedConfigResourceBody = Omit<
 	NonNullable<SmartlockSmartdoorAdvancedConfig>,
 	"operationId" | "supportedBatteryTypes"
 >;
 
-export type PostSmartdoorAdvancedConfigResourceMutationResponse =
-	PostSmartdoorAdvancedConfigResource204;
-
-export type PostSmartdoorAdvancedConfigResourceMutation = {
-	Response: PostSmartdoorAdvancedConfigResource204;
-	Request: PostSmartdoorAdvancedConfigResourceMutationRequest;
-	PathParams: PostSmartdoorAdvancedConfigResourcePathParams;
-	Errors: PostSmartdoorAdvancedConfigResource400 | PostSmartdoorAdvancedConfigResource401;
+export type PostSmartdoorAdvancedConfigResourceOptions = {
+	body: PostSmartdoorAdvancedConfigResourceBody;
+	path: PostSmartdoorAdvancedConfigResourcePath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-export type GetSmartlockAuthsResourcePathParams = {
+export type PostSmartdoorAdvancedConfigResourceResponses = {
+	"204": PostSmartdoorAdvancedConfigResourceStatus204;
+	"400": PostSmartdoorAdvancedConfigResourceStatus400;
+	"401": PostSmartdoorAdvancedConfigResourceStatus401;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type PostSmartdoorAdvancedConfigResourceResponse =
+	| PostSmartdoorAdvancedConfigResourceStatus204
+	| PostSmartdoorAdvancedConfigResourceStatus400
+	| PostSmartdoorAdvancedConfigResourceStatus401;
+
+export type GetSmartlockAuthsResourcePath = {
 	/**
 	 * @description The smartlock ID
 	 * @type integer
@@ -8877,7 +8026,7 @@ export type GetSmartlockAuthsResourcePathParams = {
 	smartlockId: number;
 };
 
-export type GetSmartlockAuthsResourceQueryParams = {
+export type GetSmartlockAuthsResourceQuery = {
 	/**
 	 * @description Filter for smartlock authorization\'s types (comma-separated eg: 0,2,3)
 	 * @type string | undefined
@@ -8890,31 +8039,34 @@ export type GetSmartlockAuthsResourceQueryParams = {
 	includeEmail?: boolean | undefined;
 };
 
-/**
- * @description successful operation
- */
-export type GetSmartlockAuthsResource200 = unknown;
+export type GetSmartlockAuthsResourceStatus200 = SmartlockAuth[];
 
-/**
- * @description Not authorized
- */
-export type GetSmartlockAuthsResource401 = unknown;
+export type GetSmartlockAuthsResourceStatus401 = unknown;
 
-/**
- * @description Forbidden
- */
-export type GetSmartlockAuthsResource403 = unknown;
+export type GetSmartlockAuthsResourceStatus403 = unknown;
 
-export type GetSmartlockAuthsResourceQueryResponse = GetSmartlockAuthsResource200;
-
-export type GetSmartlockAuthsResourceQuery = {
-	Response: GetSmartlockAuthsResource200;
-	PathParams: GetSmartlockAuthsResourcePathParams;
-	QueryParams: GetSmartlockAuthsResourceQueryParams;
-	Errors: GetSmartlockAuthsResource401 | GetSmartlockAuthsResource403;
+export type GetSmartlockAuthsResourceOptions = {
+	body?: never | undefined;
+	path: GetSmartlockAuthsResourcePath;
+	query?: GetSmartlockAuthsResourceQuery | undefined;
+	headers?: never | undefined;
 };
 
-export type PutSmartlockAuthsResourcePathParams = {
+export type GetSmartlockAuthsResourceResponses = {
+	"200": GetSmartlockAuthsResourceStatus200;
+	"401": GetSmartlockAuthsResourceStatus401;
+	"403": GetSmartlockAuthsResourceStatus403;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetSmartlockAuthsResourceResponse =
+	| GetSmartlockAuthsResourceStatus200
+	| GetSmartlockAuthsResourceStatus401
+	| GetSmartlockAuthsResourceStatus403;
+
+export type PutSmartlockAuthsResourcePath = {
 	/**
 	 * @description The smartlock ID
 	 * @type integer
@@ -8922,50 +8074,48 @@ export type PutSmartlockAuthsResourcePathParams = {
 	smartlockId: number;
 };
 
-/**
- * @description Ok
- */
-export type PutSmartlockAuthsResource204 = unknown;
+export type PutSmartlockAuthsResourceStatus204 = unknown;
 
-/**
- * @description Bad parameter
- */
-export type PutSmartlockAuthsResource400 = unknown;
+export type PutSmartlockAuthsResourceStatus400 = unknown;
 
-/**
- * @description Account not paid
- */
-export type PutSmartlockAuthsResource402 = unknown;
+export type PutSmartlockAuthsResourceStatus402 = unknown;
 
-/**
- * @description Parameter conflicts
- */
-export type PutSmartlockAuthsResource409 = unknown;
+export type PutSmartlockAuthsResourceStatus409 = unknown;
 
-/**
- * @description Account upgrade required
- */
-export type PutSmartlockAuthsResource426 = unknown;
+export type PutSmartlockAuthsResourceStatus426 = unknown;
 
 /**
  * @description Smartlock authorization create representation
+ * @type object
  */
-export type PutSmartlockAuthsResourceMutationRequest = SmartlockAuthCreate;
+export type PutSmartlockAuthsResourceBody = SmartlockAuthCreate;
 
-export type PutSmartlockAuthsResourceMutationResponse = PutSmartlockAuthsResource204;
-
-export type PutSmartlockAuthsResourceMutation = {
-	Response: PutSmartlockAuthsResource204;
-	Request: PutSmartlockAuthsResourceMutationRequest;
-	PathParams: PutSmartlockAuthsResourcePathParams;
-	Errors:
-		| PutSmartlockAuthsResource400
-		| PutSmartlockAuthsResource402
-		| PutSmartlockAuthsResource409
-		| PutSmartlockAuthsResource426;
+export type PutSmartlockAuthsResourceOptions = {
+	body: PutSmartlockAuthsResourceBody;
+	path: PutSmartlockAuthsResourcePath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-export type PostSmartlockAuthWithSharedKeyResourcePathParams = {
+export type PutSmartlockAuthsResourceResponses = {
+	"204": PutSmartlockAuthsResourceStatus204;
+	"400": PutSmartlockAuthsResourceStatus400;
+	"402": PutSmartlockAuthsResourceStatus402;
+	"409": PutSmartlockAuthsResourceStatus409;
+	"426": PutSmartlockAuthsResourceStatus426;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type PutSmartlockAuthsResourceResponse =
+	| PutSmartlockAuthsResourceStatus204
+	| PutSmartlockAuthsResourceStatus400
+	| PutSmartlockAuthsResourceStatus402
+	| PutSmartlockAuthsResourceStatus409
+	| PutSmartlockAuthsResourceStatus426;
+
+export type PostSmartlockAuthWithSharedKeyResourcePath = {
 	/**
 	 * @description The smartlock ID
 	 * @type integer
@@ -8973,46 +8123,44 @@ export type PostSmartlockAuthWithSharedKeyResourcePathParams = {
 	smartlockId: number;
 };
 
-/**
- * @description successful operation
- */
-export type PostSmartlockAuthWithSharedKeyResource200 = unknown;
+export type PostSmartlockAuthWithSharedKeyResourceStatus200 = SmartlockAuth[];
 
-/**
- * @description Not authorized
- */
-export type PostSmartlockAuthWithSharedKeyResource401 = unknown;
+export type PostSmartlockAuthWithSharedKeyResourceStatus401 = unknown;
 
-/**
- * @description Forbidden
- */
-export type PostSmartlockAuthWithSharedKeyResource403 = unknown;
+export type PostSmartlockAuthWithSharedKeyResourceStatus403 = unknown;
 
-/**
- * @description Not found
- */
-export type PostSmartlockAuthWithSharedKeyResource404 = unknown;
+export type PostSmartlockAuthWithSharedKeyResourceStatus404 = unknown;
 
 /**
  * @description Smartlock auth create with shared key
+ * @type object
  */
-export type PostSmartlockAuthWithSharedKeyResourceMutationRequest =
-	SmartlockAuthWithSharedKeyCreate;
+export type PostSmartlockAuthWithSharedKeyResourceBody = SmartlockAuthWithSharedKeyCreate;
 
-export type PostSmartlockAuthWithSharedKeyResourceMutationResponse =
-	PostSmartlockAuthWithSharedKeyResource200;
-
-export type PostSmartlockAuthWithSharedKeyResourceMutation = {
-	Response: PostSmartlockAuthWithSharedKeyResource200;
-	Request: PostSmartlockAuthWithSharedKeyResourceMutationRequest;
-	PathParams: PostSmartlockAuthWithSharedKeyResourcePathParams;
-	Errors:
-		| PostSmartlockAuthWithSharedKeyResource401
-		| PostSmartlockAuthWithSharedKeyResource403
-		| PostSmartlockAuthWithSharedKeyResource404;
+export type PostSmartlockAuthWithSharedKeyResourceOptions = {
+	body: PostSmartlockAuthWithSharedKeyResourceBody;
+	path: PostSmartlockAuthWithSharedKeyResourcePath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-export type GetSmartlockAuthResourcePathParams = {
+export type PostSmartlockAuthWithSharedKeyResourceResponses = {
+	"200": PostSmartlockAuthWithSharedKeyResourceStatus200;
+	"401": PostSmartlockAuthWithSharedKeyResourceStatus401;
+	"403": PostSmartlockAuthWithSharedKeyResourceStatus403;
+	"404": PostSmartlockAuthWithSharedKeyResourceStatus404;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type PostSmartlockAuthWithSharedKeyResourceResponse =
+	| PostSmartlockAuthWithSharedKeyResourceStatus200
+	| PostSmartlockAuthWithSharedKeyResourceStatus401
+	| PostSmartlockAuthWithSharedKeyResourceStatus403
+	| PostSmartlockAuthWithSharedKeyResourceStatus404;
+
+export type GetSmartlockAuthResourcePath = {
 	/**
 	 * @description The smartlock ID
 	 * @type integer
@@ -9025,30 +8173,34 @@ export type GetSmartlockAuthResourcePathParams = {
 	id: string;
 };
 
-/**
- * @description successful operation
- */
-export type GetSmartlockAuthResource200 = unknown;
+export type GetSmartlockAuthResourceStatus200 = SmartlockAuth;
 
-/**
- * @description Not authorized
- */
-export type GetSmartlockAuthResource401 = unknown;
+export type GetSmartlockAuthResourceStatus401 = unknown;
 
-/**
- * @description Forbidden
- */
-export type GetSmartlockAuthResource403 = unknown;
+export type GetSmartlockAuthResourceStatus403 = unknown;
 
-export type GetSmartlockAuthResourceQueryResponse = GetSmartlockAuthResource200;
-
-export type GetSmartlockAuthResourceQuery = {
-	Response: GetSmartlockAuthResource200;
-	PathParams: GetSmartlockAuthResourcePathParams;
-	Errors: GetSmartlockAuthResource401 | GetSmartlockAuthResource403;
+export type GetSmartlockAuthResourceOptions = {
+	body?: never | undefined;
+	path: GetSmartlockAuthResourcePath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-export type PostSmartlockAuthResourcePathParams = {
+export type GetSmartlockAuthResourceResponses = {
+	"200": GetSmartlockAuthResourceStatus200;
+	"401": GetSmartlockAuthResourceStatus401;
+	"403": GetSmartlockAuthResourceStatus403;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetSmartlockAuthResourceResponse =
+	| GetSmartlockAuthResourceStatus200
+	| GetSmartlockAuthResourceStatus401
+	| GetSmartlockAuthResourceStatus403;
+
+export type PostSmartlockAuthResourcePath = {
 	/**
 	 * @description The smartlock ID
 	 * @type integer
@@ -9061,56 +8213,52 @@ export type PostSmartlockAuthResourcePathParams = {
 	id: string;
 };
 
-/**
- * @description Ok
- */
-export type PostSmartlockAuthResource204 = unknown;
+export type PostSmartlockAuthResourceStatus204 = unknown;
 
-/**
- * @description Bad parameter
- */
-export type PostSmartlockAuthResource400 = unknown;
+export type PostSmartlockAuthResourceStatus400 = unknown;
 
-/**
- * @description Not authorized
- */
-export type PostSmartlockAuthResource401 = unknown;
+export type PostSmartlockAuthResourceStatus401 = unknown;
 
-/**
- * @description Forbidden
- */
-export type PostSmartlockAuthResource403 = unknown;
+export type PostSmartlockAuthResourceStatus403 = unknown;
 
-/**
- * @description Parameter conflicts
- */
-export type PostSmartlockAuthResource409 = unknown;
+export type PostSmartlockAuthResourceStatus409 = unknown;
 
-/**
- * @description Locked
- */
-export type PostSmartlockAuthResource423 = unknown;
+export type PostSmartlockAuthResourceStatus423 = unknown;
 
 /**
  * @description Smartlock authorization update representation
+ * @type object
  */
-export type PostSmartlockAuthResourceMutationRequest = SmartlockAuthUpdate;
+export type PostSmartlockAuthResourceBody = SmartlockAuthUpdate;
 
-export type PostSmartlockAuthResourceMutationResponse = PostSmartlockAuthResource204;
-
-export type PostSmartlockAuthResourceMutation = {
-	Response: PostSmartlockAuthResource204;
-	Request: PostSmartlockAuthResourceMutationRequest;
-	PathParams: PostSmartlockAuthResourcePathParams;
-	Errors:
-		| PostSmartlockAuthResource400
-		| PostSmartlockAuthResource401
-		| PostSmartlockAuthResource403
-		| PostSmartlockAuthResource409
-		| PostSmartlockAuthResource423;
+export type PostSmartlockAuthResourceOptions = {
+	body: PostSmartlockAuthResourceBody;
+	path: PostSmartlockAuthResourcePath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-export type DeleteSmartlockAuthResourcePathParams = {
+export type PostSmartlockAuthResourceResponses = {
+	"204": PostSmartlockAuthResourceStatus204;
+	"400": PostSmartlockAuthResourceStatus400;
+	"401": PostSmartlockAuthResourceStatus401;
+	"403": PostSmartlockAuthResourceStatus403;
+	"409": PostSmartlockAuthResourceStatus409;
+	"423": PostSmartlockAuthResourceStatus423;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type PostSmartlockAuthResourceResponse =
+	| PostSmartlockAuthResourceStatus204
+	| PostSmartlockAuthResourceStatus400
+	| PostSmartlockAuthResourceStatus401
+	| PostSmartlockAuthResourceStatus403
+	| PostSmartlockAuthResourceStatus409
+	| PostSmartlockAuthResourceStatus423;
+
+export type DeleteSmartlockAuthResourcePath = {
 	/**
 	 * @description The smartlock ID
 	 * @type integer
@@ -9123,38 +8271,38 @@ export type DeleteSmartlockAuthResourcePathParams = {
 	id: string;
 };
 
-/**
- * @description Ok
- */
-export type DeleteSmartlockAuthResource204 = unknown;
+export type DeleteSmartlockAuthResourceStatus204 = unknown;
 
-/**
- * @description Not authorized
- */
-export type DeleteSmartlockAuthResource401 = unknown;
+export type DeleteSmartlockAuthResourceStatus401 = unknown;
 
-/**
- * @description Forbidden
- */
-export type DeleteSmartlockAuthResource403 = unknown;
+export type DeleteSmartlockAuthResourceStatus403 = unknown;
 
-/**
- * @description Locked
- */
-export type DeleteSmartlockAuthResource423 = unknown;
+export type DeleteSmartlockAuthResourceStatus423 = unknown;
 
-export type DeleteSmartlockAuthResourceMutationResponse = DeleteSmartlockAuthResource204;
-
-export type DeleteSmartlockAuthResourceMutation = {
-	Response: DeleteSmartlockAuthResource204;
-	PathParams: DeleteSmartlockAuthResourcePathParams;
-	Errors:
-		| DeleteSmartlockAuthResource401
-		| DeleteSmartlockAuthResource403
-		| DeleteSmartlockAuthResource423;
+export type DeleteSmartlockAuthResourceOptions = {
+	body?: never | undefined;
+	path: DeleteSmartlockAuthResourcePath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-export type PostSmartlockConfigResourcePathParams = {
+export type DeleteSmartlockAuthResourceResponses = {
+	"204": DeleteSmartlockAuthResourceStatus204;
+	"401": DeleteSmartlockAuthResourceStatus401;
+	"403": DeleteSmartlockAuthResourceStatus403;
+	"423": DeleteSmartlockAuthResourceStatus423;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type DeleteSmartlockAuthResourceResponse =
+	| DeleteSmartlockAuthResourceStatus204
+	| DeleteSmartlockAuthResourceStatus401
+	| DeleteSmartlockAuthResourceStatus403
+	| DeleteSmartlockAuthResourceStatus423;
+
+export type PostSmartlockConfigResourcePath = {
 	/**
 	 * @description The smartlock ID
 	 * @type integer
@@ -9162,25 +8310,17 @@ export type PostSmartlockConfigResourcePathParams = {
 	smartlockId: number;
 };
 
-/**
- * @description Ok
- */
-export type PostSmartlockConfigResource204 = unknown;
+export type PostSmartlockConfigResourceStatus204 = unknown;
 
-/**
- * @description Bad parameter
- */
-export type PostSmartlockConfigResource400 = unknown;
+export type PostSmartlockConfigResourceStatus400 = unknown;
 
-/**
- * @description Not authorized
- */
-export type PostSmartlockConfigResource401 = unknown;
+export type PostSmartlockConfigResourceStatus401 = unknown;
 
 /**
  * @description Smartlock config update representation
+ * @type object
  */
-export type PostSmartlockConfigResourceMutationRequest = Omit<
+export type PostSmartlockConfigResourceBody = Omit<
 	NonNullable<SmartlockConfig>,
 	| "capabilities"
 	| "fobPaired"
@@ -9198,16 +8338,28 @@ export type PostSmartlockConfigResourceMutationRequest = Omit<
 	| "productVariant"
 >;
 
-export type PostSmartlockConfigResourceMutationResponse = PostSmartlockConfigResource204;
-
-export type PostSmartlockConfigResourceMutation = {
-	Response: PostSmartlockConfigResource204;
-	Request: PostSmartlockConfigResourceMutationRequest;
-	PathParams: PostSmartlockConfigResourcePathParams;
-	Errors: PostSmartlockConfigResource400 | PostSmartlockConfigResource401;
+export type PostSmartlockConfigResourceOptions = {
+	body: PostSmartlockConfigResourceBody;
+	path: PostSmartlockConfigResourcePath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-export type GetSmartlockLogsResourcePathParams = {
+export type PostSmartlockConfigResourceResponses = {
+	"204": PostSmartlockConfigResourceStatus204;
+	"400": PostSmartlockConfigResourceStatus400;
+	"401": PostSmartlockConfigResourceStatus401;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type PostSmartlockConfigResourceResponse =
+	| PostSmartlockConfigResourceStatus204
+	| PostSmartlockConfigResourceStatus400
+	| PostSmartlockConfigResourceStatus401;
+
+export type GetSmartlockLogsResourcePath = {
 	/**
 	 * @description The smartlock ID
 	 * @type integer
@@ -9215,7 +8367,7 @@ export type GetSmartlockLogsResourcePathParams = {
 	smartlockId: number;
 };
 
-export type GetSmartlockLogsResourceQueryParams = {
+export type GetSmartlockLogsResourceQuery = {
 	/**
 	 * @description Filter for auths
 	 * @type string | undefined
@@ -9254,26 +8406,30 @@ export type GetSmartlockLogsResourceQueryParams = {
 	limit?: number | undefined;
 };
 
-/**
- * @description successful operation
- */
-export type GetSmartlockLogsResource200 = unknown;
+export type GetSmartlockLogsResourceStatus200 = SmartlockLog[];
 
-/**
- * @description Not authorized
- */
-export type GetSmartlockLogsResource401 = unknown;
+export type GetSmartlockLogsResourceStatus401 = unknown;
 
-export type GetSmartlockLogsResourceQueryResponse = GetSmartlockLogsResource200;
-
-export type GetSmartlockLogsResourceQuery = {
-	Response: GetSmartlockLogsResource200;
-	PathParams: GetSmartlockLogsResourcePathParams;
-	QueryParams: GetSmartlockLogsResourceQueryParams;
-	Errors: GetSmartlockLogsResource401;
+export type GetSmartlockLogsResourceOptions = {
+	body?: never | undefined;
+	path: GetSmartlockLogsResourcePath;
+	query?: GetSmartlockLogsResourceQuery | undefined;
+	headers?: never | undefined;
 };
 
-export type PostSmartlockSyncResourcePathParams = {
+export type GetSmartlockLogsResourceResponses = {
+	"200": GetSmartlockLogsResourceStatus200;
+	"401": GetSmartlockLogsResourceStatus401;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetSmartlockLogsResourceResponse =
+	| GetSmartlockLogsResourceStatus200
+	| GetSmartlockLogsResourceStatus401;
+
+export type PostSmartlockSyncResourcePath = {
 	/**
 	 * @description The smartlock ID
 	 * @type string
@@ -9281,30 +8437,34 @@ export type PostSmartlockSyncResourcePathParams = {
 	smartlockId: string;
 };
 
-/**
- * @description Ok
- */
-export type PostSmartlockSyncResource204 = unknown;
+export type PostSmartlockSyncResourceStatus204 = unknown;
 
-/**
- * @description Bad parameter
- */
-export type PostSmartlockSyncResource400 = unknown;
+export type PostSmartlockSyncResourceStatus400 = unknown;
 
-/**
- * @description Not authorized
- */
-export type PostSmartlockSyncResource401 = unknown;
+export type PostSmartlockSyncResourceStatus401 = unknown;
 
-export type PostSmartlockSyncResourceMutationResponse = PostSmartlockSyncResource204;
-
-export type PostSmartlockSyncResourceMutation = {
-	Response: PostSmartlockSyncResource204;
-	PathParams: PostSmartlockSyncResourcePathParams;
-	Errors: PostSmartlockSyncResource400 | PostSmartlockSyncResource401;
+export type PostSmartlockSyncResourceOptions = {
+	body?: never | undefined;
+	path: PostSmartlockSyncResourcePath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-export type PostSmartlockWebConfigResourcePathParams = {
+export type PostSmartlockSyncResourceResponses = {
+	"204": PostSmartlockSyncResourceStatus204;
+	"400": PostSmartlockSyncResourceStatus400;
+	"401": PostSmartlockSyncResourceStatus401;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type PostSmartlockSyncResourceResponse =
+	| PostSmartlockSyncResourceStatus204
+	| PostSmartlockSyncResourceStatus400
+	| PostSmartlockSyncResourceStatus401;
+
+export type PostSmartlockWebConfigResourcePath = {
 	/**
 	 * @description The smartlock ID
 	 * @type integer
@@ -9312,31 +8472,35 @@ export type PostSmartlockWebConfigResourcePathParams = {
 	smartlockId: number;
 };
 
-/**
- * @description Ok
- */
-export type PostSmartlockWebConfigResource204 = unknown;
+export type PostSmartlockWebConfigResourceStatus204 = unknown;
 
-/**
- * @description Bad parameter
- */
-export type PostSmartlockWebConfigResource400 = unknown;
+export type PostSmartlockWebConfigResourceStatus400 = unknown;
 
-/**
- * @description Not authorized
- */
-export type PostSmartlockWebConfigResource401 = unknown;
+export type PostSmartlockWebConfigResourceStatus401 = unknown;
 
 /**
  * @description Smartlock web config update representation
+ * @type object
  */
-export type PostSmartlockWebConfigResourceMutationRequest = SmartlockWebConfig;
+export type PostSmartlockWebConfigResourceBody = SmartlockWebConfig;
 
-export type PostSmartlockWebConfigResourceMutationResponse = PostSmartlockWebConfigResource204;
-
-export type PostSmartlockWebConfigResourceMutation = {
-	Response: PostSmartlockWebConfigResource204;
-	Request: PostSmartlockWebConfigResourceMutationRequest;
-	PathParams: PostSmartlockWebConfigResourcePathParams;
-	Errors: PostSmartlockWebConfigResource400 | PostSmartlockWebConfigResource401;
+export type PostSmartlockWebConfigResourceOptions = {
+	body: PostSmartlockWebConfigResourceBody;
+	path: PostSmartlockWebConfigResourcePath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
+
+export type PostSmartlockWebConfigResourceResponses = {
+	"204": PostSmartlockWebConfigResourceStatus204;
+	"400": PostSmartlockWebConfigResourceStatus400;
+	"401": PostSmartlockWebConfigResourceStatus401;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type PostSmartlockWebConfigResourceResponse =
+	| PostSmartlockWebConfigResourceStatus204
+	| PostSmartlockWebConfigResourceStatus400
+	| PostSmartlockWebConfigResourceStatus401;

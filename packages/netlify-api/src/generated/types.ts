@@ -74,7 +74,7 @@ export type DatabaseBranchResponse = {
 		| undefined;
 };
 
-export const stateEnum = {
+export const databaseBranchesResponseBranchesStateEnum = {
 	init: "init",
 	creating: "creating",
 	resetting: "resetting",
@@ -82,14 +82,16 @@ export const stateEnum = {
 	archived: "archived",
 } as const;
 
-export type StateEnumKey = (typeof stateEnum)[keyof typeof stateEnum];
+export type DatabaseBranchesResponseBranchesStateEnumKey =
+	(typeof databaseBranchesResponseBranchesStateEnum)[keyof typeof databaseBranchesResponseBranchesStateEnum];
 
-export const currentStateEnum = {
+export const databaseBranchesResponseBranchesComputeCurrentStateEnum = {
 	active: "active",
 	idle: "idle",
 } as const;
 
-export type CurrentStateEnumKey = (typeof currentStateEnum)[keyof typeof currentStateEnum];
+export type DatabaseBranchesResponseBranchesComputeCurrentStateEnumKey =
+	(typeof databaseBranchesResponseBranchesComputeCurrentStateEnum)[keyof typeof databaseBranchesResponseBranchesComputeCurrentStateEnum];
 
 /**
  * @description Response containing a list of database branches
@@ -121,24 +123,32 @@ export type DatabaseBranchesResponse = {
 				 * @description The current state of the branch
 				 * @type string | undefined
 				 */
-				state?: StateEnumKey | undefined;
+				state?: DatabaseBranchesResponseBranchesStateEnumKey | undefined;
 				/**
 				 * @description The logical size of the branch in bytes
+				 *
+				 * Format: `int64`
 				 * @type integer | undefined
 				 */
 				logical_size_bytes?: bigint | undefined;
 				/**
 				 * @description When the branch was created
+				 *
+				 * Format: `dateTime`
 				 * @type string | undefined
 				 */
 				created_at?: string | undefined;
 				/**
 				 * @description When the branch was last updated
+				 *
+				 * Format: `dateTime`
 				 * @type string | undefined
 				 */
 				updated_at?: string | undefined;
 				/**
 				 * @description When the branch was last active
+				 *
+				 * Format: `dateTime`
 				 * @type string | undefined
 				 */
 				last_active_at?: string | undefined;
@@ -152,24 +162,34 @@ export type DatabaseBranchesResponse = {
 							 * @description The current state of the compute endpoint
 							 * @type string | undefined
 							 */
-							current_state?: CurrentStateEnumKey | undefined;
+							current_state?:
+								| DatabaseBranchesResponseBranchesComputeCurrentStateEnumKey
+								| undefined;
 							/**
 							 * @description Minimum compute units for autoscaling
+							 *
+							 * Format: `double`
 							 * @type number | undefined
 							 */
 							autoscaling_limit_min_cu?: number | undefined;
 							/**
 							 * @description Maximum compute units for autoscaling
+							 *
+							 * Format: `double`
 							 * @type number | undefined
 							 */
 							autoscaling_limit_max_cu?: number | undefined;
 							/**
 							 * @description Seconds of inactivity before the compute endpoint is suspended
+							 *
+							 * Format: `int64`
 							 * @type integer | undefined
 							 */
 							suspend_timeout_seconds?: bigint | undefined;
 							/**
 							 * @description When the compute endpoint was last active
+							 *
+							 * Format: `dateTime`
 							 * @type string | undefined
 							 */
 							last_active?: string | undefined;
@@ -234,21 +254,29 @@ export type DatabaseBranchDetail = {
 	state?: DatabaseBranchDetailStateEnumKey | undefined;
 	/**
 	 * @description The logical size of the branch in bytes
+	 *
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	logical_size_bytes?: bigint | undefined;
 	/**
 	 * @description When the branch was created
+	 *
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
 	 * @description When the branch was last updated
+	 *
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
 	 * @description When the branch was last active
+	 *
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	last_active_at?: string | undefined;
@@ -265,21 +293,29 @@ export type DatabaseBranchDetail = {
 				current_state?: DatabaseBranchDetailComputeCurrentStateEnumKey | undefined;
 				/**
 				 * @description Minimum compute units for autoscaling
+				 *
+				 * Format: `double`
 				 * @type number | undefined
 				 */
 				autoscaling_limit_min_cu?: number | undefined;
 				/**
 				 * @description Maximum compute units for autoscaling
+				 *
+				 * Format: `double`
 				 * @type number | undefined
 				 */
 				autoscaling_limit_max_cu?: number | undefined;
 				/**
 				 * @description Seconds of inactivity before the compute endpoint is suspended
+				 *
+				 * Format: `int64`
 				 * @type integer | undefined
 				 */
 				suspend_timeout_seconds?: bigint | undefined;
 				/**
 				 * @description When the compute endpoint was last active
+				 *
+				 * Format: `dateTime`
 				 * @type string | undefined
 				 */
 				last_active?: string | undefined;
@@ -316,21 +352,29 @@ export type DatabaseBranchCompute = {
 	current_state?: DatabaseBranchComputeCurrentStateEnumKey | undefined;
 	/**
 	 * @description Minimum compute units for autoscaling
+	 *
+	 * Format: `double`
 	 * @type number | undefined
 	 */
 	autoscaling_limit_min_cu?: number | undefined;
 	/**
 	 * @description Maximum compute units for autoscaling
+	 *
+	 * Format: `double`
 	 * @type number | undefined
 	 */
 	autoscaling_limit_max_cu?: number | undefined;
 	/**
 	 * @description Seconds of inactivity before the compute endpoint is suspended
+	 *
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	suspend_timeout_seconds?: bigint | undefined;
 	/**
 	 * @description When the compute endpoint was last active
+	 *
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	last_active?: string | undefined;
@@ -397,16 +441,22 @@ export type DatabaseSnapshot = {
 	manual?: boolean | undefined;
 	/**
 	 * @description When the snapshot was created
+	 *
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
 	 * @description When the snapshot expires
+	 *
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	expires_at?: string | undefined;
 	/**
 	 * @description The point-in-time timestamp of the snapshot
+	 *
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	timestamp?: string | undefined;
@@ -483,16 +533,22 @@ export type DatabaseSnapshotsResponse = {
 				manual?: boolean | undefined;
 				/**
 				 * @description When the snapshot was created
+				 *
+				 * Format: `dateTime`
 				 * @type string | undefined
 				 */
 				created_at?: string | undefined;
 				/**
 				 * @description When the snapshot expires
+				 *
+				 * Format: `dateTime`
 				 * @type string | undefined
 				 */
 				expires_at?: string | undefined;
 				/**
 				 * @description The point-in-time timestamp of the snapshot
+				 *
+				 * Format: `dateTime`
 				 * @type string | undefined
 				 */
 				timestamp?: string | undefined;
@@ -541,18 +597,24 @@ export type RestoreDatabaseSnapshotRequest = {
 export type DatabaseComputeSettingsRequest = {
 	/**
 	 * @description Minimum compute units (0.25 to 16.0). Must be less than or equal to max_cu.
-	 * @type number
+	 *
+	 * Format: `double`
+	 * @type number | undefined
 	 */
 	min_cu?: (number | null) | undefined;
 	/**
 	 * @description Maximum compute units (0.25 to 16.0). Must be greater than or equal to min_cu. max_cu - min_cu must not exceed 8.0.
-	 * @type number
+	 *
+	 * Format: `double`
+	 * @type number | undefined
 	 */
 	max_cu?: (number | null) | undefined;
 	/**
 	 * @description Seconds of inactivity before the compute endpoint is suspended. Use -1 for always on, or a non-negative value.
+	 *
+	 * Format: `int64`
 	 * @minLength -1
-	 * @type integer
+	 * @type integer | undefined
 	 */
 	sleep_timeout_seconds?: (bigint | null) | undefined;
 };
@@ -564,16 +626,22 @@ export type DatabaseComputeSettingsRequest = {
 export type DatabaseComputeSettings = {
 	/**
 	 * @description Minimum compute units
+	 *
+	 * Format: `double`
 	 * @type number | undefined
 	 */
 	min_cu?: number | undefined;
 	/**
 	 * @description Maximum compute units
+	 *
+	 * Format: `double`
 	 * @type number | undefined
 	 */
 	max_cu?: number | undefined;
 	/**
 	 * @description Seconds of inactivity before suspension
+	 *
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	sleep_timeout_seconds?: bigint | undefined;
@@ -642,6 +710,8 @@ export type ListDatabaseMigrationsResponse = {
 		| {
 				/**
 				 * @description The migration version number
+				 *
+				 * Format: `int64`
 				 * @type integer | undefined
 				 */
 				version?: bigint | undefined;
@@ -671,6 +741,8 @@ export type ListDatabaseMigrationsResponse = {
 export type DatabaseMigration = {
 	/**
 	 * @description The migration version number
+	 *
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	version?: bigint | undefined;
@@ -698,6 +770,8 @@ export type DatabaseMigration = {
 export type DatabaseMigrationDetail = {
 	/**
 	 * @description The migration version number
+	 *
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	version?: bigint | undefined;
@@ -718,9 +792,6 @@ export type DatabaseMigrationDetail = {
 	content?: string | undefined;
 };
 
-/**
- * @type object
- */
 export type DeployValidationsReport = {
 	/**
 	 * @description The id of the deploy validations report
@@ -732,9 +803,6 @@ export type DeployValidationsReport = {
 	 * @type string | undefined
 	 */
 	deploy_id?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	secret_scan_result?:
 		| {
 				/**
@@ -751,9 +819,6 @@ export type DeployValidationsReport = {
 		| undefined;
 };
 
-/**
- * @type object
- */
 export type DeployValidationsReportSecretScanResult = {
 	/**
 	 * @description The number of files scanned
@@ -767,446 +832,203 @@ export type DeployValidationsReportSecretScanResult = {
 	secretsScanMatches?: string[] | undefined;
 };
 
-/**
- * @type object
- */
 export type SplitTestSetup = {
-	/**
-	 * @type object | undefined
-	 */
 	branch_tests?: object | undefined;
 };
 
-/**
- * @type array
- */
 export type SplitTests = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	site_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	path?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	branches?: object[] | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	active?: boolean | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	unpublished_at?: string | undefined;
 }[];
 
-/**
- * @type object
- */
 export type SplitTest = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	site_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	path?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	branches?: object[] | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	active?: boolean | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	unpublished_at?: string | undefined;
 };
 
-/**
- * @type object
- */
 export type ServiceInstance = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	url?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	config?: object | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	external_attributes?: object | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	service_slug?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	service_path?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	service_name?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	env?: object | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	snippets?: object[] | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	auth_url?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 };
 
-/**
- * @type object
- */
 export type Service = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	slug?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	service_path?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	long_description?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	description?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	events?: object[] | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	tags?: string[] | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	icon?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	manifest_url?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	environments?: string[] | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 };
 
-/**
- * @type object
- */
 export type Site = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	state?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	plan?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	custom_domain?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	domain_aliases?: string[] | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	branch_deploy_custom_domain?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	deploy_preview_custom_domain?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	password?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	notification_email?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	ssl_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	admin_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	screenshot_url?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	user_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	session_id?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	ssl?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	force_ssl?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	managed_dns?: boolean | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	deploy_url?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	published_deploy?:
 		| {
-				/**
-				 * @type string | undefined
-				 */
 				id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				site_id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				user_id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				build_id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				state?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				name?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				url?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				ssl_url?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				admin_url?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				deploy_url?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				deploy_ssl_url?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				screenshot_url?: string | undefined;
-				/**
-				 * @type number | undefined
-				 */
 				review_id?: number | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
 				draft?: boolean | undefined;
-				/**
-				 * @type array | undefined
-				 */
 				required?: string[] | undefined;
-				/**
-				 * @type array | undefined
-				 */
 				required_functions?: string[] | undefined;
 				/**
 				 * @description An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n
 				 * @type array | undefined
 				 */
 				required_edge_functions?: string[] | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				error_message?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				branch?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				commit_ref?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				commit_url?: string | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
 				skipped?: boolean | undefined;
 				/**
+				 * @description
+				 * Format: `dateTime`
 				 * @type string | undefined
 				 */
 				created_at?: string | undefined;
 				/**
+				 * @description
+				 * Format: `dateTime`
 				 * @type string | undefined
 				 */
 				updated_at?: string | undefined;
 				/**
+				 * @description
+				 * Format: `dateTime`
 				 * @type string | undefined
 				 */
 				published_at?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				title?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				context?: string | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
 				locked?: boolean | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				review_url?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				framework?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				skew_protection_token?: string | undefined;
-				/**
-				 * @type array | undefined
-				 */
 				function_schedules?:
 					| {
-							/**
-							 * @type string | undefined
-							 */
 							name?: string | undefined;
-							/**
-							 * @type string | undefined
-							 */
 							cron?: string | undefined;
 					  }[]
 					| undefined;
@@ -1221,92 +1043,38 @@ export type Site = {
 				 */
 				functions_region_overrides?:
 					| {
-							/**
-							 * @type string | undefined
-							 */
 							name?: string | undefined;
-							/**
-							 * @type string | undefined
-							 */
 							region?: string | undefined;
 					  }[]
 					| undefined;
 		  }
 		| undefined;
-	/**
-	 * @type string | undefined
-	 */
 	account_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	account_name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	account_slug?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	git_provider?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	deploy_hook?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	capabilities?:
 		| {
 				[key: string]: object;
 		  }
 		| undefined;
-	/**
-	 * @type object | undefined
-	 */
 	processing_settings?:
 		| {
-				/**
-				 * @type object | undefined
-				 */
 				html?:
 					| {
-							/**
-							 * @type boolean | undefined
-							 */
 							pretty_urls?: boolean | undefined;
 					  }
 					| undefined;
 		  }
 		| undefined;
-	/**
-	 * @type object | undefined
-	 */
 	build_settings?:
 		| {
-				/**
-				 * @type integer | undefined
-				 */
 				id?: number | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				provider?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				deploy_key_id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				repo_path?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				repo_branch?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				dir?: string | undefined;
 				/**
 				 * @description The directory where Netlify can find your compiled functions to deploy them. Defaults to netlify/functions if not set. You can also define and override this setting in your project’s netlify.toml file.
@@ -1318,33 +1086,15 @@ export type Site = {
 				 * @type string | undefined
 				 */
 				cmd?: string | undefined;
-				/**
-				 * @type array | undefined
-				 */
 				allowed_branches?: string[] | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
 				public_repo?: boolean | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
 				private_logs?: boolean | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				repo_url?: string | undefined;
-				/**
-				 * @type object | undefined
-				 */
 				env?:
 					| {
 							[key: string]: string;
 					  }
 					| undefined;
-				/**
-				 * @type integer | undefined
-				 */
 				installation_id?: number | undefined;
 				/**
 				 * @description When true, Netlify will not build your project automatically. You can build locally via the CLI and then publish new deploys manually via the CLI or the API.
@@ -1353,32 +1103,14 @@ export type Site = {
 				stop_builds?: boolean | undefined;
 		  }
 		| undefined;
-	/**
-	 * @type string | undefined
-	 */
 	id_domain?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	default_hooks_data?:
 		| {
-				/**
-				 * @type string | undefined
-				 */
 				access_token?: string | undefined;
 		  }
 		| undefined;
-	/**
-	 * @type string | undefined
-	 */
 	build_image?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	prerender?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	functions_region?: string | undefined;
 	/**
 	 * @default false
@@ -1388,236 +1120,93 @@ export type Site = {
 };
 
 export type SiteSetup = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	state?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	plan?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	custom_domain?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	domain_aliases?: string[] | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	branch_deploy_custom_domain?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	deploy_preview_custom_domain?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	password?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	notification_email?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	ssl_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	admin_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	screenshot_url?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	user_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	session_id?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	ssl?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	force_ssl?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	managed_dns?: boolean | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	deploy_url?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	published_deploy?:
 		| {
-				/**
-				 * @type string | undefined
-				 */
 				id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				site_id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				user_id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				build_id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				state?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				name?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				url?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				ssl_url?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				admin_url?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				deploy_url?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				deploy_ssl_url?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				screenshot_url?: string | undefined;
-				/**
-				 * @type number | undefined
-				 */
 				review_id?: number | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
 				draft?: boolean | undefined;
-				/**
-				 * @type array | undefined
-				 */
 				required?: string[] | undefined;
-				/**
-				 * @type array | undefined
-				 */
 				required_functions?: string[] | undefined;
 				/**
 				 * @description An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n
 				 * @type array | undefined
 				 */
 				required_edge_functions?: string[] | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				error_message?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				branch?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				commit_ref?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				commit_url?: string | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
 				skipped?: boolean | undefined;
 				/**
+				 * @description
+				 * Format: `dateTime`
 				 * @type string | undefined
 				 */
 				created_at?: string | undefined;
 				/**
+				 * @description
+				 * Format: `dateTime`
 				 * @type string | undefined
 				 */
 				updated_at?: string | undefined;
 				/**
+				 * @description
+				 * Format: `dateTime`
 				 * @type string | undefined
 				 */
 				published_at?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				title?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				context?: string | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
 				locked?: boolean | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				review_url?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				framework?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				skew_protection_token?: string | undefined;
-				/**
-				 * @type array | undefined
-				 */
 				function_schedules?:
 					| {
-							/**
-							 * @type string | undefined
-							 */
 							name?: string | undefined;
-							/**
-							 * @type string | undefined
-							 */
 							cron?: string | undefined;
 					  }[]
 					| undefined;
@@ -1632,92 +1221,38 @@ export type SiteSetup = {
 				 */
 				functions_region_overrides?:
 					| {
-							/**
-							 * @type string | undefined
-							 */
 							name?: string | undefined;
-							/**
-							 * @type string | undefined
-							 */
 							region?: string | undefined;
 					  }[]
 					| undefined;
 		  }
 		| undefined;
-	/**
-	 * @type string | undefined
-	 */
 	account_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	account_name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	account_slug?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	git_provider?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	deploy_hook?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	capabilities?:
 		| {
 				[key: string]: object;
 		  }
 		| undefined;
-	/**
-	 * @type object | undefined
-	 */
 	processing_settings?:
 		| {
-				/**
-				 * @type object | undefined
-				 */
 				html?:
 					| {
-							/**
-							 * @type boolean | undefined
-							 */
 							pretty_urls?: boolean | undefined;
 					  }
 					| undefined;
 		  }
 		| undefined;
-	/**
-	 * @type object | undefined
-	 */
 	build_settings?:
 		| {
-				/**
-				 * @type integer | undefined
-				 */
 				id?: number | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				provider?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				deploy_key_id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				repo_path?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				repo_branch?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				dir?: string | undefined;
 				/**
 				 * @description The directory where Netlify can find your compiled functions to deploy them. Defaults to netlify/functions if not set. You can also define and override this setting in your project’s netlify.toml file.
@@ -1729,33 +1264,15 @@ export type SiteSetup = {
 				 * @type string | undefined
 				 */
 				cmd?: string | undefined;
-				/**
-				 * @type array | undefined
-				 */
 				allowed_branches?: string[] | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
 				public_repo?: boolean | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
 				private_logs?: boolean | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				repo_url?: string | undefined;
-				/**
-				 * @type object | undefined
-				 */
 				env?:
 					| {
 							[key: string]: string;
 					  }
 					| undefined;
-				/**
-				 * @type integer | undefined
-				 */
 				installation_id?: number | undefined;
 				/**
 				 * @description When true, Netlify will not build your project automatically. You can build locally via the CLI and then publish new deploys manually via the CLI or the API.
@@ -1764,66 +1281,28 @@ export type SiteSetup = {
 				stop_builds?: boolean | undefined;
 		  }
 		| undefined;
-	/**
-	 * @type string | undefined
-	 */
 	id_domain?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	default_hooks_data?:
 		| {
-				/**
-				 * @type string | undefined
-				 */
 				access_token?: string | undefined;
 		  }
 		| undefined;
-	/**
-	 * @type string | undefined
-	 */
 	build_image?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	prerender?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	functions_region?: string | undefined;
 	/**
 	 * @default false
 	 * @type boolean | undefined
 	 */
 	prevent_non_git_prod_deploys?: boolean | undefined;
-	/**
-	 * @type object | undefined
-	 */
+} & {
 	repo?:
 		| {
-				/**
-				 * @type integer | undefined
-				 */
 				id?: number | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				provider?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				deploy_key_id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				repo_path?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				repo_branch?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				dir?: string | undefined;
 				/**
 				 * @description The directory where Netlify can find your compiled functions to deploy them. Defaults to netlify/functions if not set. You can also define and override this setting in your project’s netlify.toml file.
@@ -1835,33 +1314,15 @@ export type SiteSetup = {
 				 * @type string | undefined
 				 */
 				cmd?: string | undefined;
-				/**
-				 * @type array | undefined
-				 */
 				allowed_branches?: string[] | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
 				public_repo?: boolean | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
 				private_logs?: boolean | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				repo_url?: string | undefined;
-				/**
-				 * @type object | undefined
-				 */
 				env?:
 					| {
 							[key: string]: string;
 					  }
 					| undefined;
-				/**
-				 * @type integer | undefined
-				 */
 				installation_id?: number | undefined;
 				/**
 				 * @description When true, Netlify will not build your project automatically. You can build locally via the CLI and then publish new deploys manually via the CLI or the API.
@@ -1872,33 +1333,12 @@ export type SiteSetup = {
 		| undefined;
 };
 
-/**
- * @type object
- */
 export type RepoInfo = {
-	/**
-	 * @type integer | undefined
-	 */
 	id?: number | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	provider?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	deploy_key_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	repo_path?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	repo_branch?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	dir?: string | undefined;
 	/**
 	 * @description The directory where Netlify can find your compiled functions to deploy them. Defaults to netlify/functions if not set. You can also define and override this setting in your project’s netlify.toml file.
@@ -1910,33 +1350,15 @@ export type RepoInfo = {
 	 * @type string | undefined
 	 */
 	cmd?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	allowed_branches?: string[] | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	public_repo?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	private_logs?: boolean | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	repo_url?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	env?:
 		| {
 				[key: string]: string;
 		  }
 		| undefined;
-	/**
-	 * @type integer | undefined
-	 */
 	installation_id?: number | undefined;
 	/**
 	 * @description When true, Netlify will not build your project automatically. You can build locally via the CLI and then publish new deploys manually via the CLI or the API.
@@ -1945,57 +1367,28 @@ export type RepoInfo = {
 	stop_builds?: boolean | undefined;
 };
 
-/**
- * @type object
- */
 export type Submission = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
 	/**
+	 * @description
+	 * Format: `int32`
 	 * @type integer | undefined
 	 */
 	number?: number | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	email?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	first_name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	last_name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	company?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	summary?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	body?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	data?: object | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	site_url?: string | undefined;
 };
 
@@ -2008,7 +1401,7 @@ export const envVarScopesEnum = {
 
 export type EnvVarScopesEnumKey = (typeof envVarScopesEnum)[keyof typeof envVarScopesEnum];
 
-export const contextEnum = {
+export const envVarValuesContextEnum = {
 	all: "all",
 	dev: "dev",
 	"dev-server": "dev-server",
@@ -2018,7 +1411,8 @@ export const contextEnum = {
 	branch: "branch",
 } as const;
 
-export type ContextEnumKey = (typeof contextEnum)[keyof typeof contextEnum];
+export type EnvVarValuesContextEnumKey =
+	(typeof envVarValuesContextEnum)[keyof typeof envVarValuesContextEnum];
 
 /**
  * @description Environment variable model definition
@@ -2055,7 +1449,7 @@ export type EnvVar = {
 				 * @description The deploy context in which this value will be used. `dev` refers to local development when running `netlify dev`.
 				 * @type string | undefined
 				 */
-				context?: ContextEnumKey | undefined;
+				context?: EnvVarValuesContextEnumKey | undefined;
 				/**
 				 * @description An additional parameter for custom branches. Currently, this is used for specifying a branch name when `context=branch`.
 				 * @type string | undefined
@@ -2070,12 +1464,11 @@ export type EnvVar = {
 	is_secret?: boolean | undefined;
 	/**
 	 * @description The timestamp of when the value was last updated
+	 *
+	 * Format: `date-time`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	updated_by?:
 		| {
 				/**
@@ -2142,9 +1535,6 @@ export type EnvVarValue = {
 	context_parameter?: string | undefined;
 };
 
-/**
- * @type object
- */
 export type EnvVarUser = {
 	/**
 	 * @description The user\'s unique identifier
@@ -2168,337 +1558,148 @@ export type EnvVarUser = {
 	avatar_url?: string | undefined;
 };
 
-/**
- * @type object
- */
 export type Form = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	site_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	paths?: string[] | undefined;
 	/**
+	 * @description
+	 * Format: `int32`
 	 * @type integer | undefined
 	 */
 	submission_count?: number | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	fields?: object[] | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 };
 
-/**
- * @type object
- */
 export type HookType = {
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	events?: string[] | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	fields?: object[] | undefined;
 };
 
-/**
- * @type object
- */
 export type Hook = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	site_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	type?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	event?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	data?: object | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	disabled?: boolean | undefined;
 };
 
-/**
- * @type object
- */
 export type File = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	path?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	sha?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	mime_type?: string | undefined;
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	size?: bigint | undefined;
 };
 
-/**
- * @type object
- */
 export type Function = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	sha?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	region?: string | undefined;
 };
 
-/**
- * @type object
- */
 export type Snippet = {
 	/**
+	 * @description
+	 * Format: `int32`
 	 * @type integer | undefined
 	 */
 	id?: number | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	site_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	title?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	general?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	general_position?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	goal?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	goal_position?: string | undefined;
 };
 
-/**
- * @type object
- */
 export type Purge = {
-	/**
-	 * @type string | undefined
-	 */
 	site_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	site_slug?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	cache_tags?: string[] | undefined;
 };
 
-/**
- * @type object
- */
 export type Deploy = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	site_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	user_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	build_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	state?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	ssl_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	admin_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	deploy_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	deploy_ssl_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	screenshot_url?: string | undefined;
-	/**
-	 * @type number | undefined
-	 */
 	review_id?: number | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	draft?: boolean | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	required?: string[] | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	required_functions?: string[] | undefined;
 	/**
 	 * @description An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n
 	 * @type array | undefined
 	 */
 	required_edge_functions?: string[] | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	error_message?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	branch?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	commit_ref?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	commit_url?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	skipped?: boolean | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	published_at?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	title?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	context?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	locked?: boolean | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	review_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	framework?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	skew_protection_token?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	function_schedules?:
 		| {
-				/**
-				 * @type string | undefined
-				 */
 				name?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				cron?: string | undefined;
 		  }[]
 		| undefined;
@@ -2513,13 +1714,7 @@ export type Deploy = {
 	 */
 	functions_region_overrides?:
 		| {
-				/**
-				 * @type string | undefined
-				 */
 				name?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				region?: string | undefined;
 		  }[]
 		| undefined;
@@ -2535,33 +1730,12 @@ export const deployEnvironmentVariableScopesEnum = {
 export type DeployEnvironmentVariableScopesEnumKey =
 	(typeof deployEnvironmentVariableScopesEnum)[keyof typeof deployEnvironmentVariableScopesEnum];
 
-/**
- * @type object
- */
 export type DeployEnvironmentVariable = {
-	/**
-	 * @type string
-	 */
 	key: string;
-	/**
-	 * @type string
-	 */
 	value: string;
-	/**
-	 * @type boolean
-	 */
 	is_secret: boolean;
-	/**
-	 * @type array
-	 */
 	scopes: DeployEnvironmentVariableScopesEnumKey[];
 };
-
-export const algorithmEnum = {
-	sliding_window: "sliding_window",
-} as const;
-
-export type AlgorithmEnumKey = (typeof algorithmEnum)[keyof typeof algorithmEnum];
 
 export const typeEnum = {
 	ip: "ip",
@@ -2569,6 +1743,16 @@ export const typeEnum = {
 } as const;
 
 export type TypeEnumKey = (typeof typeEnum)[keyof typeof typeEnum];
+
+export const deployFilesEnvironmentScopesEnum = {
+	builds: "builds",
+	functions: "functions",
+	runtime: "runtime",
+	"post-processing": "post-processing",
+} as const;
+
+export type DeployFilesEnvironmentScopesEnumKey =
+	(typeof deployFilesEnvironmentScopesEnum)[keyof typeof deployFilesEnvironmentScopesEnum];
 
 /**
  * @description Deploy files can be provided in two ways:\n1. As a JSON object using \'files\' (a hash mapping file paths to SHA1 digests), OR\n2. As a zip file using one of these methods:\n   - Set Content-Type to \'application/zip\' and send the zip file as the raw request body\n   - Include the zip file content in the \'zip\' field of this JSON object with Content-Type \'application/json\'\n
@@ -2585,170 +1769,68 @@ export type DeployFiles = {
 	 * @type string | undefined
 	 */
 	zip?: Blob | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	draft?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	async?: boolean | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	functions?: object | undefined;
 	/**
 	 * @description A hash mapping edge-function bundle formats to the code_sha of each bundle. The\nresponse\'s required_edge_functions lists which of these still need to be uploaded.\n
 	 * @type object | undefined
 	 */
 	edge_functions?: object | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	function_schedules?:
 		| {
-				/**
-				 * @type string | undefined
-				 */
 				name?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				cron?: string | undefined;
 		  }[]
 		| undefined;
-	/**
-	 * @type object | undefined
-	 */
 	functions_config?:
 		| {
 				[key: string]: {
-					/**
-					 * @type string | undefined
-					 */
 					display_name?: string | undefined;
-					/**
-					 * @type string | undefined
-					 */
 					generator?: string | undefined;
-					/**
-					 * @type object | undefined
-					 */
 					build_data?: object | undefined;
 					/**
 					 * @description The function\'s memory allocation in MB. Mutually exclusive with `vcpu`.\n
 					 * @type integer | undefined
 					 */
 					memory?: number | undefined;
-					/**
-					 * @type array | undefined
-					 */
 					routes?:
 						| {
-								/**
-								 * @type string | undefined
-								 */
 								pattern?: string | undefined;
-								/**
-								 * @type string | undefined
-								 */
 								literal?: string | undefined;
-								/**
-								 * @type string | undefined
-								 */
 								expression?: string | undefined;
-								/**
-								 * @type array | undefined
-								 */
 								methods?: ("GET" | "POST" | "PUT" | "PATCH" | "DELETE" | "OPTIONS")[] | undefined;
-								/**
-								 * @type boolean | undefined
-								 */
 								prefer_static?: boolean | undefined;
 						  }[]
 						| undefined;
-					/**
-					 * @type array | undefined
-					 */
 					excluded_routes?:
 						| {
-								/**
-								 * @type string | undefined
-								 */
 								pattern?: string | undefined;
-								/**
-								 * @type string | undefined
-								 */
 								literal?: string | undefined;
-								/**
-								 * @type string | undefined
-								 */
 								expression?: string | undefined;
 						  }[]
 						| undefined;
-					/**
-					 * @type integer | undefined
-					 */
 					priority?: number | undefined;
-					/**
-					 * @type string | undefined
-					 */
 					region?: string | undefined;
-					/**
-					 * @type object | undefined
-					 */
 					traffic_rules?:
 						| {
-								/**
-								 * @type object | undefined
-								 */
 								action?:
 									| {
-											/**
-											 * @type string | undefined
-											 */
 											type?: string | undefined;
-											/**
-											 * @type object | undefined
-											 */
 											config?:
 												| {
-														/**
-														 * @type string | undefined
-														 */
 														to?: string | undefined;
-														/**
-														 * @type object | undefined
-														 */
 														rate_limit_config?:
 															| {
-																	/**
-																	 * @type string | undefined
-																	 */
-																	algorithm?: AlgorithmEnumKey | undefined;
-																	/**
-																	 * @type integer | undefined
-																	 */
+																	algorithm?: "sliding_window" | undefined;
 																	window_size?: number | undefined;
-																	/**
-																	 * @type integer | undefined
-																	 */
 																	window_limit?: number | undefined;
 															  }
 															| undefined;
-														/**
-														 * @type object | undefined
-														 */
 														aggregate?:
 															| {
-																	/**
-																	 * @type array | undefined
-																	 */
 																	keys?:
 																		| {
-																				/**
-																				 * @type string | undefined
-																				 */
 																				type?: TypeEnumKey | undefined;
 																		  }[]
 																		| undefined;
@@ -2762,27 +1844,17 @@ export type DeployFiles = {
 						| undefined;
 					/**
 					 * @description Number of vCPUs to provision for the function. Allowed range is\n0.5–2.\n
+					 *
+					 * Format: `float`
 					 * @type number | undefined
 					 */
 					vcpu?: number | undefined;
-					/**
-					 * @type array | undefined
-					 */
 					event_subscriptions?: string[] | undefined;
 				};
 		  }
 		| undefined;
-	/**
-	 * @type string | undefined
-	 */
 	branch?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	framework?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	framework_version?: string | undefined;
 	/**
 	 * @description A list of deploy-specific environment variable data. Data specified this way applies only\nto this specific deploy and is merged into any existing environment variables set on the\naccount and site.\n\nDeploy-specific environment variable data takes precedence over account and site\nenvironment variable data: For example, a deploy-specific variable with the key `NODE_ENV`\nwill take priority over any existing site- and account-level environment variable data\nwith the key `NODE_ENV`.\n\nEnvironment variable data may be provided at one of two times:\n\n- When creating a new Deploy with deploy files (most common)\n- When finalizing an existing Deploy with deploy files\n\nOnce set, environment variables for a specific deploy cannot be modified. Subsequent\nattempts to modify environment variable data for a deploy will be ignored.\n
@@ -2790,136 +1862,66 @@ export type DeployFiles = {
 	 */
 	environment?:
 		| {
-				/**
-				 * @type string
-				 */
 				key: string;
-				/**
-				 * @type string
-				 */
 				value: string;
-				/**
-				 * @type boolean
-				 */
 				is_secret: boolean;
-				/**
-				 * @type array
-				 */
-				scopes: ("builds" | "functions" | "runtime" | "post-processing")[];
+				scopes: DeployFilesEnvironmentScopesEnumKey[];
 		  }[]
 		| undefined;
 };
 
-/**
- * @type object
- */
 export type PluginParams = {
-	/**
-	 * @type string | undefined
-	 */
 	pinned_version?: string | undefined;
 };
 
-/**
- * @type object
- */
 export type Plugin = {
-	/**
-	 * @type string | undefined
-	 */
 	package?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	pinned_version?: string | undefined;
 };
 
-/**
- * @type object
- */
 export type BuildStatus = {
-	/**
-	 * @type integer | undefined
-	 */
 	active?: number | undefined;
-	/**
-	 * @type integer | undefined
-	 */
 	pending_concurrency?: number | undefined;
-	/**
-	 * @type integer | undefined
-	 */
 	enqueued?: number | undefined;
-	/**
-	 * @type integer | undefined
-	 */
 	build_count?: number | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	minutes?:
 		| {
-				/**
-				 * @type integer | undefined
-				 */
 				current?: number | undefined;
-				/**
-				 * @type integer | undefined
-				 */
 				current_average_sec?: number | undefined;
-				/**
-				 * @type integer | undefined
-				 */
 				previous?: number | undefined;
 				/**
+				 * @description
+				 * Format: `dateTime`
 				 * @type string | undefined
 				 */
 				period_start_date?: string | undefined;
 				/**
+				 * @description
+				 * Format: `dateTime`
 				 * @type string | undefined
 				 */
 				period_end_date?: string | undefined;
 				/**
+				 * @description
+				 * Format: `dateTime`
 				 * @type string | undefined
 				 */
 				last_updated_at?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				included_minutes?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				included_minutes_with_packs?: string | undefined;
 		  }
 		| undefined;
 };
 
-/**
- * @type object
- */
 export type Build = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	deploy_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	sha?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	done?: boolean | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	error?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
@@ -2936,631 +1938,313 @@ export const buildLogMsgSectionEnum = {
 export type BuildLogMsgSectionEnumKey =
 	(typeof buildLogMsgSectionEnum)[keyof typeof buildLogMsgSectionEnum];
 
-/**
- * @type object
- */
 export type BuildLogMsg = {
-	/**
-	 * @type string | undefined
-	 */
 	message?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	error?: boolean | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	section?: BuildLogMsgSectionEnumKey | undefined;
 };
 
-/**
- * @type object
- */
 export type PluginRunData = {
-	/**
-	 * @type string | undefined
-	 */
 	package?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	version?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	state?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	reporting_event?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	title?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	summary?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	text?: string | undefined;
 };
 
 export type PluginRun = {
-	/**
-	 * @type string | undefined
-	 */
 	package?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	version?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	state?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	reporting_event?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	title?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	summary?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	text?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
+} & {
 	deploy_id?: string | undefined;
 };
 
-/**
- * @type object
- */
 export type Metadata = object;
 
-/**
- * @type object
- */
 export type DnsZoneSetup = {
-	/**
-	 * @type string | undefined
-	 */
 	account_slug?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	site_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
 };
 
-/**
- * @type array
- */
 export type DnsZones = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	errors?: string[] | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	supported_record_types?: string[] | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	user_id?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	records?:
 		| {
-				/**
-				 * @type string | undefined
-				 */
 				id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				hostname?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				type?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				value?: string | undefined;
 				/**
+				 * @description
+				 * Format: `int64`
 				 * @type integer | undefined
 				 */
 				ttl?: bigint | undefined;
 				/**
+				 * @description
+				 * Format: `int64`
 				 * @type integer | undefined
 				 */
 				priority?: bigint | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				dns_zone_id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				site_id?: string | undefined;
-				/**
-				 * @type integer | undefined
-				 */
 				flag?: number | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				tag?: string | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
 				managed?: boolean | undefined;
 		  }[]
 		| undefined;
-	/**
-	 * @type array | undefined
-	 */
 	dns_servers?: string[] | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	account_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	site_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	account_slug?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	account_name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	domain?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	ipv6_enabled?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	dedicated?: boolean | undefined;
 }[];
 
-/**
- * @type object
- */
 export type DnsZone = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	errors?: string[] | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	supported_record_types?: string[] | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	user_id?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	records?:
 		| {
-				/**
-				 * @type string | undefined
-				 */
 				id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				hostname?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				type?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				value?: string | undefined;
 				/**
+				 * @description
+				 * Format: `int64`
 				 * @type integer | undefined
 				 */
 				ttl?: bigint | undefined;
 				/**
+				 * @description
+				 * Format: `int64`
 				 * @type integer | undefined
 				 */
 				priority?: bigint | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				dns_zone_id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				site_id?: string | undefined;
-				/**
-				 * @type integer | undefined
-				 */
 				flag?: number | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				tag?: string | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
 				managed?: boolean | undefined;
 		  }[]
 		| undefined;
-	/**
-	 * @type array | undefined
-	 */
 	dns_servers?: string[] | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	account_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	site_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	account_slug?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	account_name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	domain?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	ipv6_enabled?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	dedicated?: boolean | undefined;
 };
 
-/**
- * @type object
- */
 export type DnsRecordCreate = {
-	/**
-	 * @type string | undefined
-	 */
 	type?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	hostname?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	value?: string | undefined;
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	ttl?: bigint | undefined;
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	priority?: bigint | undefined;
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	weight?: bigint | undefined;
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	port?: bigint | undefined;
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	flag?: bigint | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	tag?: string | undefined;
 };
 
-/**
- * @type array
- */
 export type DnsRecords = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	hostname?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	type?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	value?: string | undefined;
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	ttl?: bigint | undefined;
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	priority?: bigint | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	dns_zone_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	site_id?: string | undefined;
-	/**
-	 * @type integer | undefined
-	 */
 	flag?: number | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	tag?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	managed?: boolean | undefined;
 }[];
 
-/**
- * @type object
- */
 export type DnsRecord = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	hostname?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	type?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	value?: string | undefined;
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	ttl?: bigint | undefined;
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	priority?: bigint | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	dns_zone_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	site_id?: string | undefined;
-	/**
-	 * @type integer | undefined
-	 */
 	flag?: number | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	tag?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	managed?: boolean | undefined;
 };
 
-/**
- * @type object
- */
 export type SniCertificate = {
-	/**
-	 * @type string | undefined
-	 */
 	state?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	domains?: string[] | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	expires_at?: string | undefined;
 };
 
-/**
- * @type object
- */
 export type Ticket = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	client_id?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	authorized?: boolean | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 };
 
-/**
- * @type object
- */
 export type AccessToken = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	access_token?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	user_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	user_email?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 };
 
-/**
- * @type object
- */
 export type Asset = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	site_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	creator_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	state?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	content_type?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	key?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	visibility?: string | undefined;
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	size?: bigint | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 };
 
-/**
- * @type object
- */
 export type AssetForm = {
-	/**
-	 * @type string | undefined
-	 */
 	url?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	fields?:
 		| {
 				[key: string]: string;
@@ -3568,22 +2252,10 @@ export type AssetForm = {
 		| undefined;
 };
 
-/**
- * @type object
- */
 export type AssetSignature = {
-	/**
-	 * @type object | undefined
-	 */
 	form?:
 		| {
-				/**
-				 * @type string | undefined
-				 */
 				url?: string | undefined;
-				/**
-				 * @type object | undefined
-				 */
 				fields?:
 					| {
 							[key: string]: string;
@@ -3591,56 +2263,32 @@ export type AssetSignature = {
 					| undefined;
 		  }
 		| undefined;
-	/**
-	 * @type object | undefined
-	 */
 	asset?:
 		| {
-				/**
-				 * @type string | undefined
-				 */
 				id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				site_id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				creator_id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				name?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				state?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				content_type?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				url?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				key?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				visibility?: string | undefined;
 				/**
+				 * @description
+				 * Format: `int64`
 				 * @type integer | undefined
 				 */
 				size?: bigint | undefined;
 				/**
+				 * @description
+				 * Format: `dateTime`
 				 * @type string | undefined
 				 */
 				created_at?: string | undefined;
 				/**
+				 * @description
+				 * Format: `dateTime`
 				 * @type string | undefined
 				 */
 				updated_at?: string | undefined;
@@ -3648,144 +2296,63 @@ export type AssetSignature = {
 		| undefined;
 };
 
-/**
- * @type object
- */
 export type AssetPublicSignature = {
-	/**
-	 * @type string | undefined
-	 */
 	url?: string | undefined;
 };
 
-/**
- * @type object
- */
 export type DeployKey = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	public_key?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 };
 
-/**
- * @type object
- */
 export type Member = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	full_name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	email?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	avatar?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	role?: string | undefined;
 };
 
-/**
- * @type object
- */
 export type PaymentMethod = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	method_name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	type?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	state?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	data?:
 		| {
-				/**
-				 * @type string | undefined
-				 */
 				card_type?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				last4?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				email?: string | undefined;
 		  }
 		| undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 };
 
-/**
- * @type object
- */
 export type AccountType = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	description?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	capabilities?: object | undefined;
-	/**
-	 * @type integer | undefined
-	 */
 	monthly_dollar_price?: number | undefined;
-	/**
-	 * @type integer | undefined
-	 */
 	yearly_dollar_price?: number | undefined;
-	/**
-	 * @type integer | undefined
-	 */
 	monthly_seats_addon_dollar_price?: number | undefined;
-	/**
-	 * @type integer | undefined
-	 */
 	yearly_seats_addon_dollar_price?: number | undefined;
 };
 
@@ -3797,63 +2364,21 @@ export const accountSetupPeriodEnum = {
 export type AccountSetupPeriodEnumKey =
 	(typeof accountSetupPeriodEnum)[keyof typeof accountSetupPeriodEnum];
 
-/**
- * @type object
- */
 export type AccountSetup = {
-	/**
-	 * @type string
-	 */
 	name: string;
-	/**
-	 * @type string
-	 */
 	type_id: string;
-	/**
-	 * @type string | undefined
-	 */
 	payment_method_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	period?: AccountSetupPeriodEnumKey | undefined;
-	/**
-	 * @type integer | undefined
-	 */
 	extra_seats_block?: number | undefined;
 };
 
-/**
- * @type object
- */
 export type AccountUpdateSetup = {
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	slug?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	type_id?: string | undefined;
-	/**
-	 * @type integer | undefined
-	 */
 	extra_seats_block?: number | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	billing_name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	billing_email?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	billing_details?: string | undefined;
 };
 
@@ -3867,17 +2392,8 @@ export const accountAddMemberSetupRoleEnum = {
 export type AccountAddMemberSetupRoleEnumKey =
 	(typeof accountAddMemberSetupRoleEnum)[keyof typeof accountAddMemberSetupRoleEnum];
 
-/**
- * @type object
- */
 export type AccountAddMemberSetup = {
-	/**
-	 * @type string | undefined
-	 */
 	role?: AccountAddMemberSetupRoleEnumKey | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	email?: string | undefined;
 };
 
@@ -3900,939 +2416,416 @@ export const accountUpdateMemberSetupSiteAccessEnum = {
 export type AccountUpdateMemberSetupSiteAccessEnumKey =
 	(typeof accountUpdateMemberSetupSiteAccessEnum)[keyof typeof accountUpdateMemberSetupSiteAccessEnum];
 
-/**
- * @type object
- */
 export type AccountUpdateMemberSetup = {
-	/**
-	 * @type string | undefined
-	 */
 	role?: AccountUpdateMemberSetupRoleEnumKey | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	site_access?: AccountUpdateMemberSetupSiteAccessEnumKey | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	site_ids?: string[] | undefined;
 };
 
-/**
- * @type object
- */
 export type AccountMembership = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	slug?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	type?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	capabilities?:
 		| {
-				/**
-				 * @type object | undefined
-				 */
 				sites?:
 					| {
-							/**
-							 * @type integer | undefined
-							 */
 							included?: number | undefined;
-							/**
-							 * @type integer | undefined
-							 */
 							used?: number | undefined;
 					  }
 					| undefined;
-				/**
-				 * @type object | undefined
-				 */
 				collaborators?:
 					| {
-							/**
-							 * @type integer | undefined
-							 */
 							included?: number | undefined;
-							/**
-							 * @type integer | undefined
-							 */
 							used?: number | undefined;
 					  }
 					| undefined;
 		  }
 		| undefined;
-	/**
-	 * @type string | undefined
-	 */
 	billing_name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	billing_email?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	billing_details?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	billing_period?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	payment_method_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	type_name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	type_id?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	owner_ids?: string[] | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	roles_allowed?: string[] | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 };
 
-/**
- * @type object
- */
 export type AuditLog = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	account_id?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	payload?:
 		| {
-				/**
-				 * @type string | undefined
-				 */
 				actor_id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				actor_name?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				actor_email?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				action?: string | undefined;
 				/**
+				 * @description
+				 * Format: `dateTime`
 				 * @type string | undefined
 				 */
 				timestamp?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				log_type?: string | undefined;
 				[key: string]: unknown;
 		  }
 		| undefined;
 };
 
-/**
- * @type object
- */
 export type AgentRunner = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	site_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	parent_agent_runner_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	state?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	done_at?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	title?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	branch?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	result_branch?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	pr_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	pr_branch?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	pr_state?: string | undefined;
-	/**
-	 * @type integer | undefined
-	 */
 	pr_number?: number | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	pr_is_being_created?: boolean | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	pr_error?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	current_task?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	result_diff?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	sha?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	merge_commit_sha?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	merge_commit_error?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	merge_commit_is_being_created?: boolean | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	base_deploy_id?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	attached_file_keys?: string[] | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	active_session_created_at?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	latest_session_deploy_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	latest_session_deploy_url?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	user?:
 		| {
-				/**
-				 * @type string | undefined
-				 */
 				id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				full_name?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				email?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				avatar_url?: string | undefined;
 		  }
 		| undefined;
 };
 
-/**
- * @type object
- */
 export type AgentRunnerSession = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	agent_runner_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	dev_server_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	state?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	done_at?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	title?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	prompt?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	agent_config?:
 		| {
-				/**
-				 * @type string | undefined
-				 */
 				agent?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				model?: string | undefined;
 		  }
 		| undefined;
-	/**
-	 * @type string | undefined
-	 */
 	result?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	result_diff?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	commit_sha?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	deploy_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	deploy_url?: string | undefined;
-	/**
-	 * @type integer | undefined
-	 */
 	duration?: number | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	steps?:
 		| {
-				/**
-				 * @type string | undefined
-				 */
 				title?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				message?: string | undefined;
 		  }[]
 		| undefined;
-	/**
-	 * @type object | undefined
-	 */
 	user?:
 		| {
-				/**
-				 * @type string | undefined
-				 */
 				id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				full_name?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				email?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				avatar_url?: string | undefined;
 		  }
 		| undefined;
-	/**
-	 * @type array | undefined
-	 */
 	attached_file_keys?: string[] | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	result_zip_file_name?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	is_published?: boolean | undefined;
 };
 
-/**
- * @type object
- */
 export type AgentRunnerSessionStep = {
-	/**
-	 * @type string | undefined
-	 */
 	title?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	message?: string | undefined;
 };
 
-/**
- * @type object
- */
 export type AgentRunnerSessionConfig = {
-	/**
-	 * @type string | undefined
-	 */
 	agent?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	model?: string | undefined;
 };
 
-/**
- * @type object
- */
 export type AgentRunnerUser = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	full_name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	email?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	avatar_url?: string | undefined;
 };
 
-/**
- * @type object
- */
 export type AgentRunnerHook = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	site_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	title?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	branch?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	prompt?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	agent?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	msg?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 };
 
-/**
- * @type object
- */
 export type AgentRunnerHookSetup = {
-	/**
-	 * @type string | undefined
-	 */
 	title?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	branch?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	prompt?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	agent?: string | undefined;
 };
 
 export type AgentRunnerHookCreated = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	site_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	title?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	branch?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	prompt?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	agent?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	msg?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
+} & {
 	secret?: string | undefined;
 };
 
-/**
- * @type object
- */
 export type AccountUsageCapability = {
-	/**
-	 * @type integer | undefined
-	 */
 	included?: number | undefined;
-	/**
-	 * @type integer | undefined
-	 */
 	used?: number | undefined;
 };
 
-/**
- * @type object
- */
 export type BuildSetup = {
-	/**
-	 * @type string | undefined
-	 */
 	image?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	clear_cache?: boolean | undefined;
 };
 
-/**
- * @type object
- */
 export type BuildHookSetup = {
-	/**
-	 * @type string | undefined
-	 */
 	title?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	branch?: string | undefined;
 };
 
-/**
- * @type object
- */
 export type BuildHook = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	title?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	branch?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	site_id?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 };
 
-/**
- * @type object
- */
 export type DeployedBranch = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	deploy_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	slug?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	ssl_url?: string | undefined;
 };
 
-/**
- * @type object
- */
 export type User = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	uid?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	full_name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	avatar_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	email?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	affiliate_id?: string | undefined;
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	site_count?: bigint | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	last_login?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	login_providers?: string[] | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	onboarding_progress?:
 		| {
-				/**
-				 * @type string | undefined
-				 */
 				slides?: string | undefined;
 		  }
 		| undefined;
 };
 
-/**
- * @type object
- */
 export type ErrorSchema = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
 export type ErrorResponse = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
 export type FunctionSchedule = {
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	cron?: string | undefined;
 };
 
-export const functionConfigTrafficRulesActionConfigRateLimitConfigAlgorithmEnum = {
-	sliding_window: "sliding_window",
+export const functionConfigRoutesMethodsEnum = {
+	GET: "GET",
+	POST: "POST",
+	PUT: "PUT",
+	PATCH: "PATCH",
+	DELETE: "DELETE",
+	OPTIONS: "OPTIONS",
 } as const;
 
-export type FunctionConfigTrafficRulesActionConfigRateLimitConfigAlgorithmEnumKey =
-	(typeof functionConfigTrafficRulesActionConfigRateLimitConfigAlgorithmEnum)[keyof typeof functionConfigTrafficRulesActionConfigRateLimitConfigAlgorithmEnum];
+export type FunctionConfigRoutesMethodsEnumKey =
+	(typeof functionConfigRoutesMethodsEnum)[keyof typeof functionConfigRoutesMethodsEnum];
 
-/**
- * @type object
- */
+export const functionConfigTrafficRulesActionConfigAggregateKeysTypeEnum = {
+	ip: "ip",
+	domain: "domain",
+} as const;
+
+export type FunctionConfigTrafficRulesActionConfigAggregateKeysTypeEnumKey =
+	(typeof functionConfigTrafficRulesActionConfigAggregateKeysTypeEnum)[keyof typeof functionConfigTrafficRulesActionConfigAggregateKeysTypeEnum];
+
 export type FunctionConfig = {
-	/**
-	 * @type string | undefined
-	 */
 	display_name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	generator?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	build_data?: object | undefined;
 	/**
 	 * @description The function\'s memory allocation in MB. Mutually exclusive with `vcpu`.\n
 	 * @type integer | undefined
 	 */
 	memory?: number | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	routes?:
 		| {
-				/**
-				 * @type string | undefined
-				 */
 				pattern?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				literal?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				expression?: string | undefined;
-				/**
-				 * @type array | undefined
-				 */
-				methods?: ("GET" | "POST" | "PUT" | "PATCH" | "DELETE" | "OPTIONS")[] | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
+				methods?: FunctionConfigRoutesMethodsEnumKey[] | undefined;
 				prefer_static?: boolean | undefined;
 		  }[]
 		| undefined;
-	/**
-	 * @type array | undefined
-	 */
 	excluded_routes?:
 		| {
-				/**
-				 * @type string | undefined
-				 */
 				pattern?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				literal?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				expression?: string | undefined;
 		  }[]
 		| undefined;
-	/**
-	 * @type integer | undefined
-	 */
 	priority?: number | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	region?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	traffic_rules?:
 		| {
-				/**
-				 * @type object | undefined
-				 */
 				action?:
 					| {
-							/**
-							 * @type string | undefined
-							 */
 							type?: string | undefined;
-							/**
-							 * @type object | undefined
-							 */
 							config?:
 								| {
-										/**
-										 * @type string | undefined
-										 */
 										to?: string | undefined;
-										/**
-										 * @type object | undefined
-										 */
 										rate_limit_config?:
 											| {
-													/**
-													 * @type string | undefined
-													 */
-													algorithm?:
-														| FunctionConfigTrafficRulesActionConfigRateLimitConfigAlgorithmEnumKey
-														| undefined;
-													/**
-													 * @type integer | undefined
-													 */
+													algorithm?: "sliding_window" | undefined;
 													window_size?: number | undefined;
-													/**
-													 * @type integer | undefined
-													 */
 													window_limit?: number | undefined;
 											  }
 											| undefined;
-										/**
-										 * @type object | undefined
-										 */
 										aggregate?:
 											| {
-													/**
-													 * @type array | undefined
-													 */
 													keys?:
 														| {
-																/**
-																 * @type string | undefined
-																 */
-																type?: TypeEnumKey | undefined;
+																type?:
+																	| FunctionConfigTrafficRulesActionConfigAggregateKeysTypeEnumKey
+																	| undefined;
 														  }[]
 														| undefined;
 											  }
@@ -4845,12 +2838,11 @@ export type FunctionConfig = {
 		| undefined;
 	/**
 	 * @description Number of vCPUs to provision for the function. Allowed range is\n0.5–2.\n
+	 *
+	 * Format: `float`
 	 * @type number | undefined
 	 */
 	vcpu?: number | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	event_subscriptions?: string[] | undefined;
 };
 
@@ -4866,114 +2858,47 @@ export const functionRouteMethodsEnum = {
 export type FunctionRouteMethodsEnumKey =
 	(typeof functionRouteMethodsEnum)[keyof typeof functionRouteMethodsEnum];
 
-/**
- * @type object
- */
 export type FunctionRoute = {
-	/**
-	 * @type string | undefined
-	 */
 	pattern?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	literal?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	expression?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	methods?: FunctionRouteMethodsEnumKey[] | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	prefer_static?: boolean | undefined;
 };
 
-/**
- * @type object
- */
 export type ExcludedFunctionRoute = {
-	/**
-	 * @type string | undefined
-	 */
 	pattern?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	literal?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	expression?: string | undefined;
 };
 
-export const trafficRulesConfigActionConfigRateLimitConfigAlgorithmEnum = {
-	sliding_window: "sliding_window",
+export const trafficRulesConfigActionConfigAggregateKeysTypeEnum = {
+	ip: "ip",
+	domain: "domain",
 } as const;
 
-export type TrafficRulesConfigActionConfigRateLimitConfigAlgorithmEnumKey =
-	(typeof trafficRulesConfigActionConfigRateLimitConfigAlgorithmEnum)[keyof typeof trafficRulesConfigActionConfigRateLimitConfigAlgorithmEnum];
+export type TrafficRulesConfigActionConfigAggregateKeysTypeEnumKey =
+	(typeof trafficRulesConfigActionConfigAggregateKeysTypeEnum)[keyof typeof trafficRulesConfigActionConfigAggregateKeysTypeEnum];
 
-/**
- * @type object
- */
 export type TrafficRulesConfig = {
-	/**
-	 * @type object | undefined
-	 */
 	action?:
 		| {
-				/**
-				 * @type string | undefined
-				 */
 				type?: string | undefined;
-				/**
-				 * @type object | undefined
-				 */
 				config?:
 					| {
-							/**
-							 * @type string | undefined
-							 */
 							to?: string | undefined;
-							/**
-							 * @type object | undefined
-							 */
 							rate_limit_config?:
 								| {
-										/**
-										 * @type string | undefined
-										 */
-										algorithm?:
-											| TrafficRulesConfigActionConfigRateLimitConfigAlgorithmEnumKey
-											| undefined;
-										/**
-										 * @type integer | undefined
-										 */
+										algorithm?: "sliding_window" | undefined;
 										window_size?: number | undefined;
-										/**
-										 * @type integer | undefined
-										 */
 										window_limit?: number | undefined;
 								  }
 								| undefined;
-							/**
-							 * @type object | undefined
-							 */
 							aggregate?:
 								| {
-										/**
-										 * @type array | undefined
-										 */
 										keys?:
 											| {
-													/**
-													 * @type string | undefined
-													 */
-													type?: TypeEnumKey | undefined;
+													type?: TrafficRulesConfigActionConfigAggregateKeysTypeEnumKey | undefined;
 											  }[]
 											| undefined;
 								  }
@@ -4984,129 +2909,84 @@ export type TrafficRulesConfig = {
 		| undefined;
 };
 
-export const trafficRulesRateLimitConfigAlgorithmEnum = {
-	sliding_window: "sliding_window",
-} as const;
-
-export type TrafficRulesRateLimitConfigAlgorithmEnumKey =
-	(typeof trafficRulesRateLimitConfigAlgorithmEnum)[keyof typeof trafficRulesRateLimitConfigAlgorithmEnum];
-
-/**
- * @type object
- */
 export type TrafficRulesRateLimitConfig = {
-	/**
-	 * @type string | undefined
-	 */
-	algorithm?: TrafficRulesRateLimitConfigAlgorithmEnumKey | undefined;
-	/**
-	 * @type integer | undefined
-	 */
+	algorithm?: "sliding_window" | undefined;
 	window_size?: number | undefined;
-	/**
-	 * @type integer | undefined
-	 */
 	window_limit?: number | undefined;
 };
 
-/**
- * @type object
- */
+export const trafficRulesAggregateConfigKeysTypeEnum = {
+	ip: "ip",
+	domain: "domain",
+} as const;
+
+export type TrafficRulesAggregateConfigKeysTypeEnumKey =
+	(typeof trafficRulesAggregateConfigKeysTypeEnum)[keyof typeof trafficRulesAggregateConfigKeysTypeEnum];
+
 export type TrafficRulesAggregateConfig = {
-	/**
-	 * @type array | undefined
-	 */
 	keys?:
 		| {
-				/**
-				 * @type string | undefined
-				 */
-				type?: TypeEnumKey | undefined;
+				type?: TrafficRulesAggregateConfigKeysTypeEnumKey | undefined;
 		  }[]
 		| undefined;
 };
 
-/**
- * @type object
- */
 export type SiteFunction = {
-	/**
-	 * @type string | undefined
-	 */
 	branch?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	functions?: object[] | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	log_type?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	provider?: string | undefined;
 };
 
-/**
- * @type object
- */
 export type DevServer = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	site_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	branch?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	state?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	starting_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	error_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	live_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	done_at?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	title?: string | undefined;
 };
 
@@ -5118,37 +2998,18 @@ export const devServerHookTypeEnum = {
 export type DevServerHookTypeEnumKey =
 	(typeof devServerHookTypeEnum)[keyof typeof devServerHookTypeEnum];
 
-/**
- * @type object
- */
 export type DevServerHook = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	title?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	branch?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	site_id?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	type?: DevServerHookTypeEnumKey | undefined;
 };
 
@@ -5160,45 +3021,18 @@ export const devServerHookSetupTypeEnum = {
 export type DevServerHookSetupTypeEnumKey =
 	(typeof devServerHookSetupTypeEnum)[keyof typeof devServerHookSetupTypeEnum];
 
-/**
- * @type object
- */
 export type DevServerHookSetup = {
-	/**
-	 * @type string | undefined
-	 */
 	title?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	branch?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	type?: DevServerHookSetupTypeEnumKey | undefined;
 };
 
-/**
- * @type object
- */
 export type ProviderDefinition = {
-	/**
-	 * @type string | undefined
-	 */
 	token_env_var?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	url_env_var?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	models?: string[] | undefined;
 };
 
-/**
- * @type object
- */
 export type AiGatewayToken = {
 	/**
 	 * @description The AI Gateway authentication token
@@ -5212,1162 +3046,126 @@ export type AiGatewayToken = {
 	url?: string | undefined;
 	/**
 	 * @description Unix timestamp when the token expires
+	 *
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	expires_at?: bigint | undefined;
 };
 
-/**
- * @type object
- */
-export type UpdateSiteMetadataMetadata = object;
-
-export type CreateSiteSite = {
-	/**
-	 * @type string | undefined
-	 */
-	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	state?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	plan?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	custom_domain?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
-	domain_aliases?: string[] | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	branch_deploy_custom_domain?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	deploy_preview_custom_domain?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	password?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	notification_email?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	ssl_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	admin_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	screenshot_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	created_at?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	updated_at?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	user_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	session_id?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	ssl?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	force_ssl?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	managed_dns?: boolean | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	deploy_url?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	published_deploy?:
-		| {
-				/**
-				 * @type string | undefined
-				 */
-				id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				site_id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				user_id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				build_id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				state?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				name?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				url?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				ssl_url?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				admin_url?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				deploy_url?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				deploy_ssl_url?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				screenshot_url?: string | undefined;
-				/**
-				 * @type number | undefined
-				 */
-				review_id?: number | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
-				draft?: boolean | undefined;
-				/**
-				 * @type array | undefined
-				 */
-				required?: string[] | undefined;
-				/**
-				 * @type array | undefined
-				 */
-				required_functions?: string[] | undefined;
-				/**
-				 * @description An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n
-				 * @type array | undefined
-				 */
-				required_edge_functions?: string[] | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				error_message?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				branch?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				commit_ref?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				commit_url?: string | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
-				skipped?: boolean | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				created_at?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				updated_at?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				published_at?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				title?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				context?: string | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
-				locked?: boolean | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				review_url?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				framework?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				skew_protection_token?: string | undefined;
-				/**
-				 * @type array | undefined
-				 */
-				function_schedules?:
-					| {
-							/**
-							 * @type string | undefined
-							 */
-							name?: string | undefined;
-							/**
-							 * @type string | undefined
-							 */
-							cron?: string | undefined;
-					  }[]
-					| undefined;
-				/**
-				 * @description The functions region for this deploy as an airport code.\n
-				 * @type string | undefined
-				 */
-				functions_region?: string | undefined;
-				/**
-				 * @description Functions in the deploy that explicitly specify their own region\n(airport code).\n
-				 * @type array | undefined
-				 */
-				functions_region_overrides?:
-					| {
-							/**
-							 * @type string | undefined
-							 */
-							name?: string | undefined;
-							/**
-							 * @type string | undefined
-							 */
-							region?: string | undefined;
-					  }[]
-					| undefined;
-		  }
-		| undefined;
-	/**
-	 * @type string | undefined
-	 */
-	account_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	account_name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	account_slug?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	git_provider?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	deploy_hook?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	capabilities?:
-		| {
-				[key: string]: object;
-		  }
-		| undefined;
-	/**
-	 * @type object | undefined
-	 */
-	processing_settings?:
-		| {
-				/**
-				 * @type object | undefined
-				 */
-				html?:
-					| {
-							/**
-							 * @type boolean | undefined
-							 */
-							pretty_urls?: boolean | undefined;
-					  }
-					| undefined;
-		  }
-		| undefined;
-	/**
-	 * @type object | undefined
-	 */
-	build_settings?:
-		| {
-				/**
-				 * @type integer | undefined
-				 */
-				id?: number | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				provider?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				deploy_key_id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				repo_path?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				repo_branch?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				dir?: string | undefined;
-				/**
-				 * @description The directory where Netlify can find your compiled functions to deploy them. Defaults to netlify/functions if not set. You can also define and override this setting in your project’s netlify.toml file.
-				 * @type string | undefined
-				 */
-				functions_dir?: string | undefined;
-				/**
-				 * @description The build command to run. This is the command that Netlify runs to build your site. If a site has a netlify.toml file with a build command it will override this value.
-				 * @type string | undefined
-				 */
-				cmd?: string | undefined;
-				/**
-				 * @type array | undefined
-				 */
-				allowed_branches?: string[] | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
-				public_repo?: boolean | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
-				private_logs?: boolean | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				repo_url?: string | undefined;
-				/**
-				 * @type object | undefined
-				 */
-				env?:
-					| {
-							[key: string]: string;
-					  }
-					| undefined;
-				/**
-				 * @type integer | undefined
-				 */
-				installation_id?: number | undefined;
-				/**
-				 * @description When true, Netlify will not build your project automatically. You can build locally via the CLI and then publish new deploys manually via the CLI or the API.
-				 * @type boolean | undefined
-				 */
-				stop_builds?: boolean | undefined;
-		  }
-		| undefined;
-	/**
-	 * @type string | undefined
-	 */
-	id_domain?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	default_hooks_data?:
-		| {
-				/**
-				 * @type string | undefined
-				 */
-				access_token?: string | undefined;
-		  }
-		| undefined;
-	/**
-	 * @type string | undefined
-	 */
-	build_image?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	prerender?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	functions_region?: string | undefined;
-	/**
-	 * @default false
-	 * @type boolean | undefined
-	 */
-	prevent_non_git_prod_deploys?: boolean | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	repo?:
-		| {
-				/**
-				 * @type integer | undefined
-				 */
-				id?: number | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				provider?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				deploy_key_id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				repo_path?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				repo_branch?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				dir?: string | undefined;
-				/**
-				 * @description The directory where Netlify can find your compiled functions to deploy them. Defaults to netlify/functions if not set. You can also define and override this setting in your project’s netlify.toml file.
-				 * @type string | undefined
-				 */
-				functions_dir?: string | undefined;
-				/**
-				 * @description The build command to run. This is the command that Netlify runs to build your site. If a site has a netlify.toml file with a build command it will override this value.
-				 * @type string | undefined
-				 */
-				cmd?: string | undefined;
-				/**
-				 * @type array | undefined
-				 */
-				allowed_branches?: string[] | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
-				public_repo?: boolean | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
-				private_logs?: boolean | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				repo_url?: string | undefined;
-				/**
-				 * @type object | undefined
-				 */
-				env?:
-					| {
-							[key: string]: string;
-					  }
-					| undefined;
-				/**
-				 * @type integer | undefined
-				 */
-				installation_id?: number | undefined;
-				/**
-				 * @description When true, Netlify will not build your project automatically. You can build locally via the CLI and then publish new deploys manually via the CLI or the API.
-				 * @type boolean | undefined
-				 */
-				stop_builds?: boolean | undefined;
-		  }
-		| undefined;
-};
-
-/**
- * @type object
- */
-export type CreateHookBySiteIdHook = {
-	/**
-	 * @type string | undefined
-	 */
-	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	site_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	type?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	event?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	data?: object | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	created_at?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	updated_at?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	disabled?: boolean | undefined;
-};
-
-/**
- * @type object
- */
-export type CreateSiteSnippetSnippet = {
-	/**
-	 * @type integer | undefined
-	 */
-	id?: number | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	site_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	title?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	general?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	general_position?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	goal?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	goal_position?: string | undefined;
-};
-
-/**
- * @description Request body for setting compute settings. All fields are optional; only provided fields are updated.
- * @type object
- */
-export type SetSiteDatabaseBranchComputeSettingsComputesettings = {
-	/**
-	 * @description Minimum compute units (0.25 to 16.0). Must be less than or equal to max_cu.
-	 * @type number
-	 */
-	min_cu?: (number | null) | undefined;
-	/**
-	 * @description Maximum compute units (0.25 to 16.0). Must be greater than or equal to min_cu. max_cu - min_cu must not exceed 8.0.
-	 * @type number
-	 */
-	max_cu?: (number | null) | undefined;
-	/**
-	 * @description Seconds of inactivity before the compute endpoint is suspended. Use -1 for always on, or a non-negative value.
-	 * @minLength -1
-	 * @type integer
-	 */
-	sleep_timeout_seconds?: (bigint | null) | undefined;
-};
-
-/**
- * @type object
- */
-export type CreateSiteBuildHookBuildhook = {
-	/**
-	 * @type string | undefined
-	 */
-	title?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	branch?: string | undefined;
-};
-
-/**
- * @description Deploy files can be provided in two ways:\n1. As a JSON object using \'files\' (a hash mapping file paths to SHA1 digests), OR\n2. As a zip file using one of these methods:\n   - Set Content-Type to \'application/zip\' and send the zip file as the raw request body\n   - Include the zip file content in the \'zip\' field of this JSON object with Content-Type \'application/json\'\n
- * @type object
- */
-export type CreateSiteDeployDeploy = {
-	/**
-	 * @description A hash mapping file paths to SHA1 digests of the file contents.
-	 * @type object | undefined
-	 */
-	files?: object | undefined;
-	/**
-	 * @description A zip file containing the site files to deploy. Alternative to \'files\'.\nTo use this field, set Content-Type to \'application/json\' and include the zip content here.\nAlternatively, you can set Content-Type to \'application/zip\' and send the zip as the raw request body (not as JSON).\n
-	 * @type string | undefined
-	 */
-	zip?: Blob | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	draft?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
-	async?: boolean | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	functions?: object | undefined;
-	/**
-	 * @description A hash mapping edge-function bundle formats to the code_sha of each bundle. The\nresponse\'s required_edge_functions lists which of these still need to be uploaded.\n
-	 * @type object | undefined
-	 */
-	edge_functions?: object | undefined;
-	/**
-	 * @type array | undefined
-	 */
-	function_schedules?:
-		| {
-				/**
-				 * @type string | undefined
-				 */
-				name?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
-				cron?: string | undefined;
-		  }[]
-		| undefined;
-	/**
-	 * @type object | undefined
-	 */
-	functions_config?:
-		| {
-				[key: string]: {
-					/**
-					 * @type string | undefined
-					 */
-					display_name?: string | undefined;
-					/**
-					 * @type string | undefined
-					 */
-					generator?: string | undefined;
-					/**
-					 * @type object | undefined
-					 */
-					build_data?: object | undefined;
-					/**
-					 * @description The function\'s memory allocation in MB. Mutually exclusive with `vcpu`.\n
-					 * @type integer | undefined
-					 */
-					memory?: number | undefined;
-					/**
-					 * @type array | undefined
-					 */
-					routes?:
-						| {
-								/**
-								 * @type string | undefined
-								 */
-								pattern?: string | undefined;
-								/**
-								 * @type string | undefined
-								 */
-								literal?: string | undefined;
-								/**
-								 * @type string | undefined
-								 */
-								expression?: string | undefined;
-								/**
-								 * @type array | undefined
-								 */
-								methods?: ("GET" | "POST" | "PUT" | "PATCH" | "DELETE" | "OPTIONS")[] | undefined;
-								/**
-								 * @type boolean | undefined
-								 */
-								prefer_static?: boolean | undefined;
-						  }[]
-						| undefined;
-					/**
-					 * @type array | undefined
-					 */
-					excluded_routes?:
-						| {
-								/**
-								 * @type string | undefined
-								 */
-								pattern?: string | undefined;
-								/**
-								 * @type string | undefined
-								 */
-								literal?: string | undefined;
-								/**
-								 * @type string | undefined
-								 */
-								expression?: string | undefined;
-						  }[]
-						| undefined;
-					/**
-					 * @type integer | undefined
-					 */
-					priority?: number | undefined;
-					/**
-					 * @type string | undefined
-					 */
-					region?: string | undefined;
-					/**
-					 * @type object | undefined
-					 */
-					traffic_rules?:
-						| {
-								/**
-								 * @type object | undefined
-								 */
-								action?:
-									| {
-											/**
-											 * @type string | undefined
-											 */
-											type?: string | undefined;
-											/**
-											 * @type object | undefined
-											 */
-											config?:
-												| {
-														/**
-														 * @type string | undefined
-														 */
-														to?: string | undefined;
-														/**
-														 * @type object | undefined
-														 */
-														rate_limit_config?:
-															| {
-																	/**
-																	 * @type string | undefined
-																	 */
-																	algorithm?: AlgorithmEnumKey | undefined;
-																	/**
-																	 * @type integer | undefined
-																	 */
-																	window_size?: number | undefined;
-																	/**
-																	 * @type integer | undefined
-																	 */
-																	window_limit?: number | undefined;
-															  }
-															| undefined;
-														/**
-														 * @type object | undefined
-														 */
-														aggregate?:
-															| {
-																	/**
-																	 * @type array | undefined
-																	 */
-																	keys?:
-																		| {
-																				/**
-																				 * @type string | undefined
-																				 */
-																				type?: TypeEnumKey | undefined;
-																		  }[]
-																		| undefined;
-															  }
-															| undefined;
-												  }
-												| undefined;
-									  }
-									| undefined;
-						  }
-						| undefined;
-					/**
-					 * @description Number of vCPUs to provision for the function. Allowed range is\n0.5–2.\n
-					 * @type number | undefined
-					 */
-					vcpu?: number | undefined;
-					/**
-					 * @type array | undefined
-					 */
-					event_subscriptions?: string[] | undefined;
-				};
-		  }
-		| undefined;
-	/**
-	 * @type string | undefined
-	 */
-	branch?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	framework?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	framework_version?: string | undefined;
-	/**
-	 * @description A list of deploy-specific environment variable data. Data specified this way applies only\nto this specific deploy and is merged into any existing environment variables set on the\naccount and site.\n\nDeploy-specific environment variable data takes precedence over account and site\nenvironment variable data: For example, a deploy-specific variable with the key `NODE_ENV`\nwill take priority over any existing site- and account-level environment variable data\nwith the key `NODE_ENV`.\n\nEnvironment variable data may be provided at one of two times:\n\n- When creating a new Deploy with deploy files (most common)\n- When finalizing an existing Deploy with deploy files\n\nOnce set, environment variables for a specific deploy cannot be modified. Subsequent\nattempts to modify environment variable data for a deploy will be ignored.\n
-	 * @type array | undefined
-	 */
-	environment?:
-		| {
-				/**
-				 * @type string
-				 */
-				key: string;
-				/**
-				 * @type string
-				 */
-				value: string;
-				/**
-				 * @type boolean
-				 */
-				is_secret: boolean;
-				/**
-				 * @type array
-				 */
-				scopes: ("builds" | "functions" | "runtime" | "post-processing")[];
-		  }[]
-		| undefined;
-};
-
-/**
- * @type object
- */
-export type CreateSplitTestBranchTests = {
-	/**
-	 * @type object | undefined
-	 */
-	branch_tests?: object | undefined;
-};
-
-export const createSiteDevServerHookDevserverhookTypeEnum = {
-	new_dev_server: "new_dev_server",
-	content_refresh: "content_refresh",
+export const listSitesFilter = {
+	all: "all",
+	owner: "owner",
+	guest: "guest",
 } as const;
 
-export type CreateSiteDevServerHookDevserverhookTypeEnumKey =
-	(typeof createSiteDevServerHookDevserverhookTypeEnum)[keyof typeof createSiteDevServerHookDevserverhookTypeEnum];
+export type ListSitesFilterKey = (typeof listSitesFilter)[keyof typeof listSitesFilter];
 
-/**
- * @type object
- */
-export type CreateSiteDevServerHookDevserverhook = {
-	/**
-	 * @type string | undefined
-	 */
-	title?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	branch?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	type?: CreateSiteDevServerHookDevserverhookTypeEnumKey | undefined;
-};
-
-/**
- * @type object
- */
-export type CreateSiteAgentRunnerHookAgentrunnerhook = {
-	/**
-	 * @type string | undefined
-	 */
-	title?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	branch?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	prompt?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	agent?: string | undefined;
-};
-
-/**
- * @type string | undefined
- */
-export type ListSitesQueryName = string | undefined;
-
-/**
- * @type string | undefined
- */
-export type ListSitesQueryFilter = ("all" | "owner" | "guest") | undefined;
-
-/**
- * @type integer | undefined
- */
-export type ListSitesQueryPage = number | undefined;
-
-/**
- * @type integer | undefined
- */
-export type ListSitesQueryPerPage = number | undefined;
-
-/**
- * @type array
- */
-export type ListSitesStatus200 = {
-	/**
-	 * @type string | undefined
-	 */
-	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	state?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	plan?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
+export type ListSitesQuery = {
 	name?: string | undefined;
+	filter?: ListSitesFilterKey | undefined;
 	/**
-	 * @type string | undefined
+	 * @description
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
+	page?: number | undefined;
+	/**
+	 * @description
+	 * Format: `int32`
+	 * @type integer | undefined
+	 */
+	per_page?: number | undefined;
+};
+
+export type ListSitesStatus200 = {
+	id?: string | undefined;
+	state?: string | undefined;
+	plan?: string | undefined;
+	name?: string | undefined;
 	custom_domain?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	domain_aliases?: string[] | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	branch_deploy_custom_domain?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	deploy_preview_custom_domain?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	password?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	notification_email?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	ssl_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	admin_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	screenshot_url?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	user_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	session_id?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	ssl?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	force_ssl?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	managed_dns?: boolean | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	deploy_url?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	published_deploy?:
 		| {
-				/**
-				 * @type string | undefined
-				 */
 				id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				site_id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				user_id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				build_id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				state?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				name?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				url?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				ssl_url?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				admin_url?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				deploy_url?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				deploy_ssl_url?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				screenshot_url?: string | undefined;
-				/**
-				 * @type number | undefined
-				 */
 				review_id?: number | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
 				draft?: boolean | undefined;
-				/**
-				 * @type array | undefined
-				 */
 				required?: string[] | undefined;
-				/**
-				 * @type array | undefined
-				 */
 				required_functions?: string[] | undefined;
 				/**
 				 * @description An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n
 				 * @type array | undefined
 				 */
 				required_edge_functions?: string[] | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				error_message?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				branch?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				commit_ref?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				commit_url?: string | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
 				skipped?: boolean | undefined;
 				/**
+				 * @description
+				 * Format: `dateTime`
 				 * @type string | undefined
 				 */
 				created_at?: string | undefined;
 				/**
+				 * @description
+				 * Format: `dateTime`
 				 * @type string | undefined
 				 */
 				updated_at?: string | undefined;
 				/**
+				 * @description
+				 * Format: `dateTime`
 				 * @type string | undefined
 				 */
 				published_at?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				title?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				context?: string | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
 				locked?: boolean | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				review_url?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				framework?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				skew_protection_token?: string | undefined;
-				/**
-				 * @type array | undefined
-				 */
 				function_schedules?:
 					| {
-							/**
-							 * @type string | undefined
-							 */
 							name?: string | undefined;
-							/**
-							 * @type string | undefined
-							 */
 							cron?: string | undefined;
 					  }[]
 					| undefined;
@@ -6382,92 +3180,38 @@ export type ListSitesStatus200 = {
 				 */
 				functions_region_overrides?:
 					| {
-							/**
-							 * @type string | undefined
-							 */
 							name?: string | undefined;
-							/**
-							 * @type string | undefined
-							 */
 							region?: string | undefined;
 					  }[]
 					| undefined;
 		  }
 		| undefined;
-	/**
-	 * @type string | undefined
-	 */
 	account_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	account_name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	account_slug?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	git_provider?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	deploy_hook?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	capabilities?:
 		| {
 				[key: string]: object;
 		  }
 		| undefined;
-	/**
-	 * @type object | undefined
-	 */
 	processing_settings?:
 		| {
-				/**
-				 * @type object | undefined
-				 */
 				html?:
 					| {
-							/**
-							 * @type boolean | undefined
-							 */
 							pretty_urls?: boolean | undefined;
 					  }
 					| undefined;
 		  }
 		| undefined;
-	/**
-	 * @type object | undefined
-	 */
 	build_settings?:
 		| {
-				/**
-				 * @type integer | undefined
-				 */
 				id?: number | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				provider?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				deploy_key_id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				repo_path?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				repo_branch?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				dir?: string | undefined;
 				/**
 				 * @description The directory where Netlify can find your compiled functions to deploy them. Defaults to netlify/functions if not set. You can also define and override this setting in your project’s netlify.toml file.
@@ -6479,33 +3223,15 @@ export type ListSitesStatus200 = {
 				 * @type string | undefined
 				 */
 				cmd?: string | undefined;
-				/**
-				 * @type array | undefined
-				 */
 				allowed_branches?: string[] | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
 				public_repo?: boolean | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
 				private_logs?: boolean | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				repo_url?: string | undefined;
-				/**
-				 * @type object | undefined
-				 */
 				env?:
 					| {
 							[key: string]: string;
 					  }
 					| undefined;
-				/**
-				 * @type integer | undefined
-				 */
 				installation_id?: number | undefined;
 				/**
 				 * @description When true, Netlify will not build your project automatically. You can build locally via the CLI and then publish new deploys manually via the CLI or the API.
@@ -6514,32 +3240,14 @@ export type ListSitesStatus200 = {
 				stop_builds?: boolean | undefined;
 		  }
 		| undefined;
-	/**
-	 * @type string | undefined
-	 */
 	id_domain?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	default_hooks_data?:
 		| {
-				/**
-				 * @type string | undefined
-				 */
 				access_token?: string | undefined;
 		  }
 		| undefined;
-	/**
-	 * @type string | undefined
-	 */
 	build_image?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	prerender?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	functions_region?: string | undefined;
 	/**
 	 * @default false
@@ -6548,47 +3256,23 @@ export type ListSitesStatus200 = {
 	prevent_non_git_prod_deploys?: boolean | undefined;
 }[];
 
-/**
- * @type object
- */
 export type ListSitesStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type ListSitesRequestConfig = {
-	data?: never | undefined;
-	pathParams?: never | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				name?: ListSitesQueryName | undefined;
-				filter?: ListSitesQueryFilter | undefined;
-				page?: ListSitesQueryPage | undefined;
-				per_page?: ListSitesQueryPerPage | undefined;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: "/sites";
+export type ListSitesOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query?: ListSitesQuery | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type ListSitesResponses = {
 	"200": ListSitesStatus200;
 	default: ListSitesStatusDefault;
@@ -6599,245 +3283,98 @@ export type ListSitesResponses = {
  */
 export type ListSitesResponse = ListSitesStatus200 | ListSitesStatusDefault;
 
-/**
- * @type boolean | undefined
- */
-export type CreateSiteQueryConfigureDns = boolean | undefined;
+export type CreateSiteQuery = {
+	configure_dns?: boolean | undefined;
+};
 
-/**
- * @type object
- */
 export type CreateSiteStatus201 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	state?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	plan?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	custom_domain?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	domain_aliases?: string[] | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	branch_deploy_custom_domain?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	deploy_preview_custom_domain?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	password?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	notification_email?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	ssl_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	admin_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	screenshot_url?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	user_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	session_id?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	ssl?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	force_ssl?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	managed_dns?: boolean | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	deploy_url?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	published_deploy?:
 		| {
-				/**
-				 * @type string | undefined
-				 */
 				id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				site_id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				user_id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				build_id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				state?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				name?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				url?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				ssl_url?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				admin_url?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				deploy_url?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				deploy_ssl_url?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				screenshot_url?: string | undefined;
-				/**
-				 * @type number | undefined
-				 */
 				review_id?: number | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
 				draft?: boolean | undefined;
-				/**
-				 * @type array | undefined
-				 */
 				required?: string[] | undefined;
-				/**
-				 * @type array | undefined
-				 */
 				required_functions?: string[] | undefined;
 				/**
 				 * @description An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n
 				 * @type array | undefined
 				 */
 				required_edge_functions?: string[] | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				error_message?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				branch?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				commit_ref?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				commit_url?: string | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
 				skipped?: boolean | undefined;
 				/**
+				 * @description
+				 * Format: `dateTime`
 				 * @type string | undefined
 				 */
 				created_at?: string | undefined;
 				/**
+				 * @description
+				 * Format: `dateTime`
 				 * @type string | undefined
 				 */
 				updated_at?: string | undefined;
 				/**
+				 * @description
+				 * Format: `dateTime`
 				 * @type string | undefined
 				 */
 				published_at?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				title?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				context?: string | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
 				locked?: boolean | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				review_url?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				framework?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				skew_protection_token?: string | undefined;
-				/**
-				 * @type array | undefined
-				 */
 				function_schedules?:
 					| {
-							/**
-							 * @type string | undefined
-							 */
 							name?: string | undefined;
-							/**
-							 * @type string | undefined
-							 */
 							cron?: string | undefined;
 					  }[]
 					| undefined;
@@ -6852,92 +3389,38 @@ export type CreateSiteStatus201 = {
 				 */
 				functions_region_overrides?:
 					| {
-							/**
-							 * @type string | undefined
-							 */
 							name?: string | undefined;
-							/**
-							 * @type string | undefined
-							 */
 							region?: string | undefined;
 					  }[]
 					| undefined;
 		  }
 		| undefined;
-	/**
-	 * @type string | undefined
-	 */
 	account_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	account_name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	account_slug?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	git_provider?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	deploy_hook?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	capabilities?:
 		| {
 				[key: string]: object;
 		  }
 		| undefined;
-	/**
-	 * @type object | undefined
-	 */
 	processing_settings?:
 		| {
-				/**
-				 * @type object | undefined
-				 */
 				html?:
 					| {
-							/**
-							 * @type boolean | undefined
-							 */
 							pretty_urls?: boolean | undefined;
 					  }
 					| undefined;
 		  }
 		| undefined;
-	/**
-	 * @type object | undefined
-	 */
 	build_settings?:
 		| {
-				/**
-				 * @type integer | undefined
-				 */
 				id?: number | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				provider?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				deploy_key_id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				repo_path?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				repo_branch?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				dir?: string | undefined;
 				/**
 				 * @description The directory where Netlify can find your compiled functions to deploy them. Defaults to netlify/functions if not set. You can also define and override this setting in your project’s netlify.toml file.
@@ -6949,33 +3432,15 @@ export type CreateSiteStatus201 = {
 				 * @type string | undefined
 				 */
 				cmd?: string | undefined;
-				/**
-				 * @type array | undefined
-				 */
 				allowed_branches?: string[] | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
 				public_repo?: boolean | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
 				private_logs?: boolean | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				repo_url?: string | undefined;
-				/**
-				 * @type object | undefined
-				 */
 				env?:
 					| {
 							[key: string]: string;
 					  }
 					| undefined;
-				/**
-				 * @type integer | undefined
-				 */
 				installation_id?: number | undefined;
 				/**
 				 * @description When true, Netlify will not build your project automatically. You can build locally via the CLI and then publish new deploys manually via the CLI or the API.
@@ -6984,32 +3449,14 @@ export type CreateSiteStatus201 = {
 				stop_builds?: boolean | undefined;
 		  }
 		| undefined;
-	/**
-	 * @type string | undefined
-	 */
 	id_domain?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	default_hooks_data?:
 		| {
-				/**
-				 * @type string | undefined
-				 */
 				access_token?: string | undefined;
 		  }
 		| undefined;
-	/**
-	 * @type string | undefined
-	 */
 	build_image?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	prerender?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	functions_region?: string | undefined;
 	/**
 	 * @default false
@@ -7018,531 +3465,237 @@ export type CreateSiteStatus201 = {
 	prevent_non_git_prod_deploys?: boolean | undefined;
 };
 
-/**
- * @type object
- */
 export type CreateSiteStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-export type CreateSiteData =
-	| {
-			/**
-			 * @type string | undefined
-			 */
-			id?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			state?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			plan?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			name?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			custom_domain?: string | undefined;
-			/**
-			 * @type array | undefined
-			 */
-			domain_aliases?: string[] | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			branch_deploy_custom_domain?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			deploy_preview_custom_domain?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			password?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			notification_email?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			url?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			ssl_url?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			admin_url?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			screenshot_url?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			created_at?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			updated_at?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			user_id?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			session_id?: string | undefined;
-			/**
-			 * @type boolean | undefined
-			 */
-			ssl?: boolean | undefined;
-			/**
-			 * @type boolean | undefined
-			 */
-			force_ssl?: boolean | undefined;
-			/**
-			 * @type boolean | undefined
-			 */
-			managed_dns?: boolean | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			deploy_url?: string | undefined;
-			/**
-			 * @type object | undefined
-			 */
-			published_deploy?:
-				| {
-						/**
-						 * @type string | undefined
-						 */
-						id?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						site_id?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						user_id?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						build_id?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						state?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						name?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						url?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						ssl_url?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						admin_url?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						deploy_url?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						deploy_ssl_url?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						screenshot_url?: string | undefined;
-						/**
-						 * @type number | undefined
-						 */
-						review_id?: number | undefined;
-						/**
-						 * @type boolean | undefined
-						 */
-						draft?: boolean | undefined;
-						/**
-						 * @type array | undefined
-						 */
-						required?: string[] | undefined;
-						/**
-						 * @type array | undefined
-						 */
-						required_functions?: string[] | undefined;
-						/**
-						 * @description An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n
-						 * @type array | undefined
-						 */
-						required_edge_functions?: string[] | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						error_message?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						branch?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						commit_ref?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						commit_url?: string | undefined;
-						/**
-						 * @type boolean | undefined
-						 */
-						skipped?: boolean | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						created_at?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						updated_at?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						published_at?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						title?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						context?: string | undefined;
-						/**
-						 * @type boolean | undefined
-						 */
-						locked?: boolean | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						review_url?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						framework?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						skew_protection_token?: string | undefined;
-						/**
-						 * @type array | undefined
-						 */
-						function_schedules?:
-							| {
-									/**
-									 * @type string | undefined
-									 */
-									name?: string | undefined;
-									/**
-									 * @type string | undefined
-									 */
-									cron?: string | undefined;
-							  }[]
-							| undefined;
-						/**
-						 * @description The functions region for this deploy as an airport code.\n
-						 * @type string | undefined
-						 */
-						functions_region?: string | undefined;
-						/**
-						 * @description Functions in the deploy that explicitly specify their own region\n(airport code).\n
-						 * @type array | undefined
-						 */
-						functions_region_overrides?:
-							| {
-									/**
-									 * @type string | undefined
-									 */
-									name?: string | undefined;
-									/**
-									 * @type string | undefined
-									 */
-									region?: string | undefined;
-							  }[]
-							| undefined;
-				  }
-				| undefined;
-			/**
-			 * @type string | undefined
-			 */
-			account_id?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			account_name?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			account_slug?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			git_provider?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			deploy_hook?: string | undefined;
-			/**
-			 * @type object | undefined
-			 */
-			capabilities?:
-				| {
-						[key: string]: object;
-				  }
-				| undefined;
-			/**
-			 * @type object | undefined
-			 */
-			processing_settings?:
-				| {
-						/**
-						 * @type object | undefined
-						 */
-						html?:
-							| {
-									/**
-									 * @type boolean | undefined
-									 */
-									pretty_urls?: boolean | undefined;
-							  }
-							| undefined;
-				  }
-				| undefined;
-			/**
-			 * @type object | undefined
-			 */
-			build_settings?:
-				| {
-						/**
-						 * @type integer | undefined
-						 */
-						id?: number | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						provider?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						deploy_key_id?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						repo_path?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						repo_branch?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						dir?: string | undefined;
-						/**
-						 * @description The directory where Netlify can find your compiled functions to deploy them. Defaults to netlify/functions if not set. You can also define and override this setting in your project’s netlify.toml file.
-						 * @type string | undefined
-						 */
-						functions_dir?: string | undefined;
-						/**
-						 * @description The build command to run. This is the command that Netlify runs to build your site. If a site has a netlify.toml file with a build command it will override this value.
-						 * @type string | undefined
-						 */
-						cmd?: string | undefined;
-						/**
-						 * @type array | undefined
-						 */
-						allowed_branches?: string[] | undefined;
-						/**
-						 * @type boolean | undefined
-						 */
-						public_repo?: boolean | undefined;
-						/**
-						 * @type boolean | undefined
-						 */
-						private_logs?: boolean | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						repo_url?: string | undefined;
-						/**
-						 * @type object | undefined
-						 */
-						env?:
-							| {
-									[key: string]: string;
-							  }
-							| undefined;
-						/**
-						 * @type integer | undefined
-						 */
-						installation_id?: number | undefined;
-						/**
-						 * @description When true, Netlify will not build your project automatically. You can build locally via the CLI and then publish new deploys manually via the CLI or the API.
-						 * @type boolean | undefined
-						 */
-						stop_builds?: boolean | undefined;
-				  }
-				| undefined;
-			/**
-			 * @type string | undefined
-			 */
-			id_domain?: string | undefined;
-			/**
-			 * @type object | undefined
-			 */
-			default_hooks_data?:
-				| {
-						/**
-						 * @type string | undefined
-						 */
-						access_token?: string | undefined;
-				  }
-				| undefined;
-			/**
-			 * @type string | undefined
-			 */
-			build_image?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			prerender?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			functions_region?: string | undefined;
-			/**
-			 * @default false
-			 * @type boolean | undefined
-			 */
-			prevent_non_git_prod_deploys?: boolean | undefined;
-			/**
-			 * @type object | undefined
-			 */
-			repo?:
-				| {
-						/**
-						 * @type integer | undefined
-						 */
-						id?: number | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						provider?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						deploy_key_id?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						repo_path?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						repo_branch?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						dir?: string | undefined;
-						/**
-						 * @description The directory where Netlify can find your compiled functions to deploy them. Defaults to netlify/functions if not set. You can also define and override this setting in your project’s netlify.toml file.
-						 * @type string | undefined
-						 */
-						functions_dir?: string | undefined;
-						/**
-						 * @description The build command to run. This is the command that Netlify runs to build your site. If a site has a netlify.toml file with a build command it will override this value.
-						 * @type string | undefined
-						 */
-						cmd?: string | undefined;
-						/**
-						 * @type array | undefined
-						 */
-						allowed_branches?: string[] | undefined;
-						/**
-						 * @type boolean | undefined
-						 */
-						public_repo?: boolean | undefined;
-						/**
-						 * @type boolean | undefined
-						 */
-						private_logs?: boolean | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						repo_url?: string | undefined;
-						/**
-						 * @type object | undefined
-						 */
-						env?:
-							| {
-									[key: string]: string;
-							  }
-							| undefined;
-						/**
-						 * @type integer | undefined
-						 */
-						installation_id?: number | undefined;
-						/**
-						 * @description When true, Netlify will not build your project automatically. You can build locally via the CLI and then publish new deploys manually via the CLI or the API.
-						 * @type boolean | undefined
-						 */
-						stop_builds?: boolean | undefined;
-				  }
-				| undefined;
-	  }
-	| undefined;
-
-/**
- * @type object
- */
-export type CreateSiteRequestConfig = {
-	data?: CreateSiteData | undefined;
-	pathParams?: never | undefined;
+export type CreateSiteBody = {
+	id?: string | undefined;
+	state?: string | undefined;
+	plan?: string | undefined;
+	name?: string | undefined;
+	custom_domain?: string | undefined;
+	domain_aliases?: string[] | undefined;
+	branch_deploy_custom_domain?: string | undefined;
+	deploy_preview_custom_domain?: string | undefined;
+	password?: string | undefined;
+	notification_email?: string | undefined;
+	url?: string | undefined;
+	ssl_url?: string | undefined;
+	admin_url?: string | undefined;
+	screenshot_url?: string | undefined;
 	/**
-	 * @type object | undefined
+	 * @description
+	 * Format: `dateTime`
+	 * @type string | undefined
 	 */
-	queryParams?:
+	created_at?: string | undefined;
+	/**
+	 * @description
+	 * Format: `dateTime`
+	 * @type string | undefined
+	 */
+	updated_at?: string | undefined;
+	user_id?: string | undefined;
+	session_id?: string | undefined;
+	ssl?: boolean | undefined;
+	force_ssl?: boolean | undefined;
+	managed_dns?: boolean | undefined;
+	deploy_url?: string | undefined;
+	published_deploy?:
 		| {
-				configure_dns?: CreateSiteQueryConfigureDns | undefined;
+				id?: string | undefined;
+				site_id?: string | undefined;
+				user_id?: string | undefined;
+				build_id?: string | undefined;
+				state?: string | undefined;
+				name?: string | undefined;
+				url?: string | undefined;
+				ssl_url?: string | undefined;
+				admin_url?: string | undefined;
+				deploy_url?: string | undefined;
+				deploy_ssl_url?: string | undefined;
+				screenshot_url?: string | undefined;
+				review_id?: number | undefined;
+				draft?: boolean | undefined;
+				required?: string[] | undefined;
+				required_functions?: string[] | undefined;
+				/**
+				 * @description An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n
+				 * @type array | undefined
+				 */
+				required_edge_functions?: string[] | undefined;
+				error_message?: string | undefined;
+				branch?: string | undefined;
+				commit_ref?: string | undefined;
+				commit_url?: string | undefined;
+				skipped?: boolean | undefined;
+				/**
+				 * @description
+				 * Format: `dateTime`
+				 * @type string | undefined
+				 */
+				created_at?: string | undefined;
+				/**
+				 * @description
+				 * Format: `dateTime`
+				 * @type string | undefined
+				 */
+				updated_at?: string | undefined;
+				/**
+				 * @description
+				 * Format: `dateTime`
+				 * @type string | undefined
+				 */
+				published_at?: string | undefined;
+				title?: string | undefined;
+				context?: string | undefined;
+				locked?: boolean | undefined;
+				review_url?: string | undefined;
+				framework?: string | undefined;
+				skew_protection_token?: string | undefined;
+				function_schedules?:
+					| {
+							name?: string | undefined;
+							cron?: string | undefined;
+					  }[]
+					| undefined;
+				/**
+				 * @description The functions region for this deploy as an airport code.\n
+				 * @type string | undefined
+				 */
+				functions_region?: string | undefined;
+				/**
+				 * @description Functions in the deploy that explicitly specify their own region\n(airport code).\n
+				 * @type array | undefined
+				 */
+				functions_region_overrides?:
+					| {
+							name?: string | undefined;
+							region?: string | undefined;
+					  }[]
+					| undefined;
 		  }
 		| undefined;
-	headerParams?: never | undefined;
+	account_id?: string | undefined;
+	account_name?: string | undefined;
+	account_slug?: string | undefined;
+	git_provider?: string | undefined;
+	deploy_hook?: string | undefined;
+	capabilities?:
+		| {
+				[key: string]: object;
+		  }
+		| undefined;
+	processing_settings?:
+		| {
+				html?:
+					| {
+							pretty_urls?: boolean | undefined;
+					  }
+					| undefined;
+		  }
+		| undefined;
+	build_settings?:
+		| {
+				id?: number | undefined;
+				provider?: string | undefined;
+				deploy_key_id?: string | undefined;
+				repo_path?: string | undefined;
+				repo_branch?: string | undefined;
+				dir?: string | undefined;
+				/**
+				 * @description The directory where Netlify can find your compiled functions to deploy them. Defaults to netlify/functions if not set. You can also define and override this setting in your project’s netlify.toml file.
+				 * @type string | undefined
+				 */
+				functions_dir?: string | undefined;
+				/**
+				 * @description The build command to run. This is the command that Netlify runs to build your site. If a site has a netlify.toml file with a build command it will override this value.
+				 * @type string | undefined
+				 */
+				cmd?: string | undefined;
+				allowed_branches?: string[] | undefined;
+				public_repo?: boolean | undefined;
+				private_logs?: boolean | undefined;
+				repo_url?: string | undefined;
+				env?:
+					| {
+							[key: string]: string;
+					  }
+					| undefined;
+				installation_id?: number | undefined;
+				/**
+				 * @description When true, Netlify will not build your project automatically. You can build locally via the CLI and then publish new deploys manually via the CLI or the API.
+				 * @type boolean | undefined
+				 */
+				stop_builds?: boolean | undefined;
+		  }
+		| undefined;
+	id_domain?: string | undefined;
+	default_hooks_data?:
+		| {
+				access_token?: string | undefined;
+		  }
+		| undefined;
+	build_image?: string | undefined;
+	prerender?: string | undefined;
+	functions_region?: string | undefined;
 	/**
-	 * @type string
+	 * @default false
+	 * @type boolean | undefined
 	 */
-	url: "/sites";
+	prevent_non_git_prod_deploys?: boolean | undefined;
+} & {
+	repo?:
+		| {
+				id?: number | undefined;
+				provider?: string | undefined;
+				deploy_key_id?: string | undefined;
+				repo_path?: string | undefined;
+				repo_branch?: string | undefined;
+				dir?: string | undefined;
+				/**
+				 * @description The directory where Netlify can find your compiled functions to deploy them. Defaults to netlify/functions if not set. You can also define and override this setting in your project’s netlify.toml file.
+				 * @type string | undefined
+				 */
+				functions_dir?: string | undefined;
+				/**
+				 * @description The build command to run. This is the command that Netlify runs to build your site. If a site has a netlify.toml file with a build command it will override this value.
+				 * @type string | undefined
+				 */
+				cmd?: string | undefined;
+				allowed_branches?: string[] | undefined;
+				public_repo?: boolean | undefined;
+				private_logs?: boolean | undefined;
+				repo_url?: string | undefined;
+				env?:
+					| {
+							[key: string]: string;
+					  }
+					| undefined;
+				installation_id?: number | undefined;
+				/**
+				 * @description When true, Netlify will not build your project automatically. You can build locally via the CLI and then publish new deploys manually via the CLI or the API.
+				 * @type boolean | undefined
+				 */
+				stop_builds?: boolean | undefined;
+		  }
+		| undefined;
 };
 
-/**
- * @type object
- */
+export type CreateSiteOptions = {
+	body: CreateSiteBody;
+	path?: never | undefined;
+	query?: CreateSiteQuery | undefined;
+	headers?: never | undefined;
+};
+
 export type CreateSiteResponses = {
 	"201": CreateSiteStatus201;
 	default: CreateSiteStatusDefault;
@@ -7553,250 +3706,102 @@ export type CreateSiteResponses = {
  */
 export type CreateSiteResponse = CreateSiteStatus201 | CreateSiteStatusDefault;
 
-/**
- * @type string
- */
-export type GetSitePathSiteId = string;
+export type GetSitePath = {
+	site_id: string;
+};
 
-/**
- * @type string | undefined
- */
-export type GetSiteQueryFeatureFlags = string | undefined;
+export type GetSiteQuery = {
+	feature_flags?: string | undefined;
+};
 
-/**
- * @type object
- */
 export type GetSiteStatus200 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	state?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	plan?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	custom_domain?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	domain_aliases?: string[] | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	branch_deploy_custom_domain?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	deploy_preview_custom_domain?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	password?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	notification_email?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	ssl_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	admin_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	screenshot_url?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	user_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	session_id?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	ssl?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	force_ssl?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	managed_dns?: boolean | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	deploy_url?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	published_deploy?:
 		| {
-				/**
-				 * @type string | undefined
-				 */
 				id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				site_id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				user_id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				build_id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				state?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				name?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				url?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				ssl_url?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				admin_url?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				deploy_url?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				deploy_ssl_url?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				screenshot_url?: string | undefined;
-				/**
-				 * @type number | undefined
-				 */
 				review_id?: number | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
 				draft?: boolean | undefined;
-				/**
-				 * @type array | undefined
-				 */
 				required?: string[] | undefined;
-				/**
-				 * @type array | undefined
-				 */
 				required_functions?: string[] | undefined;
 				/**
 				 * @description An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n
 				 * @type array | undefined
 				 */
 				required_edge_functions?: string[] | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				error_message?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				branch?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				commit_ref?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				commit_url?: string | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
 				skipped?: boolean | undefined;
 				/**
+				 * @description
+				 * Format: `dateTime`
 				 * @type string | undefined
 				 */
 				created_at?: string | undefined;
 				/**
+				 * @description
+				 * Format: `dateTime`
 				 * @type string | undefined
 				 */
 				updated_at?: string | undefined;
 				/**
+				 * @description
+				 * Format: `dateTime`
 				 * @type string | undefined
 				 */
 				published_at?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				title?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				context?: string | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
 				locked?: boolean | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				review_url?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				framework?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				skew_protection_token?: string | undefined;
-				/**
-				 * @type array | undefined
-				 */
 				function_schedules?:
 					| {
-							/**
-							 * @type string | undefined
-							 */
 							name?: string | undefined;
-							/**
-							 * @type string | undefined
-							 */
 							cron?: string | undefined;
 					  }[]
 					| undefined;
@@ -7811,92 +3816,38 @@ export type GetSiteStatus200 = {
 				 */
 				functions_region_overrides?:
 					| {
-							/**
-							 * @type string | undefined
-							 */
 							name?: string | undefined;
-							/**
-							 * @type string | undefined
-							 */
 							region?: string | undefined;
 					  }[]
 					| undefined;
 		  }
 		| undefined;
-	/**
-	 * @type string | undefined
-	 */
 	account_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	account_name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	account_slug?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	git_provider?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	deploy_hook?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	capabilities?:
 		| {
 				[key: string]: object;
 		  }
 		| undefined;
-	/**
-	 * @type object | undefined
-	 */
 	processing_settings?:
 		| {
-				/**
-				 * @type object | undefined
-				 */
 				html?:
 					| {
-							/**
-							 * @type boolean | undefined
-							 */
 							pretty_urls?: boolean | undefined;
 					  }
 					| undefined;
 		  }
 		| undefined;
-	/**
-	 * @type object | undefined
-	 */
 	build_settings?:
 		| {
-				/**
-				 * @type integer | undefined
-				 */
 				id?: number | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				provider?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				deploy_key_id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				repo_path?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				repo_branch?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				dir?: string | undefined;
 				/**
 				 * @description The directory where Netlify can find your compiled functions to deploy them. Defaults to netlify/functions if not set. You can also define and override this setting in your project’s netlify.toml file.
@@ -7908,33 +3859,15 @@ export type GetSiteStatus200 = {
 				 * @type string | undefined
 				 */
 				cmd?: string | undefined;
-				/**
-				 * @type array | undefined
-				 */
 				allowed_branches?: string[] | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
 				public_repo?: boolean | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
 				private_logs?: boolean | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				repo_url?: string | undefined;
-				/**
-				 * @type object | undefined
-				 */
 				env?:
 					| {
 							[key: string]: string;
 					  }
 					| undefined;
-				/**
-				 * @type integer | undefined
-				 */
 				installation_id?: number | undefined;
 				/**
 				 * @description When true, Netlify will not build your project automatically. You can build locally via the CLI and then publish new deploys manually via the CLI or the API.
@@ -7943,32 +3876,14 @@ export type GetSiteStatus200 = {
 				stop_builds?: boolean | undefined;
 		  }
 		| undefined;
-	/**
-	 * @type string | undefined
-	 */
 	id_domain?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	default_hooks_data?:
 		| {
-				/**
-				 * @type string | undefined
-				 */
 				access_token?: string | undefined;
 		  }
 		| undefined;
-	/**
-	 * @type string | undefined
-	 */
 	build_image?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	prerender?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	functions_region?: string | undefined;
 	/**
 	 * @default false
@@ -7977,49 +3892,23 @@ export type GetSiteStatus200 = {
 	prevent_non_git_prod_deploys?: boolean | undefined;
 };
 
-/**
- * @type object
- */
 export type GetSiteStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type GetSiteRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: GetSitePathSiteId;
-	};
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				feature_flags?: GetSiteQueryFeatureFlags | undefined;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}`;
+export type GetSiteOptions = {
+	body?: never | undefined;
+	path: GetSitePath;
+	query?: GetSiteQuery | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type GetSiteResponses = {
 	"200": GetSiteStatus200;
 	default: GetSiteStatusDefault;
@@ -8030,245 +3919,98 @@ export type GetSiteResponses = {
  */
 export type GetSiteResponse = GetSiteStatus200 | GetSiteStatusDefault;
 
-/**
- * @type string
- */
-export type UpdateSitePathSiteId = string;
+export type UpdateSitePath = {
+	site_id: string;
+};
 
-/**
- * @type object
- */
 export type UpdateSiteStatus200 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	state?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	plan?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	custom_domain?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	domain_aliases?: string[] | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	branch_deploy_custom_domain?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	deploy_preview_custom_domain?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	password?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	notification_email?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	ssl_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	admin_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	screenshot_url?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	user_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	session_id?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	ssl?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	force_ssl?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	managed_dns?: boolean | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	deploy_url?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	published_deploy?:
 		| {
-				/**
-				 * @type string | undefined
-				 */
 				id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				site_id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				user_id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				build_id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				state?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				name?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				url?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				ssl_url?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				admin_url?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				deploy_url?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				deploy_ssl_url?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				screenshot_url?: string | undefined;
-				/**
-				 * @type number | undefined
-				 */
 				review_id?: number | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
 				draft?: boolean | undefined;
-				/**
-				 * @type array | undefined
-				 */
 				required?: string[] | undefined;
-				/**
-				 * @type array | undefined
-				 */
 				required_functions?: string[] | undefined;
 				/**
 				 * @description An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n
 				 * @type array | undefined
 				 */
 				required_edge_functions?: string[] | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				error_message?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				branch?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				commit_ref?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				commit_url?: string | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
 				skipped?: boolean | undefined;
 				/**
+				 * @description
+				 * Format: `dateTime`
 				 * @type string | undefined
 				 */
 				created_at?: string | undefined;
 				/**
+				 * @description
+				 * Format: `dateTime`
 				 * @type string | undefined
 				 */
 				updated_at?: string | undefined;
 				/**
+				 * @description
+				 * Format: `dateTime`
 				 * @type string | undefined
 				 */
 				published_at?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				title?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				context?: string | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
 				locked?: boolean | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				review_url?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				framework?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				skew_protection_token?: string | undefined;
-				/**
-				 * @type array | undefined
-				 */
 				function_schedules?:
 					| {
-							/**
-							 * @type string | undefined
-							 */
 							name?: string | undefined;
-							/**
-							 * @type string | undefined
-							 */
 							cron?: string | undefined;
 					  }[]
 					| undefined;
@@ -8283,92 +4025,38 @@ export type UpdateSiteStatus200 = {
 				 */
 				functions_region_overrides?:
 					| {
-							/**
-							 * @type string | undefined
-							 */
 							name?: string | undefined;
-							/**
-							 * @type string | undefined
-							 */
 							region?: string | undefined;
 					  }[]
 					| undefined;
 		  }
 		| undefined;
-	/**
-	 * @type string | undefined
-	 */
 	account_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	account_name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	account_slug?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	git_provider?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	deploy_hook?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	capabilities?:
 		| {
 				[key: string]: object;
 		  }
 		| undefined;
-	/**
-	 * @type object | undefined
-	 */
 	processing_settings?:
 		| {
-				/**
-				 * @type object | undefined
-				 */
 				html?:
 					| {
-							/**
-							 * @type boolean | undefined
-							 */
 							pretty_urls?: boolean | undefined;
 					  }
 					| undefined;
 		  }
 		| undefined;
-	/**
-	 * @type object | undefined
-	 */
 	build_settings?:
 		| {
-				/**
-				 * @type integer | undefined
-				 */
 				id?: number | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				provider?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				deploy_key_id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				repo_path?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				repo_branch?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				dir?: string | undefined;
 				/**
 				 * @description The directory where Netlify can find your compiled functions to deploy them. Defaults to netlify/functions if not set. You can also define and override this setting in your project’s netlify.toml file.
@@ -8380,33 +4068,15 @@ export type UpdateSiteStatus200 = {
 				 * @type string | undefined
 				 */
 				cmd?: string | undefined;
-				/**
-				 * @type array | undefined
-				 */
 				allowed_branches?: string[] | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
 				public_repo?: boolean | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
 				private_logs?: boolean | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				repo_url?: string | undefined;
-				/**
-				 * @type object | undefined
-				 */
 				env?:
 					| {
 							[key: string]: string;
 					  }
 					| undefined;
-				/**
-				 * @type integer | undefined
-				 */
 				installation_id?: number | undefined;
 				/**
 				 * @description When true, Netlify will not build your project automatically. You can build locally via the CLI and then publish new deploys manually via the CLI or the API.
@@ -8415,32 +4085,14 @@ export type UpdateSiteStatus200 = {
 				stop_builds?: boolean | undefined;
 		  }
 		| undefined;
-	/**
-	 * @type string | undefined
-	 */
 	id_domain?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	default_hooks_data?:
 		| {
-				/**
-				 * @type string | undefined
-				 */
 				access_token?: string | undefined;
 		  }
 		| undefined;
-	/**
-	 * @type string | undefined
-	 */
 	build_image?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	prerender?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	functions_region?: string | undefined;
 	/**
 	 * @default false
@@ -8449,529 +4101,237 @@ export type UpdateSiteStatus200 = {
 	prevent_non_git_prod_deploys?: boolean | undefined;
 };
 
-/**
- * @type object
- */
 export type UpdateSiteStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-export type UpdateSiteData =
-	| {
-			/**
-			 * @type string | undefined
-			 */
-			id?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			state?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			plan?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			name?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			custom_domain?: string | undefined;
-			/**
-			 * @type array | undefined
-			 */
-			domain_aliases?: string[] | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			branch_deploy_custom_domain?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			deploy_preview_custom_domain?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			password?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			notification_email?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			url?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			ssl_url?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			admin_url?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			screenshot_url?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			created_at?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			updated_at?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			user_id?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			session_id?: string | undefined;
-			/**
-			 * @type boolean | undefined
-			 */
-			ssl?: boolean | undefined;
-			/**
-			 * @type boolean | undefined
-			 */
-			force_ssl?: boolean | undefined;
-			/**
-			 * @type boolean | undefined
-			 */
-			managed_dns?: boolean | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			deploy_url?: string | undefined;
-			/**
-			 * @type object | undefined
-			 */
-			published_deploy?:
-				| {
-						/**
-						 * @type string | undefined
-						 */
-						id?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						site_id?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						user_id?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						build_id?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						state?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						name?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						url?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						ssl_url?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						admin_url?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						deploy_url?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						deploy_ssl_url?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						screenshot_url?: string | undefined;
-						/**
-						 * @type number | undefined
-						 */
-						review_id?: number | undefined;
-						/**
-						 * @type boolean | undefined
-						 */
-						draft?: boolean | undefined;
-						/**
-						 * @type array | undefined
-						 */
-						required?: string[] | undefined;
-						/**
-						 * @type array | undefined
-						 */
-						required_functions?: string[] | undefined;
-						/**
-						 * @description An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n
-						 * @type array | undefined
-						 */
-						required_edge_functions?: string[] | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						error_message?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						branch?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						commit_ref?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						commit_url?: string | undefined;
-						/**
-						 * @type boolean | undefined
-						 */
-						skipped?: boolean | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						created_at?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						updated_at?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						published_at?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						title?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						context?: string | undefined;
-						/**
-						 * @type boolean | undefined
-						 */
-						locked?: boolean | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						review_url?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						framework?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						skew_protection_token?: string | undefined;
-						/**
-						 * @type array | undefined
-						 */
-						function_schedules?:
-							| {
-									/**
-									 * @type string | undefined
-									 */
-									name?: string | undefined;
-									/**
-									 * @type string | undefined
-									 */
-									cron?: string | undefined;
-							  }[]
-							| undefined;
-						/**
-						 * @description The functions region for this deploy as an airport code.\n
-						 * @type string | undefined
-						 */
-						functions_region?: string | undefined;
-						/**
-						 * @description Functions in the deploy that explicitly specify their own region\n(airport code).\n
-						 * @type array | undefined
-						 */
-						functions_region_overrides?:
-							| {
-									/**
-									 * @type string | undefined
-									 */
-									name?: string | undefined;
-									/**
-									 * @type string | undefined
-									 */
-									region?: string | undefined;
-							  }[]
-							| undefined;
-				  }
-				| undefined;
-			/**
-			 * @type string | undefined
-			 */
-			account_id?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			account_name?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			account_slug?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			git_provider?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			deploy_hook?: string | undefined;
-			/**
-			 * @type object | undefined
-			 */
-			capabilities?:
-				| {
-						[key: string]: object;
-				  }
-				| undefined;
-			/**
-			 * @type object | undefined
-			 */
-			processing_settings?:
-				| {
-						/**
-						 * @type object | undefined
-						 */
-						html?:
-							| {
-									/**
-									 * @type boolean | undefined
-									 */
-									pretty_urls?: boolean | undefined;
-							  }
-							| undefined;
-				  }
-				| undefined;
-			/**
-			 * @type object | undefined
-			 */
-			build_settings?:
-				| {
-						/**
-						 * @type integer | undefined
-						 */
-						id?: number | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						provider?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						deploy_key_id?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						repo_path?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						repo_branch?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						dir?: string | undefined;
-						/**
-						 * @description The directory where Netlify can find your compiled functions to deploy them. Defaults to netlify/functions if not set. You can also define and override this setting in your project’s netlify.toml file.
-						 * @type string | undefined
-						 */
-						functions_dir?: string | undefined;
-						/**
-						 * @description The build command to run. This is the command that Netlify runs to build your site. If a site has a netlify.toml file with a build command it will override this value.
-						 * @type string | undefined
-						 */
-						cmd?: string | undefined;
-						/**
-						 * @type array | undefined
-						 */
-						allowed_branches?: string[] | undefined;
-						/**
-						 * @type boolean | undefined
-						 */
-						public_repo?: boolean | undefined;
-						/**
-						 * @type boolean | undefined
-						 */
-						private_logs?: boolean | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						repo_url?: string | undefined;
-						/**
-						 * @type object | undefined
-						 */
-						env?:
-							| {
-									[key: string]: string;
-							  }
-							| undefined;
-						/**
-						 * @type integer | undefined
-						 */
-						installation_id?: number | undefined;
-						/**
-						 * @description When true, Netlify will not build your project automatically. You can build locally via the CLI and then publish new deploys manually via the CLI or the API.
-						 * @type boolean | undefined
-						 */
-						stop_builds?: boolean | undefined;
-				  }
-				| undefined;
-			/**
-			 * @type string | undefined
-			 */
-			id_domain?: string | undefined;
-			/**
-			 * @type object | undefined
-			 */
-			default_hooks_data?:
-				| {
-						/**
-						 * @type string | undefined
-						 */
-						access_token?: string | undefined;
-				  }
-				| undefined;
-			/**
-			 * @type string | undefined
-			 */
-			build_image?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			prerender?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			functions_region?: string | undefined;
-			/**
-			 * @default false
-			 * @type boolean | undefined
-			 */
-			prevent_non_git_prod_deploys?: boolean | undefined;
-			/**
-			 * @type object | undefined
-			 */
-			repo?:
-				| {
-						/**
-						 * @type integer | undefined
-						 */
-						id?: number | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						provider?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						deploy_key_id?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						repo_path?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						repo_branch?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						dir?: string | undefined;
-						/**
-						 * @description The directory where Netlify can find your compiled functions to deploy them. Defaults to netlify/functions if not set. You can also define and override this setting in your project’s netlify.toml file.
-						 * @type string | undefined
-						 */
-						functions_dir?: string | undefined;
-						/**
-						 * @description The build command to run. This is the command that Netlify runs to build your site. If a site has a netlify.toml file with a build command it will override this value.
-						 * @type string | undefined
-						 */
-						cmd?: string | undefined;
-						/**
-						 * @type array | undefined
-						 */
-						allowed_branches?: string[] | undefined;
-						/**
-						 * @type boolean | undefined
-						 */
-						public_repo?: boolean | undefined;
-						/**
-						 * @type boolean | undefined
-						 */
-						private_logs?: boolean | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						repo_url?: string | undefined;
-						/**
-						 * @type object | undefined
-						 */
-						env?:
-							| {
-									[key: string]: string;
-							  }
-							| undefined;
-						/**
-						 * @type integer | undefined
-						 */
-						installation_id?: number | undefined;
-						/**
-						 * @description When true, Netlify will not build your project automatically. You can build locally via the CLI and then publish new deploys manually via the CLI or the API.
-						 * @type boolean | undefined
-						 */
-						stop_builds?: boolean | undefined;
-				  }
-				| undefined;
-	  }
-	| undefined;
-
-/**
- * @type object
- */
-export type UpdateSiteRequestConfig = {
-	data?: UpdateSiteData | undefined;
+export type UpdateSiteBody = {
+	id?: string | undefined;
+	state?: string | undefined;
+	plan?: string | undefined;
+	name?: string | undefined;
+	custom_domain?: string | undefined;
+	domain_aliases?: string[] | undefined;
+	branch_deploy_custom_domain?: string | undefined;
+	deploy_preview_custom_domain?: string | undefined;
+	password?: string | undefined;
+	notification_email?: string | undefined;
+	url?: string | undefined;
+	ssl_url?: string | undefined;
+	admin_url?: string | undefined;
+	screenshot_url?: string | undefined;
 	/**
-	 * @type object
+	 * @description
+	 * Format: `dateTime`
+	 * @type string | undefined
 	 */
-	pathParams: {
-		site_id: UpdateSitePathSiteId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
+	created_at?: string | undefined;
 	/**
-	 * @type string
+	 * @description
+	 * Format: `dateTime`
+	 * @type string | undefined
 	 */
-	url: `/sites/${string}`;
+	updated_at?: string | undefined;
+	user_id?: string | undefined;
+	session_id?: string | undefined;
+	ssl?: boolean | undefined;
+	force_ssl?: boolean | undefined;
+	managed_dns?: boolean | undefined;
+	deploy_url?: string | undefined;
+	published_deploy?:
+		| {
+				id?: string | undefined;
+				site_id?: string | undefined;
+				user_id?: string | undefined;
+				build_id?: string | undefined;
+				state?: string | undefined;
+				name?: string | undefined;
+				url?: string | undefined;
+				ssl_url?: string | undefined;
+				admin_url?: string | undefined;
+				deploy_url?: string | undefined;
+				deploy_ssl_url?: string | undefined;
+				screenshot_url?: string | undefined;
+				review_id?: number | undefined;
+				draft?: boolean | undefined;
+				required?: string[] | undefined;
+				required_functions?: string[] | undefined;
+				/**
+				 * @description An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n
+				 * @type array | undefined
+				 */
+				required_edge_functions?: string[] | undefined;
+				error_message?: string | undefined;
+				branch?: string | undefined;
+				commit_ref?: string | undefined;
+				commit_url?: string | undefined;
+				skipped?: boolean | undefined;
+				/**
+				 * @description
+				 * Format: `dateTime`
+				 * @type string | undefined
+				 */
+				created_at?: string | undefined;
+				/**
+				 * @description
+				 * Format: `dateTime`
+				 * @type string | undefined
+				 */
+				updated_at?: string | undefined;
+				/**
+				 * @description
+				 * Format: `dateTime`
+				 * @type string | undefined
+				 */
+				published_at?: string | undefined;
+				title?: string | undefined;
+				context?: string | undefined;
+				locked?: boolean | undefined;
+				review_url?: string | undefined;
+				framework?: string | undefined;
+				skew_protection_token?: string | undefined;
+				function_schedules?:
+					| {
+							name?: string | undefined;
+							cron?: string | undefined;
+					  }[]
+					| undefined;
+				/**
+				 * @description The functions region for this deploy as an airport code.\n
+				 * @type string | undefined
+				 */
+				functions_region?: string | undefined;
+				/**
+				 * @description Functions in the deploy that explicitly specify their own region\n(airport code).\n
+				 * @type array | undefined
+				 */
+				functions_region_overrides?:
+					| {
+							name?: string | undefined;
+							region?: string | undefined;
+					  }[]
+					| undefined;
+		  }
+		| undefined;
+	account_id?: string | undefined;
+	account_name?: string | undefined;
+	account_slug?: string | undefined;
+	git_provider?: string | undefined;
+	deploy_hook?: string | undefined;
+	capabilities?:
+		| {
+				[key: string]: object;
+		  }
+		| undefined;
+	processing_settings?:
+		| {
+				html?:
+					| {
+							pretty_urls?: boolean | undefined;
+					  }
+					| undefined;
+		  }
+		| undefined;
+	build_settings?:
+		| {
+				id?: number | undefined;
+				provider?: string | undefined;
+				deploy_key_id?: string | undefined;
+				repo_path?: string | undefined;
+				repo_branch?: string | undefined;
+				dir?: string | undefined;
+				/**
+				 * @description The directory where Netlify can find your compiled functions to deploy them. Defaults to netlify/functions if not set. You can also define and override this setting in your project’s netlify.toml file.
+				 * @type string | undefined
+				 */
+				functions_dir?: string | undefined;
+				/**
+				 * @description The build command to run. This is the command that Netlify runs to build your site. If a site has a netlify.toml file with a build command it will override this value.
+				 * @type string | undefined
+				 */
+				cmd?: string | undefined;
+				allowed_branches?: string[] | undefined;
+				public_repo?: boolean | undefined;
+				private_logs?: boolean | undefined;
+				repo_url?: string | undefined;
+				env?:
+					| {
+							[key: string]: string;
+					  }
+					| undefined;
+				installation_id?: number | undefined;
+				/**
+				 * @description When true, Netlify will not build your project automatically. You can build locally via the CLI and then publish new deploys manually via the CLI or the API.
+				 * @type boolean | undefined
+				 */
+				stop_builds?: boolean | undefined;
+		  }
+		| undefined;
+	id_domain?: string | undefined;
+	default_hooks_data?:
+		| {
+				access_token?: string | undefined;
+		  }
+		| undefined;
+	build_image?: string | undefined;
+	prerender?: string | undefined;
+	functions_region?: string | undefined;
+	/**
+	 * @default false
+	 * @type boolean | undefined
+	 */
+	prevent_non_git_prod_deploys?: boolean | undefined;
+} & {
+	repo?:
+		| {
+				id?: number | undefined;
+				provider?: string | undefined;
+				deploy_key_id?: string | undefined;
+				repo_path?: string | undefined;
+				repo_branch?: string | undefined;
+				dir?: string | undefined;
+				/**
+				 * @description The directory where Netlify can find your compiled functions to deploy them. Defaults to netlify/functions if not set. You can also define and override this setting in your project’s netlify.toml file.
+				 * @type string | undefined
+				 */
+				functions_dir?: string | undefined;
+				/**
+				 * @description The build command to run. This is the command that Netlify runs to build your site. If a site has a netlify.toml file with a build command it will override this value.
+				 * @type string | undefined
+				 */
+				cmd?: string | undefined;
+				allowed_branches?: string[] | undefined;
+				public_repo?: boolean | undefined;
+				private_logs?: boolean | undefined;
+				repo_url?: string | undefined;
+				env?:
+					| {
+							[key: string]: string;
+					  }
+					| undefined;
+				installation_id?: number | undefined;
+				/**
+				 * @description When true, Netlify will not build your project automatically. You can build locally via the CLI and then publish new deploys manually via the CLI or the API.
+				 * @type boolean | undefined
+				 */
+				stop_builds?: boolean | undefined;
+		  }
+		| undefined;
 };
 
-/**
- * @type object
- */
+export type UpdateSiteOptions = {
+	body: UpdateSiteBody;
+	path: UpdateSitePath;
+	query?: never | undefined;
+	headers?: never | undefined;
+};
+
 export type UpdateSiteResponses = {
 	"200": UpdateSiteStatus200;
 	default: UpdateSiteStatusDefault;
@@ -8982,52 +4342,29 @@ export type UpdateSiteResponses = {
  */
 export type UpdateSiteResponse = UpdateSiteStatus200 | UpdateSiteStatusDefault;
 
-/**
- * @type string
- */
-export type DeleteSitePathSiteId = string;
+export type DeleteSitePath = {
+	site_id: string;
+};
 
-/**
- * @type unknown
- */
 export type DeleteSiteStatus204 = unknown;
 
-/**
- * @type object
- */
 export type DeleteSiteStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type DeleteSiteRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: DeleteSitePathSiteId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}`;
+export type DeleteSiteOptions = {
+	body?: never | undefined;
+	path: DeleteSitePath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type DeleteSiteResponses = {
 	"204": DeleteSiteStatus204;
 	default: DeleteSiteStatusDefault;
@@ -9038,105 +4375,70 @@ export type DeleteSiteResponses = {
  */
 export type DeleteSiteResponse = DeleteSiteStatus204 | DeleteSiteStatusDefault;
 
-/**
- * @type string
- */
-export type ProvisionSiteTLSCertificatePathSiteId = string;
+export type ProvisionSiteTLSCertificatePath = {
+	site_id: string;
+};
 
-/**
- * @description PEM-encoded certificate. Required when updating an existing certificate.
- * @type string | undefined
- */
-export type ProvisionSiteTLSCertificateQueryCertificate = string | undefined;
-
-/**
- * @description PEM-encoded private key. Required when updating an existing certificate.
- * @type string | undefined
- */
-export type ProvisionSiteTLSCertificateQueryKey = string | undefined;
-
-/**
- * @description PEM-encoded CA certificate chain. Required when updating an existing certificate.
- * @type string | undefined
- */
-export type ProvisionSiteTLSCertificateQueryCaCertificates = string | undefined;
-
-/**
- * @type object
- */
-export type ProvisionSiteTLSCertificateStatus200 = {
+export type ProvisionSiteTLSCertificateQuery = {
 	/**
+	 * @description PEM-encoded certificate. Required when updating an existing certificate.
 	 * @type string | undefined
 	 */
-	state?: string | undefined;
+	certificate?: string | undefined;
 	/**
-	 * @type array | undefined
+	 * @description PEM-encoded private key. Required when updating an existing certificate.
+	 * @type string | undefined
 	 */
+	key?: string | undefined;
+	/**
+	 * @description PEM-encoded CA certificate chain. Required when updating an existing certificate.
+	 * @type string | undefined
+	 */
+	ca_certificates?: string | undefined;
+};
+
+export type ProvisionSiteTLSCertificateStatus200 = {
+	state?: string | undefined;
 	domains?: string[] | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	expires_at?: string | undefined;
 };
 
-/**
- * @type unknown
- */
 export type ProvisionSiteTLSCertificateStatus422 = unknown;
 
-/**
- * @type object
- */
 export type ProvisionSiteTLSCertificateStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type ProvisionSiteTLSCertificateRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: ProvisionSiteTLSCertificatePathSiteId;
-	};
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				certificate?: ProvisionSiteTLSCertificateQueryCertificate | undefined;
-				key?: ProvisionSiteTLSCertificateQueryKey | undefined;
-				ca_certificates?: ProvisionSiteTLSCertificateQueryCaCertificates | undefined;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/ssl`;
+export type ProvisionSiteTLSCertificateOptions = {
+	body?: never | undefined;
+	path: ProvisionSiteTLSCertificatePath;
+	query?: ProvisionSiteTLSCertificateQuery | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type ProvisionSiteTLSCertificateResponses = {
 	"200": ProvisionSiteTLSCertificateStatus200;
 	"422": ProvisionSiteTLSCertificateStatus422;
@@ -9151,73 +4453,50 @@ export type ProvisionSiteTLSCertificateResponse =
 	| ProvisionSiteTLSCertificateStatus422
 	| ProvisionSiteTLSCertificateStatusDefault;
 
-/**
- * @type string
- */
-export type ShowSiteTLSCertificatePathSiteId = string;
+export type ShowSiteTLSCertificatePath = {
+	site_id: string;
+};
 
-/**
- * @type object
- */
 export type ShowSiteTLSCertificateStatus200 = {
-	/**
-	 * @type string | undefined
-	 */
 	state?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	domains?: string[] | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	expires_at?: string | undefined;
 };
 
-/**
- * @type object
- */
 export type ShowSiteTLSCertificateStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type ShowSiteTLSCertificateRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: ShowSiteTLSCertificatePathSiteId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/ssl`;
+export type ShowSiteTLSCertificateOptions = {
+	body?: never | undefined;
+	path: ShowSiteTLSCertificatePath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type ShowSiteTLSCertificateResponses = {
 	"200": ShowSiteTLSCertificateStatus200;
 	default: ShowSiteTLSCertificateStatusDefault;
@@ -9230,81 +4509,48 @@ export type ShowSiteTLSCertificateResponse =
 	| ShowSiteTLSCertificateStatus200
 	| ShowSiteTLSCertificateStatusDefault;
 
-/**
- * @type string
- */
-export type GetAllCertificatesPathSiteId = string;
+export type GetAllCertificatesPath = {
+	site_id: string;
+};
 
-/**
- * @type string
- */
-export type GetAllCertificatesQueryDomain = string;
+export type GetAllCertificatesQuery = {
+	domain: string;
+};
 
-/**
- * @type array
- */
 export type GetAllCertificatesStatus200 = {
-	/**
-	 * @type string | undefined
-	 */
 	state?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	domains?: string[] | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	expires_at?: string | undefined;
 }[];
 
-/**
- * @type unknown
- */
 export type GetAllCertificatesStatus404 = unknown;
 
-/**
- * @type unknown
- */
 export type GetAllCertificatesStatus422 = unknown;
 
-/**
- * @type object
- */
-export type GetAllCertificatesRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: GetAllCertificatesPathSiteId;
-	};
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				domain: GetAllCertificatesQueryDomain;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/ssl/certificates`;
+export type GetAllCertificatesOptions = {
+	body?: never | undefined;
+	path: GetAllCertificatesPath;
+	query: GetAllCertificatesQuery;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type GetAllCertificatesResponses = {
 	"200": GetAllCertificatesStatus200;
 	"404": GetAllCertificatesStatus404;
@@ -9319,37 +4565,76 @@ export type GetAllCertificatesResponse =
 	| GetAllCertificatesStatus404
 	| GetAllCertificatesStatus422;
 
-/**
- * @description Scope response to account_id
- * @type string
- */
-export type GetEnvVarsPathAccountId = string;
+export type GetEnvVarsPath = {
+	/**
+	 * @description Scope response to account_id
+	 * @type string
+	 */
+	account_id: string;
+};
 
-/**
- * @description Filter by deploy context
- * @type string | undefined
- */
-export type GetEnvVarsQueryContextName =
-	| ("all" | "dev" | "dev-server" | "branch-deploy" | "deploy-preview" | "production")
-	| undefined;
+export const getEnvVarsContextName = {
+	all: "all",
+	dev: "dev",
+	"dev-server": "dev-server",
+	"branch-deploy": "branch-deploy",
+	"deploy-preview": "deploy-preview",
+	production: "production",
+} as const;
 
-/**
- * @description Filter by scope
- * @type string | undefined
- */
-export type GetEnvVarsQueryScope =
-	| ("builds" | "functions" | "runtime" | "post-processing")
-	| undefined;
+export type GetEnvVarsContextNameKey =
+	(typeof getEnvVarsContextName)[keyof typeof getEnvVarsContextName];
 
-/**
- * @description If specified, only return environment variables set on this site
- * @type string | undefined
- */
-export type GetEnvVarsQuerySiteId = string | undefined;
+export const getEnvVarsScope = {
+	builds: "builds",
+	functions: "functions",
+	runtime: "runtime",
+	"post-processing": "post-processing",
+} as const;
 
-/**
- * @type array
- */
+export type GetEnvVarsScopeKey = (typeof getEnvVarsScope)[keyof typeof getEnvVarsScope];
+
+export type GetEnvVarsQuery = {
+	/**
+	 * @description Filter by deploy context
+	 * @type string | undefined
+	 */
+	context_name?: GetEnvVarsContextNameKey | undefined;
+	/**
+	 * @description Filter by scope
+	 * @type string | undefined
+	 */
+	scope?: GetEnvVarsScopeKey | undefined;
+	/**
+	 * @description If specified, only return environment variables set on this site
+	 * @type string | undefined
+	 */
+	site_id?: string | undefined;
+};
+
+export const getEnvVarsStatus200ScopesEnum = {
+	builds: "builds",
+	functions: "functions",
+	runtime: "runtime",
+	"post-processing": "post-processing",
+} as const;
+
+export type GetEnvVarsStatus200ScopesEnumKey =
+	(typeof getEnvVarsStatus200ScopesEnum)[keyof typeof getEnvVarsStatus200ScopesEnum];
+
+export const getEnvVarsStatus200ValuesContextEnum = {
+	all: "all",
+	dev: "dev",
+	"dev-server": "dev-server",
+	"branch-deploy": "branch-deploy",
+	"deploy-preview": "deploy-preview",
+	production: "production",
+	branch: "branch",
+} as const;
+
+export type GetEnvVarsStatus200ValuesContextEnumKey =
+	(typeof getEnvVarsStatus200ValuesContextEnum)[keyof typeof getEnvVarsStatus200ValuesContextEnum];
+
 export type GetEnvVarsStatus200 = {
 	/**
 	 * @description The environment variable key, like ALGOLIA_ID (case-sensitive)
@@ -9360,7 +4645,7 @@ export type GetEnvVarsStatus200 = {
 	 * @description The scopes that this environment variable is set to
 	 * @type array | undefined
 	 */
-	scopes?: ("builds" | "functions" | "runtime" | "post-processing")[] | undefined;
+	scopes?: GetEnvVarsStatus200ScopesEnumKey[] | undefined;
 	/**
 	 * @description An array of Value objects containing values and metadata
 	 * @type array | undefined
@@ -9381,7 +4666,7 @@ export type GetEnvVarsStatus200 = {
 				 * @description The deploy context in which this value will be used. `dev` refers to local development when running `netlify dev`.
 				 * @type string | undefined
 				 */
-				context?: ContextEnumKey | undefined;
+				context?: GetEnvVarsStatus200ValuesContextEnumKey | undefined;
 				/**
 				 * @description An additional parameter for custom branches. Currently, this is used for specifying a branch name when `context=branch`.
 				 * @type string | undefined
@@ -9396,12 +4681,11 @@ export type GetEnvVarsStatus200 = {
 	is_secret?: boolean | undefined;
 	/**
 	 * @description The timestamp of when the value was last updated
+	 *
+	 * Format: `date-time`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	updated_by?:
 		| {
 				/**
@@ -9428,51 +4712,23 @@ export type GetEnvVarsStatus200 = {
 		| undefined;
 }[];
 
-/**
- * @type object
- */
 export type GetEnvVarsStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type GetEnvVarsRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		account_id: GetEnvVarsPathAccountId;
-	};
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				context_name?: GetEnvVarsQueryContextName | undefined;
-				scope?: GetEnvVarsQueryScope | undefined;
-				site_id?: GetEnvVarsQuerySiteId | undefined;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/accounts/${string}/env`;
+export type GetEnvVarsOptions = {
+	body?: never | undefined;
+	path: GetEnvVarsPath;
+	query?: GetEnvVarsQuery | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type GetEnvVarsResponses = {
 	"200": GetEnvVarsStatus200;
 	default: GetEnvVarsStatusDefault;
@@ -9483,21 +4739,45 @@ export type GetEnvVarsResponses = {
  */
 export type GetEnvVarsResponse = GetEnvVarsStatus200 | GetEnvVarsStatusDefault;
 
-/**
- * @description Scope response to account_id
- * @type string
- */
-export type CreateEnvVarsPathAccountId = string;
+export type CreateEnvVarsPath = {
+	/**
+	 * @description Scope response to account_id
+	 * @type string
+	 */
+	account_id: string;
+};
 
-/**
- * @description If provided, create an environment variable on the site level, not the account level
- * @type string | undefined
- */
-export type CreateEnvVarsQuerySiteId = string | undefined;
+export type CreateEnvVarsQuery = {
+	/**
+	 * @description If provided, create an environment variable on the site level, not the account level
+	 * @type string | undefined
+	 */
+	site_id?: string | undefined;
+};
 
-/**
- * @type array
- */
+export const createEnvVarsStatus201ScopesEnum = {
+	builds: "builds",
+	functions: "functions",
+	runtime: "runtime",
+	"post-processing": "post-processing",
+} as const;
+
+export type CreateEnvVarsStatus201ScopesEnumKey =
+	(typeof createEnvVarsStatus201ScopesEnum)[keyof typeof createEnvVarsStatus201ScopesEnum];
+
+export const createEnvVarsStatus201ValuesContextEnum = {
+	all: "all",
+	dev: "dev",
+	"dev-server": "dev-server",
+	"branch-deploy": "branch-deploy",
+	"deploy-preview": "deploy-preview",
+	production: "production",
+	branch: "branch",
+} as const;
+
+export type CreateEnvVarsStatus201ValuesContextEnumKey =
+	(typeof createEnvVarsStatus201ValuesContextEnum)[keyof typeof createEnvVarsStatus201ValuesContextEnum];
+
 export type CreateEnvVarsStatus201 = {
 	/**
 	 * @description The environment variable key, like ALGOLIA_ID (case-sensitive)
@@ -9508,7 +4788,7 @@ export type CreateEnvVarsStatus201 = {
 	 * @description The scopes that this environment variable is set to
 	 * @type array | undefined
 	 */
-	scopes?: ("builds" | "functions" | "runtime" | "post-processing")[] | undefined;
+	scopes?: CreateEnvVarsStatus201ScopesEnumKey[] | undefined;
 	/**
 	 * @description An array of Value objects containing values and metadata
 	 * @type array | undefined
@@ -9529,7 +4809,7 @@ export type CreateEnvVarsStatus201 = {
 				 * @description The deploy context in which this value will be used. `dev` refers to local development when running `netlify dev`.
 				 * @type string | undefined
 				 */
-				context?: ContextEnumKey | undefined;
+				context?: CreateEnvVarsStatus201ValuesContextEnumKey | undefined;
 				/**
 				 * @description An additional parameter for custom branches. Currently, this is used for specifying a branch name when `context=branch`.
 				 * @type string | undefined
@@ -9544,12 +4824,11 @@ export type CreateEnvVarsStatus201 = {
 	is_secret?: boolean | undefined;
 	/**
 	 * @description The timestamp of when the value was last updated
+	 *
+	 * Format: `date-time`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	updated_by?:
 		| {
 				/**
@@ -9576,24 +4855,40 @@ export type CreateEnvVarsStatus201 = {
 		| undefined;
 }[];
 
-/**
- * @type object
- */
 export type CreateEnvVarsStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type array | undefined
- */
-export type CreateEnvVarsData =
+export const createEnvVarsRequestScopesEnum = {
+	builds: "builds",
+	functions: "functions",
+	runtime: "runtime",
+	"post-processing": "post-processing",
+} as const;
+
+export type CreateEnvVarsRequestScopesEnumKey =
+	(typeof createEnvVarsRequestScopesEnum)[keyof typeof createEnvVarsRequestScopesEnum];
+
+export const createEnvVarsRequestValuesContextEnum = {
+	all: "all",
+	dev: "dev",
+	"dev-server": "dev-server",
+	"branch-deploy": "branch-deploy",
+	"deploy-preview": "deploy-preview",
+	production: "production",
+	branch: "branch",
+} as const;
+
+export type CreateEnvVarsRequestValuesContextEnumKey =
+	(typeof createEnvVarsRequestValuesContextEnum)[keyof typeof createEnvVarsRequestValuesContextEnum];
+
+export type CreateEnvVarsBody =
 	| {
 			/**
 			 * @description The existing or new name of the key, if you wish to rename it (case-sensitive)
@@ -9604,10 +4899,7 @@ export type CreateEnvVarsData =
 			 * @description The scopes that this environment variable is set to (Pro plans and above)
 			 * @type array | undefined
 			 */
-			scopes?: ("builds" | "functions" | "runtime" | "post-processing")[] | undefined;
-			/**
-			 * @type array | undefined
-			 */
+			scopes?: CreateEnvVarsRequestScopesEnumKey[] | undefined;
 			values?:
 				| {
 						/**
@@ -9624,7 +4916,7 @@ export type CreateEnvVarsData =
 						 * @description The deploy context in which this value will be used. `dev` refers to local development when running `netlify dev`.
 						 * @type string | undefined
 						 */
-						context?: ContextEnumKey | undefined;
+						context?: CreateEnvVarsRequestValuesContextEnumKey | undefined;
 						/**
 						 * @description An additional parameter for custom branches. Currently, this is used for specifying a branch name when `context=branch`.
 						 * @type string | undefined
@@ -9640,35 +4932,13 @@ export type CreateEnvVarsData =
 	  }[]
 	| undefined;
 
-/**
- * @type object
- */
-export type CreateEnvVarsRequestConfig = {
-	data?: CreateEnvVarsData | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		account_id: CreateEnvVarsPathAccountId;
-	};
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				site_id?: CreateEnvVarsQuerySiteId | undefined;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/accounts/${string}/env`;
+export type CreateEnvVarsOptions = {
+	body: CreateEnvVarsBody;
+	path: CreateEnvVarsPath;
+	query?: CreateEnvVarsQuery | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type CreateEnvVarsResponses = {
 	"201": CreateEnvVarsStatus201;
 	default: CreateEnvVarsStatusDefault;
@@ -9679,31 +4949,71 @@ export type CreateEnvVarsResponses = {
  */
 export type CreateEnvVarsResponse = CreateEnvVarsStatus201 | CreateEnvVarsStatusDefault;
 
-/**
- * @description Filter by deploy context
- * @type string | undefined
- */
-export type GetSiteEnvVarsQueryContextName =
-	| ("all" | "dev" | "dev-server" | "branch-deploy" | "deploy-preview" | "production")
-	| undefined;
+export type GetSiteEnvVarsPath = {
+	/**
+	 * @description Scope response to site_id
+	 * @type string
+	 */
+	site_id: string;
+};
 
-/**
- * @description Filter by scope
- * @type string | undefined
- */
-export type GetSiteEnvVarsQueryScope =
-	| ("builds" | "functions" | "runtime" | "post_processing")
-	| undefined;
+export const getSiteEnvVarsContextName = {
+	all: "all",
+	dev: "dev",
+	"dev-server": "dev-server",
+	"branch-deploy": "branch-deploy",
+	"deploy-preview": "deploy-preview",
+	production: "production",
+} as const;
 
-/**
- * @description Scope response to site_id
- * @type string
- */
-export type GetSiteEnvVarsPathSiteId = string;
+export type GetSiteEnvVarsContextNameKey =
+	(typeof getSiteEnvVarsContextName)[keyof typeof getSiteEnvVarsContextName];
 
-/**
- * @type array
- */
+export const getSiteEnvVarsScope = {
+	builds: "builds",
+	functions: "functions",
+	runtime: "runtime",
+	post_processing: "post_processing",
+} as const;
+
+export type GetSiteEnvVarsScopeKey = (typeof getSiteEnvVarsScope)[keyof typeof getSiteEnvVarsScope];
+
+export type GetSiteEnvVarsQuery = {
+	/**
+	 * @description Filter by deploy context
+	 * @type string | undefined
+	 */
+	context_name?: GetSiteEnvVarsContextNameKey | undefined;
+	/**
+	 * @description Filter by scope
+	 * @type string | undefined
+	 */
+	scope?: GetSiteEnvVarsScopeKey | undefined;
+};
+
+export const getSiteEnvVarsStatus200ScopesEnum = {
+	builds: "builds",
+	functions: "functions",
+	runtime: "runtime",
+	"post-processing": "post-processing",
+} as const;
+
+export type GetSiteEnvVarsStatus200ScopesEnumKey =
+	(typeof getSiteEnvVarsStatus200ScopesEnum)[keyof typeof getSiteEnvVarsStatus200ScopesEnum];
+
+export const getSiteEnvVarsStatus200ValuesContextEnum = {
+	all: "all",
+	dev: "dev",
+	"dev-server": "dev-server",
+	"branch-deploy": "branch-deploy",
+	"deploy-preview": "deploy-preview",
+	production: "production",
+	branch: "branch",
+} as const;
+
+export type GetSiteEnvVarsStatus200ValuesContextEnumKey =
+	(typeof getSiteEnvVarsStatus200ValuesContextEnum)[keyof typeof getSiteEnvVarsStatus200ValuesContextEnum];
+
 export type GetSiteEnvVarsStatus200 = {
 	/**
 	 * @description The environment variable key, like ALGOLIA_ID (case-sensitive)
@@ -9714,7 +5024,7 @@ export type GetSiteEnvVarsStatus200 = {
 	 * @description The scopes that this environment variable is set to
 	 * @type array | undefined
 	 */
-	scopes?: ("builds" | "functions" | "runtime" | "post-processing")[] | undefined;
+	scopes?: GetSiteEnvVarsStatus200ScopesEnumKey[] | undefined;
 	/**
 	 * @description An array of Value objects containing values and metadata
 	 * @type array | undefined
@@ -9735,7 +5045,7 @@ export type GetSiteEnvVarsStatus200 = {
 				 * @description The deploy context in which this value will be used. `dev` refers to local development when running `netlify dev`.
 				 * @type string | undefined
 				 */
-				context?: ContextEnumKey | undefined;
+				context?: GetSiteEnvVarsStatus200ValuesContextEnumKey | undefined;
 				/**
 				 * @description An additional parameter for custom branches. Currently, this is used for specifying a branch name when `context=branch`.
 				 * @type string | undefined
@@ -9750,12 +5060,11 @@ export type GetSiteEnvVarsStatus200 = {
 	is_secret?: boolean | undefined;
 	/**
 	 * @description The timestamp of when the value was last updated
+	 *
+	 * Format: `date-time`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	updated_by?:
 		| {
 				/**
@@ -9782,50 +5091,23 @@ export type GetSiteEnvVarsStatus200 = {
 		| undefined;
 }[];
 
-/**
- * @type object
- */
 export type GetSiteEnvVarsStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type GetSiteEnvVarsRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: GetSiteEnvVarsPathSiteId;
-	};
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				context_name?: GetSiteEnvVarsQueryContextName | undefined;
-				scope?: GetSiteEnvVarsQueryScope | undefined;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/api/v1/sites/${string}/env`;
+export type GetSiteEnvVarsOptions = {
+	body?: never | undefined;
+	path: GetSiteEnvVarsPath;
+	query?: GetSiteEnvVarsQuery | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type GetSiteEnvVarsResponses = {
 	"200": GetSiteEnvVarsStatus200;
 	default: GetSiteEnvVarsStatusDefault;
@@ -9836,23 +5118,49 @@ export type GetSiteEnvVarsResponses = {
  */
 export type GetSiteEnvVarsResponse = GetSiteEnvVarsStatus200 | GetSiteEnvVarsStatusDefault;
 
-/**
- * @description Scope response to account_id
- * @type string
- */
-export type GetEnvVarPathAccountId = string;
+export type GetEnvVarPath = {
+	/**
+	 * @description Scope response to account_id
+	 * @type string
+	 */
+	account_id: string;
+	/**
+	 * @description The environment variable key (case-sensitive)
+	 * @type string
+	 */
+	key: string;
+};
 
-/**
- * @description The environment variable key (case-sensitive)
- * @type string
- */
-export type GetEnvVarPathKey = string;
+export type GetEnvVarQuery = {
+	/**
+	 * @description If provided, return the environment variable for a specific site (no merging is performed)
+	 * @type string | undefined
+	 */
+	site_id?: string | undefined;
+};
 
-/**
- * @description If provided, return the environment variable for a specific site (no merging is performed)
- * @type string | undefined
- */
-export type GetEnvVarQuerySiteId = string | undefined;
+export const getEnvVarStatus200ScopesEnum = {
+	builds: "builds",
+	functions: "functions",
+	runtime: "runtime",
+	"post-processing": "post-processing",
+} as const;
+
+export type GetEnvVarStatus200ScopesEnumKey =
+	(typeof getEnvVarStatus200ScopesEnum)[keyof typeof getEnvVarStatus200ScopesEnum];
+
+export const getEnvVarStatus200ValuesContextEnum = {
+	all: "all",
+	dev: "dev",
+	"dev-server": "dev-server",
+	"branch-deploy": "branch-deploy",
+	"deploy-preview": "deploy-preview",
+	production: "production",
+	branch: "branch",
+} as const;
+
+export type GetEnvVarStatus200ValuesContextEnumKey =
+	(typeof getEnvVarStatus200ValuesContextEnum)[keyof typeof getEnvVarStatus200ValuesContextEnum];
 
 /**
  * @description Environment variable model definition
@@ -9868,7 +5176,7 @@ export type GetEnvVarStatus200 = {
 	 * @description The scopes that this environment variable is set to
 	 * @type array | undefined
 	 */
-	scopes?: ("builds" | "functions" | "runtime" | "post-processing")[] | undefined;
+	scopes?: GetEnvVarStatus200ScopesEnumKey[] | undefined;
 	/**
 	 * @description An array of Value objects containing values and metadata
 	 * @type array | undefined
@@ -9889,7 +5197,7 @@ export type GetEnvVarStatus200 = {
 				 * @description The deploy context in which this value will be used. `dev` refers to local development when running `netlify dev`.
 				 * @type string | undefined
 				 */
-				context?: ContextEnumKey | undefined;
+				context?: GetEnvVarStatus200ValuesContextEnumKey | undefined;
 				/**
 				 * @description An additional parameter for custom branches. Currently, this is used for specifying a branch name when `context=branch`.
 				 * @type string | undefined
@@ -9904,12 +5212,11 @@ export type GetEnvVarStatus200 = {
 	is_secret?: boolean | undefined;
 	/**
 	 * @description The timestamp of when the value was last updated
+	 *
+	 * Format: `date-time`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	updated_by?:
 		| {
 				/**
@@ -9936,50 +5243,23 @@ export type GetEnvVarStatus200 = {
 		| undefined;
 };
 
-/**
- * @type object
- */
 export type GetEnvVarStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type GetEnvVarRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		account_id: GetEnvVarPathAccountId;
-		key: GetEnvVarPathKey;
-	};
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				site_id?: GetEnvVarQuerySiteId | undefined;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/accounts/${string}/env/${string}`;
+export type GetEnvVarOptions = {
+	body?: never | undefined;
+	path: GetEnvVarPath;
+	query?: GetEnvVarQuery | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type GetEnvVarResponses = {
 	"200": GetEnvVarStatus200;
 	default: GetEnvVarStatusDefault;
@@ -9990,23 +5270,49 @@ export type GetEnvVarResponses = {
  */
 export type GetEnvVarResponse = GetEnvVarStatus200 | GetEnvVarStatusDefault;
 
-/**
- * @description Scope response to account_id
- * @type string
- */
-export type UpdateEnvVarPathAccountId = string;
+export type UpdateEnvVarPath = {
+	/**
+	 * @description Scope response to account_id
+	 * @type string
+	 */
+	account_id: string;
+	/**
+	 * @description The existing environment variable key name (case-sensitive)
+	 * @type string
+	 */
+	key: string;
+};
 
-/**
- * @description The existing environment variable key name (case-sensitive)
- * @type string
- */
-export type UpdateEnvVarPathKey = string;
+export type UpdateEnvVarQuery = {
+	/**
+	 * @description If provided, update an environment variable set on this site
+	 * @type string | undefined
+	 */
+	site_id?: string | undefined;
+};
 
-/**
- * @description If provided, update an environment variable set on this site
- * @type string | undefined
- */
-export type UpdateEnvVarQuerySiteId = string | undefined;
+export const updateEnvVarStatus200ScopesEnum = {
+	builds: "builds",
+	functions: "functions",
+	runtime: "runtime",
+	"post-processing": "post-processing",
+} as const;
+
+export type UpdateEnvVarStatus200ScopesEnumKey =
+	(typeof updateEnvVarStatus200ScopesEnum)[keyof typeof updateEnvVarStatus200ScopesEnum];
+
+export const updateEnvVarStatus200ValuesContextEnum = {
+	all: "all",
+	dev: "dev",
+	"dev-server": "dev-server",
+	"branch-deploy": "branch-deploy",
+	"deploy-preview": "deploy-preview",
+	production: "production",
+	branch: "branch",
+} as const;
+
+export type UpdateEnvVarStatus200ValuesContextEnumKey =
+	(typeof updateEnvVarStatus200ValuesContextEnum)[keyof typeof updateEnvVarStatus200ValuesContextEnum];
 
 /**
  * @description Environment variable model definition
@@ -10022,7 +5328,7 @@ export type UpdateEnvVarStatus200 = {
 	 * @description The scopes that this environment variable is set to
 	 * @type array | undefined
 	 */
-	scopes?: ("builds" | "functions" | "runtime" | "post-processing")[] | undefined;
+	scopes?: UpdateEnvVarStatus200ScopesEnumKey[] | undefined;
 	/**
 	 * @description An array of Value objects containing values and metadata
 	 * @type array | undefined
@@ -10043,7 +5349,7 @@ export type UpdateEnvVarStatus200 = {
 				 * @description The deploy context in which this value will be used. `dev` refers to local development when running `netlify dev`.
 				 * @type string | undefined
 				 */
-				context?: ContextEnumKey | undefined;
+				context?: UpdateEnvVarStatus200ValuesContextEnumKey | undefined;
 				/**
 				 * @description An additional parameter for custom branches. Currently, this is used for specifying a branch name when `context=branch`.
 				 * @type string | undefined
@@ -10058,12 +5364,11 @@ export type UpdateEnvVarStatus200 = {
 	is_secret?: boolean | undefined;
 	/**
 	 * @description The timestamp of when the value was last updated
+	 *
+	 * Format: `date-time`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	updated_by?:
 		| {
 				/**
@@ -10090,24 +5395,40 @@ export type UpdateEnvVarStatus200 = {
 		| undefined;
 };
 
-/**
- * @type object
- */
 export type UpdateEnvVarStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object | undefined
- */
-export type UpdateEnvVarData =
+export const updateEnvVarRequestScopesEnum = {
+	builds: "builds",
+	functions: "functions",
+	runtime: "runtime",
+	"post-processing": "post-processing",
+} as const;
+
+export type UpdateEnvVarRequestScopesEnumKey =
+	(typeof updateEnvVarRequestScopesEnum)[keyof typeof updateEnvVarRequestScopesEnum];
+
+export const updateEnvVarRequestValuesContextEnum = {
+	all: "all",
+	dev: "dev",
+	"dev-server": "dev-server",
+	"branch-deploy": "branch-deploy",
+	"deploy-preview": "deploy-preview",
+	production: "production",
+	branch: "branch",
+} as const;
+
+export type UpdateEnvVarRequestValuesContextEnumKey =
+	(typeof updateEnvVarRequestValuesContextEnum)[keyof typeof updateEnvVarRequestValuesContextEnum];
+
+export type UpdateEnvVarBody =
 	| {
 			/**
 			 * @description The existing or new name of the key, if you wish to rename it (case-sensitive)
@@ -10118,10 +5439,7 @@ export type UpdateEnvVarData =
 			 * @description The scopes that this environment variable is set to (Pro plans and above)
 			 * @type array | undefined
 			 */
-			scopes?: ("builds" | "functions" | "runtime" | "post-processing")[] | undefined;
-			/**
-			 * @type array | undefined
-			 */
+			scopes?: UpdateEnvVarRequestScopesEnumKey[] | undefined;
 			values?:
 				| {
 						/**
@@ -10138,7 +5456,7 @@ export type UpdateEnvVarData =
 						 * @description The deploy context in which this value will be used. `dev` refers to local development when running `netlify dev`.
 						 * @type string | undefined
 						 */
-						context?: ContextEnumKey | undefined;
+						context?: UpdateEnvVarRequestValuesContextEnumKey | undefined;
 						/**
 						 * @description An additional parameter for custom branches. Currently, this is used for specifying a branch name when `context=branch`.
 						 * @type string | undefined
@@ -10154,36 +5472,13 @@ export type UpdateEnvVarData =
 	  }
 	| undefined;
 
-/**
- * @type object
- */
-export type UpdateEnvVarRequestConfig = {
-	data?: UpdateEnvVarData | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		account_id: UpdateEnvVarPathAccountId;
-		key: UpdateEnvVarPathKey;
-	};
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				site_id?: UpdateEnvVarQuerySiteId | undefined;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/accounts/${string}/env/${string}`;
+export type UpdateEnvVarOptions = {
+	body: UpdateEnvVarBody;
+	path: UpdateEnvVarPath;
+	query?: UpdateEnvVarQuery | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type UpdateEnvVarResponses = {
 	"200": UpdateEnvVarStatus200;
 	default: UpdateEnvVarStatusDefault;
@@ -10194,23 +5489,49 @@ export type UpdateEnvVarResponses = {
  */
 export type UpdateEnvVarResponse = UpdateEnvVarStatus200 | UpdateEnvVarStatusDefault;
 
-/**
- * @description Scope response to account_id
- * @type string
- */
-export type SetEnvVarValuePathAccountId = string;
+export type SetEnvVarValuePath = {
+	/**
+	 * @description Scope response to account_id
+	 * @type string
+	 */
+	account_id: string;
+	/**
+	 * @description The existing environment variable key name (case-sensitive)
+	 * @type string
+	 */
+	key: string;
+};
 
-/**
- * @description The existing environment variable key name (case-sensitive)
- * @type string
- */
-export type SetEnvVarValuePathKey = string;
+export type SetEnvVarValueQuery = {
+	/**
+	 * @description If provided, update an environment variable set on this site
+	 * @type string | undefined
+	 */
+	site_id?: string | undefined;
+};
 
-/**
- * @description If provided, update an environment variable set on this site
- * @type string | undefined
- */
-export type SetEnvVarValueQuerySiteId = string | undefined;
+export const setEnvVarValueStatus201ScopesEnum = {
+	builds: "builds",
+	functions: "functions",
+	runtime: "runtime",
+	"post-processing": "post-processing",
+} as const;
+
+export type SetEnvVarValueStatus201ScopesEnumKey =
+	(typeof setEnvVarValueStatus201ScopesEnum)[keyof typeof setEnvVarValueStatus201ScopesEnum];
+
+export const setEnvVarValueStatus201ValuesContextEnum = {
+	all: "all",
+	dev: "dev",
+	"dev-server": "dev-server",
+	"branch-deploy": "branch-deploy",
+	"deploy-preview": "deploy-preview",
+	production: "production",
+	branch: "branch",
+} as const;
+
+export type SetEnvVarValueStatus201ValuesContextEnumKey =
+	(typeof setEnvVarValueStatus201ValuesContextEnum)[keyof typeof setEnvVarValueStatus201ValuesContextEnum];
 
 /**
  * @description Environment variable model definition
@@ -10226,7 +5547,7 @@ export type SetEnvVarValueStatus201 = {
 	 * @description The scopes that this environment variable is set to
 	 * @type array | undefined
 	 */
-	scopes?: ("builds" | "functions" | "runtime" | "post-processing")[] | undefined;
+	scopes?: SetEnvVarValueStatus201ScopesEnumKey[] | undefined;
 	/**
 	 * @description An array of Value objects containing values and metadata
 	 * @type array | undefined
@@ -10247,7 +5568,7 @@ export type SetEnvVarValueStatus201 = {
 				 * @description The deploy context in which this value will be used. `dev` refers to local development when running `netlify dev`.
 				 * @type string | undefined
 				 */
-				context?: ContextEnumKey | undefined;
+				context?: SetEnvVarValueStatus201ValuesContextEnumKey | undefined;
 				/**
 				 * @description An additional parameter for custom branches. Currently, this is used for specifying a branch name when `context=branch`.
 				 * @type string | undefined
@@ -10262,12 +5583,11 @@ export type SetEnvVarValueStatus201 = {
 	is_secret?: boolean | undefined;
 	/**
 	 * @description The timestamp of when the value was last updated
+	 *
+	 * Format: `date-time`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	updated_by?:
 		| {
 				/**
@@ -10294,30 +5614,36 @@ export type SetEnvVarValueStatus201 = {
 		| undefined;
 };
 
-/**
- * @type object
- */
 export type SetEnvVarValueStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object | undefined
- */
-export type SetEnvVarValueData =
+export const setEnvVarValueRequestContextEnum = {
+	all: "all",
+	dev: "dev",
+	"dev-server": "dev-server",
+	"branch-deploy": "branch-deploy",
+	"deploy-preview": "deploy-preview",
+	production: "production",
+	branch: "branch",
+} as const;
+
+export type SetEnvVarValueRequestContextEnumKey =
+	(typeof setEnvVarValueRequestContextEnum)[keyof typeof setEnvVarValueRequestContextEnum];
+
+export type SetEnvVarValueBody =
 	| {
 			/**
 			 * @description The deploy context in which this value will be used. `dev` refers to local development when running `netlify dev`. `branch` must be provided with a value in `context_parameter`.
 			 * @type string | undefined
 			 */
-			context?: ContextEnumKey | undefined;
+			context?: SetEnvVarValueRequestContextEnumKey | undefined;
 			/**
 			 * @description An additional parameter for custom branches. Currently, this is used for providing a branch name when `context=branch`.
 			 * @type string | undefined
@@ -10331,36 +5657,13 @@ export type SetEnvVarValueData =
 	  }
 	| undefined;
 
-/**
- * @type object
- */
-export type SetEnvVarValueRequestConfig = {
-	data?: SetEnvVarValueData | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		account_id: SetEnvVarValuePathAccountId;
-		key: SetEnvVarValuePathKey;
-	};
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				site_id?: SetEnvVarValueQuerySiteId | undefined;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/accounts/${string}/env/${string}`;
+export type SetEnvVarValueOptions = {
+	body: SetEnvVarValueBody;
+	path: SetEnvVarValuePath;
+	query?: SetEnvVarValueQuery | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type SetEnvVarValueResponses = {
 	"201": SetEnvVarValueStatus201;
 	default: SetEnvVarValueStatusDefault;
@@ -10371,73 +5674,46 @@ export type SetEnvVarValueResponses = {
  */
 export type SetEnvVarValueResponse = SetEnvVarValueStatus201 | SetEnvVarValueStatusDefault;
 
-/**
- * @description Scope response to account_id
- * @type string
- */
-export type DeleteEnvVarPathAccountId = string;
+export type DeleteEnvVarPath = {
+	/**
+	 * @description Scope response to account_id
+	 * @type string
+	 */
+	account_id: string;
+	/**
+	 * @description The environment variable key (case-sensitive)
+	 * @type string
+	 */
+	key: string;
+};
 
-/**
- * @description The environment variable key (case-sensitive)
- * @type string
- */
-export type DeleteEnvVarPathKey = string;
+export type DeleteEnvVarQuery = {
+	/**
+	 * @description If provided, delete the environment variable from this site
+	 * @type string | undefined
+	 */
+	site_id?: string | undefined;
+};
 
-/**
- * @description If provided, delete the environment variable from this site
- * @type string | undefined
- */
-export type DeleteEnvVarQuerySiteId = string | undefined;
-
-/**
- * @type unknown
- */
 export type DeleteEnvVarStatus204 = unknown;
 
-/**
- * @type object
- */
 export type DeleteEnvVarStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type DeleteEnvVarRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		account_id: DeleteEnvVarPathAccountId;
-		key: DeleteEnvVarPathKey;
-	};
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				site_id?: DeleteEnvVarQuerySiteId | undefined;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/accounts/${string}/env/${string}`;
+export type DeleteEnvVarOptions = {
+	body?: never | undefined;
+	path: DeleteEnvVarPath;
+	query?: DeleteEnvVarQuery | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type DeleteEnvVarResponses = {
 	"204": DeleteEnvVarStatus204;
 	default: DeleteEnvVarStatusDefault;
@@ -10448,80 +5724,51 @@ export type DeleteEnvVarResponses = {
  */
 export type DeleteEnvVarResponse = DeleteEnvVarStatus204 | DeleteEnvVarStatusDefault;
 
-/**
- * @description Scope response to account_id
- * @type string
- */
-export type DeleteEnvVarValuePathAccountId = string;
+export type DeleteEnvVarValuePath = {
+	/**
+	 * @description Scope response to account_id
+	 * @type string
+	 */
+	account_id: string;
+	/**
+	 * @description The environment variable value\'s ID
+	 * @type string
+	 */
+	id: string;
+	/**
+	 * @description The environment variable key name (case-sensitive)
+	 * @type string
+	 */
+	key: string;
+};
 
-/**
- * @description The environment variable value\'s ID
- * @type string
- */
-export type DeleteEnvVarValuePathId = string;
+export type DeleteEnvVarValueQuery = {
+	/**
+	 * @description If provided, delete the value from an environment variable on this site
+	 * @type string | undefined
+	 */
+	site_id?: string | undefined;
+};
 
-/**
- * @description The environment variable key name (case-sensitive)
- * @type string
- */
-export type DeleteEnvVarValuePathKey = string;
-
-/**
- * @description If provided, delete the value from an environment variable on this site
- * @type string | undefined
- */
-export type DeleteEnvVarValueQuerySiteId = string | undefined;
-
-/**
- * @type unknown
- */
 export type DeleteEnvVarValueStatus204 = unknown;
 
-/**
- * @type object
- */
 export type DeleteEnvVarValueStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type DeleteEnvVarValueRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		account_id: DeleteEnvVarValuePathAccountId;
-		id: DeleteEnvVarValuePathId;
-		key: DeleteEnvVarValuePathKey;
-	};
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				site_id?: DeleteEnvVarValueQuerySiteId | undefined;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/accounts/${string}/env/${string}/value/${string}`;
+export type DeleteEnvVarValueOptions = {
+	body?: never | undefined;
+	path: DeleteEnvVarValuePath;
+	query?: DeleteEnvVarValueQuery | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type DeleteEnvVarValueResponses = {
 	"204": DeleteEnvVarValueStatus204;
 	default: DeleteEnvVarValueStatusDefault;
@@ -10532,89 +5779,45 @@ export type DeleteEnvVarValueResponses = {
  */
 export type DeleteEnvVarValueResponse = DeleteEnvVarValueStatus204 | DeleteEnvVarValueStatusDefault;
 
-/**
- * @type string
- */
-export type SearchSiteFunctionsPathSiteId = string;
+export type SearchSiteFunctionsPath = {
+	site_id: string;
+};
 
-/**
- * @type string | undefined
- */
-export type SearchSiteFunctionsQueryFilter = string | undefined;
+export type SearchSiteFunctionsQuery = {
+	filter?: string | undefined;
+};
 
-/**
- * @type array
- */
 export type SearchSiteFunctionsStatus200 = {
-	/**
-	 * @type string | undefined
-	 */
 	branch?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	functions?: object[] | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	log_type?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	provider?: string | undefined;
 }[];
 
-/**
- * @type object
- */
 export type SearchSiteFunctionsStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type SearchSiteFunctionsRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: SearchSiteFunctionsPathSiteId;
-	};
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				filter?: SearchSiteFunctionsQueryFilter | undefined;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/functions`;
+export type SearchSiteFunctionsOptions = {
+	body?: never | undefined;
+	path: SearchSiteFunctionsPath;
+	query?: SearchSiteFunctionsQuery | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type SearchSiteFunctionsResponses = {
 	"200": SearchSiteFunctionsStatus200;
 	default: SearchSiteFunctionsStatusDefault;
@@ -10627,81 +5830,47 @@ export type SearchSiteFunctionsResponse =
 	| SearchSiteFunctionsStatus200
 	| SearchSiteFunctionsStatusDefault;
 
-/**
- * @type string
- */
-export type ListSiteFormsPathSiteId = string;
+export type ListSiteFormsPath = {
+	site_id: string;
+};
 
-/**
- * @type array
- */
 export type ListSiteFormsStatus200 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	site_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	paths?: string[] | undefined;
 	/**
+	 * @description
+	 * Format: `int32`
 	 * @type integer | undefined
 	 */
 	submission_count?: number | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	fields?: object[] | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 }[];
 
-/**
- * @type object
- */
 export type ListSiteFormsStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type ListSiteFormsRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: ListSiteFormsPathSiteId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/forms`;
+export type ListSiteFormsOptions = {
+	body?: never | undefined;
+	path: ListSiteFormsPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type ListSiteFormsResponses = {
 	"200": ListSiteFormsStatus200;
 	default: ListSiteFormsStatusDefault;
@@ -10712,58 +5881,30 @@ export type ListSiteFormsResponses = {
  */
 export type ListSiteFormsResponse = ListSiteFormsStatus200 | ListSiteFormsStatusDefault;
 
-/**
- * @type string
- */
-export type DeleteSiteFormPathSiteId = string;
+export type DeleteSiteFormPath = {
+	site_id: string;
+	form_id: string;
+};
 
-/**
- * @type string
- */
-export type DeleteSiteFormPathFormId = string;
-
-/**
- * @type unknown
- */
 export type DeleteSiteFormStatus204 = unknown;
 
-/**
- * @type object
- */
 export type DeleteSiteFormStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type DeleteSiteFormRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: DeleteSiteFormPathSiteId;
-		form_id: DeleteSiteFormPathFormId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/forms/${string}`;
+export type DeleteSiteFormOptions = {
+	body?: never | undefined;
+	path: DeleteSiteFormPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type DeleteSiteFormResponses = {
 	"204": DeleteSiteFormStatus204;
 	default: DeleteSiteFormStatusDefault;
@@ -10774,119 +5915,67 @@ export type DeleteSiteFormResponses = {
  */
 export type DeleteSiteFormResponse = DeleteSiteFormStatus204 | DeleteSiteFormStatusDefault;
 
-/**
- * @type string
- */
-export type ListSiteSubmissionsPathSiteId = string;
+export type ListSiteSubmissionsPath = {
+	site_id: string;
+};
 
-/**
- * @type integer | undefined
- */
-export type ListSiteSubmissionsQueryPage = number | undefined;
-
-/**
- * @type integer | undefined
- */
-export type ListSiteSubmissionsQueryPerPage = number | undefined;
-
-/**
- * @type array
- */
-export type ListSiteSubmissionsStatus200 = {
+export type ListSiteSubmissionsQuery = {
 	/**
-	 * @type string | undefined
+	 * @description
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
+	page?: number | undefined;
+	/**
+	 * @description
+	 * Format: `int32`
+	 * @type integer | undefined
+	 */
+	per_page?: number | undefined;
+};
+
+export type ListSiteSubmissionsStatus200 = {
 	id?: string | undefined;
 	/**
+	 * @description
+	 * Format: `int32`
 	 * @type integer | undefined
 	 */
 	number?: number | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	email?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	first_name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	last_name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	company?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	summary?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	body?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	data?: object | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	site_url?: string | undefined;
 }[];
 
-/**
- * @type object
- */
 export type ListSiteSubmissionsStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type ListSiteSubmissionsRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: ListSiteSubmissionsPathSiteId;
-	};
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				page?: ListSiteSubmissionsQueryPage | undefined;
-				per_page?: ListSiteSubmissionsQueryPerPage | undefined;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/submissions`;
+export type ListSiteSubmissionsOptions = {
+	body?: never | undefined;
+	path: ListSiteSubmissionsPath;
+	query?: ListSiteSubmissionsQuery | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type ListSiteSubmissionsResponses = {
 	"200": ListSiteSubmissionsStatus200;
 	default: ListSiteSubmissionsStatusDefault;
@@ -10899,73 +5988,40 @@ export type ListSiteSubmissionsResponse =
 	| ListSiteSubmissionsStatus200
 	| ListSiteSubmissionsStatusDefault;
 
-/**
- * @type string
- */
-export type ListSiteFilesPathSiteId = string;
+export type ListSiteFilesPath = {
+	site_id: string;
+};
 
-/**
- * @type array
- */
 export type ListSiteFilesStatus200 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	path?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	sha?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	mime_type?: string | undefined;
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	size?: bigint | undefined;
 }[];
 
-/**
- * @type object
- */
 export type ListSiteFilesStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type ListSiteFilesRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: ListSiteFilesPathSiteId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/files`;
+export type ListSiteFilesOptions = {
+	body?: never | undefined;
+	path: ListSiteFilesPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type ListSiteFilesResponses = {
 	"200": ListSiteFilesStatus200;
 	default: ListSiteFilesStatusDefault;
@@ -10976,101 +6032,57 @@ export type ListSiteFilesResponses = {
  */
 export type ListSiteFilesResponse = ListSiteFilesStatus200 | ListSiteFilesStatusDefault;
 
-/**
- * @type string
- */
-export type ListSiteAssetsPathSiteId = string;
+export type ListSiteAssetsPath = {
+	site_id: string;
+};
 
-/**
- * @type array
- */
 export type ListSiteAssetsStatus200 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	site_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	creator_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	state?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	content_type?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	key?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	visibility?: string | undefined;
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	size?: bigint | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 }[];
 
-/**
- * @type object
- */
 export type ListSiteAssetsStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type ListSiteAssetsRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: ListSiteAssetsPathSiteId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/assets`;
+export type ListSiteAssetsOptions = {
+	body?: never | undefined;
+	path: ListSiteAssetsPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type ListSiteAssetsResponses = {
 	"200": ListSiteAssetsStatus200;
 	default: ListSiteAssetsStatusDefault;
@@ -11081,47 +6093,26 @@ export type ListSiteAssetsResponses = {
  */
 export type ListSiteAssetsResponse = ListSiteAssetsStatus200 | ListSiteAssetsStatusDefault;
 
-/**
- * @type string
- */
-export type CreateSiteAssetPathSiteId = string;
+export type CreateSiteAssetPath = {
+	site_id: string;
+};
 
-/**
- * @type string
- */
-export type CreateSiteAssetQueryName = string;
-
-/**
- * @type integer
- */
-export type CreateSiteAssetQuerySize = bigint;
-
-/**
- * @type string
- */
-export type CreateSiteAssetQueryContentType = string;
-
-/**
- * @type string | undefined
- */
-export type CreateSiteAssetQueryVisibility = string | undefined;
-
-/**
- * @type object
- */
-export type CreateSiteAssetStatus201 = {
+export type CreateSiteAssetQuery = {
+	name: string;
 	/**
-	 * @type object | undefined
+	 * @description
+	 * Format: `int64`
+	 * @type integer
 	 */
+	size: bigint;
+	content_type: string;
+	visibility?: string | undefined;
+};
+
+export type CreateSiteAssetStatus201 = {
 	form?:
 		| {
-				/**
-				 * @type string | undefined
-				 */
 				url?: string | undefined;
-				/**
-				 * @type object | undefined
-				 */
 				fields?:
 					| {
 							[key: string]: string;
@@ -11129,56 +6120,32 @@ export type CreateSiteAssetStatus201 = {
 					| undefined;
 		  }
 		| undefined;
-	/**
-	 * @type object | undefined
-	 */
 	asset?:
 		| {
-				/**
-				 * @type string | undefined
-				 */
 				id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				site_id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				creator_id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				name?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				state?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				content_type?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				url?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				key?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				visibility?: string | undefined;
 				/**
+				 * @description
+				 * Format: `int64`
 				 * @type integer | undefined
 				 */
 				size?: bigint | undefined;
 				/**
+				 * @description
+				 * Format: `dateTime`
 				 * @type string | undefined
 				 */
 				created_at?: string | undefined;
 				/**
+				 * @description
+				 * Format: `dateTime`
 				 * @type string | undefined
 				 */
 				updated_at?: string | undefined;
@@ -11186,52 +6153,23 @@ export type CreateSiteAssetStatus201 = {
 		| undefined;
 };
 
-/**
- * @type object
- */
 export type CreateSiteAssetStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type CreateSiteAssetRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: CreateSiteAssetPathSiteId;
-	};
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				name: CreateSiteAssetQueryName;
-				size: CreateSiteAssetQuerySize;
-				content_type: CreateSiteAssetQueryContentType;
-				visibility?: CreateSiteAssetQueryVisibility | undefined;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/assets`;
+export type CreateSiteAssetOptions = {
+	body?: never | undefined;
+	path: CreateSiteAssetPath;
+	query: CreateSiteAssetQuery;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type CreateSiteAssetResponses = {
 	"201": CreateSiteAssetStatus201;
 	default: CreateSiteAssetStatusDefault;
@@ -11242,107 +6180,58 @@ export type CreateSiteAssetResponses = {
  */
 export type CreateSiteAssetResponse = CreateSiteAssetStatus201 | CreateSiteAssetStatusDefault;
 
-/**
- * @type string
- */
-export type GetSiteAssetInfoPathSiteId = string;
+export type GetSiteAssetInfoPath = {
+	site_id: string;
+	asset_id: string;
+};
 
-/**
- * @type string
- */
-export type GetSiteAssetInfoPathAssetId = string;
-
-/**
- * @type object
- */
 export type GetSiteAssetInfoStatus200 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	site_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	creator_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	state?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	content_type?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	key?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	visibility?: string | undefined;
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	size?: bigint | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 };
 
-/**
- * @type object
- */
 export type GetSiteAssetInfoStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type GetSiteAssetInfoRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: GetSiteAssetInfoPathSiteId;
-		asset_id: GetSiteAssetInfoPathAssetId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/assets/${string}`;
+export type GetSiteAssetInfoOptions = {
+	body?: never | undefined;
+	path: GetSiteAssetInfoPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type GetSiteAssetInfoResponses = {
 	"200": GetSiteAssetInfoStatus200;
 	default: GetSiteAssetInfoStatusDefault;
@@ -11353,119 +6242,62 @@ export type GetSiteAssetInfoResponses = {
  */
 export type GetSiteAssetInfoResponse = GetSiteAssetInfoStatus200 | GetSiteAssetInfoStatusDefault;
 
-/**
- * @type string
- */
-export type UpdateSiteAssetPathSiteId = string;
+export type UpdateSiteAssetPath = {
+	site_id: string;
+	asset_id: string;
+};
 
-/**
- * @type string
- */
-export type UpdateSiteAssetPathAssetId = string;
+export type UpdateSiteAssetQuery = {
+	state: string;
+};
 
-/**
- * @type string
- */
-export type UpdateSiteAssetQueryState = string;
-
-/**
- * @type object
- */
 export type UpdateSiteAssetStatus200 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	site_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	creator_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	state?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	content_type?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	key?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	visibility?: string | undefined;
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	size?: bigint | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 };
 
-/**
- * @type object
- */
 export type UpdateSiteAssetStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type UpdateSiteAssetRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: UpdateSiteAssetPathSiteId;
-		asset_id: UpdateSiteAssetPathAssetId;
-	};
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				state: UpdateSiteAssetQueryState;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/assets/${string}`;
+export type UpdateSiteAssetOptions = {
+	body?: never | undefined;
+	path: UpdateSiteAssetPath;
+	query: UpdateSiteAssetQuery;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type UpdateSiteAssetResponses = {
 	"200": UpdateSiteAssetStatus200;
 	default: UpdateSiteAssetStatusDefault;
@@ -11476,58 +6308,30 @@ export type UpdateSiteAssetResponses = {
  */
 export type UpdateSiteAssetResponse = UpdateSiteAssetStatus200 | UpdateSiteAssetStatusDefault;
 
-/**
- * @type string
- */
-export type DeleteSiteAssetPathSiteId = string;
+export type DeleteSiteAssetPath = {
+	site_id: string;
+	asset_id: string;
+};
 
-/**
- * @type string
- */
-export type DeleteSiteAssetPathAssetId = string;
-
-/**
- * @type unknown
- */
 export type DeleteSiteAssetStatus204 = unknown;
 
-/**
- * @type object
- */
 export type DeleteSiteAssetStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type DeleteSiteAssetRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: DeleteSiteAssetPathSiteId;
-		asset_id: DeleteSiteAssetPathAssetId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/assets/${string}`;
+export type DeleteSiteAssetOptions = {
+	body?: never | undefined;
+	path: DeleteSiteAssetPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type DeleteSiteAssetResponses = {
 	"204": DeleteSiteAssetStatus204;
 	default: DeleteSiteAssetStatusDefault;
@@ -11538,63 +6342,32 @@ export type DeleteSiteAssetResponses = {
  */
 export type DeleteSiteAssetResponse = DeleteSiteAssetStatus204 | DeleteSiteAssetStatusDefault;
 
-/**
- * @type string
- */
-export type GetSiteAssetPublicSignaturePathSiteId = string;
+export type GetSiteAssetPublicSignaturePath = {
+	site_id: string;
+	asset_id: string;
+};
 
-/**
- * @type string
- */
-export type GetSiteAssetPublicSignaturePathAssetId = string;
-
-/**
- * @type object
- */
 export type GetSiteAssetPublicSignatureStatus200 = {
-	/**
-	 * @type string | undefined
-	 */
 	url?: string | undefined;
 };
 
-/**
- * @type object
- */
 export type GetSiteAssetPublicSignatureStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type GetSiteAssetPublicSignatureRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: GetSiteAssetPublicSignaturePathSiteId;
-		asset_id: GetSiteAssetPublicSignaturePathAssetId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/assets/${string}/public_signature`;
+export type GetSiteAssetPublicSignatureOptions = {
+	body?: never | undefined;
+	path: GetSiteAssetPublicSignaturePath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type GetSiteAssetPublicSignatureResponses = {
 	"200": GetSiteAssetPublicSignatureStatus200;
 	default: GetSiteAssetPublicSignatureStatusDefault;
@@ -11607,79 +6380,41 @@ export type GetSiteAssetPublicSignatureResponse =
 	| GetSiteAssetPublicSignatureStatus200
 	| GetSiteAssetPublicSignatureStatusDefault;
 
-/**
- * @type string
- */
-export type GetSiteFileByPathNamePathSiteId = string;
+export type GetSiteFileByPathNamePath = {
+	site_id: string;
+	file_path: string;
+};
 
-/**
- * @type string
- */
-export type GetSiteFileByPathNamePathFilePath = string;
-
-/**
- * @type object
- */
 export type GetSiteFileByPathNameStatus200 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	path?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	sha?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	mime_type?: string | undefined;
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	size?: bigint | undefined;
 };
 
-/**
- * @type object
- */
 export type GetSiteFileByPathNameStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type GetSiteFileByPathNameRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: GetSiteFileByPathNamePathSiteId;
-		file_path: GetSiteFileByPathNamePathFilePath;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/files/${string}`;
+export type GetSiteFileByPathNameOptions = {
+	body?: never | undefined;
+	path: GetSiteFileByPathNamePath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type GetSiteFileByPathNameResponses = {
 	"200": GetSiteFileByPathNameStatus200;
 	default: GetSiteFileByPathNameStatusDefault;
@@ -11692,56 +6427,25 @@ export type GetSiteFileByPathNameResponse =
 	| GetSiteFileByPathNameStatus200
 	| GetSiteFileByPathNameStatusDefault;
 
-/**
- * @type unknown
- */
 export type PurgeCacheStatus202 = unknown;
 
-/**
- * @type unknown
- */
 export type PurgeCacheStatus400 = unknown;
 
-/**
- * @type unknown
- */
 export type PurgeCacheStatus404 = unknown;
 
-/**
- * @type object
- */
-export type PurgeCacheData = {
-	/**
-	 * @type string | undefined
-	 */
+export type PurgeCacheBody = {
 	site_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	site_slug?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	cache_tags?: string[] | undefined;
 };
 
-/**
- * @type object
- */
-export type PurgeCacheRequestConfig = {
-	data?: PurgeCacheData | undefined;
-	pathParams?: never | undefined;
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: "/purge";
+export type PurgeCacheOptions = {
+	body: PurgeCacheBody;
+	path?: never | undefined;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type PurgeCacheResponses = {
 	"202": PurgeCacheStatus202;
 	"400": PurgeCacheStatus400;
@@ -11753,81 +6457,42 @@ export type PurgeCacheResponses = {
  */
 export type PurgeCacheResponse = PurgeCacheStatus202 | PurgeCacheStatus400 | PurgeCacheStatus404;
 
-/**
- * @type string
- */
-export type ListSiteSnippetsPathSiteId = string;
+export type ListSiteSnippetsPath = {
+	site_id: string;
+};
 
-/**
- * @type array
- */
 export type ListSiteSnippetsStatus200 = {
 	/**
+	 * @description
+	 * Format: `int32`
 	 * @type integer | undefined
 	 */
 	id?: number | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	site_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	title?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	general?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	general_position?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	goal?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	goal_position?: string | undefined;
 }[];
 
-/**
- * @type object
- */
 export type ListSiteSnippetsStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type ListSiteSnippetsRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: ListSiteSnippetsPathSiteId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/snippets`;
+export type ListSiteSnippetsOptions = {
+	body?: never | undefined;
+	path: ListSiteSnippetsPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type ListSiteSnippetsResponses = {
 	"200": ListSiteSnippetsStatus200;
 	default: ListSiteSnippetsStatusDefault;
@@ -11838,117 +6503,57 @@ export type ListSiteSnippetsResponses = {
  */
 export type ListSiteSnippetsResponse = ListSiteSnippetsStatus200 | ListSiteSnippetsStatusDefault;
 
-/**
- * @type string
- */
-export type CreateSiteSnippetPathSiteId = string;
+export type CreateSiteSnippetPath = {
+	site_id: string;
+};
 
-/**
- * @type object
- */
 export type CreateSiteSnippetStatus201 = {
 	/**
+	 * @description
+	 * Format: `int32`
 	 * @type integer | undefined
 	 */
 	id?: number | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	site_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	title?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	general?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	general_position?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	goal?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	goal_position?: string | undefined;
 };
 
-/**
- * @type object
- */
 export type CreateSiteSnippetStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object | undefined
- */
-export type CreateSiteSnippetData =
-	| {
-			/**
-			 * @type integer | undefined
-			 */
-			id?: number | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			site_id?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			title?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			general?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			general_position?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			goal?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			goal_position?: string | undefined;
-	  }
-	| undefined;
-
-/**
- * @type object
- */
-export type CreateSiteSnippetRequestConfig = {
-	data?: CreateSiteSnippetData | undefined;
+export type CreateSiteSnippetBody = {
 	/**
-	 * @type object
+	 * @description
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
-	pathParams: {
-		site_id: CreateSiteSnippetPathSiteId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/snippets`;
+	id?: number | undefined;
+	site_id?: string | undefined;
+	title?: string | undefined;
+	general?: string | undefined;
+	general_position?: string | undefined;
+	goal?: string | undefined;
+	goal_position?: string | undefined;
 };
 
-/**
- * @type object
- */
+export type CreateSiteSnippetOptions = {
+	body: CreateSiteSnippetBody;
+	path: CreateSiteSnippetPath;
+	query?: never | undefined;
+	headers?: never | undefined;
+};
+
 export type CreateSiteSnippetResponses = {
 	"201": CreateSiteSnippetStatus201;
 	default: CreateSiteSnippetStatusDefault;
@@ -11959,87 +6564,43 @@ export type CreateSiteSnippetResponses = {
  */
 export type CreateSiteSnippetResponse = CreateSiteSnippetStatus201 | CreateSiteSnippetStatusDefault;
 
-/**
- * @type string
- */
-export type GetSiteSnippetPathSiteId = string;
+export type GetSiteSnippetPath = {
+	site_id: string;
+	snippet_id: string;
+};
 
-/**
- * @type string
- */
-export type GetSiteSnippetPathSnippetId = string;
-
-/**
- * @type object
- */
 export type GetSiteSnippetStatus200 = {
 	/**
+	 * @description
+	 * Format: `int32`
 	 * @type integer | undefined
 	 */
 	id?: number | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	site_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	title?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	general?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	general_position?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	goal?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	goal_position?: string | undefined;
 };
 
-/**
- * @type object
- */
 export type GetSiteSnippetStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type GetSiteSnippetRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: GetSiteSnippetPathSiteId;
-		snippet_id: GetSiteSnippetPathSnippetId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/snippets/${string}`;
+export type GetSiteSnippetOptions = {
+	body?: never | undefined;
+	path: GetSiteSnippetPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type GetSiteSnippetResponses = {
 	"200": GetSiteSnippetStatus200;
 	default: GetSiteSnippetStatusDefault;
@@ -12050,94 +6611,45 @@ export type GetSiteSnippetResponses = {
  */
 export type GetSiteSnippetResponse = GetSiteSnippetStatus200 | GetSiteSnippetStatusDefault;
 
-/**
- * @type string
- */
-export type UpdateSiteSnippetPathSiteId = string;
+export type UpdateSiteSnippetPath = {
+	site_id: string;
+	snippet_id: string;
+};
 
-/**
- * @type string
- */
-export type UpdateSiteSnippetPathSnippetId = string;
-
-/**
- * @type unknown
- */
 export type UpdateSiteSnippetStatus204 = unknown;
 
-/**
- * @type object
- */
 export type UpdateSiteSnippetStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object | undefined
- */
-export type UpdateSiteSnippetData =
-	| {
-			/**
-			 * @type integer | undefined
-			 */
-			id?: number | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			site_id?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			title?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			general?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			general_position?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			goal?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			goal_position?: string | undefined;
-	  }
-	| undefined;
-
-/**
- * @type object
- */
-export type UpdateSiteSnippetRequestConfig = {
-	data?: UpdateSiteSnippetData | undefined;
+export type UpdateSiteSnippetBody = {
 	/**
-	 * @type object
+	 * @description
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
-	pathParams: {
-		site_id: UpdateSiteSnippetPathSiteId;
-		snippet_id: UpdateSiteSnippetPathSnippetId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/snippets/${string}`;
+	id?: number | undefined;
+	site_id?: string | undefined;
+	title?: string | undefined;
+	general?: string | undefined;
+	general_position?: string | undefined;
+	goal?: string | undefined;
+	goal_position?: string | undefined;
 };
 
-/**
- * @type object
- */
+export type UpdateSiteSnippetOptions = {
+	body: UpdateSiteSnippetBody;
+	path: UpdateSiteSnippetPath;
+	query?: never | undefined;
+	headers?: never | undefined;
+};
+
 export type UpdateSiteSnippetResponses = {
 	"204": UpdateSiteSnippetStatus204;
 	default: UpdateSiteSnippetStatusDefault;
@@ -12148,58 +6660,30 @@ export type UpdateSiteSnippetResponses = {
  */
 export type UpdateSiteSnippetResponse = UpdateSiteSnippetStatus204 | UpdateSiteSnippetStatusDefault;
 
-/**
- * @type string
- */
-export type DeleteSiteSnippetPathSiteId = string;
+export type DeleteSiteSnippetPath = {
+	site_id: string;
+	snippet_id: string;
+};
 
-/**
- * @type string
- */
-export type DeleteSiteSnippetPathSnippetId = string;
-
-/**
- * @type unknown
- */
 export type DeleteSiteSnippetStatus204 = unknown;
 
-/**
- * @type object
- */
 export type DeleteSiteSnippetStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type DeleteSiteSnippetRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: DeleteSiteSnippetPathSiteId;
-		snippet_id: DeleteSiteSnippetPathSnippetId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/snippets/${string}`;
+export type DeleteSiteSnippetOptions = {
+	body?: never | undefined;
+	path: DeleteSiteSnippetPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type DeleteSiteSnippetResponses = {
 	"204": DeleteSiteSnippetStatus204;
 	default: DeleteSiteSnippetStatusDefault;
@@ -12210,52 +6694,29 @@ export type DeleteSiteSnippetResponses = {
  */
 export type DeleteSiteSnippetResponse = DeleteSiteSnippetStatus204 | DeleteSiteSnippetStatusDefault;
 
-/**
- * @type string
- */
-export type GetSiteMetadataPathSiteId = string;
+export type GetSiteMetadataPath = {
+	site_id: string;
+};
 
-/**
- * @type object
- */
 export type GetSiteMetadataStatus200 = object;
 
-/**
- * @type object
- */
 export type GetSiteMetadataStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type GetSiteMetadataRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: GetSiteMetadataPathSiteId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/metadata`;
+export type GetSiteMetadataOptions = {
+	body?: never | undefined;
+	path: GetSiteMetadataPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type GetSiteMetadataResponses = {
 	"200": GetSiteMetadataStatus200;
 	default: GetSiteMetadataStatusDefault;
@@ -12266,57 +6727,31 @@ export type GetSiteMetadataResponses = {
  */
 export type GetSiteMetadataResponse = GetSiteMetadataStatus200 | GetSiteMetadataStatusDefault;
 
-/**
- * @type string
- */
-export type UpdateSiteMetadataPathSiteId = string;
+export type UpdateSiteMetadataPath = {
+	site_id: string;
+};
 
-/**
- * @type unknown
- */
 export type UpdateSiteMetadataStatus204 = unknown;
 
-/**
- * @type object
- */
 export type UpdateSiteMetadataStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object | undefined
- */
-export type UpdateSiteMetadataData = object | undefined;
+export type UpdateSiteMetadataBody = object;
 
-/**
- * @type object
- */
-export type UpdateSiteMetadataRequestConfig = {
-	data?: UpdateSiteMetadataData | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: UpdateSiteMetadataPathSiteId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/metadata`;
+export type UpdateSiteMetadataOptions = {
+	body: UpdateSiteMetadataBody;
+	path: UpdateSiteMetadataPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type UpdateSiteMetadataResponses = {
 	"204": UpdateSiteMetadataStatus204;
 	default: UpdateSiteMetadataStatusDefault;
@@ -12329,77 +6764,41 @@ export type UpdateSiteMetadataResponse =
 	| UpdateSiteMetadataStatus204
 	| UpdateSiteMetadataStatusDefault;
 
-/**
- * @type string
- */
-export type ListSiteBuildHooksPathSiteId = string;
+export type ListSiteBuildHooksPath = {
+	site_id: string;
+};
 
-/**
- * @type array
- */
 export type ListSiteBuildHooksStatus200 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	title?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	branch?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	site_id?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 }[];
 
-/**
- * @type object
- */
 export type ListSiteBuildHooksStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type ListSiteBuildHooksRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: ListSiteBuildHooksPathSiteId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/build_hooks`;
+export type ListSiteBuildHooksOptions = {
+	body?: never | undefined;
+	path: ListSiteBuildHooksPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type ListSiteBuildHooksResponses = {
 	"200": ListSiteBuildHooksStatus200;
 	default: ListSiteBuildHooksStatusDefault;
@@ -12412,93 +6811,46 @@ export type ListSiteBuildHooksResponse =
 	| ListSiteBuildHooksStatus200
 	| ListSiteBuildHooksStatusDefault;
 
-/**
- * @type string
- */
-export type CreateSiteBuildHookPathSiteId = string;
+export type CreateSiteBuildHookPath = {
+	site_id: string;
+};
 
-/**
- * @type object
- */
 export type CreateSiteBuildHookStatus201 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	title?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	branch?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	site_id?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 };
 
-/**
- * @type object
- */
 export type CreateSiteBuildHookStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object | undefined
- */
-export type CreateSiteBuildHookData =
-	| {
-			/**
-			 * @type string | undefined
-			 */
-			title?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			branch?: string | undefined;
-	  }
-	| undefined;
-
-/**
- * @type object
- */
-export type CreateSiteBuildHookRequestConfig = {
-	data?: CreateSiteBuildHookData | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: CreateSiteBuildHookPathSiteId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/build_hooks`;
+export type CreateSiteBuildHookBody = {
+	title?: string | undefined;
+	branch?: string | undefined;
 };
 
-/**
- * @type object
- */
+export type CreateSiteBuildHookOptions = {
+	body: CreateSiteBuildHookBody;
+	path: CreateSiteBuildHookPath;
+	query?: never | undefined;
+	headers?: never | undefined;
+};
+
 export type CreateSiteBuildHookResponses = {
 	"201": CreateSiteBuildHookStatus201;
 	default: CreateSiteBuildHookStatusDefault;
@@ -12511,83 +6863,42 @@ export type CreateSiteBuildHookResponse =
 	| CreateSiteBuildHookStatus201
 	| CreateSiteBuildHookStatusDefault;
 
-/**
- * @type string
- */
-export type GetSiteBuildHookPathSiteId = string;
+export type GetSiteBuildHookPath = {
+	site_id: string;
+	id: string;
+};
 
-/**
- * @type string
- */
-export type GetSiteBuildHookPathId = string;
-
-/**
- * @type object
- */
 export type GetSiteBuildHookStatus200 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	title?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	branch?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	site_id?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 };
 
-/**
- * @type object
- */
 export type GetSiteBuildHookStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type GetSiteBuildHookRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: GetSiteBuildHookPathSiteId;
-		id: GetSiteBuildHookPathId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/build_hooks/${string}`;
+export type GetSiteBuildHookOptions = {
+	body?: never | undefined;
+	path: GetSiteBuildHookPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type GetSiteBuildHookResponses = {
 	"200": GetSiteBuildHookStatus200;
 	default: GetSiteBuildHookStatusDefault;
@@ -12598,74 +6909,35 @@ export type GetSiteBuildHookResponses = {
  */
 export type GetSiteBuildHookResponse = GetSiteBuildHookStatus200 | GetSiteBuildHookStatusDefault;
 
-/**
- * @type string
- */
-export type UpdateSiteBuildHookPathSiteId = string;
+export type UpdateSiteBuildHookPath = {
+	site_id: string;
+	id: string;
+};
 
-/**
- * @type string
- */
-export type UpdateSiteBuildHookPathId = string;
-
-/**
- * @type unknown
- */
 export type UpdateSiteBuildHookStatus204 = unknown;
 
-/**
- * @type object
- */
 export type UpdateSiteBuildHookStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object | undefined
- */
-export type UpdateSiteBuildHookData =
-	| {
-			/**
-			 * @type string | undefined
-			 */
-			title?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			branch?: string | undefined;
-	  }
-	| undefined;
-
-/**
- * @type object
- */
-export type UpdateSiteBuildHookRequestConfig = {
-	data?: UpdateSiteBuildHookData | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: UpdateSiteBuildHookPathSiteId;
-		id: UpdateSiteBuildHookPathId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/build_hooks/${string}`;
+export type UpdateSiteBuildHookBody = {
+	title?: string | undefined;
+	branch?: string | undefined;
 };
 
-/**
- * @type object
- */
+export type UpdateSiteBuildHookOptions = {
+	body: UpdateSiteBuildHookBody;
+	path: UpdateSiteBuildHookPath;
+	query?: never | undefined;
+	headers?: never | undefined;
+};
+
 export type UpdateSiteBuildHookResponses = {
 	"204": UpdateSiteBuildHookStatus204;
 	default: UpdateSiteBuildHookStatusDefault;
@@ -12678,58 +6950,30 @@ export type UpdateSiteBuildHookResponse =
 	| UpdateSiteBuildHookStatus204
 	| UpdateSiteBuildHookStatusDefault;
 
-/**
- * @type string
- */
-export type DeleteSiteBuildHookPathSiteId = string;
+export type DeleteSiteBuildHookPath = {
+	site_id: string;
+	id: string;
+};
 
-/**
- * @type string
- */
-export type DeleteSiteBuildHookPathId = string;
-
-/**
- * @type unknown
- */
 export type DeleteSiteBuildHookStatus204 = unknown;
 
-/**
- * @type object
- */
 export type DeleteSiteBuildHookStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type DeleteSiteBuildHookRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: DeleteSiteBuildHookPathSiteId;
-		id: DeleteSiteBuildHookPathId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/build_hooks/${string}`;
+export type DeleteSiteBuildHookOptions = {
+	body?: never | undefined;
+	path: DeleteSiteBuildHookPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type DeleteSiteBuildHookResponses = {
 	"204": DeleteSiteBuildHookStatus204;
 	default: DeleteSiteBuildHookStatusDefault;
@@ -12742,205 +6986,105 @@ export type DeleteSiteBuildHookResponse =
 	| DeleteSiteBuildHookStatus204
 	| DeleteSiteBuildHookStatusDefault;
 
-/**
- * @type string
- */
-export type ListSiteDeploysPathSiteId = string;
+export type ListSiteDeploysPath = {
+	site_id: string;
+};
 
-/**
- * @type boolean | undefined
- */
-export type ListSiteDeploysQueryDeployPreviews = boolean | undefined;
+export const listSiteDeploysState = {
+	new: "new",
+	pending_review: "pending_review",
+	accepted: "accepted",
+	rejected: "rejected",
+	enqueued: "enqueued",
+	building: "building",
+	uploading: "uploading",
+	uploaded: "uploaded",
+	preparing: "preparing",
+	prepared: "prepared",
+	processing: "processing",
+	processed: "processed",
+	ready: "ready",
+	error: "error",
+	retrying: "retrying",
+} as const;
 
-/**
- * @type boolean | undefined
- */
-export type ListSiteDeploysQueryProduction = boolean | undefined;
+export type ListSiteDeploysStateKey =
+	(typeof listSiteDeploysState)[keyof typeof listSiteDeploysState];
 
-/**
- * @type string | undefined
- */
-export type ListSiteDeploysQueryState =
-	| (
-			| "new"
-			| "pending_review"
-			| "accepted"
-			| "rejected"
-			| "enqueued"
-			| "building"
-			| "uploading"
-			| "uploaded"
-			| "preparing"
-			| "prepared"
-			| "processing"
-			| "processed"
-			| "ready"
-			| "error"
-			| "retrying"
-	  )
-	| undefined;
+export type ListSiteDeploysQuery = {
+	"deploy-previews"?: boolean | undefined;
+	production?: boolean | undefined;
+	state?: ListSiteDeploysStateKey | undefined;
+	branch?: string | undefined;
+	"latest-published"?: boolean | undefined;
+	/**
+	 * @description
+	 * Format: `int32`
+	 * @type integer | undefined
+	 */
+	page?: number | undefined;
+	/**
+	 * @description
+	 * Format: `int32`
+	 * @type integer | undefined
+	 */
+	per_page?: number | undefined;
+};
 
-/**
- * @type string | undefined
- */
-export type ListSiteDeploysQueryBranch = string | undefined;
-
-/**
- * @type boolean | undefined
- */
-export type ListSiteDeploysQueryLatestPublished = boolean | undefined;
-
-/**
- * @type integer | undefined
- */
-export type ListSiteDeploysQueryPage = number | undefined;
-
-/**
- * @type integer | undefined
- */
-export type ListSiteDeploysQueryPerPage = number | undefined;
-
-/**
- * @type array
- */
 export type ListSiteDeploysStatus200 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	site_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	user_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	build_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	state?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	ssl_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	admin_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	deploy_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	deploy_ssl_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	screenshot_url?: string | undefined;
-	/**
-	 * @type number | undefined
-	 */
 	review_id?: number | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	draft?: boolean | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	required?: string[] | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	required_functions?: string[] | undefined;
 	/**
 	 * @description An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n
 	 * @type array | undefined
 	 */
 	required_edge_functions?: string[] | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	error_message?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	branch?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	commit_ref?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	commit_url?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	skipped?: boolean | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	published_at?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	title?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	context?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	locked?: boolean | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	review_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	framework?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	skew_protection_token?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	function_schedules?:
 		| {
-				/**
-				 * @type string | undefined
-				 */
 				name?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				cron?: string | undefined;
 		  }[]
 		| undefined;
@@ -12955,67 +7099,29 @@ export type ListSiteDeploysStatus200 = {
 	 */
 	functions_region_overrides?:
 		| {
-				/**
-				 * @type string | undefined
-				 */
 				name?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				region?: string | undefined;
 		  }[]
 		| undefined;
 }[];
 
-/**
- * @type object
- */
 export type ListSiteDeploysStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type ListSiteDeploysRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: ListSiteDeploysPathSiteId;
-	};
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				"deploy-previews"?: ListSiteDeploysQueryDeployPreviews | undefined;
-				production?: ListSiteDeploysQueryProduction | undefined;
-				state?: ListSiteDeploysQueryState | undefined;
-				branch?: ListSiteDeploysQueryBranch | undefined;
-				"latest-published"?: ListSiteDeploysQueryLatestPublished | undefined;
-				page?: ListSiteDeploysQueryPage | undefined;
-				per_page?: ListSiteDeploysQueryPerPage | undefined;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/deploys`;
+export type ListSiteDeploysOptions = {
+	body?: never | undefined;
+	path: ListSiteDeploysPath;
+	query?: ListSiteDeploysQuery | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type ListSiteDeploysResponses = {
 	"200": ListSiteDeploysStatus200;
 	default: ListSiteDeploysStatusDefault;
@@ -13026,200 +7132,94 @@ export type ListSiteDeploysResponses = {
  */
 export type ListSiteDeploysResponse = ListSiteDeploysStatus200 | ListSiteDeploysStatusDefault;
 
-/**
- * @type string
- */
-export type CreateSiteDeployPathSiteId = string;
+export type CreateSiteDeployPath = {
+	site_id: string;
+};
 
-/**
- * @type boolean | undefined
- */
-export type CreateSiteDeployQueryDeployPreviews = boolean | undefined;
+export const createSiteDeployState = {
+	new: "new",
+	pending_review: "pending_review",
+	accepted: "accepted",
+	rejected: "rejected",
+	enqueued: "enqueued",
+	building: "building",
+	uploading: "uploading",
+	uploaded: "uploaded",
+	preparing: "preparing",
+	prepared: "prepared",
+	processing: "processing",
+	processed: "processed",
+	ready: "ready",
+	error: "error",
+	retrying: "retrying",
+} as const;
 
-/**
- * @type boolean | undefined
- */
-export type CreateSiteDeployQueryProduction = boolean | undefined;
+export type CreateSiteDeployStateKey =
+	(typeof createSiteDeployState)[keyof typeof createSiteDeployState];
 
-/**
- * @type string | undefined
- */
-export type CreateSiteDeployQueryState =
-	| (
-			| "new"
-			| "pending_review"
-			| "accepted"
-			| "rejected"
-			| "enqueued"
-			| "building"
-			| "uploading"
-			| "uploaded"
-			| "preparing"
-			| "prepared"
-			| "processing"
-			| "processed"
-			| "ready"
-			| "error"
-			| "retrying"
-	  )
-	| undefined;
+export type CreateSiteDeployQuery = {
+	"deploy-previews"?: boolean | undefined;
+	production?: boolean | undefined;
+	state?: CreateSiteDeployStateKey | undefined;
+	branch?: string | undefined;
+	"latest-published"?: boolean | undefined;
+	title?: string | undefined;
+};
 
-/**
- * @type string | undefined
- */
-export type CreateSiteDeployQueryBranch = string | undefined;
-
-/**
- * @type boolean | undefined
- */
-export type CreateSiteDeployQueryLatestPublished = boolean | undefined;
-
-/**
- * @type string | undefined
- */
-export type CreateSiteDeployQueryTitle = string | undefined;
-
-/**
- * @type object
- */
 export type CreateSiteDeployStatus200 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	site_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	user_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	build_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	state?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	ssl_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	admin_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	deploy_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	deploy_ssl_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	screenshot_url?: string | undefined;
-	/**
-	 * @type number | undefined
-	 */
 	review_id?: number | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	draft?: boolean | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	required?: string[] | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	required_functions?: string[] | undefined;
 	/**
 	 * @description An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n
 	 * @type array | undefined
 	 */
 	required_edge_functions?: string[] | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	error_message?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	branch?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	commit_ref?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	commit_url?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	skipped?: boolean | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	published_at?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	title?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	context?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	locked?: boolean | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	review_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	framework?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	skew_protection_token?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	function_schedules?:
 		| {
-				/**
-				 * @type string | undefined
-				 */
 				name?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				cron?: string | undefined;
 		  }[]
 		| undefined;
@@ -13234,310 +7234,155 @@ export type CreateSiteDeployStatus200 = {
 	 */
 	functions_region_overrides?:
 		| {
-				/**
-				 * @type string | undefined
-				 */
 				name?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				region?: string | undefined;
 		  }[]
 		| undefined;
 };
 
-/**
- * @type object
- */
 export type CreateSiteDeployStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
+export const createSiteDeployRequestEnvironmentScopesEnum = {
+	builds: "builds",
+	functions: "functions",
+	runtime: "runtime",
+	"post-processing": "post-processing",
+} as const;
+
+export type CreateSiteDeployRequestEnvironmentScopesEnumKey =
+	(typeof createSiteDeployRequestEnvironmentScopesEnum)[keyof typeof createSiteDeployRequestEnvironmentScopesEnum];
+
 /**
  * @description Deploy files can be provided in two ways:\n1. As a JSON object using \'files\' (a hash mapping file paths to SHA1 digests), OR\n2. As a zip file using one of these methods:\n   - Set Content-Type to \'application/zip\' and send the zip file as the raw request body\n   - Include the zip file content in the \'zip\' field of this JSON object with Content-Type \'application/json\'\n
- * @type object | undefined
- */
-export type CreateSiteDeployData =
-	| {
-			/**
-			 * @description A hash mapping file paths to SHA1 digests of the file contents.
-			 * @type object | undefined
-			 */
-			files?: object | undefined;
-			/**
-			 * @description A zip file containing the site files to deploy. Alternative to \'files\'.\nTo use this field, set Content-Type to \'application/json\' and include the zip content here.\nAlternatively, you can set Content-Type to \'application/zip\' and send the zip as the raw request body (not as JSON).\n
-			 * @type string | undefined
-			 */
-			zip?: Blob | undefined;
-			/**
-			 * @type boolean | undefined
-			 */
-			draft?: boolean | undefined;
-			/**
-			 * @type boolean | undefined
-			 */
-			async?: boolean | undefined;
-			/**
-			 * @type object | undefined
-			 */
-			functions?: object | undefined;
-			/**
-			 * @description A hash mapping edge-function bundle formats to the code_sha of each bundle. The\nresponse\'s required_edge_functions lists which of these still need to be uploaded.\n
-			 * @type object | undefined
-			 */
-			edge_functions?: object | undefined;
-			/**
-			 * @type array | undefined
-			 */
-			function_schedules?:
-				| {
-						/**
-						 * @type string | undefined
-						 */
-						name?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						cron?: string | undefined;
-				  }[]
-				| undefined;
-			/**
-			 * @type object | undefined
-			 */
-			functions_config?:
-				| {
-						[key: string]: {
-							/**
-							 * @type string | undefined
-							 */
-							display_name?: string | undefined;
-							/**
-							 * @type string | undefined
-							 */
-							generator?: string | undefined;
-							/**
-							 * @type object | undefined
-							 */
-							build_data?: object | undefined;
-							/**
-							 * @description The function\'s memory allocation in MB. Mutually exclusive with `vcpu`.\n
-							 * @type integer | undefined
-							 */
-							memory?: number | undefined;
-							/**
-							 * @type array | undefined
-							 */
-							routes?:
-								| {
-										/**
-										 * @type string | undefined
-										 */
-										pattern?: string | undefined;
-										/**
-										 * @type string | undefined
-										 */
-										literal?: string | undefined;
-										/**
-										 * @type string | undefined
-										 */
-										expression?: string | undefined;
-										/**
-										 * @type array | undefined
-										 */
-										methods?:
-											| ("GET" | "POST" | "PUT" | "PATCH" | "DELETE" | "OPTIONS")[]
-											| undefined;
-										/**
-										 * @type boolean | undefined
-										 */
-										prefer_static?: boolean | undefined;
-								  }[]
-								| undefined;
-							/**
-							 * @type array | undefined
-							 */
-							excluded_routes?:
-								| {
-										/**
-										 * @type string | undefined
-										 */
-										pattern?: string | undefined;
-										/**
-										 * @type string | undefined
-										 */
-										literal?: string | undefined;
-										/**
-										 * @type string | undefined
-										 */
-										expression?: string | undefined;
-								  }[]
-								| undefined;
-							/**
-							 * @type integer | undefined
-							 */
-							priority?: number | undefined;
-							/**
-							 * @type string | undefined
-							 */
-							region?: string | undefined;
-							/**
-							 * @type object | undefined
-							 */
-							traffic_rules?:
-								| {
-										/**
-										 * @type object | undefined
-										 */
-										action?:
-											| {
-													/**
-													 * @type string | undefined
-													 */
-													type?: string | undefined;
-													/**
-													 * @type object | undefined
-													 */
-													config?:
-														| {
-																/**
-																 * @type string | undefined
-																 */
-																to?: string | undefined;
-																/**
-																 * @type object | undefined
-																 */
-																rate_limit_config?:
-																	| {
-																			/**
-																			 * @type string | undefined
-																			 */
-																			algorithm?: AlgorithmEnumKey | undefined;
-																			/**
-																			 * @type integer | undefined
-																			 */
-																			window_size?: number | undefined;
-																			/**
-																			 * @type integer | undefined
-																			 */
-																			window_limit?: number | undefined;
-																	  }
-																	| undefined;
-																/**
-																 * @type object | undefined
-																 */
-																aggregate?:
-																	| {
-																			/**
-																			 * @type array | undefined
-																			 */
-																			keys?:
-																				| {
-																						/**
-																						 * @type string | undefined
-																						 */
-																						type?: TypeEnumKey | undefined;
-																				  }[]
-																				| undefined;
-																	  }
-																	| undefined;
-														  }
-														| undefined;
-											  }
-											| undefined;
-								  }
-								| undefined;
-							/**
-							 * @description Number of vCPUs to provision for the function. Allowed range is\n0.5–2.\n
-							 * @type number | undefined
-							 */
-							vcpu?: number | undefined;
-							/**
-							 * @type array | undefined
-							 */
-							event_subscriptions?: string[] | undefined;
-						};
-				  }
-				| undefined;
-			/**
-			 * @type string | undefined
-			 */
-			branch?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			framework?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			framework_version?: string | undefined;
-			/**
-			 * @description A list of deploy-specific environment variable data. Data specified this way applies only\nto this specific deploy and is merged into any existing environment variables set on the\naccount and site.\n\nDeploy-specific environment variable data takes precedence over account and site\nenvironment variable data: For example, a deploy-specific variable with the key `NODE_ENV`\nwill take priority over any existing site- and account-level environment variable data\nwith the key `NODE_ENV`.\n\nEnvironment variable data may be provided at one of two times:\n\n- When creating a new Deploy with deploy files (most common)\n- When finalizing an existing Deploy with deploy files\n\nOnce set, environment variables for a specific deploy cannot be modified. Subsequent\nattempts to modify environment variable data for a deploy will be ignored.\n
-			 * @type array | undefined
-			 */
-			environment?:
-				| {
-						/**
-						 * @type string
-						 */
-						key: string;
-						/**
-						 * @type string
-						 */
-						value: string;
-						/**
-						 * @type boolean
-						 */
-						is_secret: boolean;
-						/**
-						 * @type array
-						 */
-						scopes: ("builds" | "functions" | "runtime" | "post-processing")[];
-				  }[]
-				| undefined;
-	  }
-	| undefined;
-
-/**
  * @type object
  */
-export type CreateSiteDeployRequestConfig = {
-	data?: CreateSiteDeployData | undefined;
+export type CreateSiteDeployBody = {
 	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: CreateSiteDeployPathSiteId;
-	};
-	/**
+	 * @description A hash mapping file paths to SHA1 digests of the file contents.
 	 * @type object | undefined
 	 */
-	queryParams?:
+	files?: object | undefined;
+	/**
+	 * @description A zip file containing the site files to deploy. Alternative to \'files\'.\nTo use this field, set Content-Type to \'application/json\' and include the zip content here.\nAlternatively, you can set Content-Type to \'application/zip\' and send the zip as the raw request body (not as JSON).\n
+	 * @type string | undefined
+	 */
+	zip?: Blob | undefined;
+	draft?: boolean | undefined;
+	async?: boolean | undefined;
+	functions?: object | undefined;
+	/**
+	 * @description A hash mapping edge-function bundle formats to the code_sha of each bundle. The\nresponse\'s required_edge_functions lists which of these still need to be uploaded.\n
+	 * @type object | undefined
+	 */
+	edge_functions?: object | undefined;
+	function_schedules?:
 		| {
-				"deploy-previews"?: CreateSiteDeployQueryDeployPreviews | undefined;
-				production?: CreateSiteDeployQueryProduction | undefined;
-				state?: CreateSiteDeployQueryState | undefined;
-				branch?: CreateSiteDeployQueryBranch | undefined;
-				"latest-published"?: CreateSiteDeployQueryLatestPublished | undefined;
-				title?: CreateSiteDeployQueryTitle | undefined;
+				name?: string | undefined;
+				cron?: string | undefined;
+		  }[]
+		| undefined;
+	functions_config?:
+		| {
+				[key: string]: {
+					display_name?: string | undefined;
+					generator?: string | undefined;
+					build_data?: object | undefined;
+					/**
+					 * @description The function\'s memory allocation in MB. Mutually exclusive with `vcpu`.\n
+					 * @type integer | undefined
+					 */
+					memory?: number | undefined;
+					routes?:
+						| {
+								pattern?: string | undefined;
+								literal?: string | undefined;
+								expression?: string | undefined;
+								methods?: ("GET" | "POST" | "PUT" | "PATCH" | "DELETE" | "OPTIONS")[] | undefined;
+								prefer_static?: boolean | undefined;
+						  }[]
+						| undefined;
+					excluded_routes?:
+						| {
+								pattern?: string | undefined;
+								literal?: string | undefined;
+								expression?: string | undefined;
+						  }[]
+						| undefined;
+					priority?: number | undefined;
+					region?: string | undefined;
+					traffic_rules?:
+						| {
+								action?:
+									| {
+											type?: string | undefined;
+											config?:
+												| {
+														to?: string | undefined;
+														rate_limit_config?:
+															| {
+																	algorithm?: "sliding_window" | undefined;
+																	window_size?: number | undefined;
+																	window_limit?: number | undefined;
+															  }
+															| undefined;
+														aggregate?:
+															| {
+																	keys?:
+																		| {
+																				type?: TypeEnumKey | undefined;
+																		  }[]
+																		| undefined;
+															  }
+															| undefined;
+												  }
+												| undefined;
+									  }
+									| undefined;
+						  }
+						| undefined;
+					/**
+					 * @description Number of vCPUs to provision for the function. Allowed range is\n0.5–2.\n
+					 *
+					 * Format: `float`
+					 * @type number | undefined
+					 */
+					vcpu?: number | undefined;
+					event_subscriptions?: string[] | undefined;
+				};
 		  }
 		| undefined;
-	headerParams?: never | undefined;
+	branch?: string | undefined;
+	framework?: string | undefined;
+	framework_version?: string | undefined;
 	/**
-	 * @type string
+	 * @description A list of deploy-specific environment variable data. Data specified this way applies only\nto this specific deploy and is merged into any existing environment variables set on the\naccount and site.\n\nDeploy-specific environment variable data takes precedence over account and site\nenvironment variable data: For example, a deploy-specific variable with the key `NODE_ENV`\nwill take priority over any existing site- and account-level environment variable data\nwith the key `NODE_ENV`.\n\nEnvironment variable data may be provided at one of two times:\n\n- When creating a new Deploy with deploy files (most common)\n- When finalizing an existing Deploy with deploy files\n\nOnce set, environment variables for a specific deploy cannot be modified. Subsequent\nattempts to modify environment variable data for a deploy will be ignored.\n
+	 * @type array | undefined
 	 */
-	url: `/sites/${string}/deploys`;
+	environment?:
+		| {
+				key: string;
+				value: string;
+				is_secret: boolean;
+				scopes: CreateSiteDeployRequestEnvironmentScopesEnumKey[];
+		  }[]
+		| undefined;
 };
 
-/**
- * @type object
- */
+export type CreateSiteDeployOptions = {
+	body: CreateSiteDeployBody;
+	path: CreateSiteDeployPath;
+	query?: CreateSiteDeployQuery | undefined;
+	headers?: never | undefined;
+};
+
 export type CreateSiteDeployResponses = {
 	"200": CreateSiteDeployStatus200;
 	default: CreateSiteDeployStatusDefault;
@@ -13548,157 +7393,65 @@ export type CreateSiteDeployResponses = {
  */
 export type CreateSiteDeployResponse = CreateSiteDeployStatus200 | CreateSiteDeployStatusDefault;
 
-/**
- * @type string
- */
-export type GetSiteDeployPathSiteId = string;
+export type GetSiteDeployPath = {
+	site_id: string;
+	deploy_id: string;
+};
 
-/**
- * @type string
- */
-export type GetSiteDeployPathDeployId = string;
-
-/**
- * @type object
- */
 export type GetSiteDeployStatus200 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	site_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	user_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	build_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	state?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	ssl_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	admin_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	deploy_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	deploy_ssl_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	screenshot_url?: string | undefined;
-	/**
-	 * @type number | undefined
-	 */
 	review_id?: number | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	draft?: boolean | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	required?: string[] | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	required_functions?: string[] | undefined;
 	/**
 	 * @description An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n
 	 * @type array | undefined
 	 */
 	required_edge_functions?: string[] | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	error_message?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	branch?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	commit_ref?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	commit_url?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	skipped?: boolean | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	published_at?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	title?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	context?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	locked?: boolean | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	review_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	framework?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	skew_protection_token?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	function_schedules?:
 		| {
-				/**
-				 * @type string | undefined
-				 */
 				name?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				cron?: string | undefined;
 		  }[]
 		| undefined;
@@ -13713,55 +7466,29 @@ export type GetSiteDeployStatus200 = {
 	 */
 	functions_region_overrides?:
 		| {
-				/**
-				 * @type string | undefined
-				 */
 				name?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				region?: string | undefined;
 		  }[]
 		| undefined;
 };
 
-/**
- * @type object
- */
 export type GetSiteDeployStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type GetSiteDeployRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: GetSiteDeployPathSiteId;
-		deploy_id: GetSiteDeployPathDeployId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/deploys/${string}`;
+export type GetSiteDeployOptions = {
+	body?: never | undefined;
+	path: GetSiteDeployPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type GetSiteDeployResponses = {
 	"200": GetSiteDeployStatus200;
 	default: GetSiteDeployStatusDefault;
@@ -13772,162 +7499,69 @@ export type GetSiteDeployResponses = {
  */
 export type GetSiteDeployResponse = GetSiteDeployStatus200 | GetSiteDeployStatusDefault;
 
-/**
- * @type string
- */
-export type UpdateSiteDeployPathSiteId = string;
+export type UpdateSiteDeployPath = {
+	site_id: string;
+	deploy_id: string;
+};
 
-/**
- * @type string
- */
-export type UpdateSiteDeployPathDeployId = string;
+export type UpdateSiteDeployQuery = {
+	commit_ref?: string | undefined;
+};
 
-/**
- * @type string | undefined
- */
-export type UpdateSiteDeployQueryCommitRef = string | undefined;
-
-/**
- * @type object
- */
 export type UpdateSiteDeployStatus200 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	site_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	user_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	build_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	state?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	ssl_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	admin_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	deploy_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	deploy_ssl_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	screenshot_url?: string | undefined;
-	/**
-	 * @type number | undefined
-	 */
 	review_id?: number | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	draft?: boolean | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	required?: string[] | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	required_functions?: string[] | undefined;
 	/**
 	 * @description An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n
 	 * @type array | undefined
 	 */
 	required_edge_functions?: string[] | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	error_message?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	branch?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	commit_ref?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	commit_url?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	skipped?: boolean | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	published_at?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	title?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	context?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	locked?: boolean | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	review_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	framework?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	skew_protection_token?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	function_schedules?:
 		| {
-				/**
-				 * @type string | undefined
-				 */
 				name?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				cron?: string | undefined;
 		  }[]
 		| undefined;
@@ -13942,306 +7576,155 @@ export type UpdateSiteDeployStatus200 = {
 	 */
 	functions_region_overrides?:
 		| {
-				/**
-				 * @type string | undefined
-				 */
 				name?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				region?: string | undefined;
 		  }[]
 		| undefined;
 };
 
-/**
- * @type object
- */
 export type UpdateSiteDeployStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
+export const updateSiteDeployRequestEnvironmentScopesEnum = {
+	builds: "builds",
+	functions: "functions",
+	runtime: "runtime",
+	"post-processing": "post-processing",
+} as const;
+
+export type UpdateSiteDeployRequestEnvironmentScopesEnumKey =
+	(typeof updateSiteDeployRequestEnvironmentScopesEnum)[keyof typeof updateSiteDeployRequestEnvironmentScopesEnum];
+
 /**
  * @description Deploy files can be provided in two ways:\n1. As a JSON object using \'files\' (a hash mapping file paths to SHA1 digests), OR\n2. As a zip file using one of these methods:\n   - Set Content-Type to \'application/zip\' and send the zip file as the raw request body\n   - Include the zip file content in the \'zip\' field of this JSON object with Content-Type \'application/json\'\n
- * @type object | undefined
- */
-export type UpdateSiteDeployData =
-	| {
-			/**
-			 * @description A hash mapping file paths to SHA1 digests of the file contents.
-			 * @type object | undefined
-			 */
-			files?: object | undefined;
-			/**
-			 * @description A zip file containing the site files to deploy. Alternative to \'files\'.\nTo use this field, set Content-Type to \'application/json\' and include the zip content here.\nAlternatively, you can set Content-Type to \'application/zip\' and send the zip as the raw request body (not as JSON).\n
-			 * @type string | undefined
-			 */
-			zip?: Blob | undefined;
-			/**
-			 * @type boolean | undefined
-			 */
-			draft?: boolean | undefined;
-			/**
-			 * @type boolean | undefined
-			 */
-			async?: boolean | undefined;
-			/**
-			 * @type object | undefined
-			 */
-			functions?: object | undefined;
-			/**
-			 * @description A hash mapping edge-function bundle formats to the code_sha of each bundle. The\nresponse\'s required_edge_functions lists which of these still need to be uploaded.\n
-			 * @type object | undefined
-			 */
-			edge_functions?: object | undefined;
-			/**
-			 * @type array | undefined
-			 */
-			function_schedules?:
-				| {
-						/**
-						 * @type string | undefined
-						 */
-						name?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
-						cron?: string | undefined;
-				  }[]
-				| undefined;
-			/**
-			 * @type object | undefined
-			 */
-			functions_config?:
-				| {
-						[key: string]: {
-							/**
-							 * @type string | undefined
-							 */
-							display_name?: string | undefined;
-							/**
-							 * @type string | undefined
-							 */
-							generator?: string | undefined;
-							/**
-							 * @type object | undefined
-							 */
-							build_data?: object | undefined;
-							/**
-							 * @description The function\'s memory allocation in MB. Mutually exclusive with `vcpu`.\n
-							 * @type integer | undefined
-							 */
-							memory?: number | undefined;
-							/**
-							 * @type array | undefined
-							 */
-							routes?:
-								| {
-										/**
-										 * @type string | undefined
-										 */
-										pattern?: string | undefined;
-										/**
-										 * @type string | undefined
-										 */
-										literal?: string | undefined;
-										/**
-										 * @type string | undefined
-										 */
-										expression?: string | undefined;
-										/**
-										 * @type array | undefined
-										 */
-										methods?:
-											| ("GET" | "POST" | "PUT" | "PATCH" | "DELETE" | "OPTIONS")[]
-											| undefined;
-										/**
-										 * @type boolean | undefined
-										 */
-										prefer_static?: boolean | undefined;
-								  }[]
-								| undefined;
-							/**
-							 * @type array | undefined
-							 */
-							excluded_routes?:
-								| {
-										/**
-										 * @type string | undefined
-										 */
-										pattern?: string | undefined;
-										/**
-										 * @type string | undefined
-										 */
-										literal?: string | undefined;
-										/**
-										 * @type string | undefined
-										 */
-										expression?: string | undefined;
-								  }[]
-								| undefined;
-							/**
-							 * @type integer | undefined
-							 */
-							priority?: number | undefined;
-							/**
-							 * @type string | undefined
-							 */
-							region?: string | undefined;
-							/**
-							 * @type object | undefined
-							 */
-							traffic_rules?:
-								| {
-										/**
-										 * @type object | undefined
-										 */
-										action?:
-											| {
-													/**
-													 * @type string | undefined
-													 */
-													type?: string | undefined;
-													/**
-													 * @type object | undefined
-													 */
-													config?:
-														| {
-																/**
-																 * @type string | undefined
-																 */
-																to?: string | undefined;
-																/**
-																 * @type object | undefined
-																 */
-																rate_limit_config?:
-																	| {
-																			/**
-																			 * @type string | undefined
-																			 */
-																			algorithm?: AlgorithmEnumKey | undefined;
-																			/**
-																			 * @type integer | undefined
-																			 */
-																			window_size?: number | undefined;
-																			/**
-																			 * @type integer | undefined
-																			 */
-																			window_limit?: number | undefined;
-																	  }
-																	| undefined;
-																/**
-																 * @type object | undefined
-																 */
-																aggregate?:
-																	| {
-																			/**
-																			 * @type array | undefined
-																			 */
-																			keys?:
-																				| {
-																						/**
-																						 * @type string | undefined
-																						 */
-																						type?: TypeEnumKey | undefined;
-																				  }[]
-																				| undefined;
-																	  }
-																	| undefined;
-														  }
-														| undefined;
-											  }
-											| undefined;
-								  }
-								| undefined;
-							/**
-							 * @description Number of vCPUs to provision for the function. Allowed range is\n0.5–2.\n
-							 * @type number | undefined
-							 */
-							vcpu?: number | undefined;
-							/**
-							 * @type array | undefined
-							 */
-							event_subscriptions?: string[] | undefined;
-						};
-				  }
-				| undefined;
-			/**
-			 * @type string | undefined
-			 */
-			branch?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			framework?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			framework_version?: string | undefined;
-			/**
-			 * @description A list of deploy-specific environment variable data. Data specified this way applies only\nto this specific deploy and is merged into any existing environment variables set on the\naccount and site.\n\nDeploy-specific environment variable data takes precedence over account and site\nenvironment variable data: For example, a deploy-specific variable with the key `NODE_ENV`\nwill take priority over any existing site- and account-level environment variable data\nwith the key `NODE_ENV`.\n\nEnvironment variable data may be provided at one of two times:\n\n- When creating a new Deploy with deploy files (most common)\n- When finalizing an existing Deploy with deploy files\n\nOnce set, environment variables for a specific deploy cannot be modified. Subsequent\nattempts to modify environment variable data for a deploy will be ignored.\n
-			 * @type array | undefined
-			 */
-			environment?:
-				| {
-						/**
-						 * @type string
-						 */
-						key: string;
-						/**
-						 * @type string
-						 */
-						value: string;
-						/**
-						 * @type boolean
-						 */
-						is_secret: boolean;
-						/**
-						 * @type array
-						 */
-						scopes: ("builds" | "functions" | "runtime" | "post-processing")[];
-				  }[]
-				| undefined;
-	  }
-	| undefined;
-
-/**
  * @type object
  */
-export type UpdateSiteDeployRequestConfig = {
-	data?: UpdateSiteDeployData | undefined;
+export type UpdateSiteDeployBody = {
 	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: UpdateSiteDeployPathSiteId;
-		deploy_id: UpdateSiteDeployPathDeployId;
-	};
-	/**
+	 * @description A hash mapping file paths to SHA1 digests of the file contents.
 	 * @type object | undefined
 	 */
-	queryParams?:
+	files?: object | undefined;
+	/**
+	 * @description A zip file containing the site files to deploy. Alternative to \'files\'.\nTo use this field, set Content-Type to \'application/json\' and include the zip content here.\nAlternatively, you can set Content-Type to \'application/zip\' and send the zip as the raw request body (not as JSON).\n
+	 * @type string | undefined
+	 */
+	zip?: Blob | undefined;
+	draft?: boolean | undefined;
+	async?: boolean | undefined;
+	functions?: object | undefined;
+	/**
+	 * @description A hash mapping edge-function bundle formats to the code_sha of each bundle. The\nresponse\'s required_edge_functions lists which of these still need to be uploaded.\n
+	 * @type object | undefined
+	 */
+	edge_functions?: object | undefined;
+	function_schedules?:
 		| {
-				commit_ref?: UpdateSiteDeployQueryCommitRef | undefined;
+				name?: string | undefined;
+				cron?: string | undefined;
+		  }[]
+		| undefined;
+	functions_config?:
+		| {
+				[key: string]: {
+					display_name?: string | undefined;
+					generator?: string | undefined;
+					build_data?: object | undefined;
+					/**
+					 * @description The function\'s memory allocation in MB. Mutually exclusive with `vcpu`.\n
+					 * @type integer | undefined
+					 */
+					memory?: number | undefined;
+					routes?:
+						| {
+								pattern?: string | undefined;
+								literal?: string | undefined;
+								expression?: string | undefined;
+								methods?: ("GET" | "POST" | "PUT" | "PATCH" | "DELETE" | "OPTIONS")[] | undefined;
+								prefer_static?: boolean | undefined;
+						  }[]
+						| undefined;
+					excluded_routes?:
+						| {
+								pattern?: string | undefined;
+								literal?: string | undefined;
+								expression?: string | undefined;
+						  }[]
+						| undefined;
+					priority?: number | undefined;
+					region?: string | undefined;
+					traffic_rules?:
+						| {
+								action?:
+									| {
+											type?: string | undefined;
+											config?:
+												| {
+														to?: string | undefined;
+														rate_limit_config?:
+															| {
+																	algorithm?: "sliding_window" | undefined;
+																	window_size?: number | undefined;
+																	window_limit?: number | undefined;
+															  }
+															| undefined;
+														aggregate?:
+															| {
+																	keys?:
+																		| {
+																				type?: TypeEnumKey | undefined;
+																		  }[]
+																		| undefined;
+															  }
+															| undefined;
+												  }
+												| undefined;
+									  }
+									| undefined;
+						  }
+						| undefined;
+					/**
+					 * @description Number of vCPUs to provision for the function. Allowed range is\n0.5–2.\n
+					 *
+					 * Format: `float`
+					 * @type number | undefined
+					 */
+					vcpu?: number | undefined;
+					event_subscriptions?: string[] | undefined;
+				};
 		  }
 		| undefined;
-	headerParams?: never | undefined;
+	branch?: string | undefined;
+	framework?: string | undefined;
+	framework_version?: string | undefined;
 	/**
-	 * @type string
+	 * @description A list of deploy-specific environment variable data. Data specified this way applies only\nto this specific deploy and is merged into any existing environment variables set on the\naccount and site.\n\nDeploy-specific environment variable data takes precedence over account and site\nenvironment variable data: For example, a deploy-specific variable with the key `NODE_ENV`\nwill take priority over any existing site- and account-level environment variable data\nwith the key `NODE_ENV`.\n\nEnvironment variable data may be provided at one of two times:\n\n- When creating a new Deploy with deploy files (most common)\n- When finalizing an existing Deploy with deploy files\n\nOnce set, environment variables for a specific deploy cannot be modified. Subsequent\nattempts to modify environment variable data for a deploy will be ignored.\n
+	 * @type array | undefined
 	 */
-	url: `/sites/${string}/deploys/${string}`;
+	environment?:
+		| {
+				key: string;
+				value: string;
+				is_secret: boolean;
+				scopes: UpdateSiteDeployRequestEnvironmentScopesEnumKey[];
+		  }[]
+		| undefined;
 };
 
-/**
- * @type object
- */
+export type UpdateSiteDeployOptions = {
+	body: UpdateSiteDeployBody;
+	path: UpdateSiteDeployPath;
+	query?: UpdateSiteDeployQuery | undefined;
+	headers?: never | undefined;
+};
+
 export type UpdateSiteDeployResponses = {
 	"200": UpdateSiteDeployStatus200;
 	default: UpdateSiteDeployStatusDefault;
@@ -14252,58 +7735,30 @@ export type UpdateSiteDeployResponses = {
  */
 export type UpdateSiteDeployResponse = UpdateSiteDeployStatus200 | UpdateSiteDeployStatusDefault;
 
-/**
- * @type string
- */
-export type DeleteSiteDeployPathDeployId = string;
+export type DeleteSiteDeployPath = {
+	deploy_id: string;
+	site_id: string;
+};
 
-/**
- * @type string
- */
-export type DeleteSiteDeployPathSiteId = string;
-
-/**
- * @type unknown
- */
 export type DeleteSiteDeployStatus204 = unknown;
 
-/**
- * @type object
- */
 export type DeleteSiteDeployStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type DeleteSiteDeployRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		deploy_id: DeleteSiteDeployPathDeployId;
-		site_id: DeleteSiteDeployPathSiteId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/deploys/${string}`;
+export type DeleteSiteDeployOptions = {
+	body?: never | undefined;
+	path: DeleteSiteDeployPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type DeleteSiteDeployResponses = {
 	"204": DeleteSiteDeployStatus204;
 	default: DeleteSiteDeployStatusDefault;
@@ -14314,152 +7769,64 @@ export type DeleteSiteDeployResponses = {
  */
 export type DeleteSiteDeployResponse = DeleteSiteDeployStatus204 | DeleteSiteDeployStatusDefault;
 
-/**
- * @type string
- */
-export type CancelSiteDeployPathDeployId = string;
+export type CancelSiteDeployPath = {
+	deploy_id: string;
+};
 
-/**
- * @type object
- */
 export type CancelSiteDeployStatus201 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	site_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	user_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	build_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	state?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	ssl_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	admin_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	deploy_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	deploy_ssl_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	screenshot_url?: string | undefined;
-	/**
-	 * @type number | undefined
-	 */
 	review_id?: number | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	draft?: boolean | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	required?: string[] | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	required_functions?: string[] | undefined;
 	/**
 	 * @description An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n
 	 * @type array | undefined
 	 */
 	required_edge_functions?: string[] | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	error_message?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	branch?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	commit_ref?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	commit_url?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	skipped?: boolean | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	published_at?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	title?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	context?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	locked?: boolean | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	review_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	framework?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	skew_protection_token?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	function_schedules?:
 		| {
-				/**
-				 * @type string | undefined
-				 */
 				name?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				cron?: string | undefined;
 		  }[]
 		| undefined;
@@ -14474,54 +7841,29 @@ export type CancelSiteDeployStatus201 = {
 	 */
 	functions_region_overrides?:
 		| {
-				/**
-				 * @type string | undefined
-				 */
 				name?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				region?: string | undefined;
 		  }[]
 		| undefined;
 };
 
-/**
- * @type object
- */
 export type CancelSiteDeployStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type CancelSiteDeployRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		deploy_id: CancelSiteDeployPathDeployId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/deploys/${string}/cancel`;
+export type CancelSiteDeployOptions = {
+	body?: never | undefined;
+	path: CancelSiteDeployPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type CancelSiteDeployResponses = {
 	"201": CancelSiteDeployStatus201;
 	default: CancelSiteDeployStatusDefault;
@@ -14532,157 +7874,65 @@ export type CancelSiteDeployResponses = {
  */
 export type CancelSiteDeployResponse = CancelSiteDeployStatus201 | CancelSiteDeployStatusDefault;
 
-/**
- * @type string
- */
-export type RestoreSiteDeployPathSiteId = string;
+export type RestoreSiteDeployPath = {
+	site_id: string;
+	deploy_id: string;
+};
 
-/**
- * @type string
- */
-export type RestoreSiteDeployPathDeployId = string;
-
-/**
- * @type object
- */
 export type RestoreSiteDeployStatus201 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	site_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	user_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	build_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	state?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	ssl_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	admin_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	deploy_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	deploy_ssl_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	screenshot_url?: string | undefined;
-	/**
-	 * @type number | undefined
-	 */
 	review_id?: number | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	draft?: boolean | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	required?: string[] | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	required_functions?: string[] | undefined;
 	/**
 	 * @description An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n
 	 * @type array | undefined
 	 */
 	required_edge_functions?: string[] | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	error_message?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	branch?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	commit_ref?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	commit_url?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	skipped?: boolean | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	published_at?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	title?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	context?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	locked?: boolean | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	review_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	framework?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	skew_protection_token?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	function_schedules?:
 		| {
-				/**
-				 * @type string | undefined
-				 */
 				name?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				cron?: string | undefined;
 		  }[]
 		| undefined;
@@ -14697,55 +7947,29 @@ export type RestoreSiteDeployStatus201 = {
 	 */
 	functions_region_overrides?:
 		| {
-				/**
-				 * @type string | undefined
-				 */
 				name?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				region?: string | undefined;
 		  }[]
 		| undefined;
 };
 
-/**
- * @type object
- */
 export type RestoreSiteDeployStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type RestoreSiteDeployRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: RestoreSiteDeployPathSiteId;
-		deploy_id: RestoreSiteDeployPathDeployId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/deploys/${string}/restore`;
+export type RestoreSiteDeployOptions = {
+	body?: never | undefined;
+	path: RestoreSiteDeployPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type RestoreSiteDeployResponses = {
 	"201": RestoreSiteDeployStatus201;
 	default: RestoreSiteDeployStatusDefault;
@@ -14756,95 +7980,56 @@ export type RestoreSiteDeployResponses = {
  */
 export type RestoreSiteDeployResponse = RestoreSiteDeployStatus201 | RestoreSiteDeployStatusDefault;
 
-/**
- * @type string
- */
-export type ListSiteBuildsPathSiteId = string;
+export type ListSiteBuildsPath = {
+	site_id: string;
+};
 
-/**
- * @type integer | undefined
- */
-export type ListSiteBuildsQueryPage = number | undefined;
+export type ListSiteBuildsQuery = {
+	/**
+	 * @description
+	 * Format: `int32`
+	 * @type integer | undefined
+	 */
+	page?: number | undefined;
+	/**
+	 * @description
+	 * Format: `int32`
+	 * @type integer | undefined
+	 */
+	per_page?: number | undefined;
+};
 
-/**
- * @type integer | undefined
- */
-export type ListSiteBuildsQueryPerPage = number | undefined;
-
-/**
- * @type array
- */
 export type ListSiteBuildsStatus200 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	deploy_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	sha?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	done?: boolean | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	error?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 }[];
 
-/**
- * @type object
- */
 export type ListSiteBuildsStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type ListSiteBuildsRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: ListSiteBuildsPathSiteId;
-	};
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				page?: ListSiteBuildsQueryPage | undefined;
-				per_page?: ListSiteBuildsQueryPerPage | undefined;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/builds`;
+export type ListSiteBuildsOptions = {
+	body?: never | undefined;
+	path: ListSiteBuildsPath;
+	query?: ListSiteBuildsQuery | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type ListSiteBuildsResponses = {
 	"200": ListSiteBuildsStatus200;
 	default: ListSiteBuildsStatusDefault;
@@ -14855,133 +8040,75 @@ export type ListSiteBuildsResponses = {
  */
 export type ListSiteBuildsResponse = ListSiteBuildsStatus200 | ListSiteBuildsStatusDefault;
 
-/**
- * @type string
- */
-export type CreateSiteBuildPathSiteId = string;
+export type CreateSiteBuildPath = {
+	site_id: string;
+};
 
-/**
- * @description If no branch is specified, it is treated as a production deploy If a branch IS specified and matches the main branch, it is also production If a branch is specified and doesn\'t match the main branch, it is a branch deploy
- * @type string | undefined
- */
-export type CreateSiteBuildQueryBranch = string | undefined;
-
-/**
- * @description Whether to clear the build cache before building
- * @type boolean | undefined
- */
-export type CreateSiteBuildQueryClearCache = boolean | undefined;
-
-/**
- * @description The build image tag to use for the build
- * @type string | undefined
- */
-export type CreateSiteBuildQueryImage = string | undefined;
-
-/**
- * @description The build template to use for the build
- * @type string | undefined
- */
-export type CreateSiteBuildQueryTemplateId = string | undefined;
-
-/**
- * @description The title of the build
- * @type string | undefined
- */
-export type CreateSiteBuildQueryTitle = string | undefined;
-
-/**
- * @type object
- */
-export type CreateSiteBuildStatus200 = {
+export type CreateSiteBuildQuery = {
 	/**
+	 * @description If no branch is specified, it is treated as a production deploy If a branch IS specified and matches the main branch, it is also production If a branch is specified and doesn\'t match the main branch, it is a branch deploy
 	 * @type string | undefined
 	 */
-	id?: string | undefined;
+	branch?: string | undefined;
 	/**
-	 * @type string | undefined
-	 */
-	deploy_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	sha?: string | undefined;
-	/**
+	 * @description Whether to clear the build cache before building
 	 * @type boolean | undefined
 	 */
-	done?: boolean | undefined;
+	clear_cache?: boolean | undefined;
 	/**
+	 * @description The build image tag to use for the build
 	 * @type string | undefined
 	 */
+	image?: string | undefined;
+	/**
+	 * @description The build template to use for the build
+	 * @type string | undefined
+	 */
+	template_id?: string | undefined;
+	/**
+	 * @description The title of the build
+	 * @type string | undefined
+	 */
+	title?: string | undefined;
+};
+
+export type CreateSiteBuildStatus200 = {
+	id?: string | undefined;
+	deploy_id?: string | undefined;
+	sha?: string | undefined;
+	done?: boolean | undefined;
 	error?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 };
 
-/**
- * @type unknown
- */
 export type CreateSiteBuildStatus400 = unknown;
 
-/**
- * @type unknown
- */
 export type CreateSiteBuildStatus404 = unknown;
 
-/**
- * @type unknown
- */
 export type CreateSiteBuildStatus422 = unknown;
 
-/**
- * @type object
- */
 export type CreateSiteBuildStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type CreateSiteBuildRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: CreateSiteBuildPathSiteId;
-	};
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				branch?: CreateSiteBuildQueryBranch | undefined;
-				clear_cache?: CreateSiteBuildQueryClearCache | undefined;
-				image?: CreateSiteBuildQueryImage | undefined;
-				template_id?: CreateSiteBuildQueryTemplateId | undefined;
-				title?: CreateSiteBuildQueryTitle | undefined;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/builds`;
+export type CreateSiteBuildOptions = {
+	body?: never | undefined;
+	path: CreateSiteBuildPath;
+	query?: CreateSiteBuildQuery | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type CreateSiteBuildResponses = {
 	"200": CreateSiteBuildStatus200;
 	"400": CreateSiteBuildStatus400;
@@ -15000,77 +8127,36 @@ export type CreateSiteBuildResponse =
 	| CreateSiteBuildStatus422
 	| CreateSiteBuildStatusDefault;
 
-/**
- * @type string
- */
-export type ListSiteDeployedBranchesPathSiteId = string;
+export type ListSiteDeployedBranchesPath = {
+	site_id: string;
+};
 
-/**
- * @type array
- */
 export type ListSiteDeployedBranchesStatus200 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	deploy_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	slug?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	ssl_url?: string | undefined;
 }[];
 
-/**
- * @type object
- */
 export type ListSiteDeployedBranchesStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type ListSiteDeployedBranchesRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: ListSiteDeployedBranchesPathSiteId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/deployed-branches`;
+export type ListSiteDeployedBranchesOptions = {
+	body?: never | undefined;
+	path: ListSiteDeployedBranchesPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type ListSiteDeployedBranchesResponses = {
 	"200": ListSiteDeployedBranchesStatus200;
 	default: ListSiteDeployedBranchesStatusDefault;
@@ -15083,245 +8169,98 @@ export type ListSiteDeployedBranchesResponse =
 	| ListSiteDeployedBranchesStatus200
 	| ListSiteDeployedBranchesStatusDefault;
 
-/**
- * @type string
- */
-export type UnlinkSiteRepoPathSiteId = string;
+export type UnlinkSiteRepoPath = {
+	site_id: string;
+};
 
-/**
- * @type object
- */
 export type UnlinkSiteRepoStatus200 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	state?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	plan?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	custom_domain?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	domain_aliases?: string[] | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	branch_deploy_custom_domain?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	deploy_preview_custom_domain?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	password?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	notification_email?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	ssl_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	admin_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	screenshot_url?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	user_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	session_id?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	ssl?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	force_ssl?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	managed_dns?: boolean | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	deploy_url?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	published_deploy?:
 		| {
-				/**
-				 * @type string | undefined
-				 */
 				id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				site_id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				user_id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				build_id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				state?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				name?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				url?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				ssl_url?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				admin_url?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				deploy_url?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				deploy_ssl_url?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				screenshot_url?: string | undefined;
-				/**
-				 * @type number | undefined
-				 */
 				review_id?: number | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
 				draft?: boolean | undefined;
-				/**
-				 * @type array | undefined
-				 */
 				required?: string[] | undefined;
-				/**
-				 * @type array | undefined
-				 */
 				required_functions?: string[] | undefined;
 				/**
 				 * @description An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n
 				 * @type array | undefined
 				 */
 				required_edge_functions?: string[] | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				error_message?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				branch?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				commit_ref?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				commit_url?: string | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
 				skipped?: boolean | undefined;
 				/**
+				 * @description
+				 * Format: `dateTime`
 				 * @type string | undefined
 				 */
 				created_at?: string | undefined;
 				/**
+				 * @description
+				 * Format: `dateTime`
 				 * @type string | undefined
 				 */
 				updated_at?: string | undefined;
 				/**
+				 * @description
+				 * Format: `dateTime`
 				 * @type string | undefined
 				 */
 				published_at?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				title?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				context?: string | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
 				locked?: boolean | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				review_url?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				framework?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				skew_protection_token?: string | undefined;
-				/**
-				 * @type array | undefined
-				 */
 				function_schedules?:
 					| {
-							/**
-							 * @type string | undefined
-							 */
 							name?: string | undefined;
-							/**
-							 * @type string | undefined
-							 */
 							cron?: string | undefined;
 					  }[]
 					| undefined;
@@ -15336,92 +8275,38 @@ export type UnlinkSiteRepoStatus200 = {
 				 */
 				functions_region_overrides?:
 					| {
-							/**
-							 * @type string | undefined
-							 */
 							name?: string | undefined;
-							/**
-							 * @type string | undefined
-							 */
 							region?: string | undefined;
 					  }[]
 					| undefined;
 		  }
 		| undefined;
-	/**
-	 * @type string | undefined
-	 */
 	account_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	account_name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	account_slug?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	git_provider?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	deploy_hook?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	capabilities?:
 		| {
 				[key: string]: object;
 		  }
 		| undefined;
-	/**
-	 * @type object | undefined
-	 */
 	processing_settings?:
 		| {
-				/**
-				 * @type object | undefined
-				 */
 				html?:
 					| {
-							/**
-							 * @type boolean | undefined
-							 */
 							pretty_urls?: boolean | undefined;
 					  }
 					| undefined;
 		  }
 		| undefined;
-	/**
-	 * @type object | undefined
-	 */
 	build_settings?:
 		| {
-				/**
-				 * @type integer | undefined
-				 */
 				id?: number | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				provider?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				deploy_key_id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				repo_path?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				repo_branch?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				dir?: string | undefined;
 				/**
 				 * @description The directory where Netlify can find your compiled functions to deploy them. Defaults to netlify/functions if not set. You can also define and override this setting in your project’s netlify.toml file.
@@ -15433,33 +8318,15 @@ export type UnlinkSiteRepoStatus200 = {
 				 * @type string | undefined
 				 */
 				cmd?: string | undefined;
-				/**
-				 * @type array | undefined
-				 */
 				allowed_branches?: string[] | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
 				public_repo?: boolean | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
 				private_logs?: boolean | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				repo_url?: string | undefined;
-				/**
-				 * @type object | undefined
-				 */
 				env?:
 					| {
 							[key: string]: string;
 					  }
 					| undefined;
-				/**
-				 * @type integer | undefined
-				 */
 				installation_id?: number | undefined;
 				/**
 				 * @description When true, Netlify will not build your project automatically. You can build locally via the CLI and then publish new deploys manually via the CLI or the API.
@@ -15468,32 +8335,14 @@ export type UnlinkSiteRepoStatus200 = {
 				stop_builds?: boolean | undefined;
 		  }
 		| undefined;
-	/**
-	 * @type string | undefined
-	 */
 	id_domain?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	default_hooks_data?:
 		| {
-				/**
-				 * @type string | undefined
-				 */
 				access_token?: string | undefined;
 		  }
 		| undefined;
-	/**
-	 * @type string | undefined
-	 */
 	build_image?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	prerender?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	functions_region?: string | undefined;
 	/**
 	 * @default false
@@ -15502,33 +8351,15 @@ export type UnlinkSiteRepoStatus200 = {
 	prevent_non_git_prod_deploys?: boolean | undefined;
 };
 
-/**
- * @type unknown
- */
 export type UnlinkSiteRepoStatus404 = unknown;
 
-/**
- * @type object
- */
-export type UnlinkSiteRepoRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: UnlinkSiteRepoPathSiteId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/unlink_repo`;
+export type UnlinkSiteRepoOptions = {
+	body?: never | undefined;
+	path: UnlinkSiteRepoPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type UnlinkSiteRepoResponses = {
 	"200": UnlinkSiteRepoStatus200;
 	"404": UnlinkSiteRepoStatus404;
@@ -15539,66 +8370,39 @@ export type UnlinkSiteRepoResponses = {
  */
 export type UnlinkSiteRepoResponse = UnlinkSiteRepoStatus200 | UnlinkSiteRepoStatus404;
 
-/**
- * @type string
- */
-export type EnableSitePathSiteId = string;
+export type EnableSitePath = {
+	site_id: string;
+};
 
-/**
- * @type unknown
- */
 export type EnableSiteStatus204 = unknown;
 
-/**
- * @type object
- */
 export type EnableSiteStatus422 = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
 export type EnableSiteStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type EnableSiteRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: EnableSitePathSiteId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/enable`;
+export type EnableSiteOptions = {
+	body?: never | undefined;
+	path: EnableSitePath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type EnableSiteResponses = {
 	"204": EnableSiteStatus204;
 	"422": EnableSiteStatus422;
@@ -15613,65 +8417,37 @@ export type EnableSiteResponse =
 	| EnableSiteStatus422
 	| EnableSiteStatusDefault;
 
-/**
- * @type string
- */
-export type DisableSitePathSiteId = string;
+export type DisableSitePath = {
+	site_id: string;
+};
 
-/**
- * @description Reason for disabling the site
- * @type string
- */
-export type DisableSiteQueryReason = string;
+export type DisableSiteQuery = {
+	/**
+	 * @description Reason for disabling the site
+	 * @type string
+	 */
+	reason: string;
+};
 
-/**
- * @type unknown
- */
 export type DisableSiteStatus204 = unknown;
 
-/**
- * @type object
- */
 export type DisableSiteStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type DisableSiteRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: DisableSitePathSiteId;
-	};
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				reason: DisableSiteQueryReason;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/disable`;
+export type DisableSiteOptions = {
+	body?: never | undefined;
+	path: DisableSitePath;
+	query: DisableSiteQuery;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type DisableSiteResponses = {
 	"204": DisableSiteStatus204;
 	default: DisableSiteStatusDefault;
@@ -15682,77 +8458,41 @@ export type DisableSiteResponses = {
  */
 export type DisableSiteResponse = DisableSiteStatus204 | DisableSiteStatusDefault;
 
-/**
- * @type string
- */
-export type GetSiteBuildPathBuildId = string;
+export type GetSiteBuildPath = {
+	build_id: string;
+};
 
-/**
- * @type object
- */
 export type GetSiteBuildStatus200 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	deploy_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	sha?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	done?: boolean | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	error?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 };
 
-/**
- * @type object
- */
 export type GetSiteBuildStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type GetSiteBuildRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		build_id: GetSiteBuildPathBuildId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/builds/${string}`;
+export type GetSiteBuildOptions = {
+	body?: never | undefined;
+	path: GetSiteBuildPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type GetSiteBuildResponses = {
 	"200": GetSiteBuildStatus200;
 	default: GetSiteBuildStatusDefault;
@@ -15763,52 +8503,46 @@ export type GetSiteBuildResponses = {
  */
 export type GetSiteBuildResponse = GetSiteBuildStatus200 | GetSiteBuildStatusDefault;
 
-/**
- * @type string
- */
-export type UpdateSiteBuildLogPathBuildId = string;
+export type UpdateSiteBuildLogPath = {
+	build_id: string;
+};
 
-/**
- * @type unknown
- */
 export type UpdateSiteBuildLogStatus204 = unknown;
 
-/**
- * @type object
- */
 export type UpdateSiteBuildLogStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type UpdateSiteBuildLogRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		build_id: UpdateSiteBuildLogPathBuildId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/builds/${string}/log`;
+export const updateSiteBuildLogRequestSectionEnum = {
+	initializing: "initializing",
+	building: "building",
+	deploying: "deploying",
+	cleanup: "cleanup",
+	postprocessing: "postprocessing",
+} as const;
+
+export type UpdateSiteBuildLogRequestSectionEnumKey =
+	(typeof updateSiteBuildLogRequestSectionEnum)[keyof typeof updateSiteBuildLogRequestSectionEnum];
+
+export type UpdateSiteBuildLogBody = {
+	message?: string | undefined;
+	error?: boolean | undefined;
+	section?: UpdateSiteBuildLogRequestSectionEnumKey | undefined;
 };
 
-/**
- * @type object
- */
+export type UpdateSiteBuildLogOptions = {
+	body: UpdateSiteBuildLogBody;
+	path: UpdateSiteBuildLogPath;
+	query?: never | undefined;
+	headers?: never | undefined;
+};
+
 export type UpdateSiteBuildLogResponses = {
 	"204": UpdateSiteBuildLogStatus204;
 	default: UpdateSiteBuildLogStatusDefault;
@@ -15821,76 +8555,35 @@ export type UpdateSiteBuildLogResponse =
 	| UpdateSiteBuildLogStatus204
 	| UpdateSiteBuildLogStatusDefault;
 
-/**
- * @type string
- */
-export type NotifyBuildStartPathBuildId = string;
+export type NotifyBuildStartPath = {
+	build_id: string;
+};
 
-/**
- * @type string | undefined
- */
-export type NotifyBuildStartQueryBuildbotVersion = string | undefined;
+export type NotifyBuildStartQuery = {
+	buildbot_version?: string | undefined;
+	build_version?: string | undefined;
+	task_id?: string | undefined;
+};
 
-/**
- * @type string | undefined
- */
-export type NotifyBuildStartQueryBuildVersion = string | undefined;
-
-/**
- * @type string | undefined
- */
-export type NotifyBuildStartQueryTaskId = string | undefined;
-
-/**
- * @type unknown
- */
 export type NotifyBuildStartStatus204 = unknown;
 
-/**
- * @type object
- */
 export type NotifyBuildStartStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type NotifyBuildStartRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		build_id: NotifyBuildStartPathBuildId;
-	};
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				buildbot_version?: NotifyBuildStartQueryBuildbotVersion | undefined;
-				build_version?: NotifyBuildStartQueryBuildVersion | undefined;
-				task_id?: NotifyBuildStartQueryTaskId | undefined;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/builds/${string}/start`;
+export type NotifyBuildStartOptions = {
+	body?: never | undefined;
+	path: NotifyBuildStartPath;
+	query?: NotifyBuildStartQuery | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type NotifyBuildStartResponses = {
 	"204": NotifyBuildStartStatus204;
 	default: NotifyBuildStartStatusDefault;
@@ -15901,108 +8594,61 @@ export type NotifyBuildStartResponses = {
  */
 export type NotifyBuildStartResponse = NotifyBuildStartStatus204 | NotifyBuildStartStatusDefault;
 
-/**
- * @type string
- */
-export type GetAccountBuildStatusPathAccountId = string;
+export type GetAccountBuildStatusPath = {
+	account_id: string;
+};
 
-/**
- * @type array
- */
 export type GetAccountBuildStatusStatus200 = {
-	/**
-	 * @type integer | undefined
-	 */
 	active?: number | undefined;
-	/**
-	 * @type integer | undefined
-	 */
 	pending_concurrency?: number | undefined;
-	/**
-	 * @type integer | undefined
-	 */
 	enqueued?: number | undefined;
-	/**
-	 * @type integer | undefined
-	 */
 	build_count?: number | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	minutes?:
 		| {
-				/**
-				 * @type integer | undefined
-				 */
 				current?: number | undefined;
-				/**
-				 * @type integer | undefined
-				 */
 				current_average_sec?: number | undefined;
-				/**
-				 * @type integer | undefined
-				 */
 				previous?: number | undefined;
 				/**
+				 * @description
+				 * Format: `dateTime`
 				 * @type string | undefined
 				 */
 				period_start_date?: string | undefined;
 				/**
+				 * @description
+				 * Format: `dateTime`
 				 * @type string | undefined
 				 */
 				period_end_date?: string | undefined;
 				/**
+				 * @description
+				 * Format: `dateTime`
 				 * @type string | undefined
 				 */
 				last_updated_at?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				included_minutes?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				included_minutes_with_packs?: string | undefined;
 		  }
 		| undefined;
 }[];
 
-/**
- * @type object
- */
 export type GetAccountBuildStatusStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type GetAccountBuildStatusRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		account_id: GetAccountBuildStatusPathAccountId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/${string}/builds/status`;
+export type GetAccountBuildStatusOptions = {
+	body?: never | undefined;
+	path: GetAccountBuildStatusPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type GetAccountBuildStatusResponses = {
 	"200": GetAccountBuildStatusStatus200;
 	default: GetAccountBuildStatusStatusDefault;
@@ -16015,164 +8661,80 @@ export type GetAccountBuildStatusResponse =
 	| GetAccountBuildStatusStatus200
 	| GetAccountBuildStatusStatusDefault;
 
-/**
- * @type string
- */
-export type GetDNSForSitePathSiteId = string;
+export type GetDNSForSitePath = {
+	site_id: string;
+};
 
-/**
- * @type array
- */
 export type GetDNSForSiteStatus200 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	errors?: string[] | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	supported_record_types?: string[] | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	user_id?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	records?:
 		| {
-				/**
-				 * @type string | undefined
-				 */
 				id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				hostname?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				type?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				value?: string | undefined;
 				/**
+				 * @description
+				 * Format: `int64`
 				 * @type integer | undefined
 				 */
 				ttl?: bigint | undefined;
 				/**
+				 * @description
+				 * Format: `int64`
 				 * @type integer | undefined
 				 */
 				priority?: bigint | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				dns_zone_id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				site_id?: string | undefined;
-				/**
-				 * @type integer | undefined
-				 */
 				flag?: number | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				tag?: string | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
 				managed?: boolean | undefined;
 		  }[]
 		| undefined;
-	/**
-	 * @type array | undefined
-	 */
 	dns_servers?: string[] | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	account_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	site_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	account_slug?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	account_name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	domain?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	ipv6_enabled?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	dedicated?: boolean | undefined;
 }[];
 
-/**
- * @type object
- */
 export type GetDNSForSiteStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type GetDNSForSiteRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: GetDNSForSitePathSiteId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/dns`;
+export type GetDNSForSiteOptions = {
+	body?: never | undefined;
+	path: GetDNSForSitePath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type GetDNSForSiteResponses = {
 	"200": GetDNSForSiteStatus200;
 	default: GetDNSForSiteStatusDefault;
@@ -16183,164 +8745,80 @@ export type GetDNSForSiteResponses = {
  */
 export type GetDNSForSiteResponse = GetDNSForSiteStatus200 | GetDNSForSiteStatusDefault;
 
-/**
- * @type string
- */
-export type ConfigureDNSForSitePathSiteId = string;
+export type ConfigureDNSForSitePath = {
+	site_id: string;
+};
 
-/**
- * @type array
- */
 export type ConfigureDNSForSiteStatus200 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	errors?: string[] | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	supported_record_types?: string[] | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	user_id?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	records?:
 		| {
-				/**
-				 * @type string | undefined
-				 */
 				id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				hostname?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				type?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				value?: string | undefined;
 				/**
+				 * @description
+				 * Format: `int64`
 				 * @type integer | undefined
 				 */
 				ttl?: bigint | undefined;
 				/**
+				 * @description
+				 * Format: `int64`
 				 * @type integer | undefined
 				 */
 				priority?: bigint | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				dns_zone_id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				site_id?: string | undefined;
-				/**
-				 * @type integer | undefined
-				 */
 				flag?: number | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				tag?: string | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
 				managed?: boolean | undefined;
 		  }[]
 		| undefined;
-	/**
-	 * @type array | undefined
-	 */
 	dns_servers?: string[] | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	account_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	site_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	account_slug?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	account_name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	domain?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	ipv6_enabled?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	dedicated?: boolean | undefined;
 }[];
 
-/**
- * @type object
- */
 export type ConfigureDNSForSiteStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type ConfigureDNSForSiteRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: ConfigureDNSForSitePathSiteId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/dns`;
+export type ConfigureDNSForSiteOptions = {
+	body?: never | undefined;
+	path: ConfigureDNSForSitePath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type ConfigureDNSForSiteResponses = {
 	"200": ConfigureDNSForSiteStatus200;
 	default: ConfigureDNSForSiteStatusDefault;
@@ -16353,52 +8831,29 @@ export type ConfigureDNSForSiteResponse =
 	| ConfigureDNSForSiteStatus200
 	| ConfigureDNSForSiteStatusDefault;
 
-/**
- * @type string
- */
-export type RollbackSiteDeployPathSiteId = string;
+export type RollbackSiteDeployPath = {
+	site_id: string;
+};
 
-/**
- * @type unknown
- */
 export type RollbackSiteDeployStatus204 = unknown;
 
-/**
- * @type object
- */
 export type RollbackSiteDeployStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type RollbackSiteDeployRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: RollbackSiteDeployPathSiteId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/rollback`;
+export type RollbackSiteDeployOptions = {
+	body?: never | undefined;
+	path: RollbackSiteDeployPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type RollbackSiteDeployResponses = {
 	"204": RollbackSiteDeployStatus204;
 	default: RollbackSiteDeployStatusDefault;
@@ -16411,152 +8866,64 @@ export type RollbackSiteDeployResponse =
 	| RollbackSiteDeployStatus204
 	| RollbackSiteDeployStatusDefault;
 
-/**
- * @type string
- */
-export type GetDeployPathDeployId = string;
+export type GetDeployPath = {
+	deploy_id: string;
+};
 
-/**
- * @type object
- */
 export type GetDeployStatus200 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	site_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	user_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	build_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	state?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	ssl_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	admin_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	deploy_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	deploy_ssl_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	screenshot_url?: string | undefined;
-	/**
-	 * @type number | undefined
-	 */
 	review_id?: number | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	draft?: boolean | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	required?: string[] | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	required_functions?: string[] | undefined;
 	/**
 	 * @description An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n
 	 * @type array | undefined
 	 */
 	required_edge_functions?: string[] | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	error_message?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	branch?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	commit_ref?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	commit_url?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	skipped?: boolean | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	published_at?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	title?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	context?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	locked?: boolean | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	review_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	framework?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	skew_protection_token?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	function_schedules?:
 		| {
-				/**
-				 * @type string | undefined
-				 */
 				name?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				cron?: string | undefined;
 		  }[]
 		| undefined;
@@ -16571,54 +8938,29 @@ export type GetDeployStatus200 = {
 	 */
 	functions_region_overrides?:
 		| {
-				/**
-				 * @type string | undefined
-				 */
 				name?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				region?: string | undefined;
 		  }[]
 		| undefined;
 };
 
-/**
- * @type object
- */
 export type GetDeployStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type GetDeployRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		deploy_id: GetDeployPathDeployId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/deploys/${string}`;
+export type GetDeployOptions = {
+	body?: never | undefined;
+	path: GetDeployPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type GetDeployResponses = {
 	"200": GetDeployStatus200;
 	default: GetDeployStatusDefault;
@@ -16629,52 +8971,29 @@ export type GetDeployResponses = {
  */
 export type GetDeployResponse = GetDeployStatus200 | GetDeployStatusDefault;
 
-/**
- * @type string
- */
-export type DeleteDeployPathDeployId = string;
+export type DeleteDeployPath = {
+	deploy_id: string;
+};
 
-/**
- * @type unknown
- */
 export type DeleteDeployStatus204 = unknown;
 
-/**
- * @type object
- */
 export type DeleteDeployStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type DeleteDeployRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		deploy_id: DeleteDeployPathDeployId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/deploys/${string}`;
+export type DeleteDeployOptions = {
+	body?: never | undefined;
+	path: DeleteDeployPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type DeleteDeployResponses = {
 	"204": DeleteDeployStatus204;
 	default: DeleteDeployStatusDefault;
@@ -16685,15 +9004,14 @@ export type DeleteDeployResponses = {
  */
 export type DeleteDeployResponse = DeleteDeployStatus204 | DeleteDeployStatusDefault;
 
-/**
- * @description The ID of the deploy
- * @type string
- */
-export type UpdateDeployValidationsPathDeployId = string;
+export type UpdateDeployValidationsPath = {
+	/**
+	 * @description The ID of the deploy
+	 * @type string
+	 */
+	deploy_id: string;
+};
 
-/**
- * @type object
- */
 export type UpdateDeployValidationsStatus200 = {
 	/**
 	 * @description The id of the deploy validations report
@@ -16705,9 +9023,6 @@ export type UpdateDeployValidationsStatus200 = {
 	 * @type string | undefined
 	 */
 	deploy_id?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	secret_scan_result?:
 		| {
 				/**
@@ -16724,38 +9039,17 @@ export type UpdateDeployValidationsStatus200 = {
 		| undefined;
 };
 
-/**
- * @type object
- */
-export type UpdateDeployValidationsData = {
-	/**
-	 * @type object | undefined
-	 */
+export type UpdateDeployValidationsBody = {
 	secrets_scan?: object | undefined;
 };
 
-/**
- * @type object
- */
-export type UpdateDeployValidationsRequestConfig = {
-	data?: UpdateDeployValidationsData | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		deploy_id: UpdateDeployValidationsPathDeployId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/deploys/${string}/validations_report`;
+export type UpdateDeployValidationsOptions = {
+	body: UpdateDeployValidationsBody;
+	path: UpdateDeployValidationsPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type UpdateDeployValidationsResponses = {
 	"200": UpdateDeployValidationsStatus200;
 };
@@ -16765,152 +9059,64 @@ export type UpdateDeployValidationsResponses = {
  */
 export type UpdateDeployValidationsResponse = UpdateDeployValidationsStatus200;
 
-/**
- * @type string
- */
-export type LockDeployPathDeployId = string;
+export type LockDeployPath = {
+	deploy_id: string;
+};
 
-/**
- * @type object
- */
 export type LockDeployStatus200 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	site_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	user_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	build_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	state?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	ssl_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	admin_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	deploy_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	deploy_ssl_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	screenshot_url?: string | undefined;
-	/**
-	 * @type number | undefined
-	 */
 	review_id?: number | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	draft?: boolean | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	required?: string[] | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	required_functions?: string[] | undefined;
 	/**
 	 * @description An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n
 	 * @type array | undefined
 	 */
 	required_edge_functions?: string[] | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	error_message?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	branch?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	commit_ref?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	commit_url?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	skipped?: boolean | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	published_at?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	title?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	context?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	locked?: boolean | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	review_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	framework?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	skew_protection_token?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	function_schedules?:
 		| {
-				/**
-				 * @type string | undefined
-				 */
 				name?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				cron?: string | undefined;
 		  }[]
 		| undefined;
@@ -16925,54 +9131,29 @@ export type LockDeployStatus200 = {
 	 */
 	functions_region_overrides?:
 		| {
-				/**
-				 * @type string | undefined
-				 */
 				name?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				region?: string | undefined;
 		  }[]
 		| undefined;
 };
 
-/**
- * @type object
- */
 export type LockDeployStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type LockDeployRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		deploy_id: LockDeployPathDeployId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/deploys/${string}/lock`;
+export type LockDeployOptions = {
+	body?: never | undefined;
+	path: LockDeployPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type LockDeployResponses = {
 	"200": LockDeployStatus200;
 	default: LockDeployStatusDefault;
@@ -16983,152 +9164,64 @@ export type LockDeployResponses = {
  */
 export type LockDeployResponse = LockDeployStatus200 | LockDeployStatusDefault;
 
-/**
- * @type string
- */
-export type UnlockDeployPathDeployId = string;
+export type UnlockDeployPath = {
+	deploy_id: string;
+};
 
-/**
- * @type object
- */
 export type UnlockDeployStatus200 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	site_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	user_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	build_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	state?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	ssl_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	admin_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	deploy_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	deploy_ssl_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	screenshot_url?: string | undefined;
-	/**
-	 * @type number | undefined
-	 */
 	review_id?: number | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	draft?: boolean | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	required?: string[] | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	required_functions?: string[] | undefined;
 	/**
 	 * @description An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n
 	 * @type array | undefined
 	 */
 	required_edge_functions?: string[] | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	error_message?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	branch?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	commit_ref?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	commit_url?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	skipped?: boolean | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	published_at?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	title?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	context?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	locked?: boolean | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	review_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	framework?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	skew_protection_token?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	function_schedules?:
 		| {
-				/**
-				 * @type string | undefined
-				 */
 				name?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				cron?: string | undefined;
 		  }[]
 		| undefined;
@@ -17143,54 +9236,29 @@ export type UnlockDeployStatus200 = {
 	 */
 	functions_region_overrides?:
 		| {
-				/**
-				 * @type string | undefined
-				 */
 				name?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				region?: string | undefined;
 		  }[]
 		| undefined;
 };
 
-/**
- * @type object
- */
 export type UnlockDeployStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type UnlockDeployRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		deploy_id: UnlockDeployPathDeployId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/deploys/${string}/unlock`;
+export type UnlockDeployOptions = {
+	body?: never | undefined;
+	path: UnlockDeployPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type UnlockDeployResponses = {
 	"200": UnlockDeployStatus200;
 	default: UnlockDeployStatusDefault;
@@ -17201,91 +9269,45 @@ export type UnlockDeployResponses = {
  */
 export type UnlockDeployResponse = UnlockDeployStatus200 | UnlockDeployStatusDefault;
 
-/**
- * @type string
- */
-export type UploadDeployFilePathDeployId = string;
+export type UploadDeployFilePath = {
+	deploy_id: string;
+	path: string;
+};
 
-/**
- * @type string
- */
-export type UploadDeployFilePathPath = string;
+export type UploadDeployFileQuery = {
+	size?: number | undefined;
+};
 
-/**
- * @type integer | undefined
- */
-export type UploadDeployFileQuerySize = number | undefined;
-
-/**
- * @type object
- */
 export type UploadDeployFileStatus200 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	path?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	sha?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	mime_type?: string | undefined;
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	size?: bigint | undefined;
 };
 
-/**
- * @type object
- */
 export type UploadDeployFileStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type UploadDeployFileRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		deploy_id: UploadDeployFilePathDeployId;
-		path: UploadDeployFilePathPath;
-	};
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				size?: UploadDeployFileQuerySize | undefined;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/deploys/${string}/files/${string}`;
+export type UploadDeployFileOptions = {
+	body?: never | undefined;
+	path: UploadDeployFilePath;
+	query?: UploadDeployFileQuery | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type UploadDeployFileResponses = {
 	"200": UploadDeployFileStatus200;
 	default: UploadDeployFileStatusDefault;
@@ -17296,117 +9318,46 @@ export type UploadDeployFileResponses = {
  */
 export type UploadDeployFileResponse = UploadDeployFileStatus200 | UploadDeployFileStatusDefault;
 
-/**
- * @type string
- */
-export type UploadDeployFunctionPathDeployId = string;
+export type UploadDeployFunctionPath = {
+	deploy_id: string;
+	name: string;
+};
 
-/**
- * @type string
- */
-export type UploadDeployFunctionPathName = string;
+export type UploadDeployFunctionQuery = {
+	runtime?: string | undefined;
+	invocation_mode?: string | undefined;
+	timeout?: number | undefined;
+	size?: number | undefined;
+};
 
-/**
- * @type string | undefined
- */
-export type UploadDeployFunctionQueryRuntime = string | undefined;
+export type UploadDeployFunctionHeaders = {
+	"X-Nf-Retry-Count"?: number | undefined;
+};
 
-/**
- * @type string | undefined
- */
-export type UploadDeployFunctionQueryInvocationMode = string | undefined;
-
-/**
- * @type integer | undefined
- */
-export type UploadDeployFunctionQueryTimeout = number | undefined;
-
-/**
- * @type integer | undefined
- */
-export type UploadDeployFunctionQuerySize = number | undefined;
-
-/**
- * @type integer | undefined
- */
-export type UploadDeployFunctionHeaderXNfRetryCount = number | undefined;
-
-/**
- * @type object
- */
 export type UploadDeployFunctionStatus200 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	sha?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	region?: string | undefined;
 };
 
-/**
- * @type object
- */
 export type UploadDeployFunctionStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type UploadDeployFunctionRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		deploy_id: UploadDeployFunctionPathDeployId;
-		name: UploadDeployFunctionPathName;
-	};
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				runtime?: UploadDeployFunctionQueryRuntime | undefined;
-				invocation_mode?: UploadDeployFunctionQueryInvocationMode | undefined;
-				timeout?: UploadDeployFunctionQueryTimeout | undefined;
-				size?: UploadDeployFunctionQuerySize | undefined;
-		  }
-		| undefined;
-	/**
-	 * @type object | undefined
-	 */
-	headerParams?:
-		| {
-				"X-Nf-Retry-Count"?: UploadDeployFunctionHeaderXNfRetryCount | undefined;
-		  }
-		| undefined;
-	/**
-	 * @type string
-	 */
-	url: `/deploys/${string}/functions/${string}`;
+export type UploadDeployFunctionOptions = {
+	body?: never | undefined;
+	path: UploadDeployFunctionPath;
+	query?: UploadDeployFunctionQuery | undefined;
+	headers?: UploadDeployFunctionHeaders | undefined;
 };
 
-/**
- * @type object
- */
 export type UploadDeployFunctionResponses = {
 	"200": UploadDeployFunctionStatus200;
 	default: UploadDeployFunctionStatusDefault;
@@ -17419,70 +9370,34 @@ export type UploadDeployFunctionResponse =
 	| UploadDeployFunctionStatus200
 	| UploadDeployFunctionStatusDefault;
 
-/**
- * @type string
- */
-export type UploadDeployEdgeFunctionPathDeployId = string;
+export type UploadDeployEdgeFunctionPath = {
+	deploy_id: string;
+	code_sha: string;
+};
 
-/**
- * @type string
- */
-export type UploadDeployEdgeFunctionPathCodeSha = string;
+export type UploadDeployEdgeFunctionHeaders = {
+	"X-Nf-Retry-Count"?: number | undefined;
+};
 
-/**
- * @type integer | undefined
- */
-export type UploadDeployEdgeFunctionHeaderXNfRetryCount = number | undefined;
-
-/**
- * @type unknown
- */
 export type UploadDeployEdgeFunctionStatus200 = unknown;
 
-/**
- * @type object
- */
 export type UploadDeployEdgeFunctionStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type UploadDeployEdgeFunctionRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		deploy_id: UploadDeployEdgeFunctionPathDeployId;
-		code_sha: UploadDeployEdgeFunctionPathCodeSha;
-	};
-	queryParams?: never | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	headerParams?:
-		| {
-				"X-Nf-Retry-Count"?: UploadDeployEdgeFunctionHeaderXNfRetryCount | undefined;
-		  }
-		| undefined;
-	/**
-	 * @type string
-	 */
-	url: `/deploys/${string}/edge_functions/${string}`;
+export type UploadDeployEdgeFunctionOptions = {
+	body?: never | undefined;
+	path: UploadDeployEdgeFunctionPath;
+	query?: never | undefined;
+	headers?: UploadDeployEdgeFunctionHeaders | undefined;
 };
 
-/**
- * @type object
- */
 export type UploadDeployEdgeFunctionResponses = {
 	"200": UploadDeployEdgeFunctionStatus200;
 	default: UploadDeployEdgeFunctionStatusDefault;
@@ -17495,103 +9410,44 @@ export type UploadDeployEdgeFunctionResponse =
 	| UploadDeployEdgeFunctionStatus200
 	| UploadDeployEdgeFunctionStatusDefault;
 
-/**
- * @type string
- */
-export type GetLatestPluginRunsPathSiteId = string;
+export type GetLatestPluginRunsPath = {
+	site_id: string;
+};
 
-/**
- * @type array
- */
-export type GetLatestPluginRunsQueryPackages = string[];
-
-/**
- * @type string | undefined
- */
-export type GetLatestPluginRunsQueryState = string | undefined;
-
-/**
- * @type array
- */
-export type GetLatestPluginRunsStatus200 = {
-	/**
-	 * @type string | undefined
-	 */
-	package?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	version?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
+export type GetLatestPluginRunsQuery = {
+	packages: string[];
 	state?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	reporting_event?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	title?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	summary?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	text?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	deploy_id?: string | undefined;
-}[];
+};
 
-/**
- * @type object
- */
+export type GetLatestPluginRunsStatus200 = ({
+	package?: string | undefined;
+	version?: string | undefined;
+	state?: string | undefined;
+	reporting_event?: string | undefined;
+	title?: string | undefined;
+	summary?: string | undefined;
+	text?: string | undefined;
+} & {
+	deploy_id?: string | undefined;
+})[];
+
 export type GetLatestPluginRunsStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type GetLatestPluginRunsRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: GetLatestPluginRunsPathSiteId;
-	};
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				packages: GetLatestPluginRunsQueryPackages;
-				state?: GetLatestPluginRunsQueryState | undefined;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/plugin_runs/latest`;
+export type GetLatestPluginRunsOptions = {
+	body?: never | undefined;
+	path: GetLatestPluginRunsPath;
+	query: GetLatestPluginRunsQuery;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type GetLatestPluginRunsResponses = {
 	"200": GetLatestPluginRunsStatus200;
 	default: GetLatestPluginRunsStatusDefault;
@@ -17604,118 +9460,51 @@ export type GetLatestPluginRunsResponse =
 	| GetLatestPluginRunsStatus200
 	| GetLatestPluginRunsStatusDefault;
 
-/**
- * @type string
- */
-export type CreatePluginRunPathDeployId = string;
+export type CreatePluginRunPath = {
+	deploy_id: string;
+};
 
 export type CreatePluginRunStatus201 = {
-	/**
-	 * @type string | undefined
-	 */
 	package?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	version?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	state?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	reporting_event?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	title?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	summary?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	text?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
+} & {
 	deploy_id?: string | undefined;
 };
 
-/**
- * @type object
- */
 export type CreatePluginRunStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object | undefined
- */
-export type CreatePluginRunData =
+export type CreatePluginRunBody =
 	| {
-			/**
-			 * @type string | undefined
-			 */
 			package?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
 			version?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
 			state?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
 			reporting_event?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
 			title?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
 			summary?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
 			text?: string | undefined;
 	  }
 	| undefined;
 
-/**
- * @type object
- */
-export type CreatePluginRunRequestConfig = {
-	data?: CreatePluginRunData | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		deploy_id: CreatePluginRunPathDeployId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/deploys/${string}/plugin_runs`;
+export type CreatePluginRunOptions = {
+	body: CreatePluginRunBody;
+	path: CreatePluginRunPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type CreatePluginRunResponses = {
 	"201": CreatePluginRunStatus201;
 	default: CreatePluginRunStatusDefault;
@@ -17726,119 +9515,67 @@ export type CreatePluginRunResponses = {
  */
 export type CreatePluginRunResponse = CreatePluginRunStatus201 | CreatePluginRunStatusDefault;
 
-/**
- * @type string
- */
-export type ListFormSubmissionsPathFormId = string;
+export type ListFormSubmissionsPath = {
+	form_id: string;
+};
 
-/**
- * @type integer | undefined
- */
-export type ListFormSubmissionsQueryPage = number | undefined;
-
-/**
- * @type integer | undefined
- */
-export type ListFormSubmissionsQueryPerPage = number | undefined;
-
-/**
- * @type array
- */
-export type ListFormSubmissionsStatus200 = {
+export type ListFormSubmissionsQuery = {
 	/**
-	 * @type string | undefined
+	 * @description
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
+	page?: number | undefined;
+	/**
+	 * @description
+	 * Format: `int32`
+	 * @type integer | undefined
+	 */
+	per_page?: number | undefined;
+};
+
+export type ListFormSubmissionsStatus200 = {
 	id?: string | undefined;
 	/**
+	 * @description
+	 * Format: `int32`
 	 * @type integer | undefined
 	 */
 	number?: number | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	email?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	first_name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	last_name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	company?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	summary?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	body?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	data?: object | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	site_url?: string | undefined;
 }[];
 
-/**
- * @type object
- */
 export type ListFormSubmissionsStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type ListFormSubmissionsRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		form_id: ListFormSubmissionsPathFormId;
-	};
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				page?: ListFormSubmissionsQueryPage | undefined;
-				per_page?: ListFormSubmissionsQueryPerPage | undefined;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/forms/${string}/submissions`;
+export type ListFormSubmissionsOptions = {
+	body?: never | undefined;
+	path: ListFormSubmissionsPath;
+	query?: ListFormSubmissionsQuery | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type ListFormSubmissionsResponses = {
 	"200": ListFormSubmissionsStatus200;
 	default: ListFormSubmissionsStatusDefault;
@@ -17851,87 +9588,48 @@ export type ListFormSubmissionsResponse =
 	| ListFormSubmissionsStatus200
 	| ListFormSubmissionsStatusDefault;
 
-/**
- * @type string
- */
-export type ListHooksBySiteIdQuerySiteId = string;
+export type ListHooksBySiteIdQuery = {
+	site_id: string;
+};
 
-/**
- * @type array
- */
 export type ListHooksBySiteIdStatus200 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	site_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	type?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	event?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	data?: object | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	disabled?: boolean | undefined;
 }[];
 
-/**
- * @type object
- */
 export type ListHooksBySiteIdStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type ListHooksBySiteIdRequestConfig = {
-	data?: never | undefined;
-	pathParams?: never | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				site_id: ListHooksBySiteIdQuerySiteId;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: "/hooks";
+export type ListHooksBySiteIdOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query: ListHooksBySiteIdQuery;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type ListHooksBySiteIdResponses = {
 	"200": ListHooksBySiteIdStatus200;
 	default: ListHooksBySiteIdStatusDefault;
@@ -17942,127 +9640,69 @@ export type ListHooksBySiteIdResponses = {
  */
 export type ListHooksBySiteIdResponse = ListHooksBySiteIdStatus200 | ListHooksBySiteIdStatusDefault;
 
-/**
- * @type string
- */
-export type CreateHookBySiteIdQuerySiteId = string;
+export type CreateHookBySiteIdQuery = {
+	site_id: string;
+};
 
-/**
- * @type object
- */
 export type CreateHookBySiteIdStatus201 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	site_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	type?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	event?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	data?: object | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	disabled?: boolean | undefined;
 };
 
-/**
- * @type object
- */
 export type CreateHookBySiteIdStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object | undefined
- */
-export type CreateHookBySiteIdData =
-	| {
-			/**
-			 * @type string | undefined
-			 */
-			id?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			site_id?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			type?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			event?: string | undefined;
-			/**
-			 * @type object | undefined
-			 */
-			data?: object | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			created_at?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			updated_at?: string | undefined;
-			/**
-			 * @type boolean | undefined
-			 */
-			disabled?: boolean | undefined;
-	  }
-	| undefined;
-
-/**
- * @type object
- */
-export type CreateHookBySiteIdRequestConfig = {
-	data?: CreateHookBySiteIdData | undefined;
-	pathParams?: never | undefined;
+export type CreateHookBySiteIdBody = {
+	id?: string | undefined;
+	site_id?: string | undefined;
+	type?: string | undefined;
+	event?: string | undefined;
+	data?: object | undefined;
 	/**
-	 * @type object | undefined
+	 * @description
+	 * Format: `dateTime`
+	 * @type string | undefined
 	 */
-	queryParams?:
-		| {
-				site_id: CreateHookBySiteIdQuerySiteId;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
+	created_at?: string | undefined;
 	/**
-	 * @type string
+	 * @description
+	 * Format: `dateTime`
+	 * @type string | undefined
 	 */
-	url: "/hooks";
+	updated_at?: string | undefined;
+	disabled?: boolean | undefined;
 };
 
-/**
- * @type object
- */
+export type CreateHookBySiteIdOptions = {
+	body: CreateHookBySiteIdBody;
+	path?: never | undefined;
+	query: CreateHookBySiteIdQuery;
+	headers?: never | undefined;
+};
+
 export type CreateHookBySiteIdResponses = {
 	"201": CreateHookBySiteIdStatus201;
 	default: CreateHookBySiteIdStatusDefault;
@@ -18075,85 +9715,48 @@ export type CreateHookBySiteIdResponse =
 	| CreateHookBySiteIdStatus201
 	| CreateHookBySiteIdStatusDefault;
 
-/**
- * @type string
- */
-export type GetHookPathHookId = string;
+export type GetHookPath = {
+	hook_id: string;
+};
 
-/**
- * @type object
- */
 export type GetHookStatus200 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	site_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	type?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	event?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	data?: object | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	disabled?: boolean | undefined;
 };
 
-/**
- * @type object
- */
 export type GetHookStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type GetHookRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		hook_id: GetHookPathHookId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/hooks/${string}`;
+export type GetHookOptions = {
+	body?: never | undefined;
+	path: GetHookPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type GetHookResponses = {
 	"200": GetHookStatus200;
 	default: GetHookStatusDefault;
@@ -18164,125 +9767,69 @@ export type GetHookResponses = {
  */
 export type GetHookResponse = GetHookStatus200 | GetHookStatusDefault;
 
-/**
- * @type string
- */
-export type UpdateHookPathHookId = string;
+export type UpdateHookPath = {
+	hook_id: string;
+};
 
-/**
- * @type object
- */
 export type UpdateHookStatus200 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	site_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	type?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	event?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	data?: object | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	disabled?: boolean | undefined;
 };
 
-/**
- * @type object
- */
 export type UpdateHookStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object | undefined
- */
-export type UpdateHookData =
-	| {
-			/**
-			 * @type string | undefined
-			 */
-			id?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			site_id?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			type?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			event?: string | undefined;
-			/**
-			 * @type object | undefined
-			 */
-			data?: object | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			created_at?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			updated_at?: string | undefined;
-			/**
-			 * @type boolean | undefined
-			 */
-			disabled?: boolean | undefined;
-	  }
-	| undefined;
-
-/**
- * @type object
- */
-export type UpdateHookRequestConfig = {
-	data?: UpdateHookData | undefined;
+export type UpdateHookBody = {
+	id?: string | undefined;
+	site_id?: string | undefined;
+	type?: string | undefined;
+	event?: string | undefined;
+	data?: object | undefined;
 	/**
-	 * @type object
+	 * @description
+	 * Format: `dateTime`
+	 * @type string | undefined
 	 */
-	pathParams: {
-		hook_id: UpdateHookPathHookId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
+	created_at?: string | undefined;
 	/**
-	 * @type string
+	 * @description
+	 * Format: `dateTime`
+	 * @type string | undefined
 	 */
-	url: `/hooks/${string}`;
+	updated_at?: string | undefined;
+	disabled?: boolean | undefined;
 };
 
-/**
- * @type object
- */
+export type UpdateHookOptions = {
+	body: UpdateHookBody;
+	path: UpdateHookPath;
+	query?: never | undefined;
+	headers?: never | undefined;
+};
+
 export type UpdateHookResponses = {
 	"200": UpdateHookStatus200;
 	default: UpdateHookStatusDefault;
@@ -18293,38 +9840,19 @@ export type UpdateHookResponses = {
  */
 export type UpdateHookResponse = UpdateHookStatus200 | UpdateHookStatusDefault;
 
-/**
- * @type string
- */
-export type DeleteHookPathHookId = string;
-
-/**
- * @type unknown
- */
-export type DeleteHookStatus204 = unknown;
-
-/**
- * @type object
- */
-export type DeleteHookRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		hook_id: DeleteHookPathHookId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/hooks/${string}`;
+export type DeleteHookPath = {
+	hook_id: string;
 };
 
-/**
- * @type object
- */
+export type DeleteHookStatus204 = unknown;
+
+export type DeleteHookOptions = {
+	body?: never | undefined;
+	path: DeleteHookPath;
+	query?: never | undefined;
+	headers?: never | undefined;
+};
+
 export type DeleteHookResponses = {
 	"204": DeleteHookStatus204;
 };
@@ -18334,85 +9862,48 @@ export type DeleteHookResponses = {
  */
 export type DeleteHookResponse = DeleteHookStatus204;
 
-/**
- * @type string
- */
-export type EnableHookPathHookId = string;
+export type EnableHookPath = {
+	hook_id: string;
+};
 
-/**
- * @type object
- */
 export type EnableHookStatus200 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	site_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	type?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	event?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	data?: object | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	disabled?: boolean | undefined;
 };
 
-/**
- * @type object
- */
 export type EnableHookStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type EnableHookRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		hook_id: EnableHookPathHookId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/hooks/${string}/enable`;
+export type EnableHookOptions = {
+	body?: never | undefined;
+	path: EnableHookPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type EnableHookResponses = {
 	"200": EnableHookStatus200;
 	default: EnableHookStatusDefault;
@@ -18423,55 +9914,29 @@ export type EnableHookResponses = {
  */
 export type EnableHookResponse = EnableHookStatus200 | EnableHookStatusDefault;
 
-/**
- * @type array
- */
 export type ListHookTypesStatus200 = {
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	events?: string[] | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	fields?: object[] | undefined;
 }[];
 
-/**
- * @type object
- */
 export type ListHookTypesStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type ListHookTypesRequestConfig = {
-	data?: never | undefined;
-	pathParams?: never | undefined;
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: "/hooks/types";
+export type ListHookTypesOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type ListHookTypesResponses = {
 	"200": ListHookTypesStatus200;
 	default: ListHookTypesStatusDefault;
@@ -18482,111 +9947,65 @@ export type ListHookTypesResponses = {
  */
 export type ListHookTypesResponse = ListHookTypesStatus200 | ListHookTypesStatusDefault;
 
-/**
- * @type string
- */
-export type CreateTicketQueryClientId = string;
+export type CreateTicketQuery = {
+	client_id: string;
+};
 
-/**
- * @type object
- */
 export type CreateTicketStatus201 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	client_id?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	authorized?: boolean | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 };
 
-/**
- * @type object
- */
 export type CreateTicketStatus401 = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
 export type CreateTicketStatus422 = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
 export type CreateTicketStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object | undefined
- */
-export type CreateTicketData =
+export type CreateTicketBody =
 	| {
-			/**
-			 * @type string | undefined
-			 */
 			message?: string | undefined;
 	  }
 	| undefined;
 
-/**
- * @type object
- */
-export type CreateTicketRequestConfig = {
-	data?: CreateTicketData | undefined;
-	pathParams?: never | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				client_id: CreateTicketQueryClientId;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: "/oauth/tickets";
+export type CreateTicketOptions = {
+	body: CreateTicketBody;
+	path?: never | undefined;
+	query: CreateTicketQuery;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type CreateTicketResponses = {
 	"201": CreateTicketStatus201;
 	"401": CreateTicketStatus401;
@@ -18603,69 +10022,39 @@ export type CreateTicketResponse =
 	| CreateTicketStatus422
 	| CreateTicketStatusDefault;
 
-/**
- * @type string
- */
-export type ShowTicketPathTicketId = string;
+export type ShowTicketPath = {
+	ticket_id: string;
+};
 
-/**
- * @type object
- */
 export type ShowTicketStatus200 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	client_id?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	authorized?: boolean | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 };
 
-/**
- * @type object
- */
 export type ShowTicketStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type ShowTicketRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		ticket_id: ShowTicketPathTicketId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/oauth/tickets/${string}`;
+export type ShowTicketOptions = {
+	body?: never | undefined;
+	path: ShowTicketPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type ShowTicketResponses = {
 	"200": ShowTicketStatus200;
 	default: ShowTicketStatusDefault;
@@ -18676,73 +10065,40 @@ export type ShowTicketResponses = {
  */
 export type ShowTicketResponse = ShowTicketStatus200 | ShowTicketStatusDefault;
 
-/**
- * @type string
- */
-export type ExchangeTicketPathTicketId = string;
+export type ExchangeTicketPath = {
+	ticket_id: string;
+};
 
-/**
- * @type object
- */
 export type ExchangeTicketStatus201 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	access_token?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	user_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	user_email?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 };
 
-/**
- * @type object
- */
 export type ExchangeTicketStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type ExchangeTicketRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		ticket_id: ExchangeTicketPathTicketId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/oauth/tickets/${string}/exchange`;
+export type ExchangeTicketOptions = {
+	body?: never | undefined;
+	path: ExchangeTicketPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type ExchangeTicketResponses = {
 	"201": ExchangeTicketStatus201;
 	default: ExchangeTicketStatusDefault;
@@ -18753,55 +10109,34 @@ export type ExchangeTicketResponses = {
  */
 export type ExchangeTicketResponse = ExchangeTicketStatus201 | ExchangeTicketStatusDefault;
 
-/**
- * @type array
- */
 export type ListDeployKeysStatus200 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	public_key?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 }[];
 
-/**
- * @type object
- */
 export type ListDeployKeysStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type ListDeployKeysRequestConfig = {
-	data?: never | undefined;
-	pathParams?: never | undefined;
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: "/deploy_keys";
+export type ListDeployKeysOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type ListDeployKeysResponses = {
 	"200": ListDeployKeysStatus200;
 	default: ListDeployKeysStatusDefault;
@@ -18812,55 +10147,34 @@ export type ListDeployKeysResponses = {
  */
 export type ListDeployKeysResponse = ListDeployKeysStatus200 | ListDeployKeysStatusDefault;
 
-/**
- * @type object
- */
 export type CreateDeployKeyStatus201 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	public_key?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 };
 
-/**
- * @type object
- */
 export type CreateDeployKeyStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type CreateDeployKeyRequestConfig = {
-	data?: never | undefined;
-	pathParams?: never | undefined;
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: "/deploy_keys";
+export type CreateDeployKeyOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type CreateDeployKeyResponses = {
 	"201": CreateDeployKeyStatus201;
 	default: CreateDeployKeyStatusDefault;
@@ -18871,65 +10185,38 @@ export type CreateDeployKeyResponses = {
  */
 export type CreateDeployKeyResponse = CreateDeployKeyStatus201 | CreateDeployKeyStatusDefault;
 
-/**
- * @type string
- */
-export type GetDeployKeyPathKeyId = string;
+export type GetDeployKeyPath = {
+	key_id: string;
+};
 
-/**
- * @type object
- */
 export type GetDeployKeyStatus200 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	public_key?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 };
 
-/**
- * @type object
- */
 export type GetDeployKeyStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type GetDeployKeyRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		key_id: GetDeployKeyPathKeyId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/deploy_keys/${string}`;
+export type GetDeployKeyOptions = {
+	body?: never | undefined;
+	path: GetDeployKeyPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type GetDeployKeyResponses = {
 	"200": GetDeployKeyStatus200;
 	default: GetDeployKeyStatusDefault;
@@ -18940,52 +10227,29 @@ export type GetDeployKeyResponses = {
  */
 export type GetDeployKeyResponse = GetDeployKeyStatus200 | GetDeployKeyStatusDefault;
 
-/**
- * @type string
- */
-export type DeleteDeployKeyPathKeyId = string;
+export type DeleteDeployKeyPath = {
+	key_id: string;
+};
 
-/**
- * @type unknown
- */
 export type DeleteDeployKeyStatus204 = unknown;
 
-/**
- * @type object
- */
 export type DeleteDeployKeyStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type DeleteDeployKeyRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		key_id: DeleteDeployKeyPathKeyId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/deploy_keys/${string}`;
+export type DeleteDeployKeyOptions = {
+	body?: never | undefined;
+	path: DeleteDeployKeyPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type DeleteDeployKeyResponses = {
 	"204": DeleteDeployKeyStatus204;
 	default: DeleteDeployKeyStatusDefault;
@@ -18996,250 +10260,102 @@ export type DeleteDeployKeyResponses = {
  */
 export type DeleteDeployKeyResponse = DeleteDeployKeyStatus204 | DeleteDeployKeyStatusDefault;
 
-/**
- * @type boolean | undefined
- */
-export type CreateSiteInTeamQueryConfigureDns = boolean | undefined;
+export type CreateSiteInTeamPath = {
+	account_slug: string;
+};
 
-/**
- * @type string
- */
-export type CreateSiteInTeamPathAccountSlug = string;
+export type CreateSiteInTeamQuery = {
+	configure_dns?: boolean | undefined;
+};
 
-/**
- * @type object
- */
 export type CreateSiteInTeamStatus201 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	state?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	plan?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	custom_domain?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	domain_aliases?: string[] | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	branch_deploy_custom_domain?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	deploy_preview_custom_domain?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	password?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	notification_email?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	ssl_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	admin_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	screenshot_url?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	user_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	session_id?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	ssl?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	force_ssl?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	managed_dns?: boolean | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	deploy_url?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	published_deploy?:
 		| {
-				/**
-				 * @type string | undefined
-				 */
 				id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				site_id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				user_id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				build_id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				state?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				name?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				url?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				ssl_url?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				admin_url?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				deploy_url?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				deploy_ssl_url?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				screenshot_url?: string | undefined;
-				/**
-				 * @type number | undefined
-				 */
 				review_id?: number | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
 				draft?: boolean | undefined;
-				/**
-				 * @type array | undefined
-				 */
 				required?: string[] | undefined;
-				/**
-				 * @type array | undefined
-				 */
 				required_functions?: string[] | undefined;
 				/**
 				 * @description An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n
 				 * @type array | undefined
 				 */
 				required_edge_functions?: string[] | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				error_message?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				branch?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				commit_ref?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				commit_url?: string | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
 				skipped?: boolean | undefined;
 				/**
+				 * @description
+				 * Format: `dateTime`
 				 * @type string | undefined
 				 */
 				created_at?: string | undefined;
 				/**
+				 * @description
+				 * Format: `dateTime`
 				 * @type string | undefined
 				 */
 				updated_at?: string | undefined;
 				/**
+				 * @description
+				 * Format: `dateTime`
 				 * @type string | undefined
 				 */
 				published_at?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				title?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				context?: string | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
 				locked?: boolean | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				review_url?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				framework?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				skew_protection_token?: string | undefined;
-				/**
-				 * @type array | undefined
-				 */
 				function_schedules?:
 					| {
-							/**
-							 * @type string | undefined
-							 */
 							name?: string | undefined;
-							/**
-							 * @type string | undefined
-							 */
 							cron?: string | undefined;
 					  }[]
 					| undefined;
@@ -19254,92 +10370,38 @@ export type CreateSiteInTeamStatus201 = {
 				 */
 				functions_region_overrides?:
 					| {
-							/**
-							 * @type string | undefined
-							 */
 							name?: string | undefined;
-							/**
-							 * @type string | undefined
-							 */
 							region?: string | undefined;
 					  }[]
 					| undefined;
 		  }
 		| undefined;
-	/**
-	 * @type string | undefined
-	 */
 	account_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	account_name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	account_slug?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	git_provider?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	deploy_hook?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	capabilities?:
 		| {
 				[key: string]: object;
 		  }
 		| undefined;
-	/**
-	 * @type object | undefined
-	 */
 	processing_settings?:
 		| {
-				/**
-				 * @type object | undefined
-				 */
 				html?:
 					| {
-							/**
-							 * @type boolean | undefined
-							 */
 							pretty_urls?: boolean | undefined;
 					  }
 					| undefined;
 		  }
 		| undefined;
-	/**
-	 * @type object | undefined
-	 */
 	build_settings?:
 		| {
-				/**
-				 * @type integer | undefined
-				 */
 				id?: number | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				provider?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				deploy_key_id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				repo_path?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				repo_branch?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				dir?: string | undefined;
 				/**
 				 * @description The directory where Netlify can find your compiled functions to deploy them. Defaults to netlify/functions if not set. You can also define and override this setting in your project’s netlify.toml file.
@@ -19351,33 +10413,15 @@ export type CreateSiteInTeamStatus201 = {
 				 * @type string | undefined
 				 */
 				cmd?: string | undefined;
-				/**
-				 * @type array | undefined
-				 */
 				allowed_branches?: string[] | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
 				public_repo?: boolean | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
 				private_logs?: boolean | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				repo_url?: string | undefined;
-				/**
-				 * @type object | undefined
-				 */
 				env?:
 					| {
 							[key: string]: string;
 					  }
 					| undefined;
-				/**
-				 * @type integer | undefined
-				 */
 				installation_id?: number | undefined;
 				/**
 				 * @description When true, Netlify will not build your project automatically. You can build locally via the CLI and then publish new deploys manually via the CLI or the API.
@@ -19386,32 +10430,14 @@ export type CreateSiteInTeamStatus201 = {
 				stop_builds?: boolean | undefined;
 		  }
 		| undefined;
-	/**
-	 * @type string | undefined
-	 */
 	id_domain?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	default_hooks_data?:
 		| {
-				/**
-				 * @type string | undefined
-				 */
 				access_token?: string | undefined;
 		  }
 		| undefined;
-	/**
-	 * @type string | undefined
-	 */
 	build_image?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	prerender?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	functions_region?: string | undefined;
 	/**
 	 * @default false
@@ -19420,252 +10446,105 @@ export type CreateSiteInTeamStatus201 = {
 	prevent_non_git_prod_deploys?: boolean | undefined;
 };
 
-/**
- * @type object
- */
 export type CreateSiteInTeamStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-export type CreateSiteInTeamData =
-	| {
-			/**
-			 * @type string | undefined
-			 */
+export type CreateSiteInTeamBody =
+	| ({
 			id?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
 			state?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
 			plan?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
 			name?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
 			custom_domain?: string | undefined;
-			/**
-			 * @type array | undefined
-			 */
 			domain_aliases?: string[] | undefined;
-			/**
-			 * @type string | undefined
-			 */
 			branch_deploy_custom_domain?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
 			deploy_preview_custom_domain?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
 			password?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
 			notification_email?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
 			url?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
 			ssl_url?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
 			admin_url?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
 			screenshot_url?: string | undefined;
 			/**
+			 * @description
+			 * Format: `dateTime`
 			 * @type string | undefined
 			 */
 			created_at?: string | undefined;
 			/**
+			 * @description
+			 * Format: `dateTime`
 			 * @type string | undefined
 			 */
 			updated_at?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
 			user_id?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
 			session_id?: string | undefined;
-			/**
-			 * @type boolean | undefined
-			 */
 			ssl?: boolean | undefined;
-			/**
-			 * @type boolean | undefined
-			 */
 			force_ssl?: boolean | undefined;
-			/**
-			 * @type boolean | undefined
-			 */
 			managed_dns?: boolean | undefined;
-			/**
-			 * @type string | undefined
-			 */
 			deploy_url?: string | undefined;
-			/**
-			 * @type object | undefined
-			 */
 			published_deploy?:
 				| {
-						/**
-						 * @type string | undefined
-						 */
 						id?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
 						site_id?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
 						user_id?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
 						build_id?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
 						state?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
 						name?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
 						url?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
 						ssl_url?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
 						admin_url?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
 						deploy_url?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
 						deploy_ssl_url?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
 						screenshot_url?: string | undefined;
-						/**
-						 * @type number | undefined
-						 */
 						review_id?: number | undefined;
-						/**
-						 * @type boolean | undefined
-						 */
 						draft?: boolean | undefined;
-						/**
-						 * @type array | undefined
-						 */
 						required?: string[] | undefined;
-						/**
-						 * @type array | undefined
-						 */
 						required_functions?: string[] | undefined;
 						/**
 						 * @description An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n
 						 * @type array | undefined
 						 */
 						required_edge_functions?: string[] | undefined;
-						/**
-						 * @type string | undefined
-						 */
 						error_message?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
 						branch?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
 						commit_ref?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
 						commit_url?: string | undefined;
-						/**
-						 * @type boolean | undefined
-						 */
 						skipped?: boolean | undefined;
 						/**
+						 * @description
+						 * Format: `dateTime`
 						 * @type string | undefined
 						 */
 						created_at?: string | undefined;
 						/**
+						 * @description
+						 * Format: `dateTime`
 						 * @type string | undefined
 						 */
 						updated_at?: string | undefined;
 						/**
+						 * @description
+						 * Format: `dateTime`
 						 * @type string | undefined
 						 */
 						published_at?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
 						title?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
 						context?: string | undefined;
-						/**
-						 * @type boolean | undefined
-						 */
 						locked?: boolean | undefined;
-						/**
-						 * @type string | undefined
-						 */
 						review_url?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
 						framework?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
 						skew_protection_token?: string | undefined;
-						/**
-						 * @type array | undefined
-						 */
 						function_schedules?:
 							| {
-									/**
-									 * @type string | undefined
-									 */
 									name?: string | undefined;
-									/**
-									 * @type string | undefined
-									 */
 									cron?: string | undefined;
 							  }[]
 							| undefined;
@@ -19680,92 +10559,38 @@ export type CreateSiteInTeamData =
 						 */
 						functions_region_overrides?:
 							| {
-									/**
-									 * @type string | undefined
-									 */
 									name?: string | undefined;
-									/**
-									 * @type string | undefined
-									 */
 									region?: string | undefined;
 							  }[]
 							| undefined;
 				  }
 				| undefined;
-			/**
-			 * @type string | undefined
-			 */
 			account_id?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
 			account_name?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
 			account_slug?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
 			git_provider?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
 			deploy_hook?: string | undefined;
-			/**
-			 * @type object | undefined
-			 */
 			capabilities?:
 				| {
 						[key: string]: object;
 				  }
 				| undefined;
-			/**
-			 * @type object | undefined
-			 */
 			processing_settings?:
 				| {
-						/**
-						 * @type object | undefined
-						 */
 						html?:
 							| {
-									/**
-									 * @type boolean | undefined
-									 */
 									pretty_urls?: boolean | undefined;
 							  }
 							| undefined;
 				  }
 				| undefined;
-			/**
-			 * @type object | undefined
-			 */
 			build_settings?:
 				| {
-						/**
-						 * @type integer | undefined
-						 */
 						id?: number | undefined;
-						/**
-						 * @type string | undefined
-						 */
 						provider?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
 						deploy_key_id?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
 						repo_path?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
 						repo_branch?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
 						dir?: string | undefined;
 						/**
 						 * @description The directory where Netlify can find your compiled functions to deploy them. Defaults to netlify/functions if not set. You can also define and override this setting in your project’s netlify.toml file.
@@ -19777,33 +10602,15 @@ export type CreateSiteInTeamData =
 						 * @type string | undefined
 						 */
 						cmd?: string | undefined;
-						/**
-						 * @type array | undefined
-						 */
 						allowed_branches?: string[] | undefined;
-						/**
-						 * @type boolean | undefined
-						 */
 						public_repo?: boolean | undefined;
-						/**
-						 * @type boolean | undefined
-						 */
 						private_logs?: boolean | undefined;
-						/**
-						 * @type string | undefined
-						 */
 						repo_url?: string | undefined;
-						/**
-						 * @type object | undefined
-						 */
 						env?:
 							| {
 									[key: string]: string;
 							  }
 							| undefined;
-						/**
-						 * @type integer | undefined
-						 */
 						installation_id?: number | undefined;
 						/**
 						 * @description When true, Netlify will not build your project automatically. You can build locally via the CLI and then publish new deploys manually via the CLI or the API.
@@ -19812,66 +10619,28 @@ export type CreateSiteInTeamData =
 						stop_builds?: boolean | undefined;
 				  }
 				| undefined;
-			/**
-			 * @type string | undefined
-			 */
 			id_domain?: string | undefined;
-			/**
-			 * @type object | undefined
-			 */
 			default_hooks_data?:
 				| {
-						/**
-						 * @type string | undefined
-						 */
 						access_token?: string | undefined;
 				  }
 				| undefined;
-			/**
-			 * @type string | undefined
-			 */
 			build_image?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
 			prerender?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
 			functions_region?: string | undefined;
 			/**
 			 * @default false
 			 * @type boolean | undefined
 			 */
 			prevent_non_git_prod_deploys?: boolean | undefined;
-			/**
-			 * @type object | undefined
-			 */
+	  } & {
 			repo?:
 				| {
-						/**
-						 * @type integer | undefined
-						 */
 						id?: number | undefined;
-						/**
-						 * @type string | undefined
-						 */
 						provider?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
 						deploy_key_id?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
 						repo_path?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
 						repo_branch?: string | undefined;
-						/**
-						 * @type string | undefined
-						 */
 						dir?: string | undefined;
 						/**
 						 * @description The directory where Netlify can find your compiled functions to deploy them. Defaults to netlify/functions if not set. You can also define and override this setting in your project’s netlify.toml file.
@@ -19883,33 +10652,15 @@ export type CreateSiteInTeamData =
 						 * @type string | undefined
 						 */
 						cmd?: string | undefined;
-						/**
-						 * @type array | undefined
-						 */
 						allowed_branches?: string[] | undefined;
-						/**
-						 * @type boolean | undefined
-						 */
 						public_repo?: boolean | undefined;
-						/**
-						 * @type boolean | undefined
-						 */
 						private_logs?: boolean | undefined;
-						/**
-						 * @type string | undefined
-						 */
 						repo_url?: string | undefined;
-						/**
-						 * @type object | undefined
-						 */
 						env?:
 							| {
 									[key: string]: string;
 							  }
 							| undefined;
-						/**
-						 * @type integer | undefined
-						 */
 						installation_id?: number | undefined;
 						/**
 						 * @description When true, Netlify will not build your project automatically. You can build locally via the CLI and then publish new deploys manually via the CLI or the API.
@@ -19918,38 +10669,16 @@ export type CreateSiteInTeamData =
 						stop_builds?: boolean | undefined;
 				  }
 				| undefined;
-	  }
+	  })
 	| undefined;
 
-/**
- * @type object
- */
-export type CreateSiteInTeamRequestConfig = {
-	data?: CreateSiteInTeamData | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		account_slug: CreateSiteInTeamPathAccountSlug;
-	};
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				configure_dns?: CreateSiteInTeamQueryConfigureDns | undefined;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/${string}/sites`;
+export type CreateSiteInTeamOptions = {
+	body: CreateSiteInTeamBody;
+	path: CreateSiteInTeamPath;
+	query?: CreateSiteInTeamQuery | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type CreateSiteInTeamResponses = {
 	"201": CreateSiteInTeamStatus201;
 	default: CreateSiteInTeamStatusDefault;
@@ -19960,260 +10689,114 @@ export type CreateSiteInTeamResponses = {
  */
 export type CreateSiteInTeamResponse = CreateSiteInTeamStatus201 | CreateSiteInTeamStatusDefault;
 
-/**
- * @type string | undefined
- */
-export type ListSitesForAccountQueryName = string | undefined;
+export type ListSitesForAccountPath = {
+	account_slug: string;
+};
 
-/**
- * @type string
- */
-export type ListSitesForAccountPathAccountSlug = string;
-
-/**
- * @type integer | undefined
- */
-export type ListSitesForAccountQueryPage = number | undefined;
-
-/**
- * @type integer | undefined
- */
-export type ListSitesForAccountQueryPerPage = number | undefined;
-
-/**
- * @type array
- */
-export type ListSitesForAccountStatus200 = {
-	/**
-	 * @type string | undefined
-	 */
-	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	state?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	plan?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
+export type ListSitesForAccountQuery = {
 	name?: string | undefined;
 	/**
-	 * @type string | undefined
+	 * @description
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
+	page?: number | undefined;
+	/**
+	 * @description
+	 * Format: `int32`
+	 * @type integer | undefined
+	 */
+	per_page?: number | undefined;
+};
+
+export type ListSitesForAccountStatus200 = {
+	id?: string | undefined;
+	state?: string | undefined;
+	plan?: string | undefined;
+	name?: string | undefined;
 	custom_domain?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	domain_aliases?: string[] | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	branch_deploy_custom_domain?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	deploy_preview_custom_domain?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	password?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	notification_email?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	ssl_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	admin_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	screenshot_url?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	user_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	session_id?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	ssl?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	force_ssl?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	managed_dns?: boolean | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	deploy_url?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	published_deploy?:
 		| {
-				/**
-				 * @type string | undefined
-				 */
 				id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				site_id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				user_id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				build_id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				state?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				name?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				url?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				ssl_url?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				admin_url?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				deploy_url?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				deploy_ssl_url?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				screenshot_url?: string | undefined;
-				/**
-				 * @type number | undefined
-				 */
 				review_id?: number | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
 				draft?: boolean | undefined;
-				/**
-				 * @type array | undefined
-				 */
 				required?: string[] | undefined;
-				/**
-				 * @type array | undefined
-				 */
 				required_functions?: string[] | undefined;
 				/**
 				 * @description An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n
 				 * @type array | undefined
 				 */
 				required_edge_functions?: string[] | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				error_message?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				branch?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				commit_ref?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				commit_url?: string | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
 				skipped?: boolean | undefined;
 				/**
+				 * @description
+				 * Format: `dateTime`
 				 * @type string | undefined
 				 */
 				created_at?: string | undefined;
 				/**
+				 * @description
+				 * Format: `dateTime`
 				 * @type string | undefined
 				 */
 				updated_at?: string | undefined;
 				/**
+				 * @description
+				 * Format: `dateTime`
 				 * @type string | undefined
 				 */
 				published_at?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				title?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				context?: string | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
 				locked?: boolean | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				review_url?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				framework?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				skew_protection_token?: string | undefined;
-				/**
-				 * @type array | undefined
-				 */
 				function_schedules?:
 					| {
-							/**
-							 * @type string | undefined
-							 */
 							name?: string | undefined;
-							/**
-							 * @type string | undefined
-							 */
 							cron?: string | undefined;
 					  }[]
 					| undefined;
@@ -20228,92 +10811,38 @@ export type ListSitesForAccountStatus200 = {
 				 */
 				functions_region_overrides?:
 					| {
-							/**
-							 * @type string | undefined
-							 */
 							name?: string | undefined;
-							/**
-							 * @type string | undefined
-							 */
 							region?: string | undefined;
 					  }[]
 					| undefined;
 		  }
 		| undefined;
-	/**
-	 * @type string | undefined
-	 */
 	account_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	account_name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	account_slug?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	git_provider?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	deploy_hook?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	capabilities?:
 		| {
 				[key: string]: object;
 		  }
 		| undefined;
-	/**
-	 * @type object | undefined
-	 */
 	processing_settings?:
 		| {
-				/**
-				 * @type object | undefined
-				 */
 				html?:
 					| {
-							/**
-							 * @type boolean | undefined
-							 */
 							pretty_urls?: boolean | undefined;
 					  }
 					| undefined;
 		  }
 		| undefined;
-	/**
-	 * @type object | undefined
-	 */
 	build_settings?:
 		| {
-				/**
-				 * @type integer | undefined
-				 */
 				id?: number | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				provider?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				deploy_key_id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				repo_path?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				repo_branch?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				dir?: string | undefined;
 				/**
 				 * @description The directory where Netlify can find your compiled functions to deploy them. Defaults to netlify/functions if not set. You can also define and override this setting in your project’s netlify.toml file.
@@ -20325,33 +10854,15 @@ export type ListSitesForAccountStatus200 = {
 				 * @type string | undefined
 				 */
 				cmd?: string | undefined;
-				/**
-				 * @type array | undefined
-				 */
 				allowed_branches?: string[] | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
 				public_repo?: boolean | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
 				private_logs?: boolean | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				repo_url?: string | undefined;
-				/**
-				 * @type object | undefined
-				 */
 				env?:
 					| {
 							[key: string]: string;
 					  }
 					| undefined;
-				/**
-				 * @type integer | undefined
-				 */
 				installation_id?: number | undefined;
 				/**
 				 * @description When true, Netlify will not build your project automatically. You can build locally via the CLI and then publish new deploys manually via the CLI or the API.
@@ -20360,32 +10871,14 @@ export type ListSitesForAccountStatus200 = {
 				stop_builds?: boolean | undefined;
 		  }
 		| undefined;
-	/**
-	 * @type string | undefined
-	 */
 	id_domain?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	default_hooks_data?:
 		| {
-				/**
-				 * @type string | undefined
-				 */
 				access_token?: string | undefined;
 		  }
 		| undefined;
-	/**
-	 * @type string | undefined
-	 */
 	build_image?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	prerender?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	functions_region?: string | undefined;
 	/**
 	 * @default false
@@ -20394,51 +10887,23 @@ export type ListSitesForAccountStatus200 = {
 	prevent_non_git_prod_deploys?: boolean | undefined;
 }[];
 
-/**
- * @type object
- */
 export type ListSitesForAccountStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type ListSitesForAccountRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		account_slug: ListSitesForAccountPathAccountSlug;
-	};
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				name?: ListSitesForAccountQueryName | undefined;
-				page?: ListSitesForAccountQueryPage | undefined;
-				per_page?: ListSitesForAccountQueryPerPage | undefined;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/${string}/sites`;
+export type ListSitesForAccountOptions = {
+	body?: never | undefined;
+	path: ListSitesForAccountPath;
+	query?: ListSitesForAccountQuery | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type ListSitesForAccountResponses = {
 	"200": ListSitesForAccountStatus200;
 	default: ListSitesForAccountStatusDefault;
@@ -20451,73 +10916,35 @@ export type ListSitesForAccountResponse =
 	| ListSitesForAccountStatus200
 	| ListSitesForAccountStatusDefault;
 
-/**
- * @type string
- */
-export type ListMembersForAccountPathAccountSlug = string;
+export type ListMembersForAccountPath = {
+	account_slug: string;
+};
 
-/**
- * @type array
- */
 export type ListMembersForAccountStatus200 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	full_name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	email?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	avatar?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	role?: string | undefined;
 }[];
 
-/**
- * @type object
- */
 export type ListMembersForAccountStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type ListMembersForAccountRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		account_slug: ListMembersForAccountPathAccountSlug;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/${string}/members`;
+export type ListMembersForAccountOptions = {
+	body?: never | undefined;
+	path: ListMembersForAccountPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type ListMembersForAccountResponses = {
 	"200": ListMembersForAccountStatus200;
 	default: ListMembersForAccountStatusDefault;
@@ -20530,96 +10957,50 @@ export type ListMembersForAccountResponse =
 	| ListMembersForAccountStatus200
 	| ListMembersForAccountStatusDefault;
 
-/**
- * @type string
- */
-export type AddMemberToAccountPathAccountSlug = string;
+export type AddMemberToAccountPath = {
+	account_slug: string;
+};
 
-/**
- * @type array
- */
 export type AddMemberToAccountStatus200 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	full_name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	email?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	avatar?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	role?: string | undefined;
 }[];
 
-/**
- * @type object
- */
 export type AddMemberToAccountStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-export const roleEnum = {
+export const addMemberToAccountRequestRoleEnum = {
 	Owner: "Owner",
 	Developer: "Developer",
 	"Billing Admin": "Billing Admin",
 	Reviewer: "Reviewer",
 } as const;
 
-export type RoleEnumKey = (typeof roleEnum)[keyof typeof roleEnum];
+export type AddMemberToAccountRequestRoleEnumKey =
+	(typeof addMemberToAccountRequestRoleEnum)[keyof typeof addMemberToAccountRequestRoleEnum];
 
-/**
- * @type object
- */
-export type AddMemberToAccountData = {
-	/**
-	 * @type string | undefined
-	 */
-	role?: RoleEnumKey | undefined;
-	/**
-	 * @type string | undefined
-	 */
+export type AddMemberToAccountBody = {
+	role?: AddMemberToAccountRequestRoleEnumKey | undefined;
 	email?: string | undefined;
 };
 
-/**
- * @type object
- */
-export type AddMemberToAccountRequestConfig = {
-	data?: AddMemberToAccountData | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		account_slug: AddMemberToAccountPathAccountSlug;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/${string}/members`;
+export type AddMemberToAccountOptions = {
+	body: AddMemberToAccountBody;
+	path: AddMemberToAccountPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type AddMemberToAccountResponses = {
 	"200": AddMemberToAccountStatus200;
 	default: AddMemberToAccountStatusDefault;
@@ -20632,79 +11013,36 @@ export type AddMemberToAccountResponse =
 	| AddMemberToAccountStatus200
 	| AddMemberToAccountStatusDefault;
 
-/**
- * @type string
- */
-export type GetAccountMemberPathAccountSlug = string;
+export type GetAccountMemberPath = {
+	account_slug: string;
+	member_id: string;
+};
 
-/**
- * @type string
- */
-export type GetAccountMemberPathMemberId = string;
-
-/**
- * @type object
- */
 export type GetAccountMemberStatus200 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	full_name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	email?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	avatar?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	role?: string | undefined;
 };
 
-/**
- * @type object
- */
 export type GetAccountMemberStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type GetAccountMemberRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		account_slug: GetAccountMemberPathAccountSlug;
-		member_id: GetAccountMemberPathMemberId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/${string}/members/${string}`;
+export type GetAccountMemberOptions = {
+	body?: never | undefined;
+	path: GetAccountMemberPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type GetAccountMemberResponses = {
 	"200": GetAccountMemberStatus200;
 	default: GetAccountMemberStatusDefault;
@@ -20715,105 +11053,61 @@ export type GetAccountMemberResponses = {
  */
 export type GetAccountMemberResponse = GetAccountMemberStatus200 | GetAccountMemberStatusDefault;
 
-/**
- * @type string
- */
-export type UpdateAccountMemberPathAccountSlug = string;
+export type UpdateAccountMemberPath = {
+	account_slug: string;
+	member_id: string;
+};
 
-/**
- * @type string
- */
-export type UpdateAccountMemberPathMemberId = string;
-
-/**
- * @type object
- */
 export type UpdateAccountMemberStatus200 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	full_name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	email?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	avatar?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	role?: string | undefined;
 };
 
-/**
- * @type object
- */
 export type UpdateAccountMemberStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-export const siteAccessEnum = {
+export const updateAccountMemberRequestRoleEnum = {
+	Owner: "Owner",
+	Developer: "Developer",
+	"Billing Admin": "Billing Admin",
+	Reviewer: "Reviewer",
+} as const;
+
+export type UpdateAccountMemberRequestRoleEnumKey =
+	(typeof updateAccountMemberRequestRoleEnum)[keyof typeof updateAccountMemberRequestRoleEnum];
+
+export const updateAccountMemberRequestSiteAccessEnum = {
 	all: "all",
 	none: "none",
 	selected: "selected",
 } as const;
 
-export type SiteAccessEnumKey = (typeof siteAccessEnum)[keyof typeof siteAccessEnum];
+export type UpdateAccountMemberRequestSiteAccessEnumKey =
+	(typeof updateAccountMemberRequestSiteAccessEnum)[keyof typeof updateAccountMemberRequestSiteAccessEnum];
 
-/**
- * @type object
- */
-export type UpdateAccountMemberData = {
-	/**
-	 * @type string | undefined
-	 */
-	role?: RoleEnumKey | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	site_access?: SiteAccessEnumKey | undefined;
-	/**
-	 * @type array | undefined
-	 */
+export type UpdateAccountMemberBody = {
+	role?: UpdateAccountMemberRequestRoleEnumKey | undefined;
+	site_access?: UpdateAccountMemberRequestSiteAccessEnumKey | undefined;
 	site_ids?: string[] | undefined;
 };
 
-/**
- * @type object
- */
-export type UpdateAccountMemberRequestConfig = {
-	data?: UpdateAccountMemberData | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		account_slug: UpdateAccountMemberPathAccountSlug;
-		member_id: UpdateAccountMemberPathMemberId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/${string}/members/${string}`;
+export type UpdateAccountMemberOptions = {
+	body: UpdateAccountMemberBody;
+	path: UpdateAccountMemberPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type UpdateAccountMemberResponses = {
 	"200": UpdateAccountMemberStatus200;
 	default: UpdateAccountMemberStatusDefault;
@@ -20826,58 +11120,30 @@ export type UpdateAccountMemberResponse =
 	| UpdateAccountMemberStatus200
 	| UpdateAccountMemberStatusDefault;
 
-/**
- * @type string
- */
-export type RemoveAccountMemberPathAccountSlug = string;
+export type RemoveAccountMemberPath = {
+	account_slug: string;
+	member_id: string;
+};
 
-/**
- * @type string
- */
-export type RemoveAccountMemberPathMemberId = string;
-
-/**
- * @type unknown
- */
 export type RemoveAccountMemberStatus204 = unknown;
 
-/**
- * @type object
- */
 export type RemoveAccountMemberStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type RemoveAccountMemberRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		account_slug: RemoveAccountMemberPathAccountSlug;
-		member_id: RemoveAccountMemberPathMemberId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/${string}/members/${string}`;
+export type RemoveAccountMemberOptions = {
+	body?: never | undefined;
+	path: RemoveAccountMemberPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type RemoveAccountMemberResponses = {
 	"204": RemoveAccountMemberStatus204;
 	default: RemoveAccountMemberStatusDefault;
@@ -20890,86 +11156,49 @@ export type RemoveAccountMemberResponse =
 	| RemoveAccountMemberStatus204
 	| RemoveAccountMemberStatusDefault;
 
-/**
- * @type array
- */
 export type ListPaymentMethodsForUserStatus200 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	method_name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	type?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	state?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	data?:
 		| {
-				/**
-				 * @type string | undefined
-				 */
 				card_type?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				last4?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				email?: string | undefined;
 		  }
 		| undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 }[];
 
-/**
- * @type object
- */
 export type ListPaymentMethodsForUserStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type ListPaymentMethodsForUserRequestConfig = {
-	data?: never | undefined;
-	pathParams?: never | undefined;
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: "/billing/payment_methods";
+export type ListPaymentMethodsForUserOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type ListPaymentMethodsForUserResponses = {
 	"200": ListPaymentMethodsForUserStatus200;
 	default: ListPaymentMethodsForUserStatusDefault;
@@ -20982,75 +11211,34 @@ export type ListPaymentMethodsForUserResponse =
 	| ListPaymentMethodsForUserStatus200
 	| ListPaymentMethodsForUserStatusDefault;
 
-/**
- * @type array
- */
 export type ListAccountTypesForUserStatus200 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	description?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	capabilities?: object | undefined;
-	/**
-	 * @type integer | undefined
-	 */
 	monthly_dollar_price?: number | undefined;
-	/**
-	 * @type integer | undefined
-	 */
 	yearly_dollar_price?: number | undefined;
-	/**
-	 * @type integer | undefined
-	 */
 	monthly_seats_addon_dollar_price?: number | undefined;
-	/**
-	 * @type integer | undefined
-	 */
 	yearly_seats_addon_dollar_price?: number | undefined;
 }[];
 
-/**
- * @type object
- */
 export type ListAccountTypesForUserStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type ListAccountTypesForUserRequestConfig = {
-	data?: never | undefined;
-	pathParams?: never | undefined;
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: "/accounts/types";
+export type ListAccountTypesForUserOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type ListAccountTypesForUserResponses = {
 	"200": ListAccountTypesForUserStatus200;
 	default: ListAccountTypesForUserStatusDefault;
@@ -21063,152 +11251,71 @@ export type ListAccountTypesForUserResponse =
 	| ListAccountTypesForUserStatus200
 	| ListAccountTypesForUserStatusDefault;
 
-/**
- * @type boolean | undefined
- */
-export type ListAccountsForUserQueryMinimal = boolean | undefined;
+export type ListAccountsForUserQuery = {
+	minimal?: boolean | undefined;
+};
 
-/**
- * @type array
- */
 export type ListAccountsForUserStatus200 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	slug?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	type?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	capabilities?:
 		| {
-				/**
-				 * @type object | undefined
-				 */
 				sites?:
 					| {
-							/**
-							 * @type integer | undefined
-							 */
 							included?: number | undefined;
-							/**
-							 * @type integer | undefined
-							 */
 							used?: number | undefined;
 					  }
 					| undefined;
-				/**
-				 * @type object | undefined
-				 */
 				collaborators?:
 					| {
-							/**
-							 * @type integer | undefined
-							 */
 							included?: number | undefined;
-							/**
-							 * @type integer | undefined
-							 */
 							used?: number | undefined;
 					  }
 					| undefined;
 		  }
 		| undefined;
-	/**
-	 * @type string | undefined
-	 */
 	billing_name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	billing_email?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	billing_details?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	billing_period?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	payment_method_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	type_name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	type_id?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	owner_ids?: string[] | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	roles_allowed?: string[] | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 }[];
 
-/**
- * @type object
- */
 export type ListAccountsForUserStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type ListAccountsForUserRequestConfig = {
-	data?: never | undefined;
-	pathParams?: never | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				minimal?: ListAccountsForUserQueryMinimal | undefined;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: "/accounts";
+export type ListAccountsForUserOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query?: ListAccountsForUserQuery | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type ListAccountsForUserResponses = {
 	"200": ListAccountsForUserStatus200;
 	default: ListAccountsForUserStatusDefault;
@@ -21221,173 +11328,83 @@ export type ListAccountsForUserResponse =
 	| ListAccountsForUserStatus200
 	| ListAccountsForUserStatusDefault;
 
-/**
- * @type object
- */
 export type CreateAccountStatus201 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	slug?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	type?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	capabilities?:
 		| {
-				/**
-				 * @type object | undefined
-				 */
 				sites?:
 					| {
-							/**
-							 * @type integer | undefined
-							 */
 							included?: number | undefined;
-							/**
-							 * @type integer | undefined
-							 */
 							used?: number | undefined;
 					  }
 					| undefined;
-				/**
-				 * @type object | undefined
-				 */
 				collaborators?:
 					| {
-							/**
-							 * @type integer | undefined
-							 */
 							included?: number | undefined;
-							/**
-							 * @type integer | undefined
-							 */
 							used?: number | undefined;
 					  }
 					| undefined;
 		  }
 		| undefined;
-	/**
-	 * @type string | undefined
-	 */
 	billing_name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	billing_email?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	billing_details?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	billing_period?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	payment_method_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	type_name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	type_id?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	owner_ids?: string[] | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	roles_allowed?: string[] | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 };
 
-/**
- * @type object
- */
 export type CreateAccountStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-export const periodEnum = {
+export const createAccountRequestPeriodEnum = {
 	monthly: "monthly",
 	yearly: "yearly",
 } as const;
 
-export type PeriodEnumKey = (typeof periodEnum)[keyof typeof periodEnum];
+export type CreateAccountRequestPeriodEnumKey =
+	(typeof createAccountRequestPeriodEnum)[keyof typeof createAccountRequestPeriodEnum];
 
-/**
- * @type object
- */
-export type CreateAccountData = {
-	/**
-	 * @type string
-	 */
+export type CreateAccountBody = {
 	name: string;
-	/**
-	 * @type string
-	 */
 	type_id: string;
-	/**
-	 * @type string | undefined
-	 */
 	payment_method_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	period?: PeriodEnumKey | undefined;
-	/**
-	 * @type integer | undefined
-	 */
+	period?: CreateAccountRequestPeriodEnumKey | undefined;
 	extra_seats_block?: number | undefined;
 };
 
-/**
- * @type object
- */
-export type CreateAccountRequestConfig = {
-	data?: CreateAccountData | undefined;
-	pathParams?: never | undefined;
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: "/accounts";
+export type CreateAccountOptions = {
+	body: CreateAccountBody;
+	path?: never | undefined;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type CreateAccountResponses = {
 	"201": CreateAccountStatus201;
 	default: CreateAccountStatusDefault;
@@ -21398,150 +11415,71 @@ export type CreateAccountResponses = {
  */
 export type CreateAccountResponse = CreateAccountStatus201 | CreateAccountStatusDefault;
 
-/**
- * @type string
- */
-export type GetAccountPathAccountId = string;
+export type GetAccountPath = {
+	account_id: string;
+};
 
-/**
- * @type object
- */
 export type GetAccountStatus200 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	slug?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	type?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	capabilities?:
 		| {
-				/**
-				 * @type object | undefined
-				 */
 				sites?:
 					| {
-							/**
-							 * @type integer | undefined
-							 */
 							included?: number | undefined;
-							/**
-							 * @type integer | undefined
-							 */
 							used?: number | undefined;
 					  }
 					| undefined;
-				/**
-				 * @type object | undefined
-				 */
 				collaborators?:
 					| {
-							/**
-							 * @type integer | undefined
-							 */
 							included?: number | undefined;
-							/**
-							 * @type integer | undefined
-							 */
 							used?: number | undefined;
 					  }
 					| undefined;
 		  }
 		| undefined;
-	/**
-	 * @type string | undefined
-	 */
 	billing_name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	billing_email?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	billing_details?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	billing_period?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	payment_method_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	type_name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	type_id?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	owner_ids?: string[] | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	roles_allowed?: string[] | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 };
 
-/**
- * @type object
- */
 export type GetAccountStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type GetAccountRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		account_id: GetAccountPathAccountId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/accounts/${string}`;
+export type GetAccountOptions = {
+	body?: never | undefined;
+	path: GetAccountPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type GetAccountResponses = {
 	"200": GetAccountStatus200;
 	default: GetAccountStatusDefault;
@@ -21552,186 +11490,83 @@ export type GetAccountResponses = {
  */
 export type GetAccountResponse = GetAccountStatus200 | GetAccountStatusDefault;
 
-/**
- * @type string
- */
-export type UpdateAccountPathAccountId = string;
+export type UpdateAccountPath = {
+	account_id: string;
+};
 
-/**
- * @type object
- */
 export type UpdateAccountStatus200 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	slug?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	type?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	capabilities?:
 		| {
-				/**
-				 * @type object | undefined
-				 */
 				sites?:
 					| {
-							/**
-							 * @type integer | undefined
-							 */
 							included?: number | undefined;
-							/**
-							 * @type integer | undefined
-							 */
 							used?: number | undefined;
 					  }
 					| undefined;
-				/**
-				 * @type object | undefined
-				 */
 				collaborators?:
 					| {
-							/**
-							 * @type integer | undefined
-							 */
 							included?: number | undefined;
-							/**
-							 * @type integer | undefined
-							 */
 							used?: number | undefined;
 					  }
 					| undefined;
 		  }
 		| undefined;
-	/**
-	 * @type string | undefined
-	 */
 	billing_name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	billing_email?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	billing_details?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	billing_period?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	payment_method_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	type_name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	type_id?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	owner_ids?: string[] | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	roles_allowed?: string[] | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 };
 
-/**
- * @type object
- */
 export type UpdateAccountStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object | undefined
- */
-export type UpdateAccountData =
+export type UpdateAccountBody =
 	| {
-			/**
-			 * @type string | undefined
-			 */
 			name?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
 			slug?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
 			type_id?: string | undefined;
-			/**
-			 * @type integer | undefined
-			 */
 			extra_seats_block?: number | undefined;
-			/**
-			 * @type string | undefined
-			 */
 			billing_name?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
 			billing_email?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
 			billing_details?: string | undefined;
 	  }
 	| undefined;
 
-/**
- * @type object
- */
-export type UpdateAccountRequestConfig = {
-	data?: UpdateAccountData | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		account_id: UpdateAccountPathAccountId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/accounts/${string}`;
+export type UpdateAccountOptions = {
+	body: UpdateAccountBody;
+	path: UpdateAccountPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type UpdateAccountResponses = {
 	"200": UpdateAccountStatus200;
 	default: UpdateAccountStatusDefault;
@@ -21742,52 +11577,29 @@ export type UpdateAccountResponses = {
  */
 export type UpdateAccountResponse = UpdateAccountStatus200 | UpdateAccountStatusDefault;
 
-/**
- * @type string
- */
-export type CancelAccountPathAccountId = string;
+export type CancelAccountPath = {
+	account_id: string;
+};
 
-/**
- * @type unknown
- */
 export type CancelAccountStatus204 = unknown;
 
-/**
- * @type object
- */
 export type CancelAccountStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type CancelAccountRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		account_id: CancelAccountPathAccountId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/accounts/${string}`;
+export type CancelAccountOptions = {
+	body?: never | undefined;
+	path: CancelAccountPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type CancelAccountResponses = {
 	"204": CancelAccountStatus204;
 	default: CancelAccountStatusDefault;
@@ -21798,123 +11610,65 @@ export type CancelAccountResponses = {
  */
 export type CancelAccountResponse = CancelAccountStatus204 | CancelAccountStatusDefault;
 
-/**
- * @type string
- */
-export type ListAccountAuditEventsPathAccountId = string;
+export type ListAccountAuditEventsPath = {
+	account_id: string;
+};
 
-/**
- * @type string | undefined
- */
-export type ListAccountAuditEventsQueryQuery = string | undefined;
+export type ListAccountAuditEventsQuery = {
+	query?: string | undefined;
+	log_type?: string | undefined;
+	/**
+	 * @description
+	 * Format: `int32`
+	 * @type integer | undefined
+	 */
+	page?: number | undefined;
+	/**
+	 * @description
+	 * Format: `int32`
+	 * @type integer | undefined
+	 */
+	per_page?: number | undefined;
+};
 
-/**
- * @type string | undefined
- */
-export type ListAccountAuditEventsQueryLogType = string | undefined;
-
-/**
- * @type integer | undefined
- */
-export type ListAccountAuditEventsQueryPage = number | undefined;
-
-/**
- * @type integer | undefined
- */
-export type ListAccountAuditEventsQueryPerPage = number | undefined;
-
-/**
- * @type array
- */
 export type ListAccountAuditEventsStatus200 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	account_id?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	payload?:
 		| {
-				/**
-				 * @type string | undefined
-				 */
 				actor_id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				actor_name?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				actor_email?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				action?: string | undefined;
 				/**
+				 * @description
+				 * Format: `dateTime`
 				 * @type string | undefined
 				 */
 				timestamp?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				log_type?: string | undefined;
 				[key: string]: unknown;
 		  }
 		| undefined;
 }[];
 
-/**
- * @type object
- */
 export type ListAccountAuditEventsStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type ListAccountAuditEventsRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		account_id: ListAccountAuditEventsPathAccountId;
-	};
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				query?: ListAccountAuditEventsQueryQuery | undefined;
-				log_type?: ListAccountAuditEventsQueryLogType | undefined;
-				page?: ListAccountAuditEventsQueryPage | undefined;
-				per_page?: ListAccountAuditEventsQueryPerPage | undefined;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/accounts/${string}/audit`;
+export type ListAccountAuditEventsOptions = {
+	body?: never | undefined;
+	path: ListAccountAuditEventsPath;
+	query?: ListAccountAuditEventsQuery | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type ListAccountAuditEventsResponses = {
 	"200": ListAccountAuditEventsStatus200;
 	default: ListAccountAuditEventsStatusDefault;
@@ -21927,240 +11681,112 @@ export type ListAccountAuditEventsResponse =
 	| ListAccountAuditEventsStatus200
 	| ListAccountAuditEventsStatusDefault;
 
-/**
- * @type string
- */
-export type ListAgentRunnersQueryAccountId = string;
+export const listAgentRunnersState = {
+	live: "live",
+	error: "error",
+} as const;
 
-/**
- * @type string
- */
-export type ListAgentRunnersQuerySiteId = string;
+export type ListAgentRunnersStateKey =
+	(typeof listAgentRunnersState)[keyof typeof listAgentRunnersState];
 
-/**
- * @type integer | undefined
- */
-export type ListAgentRunnersQueryPage = number | undefined;
+export type ListAgentRunnersQuery = {
+	account_id: string;
+	site_id: string;
+	/**
+	 * @description
+	 * Format: `int32`
+	 * @type integer | undefined
+	 */
+	page?: number | undefined;
+	/**
+	 * @description
+	 * Format: `int32`
+	 * @type integer | undefined
+	 */
+	per_page?: number | undefined;
+	state?: ListAgentRunnersStateKey | undefined;
+	title?: string | undefined;
+	branch?: string | undefined;
+	result_branch?: string | undefined;
+	from?: number | undefined;
+	to?: number | undefined;
+};
 
-/**
- * @type integer | undefined
- */
-export type ListAgentRunnersQueryPerPage = number | undefined;
-
-/**
- * @type string | undefined
- */
-export type ListAgentRunnersQueryState = ("live" | "error") | undefined;
-
-/**
- * @type string | undefined
- */
-export type ListAgentRunnersQueryTitle = string | undefined;
-
-/**
- * @type string | undefined
- */
-export type ListAgentRunnersQueryBranch = string | undefined;
-
-/**
- * @type string | undefined
- */
-export type ListAgentRunnersQueryResultBranch = string | undefined;
-
-/**
- * @type integer | undefined
- */
-export type ListAgentRunnersQueryFrom = number | undefined;
-
-/**
- * @type integer | undefined
- */
-export type ListAgentRunnersQueryTo = number | undefined;
-
-/**
- * @type array
- */
 export type ListAgentRunnersStatus200 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	site_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	parent_agent_runner_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	state?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	done_at?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	title?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	branch?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	result_branch?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	pr_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	pr_branch?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	pr_state?: string | undefined;
-	/**
-	 * @type integer | undefined
-	 */
 	pr_number?: number | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	pr_is_being_created?: boolean | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	pr_error?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	current_task?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	result_diff?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	sha?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	merge_commit_sha?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	merge_commit_error?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	merge_commit_is_being_created?: boolean | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	base_deploy_id?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	attached_file_keys?: string[] | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	active_session_created_at?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	latest_session_deploy_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	latest_session_deploy_url?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	user?:
 		| {
-				/**
-				 * @type string | undefined
-				 */
 				id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				full_name?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				email?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				avatar_url?: string | undefined;
 		  }
 		| undefined;
 }[];
 
-/**
- * @type object
- */
 export type ListAgentRunnersStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type ListAgentRunnersRequestConfig = {
-	data?: never | undefined;
-	pathParams?: never | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				account_id: ListAgentRunnersQueryAccountId;
-				site_id: ListAgentRunnersQuerySiteId;
-				page?: ListAgentRunnersQueryPage | undefined;
-				per_page?: ListAgentRunnersQueryPerPage | undefined;
-				state?: ListAgentRunnersQueryState | undefined;
-				title?: ListAgentRunnersQueryTitle | undefined;
-				branch?: ListAgentRunnersQueryBranch | undefined;
-				result_branch?: ListAgentRunnersQueryResultBranch | undefined;
-				from?: ListAgentRunnersQueryFrom | undefined;
-				to?: ListAgentRunnersQueryTo | undefined;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: "/agent_runners";
+export type ListAgentRunnersOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query: ListAgentRunnersQuery;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type ListAgentRunnersResponses = {
 	"200": ListAgentRunnersStatus200;
 	default: ListAgentRunnersStatusDefault;
@@ -22171,244 +11797,97 @@ export type ListAgentRunnersResponses = {
  */
 export type ListAgentRunnersResponse = ListAgentRunnersStatus200 | ListAgentRunnersStatusDefault;
 
-/**
- * @type string
- */
-export type CreateAgentRunnerQuerySiteId = string;
-
-/**
- * @type string | undefined
- */
-export type CreateAgentRunnerQueryDeployId = string | undefined;
-
-/**
- * @type string | undefined
- */
-export type CreateAgentRunnerQueryBranch = string | undefined;
-
-/**
- * @type string | undefined
- */
-export type CreateAgentRunnerQueryPrompt = string | undefined;
-
-/**
- * @type string | undefined
- */
-export type CreateAgentRunnerQueryAgent = string | undefined;
-
-/**
- * @type string | undefined
- */
-export type CreateAgentRunnerQueryModel = string | undefined;
-
-/**
- * @type string | undefined
- */
-export type CreateAgentRunnerQueryParentAgentRunnerId = string | undefined;
-
-/**
- * @type string | undefined
- */
-export type CreateAgentRunnerQueryDevServerImage = string | undefined;
-
-/**
- * @type array | undefined
- */
-export type CreateAgentRunnerQueryFileKeys = string[] | undefined;
-
-/**
- * @type object
- */
-export type CreateAgentRunnerStatus200 = {
-	/**
-	 * @type string | undefined
-	 */
-	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	site_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
+export type CreateAgentRunnerQuery = {
+	site_id: string;
+	deploy_id?: string | undefined;
+	branch?: string | undefined;
+	prompt?: string | undefined;
+	agent?: string | undefined;
+	model?: string | undefined;
 	parent_agent_runner_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
+	dev_server_image?: string | undefined;
+	file_keys?: string[] | undefined;
+};
+
+export type CreateAgentRunnerStatus200 = {
+	id?: string | undefined;
+	site_id?: string | undefined;
+	parent_agent_runner_id?: string | undefined;
 	state?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	done_at?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	title?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	branch?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	result_branch?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	pr_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	pr_branch?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	pr_state?: string | undefined;
-	/**
-	 * @type integer | undefined
-	 */
 	pr_number?: number | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	pr_is_being_created?: boolean | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	pr_error?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	current_task?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	result_diff?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	sha?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	merge_commit_sha?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	merge_commit_error?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	merge_commit_is_being_created?: boolean | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	base_deploy_id?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	attached_file_keys?: string[] | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	active_session_created_at?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	latest_session_deploy_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	latest_session_deploy_url?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	user?:
 		| {
-				/**
-				 * @type string | undefined
-				 */
 				id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				full_name?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				email?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				avatar_url?: string | undefined;
 		  }
 		| undefined;
 };
 
-/**
- * @type unknown
- */
 export type CreateAgentRunnerStatus404 = unknown;
 
-/**
- * @type unknown
- */
 export type CreateAgentRunnerStatus422 = unknown;
 
-/**
- * @type object
- */
 export type CreateAgentRunnerStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type CreateAgentRunnerRequestConfig = {
-	data?: never | undefined;
-	pathParams?: never | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				site_id: CreateAgentRunnerQuerySiteId;
-				deploy_id?: CreateAgentRunnerQueryDeployId | undefined;
-				branch?: CreateAgentRunnerQueryBranch | undefined;
-				prompt?: CreateAgentRunnerQueryPrompt | undefined;
-				agent?: CreateAgentRunnerQueryAgent | undefined;
-				model?: CreateAgentRunnerQueryModel | undefined;
-				parent_agent_runner_id?: CreateAgentRunnerQueryParentAgentRunnerId | undefined;
-				dev_server_image?: CreateAgentRunnerQueryDevServerImage | undefined;
-				file_keys?: CreateAgentRunnerQueryFileKeys | undefined;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: "/agent_runners";
+export type CreateAgentRunnerOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query: CreateAgentRunnerQuery;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type CreateAgentRunnerResponses = {
 	"200": CreateAgentRunnerStatus200;
 	"404": CreateAgentRunnerStatus404;
@@ -22425,76 +11904,35 @@ export type CreateAgentRunnerResponse =
 	| CreateAgentRunnerStatus422
 	| CreateAgentRunnerStatusDefault;
 
-/**
- * @type string
- */
-export type CreateAgentRunnerUploadUrlQueryAccountId = string;
+export type CreateAgentRunnerUploadUrlQuery = {
+	account_id: string;
+	filename: string;
+	content_type: string;
+};
 
-/**
- * @type string
- */
-export type CreateAgentRunnerUploadUrlQueryFilename = string;
-
-/**
- * @type string
- */
-export type CreateAgentRunnerUploadUrlQueryContentType = string;
-
-/**
- * @type unknown
- */
 export type CreateAgentRunnerUploadUrlStatus200 = unknown;
 
-/**
- * @type unknown
- */
 export type CreateAgentRunnerUploadUrlStatus400 = unknown;
 
-/**
- * @type unknown
- */
 export type CreateAgentRunnerUploadUrlStatus422 = unknown;
 
-/**
- * @type object
- */
 export type CreateAgentRunnerUploadUrlStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type CreateAgentRunnerUploadUrlRequestConfig = {
-	data?: never | undefined;
-	pathParams?: never | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				account_id: CreateAgentRunnerUploadUrlQueryAccountId;
-				filename: CreateAgentRunnerUploadUrlQueryFilename;
-				content_type: CreateAgentRunnerUploadUrlQueryContentType;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: "/agent_runners/upload_url";
+export type CreateAgentRunnerUploadUrlOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query: CreateAgentRunnerUploadUrlQuery;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type CreateAgentRunnerUploadUrlResponses = {
 	"200": CreateAgentRunnerUploadUrlStatus200;
 	"400": CreateAgentRunnerUploadUrlStatus400;
@@ -22511,184 +11949,85 @@ export type CreateAgentRunnerUploadUrlResponse =
 	| CreateAgentRunnerUploadUrlStatus422
 	| CreateAgentRunnerUploadUrlStatusDefault;
 
-/**
- * @type string
- */
-export type GetAgentRunnerPathAgentRunnerId = string;
+export type GetAgentRunnerPath = {
+	agent_runner_id: string;
+};
 
-/**
- * @type object
- */
 export type GetAgentRunnerStatus200 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	site_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	parent_agent_runner_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	state?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	done_at?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	title?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	branch?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	result_branch?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	pr_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	pr_branch?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	pr_state?: string | undefined;
-	/**
-	 * @type integer | undefined
-	 */
 	pr_number?: number | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	pr_is_being_created?: boolean | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	pr_error?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	current_task?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	result_diff?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	sha?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	merge_commit_sha?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	merge_commit_error?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	merge_commit_is_being_created?: boolean | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	base_deploy_id?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	attached_file_keys?: string[] | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	active_session_created_at?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	latest_session_deploy_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	latest_session_deploy_url?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	user?:
 		| {
-				/**
-				 * @type string | undefined
-				 */
 				id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				full_name?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				email?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				avatar_url?: string | undefined;
 		  }
 		| undefined;
 };
 
-/**
- * @type object
- */
 export type GetAgentRunnerStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type GetAgentRunnerRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		agent_runner_id: GetAgentRunnerPathAgentRunnerId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/agent_runners/${string}`;
+export type GetAgentRunnerOptions = {
+	body?: never | undefined;
+	path: GetAgentRunnerPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type GetAgentRunnerResponses = {
 	"200": GetAgentRunnerStatus200;
 	default: GetAgentRunnerStatusDefault;
@@ -22699,184 +12038,85 @@ export type GetAgentRunnerResponses = {
  */
 export type GetAgentRunnerResponse = GetAgentRunnerStatus200 | GetAgentRunnerStatusDefault;
 
-/**
- * @type string
- */
-export type UpdateAgentRunnerPathAgentRunnerId = string;
+export type UpdateAgentRunnerPath = {
+	agent_runner_id: string;
+};
 
-/**
- * @type object
- */
 export type UpdateAgentRunnerStatus200 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	site_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	parent_agent_runner_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	state?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	done_at?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	title?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	branch?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	result_branch?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	pr_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	pr_branch?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	pr_state?: string | undefined;
-	/**
-	 * @type integer | undefined
-	 */
 	pr_number?: number | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	pr_is_being_created?: boolean | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	pr_error?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	current_task?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	result_diff?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	sha?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	merge_commit_sha?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	merge_commit_error?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	merge_commit_is_being_created?: boolean | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	base_deploy_id?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	attached_file_keys?: string[] | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	active_session_created_at?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	latest_session_deploy_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	latest_session_deploy_url?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	user?:
 		| {
-				/**
-				 * @type string | undefined
-				 */
 				id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				full_name?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				email?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				avatar_url?: string | undefined;
 		  }
 		| undefined;
 };
 
-/**
- * @type object
- */
 export type UpdateAgentRunnerStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type UpdateAgentRunnerRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		agent_runner_id: UpdateAgentRunnerPathAgentRunnerId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/agent_runners/${string}`;
+export type UpdateAgentRunnerOptions = {
+	body?: never | undefined;
+	path: UpdateAgentRunnerPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type UpdateAgentRunnerResponses = {
 	"200": UpdateAgentRunnerStatus200;
 	default: UpdateAgentRunnerStatusDefault;
@@ -22887,52 +12127,29 @@ export type UpdateAgentRunnerResponses = {
  */
 export type UpdateAgentRunnerResponse = UpdateAgentRunnerStatus200 | UpdateAgentRunnerStatusDefault;
 
-/**
- * @type string
- */
-export type DeleteAgentRunnerPathAgentRunnerId = string;
+export type DeleteAgentRunnerPath = {
+	agent_runner_id: string;
+};
 
-/**
- * @type unknown
- */
 export type DeleteAgentRunnerStatus202 = unknown;
 
-/**
- * @type object
- */
 export type DeleteAgentRunnerStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type DeleteAgentRunnerRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		agent_runner_id: DeleteAgentRunnerPathAgentRunnerId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/agent_runners/${string}`;
+export type DeleteAgentRunnerOptions = {
+	body?: never | undefined;
+	path: DeleteAgentRunnerPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type DeleteAgentRunnerResponses = {
 	"202": DeleteAgentRunnerStatus202;
 	default: DeleteAgentRunnerStatusDefault;
@@ -22943,62 +12160,33 @@ export type DeleteAgentRunnerResponses = {
  */
 export type DeleteAgentRunnerResponse = DeleteAgentRunnerStatus202 | DeleteAgentRunnerStatusDefault;
 
-/**
- * @type string
- */
-export type ArchiveAgentRunnerPathAgentRunnerId = string;
+export type ArchiveAgentRunnerPath = {
+	agent_runner_id: string;
+};
 
-/**
- * @type unknown
- */
 export type ArchiveAgentRunnerStatus202 = unknown;
 
-/**
- * @type unknown
- */
 export type ArchiveAgentRunnerStatus404 = unknown;
 
-/**
- * @type unknown
- */
 export type ArchiveAgentRunnerStatus422 = unknown;
 
-/**
- * @type object
- */
 export type ArchiveAgentRunnerStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type ArchiveAgentRunnerRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		agent_runner_id: ArchiveAgentRunnerPathAgentRunnerId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/agent_runners/${string}/archive`;
+export type ArchiveAgentRunnerOptions = {
+	body?: never | undefined;
+	path: ArchiveAgentRunnerPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type ArchiveAgentRunnerResponses = {
 	"202": ArchiveAgentRunnerStatus202;
 	"404": ArchiveAgentRunnerStatus404;
@@ -23015,67 +12203,35 @@ export type ArchiveAgentRunnerResponse =
 	| ArchiveAgentRunnerStatus422
 	| ArchiveAgentRunnerStatusDefault;
 
-/**
- * @type string
- */
-export type AgentRunnerPullRequestPathAgentRunnerId = string;
+export type AgentRunnerPullRequestPath = {
+	agent_runner_id: string;
+};
 
-/**
- * @type unknown
- */
 export type AgentRunnerPullRequestStatus200 = unknown;
 
-/**
- * @type unknown
- */
 export type AgentRunnerPullRequestStatus400 = unknown;
 
-/**
- * @type unknown
- */
 export type AgentRunnerPullRequestStatus409 = unknown;
 
-/**
- * @type unknown
- */
 export type AgentRunnerPullRequestStatus422 = unknown;
 
-/**
- * @type object
- */
 export type AgentRunnerPullRequestStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type AgentRunnerPullRequestRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		agent_runner_id: AgentRunnerPullRequestPathAgentRunnerId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/agent_runners/${string}/pull_request`;
+export type AgentRunnerPullRequestOptions = {
+	body?: never | undefined;
+	path: AgentRunnerPullRequestPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type AgentRunnerPullRequestResponses = {
 	"200": AgentRunnerPullRequestStatus200;
 	"400": AgentRunnerPullRequestStatus400;
@@ -23094,79 +12250,39 @@ export type AgentRunnerPullRequestResponse =
 	| AgentRunnerPullRequestStatus422
 	| AgentRunnerPullRequestStatusDefault;
 
-/**
- * @type string
- */
-export type AgentRunnerCommitToBranchPathAgentRunnerId = string;
+export type AgentRunnerCommitToBranchPath = {
+	agent_runner_id: string;
+};
 
-/**
- * @type string
- */
-export type AgentRunnerCommitToBranchQueryTargetBranch = string;
+export type AgentRunnerCommitToBranchQuery = {
+	target_branch: string;
+};
 
-/**
- * @type unknown
- */
 export type AgentRunnerCommitToBranchStatus200 = unknown;
 
-/**
- * @type unknown
- */
 export type AgentRunnerCommitToBranchStatus400 = unknown;
 
-/**
- * @type unknown
- */
 export type AgentRunnerCommitToBranchStatus409 = unknown;
 
-/**
- * @type unknown
- */
 export type AgentRunnerCommitToBranchStatus422 = unknown;
 
-/**
- * @type object
- */
 export type AgentRunnerCommitToBranchStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type AgentRunnerCommitToBranchRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		agent_runner_id: AgentRunnerCommitToBranchPathAgentRunnerId;
-	};
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				target_branch: AgentRunnerCommitToBranchQueryTargetBranch;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/agent_runners/${string}/commit`;
+export type AgentRunnerCommitToBranchOptions = {
+	body?: never | undefined;
+	path: AgentRunnerCommitToBranchPath;
+	query: AgentRunnerCommitToBranchQuery;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type AgentRunnerCommitToBranchResponses = {
 	"200": AgentRunnerCommitToBranchStatus200;
 	"400": AgentRunnerCommitToBranchStatus400;
@@ -23185,220 +12301,118 @@ export type AgentRunnerCommitToBranchResponse =
 	| AgentRunnerCommitToBranchStatus422
 	| AgentRunnerCommitToBranchStatusDefault;
 
-/**
- * @type string
- */
-export type ListAgentRunnerSessionsPathAgentRunnerId = string;
+export type ListAgentRunnerSessionsPath = {
+	agent_runner_id: string;
+};
 
-/**
- * @type integer | undefined
- */
-export type ListAgentRunnerSessionsQueryPage = number | undefined;
+export const listAgentRunnerSessionsState = {
+	live: "live",
+	error: "error",
+} as const;
 
-/**
- * @type integer | undefined
- */
-export type ListAgentRunnerSessionsQueryPerPage = number | undefined;
+export type ListAgentRunnerSessionsStateKey =
+	(typeof listAgentRunnerSessionsState)[keyof typeof listAgentRunnerSessionsState];
 
-/**
- * @type string | undefined
- */
-export type ListAgentRunnerSessionsQueryState = ("live" | "error") | undefined;
+export const listAgentRunnerSessionsOrderBy = {
+	asc: "asc",
+	desc: "desc",
+} as const;
 
-/**
- * @type integer | undefined
- */
-export type ListAgentRunnerSessionsQueryFrom = number | undefined;
+export type ListAgentRunnerSessionsOrderByKey =
+	(typeof listAgentRunnerSessionsOrderBy)[keyof typeof listAgentRunnerSessionsOrderBy];
 
-/**
- * @type integer | undefined
- */
-export type ListAgentRunnerSessionsQueryTo = number | undefined;
+export type ListAgentRunnerSessionsQuery = {
+	/**
+	 * @description
+	 * Format: `int32`
+	 * @type integer | undefined
+	 */
+	page?: number | undefined;
+	/**
+	 * @description
+	 * Format: `int32`
+	 * @type integer | undefined
+	 */
+	per_page?: number | undefined;
+	state?: ListAgentRunnerSessionsStateKey | undefined;
+	from?: number | undefined;
+	to?: number | undefined;
+	order_by?: ListAgentRunnerSessionsOrderByKey | undefined;
+};
 
-/**
- * @type string | undefined
- */
-export type ListAgentRunnerSessionsQueryOrderBy = ("asc" | "desc") | undefined;
-
-/**
- * @type array
- */
 export type ListAgentRunnerSessionsStatus200 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	agent_runner_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	dev_server_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	state?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	done_at?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	title?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	prompt?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	agent_config?:
 		| {
-				/**
-				 * @type string | undefined
-				 */
 				agent?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				model?: string | undefined;
 		  }
 		| undefined;
-	/**
-	 * @type string | undefined
-	 */
 	result?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	result_diff?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	commit_sha?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	deploy_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	deploy_url?: string | undefined;
-	/**
-	 * @type integer | undefined
-	 */
 	duration?: number | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	steps?:
 		| {
-				/**
-				 * @type string | undefined
-				 */
 				title?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				message?: string | undefined;
 		  }[]
 		| undefined;
-	/**
-	 * @type object | undefined
-	 */
 	user?:
 		| {
-				/**
-				 * @type string | undefined
-				 */
 				id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				full_name?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				email?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				avatar_url?: string | undefined;
 		  }
 		| undefined;
-	/**
-	 * @type array | undefined
-	 */
 	attached_file_keys?: string[] | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	result_zip_file_name?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	is_published?: boolean | undefined;
 }[];
 
-/**
- * @type object
- */
 export type ListAgentRunnerSessionsStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type ListAgentRunnerSessionsRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		agent_runner_id: ListAgentRunnerSessionsPathAgentRunnerId;
-	};
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				page?: ListAgentRunnerSessionsQueryPage | undefined;
-				per_page?: ListAgentRunnerSessionsQueryPerPage | undefined;
-				state?: ListAgentRunnerSessionsQueryState | undefined;
-				from?: ListAgentRunnerSessionsQueryFrom | undefined;
-				to?: ListAgentRunnerSessionsQueryTo | undefined;
-				order_by?: ListAgentRunnerSessionsQueryOrderBy | undefined;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/agent_runners/${string}/sessions`;
+export type ListAgentRunnerSessionsOptions = {
+	body?: never | undefined;
+	path: ListAgentRunnerSessionsPath;
+	query?: ListAgentRunnerSessionsQuery | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type ListAgentRunnerSessionsResponses = {
 	"200": ListAgentRunnerSessionsStatus200;
 	default: ListAgentRunnerSessionsStatusDefault;
@@ -23411,218 +12425,94 @@ export type ListAgentRunnerSessionsResponse =
 	| ListAgentRunnerSessionsStatus200
 	| ListAgentRunnerSessionsStatusDefault;
 
-/**
- * @type string
- */
-export type CreateAgentRunnerSessionPathAgentRunnerId = string;
+export type CreateAgentRunnerSessionPath = {
+	agent_runner_id: string;
+};
 
-/**
- * @type string | undefined
- */
-export type CreateAgentRunnerSessionQueryPrompt = string | undefined;
+export type CreateAgentRunnerSessionQuery = {
+	prompt?: string | undefined;
+	agent?: string | undefined;
+	model?: string | undefined;
+	file_keys?: string[] | undefined;
+};
 
-/**
- * @type string | undefined
- */
-export type CreateAgentRunnerSessionQueryAgent = string | undefined;
-
-/**
- * @type string | undefined
- */
-export type CreateAgentRunnerSessionQueryModel = string | undefined;
-
-/**
- * @type array | undefined
- */
-export type CreateAgentRunnerSessionQueryFileKeys = string[] | undefined;
-
-/**
- * @type object
- */
 export type CreateAgentRunnerSessionStatus200 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	agent_runner_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	dev_server_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	state?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	done_at?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	title?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	prompt?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	agent_config?:
 		| {
-				/**
-				 * @type string | undefined
-				 */
 				agent?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				model?: string | undefined;
 		  }
 		| undefined;
-	/**
-	 * @type string | undefined
-	 */
 	result?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	result_diff?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	commit_sha?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	deploy_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	deploy_url?: string | undefined;
-	/**
-	 * @type integer | undefined
-	 */
 	duration?: number | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	steps?:
 		| {
-				/**
-				 * @type string | undefined
-				 */
 				title?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				message?: string | undefined;
 		  }[]
 		| undefined;
-	/**
-	 * @type object | undefined
-	 */
 	user?:
 		| {
-				/**
-				 * @type string | undefined
-				 */
 				id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				full_name?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				email?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				avatar_url?: string | undefined;
 		  }
 		| undefined;
-	/**
-	 * @type array | undefined
-	 */
 	attached_file_keys?: string[] | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	result_zip_file_name?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	is_published?: boolean | undefined;
 };
 
-/**
- * @type unknown
- */
 export type CreateAgentRunnerSessionStatus404 = unknown;
 
-/**
- * @type unknown
- */
 export type CreateAgentRunnerSessionStatus422 = unknown;
 
-/**
- * @type object
- */
 export type CreateAgentRunnerSessionStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type CreateAgentRunnerSessionRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		agent_runner_id: CreateAgentRunnerSessionPathAgentRunnerId;
-	};
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				prompt?: CreateAgentRunnerSessionQueryPrompt | undefined;
-				agent?: CreateAgentRunnerSessionQueryAgent | undefined;
-				model?: CreateAgentRunnerSessionQueryModel | undefined;
-				file_keys?: CreateAgentRunnerSessionQueryFileKeys | undefined;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/agent_runners/${string}/sessions`;
+export type CreateAgentRunnerSessionOptions = {
+	body?: never | undefined;
+	path: CreateAgentRunnerSessionPath;
+	query?: CreateAgentRunnerSessionQuery | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type CreateAgentRunnerSessionResponses = {
 	"200": CreateAgentRunnerSessionStatus200;
 	"404": CreateAgentRunnerSessionStatus404;
@@ -23639,184 +12529,84 @@ export type CreateAgentRunnerSessionResponse =
 	| CreateAgentRunnerSessionStatus422
 	| CreateAgentRunnerSessionStatusDefault;
 
-/**
- * @type string
- */
-export type GetAgentRunnerSessionPathAgentRunnerId = string;
+export type GetAgentRunnerSessionPath = {
+	agent_runner_id: string;
+	agent_runner_session_id: string;
+};
 
-/**
- * @type string
- */
-export type GetAgentRunnerSessionPathAgentRunnerSessionId = string;
-
-/**
- * @type object
- */
 export type GetAgentRunnerSessionStatus200 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	agent_runner_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	dev_server_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	state?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	done_at?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	title?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	prompt?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	agent_config?:
 		| {
-				/**
-				 * @type string | undefined
-				 */
 				agent?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				model?: string | undefined;
 		  }
 		| undefined;
-	/**
-	 * @type string | undefined
-	 */
 	result?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	result_diff?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	commit_sha?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	deploy_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	deploy_url?: string | undefined;
-	/**
-	 * @type integer | undefined
-	 */
 	duration?: number | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	steps?:
 		| {
-				/**
-				 * @type string | undefined
-				 */
 				title?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				message?: string | undefined;
 		  }[]
 		| undefined;
-	/**
-	 * @type object | undefined
-	 */
 	user?:
 		| {
-				/**
-				 * @type string | undefined
-				 */
 				id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				full_name?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				email?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				avatar_url?: string | undefined;
 		  }
 		| undefined;
-	/**
-	 * @type array | undefined
-	 */
 	attached_file_keys?: string[] | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	result_zip_file_name?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	is_published?: boolean | undefined;
 };
 
-/**
- * @type object
- */
 export type GetAgentRunnerSessionStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type GetAgentRunnerSessionRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		agent_runner_id: GetAgentRunnerSessionPathAgentRunnerId;
-		agent_runner_session_id: GetAgentRunnerSessionPathAgentRunnerSessionId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/agent_runners/${string}/sessions/${string}`;
+export type GetAgentRunnerSessionOptions = {
+	body?: never | undefined;
+	path: GetAgentRunnerSessionPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type GetAgentRunnerSessionResponses = {
 	"200": GetAgentRunnerSessionStatus200;
 	default: GetAgentRunnerSessionStatusDefault;
@@ -23829,196 +12619,88 @@ export type GetAgentRunnerSessionResponse =
 	| GetAgentRunnerSessionStatus200
 	| GetAgentRunnerSessionStatusDefault;
 
-/**
- * @type string
- */
-export type UpdateAgentRunnerSessionPathAgentRunnerId = string;
+export type UpdateAgentRunnerSessionPath = {
+	agent_runner_id: string;
+	agent_runner_session_id: string;
+};
 
-/**
- * @type string
- */
-export type UpdateAgentRunnerSessionPathAgentRunnerSessionId = string;
+export type UpdateAgentRunnerSessionQuery = {
+	is_published?: boolean | undefined;
+};
 
-/**
- * @type boolean | undefined
- */
-export type UpdateAgentRunnerSessionQueryIsPublished = boolean | undefined;
-
-/**
- * @type object
- */
 export type UpdateAgentRunnerSessionStatus200 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	agent_runner_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	dev_server_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	state?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	done_at?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	title?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	prompt?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	agent_config?:
 		| {
-				/**
-				 * @type string | undefined
-				 */
 				agent?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				model?: string | undefined;
 		  }
 		| undefined;
-	/**
-	 * @type string | undefined
-	 */
 	result?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	result_diff?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	commit_sha?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	deploy_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	deploy_url?: string | undefined;
-	/**
-	 * @type integer | undefined
-	 */
 	duration?: number | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	steps?:
 		| {
-				/**
-				 * @type string | undefined
-				 */
 				title?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				message?: string | undefined;
 		  }[]
 		| undefined;
-	/**
-	 * @type object | undefined
-	 */
 	user?:
 		| {
-				/**
-				 * @type string | undefined
-				 */
 				id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				full_name?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				email?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				avatar_url?: string | undefined;
 		  }
 		| undefined;
-	/**
-	 * @type array | undefined
-	 */
 	attached_file_keys?: string[] | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	result_zip_file_name?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	is_published?: boolean | undefined;
 };
 
-/**
- * @type object
- */
 export type UpdateAgentRunnerSessionStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type UpdateAgentRunnerSessionRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		agent_runner_id: UpdateAgentRunnerSessionPathAgentRunnerId;
-		agent_runner_session_id: UpdateAgentRunnerSessionPathAgentRunnerSessionId;
-	};
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				is_published?: UpdateAgentRunnerSessionQueryIsPublished | undefined;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/agent_runners/${string}/sessions/${string}`;
+export type UpdateAgentRunnerSessionOptions = {
+	body?: never | undefined;
+	path: UpdateAgentRunnerSessionPath;
+	query?: UpdateAgentRunnerSessionQuery | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type UpdateAgentRunnerSessionResponses = {
 	"200": UpdateAgentRunnerSessionStatus200;
 	default: UpdateAgentRunnerSessionStatusDefault;
@@ -24031,58 +12713,30 @@ export type UpdateAgentRunnerSessionResponse =
 	| UpdateAgentRunnerSessionStatus200
 	| UpdateAgentRunnerSessionStatusDefault;
 
-/**
- * @type string
- */
-export type DeleteAgentRunnerSessionPathAgentRunnerId = string;
+export type DeleteAgentRunnerSessionPath = {
+	agent_runner_id: string;
+	agent_runner_session_id: string;
+};
 
-/**
- * @type string
- */
-export type DeleteAgentRunnerSessionPathAgentRunnerSessionId = string;
-
-/**
- * @type unknown
- */
 export type DeleteAgentRunnerSessionStatus202 = unknown;
 
-/**
- * @type object
- */
 export type DeleteAgentRunnerSessionStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type DeleteAgentRunnerSessionRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		agent_runner_id: DeleteAgentRunnerSessionPathAgentRunnerId;
-		agent_runner_session_id: DeleteAgentRunnerSessionPathAgentRunnerSessionId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/agent_runners/${string}/sessions/${string}`;
+export type DeleteAgentRunnerSessionOptions = {
+	body?: never | undefined;
+	path: DeleteAgentRunnerSessionPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type DeleteAgentRunnerSessionResponses = {
 	"202": DeleteAgentRunnerSessionStatus202;
 	default: DeleteAgentRunnerSessionStatusDefault;
@@ -24095,125 +12749,68 @@ export type DeleteAgentRunnerSessionResponse =
 	| DeleteAgentRunnerSessionStatus202
 	| DeleteAgentRunnerSessionStatusDefault;
 
-/**
- * @type string
- */
-export type ListFormSubmissionPathSubmissionId = string;
+export type ListFormSubmissionPath = {
+	submission_id: string;
+};
 
-/**
- * @type string | undefined
- */
-export type ListFormSubmissionQueryQuery = string | undefined;
-
-/**
- * @type integer | undefined
- */
-export type ListFormSubmissionQueryPage = number | undefined;
-
-/**
- * @type integer | undefined
- */
-export type ListFormSubmissionQueryPerPage = number | undefined;
-
-/**
- * @type array
- */
-export type ListFormSubmissionStatus200 = {
+export type ListFormSubmissionQuery = {
+	query?: string | undefined;
 	/**
-	 * @type string | undefined
+	 * @description
+	 * Format: `int32`
+	 * @type integer | undefined
 	 */
+	page?: number | undefined;
+	/**
+	 * @description
+	 * Format: `int32`
+	 * @type integer | undefined
+	 */
+	per_page?: number | undefined;
+};
+
+export type ListFormSubmissionStatus200 = {
 	id?: string | undefined;
 	/**
+	 * @description
+	 * Format: `int32`
 	 * @type integer | undefined
 	 */
 	number?: number | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	email?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	first_name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	last_name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	company?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	summary?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	body?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	data?: object | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	site_url?: string | undefined;
 }[];
 
-/**
- * @type object
- */
 export type ListFormSubmissionStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type ListFormSubmissionRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		submission_id: ListFormSubmissionPathSubmissionId;
-	};
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				query?: ListFormSubmissionQueryQuery | undefined;
-				page?: ListFormSubmissionQueryPage | undefined;
-				per_page?: ListFormSubmissionQueryPerPage | undefined;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/submissions/${string}`;
+export type ListFormSubmissionOptions = {
+	body?: never | undefined;
+	path: ListFormSubmissionPath;
+	query?: ListFormSubmissionQuery | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type ListFormSubmissionResponses = {
 	"200": ListFormSubmissionStatus200;
 	default: ListFormSubmissionStatusDefault;
@@ -24226,52 +12823,29 @@ export type ListFormSubmissionResponse =
 	| ListFormSubmissionStatus200
 	| ListFormSubmissionStatusDefault;
 
-/**
- * @type string
- */
-export type DeleteSubmissionPathSubmissionId = string;
+export type DeleteSubmissionPath = {
+	submission_id: string;
+};
 
-/**
- * @type unknown
- */
 export type DeleteSubmissionStatus204 = unknown;
 
-/**
- * @type object
- */
 export type DeleteSubmissionStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type DeleteSubmissionRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		submission_id: DeleteSubmissionPathSubmissionId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/submissions/${string}`;
+export type DeleteSubmissionOptions = {
+	body?: never | undefined;
+	path: DeleteSubmissionPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type DeleteSubmissionResponses = {
 	"204": DeleteSubmissionStatus204;
 	default: DeleteSubmissionStatusDefault;
@@ -24282,101 +12856,52 @@ export type DeleteSubmissionResponses = {
  */
 export type DeleteSubmissionResponse = DeleteSubmissionStatus204 | DeleteSubmissionStatusDefault;
 
-/**
- * @type string
- */
-export type ListServiceInstancesForSitePathSiteId = string;
+export type ListServiceInstancesForSitePath = {
+	site_id: string;
+};
 
-/**
- * @type array
- */
 export type ListServiceInstancesForSiteStatus200 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	url?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	config?: object | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	external_attributes?: object | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	service_slug?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	service_path?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	service_name?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	env?: object | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	snippets?: object[] | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	auth_url?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 }[];
 
-/**
- * @type object
- */
 export type ListServiceInstancesForSiteStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type ListServiceInstancesForSiteRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: ListServiceInstancesForSitePathSiteId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/service-instances`;
+export type ListServiceInstancesForSiteOptions = {
+	body?: never | undefined;
+	path: ListServiceInstancesForSitePath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type ListServiceInstancesForSiteResponses = {
 	"200": ListServiceInstancesForSiteStatus200;
 	default: ListServiceInstancesForSiteStatusDefault;
@@ -24389,112 +12914,55 @@ export type ListServiceInstancesForSiteResponse =
 	| ListServiceInstancesForSiteStatus200
 	| ListServiceInstancesForSiteStatusDefault;
 
-/**
- * @type string
- */
-export type CreateServiceInstancePathSiteId = string;
+export type CreateServiceInstancePath = {
+	site_id: string;
+	addon: string;
+};
 
-/**
- * @type string
- */
-export type CreateServiceInstancePathAddon = string;
-
-/**
- * @type object
- */
 export type CreateServiceInstanceStatus201 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	url?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	config?: object | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	external_attributes?: object | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	service_slug?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	service_path?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	service_name?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	env?: object | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	snippets?: object[] | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	auth_url?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 };
 
-/**
- * @type object
- */
 export type CreateServiceInstanceStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object | undefined
- */
-export type CreateServiceInstanceData = object | undefined;
+export type CreateServiceInstanceBody = object;
 
-/**
- * @type object
- */
-export type CreateServiceInstanceRequestConfig = {
-	data?: CreateServiceInstanceData | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: CreateServiceInstancePathSiteId;
-		addon: CreateServiceInstancePathAddon;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/services/${string}/instances`;
+export type CreateServiceInstanceOptions = {
+	body: CreateServiceInstanceBody;
+	path: CreateServiceInstancePath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type CreateServiceInstanceResponses = {
 	"201": CreateServiceInstanceStatus201;
 	default: CreateServiceInstanceStatusDefault;
@@ -24507,113 +12975,54 @@ export type CreateServiceInstanceResponse =
 	| CreateServiceInstanceStatus201
 	| CreateServiceInstanceStatusDefault;
 
-/**
- * @type string
- */
-export type ShowServiceInstancePathSiteId = string;
+export type ShowServiceInstancePath = {
+	site_id: string;
+	addon: string;
+	instance_id: string;
+};
 
-/**
- * @type string
- */
-export type ShowServiceInstancePathAddon = string;
-
-/**
- * @type string
- */
-export type ShowServiceInstancePathInstanceId = string;
-
-/**
- * @type object
- */
 export type ShowServiceInstanceStatus200 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	url?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	config?: object | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	external_attributes?: object | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	service_slug?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	service_path?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	service_name?: string | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	env?: object | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	snippets?: object[] | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	auth_url?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 };
 
-/**
- * @type object
- */
 export type ShowServiceInstanceStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type ShowServiceInstanceRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: ShowServiceInstancePathSiteId;
-		addon: ShowServiceInstancePathAddon;
-		instance_id: ShowServiceInstancePathInstanceId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/services/${string}/instances/${string}`;
+export type ShowServiceInstanceOptions = {
+	body?: never | undefined;
+	path: ShowServiceInstancePath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type ShowServiceInstanceResponses = {
 	"200": ShowServiceInstanceStatus200;
 	default: ShowServiceInstanceStatusDefault;
@@ -24626,69 +13035,33 @@ export type ShowServiceInstanceResponse =
 	| ShowServiceInstanceStatus200
 	| ShowServiceInstanceStatusDefault;
 
-/**
- * @type string
- */
-export type UpdateServiceInstancePathSiteId = string;
+export type UpdateServiceInstancePath = {
+	site_id: string;
+	addon: string;
+	instance_id: string;
+};
 
-/**
- * @type string
- */
-export type UpdateServiceInstancePathAddon = string;
-
-/**
- * @type string
- */
-export type UpdateServiceInstancePathInstanceId = string;
-
-/**
- * @type unknown
- */
 export type UpdateServiceInstanceStatus204 = unknown;
 
-/**
- * @type object
- */
 export type UpdateServiceInstanceStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object | undefined
- */
-export type UpdateServiceInstanceData = object | undefined;
+export type UpdateServiceInstanceBody = object;
 
-/**
- * @type object
- */
-export type UpdateServiceInstanceRequestConfig = {
-	data?: UpdateServiceInstanceData | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: UpdateServiceInstancePathSiteId;
-		addon: UpdateServiceInstancePathAddon;
-		instance_id: UpdateServiceInstancePathInstanceId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/services/${string}/instances/${string}`;
+export type UpdateServiceInstanceOptions = {
+	body: UpdateServiceInstanceBody;
+	path: UpdateServiceInstancePath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type UpdateServiceInstanceResponses = {
 	"204": UpdateServiceInstanceStatus204;
 	default: UpdateServiceInstanceStatusDefault;
@@ -24701,64 +13074,31 @@ export type UpdateServiceInstanceResponse =
 	| UpdateServiceInstanceStatus204
 	| UpdateServiceInstanceStatusDefault;
 
-/**
- * @type string
- */
-export type DeleteServiceInstancePathSiteId = string;
+export type DeleteServiceInstancePath = {
+	site_id: string;
+	addon: string;
+	instance_id: string;
+};
 
-/**
- * @type string
- */
-export type DeleteServiceInstancePathAddon = string;
-
-/**
- * @type string
- */
-export type DeleteServiceInstancePathInstanceId = string;
-
-/**
- * @type unknown
- */
 export type DeleteServiceInstanceStatus204 = unknown;
 
-/**
- * @type object
- */
 export type DeleteServiceInstanceStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type DeleteServiceInstanceRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: DeleteServiceInstancePathSiteId;
-		addon: DeleteServiceInstancePathAddon;
-		instance_id: DeleteServiceInstancePathInstanceId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/services/${string}/instances/${string}`;
+export type DeleteServiceInstanceOptions = {
+	body?: never | undefined;
+	path: DeleteServiceInstancePath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type DeleteServiceInstanceResponses = {
 	"204": DeleteServiceInstanceStatus204;
 	default: DeleteServiceInstanceStatusDefault;
@@ -24771,107 +13111,53 @@ export type DeleteServiceInstanceResponse =
 	| DeleteServiceInstanceStatus204
 	| DeleteServiceInstanceStatusDefault;
 
-/**
- * @type string | undefined
- */
-export type GetServicesQuerySearch = string | undefined;
+export type GetServicesQuery = {
+	search?: string | undefined;
+};
 
-/**
- * @type array
- */
 export type GetServicesStatus200 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	slug?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	service_path?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	long_description?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	description?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	events?: object[] | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	tags?: string[] | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	icon?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	manifest_url?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	environments?: string[] | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 }[];
 
-/**
- * @type object
- */
 export type GetServicesStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type GetServicesRequestConfig = {
-	data?: never | undefined;
-	pathParams?: never | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				search?: GetServicesQuerySearch | undefined;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: "/services/";
+export type GetServicesOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query?: GetServicesQuery | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type GetServicesResponses = {
 	"200": GetServicesStatus200;
 	default: GetServicesStatusDefault;
@@ -24882,105 +13168,53 @@ export type GetServicesResponses = {
  */
 export type GetServicesResponse = GetServicesStatus200 | GetServicesStatusDefault;
 
-/**
- * @type string
- */
-export type ShowServicePathAddonName = string;
+export type ShowServicePath = {
+	addonName: string;
+};
 
-/**
- * @type object
- */
 export type ShowServiceStatus200 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	slug?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	service_path?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	long_description?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	description?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	events?: object[] | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	tags?: string[] | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	icon?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	manifest_url?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	environments?: string[] | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 };
 
-/**
- * @type object
- */
 export type ShowServiceStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type ShowServiceRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		addonName: ShowServicePathAddonName;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/services/${string}`;
+export type ShowServiceOptions = {
+	body?: never | undefined;
+	path: ShowServicePath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type ShowServiceResponses = {
 	"200": ShowServiceStatus200;
 	default: ShowServiceStatusDefault;
@@ -24991,52 +13225,29 @@ export type ShowServiceResponses = {
  */
 export type ShowServiceResponse = ShowServiceStatus200 | ShowServiceStatusDefault;
 
-/**
- * @type string
- */
-export type ShowServiceManifestPathAddonName = string;
+export type ShowServiceManifestPath = {
+	addonName: string;
+};
 
-/**
- * @type object
- */
 export type ShowServiceManifestStatus201 = object;
 
-/**
- * @type object
- */
 export type ShowServiceManifestStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type ShowServiceManifestRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		addonName: ShowServiceManifestPathAddonName;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/services/${string}/manifest`;
+export type ShowServiceManifestOptions = {
+	body?: never | undefined;
+	path: ShowServiceManifestPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type ShowServiceManifestResponses = {
 	"201": ShowServiceManifestStatus201;
 	default: ShowServiceManifestStatusDefault;
@@ -25049,94 +13260,56 @@ export type ShowServiceManifestResponse =
 	| ShowServiceManifestStatus201
 	| ShowServiceManifestStatusDefault;
 
-/**
- * @type object
- */
 export type GetCurrentUserStatus200 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	uid?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	full_name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	avatar_url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	email?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	affiliate_id?: string | undefined;
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	site_count?: bigint | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	last_login?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	login_providers?: string[] | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	onboarding_progress?:
 		| {
-				/**
-				 * @type string | undefined
-				 */
 				slides?: string | undefined;
 		  }
 		| undefined;
 };
 
-/**
- * @type object
- */
 export type GetCurrentUserStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type GetCurrentUserRequestConfig = {
-	data?: never | undefined;
-	pathParams?: never | undefined;
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: "/user";
+export type GetCurrentUserOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type GetCurrentUserResponses = {
 	"200": GetCurrentUserStatus200;
 	default: GetCurrentUserStatusDefault;
@@ -25147,101 +13320,58 @@ export type GetCurrentUserResponses = {
  */
 export type GetCurrentUserResponse = GetCurrentUserStatus200 | GetCurrentUserStatusDefault;
 
-/**
- * @type string
- */
-export type CreateSplitTestPathSiteId = string;
+export type CreateSplitTestPath = {
+	site_id: string;
+};
 
-/**
- * @type object
- */
 export type CreateSplitTestStatus201 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	site_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	path?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	branches?: object[] | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	active?: boolean | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	unpublished_at?: string | undefined;
 };
 
-/**
- * @type object
- */
 export type CreateSplitTestStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object | undefined
- */
-export type CreateSplitTestData =
-	| {
-			/**
-			 * @type object | undefined
-			 */
-			branch_tests?: object | undefined;
-	  }
-	| undefined;
-
-/**
- * @type object
- */
-export type CreateSplitTestRequestConfig = {
-	data?: CreateSplitTestData | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: CreateSplitTestPathSiteId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/traffic_splits`;
+export type CreateSplitTestBody = {
+	branch_tests?: object | undefined;
 };
 
-/**
- * @type object
- */
+export type CreateSplitTestOptions = {
+	body: CreateSplitTestBody;
+	path: CreateSplitTestPath;
+	query?: never | undefined;
+	headers?: never | undefined;
+};
+
 export type CreateSplitTestResponses = {
 	"201": CreateSplitTestStatus201;
 	default: CreateSplitTestStatusDefault;
@@ -25252,89 +13382,54 @@ export type CreateSplitTestResponses = {
  */
 export type CreateSplitTestResponse = CreateSplitTestStatus201 | CreateSplitTestStatusDefault;
 
-/**
- * @type string
- */
-export type GetSplitTestsPathSiteId = string;
+export type GetSplitTestsPath = {
+	site_id: string;
+};
 
-/**
- * @type array
- */
 export type GetSplitTestsStatus200 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	site_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	path?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	branches?: object[] | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	active?: boolean | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	unpublished_at?: string | undefined;
 }[];
 
-/**
- * @type object
- */
 export type GetSplitTestsStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type GetSplitTestsRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: GetSplitTestsPathSiteId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/traffic_splits`;
+export type GetSplitTestsOptions = {
+	body?: never | undefined;
+	path: GetSplitTestsPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type GetSplitTestsResponses = {
 	"200": GetSplitTestsStatus200;
 	default: GetSplitTestsStatusDefault;
@@ -25345,107 +13440,59 @@ export type GetSplitTestsResponses = {
  */
 export type GetSplitTestsResponse = GetSplitTestsStatus200 | GetSplitTestsStatusDefault;
 
-/**
- * @type string
- */
-export type UpdateSplitTestPathSiteId = string;
+export type UpdateSplitTestPath = {
+	site_id: string;
+	split_test_id: string;
+};
 
-/**
- * @type string
- */
-export type UpdateSplitTestPathSplitTestId = string;
-
-/**
- * @type object
- */
 export type UpdateSplitTestStatus201 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	site_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	path?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	branches?: object[] | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	active?: boolean | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	unpublished_at?: string | undefined;
 };
 
-/**
- * @type object
- */
 export type UpdateSplitTestStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object | undefined
- */
-export type UpdateSplitTestData =
-	| {
-			/**
-			 * @type object | undefined
-			 */
-			branch_tests?: object | undefined;
-	  }
-	| undefined;
-
-/**
- * @type object
- */
-export type UpdateSplitTestRequestConfig = {
-	data?: UpdateSplitTestData | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: UpdateSplitTestPathSiteId;
-		split_test_id: UpdateSplitTestPathSplitTestId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/traffic_splits/${string}`;
+export type UpdateSplitTestBody = {
+	branch_tests?: object | undefined;
 };
 
-/**
- * @type object
- */
+export type UpdateSplitTestOptions = {
+	body: UpdateSplitTestBody;
+	path: UpdateSplitTestPath;
+	query?: never | undefined;
+	headers?: never | undefined;
+};
+
 export type UpdateSplitTestResponses = {
 	"201": UpdateSplitTestStatus201;
 	default: UpdateSplitTestStatusDefault;
@@ -25456,95 +13503,55 @@ export type UpdateSplitTestResponses = {
  */
 export type UpdateSplitTestResponse = UpdateSplitTestStatus201 | UpdateSplitTestStatusDefault;
 
-/**
- * @type string
- */
-export type GetSplitTestPathSiteId = string;
+export type GetSplitTestPath = {
+	site_id: string;
+	split_test_id: string;
+};
 
-/**
- * @type string
- */
-export type GetSplitTestPathSplitTestId = string;
-
-/**
- * @type object
- */
 export type GetSplitTestStatus200 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	site_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	path?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	branches?: object[] | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	active?: boolean | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	unpublished_at?: string | undefined;
 };
 
-/**
- * @type object
- */
 export type GetSplitTestStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type GetSplitTestRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: GetSplitTestPathSiteId;
-		split_test_id: GetSplitTestPathSplitTestId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/traffic_splits/${string}`;
+export type GetSplitTestOptions = {
+	body?: never | undefined;
+	path: GetSplitTestPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type GetSplitTestResponses = {
 	"200": GetSplitTestStatus200;
 	default: GetSplitTestStatusDefault;
@@ -25555,58 +13562,30 @@ export type GetSplitTestResponses = {
  */
 export type GetSplitTestResponse = GetSplitTestStatus200 | GetSplitTestStatusDefault;
 
-/**
- * @type string
- */
-export type EnableSplitTestPathSiteId = string;
+export type EnableSplitTestPath = {
+	site_id: string;
+	split_test_id: string;
+};
 
-/**
- * @type string
- */
-export type EnableSplitTestPathSplitTestId = string;
-
-/**
- * @type unknown
- */
 export type EnableSplitTestStatus204 = unknown;
 
-/**
- * @type object
- */
 export type EnableSplitTestStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type EnableSplitTestRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: EnableSplitTestPathSiteId;
-		split_test_id: EnableSplitTestPathSplitTestId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/traffic_splits/${string}/publish`;
+export type EnableSplitTestOptions = {
+	body?: never | undefined;
+	path: EnableSplitTestPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type EnableSplitTestResponses = {
 	"204": EnableSplitTestStatus204;
 	default: EnableSplitTestStatusDefault;
@@ -25617,58 +13596,30 @@ export type EnableSplitTestResponses = {
  */
 export type EnableSplitTestResponse = EnableSplitTestStatus204 | EnableSplitTestStatusDefault;
 
-/**
- * @type string
- */
-export type DisableSplitTestPathSiteId = string;
+export type DisableSplitTestPath = {
+	site_id: string;
+	split_test_id: string;
+};
 
-/**
- * @type string
- */
-export type DisableSplitTestPathSplitTestId = string;
-
-/**
- * @type unknown
- */
 export type DisableSplitTestStatus204 = unknown;
 
-/**
- * @type object
- */
 export type DisableSplitTestStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type DisableSplitTestRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: DisableSplitTestPathSiteId;
-		split_test_id: DisableSplitTestPathSplitTestId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/traffic_splits/${string}/unpublish`;
+export type DisableSplitTestOptions = {
+	body?: never | undefined;
+	path: DisableSplitTestPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type DisableSplitTestResponses = {
 	"204": DisableSplitTestStatus204;
 	default: DisableSplitTestStatusDefault;
@@ -25679,172 +13630,82 @@ export type DisableSplitTestResponses = {
  */
 export type DisableSplitTestResponse = DisableSplitTestStatus204 | DisableSplitTestStatusDefault;
 
-/**
- * @type object
- */
 export type CreateDnsZoneStatus201 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	errors?: string[] | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	supported_record_types?: string[] | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	user_id?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	records?:
 		| {
-				/**
-				 * @type string | undefined
-				 */
 				id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				hostname?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				type?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				value?: string | undefined;
 				/**
+				 * @description
+				 * Format: `int64`
 				 * @type integer | undefined
 				 */
 				ttl?: bigint | undefined;
 				/**
+				 * @description
+				 * Format: `int64`
 				 * @type integer | undefined
 				 */
 				priority?: bigint | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				dns_zone_id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				site_id?: string | undefined;
-				/**
-				 * @type integer | undefined
-				 */
 				flag?: number | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				tag?: string | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
 				managed?: boolean | undefined;
 		  }[]
 		| undefined;
-	/**
-	 * @type array | undefined
-	 */
 	dns_servers?: string[] | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	account_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	site_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	account_slug?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	account_name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	domain?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	ipv6_enabled?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	dedicated?: boolean | undefined;
 };
 
-/**
- * @type object
- */
 export type CreateDnsZoneStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type CreateDnsZoneData = {
-	/**
-	 * @type string | undefined
-	 */
+export type CreateDnsZoneBody = {
 	account_slug?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	site_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
 };
 
-/**
- * @type object
- */
-export type CreateDnsZoneRequestConfig = {
-	data?: CreateDnsZoneData | undefined;
-	pathParams?: never | undefined;
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: "/dns_zones";
+export type CreateDnsZoneOptions = {
+	body: CreateDnsZoneBody;
+	path?: never | undefined;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type CreateDnsZoneResponses = {
 	"201": CreateDnsZoneStatus201;
 	default: CreateDnsZoneStatusDefault;
@@ -25855,166 +13716,80 @@ export type CreateDnsZoneResponses = {
  */
 export type CreateDnsZoneResponse = CreateDnsZoneStatus201 | CreateDnsZoneStatusDefault;
 
-/**
- * @type string | undefined
- */
-export type GetDnsZonesQueryAccountSlug = string | undefined;
+export type GetDnsZonesQuery = {
+	account_slug?: string | undefined;
+};
 
-/**
- * @type array
- */
 export type GetDnsZonesStatus200 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	errors?: string[] | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	supported_record_types?: string[] | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	user_id?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	records?:
 		| {
-				/**
-				 * @type string | undefined
-				 */
 				id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				hostname?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				type?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				value?: string | undefined;
 				/**
+				 * @description
+				 * Format: `int64`
 				 * @type integer | undefined
 				 */
 				ttl?: bigint | undefined;
 				/**
+				 * @description
+				 * Format: `int64`
 				 * @type integer | undefined
 				 */
 				priority?: bigint | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				dns_zone_id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				site_id?: string | undefined;
-				/**
-				 * @type integer | undefined
-				 */
 				flag?: number | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				tag?: string | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
 				managed?: boolean | undefined;
 		  }[]
 		| undefined;
-	/**
-	 * @type array | undefined
-	 */
 	dns_servers?: string[] | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	account_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	site_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	account_slug?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	account_name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	domain?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	ipv6_enabled?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	dedicated?: boolean | undefined;
 }[];
 
-/**
- * @type object
- */
 export type GetDnsZonesStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type GetDnsZonesRequestConfig = {
-	data?: never | undefined;
-	pathParams?: never | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				account_slug?: GetDnsZonesQueryAccountSlug | undefined;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: "/dns_zones";
+export type GetDnsZonesOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query?: GetDnsZonesQuery | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type GetDnsZonesResponses = {
 	"200": GetDnsZonesStatus200;
 	default: GetDnsZonesStatusDefault;
@@ -26025,164 +13800,80 @@ export type GetDnsZonesResponses = {
  */
 export type GetDnsZonesResponse = GetDnsZonesStatus200 | GetDnsZonesStatusDefault;
 
-/**
- * @type string
- */
-export type GetDnsZonePathZoneId = string;
+export type GetDnsZonePath = {
+	zone_id: string;
+};
 
-/**
- * @type object
- */
 export type GetDnsZoneStatus200 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	errors?: string[] | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	supported_record_types?: string[] | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	user_id?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	records?:
 		| {
-				/**
-				 * @type string | undefined
-				 */
 				id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				hostname?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				type?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				value?: string | undefined;
 				/**
+				 * @description
+				 * Format: `int64`
 				 * @type integer | undefined
 				 */
 				ttl?: bigint | undefined;
 				/**
+				 * @description
+				 * Format: `int64`
 				 * @type integer | undefined
 				 */
 				priority?: bigint | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				dns_zone_id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				site_id?: string | undefined;
-				/**
-				 * @type integer | undefined
-				 */
 				flag?: number | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				tag?: string | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
 				managed?: boolean | undefined;
 		  }[]
 		| undefined;
-	/**
-	 * @type array | undefined
-	 */
 	dns_servers?: string[] | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	account_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	site_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	account_slug?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	account_name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	domain?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	ipv6_enabled?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	dedicated?: boolean | undefined;
 };
 
-/**
- * @type object
- */
 export type GetDnsZoneStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type GetDnsZoneRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		zone_id: GetDnsZonePathZoneId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/dns_zones/${string}`;
+export type GetDnsZoneOptions = {
+	body?: never | undefined;
+	path: GetDnsZonePath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type GetDnsZoneResponses = {
 	"200": GetDnsZoneStatus200;
 	default: GetDnsZoneStatusDefault;
@@ -26193,52 +13884,29 @@ export type GetDnsZoneResponses = {
  */
 export type GetDnsZoneResponse = GetDnsZoneStatus200 | GetDnsZoneStatusDefault;
 
-/**
- * @type string
- */
-export type DeleteDnsZonePathZoneId = string;
+export type DeleteDnsZonePath = {
+	zone_id: string;
+};
 
-/**
- * @type unknown
- */
 export type DeleteDnsZoneStatus204 = unknown;
 
-/**
- * @type object
- */
 export type DeleteDnsZoneStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type DeleteDnsZoneRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		zone_id: DeleteDnsZonePathZoneId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/dns_zones/${string}`;
+export type DeleteDnsZoneOptions = {
+	body?: never | undefined;
+	path: DeleteDnsZonePath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type DeleteDnsZoneResponses = {
 	"204": DeleteDnsZoneStatus204;
 	default: DeleteDnsZoneStatusDefault;
@@ -26249,191 +13917,98 @@ export type DeleteDnsZoneResponses = {
  */
 export type DeleteDnsZoneResponse = DeleteDnsZoneStatus204 | DeleteDnsZoneStatusDefault;
 
-/**
- * @type string
- */
-export type TransferDnsZonePathZoneId = string;
+export type TransferDnsZonePath = {
+	zone_id: string;
+};
 
-/**
- * @description the account of the dns zone
- * @type string
- */
-export type TransferDnsZoneQueryAccountId = string;
+export type TransferDnsZoneQuery = {
+	/**
+	 * @description the account of the dns zone
+	 * @type string
+	 */
+	account_id: string;
+	/**
+	 * @description the account you want to transfer the dns zone to
+	 * @type string
+	 */
+	transfer_account_id: string;
+	/**
+	 * @description the user you want to transfer the dns zone to
+	 * @type string
+	 */
+	transfer_user_id: string;
+};
 
-/**
- * @description the account you want to transfer the dns zone to
- * @type string
- */
-export type TransferDnsZoneQueryTransferAccountId = string;
-
-/**
- * @description the user you want to transfer the dns zone to
- * @type string
- */
-export type TransferDnsZoneQueryTransferUserId = string;
-
-/**
- * @type object
- */
 export type TransferDnsZoneStatus200 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	name?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	errors?: string[] | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	supported_record_types?: string[] | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	user_id?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
-	/**
-	 * @type array | undefined
-	 */
 	records?:
 		| {
-				/**
-				 * @type string | undefined
-				 */
 				id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				hostname?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				type?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				value?: string | undefined;
 				/**
+				 * @description
+				 * Format: `int64`
 				 * @type integer | undefined
 				 */
 				ttl?: bigint | undefined;
 				/**
+				 * @description
+				 * Format: `int64`
 				 * @type integer | undefined
 				 */
 				priority?: bigint | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				dns_zone_id?: string | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				site_id?: string | undefined;
-				/**
-				 * @type integer | undefined
-				 */
 				flag?: number | undefined;
-				/**
-				 * @type string | undefined
-				 */
 				tag?: string | undefined;
-				/**
-				 * @type boolean | undefined
-				 */
 				managed?: boolean | undefined;
 		  }[]
 		| undefined;
-	/**
-	 * @type array | undefined
-	 */
 	dns_servers?: string[] | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	account_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	site_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	account_slug?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	account_name?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	domain?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	ipv6_enabled?: boolean | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	dedicated?: boolean | undefined;
 };
 
-/**
- * @type object
- */
 export type TransferDnsZoneStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type TransferDnsZoneRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		zone_id: TransferDnsZonePathZoneId;
-	};
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				account_id: TransferDnsZoneQueryAccountId;
-				transfer_account_id: TransferDnsZoneQueryTransferAccountId;
-				transfer_user_id: TransferDnsZoneQueryTransferUserId;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/dns_zones/${string}/transfer`;
+export type TransferDnsZoneOptions = {
+	body?: never | undefined;
+	path: TransferDnsZonePath;
+	query: TransferDnsZoneQuery;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type TransferDnsZoneResponses = {
 	"200": TransferDnsZoneStatus200;
 	default: TransferDnsZoneStatusDefault;
@@ -26444,97 +14019,51 @@ export type TransferDnsZoneResponses = {
  */
 export type TransferDnsZoneResponse = TransferDnsZoneStatus200 | TransferDnsZoneStatusDefault;
 
-/**
- * @type string
- */
-export type GetDnsRecordsPathZoneId = string;
+export type GetDnsRecordsPath = {
+	zone_id: string;
+};
 
-/**
- * @type array
- */
 export type GetDnsRecordsStatus200 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	hostname?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	type?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	value?: string | undefined;
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	ttl?: bigint | undefined;
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	priority?: bigint | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	dns_zone_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	site_id?: string | undefined;
-	/**
-	 * @type integer | undefined
-	 */
 	flag?: number | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	tag?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	managed?: boolean | undefined;
 }[];
 
-/**
- * @type object
- */
 export type GetDnsRecordsStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type GetDnsRecordsRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		zone_id: GetDnsRecordsPathZoneId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/dns_zones/${string}/dns_records`;
+export type GetDnsRecordsOptions = {
+	body?: never | undefined;
+	path: GetDnsRecordsPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type GetDnsRecordsResponses = {
 	"200": GetDnsRecordsStatus200;
 	default: GetDnsRecordsStatusDefault;
@@ -26545,139 +14074,88 @@ export type GetDnsRecordsResponses = {
  */
 export type GetDnsRecordsResponse = GetDnsRecordsStatus200 | GetDnsRecordsStatusDefault;
 
-/**
- * @type string
- */
-export type CreateDnsRecordPathZoneId = string;
+export type CreateDnsRecordPath = {
+	zone_id: string;
+};
 
-/**
- * @type object
- */
 export type CreateDnsRecordStatus201 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	hostname?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	type?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	value?: string | undefined;
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	ttl?: bigint | undefined;
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	priority?: bigint | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	dns_zone_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	site_id?: string | undefined;
-	/**
-	 * @type integer | undefined
-	 */
 	flag?: number | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	tag?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	managed?: boolean | undefined;
 };
 
-/**
- * @type object
- */
 export type CreateDnsRecordStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type CreateDnsRecordData = {
-	/**
-	 * @type string | undefined
-	 */
+export type CreateDnsRecordBody = {
 	type?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	hostname?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	value?: string | undefined;
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	ttl?: bigint | undefined;
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	priority?: bigint | undefined;
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	weight?: bigint | undefined;
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	port?: bigint | undefined;
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	flag?: bigint | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	tag?: string | undefined;
 };
 
-/**
- * @type object
- */
-export type CreateDnsRecordRequestConfig = {
-	data?: CreateDnsRecordData | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		zone_id: CreateDnsRecordPathZoneId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/dns_zones/${string}/dns_records`;
+export type CreateDnsRecordOptions = {
+	body: CreateDnsRecordBody;
+	path: CreateDnsRecordPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type CreateDnsRecordResponses = {
 	"201": CreateDnsRecordStatus201;
 	default: CreateDnsRecordStatusDefault;
@@ -26688,103 +14166,52 @@ export type CreateDnsRecordResponses = {
  */
 export type CreateDnsRecordResponse = CreateDnsRecordStatus201 | CreateDnsRecordStatusDefault;
 
-/**
- * @type string
- */
-export type GetIndividualDnsRecordPathZoneId = string;
+export type GetIndividualDnsRecordPath = {
+	zone_id: string;
+	dns_record_id: string;
+};
 
-/**
- * @type string
- */
-export type GetIndividualDnsRecordPathDnsRecordId = string;
-
-/**
- * @type object
- */
 export type GetIndividualDnsRecordStatus200 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	hostname?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	type?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	value?: string | undefined;
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	ttl?: bigint | undefined;
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	priority?: bigint | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	dns_zone_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	site_id?: string | undefined;
-	/**
-	 * @type integer | undefined
-	 */
 	flag?: number | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	tag?: string | undefined;
-	/**
-	 * @type boolean | undefined
-	 */
 	managed?: boolean | undefined;
 };
 
-/**
- * @type object
- */
 export type GetIndividualDnsRecordStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type GetIndividualDnsRecordRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		zone_id: GetIndividualDnsRecordPathZoneId;
-		dns_record_id: GetIndividualDnsRecordPathDnsRecordId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/dns_zones/${string}/dns_records/${string}`;
+export type GetIndividualDnsRecordOptions = {
+	body?: never | undefined;
+	path: GetIndividualDnsRecordPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type GetIndividualDnsRecordResponses = {
 	"200": GetIndividualDnsRecordStatus200;
 	default: GetIndividualDnsRecordStatusDefault;
@@ -26797,58 +14224,30 @@ export type GetIndividualDnsRecordResponse =
 	| GetIndividualDnsRecordStatus200
 	| GetIndividualDnsRecordStatusDefault;
 
-/**
- * @type string
- */
-export type DeleteDnsRecordPathZoneId = string;
+export type DeleteDnsRecordPath = {
+	zone_id: string;
+	dns_record_id: string;
+};
 
-/**
- * @type string
- */
-export type DeleteDnsRecordPathDnsRecordId = string;
-
-/**
- * @type unknown
- */
 export type DeleteDnsRecordStatus204 = unknown;
 
-/**
- * @type object
- */
 export type DeleteDnsRecordStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type DeleteDnsRecordRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		zone_id: DeleteDnsRecordPathZoneId;
-		dns_record_id: DeleteDnsRecordPathDnsRecordId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/dns_zones/${string}/dns_records/${string}`;
+export type DeleteDnsRecordOptions = {
+	body?: never | undefined;
+	path: DeleteDnsRecordPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type DeleteDnsRecordResponses = {
 	"204": DeleteDnsRecordStatus204;
 	default: DeleteDnsRecordStatusDefault;
@@ -26859,119 +14258,87 @@ export type DeleteDnsRecordResponses = {
  */
 export type DeleteDnsRecordResponse = DeleteDnsRecordStatus204 | DeleteDnsRecordStatusDefault;
 
-/**
- * @type string
- */
-export type ListSiteDevServersPathSiteId = string;
+export type ListSiteDevServersPath = {
+	site_id: string;
+};
 
-/**
- * @type integer | undefined
- */
-export type ListSiteDevServersQueryPage = number | undefined;
+export type ListSiteDevServersQuery = {
+	/**
+	 * @description
+	 * Format: `int32`
+	 * @type integer | undefined
+	 */
+	page?: number | undefined;
+	/**
+	 * @description
+	 * Format: `int32`
+	 * @type integer | undefined
+	 */
+	per_page?: number | undefined;
+};
 
-/**
- * @type integer | undefined
- */
-export type ListSiteDevServersQueryPerPage = number | undefined;
-
-/**
- * @type array
- */
 export type ListSiteDevServersStatus200 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	site_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	branch?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	state?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	starting_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	error_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	live_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	done_at?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	title?: string | undefined;
 }[];
 
-/**
- * @type object
- */
 export type ListSiteDevServersStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type ListSiteDevServersRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: ListSiteDevServersPathSiteId;
-	};
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				page?: ListSiteDevServersQueryPage | undefined;
-				per_page?: ListSiteDevServersQueryPerPage | undefined;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/dev_servers`;
+export type ListSiteDevServersOptions = {
+	body?: never | undefined;
+	path: ListSiteDevServersPath;
+	query?: ListSiteDevServersQuery | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type ListSiteDevServersResponses = {
 	"200": ListSiteDevServersStatus200;
 	default: ListSiteDevServersStatusDefault;
@@ -26984,113 +14351,76 @@ export type ListSiteDevServersResponse =
 	| ListSiteDevServersStatus200
 	| ListSiteDevServersStatusDefault;
 
-/**
- * @type string
- */
-export type CreateSiteDevServerPathSiteId = string;
+export type CreateSiteDevServerPath = {
+	site_id: string;
+};
 
-/**
- * @type string | undefined
- */
-export type CreateSiteDevServerQueryBranch = string | undefined;
-
-/**
- * @type array
- */
-export type CreateSiteDevServerStatus200 = {
-	/**
-	 * @type string | undefined
-	 */
-	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	site_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
+export type CreateSiteDevServerQuery = {
 	branch?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
+};
+
+export type CreateSiteDevServerStatus200 = {
+	id?: string | undefined;
+	site_id?: string | undefined;
+	branch?: string | undefined;
 	url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	state?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	starting_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	error_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	live_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	done_at?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	title?: string | undefined;
 }[];
 
-/**
- * @type object
- */
 export type CreateSiteDevServerStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type CreateSiteDevServerRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: CreateSiteDevServerPathSiteId;
-	};
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				branch?: CreateSiteDevServerQueryBranch | undefined;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/dev_servers`;
+export type CreateSiteDevServerOptions = {
+	body?: never | undefined;
+	path: CreateSiteDevServerPath;
+	query?: CreateSiteDevServerQuery | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type CreateSiteDevServerResponses = {
 	"200": CreateSiteDevServerStatus200;
 	default: CreateSiteDevServerStatusDefault;
@@ -27103,64 +14433,33 @@ export type CreateSiteDevServerResponse =
 	| CreateSiteDevServerStatus200
 	| CreateSiteDevServerStatusDefault;
 
-/**
- * @type string
- */
-export type DeleteSiteDevServersPathSiteId = string;
+export type DeleteSiteDevServersPath = {
+	site_id: string;
+};
 
-/**
- * @type string | undefined
- */
-export type DeleteSiteDevServersQueryBranch = string | undefined;
+export type DeleteSiteDevServersQuery = {
+	branch?: string | undefined;
+};
 
-/**
- * @type unknown
- */
 export type DeleteSiteDevServersStatus202 = unknown;
 
-/**
- * @type object
- */
 export type DeleteSiteDevServersStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type DeleteSiteDevServersRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: DeleteSiteDevServersPathSiteId;
-	};
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				branch?: DeleteSiteDevServersQueryBranch | undefined;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/dev_servers`;
+export type DeleteSiteDevServersOptions = {
+	body?: never | undefined;
+	path: DeleteSiteDevServersPath;
+	query?: DeleteSiteDevServersQuery | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type DeleteSiteDevServersResponses = {
 	"202": DeleteSiteDevServersStatus202;
 	default: DeleteSiteDevServersStatusDefault;
@@ -27173,93 +14472,63 @@ export type DeleteSiteDevServersResponse =
 	| DeleteSiteDevServersStatus202
 	| DeleteSiteDevServersStatusDefault;
 
-/**
- * @type string
- */
-export type GetSiteDevServerPathSiteId = string;
+export type GetSiteDevServerPath = {
+	site_id: string;
+	dev_server_id: string;
+};
 
-/**
- * @type string
- */
-export type GetSiteDevServerPathDevServerId = string;
-
-/**
- * @type object
- */
 export type GetSiteDevServerStatus200 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	site_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	branch?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	state?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	starting_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	error_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	live_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	done_at?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	title?: string | undefined;
 };
 
-/**
- * @type object
- */
-export type GetSiteDevServerRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: GetSiteDevServerPathSiteId;
-		dev_server_id: GetSiteDevServerPathDevServerId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/dev_servers/${string}`;
+export type GetSiteDevServerOptions = {
+	body?: never | undefined;
+	path: GetSiteDevServerPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type GetSiteDevServerResponses = {
 	"200": GetSiteDevServerStatus200;
 };
@@ -27269,44 +14538,20 @@ export type GetSiteDevServerResponses = {
  */
 export type GetSiteDevServerResponse = GetSiteDevServerStatus200;
 
-/**
- * @type string
- */
-export type MarkDevServerActivityPathSiteId = string;
-
-/**
- * @type string
- */
-export type MarkDevServerActivityPathDevServerId = string;
-
-/**
- * @type unknown
- */
-export type MarkDevServerActivityStatus200 = unknown;
-
-/**
- * @type object
- */
-export type MarkDevServerActivityRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: MarkDevServerActivityPathSiteId;
-		dev_server_id: MarkDevServerActivityPathDevServerId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/dev_servers/${string}/activity`;
+export type MarkDevServerActivityPath = {
+	site_id: string;
+	dev_server_id: string;
 };
 
-/**
- * @type object
- */
+export type MarkDevServerActivityStatus200 = unknown;
+
+export type MarkDevServerActivityOptions = {
+	body?: never | undefined;
+	path: MarkDevServerActivityPath;
+	query?: never | undefined;
+	headers?: never | undefined;
+};
+
 export type MarkDevServerActivityResponses = {
 	"200": MarkDevServerActivityStatus200;
 };
@@ -27316,116 +14561,81 @@ export type MarkDevServerActivityResponses = {
  */
 export type MarkDevServerActivityResponse = MarkDevServerActivityStatus200;
 
-/**
- * @type string
- */
-export type UpdateDevServerStatePathSiteId = string;
+export type UpdateDevServerStatePath = {
+	site_id: string;
+	dev_server_id: string;
+};
 
-/**
- * @type string
- */
-export type UpdateDevServerStatePathDevServerId = string;
-
-/**
- * @type object
- */
 export type UpdateDevServerStateStatus200 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	site_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	branch?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	state?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	updated_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	starting_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	error_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	live_at?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	done_at?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	title?: string | undefined;
 };
 
-/**
- * @type unknown
- */
 export type UpdateDevServerStateStatus409 = unknown;
 
-/**
- * @type object
- */
-export type UpdateDevServerStateData = {
-	/**
-	 * @type string
-	 */
-	state: StateEnumKey;
-	/**
-	 * @type string | undefined
-	 */
+export const updateDevServerStateRequestStateEnum = {
+	starting: "starting",
+	live: "live",
+	error: "error",
+	done: "done",
+} as const;
+
+export type UpdateDevServerStateRequestStateEnumKey =
+	(typeof updateDevServerStateRequestStateEnum)[keyof typeof updateDevServerStateRequestStateEnum];
+
+export type UpdateDevServerStateBody = {
+	state: UpdateDevServerStateRequestStateEnumKey;
 	task_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	error?: string | undefined;
 };
 
-/**
- * @type object
- */
-export type UpdateDevServerStateRequestConfig = {
-	data?: UpdateDevServerStateData | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: UpdateDevServerStatePathSiteId;
-		dev_server_id: UpdateDevServerStatePathDevServerId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/dev_servers/${string}/state`;
+export type UpdateDevServerStateOptions = {
+	body: UpdateDevServerStateBody;
+	path: UpdateDevServerStatePath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type UpdateDevServerStateResponses = {
 	"200": UpdateDevServerStateStatus200;
 	"409": UpdateDevServerStateStatus409;
@@ -27438,81 +14648,50 @@ export type UpdateDevServerStateResponse =
 	| UpdateDevServerStateStatus200
 	| UpdateDevServerStateStatus409;
 
-/**
- * @type string
- */
-export type ListSiteDevServerHooksPathSiteId = string;
+export type ListSiteDevServerHooksPath = {
+	site_id: string;
+};
 
-/**
- * @type array
- */
+export const listSiteDevServerHooksStatus200TypeEnum = {
+	new_dev_server: "new_dev_server",
+	content_refresh: "content_refresh",
+} as const;
+
+export type ListSiteDevServerHooksStatus200TypeEnumKey =
+	(typeof listSiteDevServerHooksStatus200TypeEnum)[keyof typeof listSiteDevServerHooksStatus200TypeEnum];
+
 export type ListSiteDevServerHooksStatus200 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	title?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	branch?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	site_id?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	type?: TypeEnumKey | undefined;
+	type?: ListSiteDevServerHooksStatus200TypeEnumKey | undefined;
 }[];
 
-/**
- * @type object
- */
 export type ListSiteDevServerHooksStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type ListSiteDevServerHooksRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: ListSiteDevServerHooksPathSiteId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/dev_server_hooks`;
+export type ListSiteDevServerHooksOptions = {
+	body?: never | undefined;
+	path: ListSiteDevServerHooksPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type ListSiteDevServerHooksResponses = {
 	"200": ListSiteDevServerHooksStatus200;
 	default: ListSiteDevServerHooksStatusDefault;
@@ -27525,101 +14704,64 @@ export type ListSiteDevServerHooksResponse =
 	| ListSiteDevServerHooksStatus200
 	| ListSiteDevServerHooksStatusDefault;
 
-/**
- * @type string
- */
-export type CreateSiteDevServerHookPathSiteId = string;
+export type CreateSiteDevServerHookPath = {
+	site_id: string;
+};
 
-/**
- * @type object
- */
+export const createSiteDevServerHookStatus201TypeEnum = {
+	new_dev_server: "new_dev_server",
+	content_refresh: "content_refresh",
+} as const;
+
+export type CreateSiteDevServerHookStatus201TypeEnumKey =
+	(typeof createSiteDevServerHookStatus201TypeEnum)[keyof typeof createSiteDevServerHookStatus201TypeEnum];
+
 export type CreateSiteDevServerHookStatus201 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	title?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	branch?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	site_id?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	type?: TypeEnumKey | undefined;
+	type?: CreateSiteDevServerHookStatus201TypeEnumKey | undefined;
 };
 
-/**
- * @type object
- */
 export type CreateSiteDevServerHookStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object | undefined
- */
-export type CreateSiteDevServerHookData =
-	| {
-			/**
-			 * @type string | undefined
-			 */
-			title?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			branch?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			type?: TypeEnumKey | undefined;
-	  }
-	| undefined;
+export const createSiteDevServerHookRequestTypeEnum = {
+	new_dev_server: "new_dev_server",
+	content_refresh: "content_refresh",
+} as const;
 
-/**
- * @type object
- */
-export type CreateSiteDevServerHookRequestConfig = {
-	data?: CreateSiteDevServerHookData | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: CreateSiteDevServerHookPathSiteId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/dev_server_hooks`;
+export type CreateSiteDevServerHookRequestTypeEnumKey =
+	(typeof createSiteDevServerHookRequestTypeEnum)[keyof typeof createSiteDevServerHookRequestTypeEnum];
+
+export type CreateSiteDevServerHookBody = {
+	title?: string | undefined;
+	branch?: string | undefined;
+	type?: CreateSiteDevServerHookRequestTypeEnumKey | undefined;
 };
 
-/**
- * @type object
- */
+export type CreateSiteDevServerHookOptions = {
+	body: CreateSiteDevServerHookBody;
+	path: CreateSiteDevServerHookPath;
+	query?: never | undefined;
+	headers?: never | undefined;
+};
+
 export type CreateSiteDevServerHookResponses = {
 	"201": CreateSiteDevServerHookStatus201;
 	default: CreateSiteDevServerHookStatusDefault;
@@ -27632,87 +14774,51 @@ export type CreateSiteDevServerHookResponse =
 	| CreateSiteDevServerHookStatus201
 	| CreateSiteDevServerHookStatusDefault;
 
-/**
- * @type string
- */
-export type GetSiteDevServerHookPathSiteId = string;
+export type GetSiteDevServerHookPath = {
+	site_id: string;
+	id: string;
+};
 
-/**
- * @type string
- */
-export type GetSiteDevServerHookPathId = string;
+export const getSiteDevServerHookStatus200TypeEnum = {
+	new_dev_server: "new_dev_server",
+	content_refresh: "content_refresh",
+} as const;
 
-/**
- * @type object
- */
+export type GetSiteDevServerHookStatus200TypeEnumKey =
+	(typeof getSiteDevServerHookStatus200TypeEnum)[keyof typeof getSiteDevServerHookStatus200TypeEnum];
+
 export type GetSiteDevServerHookStatus200 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	title?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	branch?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	site_id?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
-	type?: TypeEnumKey | undefined;
+	type?: GetSiteDevServerHookStatus200TypeEnumKey | undefined;
 };
 
-/**
- * @type object
- */
 export type GetSiteDevServerHookStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type GetSiteDevServerHookRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: GetSiteDevServerHookPathSiteId;
-		id: GetSiteDevServerHookPathId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/dev_server_hooks/${string}`;
+export type GetSiteDevServerHookOptions = {
+	body?: never | undefined;
+	path: GetSiteDevServerHookPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type GetSiteDevServerHookResponses = {
 	"200": GetSiteDevServerHookStatus200;
 	default: GetSiteDevServerHookStatusDefault;
@@ -27725,78 +14831,44 @@ export type GetSiteDevServerHookResponse =
 	| GetSiteDevServerHookStatus200
 	| GetSiteDevServerHookStatusDefault;
 
-/**
- * @type string
- */
-export type UpdateSiteDevServerHookPathSiteId = string;
+export type UpdateSiteDevServerHookPath = {
+	site_id: string;
+	id: string;
+};
 
-/**
- * @type string
- */
-export type UpdateSiteDevServerHookPathId = string;
-
-/**
- * @type unknown
- */
 export type UpdateSiteDevServerHookStatus204 = unknown;
 
-/**
- * @type object
- */
 export type UpdateSiteDevServerHookStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object | undefined
- */
-export type UpdateSiteDevServerHookData =
-	| {
-			/**
-			 * @type string | undefined
-			 */
-			title?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			branch?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			type?: TypeEnumKey | undefined;
-	  }
-	| undefined;
+export const updateSiteDevServerHookRequestTypeEnum = {
+	new_dev_server: "new_dev_server",
+	content_refresh: "content_refresh",
+} as const;
 
-/**
- * @type object
- */
-export type UpdateSiteDevServerHookRequestConfig = {
-	data?: UpdateSiteDevServerHookData | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: UpdateSiteDevServerHookPathSiteId;
-		id: UpdateSiteDevServerHookPathId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/dev_server_hooks/${string}`;
+export type UpdateSiteDevServerHookRequestTypeEnumKey =
+	(typeof updateSiteDevServerHookRequestTypeEnum)[keyof typeof updateSiteDevServerHookRequestTypeEnum];
+
+export type UpdateSiteDevServerHookBody = {
+	title?: string | undefined;
+	branch?: string | undefined;
+	type?: UpdateSiteDevServerHookRequestTypeEnumKey | undefined;
 };
 
-/**
- * @type object
- */
+export type UpdateSiteDevServerHookOptions = {
+	body: UpdateSiteDevServerHookBody;
+	path: UpdateSiteDevServerHookPath;
+	query?: never | undefined;
+	headers?: never | undefined;
+};
+
 export type UpdateSiteDevServerHookResponses = {
 	"204": UpdateSiteDevServerHookStatus204;
 	default: UpdateSiteDevServerHookStatusDefault;
@@ -27809,58 +14881,30 @@ export type UpdateSiteDevServerHookResponse =
 	| UpdateSiteDevServerHookStatus204
 	| UpdateSiteDevServerHookStatusDefault;
 
-/**
- * @type string
- */
-export type DeleteSiteDevServerHookPathSiteId = string;
+export type DeleteSiteDevServerHookPath = {
+	site_id: string;
+	id: string;
+};
 
-/**
- * @type string
- */
-export type DeleteSiteDevServerHookPathId = string;
-
-/**
- * @type unknown
- */
 export type DeleteSiteDevServerHookStatus204 = unknown;
 
-/**
- * @type object
- */
 export type DeleteSiteDevServerHookStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type DeleteSiteDevServerHookRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: DeleteSiteDevServerHookPathSiteId;
-		id: DeleteSiteDevServerHookPathId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/dev_server_hooks/${string}`;
+export type DeleteSiteDevServerHookOptions = {
+	body?: never | undefined;
+	path: DeleteSiteDevServerHookPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type DeleteSiteDevServerHookResponses = {
 	"204": DeleteSiteDevServerHookStatus204;
 	default: DeleteSiteDevServerHookStatusDefault;
@@ -27873,89 +14917,44 @@ export type DeleteSiteDevServerHookResponse =
 	| DeleteSiteDevServerHookStatus204
 	| DeleteSiteDevServerHookStatusDefault;
 
-/**
- * @type string
- */
-export type ListSiteAgentRunnerHooksPathSiteId = string;
+export type ListSiteAgentRunnerHooksPath = {
+	site_id: string;
+};
 
-/**
- * @type array
- */
 export type ListSiteAgentRunnerHooksStatus200 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	site_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	title?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	branch?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	prompt?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	agent?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	msg?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 }[];
 
-/**
- * @type object
- */
 export type ListSiteAgentRunnerHooksStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type ListSiteAgentRunnerHooksRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: ListSiteAgentRunnerHooksPathSiteId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/agent_runner_hooks`;
+export type ListSiteAgentRunnerHooksOptions = {
+	body?: never | undefined;
+	path: ListSiteAgentRunnerHooksPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type ListSiteAgentRunnerHooksResponses = {
 	"200": ListSiteAgentRunnerHooksStatus200;
 	default: ListSiteAgentRunnerHooksStatusDefault;
@@ -27968,114 +14967,53 @@ export type ListSiteAgentRunnerHooksResponse =
 	| ListSiteAgentRunnerHooksStatus200
 	| ListSiteAgentRunnerHooksStatusDefault;
 
-/**
- * @type string
- */
-export type CreateSiteAgentRunnerHookPathSiteId = string;
+export type CreateSiteAgentRunnerHookPath = {
+	site_id: string;
+};
 
 export type CreateSiteAgentRunnerHookStatus201 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	site_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	title?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	branch?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	prompt?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	agent?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	msg?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
+} & {
 	secret?: string | undefined;
 };
 
-/**
- * @type object
- */
 export type CreateSiteAgentRunnerHookStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object | undefined
- */
-export type CreateSiteAgentRunnerHookData =
-	| {
-			/**
-			 * @type string | undefined
-			 */
-			title?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			branch?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			prompt?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			agent?: string | undefined;
-	  }
-	| undefined;
-
-/**
- * @type object
- */
-export type CreateSiteAgentRunnerHookRequestConfig = {
-	data?: CreateSiteAgentRunnerHookData | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: CreateSiteAgentRunnerHookPathSiteId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/agent_runner_hooks`;
+export type CreateSiteAgentRunnerHookBody = {
+	title?: string | undefined;
+	branch?: string | undefined;
+	prompt?: string | undefined;
+	agent?: string | undefined;
 };
 
-/**
- * @type object
- */
+export type CreateSiteAgentRunnerHookOptions = {
+	body: CreateSiteAgentRunnerHookBody;
+	path: CreateSiteAgentRunnerHookPath;
+	query?: never | undefined;
+	headers?: never | undefined;
+};
+
 export type CreateSiteAgentRunnerHookResponses = {
 	"201": CreateSiteAgentRunnerHookStatus201;
 	default: CreateSiteAgentRunnerHookStatusDefault;
@@ -28088,95 +15026,45 @@ export type CreateSiteAgentRunnerHookResponse =
 	| CreateSiteAgentRunnerHookStatus201
 	| CreateSiteAgentRunnerHookStatusDefault;
 
-/**
- * @type string
- */
-export type GetSiteAgentRunnerHookPathSiteId = string;
+export type GetSiteAgentRunnerHookPath = {
+	site_id: string;
+	id: string;
+};
 
-/**
- * @type string
- */
-export type GetSiteAgentRunnerHookPathId = string;
-
-/**
- * @type object
- */
 export type GetSiteAgentRunnerHookStatus200 = {
-	/**
-	 * @type string | undefined
-	 */
 	id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	site_id?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	title?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	branch?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	prompt?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	agent?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	url?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	msg?: string | undefined;
 	/**
+	 * @description
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 };
 
-/**
- * @type object
- */
 export type GetSiteAgentRunnerHookStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type GetSiteAgentRunnerHookRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: GetSiteAgentRunnerHookPathSiteId;
-		id: GetSiteAgentRunnerHookPathId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/agent_runner_hooks/${string}`;
+export type GetSiteAgentRunnerHookOptions = {
+	body?: never | undefined;
+	path: GetSiteAgentRunnerHookPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type GetSiteAgentRunnerHookResponses = {
 	"200": GetSiteAgentRunnerHookStatus200;
 	default: GetSiteAgentRunnerHookStatusDefault;
@@ -28189,82 +15077,37 @@ export type GetSiteAgentRunnerHookResponse =
 	| GetSiteAgentRunnerHookStatus200
 	| GetSiteAgentRunnerHookStatusDefault;
 
-/**
- * @type string
- */
-export type UpdateSiteAgentRunnerHookPathSiteId = string;
+export type UpdateSiteAgentRunnerHookPath = {
+	site_id: string;
+	id: string;
+};
 
-/**
- * @type string
- */
-export type UpdateSiteAgentRunnerHookPathId = string;
-
-/**
- * @type unknown
- */
 export type UpdateSiteAgentRunnerHookStatus204 = unknown;
 
-/**
- * @type object
- */
 export type UpdateSiteAgentRunnerHookStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object | undefined
- */
-export type UpdateSiteAgentRunnerHookData =
-	| {
-			/**
-			 * @type string | undefined
-			 */
-			title?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			branch?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			prompt?: string | undefined;
-			/**
-			 * @type string | undefined
-			 */
-			agent?: string | undefined;
-	  }
-	| undefined;
-
-/**
- * @type object
- */
-export type UpdateSiteAgentRunnerHookRequestConfig = {
-	data?: UpdateSiteAgentRunnerHookData | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: UpdateSiteAgentRunnerHookPathSiteId;
-		id: UpdateSiteAgentRunnerHookPathId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/agent_runner_hooks/${string}`;
+export type UpdateSiteAgentRunnerHookBody = {
+	title?: string | undefined;
+	branch?: string | undefined;
+	prompt?: string | undefined;
+	agent?: string | undefined;
 };
 
-/**
- * @type object
- */
+export type UpdateSiteAgentRunnerHookOptions = {
+	body: UpdateSiteAgentRunnerHookBody;
+	path: UpdateSiteAgentRunnerHookPath;
+	query?: never | undefined;
+	headers?: never | undefined;
+};
+
 export type UpdateSiteAgentRunnerHookResponses = {
 	"204": UpdateSiteAgentRunnerHookStatus204;
 	default: UpdateSiteAgentRunnerHookStatusDefault;
@@ -28277,58 +15120,30 @@ export type UpdateSiteAgentRunnerHookResponse =
 	| UpdateSiteAgentRunnerHookStatus204
 	| UpdateSiteAgentRunnerHookStatusDefault;
 
-/**
- * @type string
- */
-export type DeleteSiteAgentRunnerHookPathSiteId = string;
+export type DeleteSiteAgentRunnerHookPath = {
+	site_id: string;
+	id: string;
+};
 
-/**
- * @type string
- */
-export type DeleteSiteAgentRunnerHookPathId = string;
-
-/**
- * @type unknown
- */
 export type DeleteSiteAgentRunnerHookStatus204 = unknown;
 
-/**
- * @type object
- */
 export type DeleteSiteAgentRunnerHookStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type DeleteSiteAgentRunnerHookRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: DeleteSiteAgentRunnerHookPathSiteId;
-		id: DeleteSiteAgentRunnerHookPathId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/agent_runner_hooks/${string}`;
+export type DeleteSiteAgentRunnerHookOptions = {
+	body?: never | undefined;
+	path: DeleteSiteAgentRunnerHookPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type DeleteSiteAgentRunnerHookResponses = {
 	"204": DeleteSiteAgentRunnerHookStatus204;
 	default: DeleteSiteAgentRunnerHookStatusDefault;
@@ -28341,64 +15156,35 @@ export type DeleteSiteAgentRunnerHookResponse =
 	| DeleteSiteAgentRunnerHookStatus204
 	| DeleteSiteAgentRunnerHookStatusDefault;
 
-/**
- * @type object
- */
 export type GetAIGatewayProvidersStatus200 = {
-	/**
-	 * @type object | undefined
-	 */
 	providers?:
 		| {
 				[key: string]: {
-					/**
-					 * @type string | undefined
-					 */
 					token_env_var?: string | undefined;
-					/**
-					 * @type string | undefined
-					 */
 					url_env_var?: string | undefined;
-					/**
-					 * @type array | undefined
-					 */
 					models?: string[] | undefined;
 				};
 		  }
 		| undefined;
 };
 
-/**
- * @type object
- */
 export type GetAIGatewayProvidersStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type GetAIGatewayProvidersRequestConfig = {
-	data?: never | undefined;
-	pathParams?: never | undefined;
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: "/ai-gateway/providers";
+export type GetAIGatewayProvidersOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type GetAIGatewayProvidersResponses = {
 	"200": GetAIGatewayProvidersStatus200;
 	default: GetAIGatewayProvidersStatusDefault;
@@ -28411,15 +15197,14 @@ export type GetAIGatewayProvidersResponse =
 	| GetAIGatewayProvidersStatus200
 	| GetAIGatewayProvidersStatusDefault;
 
-/**
- * @description The site ID
- * @type string
- */
-export type GetAIGatewayTokenPathSiteId = string;
+export type GetAIGatewayTokenPath = {
+	/**
+	 * @description The site ID
+	 * @type string
+	 */
+	site_id: string;
+};
 
-/**
- * @type object
- */
 export type GetAIGatewayTokenStatus200 = {
 	/**
 	 * @description The AI Gateway authentication token
@@ -28433,52 +15218,32 @@ export type GetAIGatewayTokenStatus200 = {
 	url?: string | undefined;
 	/**
 	 * @description Unix timestamp when the token expires
+	 *
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	expires_at?: bigint | undefined;
 };
 
-/**
- * @type unknown
- */
 export type GetAIGatewayTokenStatus404 = unknown;
 
-/**
- * @type object
- */
 export type GetAIGatewayTokenStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type GetAIGatewayTokenRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: GetAIGatewayTokenPathSiteId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/ai-gateway/token`;
+export type GetAIGatewayTokenOptions = {
+	body?: never | undefined;
+	path: GetAIGatewayTokenPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type GetAIGatewayTokenResponses = {
 	"200": GetAIGatewayTokenStatus200;
 	"404": GetAIGatewayTokenStatus404;
@@ -28493,15 +15258,14 @@ export type GetAIGatewayTokenResponse =
 	| GetAIGatewayTokenStatus404
 	| GetAIGatewayTokenStatusDefault;
 
-/**
- * @description The account ID
- * @type string
- */
-export type GetAccountAIGatewayTokenPathAccountId = string;
+export type GetAccountAIGatewayTokenPath = {
+	/**
+	 * @description The account ID
+	 * @type string
+	 */
+	account_id: string;
+};
 
-/**
- * @type object
- */
 export type GetAccountAIGatewayTokenStatus200 = {
 	/**
 	 * @description The AI Gateway authentication token
@@ -28515,52 +15279,32 @@ export type GetAccountAIGatewayTokenStatus200 = {
 	url?: string | undefined;
 	/**
 	 * @description Unix timestamp when the token expires
+	 *
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	expires_at?: bigint | undefined;
 };
 
-/**
- * @type unknown
- */
 export type GetAccountAIGatewayTokenStatus404 = unknown;
 
-/**
- * @type object
- */
 export type GetAccountAIGatewayTokenStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type GetAccountAIGatewayTokenRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		account_id: GetAccountAIGatewayTokenPathAccountId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/accounts/${string}/ai-gateway/token`;
+export type GetAccountAIGatewayTokenOptions = {
+	body?: never | undefined;
+	path: GetAccountAIGatewayTokenPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type GetAccountAIGatewayTokenResponses = {
 	"200": GetAccountAIGatewayTokenStatus200;
 	"404": GetAccountAIGatewayTokenStatus404;
@@ -28575,10 +15319,9 @@ export type GetAccountAIGatewayTokenResponse =
 	| GetAccountAIGatewayTokenStatus404
 	| GetAccountAIGatewayTokenStatusDefault;
 
-/**
- * @type string
- */
-export type CreateSiteDatabasePathSiteId = string;
+export type CreateSiteDatabasePath = {
+	site_id: string;
+};
 
 /**
  * @description Response containing the database connection string
@@ -28604,17 +15347,13 @@ export type CreateSiteDatabaseStatus201 = {
 	connection_string?: string | undefined;
 };
 
-/**
- * @type object
- */
 export type CreateSiteDatabaseStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
@@ -28622,7 +15361,7 @@ export type CreateSiteDatabaseStatusDefault = {
  * @description Request body for creating a database
  * @type object | undefined
  */
-export type CreateSiteDatabaseData =
+export type CreateSiteDatabaseBody =
 	| {
 			/**
 			 * @description The region where the database should be created. Defaults to the site\'s functions region if not specified.
@@ -28632,28 +15371,13 @@ export type CreateSiteDatabaseData =
 	  }
 	| undefined;
 
-/**
- * @type object
- */
-export type CreateSiteDatabaseRequestConfig = {
-	data?: CreateSiteDatabaseData | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: CreateSiteDatabasePathSiteId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/database`;
+export type CreateSiteDatabaseOptions = {
+	body: CreateSiteDatabaseBody;
+	path: CreateSiteDatabasePath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type CreateSiteDatabaseResponses = {
 	"200": CreateSiteDatabaseStatus200;
 	"201": CreateSiteDatabaseStatus201;
@@ -28668,16 +15392,24 @@ export type CreateSiteDatabaseResponse =
 	| CreateSiteDatabaseStatus201
 	| CreateSiteDatabaseStatusDefault;
 
-/**
- * @type string
- */
-export type GetSiteDatabasePathSiteId = string;
+export type GetSiteDatabasePath = {
+	site_id: string;
+};
 
-/**
- * @description The database role to use for the connection string. Defaults to netlifydb_owner if not specified.
- * @type string | undefined
- */
-export type GetSiteDatabaseQueryRole = ("netlifydb_owner" | "netlifydb_readonly") | undefined;
+export const getSiteDatabaseRole = {
+	netlifydb_owner: "netlifydb_owner",
+	netlifydb_readonly: "netlifydb_readonly",
+} as const;
+
+export type GetSiteDatabaseRoleKey = (typeof getSiteDatabaseRole)[keyof typeof getSiteDatabaseRole];
+
+export type GetSiteDatabaseQuery = {
+	/**
+	 * @description The database role to use for the connection string. Defaults to netlifydb_owner if not specified.
+	 * @type string | undefined
+	 */
+	role?: GetSiteDatabaseRoleKey | undefined;
+};
 
 /**
  * @description Response containing the database connection string
@@ -28691,49 +15423,23 @@ export type GetSiteDatabaseStatus200 = {
 	connection_string?: string | undefined;
 };
 
-/**
- * @type object
- */
 export type GetSiteDatabaseStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type GetSiteDatabaseRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: GetSiteDatabasePathSiteId;
-	};
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				role?: GetSiteDatabaseQueryRole | undefined;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/database`;
+export type GetSiteDatabaseOptions = {
+	body?: never | undefined;
+	path: GetSiteDatabasePath;
+	query?: GetSiteDatabaseQuery | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type GetSiteDatabaseResponses = {
 	"200": GetSiteDatabaseStatus200;
 	default: GetSiteDatabaseStatusDefault;
@@ -28744,52 +15450,29 @@ export type GetSiteDatabaseResponses = {
  */
 export type GetSiteDatabaseResponse = GetSiteDatabaseStatus200 | GetSiteDatabaseStatusDefault;
 
-/**
- * @type string
- */
-export type DeleteSiteDatabasePathSiteId = string;
+export type DeleteSiteDatabasePath = {
+	site_id: string;
+};
 
-/**
- * @type unknown
- */
 export type DeleteSiteDatabaseStatus204 = unknown;
 
-/**
- * @type object
- */
 export type DeleteSiteDatabaseStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type DeleteSiteDatabaseRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: DeleteSiteDatabasePathSiteId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/database`;
+export type DeleteSiteDatabaseOptions = {
+	body?: never | undefined;
+	path: DeleteSiteDatabasePath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type DeleteSiteDatabaseResponses = {
 	"204": DeleteSiteDatabaseStatus204;
 	default: DeleteSiteDatabaseStatusDefault;
@@ -28802,10 +15485,9 @@ export type DeleteSiteDatabaseResponse =
 	| DeleteSiteDatabaseStatus204
 	| DeleteSiteDatabaseStatusDefault;
 
-/**
- * @type string
- */
-export type CreateSiteDatabaseBranchPathSiteId = string;
+export type CreateSiteDatabaseBranchPath = {
+	site_id: string;
+};
 
 /**
  * @description Response containing the database branch connection string
@@ -28849,17 +15531,13 @@ export type CreateSiteDatabaseBranchStatus201 = {
 		| undefined;
 };
 
-/**
- * @type object
- */
 export type CreateSiteDatabaseBranchStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
@@ -28867,7 +15545,7 @@ export type CreateSiteDatabaseBranchStatusDefault = {
  * @description Request body for creating a database branch
  * @type object
  */
-export type CreateSiteDatabaseBranchData = {
+export type CreateSiteDatabaseBranchBody = {
 	/**
 	 * @description The ID of the parent branch to create the new branch from. Defaults to the production branch if not specified.
 	 * @type string | undefined
@@ -28889,28 +15567,13 @@ export type CreateSiteDatabaseBranchData = {
 		| undefined;
 };
 
-/**
- * @type object
- */
-export type CreateSiteDatabaseBranchRequestConfig = {
-	data?: CreateSiteDatabaseBranchData | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: CreateSiteDatabaseBranchPathSiteId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/database/branch`;
+export type CreateSiteDatabaseBranchOptions = {
+	body: CreateSiteDatabaseBranchBody;
+	path: CreateSiteDatabaseBranchPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type CreateSiteDatabaseBranchResponses = {
 	"200": CreateSiteDatabaseBranchStatus200;
 	"201": CreateSiteDatabaseBranchStatus201;
@@ -28925,10 +15588,28 @@ export type CreateSiteDatabaseBranchResponse =
 	| CreateSiteDatabaseBranchStatus201
 	| CreateSiteDatabaseBranchStatusDefault;
 
-/**
- * @type string
- */
-export type ListSiteDatabaseBranchesPathSiteId = string;
+export type ListSiteDatabaseBranchesPath = {
+	site_id: string;
+};
+
+export const listSiteDatabaseBranchesStatus200BranchesStateEnum = {
+	init: "init",
+	creating: "creating",
+	resetting: "resetting",
+	ready: "ready",
+	archived: "archived",
+} as const;
+
+export type ListSiteDatabaseBranchesStatus200BranchesStateEnumKey =
+	(typeof listSiteDatabaseBranchesStatus200BranchesStateEnum)[keyof typeof listSiteDatabaseBranchesStatus200BranchesStateEnum];
+
+export const listSiteDatabaseBranchesStatus200BranchesComputeCurrentStateEnum = {
+	active: "active",
+	idle: "idle",
+} as const;
+
+export type ListSiteDatabaseBranchesStatus200BranchesComputeCurrentStateEnumKey =
+	(typeof listSiteDatabaseBranchesStatus200BranchesComputeCurrentStateEnum)[keyof typeof listSiteDatabaseBranchesStatus200BranchesComputeCurrentStateEnum];
 
 /**
  * @description Response containing a list of database branches
@@ -28960,24 +15641,32 @@ export type ListSiteDatabaseBranchesStatus200 = {
 				 * @description The current state of the branch
 				 * @type string | undefined
 				 */
-				state?: StateEnumKey | undefined;
+				state?: ListSiteDatabaseBranchesStatus200BranchesStateEnumKey | undefined;
 				/**
 				 * @description The logical size of the branch in bytes
+				 *
+				 * Format: `int64`
 				 * @type integer | undefined
 				 */
 				logical_size_bytes?: bigint | undefined;
 				/**
 				 * @description When the branch was created
+				 *
+				 * Format: `dateTime`
 				 * @type string | undefined
 				 */
 				created_at?: string | undefined;
 				/**
 				 * @description When the branch was last updated
+				 *
+				 * Format: `dateTime`
 				 * @type string | undefined
 				 */
 				updated_at?: string | undefined;
 				/**
 				 * @description When the branch was last active
+				 *
+				 * Format: `dateTime`
 				 * @type string | undefined
 				 */
 				last_active_at?: string | undefined;
@@ -28991,24 +15680,34 @@ export type ListSiteDatabaseBranchesStatus200 = {
 							 * @description The current state of the compute endpoint
 							 * @type string | undefined
 							 */
-							current_state?: CurrentStateEnumKey | undefined;
+							current_state?:
+								| ListSiteDatabaseBranchesStatus200BranchesComputeCurrentStateEnumKey
+								| undefined;
 							/**
 							 * @description Minimum compute units for autoscaling
+							 *
+							 * Format: `double`
 							 * @type number | undefined
 							 */
 							autoscaling_limit_min_cu?: number | undefined;
 							/**
 							 * @description Maximum compute units for autoscaling
+							 *
+							 * Format: `double`
 							 * @type number | undefined
 							 */
 							autoscaling_limit_max_cu?: number | undefined;
 							/**
 							 * @description Seconds of inactivity before the compute endpoint is suspended
+							 *
+							 * Format: `int64`
 							 * @type integer | undefined
 							 */
 							suspend_timeout_seconds?: bigint | undefined;
 							/**
 							 * @description When the compute endpoint was last active
+							 *
+							 * Format: `dateTime`
 							 * @type string | undefined
 							 */
 							last_active?: string | undefined;
@@ -29027,42 +15726,23 @@ export type ListSiteDatabaseBranchesStatus200 = {
 		| undefined;
 };
 
-/**
- * @type object
- */
 export type ListSiteDatabaseBranchesStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type ListSiteDatabaseBranchesRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: ListSiteDatabaseBranchesPathSiteId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/database/branches`;
+export type ListSiteDatabaseBranchesOptions = {
+	body?: never | undefined;
+	path: ListSiteDatabaseBranchesPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type ListSiteDatabaseBranchesResponses = {
 	"200": ListSiteDatabaseBranchesStatus200;
 	default: ListSiteDatabaseBranchesStatusDefault;
@@ -29075,22 +15755,30 @@ export type ListSiteDatabaseBranchesResponse =
 	| ListSiteDatabaseBranchesStatus200
 	| ListSiteDatabaseBranchesStatusDefault;
 
-/**
- * @type string
- */
-export type GetSiteDatabaseBranchPathSiteId = string;
+export type GetSiteDatabaseBranchPath = {
+	site_id: string;
+	/**
+	 * @description The branch ID
+	 * @type string
+	 */
+	branch_id: string;
+};
 
-/**
- * @description The branch ID
- * @type string
- */
-export type GetSiteDatabaseBranchPathBranchId = string;
+export const getSiteDatabaseBranchRole = {
+	netlifydb_owner: "netlifydb_owner",
+	netlifydb_readonly: "netlifydb_readonly",
+} as const;
 
-/**
- * @description The database role to use for the connection string. Defaults to netlifydb_owner if not specified.
- * @type string | undefined
- */
-export type GetSiteDatabaseBranchQueryRole = ("netlifydb_owner" | "netlifydb_readonly") | undefined;
+export type GetSiteDatabaseBranchRoleKey =
+	(typeof getSiteDatabaseBranchRole)[keyof typeof getSiteDatabaseBranchRole];
+
+export type GetSiteDatabaseBranchQuery = {
+	/**
+	 * @description The database role to use for the connection string. Defaults to netlifydb_owner if not specified.
+	 * @type string | undefined
+	 */
+	role?: GetSiteDatabaseBranchRoleKey | undefined;
+};
 
 /**
  * @description Response containing the database branch connection string
@@ -29113,55 +15801,25 @@ export type GetSiteDatabaseBranchStatus200 = {
 		| undefined;
 };
 
-/**
- * @type unknown
- */
 export type GetSiteDatabaseBranchStatus404 = unknown;
 
-/**
- * @type object
- */
 export type GetSiteDatabaseBranchStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type GetSiteDatabaseBranchRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: GetSiteDatabaseBranchPathSiteId;
-		branch_id: GetSiteDatabaseBranchPathBranchId;
-	};
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				role?: GetSiteDatabaseBranchQueryRole | undefined;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/database/branch/${string}`;
+export type GetSiteDatabaseBranchOptions = {
+	body?: never | undefined;
+	path: GetSiteDatabaseBranchPath;
+	query?: GetSiteDatabaseBranchQuery | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type GetSiteDatabaseBranchResponses = {
 	"200": GetSiteDatabaseBranchStatus200;
 	"404": GetSiteDatabaseBranchStatus404;
@@ -29176,59 +15834,34 @@ export type GetSiteDatabaseBranchResponse =
 	| GetSiteDatabaseBranchStatus404
 	| GetSiteDatabaseBranchStatusDefault;
 
-/**
- * @type string
- */
-export type DeleteSiteDatabaseBranchPathSiteId = string;
+export type DeleteSiteDatabaseBranchPath = {
+	site_id: string;
+	/**
+	 * @description The branch ID
+	 * @type string
+	 */
+	branch_id: string;
+};
 
-/**
- * @description The branch ID
- * @type string
- */
-export type DeleteSiteDatabaseBranchPathBranchId = string;
-
-/**
- * @type unknown
- */
 export type DeleteSiteDatabaseBranchStatus204 = unknown;
 
-/**
- * @type object
- */
 export type DeleteSiteDatabaseBranchStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type DeleteSiteDatabaseBranchRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: DeleteSiteDatabaseBranchPathSiteId;
-		branch_id: DeleteSiteDatabaseBranchPathBranchId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/database/branch/${string}`;
+export type DeleteSiteDatabaseBranchOptions = {
+	body?: never | undefined;
+	path: DeleteSiteDatabaseBranchPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type DeleteSiteDatabaseBranchResponses = {
 	"204": DeleteSiteDatabaseBranchStatus204;
 	default: DeleteSiteDatabaseBranchStatusDefault;
@@ -29241,30 +15874,35 @@ export type DeleteSiteDatabaseBranchResponse =
 	| DeleteSiteDatabaseBranchStatus204
 	| DeleteSiteDatabaseBranchStatusDefault;
 
-/**
- * @type string
- */
-export type ResetSiteDatabaseBranchPathSiteId = string;
+export type ResetSiteDatabaseBranchPath = {
+	site_id: string;
+	/**
+	 * @description The branch ID to reset
+	 * @type string
+	 */
+	branch_id: string;
+};
 
-/**
- * @description The branch ID to reset
- * @type string
- */
-export type ResetSiteDatabaseBranchPathBranchId = string;
+export const resetSiteDatabaseBranchRole = {
+	netlifydb_owner: "netlifydb_owner",
+	netlifydb_readonly: "netlifydb_readonly",
+} as const;
 
-/**
- * @description If true, resets the branch even when it is already in sync with the source.
- * @type boolean | undefined
- */
-export type ResetSiteDatabaseBranchQueryForce = boolean | undefined;
+export type ResetSiteDatabaseBranchRoleKey =
+	(typeof resetSiteDatabaseBranchRole)[keyof typeof resetSiteDatabaseBranchRole];
 
-/**
- * @description The database role to use for the returned connection string. Defaults to netlifydb_owner if not specified.
- * @type string | undefined
- */
-export type ResetSiteDatabaseBranchQueryRole =
-	| ("netlifydb_owner" | "netlifydb_readonly")
-	| undefined;
+export type ResetSiteDatabaseBranchQuery = {
+	/**
+	 * @description If true, resets the branch even when it is already in sync with the source.
+	 * @type boolean | undefined
+	 */
+	force?: boolean | undefined;
+	/**
+	 * @description The database role to use for the returned connection string. Defaults to netlifydb_owner if not specified.
+	 * @type string | undefined
+	 */
+	role?: ResetSiteDatabaseBranchRoleKey | undefined;
+};
 
 /**
  * @description Response for a database branch reset
@@ -29292,27 +15930,17 @@ export type ResetSiteDatabaseBranchStatus200 = {
 		| undefined;
 };
 
-/**
- * @type unknown
- */
 export type ResetSiteDatabaseBranchStatus400 = unknown;
 
-/**
- * @type unknown
- */
 export type ResetSiteDatabaseBranchStatus404 = unknown;
 
-/**
- * @type object
- */
 export type ResetSiteDatabaseBranchStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
@@ -29320,7 +15948,7 @@ export type ResetSiteDatabaseBranchStatusDefault = {
  * @description Request body for resetting a database branch
  * @type object | undefined
  */
-export type ResetSiteDatabaseBranchData =
+export type ResetSiteDatabaseBranchBody =
 	| {
 			/**
 			 * @description The ID of the branch to re-fork the target branch from. Defaults to \"production\" if not specified.
@@ -29330,37 +15958,13 @@ export type ResetSiteDatabaseBranchData =
 	  }
 	| undefined;
 
-/**
- * @type object
- */
-export type ResetSiteDatabaseBranchRequestConfig = {
-	data?: ResetSiteDatabaseBranchData | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: ResetSiteDatabaseBranchPathSiteId;
-		branch_id: ResetSiteDatabaseBranchPathBranchId;
-	};
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				force?: ResetSiteDatabaseBranchQueryForce | undefined;
-				role?: ResetSiteDatabaseBranchQueryRole | undefined;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/database/branch/${string}/reset`;
+export type ResetSiteDatabaseBranchOptions = {
+	body: ResetSiteDatabaseBranchBody;
+	path: ResetSiteDatabaseBranchPath;
+	query?: ResetSiteDatabaseBranchQuery | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type ResetSiteDatabaseBranchResponses = {
 	"200": ResetSiteDatabaseBranchStatus200;
 	"400": ResetSiteDatabaseBranchStatus400;
@@ -29377,16 +15981,14 @@ export type ResetSiteDatabaseBranchResponse =
 	| ResetSiteDatabaseBranchStatus404
 	| ResetSiteDatabaseBranchStatusDefault;
 
-/**
- * @type string
- */
-export type SetSiteDatabaseBranchComputeSettingsPathSiteId = string;
-
-/**
- * @description The branch ID
- * @type string
- */
-export type SetSiteDatabaseBranchComputeSettingsPathBranchId = string;
+export type SetSiteDatabaseBranchComputeSettingsPath = {
+	site_id: string;
+	/**
+	 * @description The branch ID
+	 * @type string
+	 */
+	branch_id: string;
+};
 
 /**
  * @description Compute settings for a database or branch
@@ -29395,88 +15997,75 @@ export type SetSiteDatabaseBranchComputeSettingsPathBranchId = string;
 export type SetSiteDatabaseBranchComputeSettingsStatus200 = {
 	/**
 	 * @description Minimum compute units
+	 *
+	 * Format: `double`
 	 * @type number | undefined
 	 */
 	min_cu?: number | undefined;
 	/**
 	 * @description Maximum compute units
+	 *
+	 * Format: `double`
 	 * @type number | undefined
 	 */
 	max_cu?: number | undefined;
 	/**
 	 * @description Seconds of inactivity before suspension
+	 *
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	sleep_timeout_seconds?: bigint | undefined;
 };
 
-/**
- * @type unknown
- */
 export type SetSiteDatabaseBranchComputeSettingsStatus403 = unknown;
 
-/**
- * @type object
- */
 export type SetSiteDatabaseBranchComputeSettingsStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
 /**
  * @description Request body for setting compute settings. All fields are optional; only provided fields are updated.
- * @type object | undefined
- */
-export type SetSiteDatabaseBranchComputeSettingsData =
-	| {
-			/**
-			 * @description Minimum compute units (0.25 to 16.0). Must be less than or equal to max_cu.
-			 * @type number
-			 */
-			min_cu?: (number | null) | undefined;
-			/**
-			 * @description Maximum compute units (0.25 to 16.0). Must be greater than or equal to min_cu. max_cu - min_cu must not exceed 8.0.
-			 * @type number
-			 */
-			max_cu?: (number | null) | undefined;
-			/**
-			 * @description Seconds of inactivity before the compute endpoint is suspended. Use -1 for always on, or a non-negative value.
-			 * @minLength -1
-			 * @type integer
-			 */
-			sleep_timeout_seconds?: (bigint | null) | undefined;
-	  }
-	| undefined;
-
-/**
  * @type object
  */
-export type SetSiteDatabaseBranchComputeSettingsRequestConfig = {
-	data?: SetSiteDatabaseBranchComputeSettingsData | undefined;
+export type SetSiteDatabaseBranchComputeSettingsBody = {
 	/**
-	 * @type object
+	 * @description Minimum compute units (0.25 to 16.0). Must be less than or equal to max_cu.
+	 *
+	 * Format: `double`
+	 * @type number | undefined
 	 */
-	pathParams: {
-		site_id: SetSiteDatabaseBranchComputeSettingsPathSiteId;
-		branch_id: SetSiteDatabaseBranchComputeSettingsPathBranchId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
+	min_cu?: (number | null) | undefined;
 	/**
-	 * @type string
+	 * @description Maximum compute units (0.25 to 16.0). Must be greater than or equal to min_cu. max_cu - min_cu must not exceed 8.0.
+	 *
+	 * Format: `double`
+	 * @type number | undefined
 	 */
-	url: `/sites/${string}/database/branch/${string}/compute/settings`;
+	max_cu?: (number | null) | undefined;
+	/**
+	 * @description Seconds of inactivity before the compute endpoint is suspended. Use -1 for always on, or a non-negative value.
+	 *
+	 * Format: `int64`
+	 * @minLength -1
+	 * @type integer | undefined
+	 */
+	sleep_timeout_seconds?: (bigint | null) | undefined;
 };
 
-/**
- * @type object
- */
+export type SetSiteDatabaseBranchComputeSettingsOptions = {
+	body: SetSiteDatabaseBranchComputeSettingsBody;
+	path: SetSiteDatabaseBranchComputeSettingsPath;
+	query?: never | undefined;
+	headers?: never | undefined;
+};
+
 export type SetSiteDatabaseBranchComputeSettingsResponses = {
 	"200": SetSiteDatabaseBranchComputeSettingsStatus200;
 	"403": SetSiteDatabaseBranchComputeSettingsStatus403;
@@ -29491,10 +16080,9 @@ export type SetSiteDatabaseBranchComputeSettingsResponse =
 	| SetSiteDatabaseBranchComputeSettingsStatus403
 	| SetSiteDatabaseBranchComputeSettingsStatusDefault;
 
-/**
- * @type string
- */
-export type SetSiteDatabaseComputeSettingsPathSiteId = string;
+export type SetSiteDatabaseComputeSettingsPath = {
+	site_id: string;
+};
 
 /**
  * @description Compute settings for a database or branch
@@ -29503,87 +16091,75 @@ export type SetSiteDatabaseComputeSettingsPathSiteId = string;
 export type SetSiteDatabaseComputeSettingsStatus200 = {
 	/**
 	 * @description Minimum compute units
+	 *
+	 * Format: `double`
 	 * @type number | undefined
 	 */
 	min_cu?: number | undefined;
 	/**
 	 * @description Maximum compute units
+	 *
+	 * Format: `double`
 	 * @type number | undefined
 	 */
 	max_cu?: number | undefined;
 	/**
 	 * @description Seconds of inactivity before suspension
+	 *
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	sleep_timeout_seconds?: bigint | undefined;
 };
 
-/**
- * @type unknown
- */
 export type SetSiteDatabaseComputeSettingsStatus403 = unknown;
 
-/**
- * @type object
- */
 export type SetSiteDatabaseComputeSettingsStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
 /**
  * @description Request body for setting compute settings. All fields are optional; only provided fields are updated.
- * @type object | undefined
- */
-export type SetSiteDatabaseComputeSettingsData =
-	| {
-			/**
-			 * @description Minimum compute units (0.25 to 16.0). Must be less than or equal to max_cu.
-			 * @type number
-			 */
-			min_cu?: (number | null) | undefined;
-			/**
-			 * @description Maximum compute units (0.25 to 16.0). Must be greater than or equal to min_cu. max_cu - min_cu must not exceed 8.0.
-			 * @type number
-			 */
-			max_cu?: (number | null) | undefined;
-			/**
-			 * @description Seconds of inactivity before the compute endpoint is suspended. Use -1 for always on, or a non-negative value.
-			 * @minLength -1
-			 * @type integer
-			 */
-			sleep_timeout_seconds?: (bigint | null) | undefined;
-	  }
-	| undefined;
-
-/**
  * @type object
  */
-export type SetSiteDatabaseComputeSettingsRequestConfig = {
-	data?: SetSiteDatabaseComputeSettingsData | undefined;
+export type SetSiteDatabaseComputeSettingsBody = {
 	/**
-	 * @type object
+	 * @description Minimum compute units (0.25 to 16.0). Must be less than or equal to max_cu.
+	 *
+	 * Format: `double`
+	 * @type number | undefined
 	 */
-	pathParams: {
-		site_id: SetSiteDatabaseComputeSettingsPathSiteId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
+	min_cu?: (number | null) | undefined;
 	/**
-	 * @type string
+	 * @description Maximum compute units (0.25 to 16.0). Must be greater than or equal to min_cu. max_cu - min_cu must not exceed 8.0.
+	 *
+	 * Format: `double`
+	 * @type number | undefined
 	 */
-	url: `/sites/${string}/database/compute/settings`;
+	max_cu?: (number | null) | undefined;
+	/**
+	 * @description Seconds of inactivity before the compute endpoint is suspended. Use -1 for always on, or a non-negative value.
+	 *
+	 * Format: `int64`
+	 * @minLength -1
+	 * @type integer | undefined
+	 */
+	sleep_timeout_seconds?: (bigint | null) | undefined;
 };
 
-/**
- * @type object
- */
+export type SetSiteDatabaseComputeSettingsOptions = {
+	body: SetSiteDatabaseComputeSettingsBody;
+	path: SetSiteDatabaseComputeSettingsPath;
+	query?: never | undefined;
+	headers?: never | undefined;
+};
+
 export type SetSiteDatabaseComputeSettingsResponses = {
 	"200": SetSiteDatabaseComputeSettingsStatus200;
 	"403": SetSiteDatabaseComputeSettingsStatus403;
@@ -29598,10 +16174,9 @@ export type SetSiteDatabaseComputeSettingsResponse =
 	| SetSiteDatabaseComputeSettingsStatus403
 	| SetSiteDatabaseComputeSettingsStatusDefault;
 
-/**
- * @type string
- */
-export type GetSiteDatabaseComputeSettingsPathSiteId = string;
+export type GetSiteDatabaseComputeSettingsPath = {
+	site_id: string;
+};
 
 /**
  * @description Compute settings for a database or branch
@@ -29610,62 +16185,46 @@ export type GetSiteDatabaseComputeSettingsPathSiteId = string;
 export type GetSiteDatabaseComputeSettingsStatus200 = {
 	/**
 	 * @description Minimum compute units
+	 *
+	 * Format: `double`
 	 * @type number | undefined
 	 */
 	min_cu?: number | undefined;
 	/**
 	 * @description Maximum compute units
+	 *
+	 * Format: `double`
 	 * @type number | undefined
 	 */
 	max_cu?: number | undefined;
 	/**
 	 * @description Seconds of inactivity before suspension
+	 *
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	sleep_timeout_seconds?: bigint | undefined;
 };
 
-/**
- * @type unknown
- */
 export type GetSiteDatabaseComputeSettingsStatus403 = unknown;
 
-/**
- * @type object
- */
 export type GetSiteDatabaseComputeSettingsStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type GetSiteDatabaseComputeSettingsRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: GetSiteDatabaseComputeSettingsPathSiteId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/database/compute/settings`;
+export type GetSiteDatabaseComputeSettingsOptions = {
+	body?: never | undefined;
+	path: GetSiteDatabaseComputeSettingsPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type GetSiteDatabaseComputeSettingsResponses = {
 	"200": GetSiteDatabaseComputeSettingsStatus200;
 	"403": GetSiteDatabaseComputeSettingsStatus403;
@@ -29680,57 +16239,31 @@ export type GetSiteDatabaseComputeSettingsResponse =
 	| GetSiteDatabaseComputeSettingsStatus403
 	| GetSiteDatabaseComputeSettingsStatusDefault;
 
-/**
- * @type string
- */
-export type ClearSiteDatabaseComputeSettingsPathSiteId = string;
+export type ClearSiteDatabaseComputeSettingsPath = {
+	site_id: string;
+};
 
-/**
- * @type unknown
- */
 export type ClearSiteDatabaseComputeSettingsStatus204 = unknown;
 
-/**
- * @type unknown
- */
 export type ClearSiteDatabaseComputeSettingsStatus403 = unknown;
 
-/**
- * @type object
- */
 export type ClearSiteDatabaseComputeSettingsStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type ClearSiteDatabaseComputeSettingsRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: ClearSiteDatabaseComputeSettingsPathSiteId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/database/compute/settings`;
+export type ClearSiteDatabaseComputeSettingsOptions = {
+	body?: never | undefined;
+	path: ClearSiteDatabaseComputeSettingsPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type ClearSiteDatabaseComputeSettingsResponses = {
 	"204": ClearSiteDatabaseComputeSettingsStatus204;
 	"403": ClearSiteDatabaseComputeSettingsStatus403;
@@ -29745,16 +16278,17 @@ export type ClearSiteDatabaseComputeSettingsResponse =
 	| ClearSiteDatabaseComputeSettingsStatus403
 	| ClearSiteDatabaseComputeSettingsStatusDefault;
 
-/**
- * @type string
- */
-export type ListSiteDatabaseMigrationsPathSiteId = string;
+export type ListSiteDatabaseMigrationsPath = {
+	site_id: string;
+};
 
-/**
- * @description The branch ID to list migrations for. Defaults to \"production\" if not specified.
- * @type string | undefined
- */
-export type ListSiteDatabaseMigrationsQueryBranch = string | undefined;
+export type ListSiteDatabaseMigrationsQuery = {
+	/**
+	 * @description The branch ID to list migrations for. Defaults to \"production\" if not specified.
+	 * @type string | undefined
+	 */
+	branch?: string | undefined;
+};
 
 /**
  * @description Response containing the list of migrations for a branch
@@ -29769,6 +16303,8 @@ export type ListSiteDatabaseMigrationsStatus200 = {
 		| {
 				/**
 				 * @description The migration version number
+				 *
+				 * Format: `int64`
 				 * @type integer | undefined
 				 */
 				version?: bigint | undefined;
@@ -29791,59 +16327,27 @@ export type ListSiteDatabaseMigrationsStatus200 = {
 		| undefined;
 };
 
-/**
- * @type unknown
- */
 export type ListSiteDatabaseMigrationsStatus404 = unknown;
 
-/**
- * @type unknown
- */
 export type ListSiteDatabaseMigrationsStatus423 = unknown;
 
-/**
- * @type object
- */
 export type ListSiteDatabaseMigrationsStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type ListSiteDatabaseMigrationsRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: ListSiteDatabaseMigrationsPathSiteId;
-	};
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				branch?: ListSiteDatabaseMigrationsQueryBranch | undefined;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/database/migrations`;
+export type ListSiteDatabaseMigrationsOptions = {
+	body?: never | undefined;
+	path: ListSiteDatabaseMigrationsPath;
+	query?: ListSiteDatabaseMigrationsQuery | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type ListSiteDatabaseMigrationsResponses = {
 	"200": ListSiteDatabaseMigrationsStatus200;
 	"404": ListSiteDatabaseMigrationsStatus404;
@@ -29860,22 +16364,22 @@ export type ListSiteDatabaseMigrationsResponse =
 	| ListSiteDatabaseMigrationsStatus423
 	| ListSiteDatabaseMigrationsStatusDefault;
 
-/**
- * @type string
- */
-export type GetSiteDatabaseMigrationPathSiteId = string;
+export type GetSiteDatabaseMigrationPath = {
+	site_id: string;
+	/**
+	 * @description The migration name
+	 * @type string
+	 */
+	name: string;
+};
 
-/**
- * @description The migration name
- * @type string
- */
-export type GetSiteDatabaseMigrationPathName = string;
-
-/**
- * @description The branch ID to look up the migration on. Defaults to the currently published deploy\'s branch.
- * @type string | undefined
- */
-export type GetSiteDatabaseMigrationQueryBranch = string | undefined;
+export type GetSiteDatabaseMigrationQuery = {
+	/**
+	 * @description The branch ID to look up the migration on. Defaults to the currently published deploy\'s branch.
+	 * @type string | undefined
+	 */
+	branch?: string | undefined;
+};
 
 /**
  * @description A migration with its file contents
@@ -29884,6 +16388,8 @@ export type GetSiteDatabaseMigrationQueryBranch = string | undefined;
 export type GetSiteDatabaseMigrationStatus200 = {
 	/**
 	 * @description The migration version number
+	 *
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	version?: bigint | undefined;
@@ -29904,60 +16410,27 @@ export type GetSiteDatabaseMigrationStatus200 = {
 	content?: string | undefined;
 };
 
-/**
- * @type unknown
- */
 export type GetSiteDatabaseMigrationStatus404 = unknown;
 
-/**
- * @type unknown
- */
 export type GetSiteDatabaseMigrationStatus423 = unknown;
 
-/**
- * @type object
- */
 export type GetSiteDatabaseMigrationStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type GetSiteDatabaseMigrationRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: GetSiteDatabaseMigrationPathSiteId;
-		name: GetSiteDatabaseMigrationPathName;
-	};
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				branch?: GetSiteDatabaseMigrationQueryBranch | undefined;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/database/migrations/${string}`;
+export type GetSiteDatabaseMigrationOptions = {
+	body?: never | undefined;
+	path: GetSiteDatabaseMigrationPath;
+	query?: GetSiteDatabaseMigrationQuery | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type GetSiteDatabaseMigrationResponses = {
 	"200": GetSiteDatabaseMigrationStatus200;
 	"404": GetSiteDatabaseMigrationStatus404;
@@ -29974,43 +16447,28 @@ export type GetSiteDatabaseMigrationResponse =
 	| GetSiteDatabaseMigrationStatus423
 	| GetSiteDatabaseMigrationStatusDefault;
 
-/**
- * @type string
- */
-export type RunSiteDatabaseMigrationsPathSiteId = string;
+export type RunSiteDatabaseMigrationsPath = {
+	site_id: string;
+	/**
+	 * @description The deploy ID to run migrations for
+	 * @type string
+	 */
+	deploy_id: string;
+};
 
-/**
- * @description The deploy ID to run migrations for
- * @type string
- */
-export type RunSiteDatabaseMigrationsPathDeployId = string;
-
-/**
- * @type unknown
- */
 export type RunSiteDatabaseMigrationsStatus200 = unknown;
 
-/**
- * @type unknown
- */
 export type RunSiteDatabaseMigrationsStatus409 = unknown;
 
-/**
- * @type unknown
- */
 export type RunSiteDatabaseMigrationsStatus422 = unknown;
 
-/**
- * @type object
- */
 export type RunSiteDatabaseMigrationsStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
@@ -30018,7 +16476,7 @@ export type RunSiteDatabaseMigrationsStatusDefault = {
  * @description Request body for running database migrations
  * @type object | undefined
  */
-export type RunSiteDatabaseMigrationsData =
+export type RunSiteDatabaseMigrationsBody =
 	| {
 			/**
 			 * @description If true, validates migrations without applying them.
@@ -30028,29 +16486,13 @@ export type RunSiteDatabaseMigrationsData =
 	  }
 	| undefined;
 
-/**
- * @type object
- */
-export type RunSiteDatabaseMigrationsRequestConfig = {
-	data?: RunSiteDatabaseMigrationsData | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: RunSiteDatabaseMigrationsPathSiteId;
-		deploy_id: RunSiteDatabaseMigrationsPathDeployId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/database/migrations/${string}`;
+export type RunSiteDatabaseMigrationsOptions = {
+	body: RunSiteDatabaseMigrationsBody;
+	path: RunSiteDatabaseMigrationsPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type RunSiteDatabaseMigrationsResponses = {
 	"200": RunSiteDatabaseMigrationsStatus200;
 	"409": RunSiteDatabaseMigrationsStatus409;
@@ -30067,10 +16509,9 @@ export type RunSiteDatabaseMigrationsResponse =
 	| RunSiteDatabaseMigrationsStatus422
 	| RunSiteDatabaseMigrationsStatusDefault;
 
-/**
- * @type string
- */
-export type CreateSiteDatabaseSnapshotPathSiteId = string;
+export type CreateSiteDatabaseSnapshotPath = {
+	site_id: string;
+};
 
 /**
  * @description A point-in-time snapshot of a database branch
@@ -30094,16 +16535,22 @@ export type CreateSiteDatabaseSnapshotStatus201 = {
 	manual?: boolean | undefined;
 	/**
 	 * @description When the snapshot was created
+	 *
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	created_at?: string | undefined;
 	/**
 	 * @description When the snapshot expires
+	 *
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	expires_at?: string | undefined;
 	/**
 	 * @description The point-in-time timestamp of the snapshot
+	 *
+	 * Format: `dateTime`
 	 * @type string | undefined
 	 */
 	timestamp?: string | undefined;
@@ -30131,17 +16578,13 @@ export type CreateSiteDatabaseSnapshotStatus201 = {
 		| undefined;
 };
 
-/**
- * @type object
- */
 export type CreateSiteDatabaseSnapshotStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
@@ -30149,7 +16592,7 @@ export type CreateSiteDatabaseSnapshotStatusDefault = {
  * @description Request body for creating a database snapshot
  * @type object | undefined
  */
-export type CreateSiteDatabaseSnapshotData =
+export type CreateSiteDatabaseSnapshotBody =
 	| {
 			/**
 			 * @description The ID of the branch to snapshot. Defaults to \"production\" if not specified.
@@ -30186,28 +16629,13 @@ export type CreateSiteDatabaseSnapshotData =
 	  }
 	| undefined;
 
-/**
- * @type object
- */
-export type CreateSiteDatabaseSnapshotRequestConfig = {
-	data?: CreateSiteDatabaseSnapshotData | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: CreateSiteDatabaseSnapshotPathSiteId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/database/snapshot`;
+export type CreateSiteDatabaseSnapshotOptions = {
+	body: CreateSiteDatabaseSnapshotBody;
+	path: CreateSiteDatabaseSnapshotPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type CreateSiteDatabaseSnapshotResponses = {
 	"201": CreateSiteDatabaseSnapshotStatus201;
 	default: CreateSiteDatabaseSnapshotStatusDefault;
@@ -30220,10 +16648,9 @@ export type CreateSiteDatabaseSnapshotResponse =
 	| CreateSiteDatabaseSnapshotStatus201
 	| CreateSiteDatabaseSnapshotStatusDefault;
 
-/**
- * @type string
- */
-export type ListSiteDatabaseSnapshotsPathSiteId = string;
+export type ListSiteDatabaseSnapshotsPath = {
+	site_id: string;
+};
 
 /**
  * @description Response containing a list of database snapshots
@@ -30253,16 +16680,22 @@ export type ListSiteDatabaseSnapshotsStatus200 = {
 				manual?: boolean | undefined;
 				/**
 				 * @description When the snapshot was created
+				 *
+				 * Format: `dateTime`
 				 * @type string | undefined
 				 */
 				created_at?: string | undefined;
 				/**
 				 * @description When the snapshot expires
+				 *
+				 * Format: `dateTime`
 				 * @type string | undefined
 				 */
 				expires_at?: string | undefined;
 				/**
 				 * @description The point-in-time timestamp of the snapshot
+				 *
+				 * Format: `dateTime`
 				 * @type string | undefined
 				 */
 				timestamp?: string | undefined;
@@ -30292,42 +16725,23 @@ export type ListSiteDatabaseSnapshotsStatus200 = {
 		| undefined;
 };
 
-/**
- * @type object
- */
 export type ListSiteDatabaseSnapshotsStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type ListSiteDatabaseSnapshotsRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: ListSiteDatabaseSnapshotsPathSiteId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/database/snapshots`;
+export type ListSiteDatabaseSnapshotsOptions = {
+	body?: never | undefined;
+	path: ListSiteDatabaseSnapshotsPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type ListSiteDatabaseSnapshotsResponses = {
 	"200": ListSiteDatabaseSnapshotsStatus200;
 	default: ListSiteDatabaseSnapshotsStatusDefault;
@@ -30340,59 +16754,34 @@ export type ListSiteDatabaseSnapshotsResponse =
 	| ListSiteDatabaseSnapshotsStatus200
 	| ListSiteDatabaseSnapshotsStatusDefault;
 
-/**
- * @type string
- */
-export type DeleteSiteDatabaseSnapshotPathSiteId = string;
+export type DeleteSiteDatabaseSnapshotPath = {
+	site_id: string;
+	/**
+	 * @description The snapshot ID
+	 * @type string
+	 */
+	snapshot_id: string;
+};
 
-/**
- * @description The snapshot ID
- * @type string
- */
-export type DeleteSiteDatabaseSnapshotPathSnapshotId = string;
-
-/**
- * @type unknown
- */
 export type DeleteSiteDatabaseSnapshotStatus204 = unknown;
 
-/**
- * @type object
- */
 export type DeleteSiteDatabaseSnapshotStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object
- */
-export type DeleteSiteDatabaseSnapshotRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: DeleteSiteDatabaseSnapshotPathSiteId;
-		snapshot_id: DeleteSiteDatabaseSnapshotPathSnapshotId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/database/snapshot/${string}`;
+export type DeleteSiteDatabaseSnapshotOptions = {
+	body?: never | undefined;
+	path: DeleteSiteDatabaseSnapshotPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type DeleteSiteDatabaseSnapshotResponses = {
 	"204": DeleteSiteDatabaseSnapshotStatus204;
 	default: DeleteSiteDatabaseSnapshotStatusDefault;
@@ -30405,33 +16794,24 @@ export type DeleteSiteDatabaseSnapshotResponse =
 	| DeleteSiteDatabaseSnapshotStatus204
 	| DeleteSiteDatabaseSnapshotStatusDefault;
 
-/**
- * @type string
- */
-export type RestoreSiteDatabaseSnapshotPathSiteId = string;
+export type RestoreSiteDatabaseSnapshotPath = {
+	site_id: string;
+	/**
+	 * @description The snapshot ID to restore
+	 * @type string
+	 */
+	snapshot_id: string;
+};
 
-/**
- * @description The snapshot ID to restore
- * @type string
- */
-export type RestoreSiteDatabaseSnapshotPathSnapshotId = string;
-
-/**
- * @type unknown
- */
 export type RestoreSiteDatabaseSnapshotStatus200 = unknown;
 
-/**
- * @type object
- */
 export type RestoreSiteDatabaseSnapshotStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
@@ -30439,7 +16819,7 @@ export type RestoreSiteDatabaseSnapshotStatusDefault = {
  * @description Request body for restoring a database snapshot
  * @type object | undefined
  */
-export type RestoreSiteDatabaseSnapshotData =
+export type RestoreSiteDatabaseSnapshotBody =
 	| {
 			/**
 			 * @description The ID of the branch to restore the snapshot to. Defaults to \"production\" if not specified.
@@ -30449,29 +16829,13 @@ export type RestoreSiteDatabaseSnapshotData =
 	  }
 	| undefined;
 
-/**
- * @type object
- */
-export type RestoreSiteDatabaseSnapshotRequestConfig = {
-	data?: RestoreSiteDatabaseSnapshotData | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: RestoreSiteDatabaseSnapshotPathSiteId;
-		snapshot_id: RestoreSiteDatabaseSnapshotPathSnapshotId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/database/snapshot/${string}/restore`;
+export type RestoreSiteDatabaseSnapshotOptions = {
+	body: RestoreSiteDatabaseSnapshotBody;
+	path: RestoreSiteDatabaseSnapshotPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type RestoreSiteDatabaseSnapshotResponses = {
 	"200": RestoreSiteDatabaseSnapshotStatus200;
 	default: RestoreSiteDatabaseSnapshotStatusDefault;
@@ -30484,79 +16848,39 @@ export type RestoreSiteDatabaseSnapshotResponse =
 	| RestoreSiteDatabaseSnapshotStatus200
 	| RestoreSiteDatabaseSnapshotStatusDefault;
 
-/**
- * @type string
- */
-export type UpdatePluginPathSiteId = string;
+export type UpdatePluginPath = {
+	site_id: string;
+	_package: string;
+};
 
-/**
- * @type string
- */
-export type UpdatePluginPathPackage = string;
-
-/**
- * @type object
- */
 export type UpdatePluginStatus200 = {
-	/**
-	 * @type string | undefined
-	 */
 	package?: string | undefined;
-	/**
-	 * @type string | undefined
-	 */
 	pinned_version?: string | undefined;
 };
 
-/**
- * @type object
- */
 export type UpdatePluginStatusDefault = {
 	/**
+	 * @description
+	 * Format: `int64`
 	 * @type integer | undefined
 	 */
 	code?: bigint | undefined;
-	/**
-	 * @type string
-	 */
 	message: string;
 };
 
-/**
- * @type object | undefined
- */
-export type UpdatePluginData =
+export type UpdatePluginBody =
 	| {
-			/**
-			 * @type string | undefined
-			 */
 			pinned_version?: string | undefined;
 	  }
 	| undefined;
 
-/**
- * @type object
- */
-export type UpdatePluginRequestConfig = {
-	data?: UpdatePluginData | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		site_id: UpdatePluginPathSiteId;
-		_package: UpdatePluginPathPackage;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/sites/${string}/plugins/${string}`;
+export type UpdatePluginOptions = {
+	body: UpdatePluginBody;
+	path: UpdatePluginPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type UpdatePluginResponses = {
 	"200": UpdatePluginStatus200;
 	default: UpdatePluginStatusDefault;

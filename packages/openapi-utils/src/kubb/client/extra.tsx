@@ -1,8 +1,8 @@
-import { type ast, defineGenerator } from "@kubb/core";
-import type { PluginClient } from "@kubb/plugin-client";
-import { pluginClientName } from "@kubb/plugin-client";
-import { File, jsxRenderer } from "@kubb/renderer-jsx";
 import c from "case";
+import { File, jsxRenderer } from "kubb/jsx";
+import { ast, defineGenerator } from "kubb/kit";
+import type { PluginClient } from "../plugin";
+import { clientFile, fileBanner, operationName } from "../utils";
 
 const HTTP_METHODS = ["GET", "POST", "PUT", "PATCH", "DELETE"] as const;
 type HttpMethod = (typeof HTTP_METHODS)[number];
@@ -15,32 +15,27 @@ export const extraGenerator = defineGenerator<PluginClient>({
 	name: "extra",
 	renderer: jsxRenderer,
 	operations(nodes, ctx) {
-		const { adapter, config, resolver, root } = ctx;
-		const { output, group } = ctx.options;
-		const clientResolver = ctx.driver.getResolver(pluginClientName);
+		const operations = nodes.filter((node) => ast.isHttpOperationNode(node));
 
-		const file = resolver.resolveFile({ name: "extra", extname: ".ts" }, { root, output, group });
+		const file = ctx.resolver.file({
+			name: "extra",
+			extname: ".ts",
+			root: ctx.root,
+			output: ctx.options.output,
+		});
 
-		const imports = nodes.map((node) => {
-			const name = clientResolver.resolveName(node.operationId);
-			const opFile = clientResolver.resolveFile(
-				{
-					name: node.operationId,
-					extname: ".ts",
-					tag: node.tags[0] ?? "default",
-					path: node.path,
-				},
-				{ root, output, group },
-			);
+		const getOpName = (node: ast.HttpOperationNode) => operationName(ctx, node);
+
+		const imports = operations.map((node) => {
+			const name = getOpName(node);
+			const opFile = clientFile(ctx, node);
 
 			return <File.Import key={name} name={[name]} root={file.path} path={opFile.path} />;
 		});
 
-		const getOpName = (node: ast.OperationNode) => clientResolver.resolveName(node.operationId);
+		const tags = Array.from(new Set(operations.flatMap((node) => node.tags)));
 
-		const tags = Array.from(new Set(nodes.flatMap((node) => node.tags)));
-
-		const eligible = nodes.filter(
+		const eligible = operations.filter(
 			(node) => isWriteOrReadMethod(node.method) && node.operationId !== undefined,
 		);
 
@@ -51,7 +46,7 @@ export const extraGenerator = defineGenerator<PluginClient>({
 		const operationsByTag = Object.fromEntries(
 			tags.map((name) => [
 				c.camel(name.toLowerCase()),
-				nodes.filter((node) => node.tags.includes(name)).map(getOpName),
+				operations.filter((node) => node.tags.includes(name)).map(getOpName),
 			]),
 		);
 
@@ -73,13 +68,7 @@ export const extraGenerator = defineGenerator<PluginClient>({
 		);
 
 		return (
-			<File
-				baseName={file.baseName}
-				path={file.path}
-				meta={file.meta}
-				banner={resolver.resolveBanner(adapter.inputNode, { output, config })}
-				footer={resolver.resolveFooter(adapter.inputNode, { output, config })}
-			>
+			<File baseName={file.baseName} path={file.path} meta={file.meta} {...fileBanner(ctx, file)}>
 				{imports}
 
 				<File.Source>

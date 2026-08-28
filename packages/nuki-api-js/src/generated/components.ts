@@ -6,3392 +6,4153 @@
 import type { ErrorWrapper, FetcherConfig } from "../utils/fetcher";
 import defaultClient from "../utils/fetcher";
 import type {
-	DeleteAccountIntegrationsResource401,
-	DeleteAccountIntegrationsResourceMutationResponse,
-	DeleteAccountIntegrationsResourceQueryParams,
-	DeleteAccountOtpResource401,
-	DeleteAccountOtpResourceMutationResponse,
-	DeleteAccountSettingResource401,
-	DeleteAccountSettingResource403,
-	DeleteAccountSettingResourceMutationResponse,
-	DeleteAccountSubResource401,
-	DeleteAccountSubResourceMutationResponse,
-	DeleteAccountSubResourcePathParams,
-	DeleteAccountsResource401,
-	DeleteAccountsResourceMutationResponse,
-	DeleteAccountUserResource401,
-	DeleteAccountUserResource423,
-	DeleteAccountUserResourceMutationResponse,
-	DeleteAccountUserResourcePathParams,
-	DeleteAddressResource401,
-	DeleteAddressResource403,
-	DeleteAddressResourceMutationResponse,
-	DeleteAddressResourcePathParams,
-	DeleteAddressUnitResource401,
-	DeleteAddressUnitResource403,
-	DeleteAddressUnitResource423,
-	DeleteAddressUnitResourceMutationResponse,
-	DeleteAddressUnitResourcePathParams,
-	DeleteAddressUnitsResource400,
-	DeleteAddressUnitsResource401,
-	DeleteAddressUnitsResource403,
-	DeleteAddressUnitsResource423,
-	DeleteAddressUnitsResourceMutationRequest,
-	DeleteAddressUnitsResourceMutationResponse,
-	DeleteAddressUnitsResourcePathParams,
-	DeleteApiKeyAdvancedResource401,
-	DeleteApiKeyAdvancedResourceMutationResponse,
-	DeleteApiKeyAdvancedResourcePathParams,
-	DeleteApiKeyResource401,
-	DeleteApiKeyResourceMutationResponse,
-	DeleteApiKeyResourcePathParams,
-	DeleteApiKeyTokenResource401,
-	DeleteApiKeyTokenResourceMutationResponse,
-	DeleteApiKeyTokenResourcePathParams,
-	DeleteDecentralWebhookResource401,
-	DeleteDecentralWebhookResource403,
-	DeleteDecentralWebhookResourceMutationResponse,
-	DeleteDecentralWebhookResourcePathParams,
-	DeleteNotificationResource401,
-	DeleteNotificationResource403,
-	DeleteNotificationResource405,
-	DeleteNotificationResourceMutationResponse,
-	DeleteNotificationResourcePathParams,
-	DeleteSmartlockAuthResource401,
-	DeleteSmartlockAuthResource403,
-	DeleteSmartlockAuthResource423,
-	DeleteSmartlockAuthResourceMutationResponse,
-	DeleteSmartlockAuthResourcePathParams,
-	DeleteSmartlockResource400,
-	DeleteSmartlockResource401,
-	DeleteSmartlockResource403,
-	DeleteSmartlockResourceMutationResponse,
-	DeleteSmartlockResourcePathParams,
-	DeleteSmartlocksAuthsResource400,
-	DeleteSmartlocksAuthsResource401,
-	DeleteSmartlocksAuthsResource403,
-	DeleteSmartlocksAuthsResource423,
-	DeleteSmartlocksAuthsResourceMutationRequest,
-	DeleteSmartlocksAuthsResourceMutationResponse,
-	GetAccountIntegrationsResource401,
-	GetAccountIntegrationsResourceQueryResponse,
-	GetAccountSettingResource401,
-	GetAccountSettingResource403,
-	GetAccountSettingResource404,
-	GetAccountSettingResourceQueryResponse,
-	GetAccountSubResource401,
-	GetAccountSubResourcePathParams,
-	GetAccountSubResourceQueryResponse,
-	GetAccountSubsResource401,
-	GetAccountSubsResourceQueryParams,
-	GetAccountSubsResourceQueryResponse,
-	GetAccountsResource401,
-	GetAccountsResourceQueryResponse,
-	GetAccountUserResource401,
-	GetAccountUserResourcePathParams,
-	GetAccountUserResourceQueryResponse,
-	GetAccountUsersResource401,
-	GetAccountUsersResourceQueryParams,
-	GetAccountUsersResourceQueryResponse,
-	GetAddressesResource401,
-	GetAddressesResourceQueryResponse,
-	GetAddressReservationsResource401,
-	GetAddressReservationsResourcePathParams,
-	GetAddressReservationsResourceQueryResponse,
-	GetAddressTokenRedeemResource401,
-	GetAddressTokenRedeemResource404,
-	GetAddressTokenRedeemResourcePathParams,
-	GetAddressTokenRedeemResourceQueryResponse,
-	GetAddressTokenResource401,
-	GetAddressTokenResource404,
-	GetAddressTokenResourcePathParams,
-	GetAddressTokenResourceQueryResponse,
-	GetAddressTokensResource400,
-	GetAddressTokensResource401,
-	GetAddressTokensResourcePathParams,
-	GetAddressTokensResourceQueryResponse,
-	GetAddressUnitsResource400,
-	GetAddressUnitsResource401,
-	GetAddressUnitsResourcePathParams,
-	GetAddressUnitsResourceQueryResponse,
-	GetApiKeyAdvancedResource401,
-	GetApiKeyAdvancedResource403,
-	GetApiKeyAdvancedResource404,
-	GetApiKeyAdvancedResourcePathParams,
-	GetApiKeyAdvancedResourceQueryResponse,
-	GetApiKeysResource401,
-	GetApiKeysResourceQueryResponse,
-	GetApiKeyTokensResource401,
-	GetApiKeyTokensResourcePathParams,
-	GetApiKeyTokensResourceQueryResponse,
-	GetCompaniesResource401,
-	GetCompaniesResource403,
-	GetCompaniesResourceQueryResponse,
-	GetDecentralWebhooksResource401,
-	GetDecentralWebhooksResource403,
-	GetDecentralWebhooksResourceQueryResponse,
-	GetNotificationResource401,
-	GetNotificationResource403,
-	GetNotificationResource404,
-	GetNotificationResourcePathParams,
-	GetNotificationResourceQueryResponse,
-	GetNotificationsResource401,
-	GetNotificationsResourceQueryParams,
-	GetNotificationsResourceQueryResponse,
-	GetOpenerBrandResourcePathParams,
-	GetOpenerBrandResourceQueryResponse,
-	GetOpenerBrandsResourceQueryResponse,
-	GetOpenerIntercomResourcePathParams,
-	GetOpenerIntercomResourceQueryResponse,
-	GetOpenerIntercomsResourceQueryParams,
-	GetOpenerIntercomsResourceQueryResponse,
-	GetServiceResource401,
-	GetServiceResourcePathParams,
-	GetServiceResourceQueryResponse,
-	GetServicesResource401,
-	GetServicesResourceQueryParams,
-	GetServicesResourceQueryResponse,
-	GetSmartlockAuthResource401,
-	GetSmartlockAuthResource403,
-	GetSmartlockAuthResourcePathParams,
-	GetSmartlockAuthResourceQueryResponse,
-	GetSmartlockAuthsResource401,
-	GetSmartlockAuthsResource403,
-	GetSmartlockAuthsResourcePathParams,
-	GetSmartlockAuthsResourceQueryParams,
-	GetSmartlockAuthsResourceQueryResponse,
-	GetSmartlockLogsResource401,
-	GetSmartlockLogsResourcePathParams,
-	GetSmartlockLogsResourceQueryParams,
-	GetSmartlockLogsResourceQueryResponse,
-	GetSmartlockResource401,
-	GetSmartlockResource403,
-	GetSmartlockResource404,
-	GetSmartlockResourcePathParams,
-	GetSmartlockResourceQueryResponse,
-	GetSmartlocksAuthsPaginatedResource401,
-	GetSmartlocksAuthsPaginatedResourceQueryParams,
-	GetSmartlocksAuthsPaginatedResourceQueryResponse,
-	GetSmartlocksAuthsResource401,
-	GetSmartlocksAuthsResourceQueryParams,
-	GetSmartlocksAuthsResourceQueryResponse,
-	GetSmartlocksLogsResource401,
-	GetSmartlocksLogsResourceQueryParams,
-	GetSmartlocksLogsResourceQueryResponse,
-	GetSmartlocksResource401,
-	GetSmartlocksResourceQueryParams,
-	GetSmartlocksResourceQueryResponse,
-	GetWebhookLogsResource401,
-	GetWebhookLogsResourcePathParams,
-	GetWebhookLogsResourceQueryParams,
-	GetWebhookLogsResourceQueryResponse,
-	PostAccountEmailChangeResource400,
-	PostAccountEmailChangeResource401,
-	PostAccountEmailChangeResource409,
-	PostAccountEmailChangeResourceMutationRequest,
-	PostAccountEmailChangeResourceMutationResponse,
-	PostAccountEmailVerifyResource400,
-	PostAccountEmailVerifyResource401,
-	PostAccountEmailVerifyResource409,
-	PostAccountEmailVerifyResourceMutationResponse,
-	PostAccountOtpResource400,
-	PostAccountOtpResource401,
-	PostAccountOtpResource429,
-	PostAccountOtpResourceMutationRequest,
-	PostAccountOtpResourceMutationResponse,
-	PostAccountPasswordResetResource401,
-	PostAccountPasswordResetResourceMutationRequest,
-	PostAccountPasswordResetResourceMutationResponse,
-	PostAccountSubResource400,
-	PostAccountSubResource401,
-	PostAccountSubResource409,
-	PostAccountSubResourceMutationRequest,
-	PostAccountSubResourceMutationResponse,
-	PostAccountSubResourcePathParams,
-	PostAccountsResource400,
-	PostAccountsResource401,
-	PostAccountsResource409,
-	PostAccountsResourceMutationRequest,
-	PostAccountsResourceMutationResponse,
-	PostAccountsResourceQueryParams,
-	PostAccountUserResource400,
-	PostAccountUserResource401,
-	PostAccountUserResource409,
-	PostAccountUserResourceMutationRequest,
-	PostAccountUserResourceMutationResponse,
-	PostAccountUserResourcePathParams,
-	PostAddressReservationIssueResource400,
-	PostAddressReservationIssueResource401,
-	PostAddressReservationIssueResourceMutationResponse,
-	PostAddressReservationIssueResourcePathParams,
-	PostAddressReservationRevokeResource400,
-	PostAddressReservationRevokeResource401,
-	PostAddressReservationRevokeResourceMutationResponse,
-	PostAddressReservationRevokeResourcePathParams,
-	PostAddressResource400,
-	PostAddressResource401,
-	PostAddressResource403,
-	PostAddressResourceMutationRequest,
-	PostAddressResourceMutationResponse,
-	PostAddressResourcePathParams,
-	PostAddressTokenRedeemResource400,
-	PostAddressTokenRedeemResource401,
-	PostAddressTokenRedeemResource404,
-	PostAddressTokenRedeemResourceMutationResponse,
-	PostAddressTokenRedeemResourcePathParams,
-	PostAddressTokenRedeemResourceQueryParams,
-	PostApiKeyAdvancedReactivateResource400,
-	PostApiKeyAdvancedReactivateResource401,
-	PostApiKeyAdvancedReactivateResourceMutationResponse,
-	PostApiKeyAdvancedReactivateResourcePathParams,
-	PostApiKeyAdvancedResource400,
-	PostApiKeyAdvancedResource401,
-	PostApiKeyAdvancedResourceMutationRequest,
-	PostApiKeyAdvancedResourceMutationResponse,
-	PostApiKeyAdvancedResourcePathParams,
-	PostApiKeyResource400,
-	PostApiKeyResource401,
-	PostApiKeyResourceMutationRequest,
-	PostApiKeyResourceMutationResponse,
-	PostApiKeyResourcePathParams,
-	PostApiKeyTokenResource400,
-	PostApiKeyTokenResource401,
-	PostApiKeyTokenResourceMutationRequest,
-	PostApiKeyTokenResourceMutationResponse,
-	PostApiKeyTokenResourcePathParams,
-	PostNotificationResource400,
-	PostNotificationResource401,
-	PostNotificationResource403,
-	PostNotificationResourceMutationRequest,
-	PostNotificationResourceMutationResponse,
-	PostNotificationResourcePathParams,
-	PostReservationAccessTimesUpdateResource400,
-	PostReservationAccessTimesUpdateResource401,
-	PostReservationAccessTimesUpdateResourceMutationRequest,
-	PostReservationAccessTimesUpdateResourceMutationResponse,
-	PostReservationAccessTimesUpdateResourcePathParams,
-	PostServiceLinkResource400,
-	PostServiceLinkResource401,
-	PostServiceLinkResourceMutationResponse,
-	PostServiceLinkResourcePathParams,
-	PostServiceSyncResource400,
-	PostServiceSyncResource401,
-	PostServiceSyncResourceMutationResponse,
-	PostServiceSyncResourcePathParams,
-	PostServiceUnlinkResource400,
-	PostServiceUnlinkResource401,
-	PostServiceUnlinkResourceMutationResponse,
-	PostServiceUnlinkResourcePathParams,
-	PostSmartdoorAdvancedConfigResource400,
-	PostSmartdoorAdvancedConfigResource401,
-	PostSmartdoorAdvancedConfigResourceMutationRequest,
-	PostSmartdoorAdvancedConfigResourceMutationResponse,
-	PostSmartdoorAdvancedConfigResourcePathParams,
-	PostSmartlockActionAdvancedResource400,
-	PostSmartlockActionAdvancedResource402,
-	PostSmartlockActionAdvancedResource409,
-	PostSmartlockActionAdvancedResource426,
-	PostSmartlockActionAdvancedResourceMutationResponse,
-	PostSmartlockActionAdvancedResourcePathParams,
-	PostSmartlockActionResource400,
-	PostSmartlockActionResource401,
-	PostSmartlockActionResource402,
-	PostSmartlockActionResourceMutationResponse,
-	PostSmartlockActionResourcePathParams,
-	PostSmartlockAdminPinResource400,
-	PostSmartlockAdminPinResource401,
-	PostSmartlockAdminPinResourceMutationRequest,
-	PostSmartlockAdminPinResourceMutationResponse,
-	PostSmartlockAdminPinResourcePathParams,
-	PostSmartlockAdvancedConfigResource400,
-	PostSmartlockAdvancedConfigResource401,
-	PostSmartlockAdvancedConfigResourceMutationRequest,
-	PostSmartlockAdvancedConfigResourceMutationResponse,
-	PostSmartlockAdvancedConfigResourcePathParams,
-	PostSmartlockAuthResource400,
-	PostSmartlockAuthResource401,
-	PostSmartlockAuthResource403,
-	PostSmartlockAuthResource409,
-	PostSmartlockAuthResource423,
-	PostSmartlockAuthResourceMutationRequest,
-	PostSmartlockAuthResourceMutationResponse,
-	PostSmartlockAuthResourcePathParams,
-	PostSmartlockAuthWithSharedKeyResource401,
-	PostSmartlockAuthWithSharedKeyResource403,
-	PostSmartlockAuthWithSharedKeyResource404,
-	PostSmartlockAuthWithSharedKeyResourceMutationRequest,
-	PostSmartlockAuthWithSharedKeyResourceMutationResponse,
-	PostSmartlockAuthWithSharedKeyResourcePathParams,
-	PostSmartlockBulkWebConfigResource400,
-	PostSmartlockBulkWebConfigResource401,
-	PostSmartlockBulkWebConfigResourceMutationRequest,
-	PostSmartlockBulkWebConfigResourceMutationResponse,
-	PostSmartlockConfigResource400,
-	PostSmartlockConfigResource401,
-	PostSmartlockConfigResourceMutationRequest,
-	PostSmartlockConfigResourceMutationResponse,
-	PostSmartlockConfigResourcePathParams,
-	PostSmartlockLockActionAdvancedResource400,
-	PostSmartlockLockActionAdvancedResource401,
-	PostSmartlockLockActionAdvancedResource405,
-	PostSmartlockLockActionAdvancedResourceMutationResponse,
-	PostSmartlockLockActionAdvancedResourcePathParams,
-	PostSmartlockLockActionResource400,
-	PostSmartlockLockActionResource401,
-	PostSmartlockLockActionResource405,
-	PostSmartlockLockActionResourceMutationResponse,
-	PostSmartlockLockActionResourcePathParams,
-	PostSmartlockOpenerAdvancedConfigResource400,
-	PostSmartlockOpenerAdvancedConfigResource401,
-	PostSmartlockOpenerAdvancedConfigResourceMutationRequest,
-	PostSmartlockOpenerAdvancedConfigResourceMutationResponse,
-	PostSmartlockOpenerAdvancedConfigResourcePathParams,
-	PostSmartlockResource400,
-	PostSmartlockResource401,
-	PostSmartlockResource403,
-	PostSmartlockResourceMutationRequest,
-	PostSmartlockResourceMutationResponse,
-	PostSmartlockResourcePathParams,
-	PostSmartlockSyncResource400,
-	PostSmartlockSyncResource401,
-	PostSmartlockSyncResourceMutationResponse,
-	PostSmartlockSyncResourcePathParams,
-	PostSmartlocksAuthsResource400,
-	PostSmartlocksAuthsResource401,
-	PostSmartlocksAuthsResource403,
-	PostSmartlocksAuthsResource409,
-	PostSmartlocksAuthsResource423,
-	PostSmartlocksAuthsResourceMutationRequest,
-	PostSmartlocksAuthsResourceMutationResponse,
-	PostSmartlockUnlockActionAdvancedResource400,
-	PostSmartlockUnlockActionAdvancedResource401,
-	PostSmartlockUnlockActionAdvancedResource405,
-	PostSmartlockUnlockActionAdvancedResourceMutationResponse,
-	PostSmartlockUnlockActionAdvancedResourcePathParams,
-	PostSmartlockUnlockActionResource400,
-	PostSmartlockUnlockActionResource401,
-	PostSmartlockUnlockActionResource405,
-	PostSmartlockUnlockActionResourceMutationResponse,
-	PostSmartlockUnlockActionResourcePathParams,
-	PostSmartlockWebConfigResource400,
-	PostSmartlockWebConfigResource401,
-	PostSmartlockWebConfigResourceMutationRequest,
-	PostSmartlockWebConfigResourceMutationResponse,
-	PostSmartlockWebConfigResourcePathParams,
-	PutAccountOtpResource405,
-	PutAccountOtpResourceMutationResponse,
-	PutAccountSettingResource400,
-	PutAccountSettingResource401,
-	PutAccountSettingResourceMutationRequest,
-	PutAccountSettingResourceMutationResponse,
-	PutAccountSubsResource400,
-	PutAccountSubsResourceMutationRequest,
-	PutAccountSubsResourceMutationResponse,
-	PutAccountUsersResource400,
-	PutAccountUsersResourceMutationRequest,
-	PutAccountUsersResourceMutationResponse,
-	PutAddressesResource400,
-	PutAddressesResource401,
-	PutAddressesResourceMutationRequest,
-	PutAddressesResourceMutationResponse,
-	PutAddressUnitsResource400,
-	PutAddressUnitsResource401,
-	PutAddressUnitsResource403,
-	PutAddressUnitsResourceMutationRequest,
-	PutAddressUnitsResourceMutationResponse,
-	PutAddressUnitsResourcePathParams,
-	PutApiKeyAdvancedResource400,
-	PutApiKeyAdvancedResource401,
-	PutApiKeyAdvancedResourceMutationRequest,
-	PutApiKeyAdvancedResourceMutationResponse,
-	PutApiKeyAdvancedResourcePathParams,
-	PutApiKeysResource400,
-	PutApiKeysResource401,
-	PutApiKeysResourceMutationRequest,
-	PutApiKeysResourceMutationResponse,
-	PutApiKeyTokensResource400,
-	PutApiKeyTokensResource401,
-	PutApiKeyTokensResourceMutationRequest,
-	PutApiKeyTokensResourceMutationResponse,
-	PutApiKeyTokensResourcePathParams,
-	PutDecentralWebhooksResource400,
-	PutDecentralWebhooksResource401,
-	PutDecentralWebhooksResource403,
-	PutDecentralWebhooksResourceMutationRequest,
-	PutDecentralWebhooksResourceMutationResponse,
-	PutNotificationsResource400,
-	PutNotificationsResource401,
-	PutNotificationsResource403,
-	PutNotificationsResourceMutationRequest,
-	PutNotificationsResourceMutationResponse,
-	PutSmartlockAuthsAdvancedResource400,
-	PutSmartlockAuthsAdvancedResource402,
-	PutSmartlockAuthsAdvancedResource409,
-	PutSmartlockAuthsAdvancedResource426,
-	PutSmartlockAuthsAdvancedResourceMutationRequest,
-	PutSmartlockAuthsAdvancedResourceMutationResponse,
-	PutSmartlockAuthsResource400,
-	PutSmartlockAuthsResource402,
-	PutSmartlockAuthsResource409,
-	PutSmartlockAuthsResource426,
-	PutSmartlockAuthsResourceMutationRequest,
-	PutSmartlockAuthsResourceMutationResponse,
-	PutSmartlockAuthsResourcePathParams,
-	PutSmartlocksAuthsResource400,
-	PutSmartlocksAuthsResource402,
-	PutSmartlocksAuthsResource409,
-	PutSmartlocksAuthsResource426,
-	PutSmartlocksAuthsResourceMutationRequest,
-	PutSmartlocksAuthsResourceMutationResponse,
+	DeleteAccountIntegrationsResourceResponse,
+	DeleteAccountIntegrationsResourceStatus401,
+	DeleteAccountOtpResourceResponse,
+	DeleteAccountOtpResourceStatus401,
+	DeleteAccountSettingResourceResponse,
+	DeleteAccountSettingResourceStatus401,
+	DeleteAccountSettingResourceStatus403,
+	DeleteAccountSubResourceResponse,
+	DeleteAccountSubResourceStatus401,
+	DeleteAccountsResourceResponse,
+	DeleteAccountsResourceStatus401,
+	DeleteAccountUserResourceResponse,
+	DeleteAccountUserResourceStatus401,
+	DeleteAccountUserResourceStatus423,
+	DeleteAddressResourceResponse,
+	DeleteAddressResourceStatus401,
+	DeleteAddressResourceStatus403,
+	DeleteAddressUnitResourceResponse,
+	DeleteAddressUnitResourceStatus401,
+	DeleteAddressUnitResourceStatus403,
+	DeleteAddressUnitResourceStatus423,
+	DeleteAddressUnitsResourceBody,
+	DeleteAddressUnitsResourceResponse,
+	DeleteAddressUnitsResourceStatus400,
+	DeleteAddressUnitsResourceStatus401,
+	DeleteAddressUnitsResourceStatus403,
+	DeleteAddressUnitsResourceStatus423,
+	DeleteApiKeyAdvancedResourceResponse,
+	DeleteApiKeyAdvancedResourceStatus401,
+	DeleteApiKeyResourceResponse,
+	DeleteApiKeyResourceStatus401,
+	DeleteApiKeyTokenResourceResponse,
+	DeleteApiKeyTokenResourceStatus401,
+	DeleteDecentralWebhookResourceResponse,
+	DeleteDecentralWebhookResourceStatus401,
+	DeleteDecentralWebhookResourceStatus403,
+	DeleteNotificationResourceResponse,
+	DeleteNotificationResourceStatus401,
+	DeleteNotificationResourceStatus403,
+	DeleteNotificationResourceStatus405,
+	DeleteSmartlockAuthResourceResponse,
+	DeleteSmartlockAuthResourceStatus401,
+	DeleteSmartlockAuthResourceStatus403,
+	DeleteSmartlockAuthResourceStatus423,
+	DeleteSmartlockResourceResponse,
+	DeleteSmartlockResourceStatus400,
+	DeleteSmartlockResourceStatus401,
+	DeleteSmartlockResourceStatus403,
+	DeleteSmartlocksAuthsResourceBody,
+	DeleteSmartlocksAuthsResourceResponse,
+	DeleteSmartlocksAuthsResourceStatus400,
+	DeleteSmartlocksAuthsResourceStatus401,
+	DeleteSmartlocksAuthsResourceStatus403,
+	DeleteSmartlocksAuthsResourceStatus423,
+	GetAccountIntegrationsResourceResponse,
+	GetAccountIntegrationsResourceStatus401,
+	GetAccountSettingResourceResponse,
+	GetAccountSettingResourceStatus401,
+	GetAccountSettingResourceStatus403,
+	GetAccountSettingResourceStatus404,
+	GetAccountSubResourceResponse,
+	GetAccountSubResourceStatus401,
+	GetAccountSubsResourceResponse,
+	GetAccountSubsResourceStatus401,
+	GetAccountsResourceResponse,
+	GetAccountsResourceStatus401,
+	GetAccountUserResourceResponse,
+	GetAccountUserResourceStatus401,
+	GetAccountUsersResourceResponse,
+	GetAccountUsersResourceStatus401,
+	GetAddressesResourceResponse,
+	GetAddressesResourceStatus401,
+	GetAddressReservationsResourceResponse,
+	GetAddressReservationsResourceStatus401,
+	GetAddressTokenRedeemResourceResponse,
+	GetAddressTokenRedeemResourceStatus401,
+	GetAddressTokenRedeemResourceStatus404,
+	GetAddressTokenResourceResponse,
+	GetAddressTokenResourceStatus401,
+	GetAddressTokenResourceStatus404,
+	GetAddressTokensResourceResponse,
+	GetAddressTokensResourceStatus400,
+	GetAddressTokensResourceStatus401,
+	GetAddressUnitsResourceResponse,
+	GetAddressUnitsResourceStatus400,
+	GetAddressUnitsResourceStatus401,
+	GetApiKeyAdvancedResourceResponse,
+	GetApiKeyAdvancedResourceStatus401,
+	GetApiKeyAdvancedResourceStatus403,
+	GetApiKeyAdvancedResourceStatus404,
+	GetApiKeysResourceResponse,
+	GetApiKeysResourceStatus401,
+	GetApiKeyTokensResourceResponse,
+	GetApiKeyTokensResourceStatus401,
+	GetCompaniesResourceResponse,
+	GetCompaniesResourceStatus401,
+	GetCompaniesResourceStatus403,
+	GetDecentralWebhooksResourceResponse,
+	GetDecentralWebhooksResourceStatus401,
+	GetDecentralWebhooksResourceStatus403,
+	GetNotificationResourceResponse,
+	GetNotificationResourceStatus401,
+	GetNotificationResourceStatus403,
+	GetNotificationResourceStatus404,
+	GetNotificationsResourceResponse,
+	GetNotificationsResourceStatus401,
+	GetOpenerBrandResourceResponse,
+	GetOpenerBrandsResourceResponse,
+	GetOpenerIntercomResourceResponse,
+	GetOpenerIntercomsResourceResponse,
+	GetServiceResourceResponse,
+	GetServiceResourceStatus401,
+	GetServicesResourceResponse,
+	GetServicesResourceStatus401,
+	GetSmartlockAuthResourceResponse,
+	GetSmartlockAuthResourceStatus401,
+	GetSmartlockAuthResourceStatus403,
+	GetSmartlockAuthsResourceResponse,
+	GetSmartlockAuthsResourceStatus401,
+	GetSmartlockAuthsResourceStatus403,
+	GetSmartlockLogsResourceResponse,
+	GetSmartlockLogsResourceStatus401,
+	GetSmartlockResourceResponse,
+	GetSmartlockResourceStatus401,
+	GetSmartlockResourceStatus403,
+	GetSmartlockResourceStatus404,
+	GetSmartlocksAuthsPaginatedResourceResponse,
+	GetSmartlocksAuthsPaginatedResourceStatus401,
+	GetSmartlocksAuthsResourceResponse,
+	GetSmartlocksAuthsResourceStatus401,
+	GetSmartlocksLogsResourceResponse,
+	GetSmartlocksLogsResourceStatus401,
+	GetSmartlocksResourceResponse,
+	GetSmartlocksResourceStatus401,
+	GetWebhookLogsResourceResponse,
+	GetWebhookLogsResourceStatus401,
+	PostAccountEmailChangeResourceBody,
+	PostAccountEmailChangeResourceResponse,
+	PostAccountEmailChangeResourceStatus400,
+	PostAccountEmailChangeResourceStatus401,
+	PostAccountEmailChangeResourceStatus409,
+	PostAccountEmailVerifyResourceResponse,
+	PostAccountEmailVerifyResourceStatus400,
+	PostAccountEmailVerifyResourceStatus401,
+	PostAccountEmailVerifyResourceStatus409,
+	PostAccountOtpResourceBody,
+	PostAccountOtpResourceResponse,
+	PostAccountOtpResourceStatus400,
+	PostAccountOtpResourceStatus401,
+	PostAccountOtpResourceStatus429,
+	PostAccountPasswordResetResourceBody,
+	PostAccountPasswordResetResourceResponse,
+	PostAccountPasswordResetResourceStatus401,
+	PostAccountSubResourceBody,
+	PostAccountSubResourceResponse,
+	PostAccountSubResourceStatus400,
+	PostAccountSubResourceStatus401,
+	PostAccountSubResourceStatus409,
+	PostAccountsResourceBody,
+	PostAccountsResourceResponse,
+	PostAccountsResourceStatus400,
+	PostAccountsResourceStatus401,
+	PostAccountsResourceStatus409,
+	PostAccountUserResourceBody,
+	PostAccountUserResourceResponse,
+	PostAccountUserResourceStatus400,
+	PostAccountUserResourceStatus401,
+	PostAccountUserResourceStatus409,
+	PostAddressReservationIssueResourceResponse,
+	PostAddressReservationIssueResourceStatus400,
+	PostAddressReservationIssueResourceStatus401,
+	PostAddressReservationRevokeResourceResponse,
+	PostAddressReservationRevokeResourceStatus400,
+	PostAddressReservationRevokeResourceStatus401,
+	PostAddressResourceBody,
+	PostAddressResourceResponse,
+	PostAddressResourceStatus400,
+	PostAddressResourceStatus401,
+	PostAddressResourceStatus403,
+	PostAddressTokenRedeemResourceResponse,
+	PostAddressTokenRedeemResourceStatus400,
+	PostAddressTokenRedeemResourceStatus401,
+	PostAddressTokenRedeemResourceStatus404,
+	PostApiKeyAdvancedReactivateResourceResponse,
+	PostApiKeyAdvancedReactivateResourceStatus400,
+	PostApiKeyAdvancedReactivateResourceStatus401,
+	PostApiKeyAdvancedResourceBody,
+	PostApiKeyAdvancedResourceResponse,
+	PostApiKeyAdvancedResourceStatus400,
+	PostApiKeyAdvancedResourceStatus401,
+	PostApiKeyResourceBody,
+	PostApiKeyResourceResponse,
+	PostApiKeyResourceStatus400,
+	PostApiKeyResourceStatus401,
+	PostApiKeyResourceStatus503,
+	PostApiKeyTokenResourceBody,
+	PostApiKeyTokenResourceResponse,
+	PostApiKeyTokenResourceStatus400,
+	PostApiKeyTokenResourceStatus401,
+	PostNotificationResourceBody,
+	PostNotificationResourceResponse,
+	PostNotificationResourceStatus400,
+	PostNotificationResourceStatus401,
+	PostNotificationResourceStatus403,
+	PostReservationAccessTimesUpdateResourceBody,
+	PostReservationAccessTimesUpdateResourceResponse,
+	PostReservationAccessTimesUpdateResourceStatus400,
+	PostReservationAccessTimesUpdateResourceStatus401,
+	PostServiceLinkResourceResponse,
+	PostServiceLinkResourceStatus400,
+	PostServiceLinkResourceStatus401,
+	PostServiceSyncResourceResponse,
+	PostServiceSyncResourceStatus400,
+	PostServiceSyncResourceStatus401,
+	PostServiceUnlinkResourceResponse,
+	PostServiceUnlinkResourceStatus400,
+	PostServiceUnlinkResourceStatus401,
+	PostSmartdoorAdvancedConfigResourceBody,
+	PostSmartdoorAdvancedConfigResourceResponse,
+	PostSmartdoorAdvancedConfigResourceStatus400,
+	PostSmartdoorAdvancedConfigResourceStatus401,
+	PostSmartlockActionAdvancedResourceBody,
+	PostSmartlockActionAdvancedResourceResponse,
+	PostSmartlockActionAdvancedResourceStatus400,
+	PostSmartlockActionAdvancedResourceStatus402,
+	PostSmartlockActionAdvancedResourceStatus409,
+	PostSmartlockActionAdvancedResourceStatus426,
+	PostSmartlockActionResourceBody,
+	PostSmartlockActionResourceResponse,
+	PostSmartlockActionResourceStatus400,
+	PostSmartlockActionResourceStatus401,
+	PostSmartlockActionResourceStatus402,
+	PostSmartlockAdminPinResourceBody,
+	PostSmartlockAdminPinResourceResponse,
+	PostSmartlockAdminPinResourceStatus400,
+	PostSmartlockAdminPinResourceStatus401,
+	PostSmartlockAdvancedConfigResourceBody,
+	PostSmartlockAdvancedConfigResourceResponse,
+	PostSmartlockAdvancedConfigResourceStatus400,
+	PostSmartlockAdvancedConfigResourceStatus401,
+	PostSmartlockAuthResourceBody,
+	PostSmartlockAuthResourceResponse,
+	PostSmartlockAuthResourceStatus400,
+	PostSmartlockAuthResourceStatus401,
+	PostSmartlockAuthResourceStatus403,
+	PostSmartlockAuthResourceStatus409,
+	PostSmartlockAuthResourceStatus423,
+	PostSmartlockAuthWithSharedKeyResourceBody,
+	PostSmartlockAuthWithSharedKeyResourceResponse,
+	PostSmartlockAuthWithSharedKeyResourceStatus401,
+	PostSmartlockAuthWithSharedKeyResourceStatus403,
+	PostSmartlockAuthWithSharedKeyResourceStatus404,
+	PostSmartlockBulkWebConfigResourceBody,
+	PostSmartlockBulkWebConfigResourceResponse,
+	PostSmartlockBulkWebConfigResourceStatus400,
+	PostSmartlockBulkWebConfigResourceStatus401,
+	PostSmartlockConfigResourceBody,
+	PostSmartlockConfigResourceResponse,
+	PostSmartlockConfigResourceStatus400,
+	PostSmartlockConfigResourceStatus401,
+	PostSmartlockLockActionAdvancedResourceResponse,
+	PostSmartlockLockActionAdvancedResourceStatus400,
+	PostSmartlockLockActionAdvancedResourceStatus401,
+	PostSmartlockLockActionAdvancedResourceStatus405,
+	PostSmartlockLockActionResourceResponse,
+	PostSmartlockLockActionResourceStatus400,
+	PostSmartlockLockActionResourceStatus401,
+	PostSmartlockLockActionResourceStatus405,
+	PostSmartlockOpenerAdvancedConfigResourceBody,
+	PostSmartlockOpenerAdvancedConfigResourceResponse,
+	PostSmartlockOpenerAdvancedConfigResourceStatus400,
+	PostSmartlockOpenerAdvancedConfigResourceStatus401,
+	PostSmartlockResourceBody,
+	PostSmartlockResourceResponse,
+	PostSmartlockResourceStatus400,
+	PostSmartlockResourceStatus401,
+	PostSmartlockResourceStatus403,
+	PostSmartlockSyncResourceResponse,
+	PostSmartlockSyncResourceStatus400,
+	PostSmartlockSyncResourceStatus401,
+	PostSmartlocksAuthsResourceBody,
+	PostSmartlocksAuthsResourceResponse,
+	PostSmartlocksAuthsResourceStatus400,
+	PostSmartlocksAuthsResourceStatus401,
+	PostSmartlocksAuthsResourceStatus403,
+	PostSmartlocksAuthsResourceStatus409,
+	PostSmartlocksAuthsResourceStatus423,
+	PostSmartlockUnlockActionAdvancedResourceResponse,
+	PostSmartlockUnlockActionAdvancedResourceStatus400,
+	PostSmartlockUnlockActionAdvancedResourceStatus401,
+	PostSmartlockUnlockActionAdvancedResourceStatus405,
+	PostSmartlockUnlockActionResourceResponse,
+	PostSmartlockUnlockActionResourceStatus400,
+	PostSmartlockUnlockActionResourceStatus401,
+	PostSmartlockUnlockActionResourceStatus405,
+	PostSmartlockWebConfigResourceBody,
+	PostSmartlockWebConfigResourceResponse,
+	PostSmartlockWebConfigResourceStatus400,
+	PostSmartlockWebConfigResourceStatus401,
+	PutAccountOtpResourceResponse,
+	PutAccountOtpResourceStatus405,
+	PutAccountSettingResourceBody,
+	PutAccountSettingResourceResponse,
+	PutAccountSettingResourceStatus400,
+	PutAccountSettingResourceStatus401,
+	PutAccountSubsResourceBody,
+	PutAccountSubsResourceResponse,
+	PutAccountSubsResourceStatus400,
+	PutAccountUsersResourceBody,
+	PutAccountUsersResourceResponse,
+	PutAccountUsersResourceStatus400,
+	PutAddressesResourceBody,
+	PutAddressesResourceResponse,
+	PutAddressesResourceStatus400,
+	PutAddressesResourceStatus401,
+	PutAddressUnitsResourceBody,
+	PutAddressUnitsResourceResponse,
+	PutAddressUnitsResourceStatus400,
+	PutAddressUnitsResourceStatus401,
+	PutAddressUnitsResourceStatus403,
+	PutApiKeyAdvancedResourceBody,
+	PutApiKeyAdvancedResourceResponse,
+	PutApiKeyAdvancedResourceStatus400,
+	PutApiKeyAdvancedResourceStatus401,
+	PutApiKeysResourceBody,
+	PutApiKeysResourceResponse,
+	PutApiKeysResourceStatus400,
+	PutApiKeysResourceStatus401,
+	PutApiKeyTokensResourceBody,
+	PutApiKeyTokensResourceResponse,
+	PutApiKeyTokensResourceStatus400,
+	PutApiKeyTokensResourceStatus401,
+	PutDecentralWebhooksResourceBody,
+	PutDecentralWebhooksResourceResponse,
+	PutDecentralWebhooksResourceStatus400,
+	PutDecentralWebhooksResourceStatus401,
+	PutDecentralWebhooksResourceStatus403,
+	PutNotificationsResourceBody,
+	PutNotificationsResourceResponse,
+	PutNotificationsResourceStatus400,
+	PutNotificationsResourceStatus401,
+	PutNotificationsResourceStatus403,
+	PutSmartlockAuthsAdvancedResourceBody,
+	PutSmartlockAuthsAdvancedResourceResponse,
+	PutSmartlockAuthsAdvancedResourceStatus400,
+	PutSmartlockAuthsAdvancedResourceStatus402,
+	PutSmartlockAuthsAdvancedResourceStatus409,
+	PutSmartlockAuthsAdvancedResourceStatus426,
+	PutSmartlockAuthsResourceBody,
+	PutSmartlockAuthsResourceResponse,
+	PutSmartlockAuthsResourceStatus400,
+	PutSmartlockAuthsResourceStatus402,
+	PutSmartlockAuthsResourceStatus409,
+	PutSmartlockAuthsResourceStatus426,
+	PutSmartlocksAuthsResourceBody,
+	PutSmartlocksAuthsResourceResponse,
+	PutSmartlocksAuthsResourceStatus400,
+	PutSmartlocksAuthsResourceStatus402,
+	PutSmartlocksAuthsResourceStatus409,
+	PutSmartlocksAuthsResourceStatus426,
 } from "./types";
 
 /**
  * @summary Get an account
- * {@link /account}
+ * @link /account
  */
-export async function getAccountsResource({
-	config = {},
-}: {
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getAccountsResource(
+	{ config }: { config?: Partial<FetcherConfig> & { client?: typeof defaultClient } } = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		GetAccountsResourceQueryResponse,
-		ErrorWrapper<GetAccountsResource401>,
+		GetAccountsResourceResponse,
+		ErrorWrapper<GetAccountsResourceStatus401>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
 		Record<string, string>
-	>({ method: "GET", url: `/account`, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/account`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Update an account
- * {@link /account}
+ * @link /account
  */
-export async function postAccountsResource({
-	body,
-	queryParams,
-	config = {},
-}: {
-	body: PostAccountsResourceMutationRequest;
-	queryParams?: PostAccountsResourceQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function postAccountsResource(
+	{
+		body,
+		queryParams,
+		config,
+	}: {
+		body: PostAccountsResourceBody;
+		queryParams?: { deleteApiTokens?: boolean };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		PostAccountsResourceMutationResponse,
-		ErrorWrapper<PostAccountsResource400 | PostAccountsResource401 | PostAccountsResource409>,
-		PostAccountsResourceMutationRequest,
+		PostAccountsResourceResponse,
+		ErrorWrapper<
+			PostAccountsResourceStatus400 | PostAccountsResourceStatus401 | PostAccountsResourceStatus409
+		>,
+		PostAccountsResourceBody,
 		Record<string, string>,
-		PostAccountsResourceQueryParams,
+		{ deleteApiTokens?: boolean },
 		Record<string, string>
-	>({ method: "POST", url: `/account`, queryParams, body, ...requestConfig });
+	>({
+		method: "POST",
+		url: `/account`,
+		queryParams,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Delete an account
- * {@link /account}
+ * @link /account
  */
-export async function deleteAccountsResource({
-	config = {},
-}: {
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deleteAccountsResource(
+	{ config }: { config?: Partial<FetcherConfig> & { client?: typeof defaultClient } } = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		DeleteAccountsResourceMutationResponse,
-		ErrorWrapper<DeleteAccountsResource401>,
+		DeleteAccountsResourceResponse,
+		ErrorWrapper<DeleteAccountsResourceStatus401>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
 		Record<string, string>
-	>({ method: "DELETE", url: `/account`, ...requestConfig });
+	>({
+		method: "DELETE",
+		url: `/account`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Trigger the email change verification email
- * {@link /account/email/change}
+ * @link /account/email/change
  */
-export async function postAccountEmailChangeResource({
-	body,
-	config = {},
-}: {
-	body: PostAccountEmailChangeResourceMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function postAccountEmailChangeResource(
+	{
+		body,
+		config,
+	}: {
+		body: PostAccountEmailChangeResourceBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		PostAccountEmailChangeResourceMutationResponse,
+		PostAccountEmailChangeResourceResponse,
 		ErrorWrapper<
-			| PostAccountEmailChangeResource400
-			| PostAccountEmailChangeResource401
-			| PostAccountEmailChangeResource409
+			| PostAccountEmailChangeResourceStatus400
+			| PostAccountEmailChangeResourceStatus401
+			| PostAccountEmailChangeResourceStatus409
 		>,
-		PostAccountEmailChangeResourceMutationRequest,
+		PostAccountEmailChangeResourceBody,
 		Record<string, string>,
 		Record<string, string>,
 		Record<string, string>
-	>({ method: "POST", url: `/account/email/change`, body, ...requestConfig });
+	>({
+		method: "POST",
+		url: `/account/email/change`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Trigger the email change verification email
- * {@link /account/email/verify}
+ * @link /account/email/verify
  */
-export async function postAccountEmailVerifyResource({
-	config = {},
-}: {
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function postAccountEmailVerifyResource(
+	{ config }: { config?: Partial<FetcherConfig> & { client?: typeof defaultClient } } = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		PostAccountEmailVerifyResourceMutationResponse,
+		PostAccountEmailVerifyResourceResponse,
 		ErrorWrapper<
-			| PostAccountEmailVerifyResource400
-			| PostAccountEmailVerifyResource401
-			| PostAccountEmailVerifyResource409
+			| PostAccountEmailVerifyResourceStatus400
+			| PostAccountEmailVerifyResourceStatus401
+			| PostAccountEmailVerifyResourceStatus409
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
 		Record<string, string>
-	>({ method: "POST", url: `/account/email/verify`, ...requestConfig });
+	>({
+		method: "POST",
+		url: `/account/email/verify`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Get all integrations for this account
- * {@link /account/integration}
+ * @link /account/integration
  */
-export async function getAccountIntegrationsResource({
-	config = {},
-}: {
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getAccountIntegrationsResource(
+	{ config }: { config?: Partial<FetcherConfig> & { client?: typeof defaultClient } } = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		GetAccountIntegrationsResourceQueryResponse,
-		ErrorWrapper<GetAccountIntegrationsResource401>,
+		GetAccountIntegrationsResourceResponse,
+		ErrorWrapper<GetAccountIntegrationsResourceStatus401>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
 		Record<string, string>
-	>({ method: "GET", url: `/account/integration`, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/account/integration`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Delete an integration
- * {@link /account/integration}
+ * @link /account/integration
  */
-export async function deleteAccountIntegrationsResource({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: DeleteAccountIntegrationsResourceQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deleteAccountIntegrationsResource(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { apiKeyId?: number; tokenId?: number };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		DeleteAccountIntegrationsResourceMutationResponse,
-		ErrorWrapper<DeleteAccountIntegrationsResource401>,
+		DeleteAccountIntegrationsResourceResponse,
+		ErrorWrapper<DeleteAccountIntegrationsResourceStatus401>,
 		null,
 		Record<string, string>,
-		DeleteAccountIntegrationsResourceQueryParams,
+		{ apiKeyId?: number; tokenId?: number },
 		Record<string, string>
-	>({ method: "DELETE", url: `/account/integration`, queryParams, ...requestConfig });
+	>({
+		method: "DELETE",
+		url: `/account/integration`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Enable one-time password for an account
- * {@link /account/otp}
+ * @link /account/otp
  */
-export async function postAccountOtpResource({
-	body,
-	config = {},
-}: {
-	body: PostAccountOtpResourceMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function postAccountOtpResource(
+	{
+		body,
+		config,
+	}: {
+		body: PostAccountOtpResourceBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		PostAccountOtpResourceMutationResponse,
-		ErrorWrapper<PostAccountOtpResource400 | PostAccountOtpResource401 | PostAccountOtpResource429>,
-		PostAccountOtpResourceMutationRequest,
+		PostAccountOtpResourceResponse,
+		ErrorWrapper<
+			| PostAccountOtpResourceStatus400
+			| PostAccountOtpResourceStatus401
+			| PostAccountOtpResourceStatus429
+		>,
+		PostAccountOtpResourceBody,
 		Record<string, string>,
 		Record<string, string>,
 		Record<string, string>
-	>({ method: "POST", url: `/account/otp`, body, ...requestConfig });
+	>({
+		method: "POST",
+		url: `/account/otp`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Create a one-time password secret
- * {@link /account/otp}
+ * @link /account/otp
  */
-export async function putAccountOtpResource({
-	config = {},
-}: {
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function putAccountOtpResource(
+	{ config }: { config?: Partial<FetcherConfig> & { client?: typeof defaultClient } } = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		PutAccountOtpResourceMutationResponse,
-		ErrorWrapper<PutAccountOtpResource405>,
+		PutAccountOtpResourceResponse,
+		ErrorWrapper<PutAccountOtpResourceStatus405>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
 		Record<string, string>
-	>({ method: "PUT", url: `/account/otp`, ...requestConfig });
+	>({
+		method: "PUT",
+		url: `/account/otp`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Disable one-time password for an account
- * {@link /account/otp}
+ * @link /account/otp
  */
-export async function deleteAccountOtpResource({
-	config = {},
-}: {
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deleteAccountOtpResource(
+	{ config }: { config?: Partial<FetcherConfig> & { client?: typeof defaultClient } } = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		DeleteAccountOtpResourceMutationResponse,
-		ErrorWrapper<DeleteAccountOtpResource401>,
+		DeleteAccountOtpResourceResponse,
+		ErrorWrapper<DeleteAccountOtpResourceStatus401>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
 		Record<string, string>
-	>({ method: "DELETE", url: `/account/otp`, ...requestConfig });
+	>({
+		method: "DELETE",
+		url: `/account/otp`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Reset account password
- * {@link /account/password/reset}
+ * @link /account/password/reset
  */
-export async function postAccountPasswordResetResource({
-	body,
-	config = {},
-}: {
-	body: PostAccountPasswordResetResourceMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function postAccountPasswordResetResource(
+	{
+		body,
+		config,
+	}: {
+		body: PostAccountPasswordResetResourceBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		PostAccountPasswordResetResourceMutationResponse,
-		ErrorWrapper<PostAccountPasswordResetResource401>,
-		PostAccountPasswordResetResourceMutationRequest,
+		PostAccountPasswordResetResourceResponse,
+		ErrorWrapper<PostAccountPasswordResetResourceStatus401>,
+		PostAccountPasswordResetResourceBody,
 		Record<string, string>,
 		Record<string, string>,
 		Record<string, string>
-	>({ method: "POST", url: `/account/password/reset`, body, ...requestConfig });
+	>({
+		method: "POST",
+		url: `/account/password/reset`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Get account setting
- * {@link /account/setting}
+ * @link /account/setting
  */
-export async function getAccountSettingResource({
-	config = {},
-}: {
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getAccountSettingResource(
+	{ config }: { config?: Partial<FetcherConfig> & { client?: typeof defaultClient } } = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		GetAccountSettingResourceQueryResponse,
+		GetAccountSettingResourceResponse,
 		ErrorWrapper<
-			GetAccountSettingResource401 | GetAccountSettingResource403 | GetAccountSettingResource404
+			| GetAccountSettingResourceStatus401
+			| GetAccountSettingResourceStatus403
+			| GetAccountSettingResourceStatus404
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
 		Record<string, string>
-	>({ method: "GET", url: `/account/setting`, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/account/setting`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Create or update account setting
- * {@link /account/setting}
+ * @link /account/setting
  */
-export async function putAccountSettingResource({
-	body,
-	config = {},
-}: {
-	body: PutAccountSettingResourceMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function putAccountSettingResource(
+	{
+		body,
+		config,
+	}: {
+		body: PutAccountSettingResourceBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		PutAccountSettingResourceMutationResponse,
-		ErrorWrapper<PutAccountSettingResource400 | PutAccountSettingResource401>,
-		PutAccountSettingResourceMutationRequest,
+		PutAccountSettingResourceResponse,
+		ErrorWrapper<PutAccountSettingResourceStatus400 | PutAccountSettingResourceStatus401>,
+		PutAccountSettingResourceBody,
 		Record<string, string>,
 		Record<string, string>,
 		Record<string, string>
-	>({ method: "PUT", url: `/account/setting`, body, ...requestConfig });
+	>({
+		method: "PUT",
+		url: `/account/setting`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Delete an account setting
- * {@link /account/setting}
+ * @link /account/setting
  */
-export async function deleteAccountSettingResource({
-	config = {},
-}: {
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deleteAccountSettingResource(
+	{ config }: { config?: Partial<FetcherConfig> & { client?: typeof defaultClient } } = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		DeleteAccountSettingResourceMutationResponse,
-		ErrorWrapper<DeleteAccountSettingResource401 | DeleteAccountSettingResource403>,
+		DeleteAccountSettingResourceResponse,
+		ErrorWrapper<DeleteAccountSettingResourceStatus401 | DeleteAccountSettingResourceStatus403>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
 		Record<string, string>
-	>({ method: "DELETE", url: `/account/setting`, ...requestConfig });
+	>({
+		method: "DELETE",
+		url: `/account/setting`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Get a list of sub accounts
- * {@link /account/sub}
+ * @link /account/sub
  */
-export async function getAccountSubsResource({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: GetAccountSubsResourceQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getAccountSubsResource(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { email?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		GetAccountSubsResourceQueryResponse,
-		ErrorWrapper<GetAccountSubsResource401>,
+		GetAccountSubsResourceResponse,
+		ErrorWrapper<GetAccountSubsResourceStatus401>,
 		null,
 		Record<string, string>,
-		GetAccountSubsResourceQueryParams,
+		{ email?: string },
 		Record<string, string>
-	>({ method: "GET", url: `/account/sub`, queryParams, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/account/sub`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Create a sub account
- * {@link /account/sub}
+ * @link /account/sub
  */
-export async function putAccountSubsResource({
-	body,
-	config = {},
-}: {
-	body: PutAccountSubsResourceMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function putAccountSubsResource(
+	{
+		body,
+		config,
+	}: {
+		body: PutAccountSubsResourceBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		PutAccountSubsResourceMutationResponse,
-		ErrorWrapper<PutAccountSubsResource400>,
-		PutAccountSubsResourceMutationRequest,
+		PutAccountSubsResourceResponse,
+		ErrorWrapper<PutAccountSubsResourceStatus400>,
+		PutAccountSubsResourceBody,
 		Record<string, string>,
 		Record<string, string>,
 		Record<string, string>
-	>({ method: "PUT", url: `/account/sub`, body, ...requestConfig });
+	>({
+		method: "PUT",
+		url: `/account/sub`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Get a sub account
- * {@link /account/sub/:accountId}
+ * @link /account/sub/{accountId}
  */
-export async function getAccountSubResource({
-	pathParams: { accountId },
-	config = {},
-}: {
-	pathParams: GetAccountSubResourcePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getAccountSubResource(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { accountId: number };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!accountId) {
+	if (!pathParams.accountId) {
 		throw new Error(`Missing required path parameter: accountId`);
 	}
-
 	const data = await request<
-		GetAccountSubResourceQueryResponse,
-		ErrorWrapper<GetAccountSubResource401>,
+		GetAccountSubResourceResponse,
+		ErrorWrapper<GetAccountSubResourceStatus401>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		GetAccountSubResourcePathParams
-	>({ method: "GET", url: `/account/sub/${accountId}`, ...requestConfig });
+		{ accountId: number }
+	>({
+		method: "GET",
+		url: `/account/sub/${pathParams.accountId}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Update a sub account
- * {@link /account/sub/:accountId}
+ * @link /account/sub/{accountId}
  */
-export async function postAccountSubResource({
-	pathParams: { accountId },
-	body,
-	config = {},
-}: {
-	pathParams: PostAccountSubResourcePathParams;
-	body: PostAccountSubResourceMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function postAccountSubResource(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { accountId: number };
+		body: PostAccountSubResourceBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!accountId) {
+	if (!pathParams.accountId) {
 		throw new Error(`Missing required path parameter: accountId`);
 	}
-
 	const data = await request<
-		PostAccountSubResourceMutationResponse,
-		ErrorWrapper<PostAccountSubResource400 | PostAccountSubResource401 | PostAccountSubResource409>,
-		PostAccountSubResourceMutationRequest,
+		PostAccountSubResourceResponse,
+		ErrorWrapper<
+			| PostAccountSubResourceStatus400
+			| PostAccountSubResourceStatus401
+			| PostAccountSubResourceStatus409
+		>,
+		PostAccountSubResourceBody,
 		Record<string, string>,
 		Record<string, string>,
-		PostAccountSubResourcePathParams
-	>({ method: "POST", url: `/account/sub/${accountId}`, body, ...requestConfig });
+		{ accountId: number }
+	>({
+		method: "POST",
+		url: `/account/sub/${pathParams.accountId}`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Delete a sub account
- * {@link /account/sub/:accountId}
+ * @link /account/sub/{accountId}
  */
-export async function deleteAccountSubResource({
-	pathParams: { accountId },
-	config = {},
-}: {
-	pathParams: DeleteAccountSubResourcePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deleteAccountSubResource(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { accountId: number };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!accountId) {
+	if (!pathParams.accountId) {
 		throw new Error(`Missing required path parameter: accountId`);
 	}
-
 	const data = await request<
-		DeleteAccountSubResourceMutationResponse,
-		ErrorWrapper<DeleteAccountSubResource401>,
+		DeleteAccountSubResourceResponse,
+		ErrorWrapper<DeleteAccountSubResourceStatus401>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		DeleteAccountSubResourcePathParams
-	>({ method: "DELETE", url: `/account/sub/${accountId}`, ...requestConfig });
+		{ accountId: number }
+	>({
+		method: "DELETE",
+		url: `/account/sub/${pathParams.accountId}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Get a list of account users
- * {@link /account/user}
+ * @link /account/user
  */
-export async function getAccountUsersResource({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: GetAccountUsersResourceQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getAccountUsersResource(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { email?: string; offset?: number; limit?: number };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		GetAccountUsersResourceQueryResponse,
-		ErrorWrapper<GetAccountUsersResource401>,
+		GetAccountUsersResourceResponse,
+		ErrorWrapper<GetAccountUsersResourceStatus401>,
 		null,
 		Record<string, string>,
-		GetAccountUsersResourceQueryParams,
+		{ email?: string; offset?: number; limit?: number },
 		Record<string, string>
-	>({ method: "GET", url: `/account/user`, queryParams, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/account/user`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Create an account user
- * {@link /account/user}
+ * @link /account/user
  */
-export async function putAccountUsersResource({
-	body,
-	config = {},
-}: {
-	body: PutAccountUsersResourceMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function putAccountUsersResource(
+	{
+		body,
+		config,
+	}: {
+		body: PutAccountUsersResourceBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		PutAccountUsersResourceMutationResponse,
-		ErrorWrapper<PutAccountUsersResource400>,
-		PutAccountUsersResourceMutationRequest,
+		PutAccountUsersResourceResponse,
+		ErrorWrapper<PutAccountUsersResourceStatus400>,
+		PutAccountUsersResourceBody,
 		Record<string, string>,
 		Record<string, string>,
 		Record<string, string>
-	>({ method: "PUT", url: `/account/user`, body, ...requestConfig });
+	>({
+		method: "PUT",
+		url: `/account/user`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Get an account user
- * {@link /account/user/:accountUserId}
+ * @link /account/user/{accountUserId}
  */
-export async function getAccountUserResource({
-	pathParams: { accountUserId },
-	config = {},
-}: {
-	pathParams: GetAccountUserResourcePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getAccountUserResource(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { accountUserId: number };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!accountUserId) {
+	if (!pathParams.accountUserId) {
 		throw new Error(`Missing required path parameter: accountUserId`);
 	}
-
 	const data = await request<
-		GetAccountUserResourceQueryResponse,
-		ErrorWrapper<GetAccountUserResource401>,
+		GetAccountUserResourceResponse,
+		ErrorWrapper<GetAccountUserResourceStatus401>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		GetAccountUserResourcePathParams
-	>({ method: "GET", url: `/account/user/${accountUserId}`, ...requestConfig });
+		{ accountUserId: number }
+	>({
+		method: "GET",
+		url: `/account/user/${pathParams.accountUserId}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Update an account user
- * {@link /account/user/:accountUserId}
+ * @link /account/user/{accountUserId}
  */
-export async function postAccountUserResource({
-	pathParams: { accountUserId },
-	body,
-	config = {},
-}: {
-	pathParams: PostAccountUserResourcePathParams;
-	body: PostAccountUserResourceMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function postAccountUserResource(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { accountUserId: number };
+		body: PostAccountUserResourceBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!accountUserId) {
+	if (!pathParams.accountUserId) {
 		throw new Error(`Missing required path parameter: accountUserId`);
 	}
-
 	const data = await request<
-		PostAccountUserResourceMutationResponse,
+		PostAccountUserResourceResponse,
 		ErrorWrapper<
-			PostAccountUserResource400 | PostAccountUserResource401 | PostAccountUserResource409
+			| PostAccountUserResourceStatus400
+			| PostAccountUserResourceStatus401
+			| PostAccountUserResourceStatus409
 		>,
-		PostAccountUserResourceMutationRequest,
+		PostAccountUserResourceBody,
 		Record<string, string>,
 		Record<string, string>,
-		PostAccountUserResourcePathParams
-	>({ method: "POST", url: `/account/user/${accountUserId}`, body, ...requestConfig });
+		{ accountUserId: number }
+	>({
+		method: "POST",
+		url: `/account/user/${pathParams.accountUserId}`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Delete an account user asynchronously
- * {@link /account/user/:accountUserId}
+ * @link /account/user/{accountUserId}
  */
-export async function deleteAccountUserResource({
-	pathParams: { accountUserId },
-	config = {},
-}: {
-	pathParams: DeleteAccountUserResourcePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deleteAccountUserResource(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { accountUserId: number };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!accountUserId) {
+	if (!pathParams.accountUserId) {
 		throw new Error(`Missing required path parameter: accountUserId`);
 	}
-
 	const data = await request<
-		DeleteAccountUserResourceMutationResponse,
-		ErrorWrapper<DeleteAccountUserResource401 | DeleteAccountUserResource423>,
+		DeleteAccountUserResourceResponse,
+		ErrorWrapper<DeleteAccountUserResourceStatus401 | DeleteAccountUserResourceStatus423>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		DeleteAccountUserResourcePathParams
-	>({ method: "DELETE", url: `/account/user/${accountUserId}`, ...requestConfig });
+		{ accountUserId: number }
+	>({
+		method: "DELETE",
+		url: `/account/user/${pathParams.accountUserId}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Get a list of addresses
- * {@link /address}
+ * @link /address
  */
-export async function getAddressesResource({
-	config = {},
-}: {
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getAddressesResource(
+	{ config }: { config?: Partial<FetcherConfig> & { client?: typeof defaultClient } } = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		GetAddressesResourceQueryResponse,
-		ErrorWrapper<GetAddressesResource401>,
+		GetAddressesResourceResponse,
+		ErrorWrapper<GetAddressesResourceStatus401>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
 		Record<string, string>
-	>({ method: "GET", url: `/address`, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/address`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Create an address
- * {@link /address}
+ * @link /address
  */
-export async function putAddressesResource({
-	body,
-	config = {},
-}: {
-	body: PutAddressesResourceMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function putAddressesResource(
+	{
+		body,
+		config,
+	}: {
+		body: PutAddressesResourceBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		PutAddressesResourceMutationResponse,
-		ErrorWrapper<PutAddressesResource400 | PutAddressesResource401>,
-		PutAddressesResourceMutationRequest,
+		PutAddressesResourceResponse,
+		ErrorWrapper<PutAddressesResourceStatus400 | PutAddressesResourceStatus401>,
+		PutAddressesResourceBody,
 		Record<string, string>,
 		Record<string, string>,
 		Record<string, string>
-	>({ method: "PUT", url: `/address`, body, ...requestConfig });
+	>({
+		method: "PUT",
+		url: `/address`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Get info about an address token
- * {@link /address/token/:id}
+ * @link /address/token/{id}
  */
-export async function getAddressTokenResource({
-	pathParams: { id },
-	config = {},
-}: {
-	pathParams: GetAddressTokenResourcePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getAddressTokenResource(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!id) {
+	if (!pathParams.id) {
 		throw new Error(`Missing required path parameter: id`);
 	}
-
 	const data = await request<
-		GetAddressTokenResourceQueryResponse,
-		ErrorWrapper<GetAddressTokenResource401 | GetAddressTokenResource404>,
+		GetAddressTokenResourceResponse,
+		ErrorWrapper<GetAddressTokenResourceStatus401 | GetAddressTokenResourceStatus404>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		GetAddressTokenResourcePathParams
-	>({ method: "GET", url: `/address/token/${id}`, ...requestConfig });
+		{ id: string }
+	>({
+		method: "GET",
+		url: `/address/token/${pathParams.id}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Get a redeemed address token
- * {@link /address/token/:id/redeem}
+ * @link /address/token/{id}/redeem
  */
-export async function getAddressTokenRedeemResource({
-	pathParams: { id },
-	config = {},
-}: {
-	pathParams: GetAddressTokenRedeemResourcePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getAddressTokenRedeemResource(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!id) {
+	if (!pathParams.id) {
 		throw new Error(`Missing required path parameter: id`);
 	}
-
 	const data = await request<
-		GetAddressTokenRedeemResourceQueryResponse,
-		ErrorWrapper<GetAddressTokenRedeemResource401 | GetAddressTokenRedeemResource404>,
+		GetAddressTokenRedeemResourceResponse,
+		ErrorWrapper<GetAddressTokenRedeemResourceStatus401 | GetAddressTokenRedeemResourceStatus404>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		GetAddressTokenRedeemResourcePathParams
-	>({ method: "GET", url: `/address/token/${id}/redeem`, ...requestConfig });
+		{ id: string }
+	>({
+		method: "GET",
+		url: `/address/token/${pathParams.id}/redeem`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Redeem an address token
- * {@link /address/token/:id/redeem}
+ * @link /address/token/{id}/redeem
  */
-export async function postAddressTokenRedeemResource({
-	pathParams: { id },
-	queryParams,
-	config = {},
-}: {
-	pathParams: PostAddressTokenRedeemResourcePathParams;
-	queryParams?: PostAddressTokenRedeemResourceQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function postAddressTokenRedeemResource(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { id: string };
+		queryParams?: { email?: boolean };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!id) {
+	if (!pathParams.id) {
 		throw new Error(`Missing required path parameter: id`);
 	}
-
 	const data = await request<
-		PostAddressTokenRedeemResourceMutationResponse,
+		PostAddressTokenRedeemResourceResponse,
 		ErrorWrapper<
-			| PostAddressTokenRedeemResource400
-			| PostAddressTokenRedeemResource401
-			| PostAddressTokenRedeemResource404
+			| PostAddressTokenRedeemResourceStatus400
+			| PostAddressTokenRedeemResourceStatus401
+			| PostAddressTokenRedeemResourceStatus404
 		>,
 		null,
 		Record<string, string>,
-		PostAddressTokenRedeemResourceQueryParams,
-		PostAddressTokenRedeemResourcePathParams
-	>({ method: "POST", url: `/address/token/${id}/redeem`, queryParams, ...requestConfig });
+		{ email?: boolean },
+		{ id: string }
+	>({
+		method: "POST",
+		url: `/address/token/${pathParams.id}/redeem`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Update an address
- * {@link /address/:addressId}
+ * @link /address/{addressId}
  */
-export async function postAddressResource({
-	pathParams: { addressId },
-	body,
-	config = {},
-}: {
-	pathParams: PostAddressResourcePathParams;
-	body: PostAddressResourceMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function postAddressResource(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { addressId: number };
+		body: PostAddressResourceBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!addressId) {
+	if (!pathParams.addressId) {
 		throw new Error(`Missing required path parameter: addressId`);
 	}
-
 	const data = await request<
-		PostAddressResourceMutationResponse,
-		ErrorWrapper<PostAddressResource400 | PostAddressResource401 | PostAddressResource403>,
-		PostAddressResourceMutationRequest,
+		PostAddressResourceResponse,
+		ErrorWrapper<
+			PostAddressResourceStatus400 | PostAddressResourceStatus401 | PostAddressResourceStatus403
+		>,
+		PostAddressResourceBody,
 		Record<string, string>,
 		Record<string, string>,
-		PostAddressResourcePathParams
-	>({ method: "POST", url: `/address/${addressId}`, body, ...requestConfig });
+		{ addressId: number }
+	>({
+		method: "POST",
+		url: `/address/${pathParams.addressId}`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Delete an address
- * {@link /address/:addressId}
+ * @link /address/{addressId}
  */
-export async function deleteAddressResource({
-	pathParams: { addressId },
-	config = {},
-}: {
-	pathParams: DeleteAddressResourcePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deleteAddressResource(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { addressId: number };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!addressId) {
+	if (!pathParams.addressId) {
 		throw new Error(`Missing required path parameter: addressId`);
 	}
-
 	const data = await request<
-		DeleteAddressResourceMutationResponse,
-		ErrorWrapper<DeleteAddressResource401 | DeleteAddressResource403>,
+		DeleteAddressResourceResponse,
+		ErrorWrapper<DeleteAddressResourceStatus401 | DeleteAddressResourceStatus403>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		DeleteAddressResourcePathParams
-	>({ method: "DELETE", url: `/address/${addressId}`, ...requestConfig });
+		{ addressId: number }
+	>({
+		method: "DELETE",
+		url: `/address/${pathParams.addressId}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Get a list of address reservations
- * {@link /address/:addressId/reservation}
+ * @link /address/{addressId}/reservation
  */
-export async function getAddressReservationsResource({
-	pathParams: { addressId },
-	config = {},
-}: {
-	pathParams: GetAddressReservationsResourcePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getAddressReservationsResource(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { addressId: number };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!addressId) {
+	if (!pathParams.addressId) {
 		throw new Error(`Missing required path parameter: addressId`);
 	}
-
 	const data = await request<
-		GetAddressReservationsResourceQueryResponse,
-		ErrorWrapper<GetAddressReservationsResource401>,
+		GetAddressReservationsResourceResponse,
+		ErrorWrapper<GetAddressReservationsResourceStatus401>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		GetAddressReservationsResourcePathParams
-	>({ method: "GET", url: `/address/${addressId}/reservation`, ...requestConfig });
+		{ addressId: number }
+	>({
+		method: "GET",
+		url: `/address/${pathParams.addressId}/reservation`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Issues authorizations for an address reservation
- * {@link /address/:addressId/reservation/:id/issue}
+ * @link /address/{addressId}/reservation/{id}/issue
  */
-export async function postAddressReservationIssueResource({
-	pathParams: { addressId, id },
-	config = {},
-}: {
-	pathParams: PostAddressReservationIssueResourcePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function postAddressReservationIssueResource(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { addressId: number; id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!addressId) {
+	if (!pathParams.addressId) {
 		throw new Error(`Missing required path parameter: addressId`);
 	}
 
-	if (!id) {
+	if (!pathParams.id) {
 		throw new Error(`Missing required path parameter: id`);
 	}
-
 	const data = await request<
-		PostAddressReservationIssueResourceMutationResponse,
-		ErrorWrapper<PostAddressReservationIssueResource400 | PostAddressReservationIssueResource401>,
+		PostAddressReservationIssueResourceResponse,
+		ErrorWrapper<
+			PostAddressReservationIssueResourceStatus400 | PostAddressReservationIssueResourceStatus401
+		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		PostAddressReservationIssueResourcePathParams
-	>({ method: "POST", url: `/address/${addressId}/reservation/${id}/issue`, ...requestConfig });
+		{ addressId: number; id: string }
+	>({
+		method: "POST",
+		url: `/address/${pathParams.addressId}/reservation/${pathParams.id}/issue`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Revoke authorizations for an address reservation
- * {@link /address/:addressId/reservation/:id/revoke}
+ * @link /address/{addressId}/reservation/{id}/revoke
  */
-export async function postAddressReservationRevokeResource({
-	pathParams: { addressId, id },
-	config = {},
-}: {
-	pathParams: PostAddressReservationRevokeResourcePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function postAddressReservationRevokeResource(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { addressId: number; id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!addressId) {
+	if (!pathParams.addressId) {
 		throw new Error(`Missing required path parameter: addressId`);
 	}
 
-	if (!id) {
+	if (!pathParams.id) {
 		throw new Error(`Missing required path parameter: id`);
 	}
-
 	const data = await request<
-		PostAddressReservationRevokeResourceMutationResponse,
-		ErrorWrapper<PostAddressReservationRevokeResource400 | PostAddressReservationRevokeResource401>,
+		PostAddressReservationRevokeResourceResponse,
+		ErrorWrapper<
+			PostAddressReservationRevokeResourceStatus400 | PostAddressReservationRevokeResourceStatus401
+		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		PostAddressReservationRevokeResourcePathParams
-	>({ method: "POST", url: `/address/${addressId}/reservation/${id}/revoke`, ...requestConfig });
+		{ addressId: number; id: string }
+	>({
+		method: "POST",
+		url: `/address/${pathParams.addressId}/reservation/${pathParams.id}/revoke`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Update access times of a reservation
- * {@link /address/:addressId/reservation/:id/update/accesstimes}
+ * @link /address/{addressId}/reservation/{id}/update/accesstimes
  */
-export async function postReservationAccessTimesUpdateResource({
-	pathParams: { addressId, id },
-	body,
-	config = {},
-}: {
-	pathParams: PostReservationAccessTimesUpdateResourcePathParams;
-	body: PostReservationAccessTimesUpdateResourceMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function postReservationAccessTimesUpdateResource(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { addressId: number; id: string };
+		body: PostReservationAccessTimesUpdateResourceBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!addressId) {
+	if (!pathParams.addressId) {
 		throw new Error(`Missing required path parameter: addressId`);
 	}
 
-	if (!id) {
+	if (!pathParams.id) {
 		throw new Error(`Missing required path parameter: id`);
 	}
-
 	const data = await request<
-		PostReservationAccessTimesUpdateResourceMutationResponse,
+		PostReservationAccessTimesUpdateResourceResponse,
 		ErrorWrapper<
-			PostReservationAccessTimesUpdateResource400 | PostReservationAccessTimesUpdateResource401
+			| PostReservationAccessTimesUpdateResourceStatus400
+			| PostReservationAccessTimesUpdateResourceStatus401
 		>,
-		PostReservationAccessTimesUpdateResourceMutationRequest,
+		PostReservationAccessTimesUpdateResourceBody,
 		Record<string, string>,
 		Record<string, string>,
-		PostReservationAccessTimesUpdateResourcePathParams
+		{ addressId: number; id: string }
 	>({
 		method: "POST",
-		url: `/address/${addressId}/reservation/${id}/update/accesstimes`,
-		body,
+		url: `/address/${pathParams.addressId}/reservation/${pathParams.id}/update/accesstimes`,
+		body: body,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
  * @summary Get a list of address tokens
- * {@link /address/:addressId/token}
+ * @link /address/{addressId}/token
  */
-export async function getAddressTokensResource({
-	pathParams: { addressId },
-	config = {},
-}: {
-	pathParams: GetAddressTokensResourcePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getAddressTokensResource(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { addressId: number };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!addressId) {
+	if (!pathParams.addressId) {
 		throw new Error(`Missing required path parameter: addressId`);
 	}
-
 	const data = await request<
-		GetAddressTokensResourceQueryResponse,
-		ErrorWrapper<GetAddressTokensResource400 | GetAddressTokensResource401>,
+		GetAddressTokensResourceResponse,
+		ErrorWrapper<GetAddressTokensResourceStatus400 | GetAddressTokensResourceStatus401>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		GetAddressTokensResourcePathParams
-	>({ method: "GET", url: `/address/${addressId}/token`, ...requestConfig });
+		{ addressId: number }
+	>({
+		method: "GET",
+		url: `/address/${pathParams.addressId}/token`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Get a list of address units
- * {@link /address/:addressId/unit}
+ * @link /address/{addressId}/unit
  */
-export async function getAddressUnitsResource({
-	pathParams: { addressId },
-	config = {},
-}: {
-	pathParams: GetAddressUnitsResourcePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getAddressUnitsResource(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { addressId: number };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!addressId) {
+	if (!pathParams.addressId) {
 		throw new Error(`Missing required path parameter: addressId`);
 	}
-
 	const data = await request<
-		GetAddressUnitsResourceQueryResponse,
-		ErrorWrapper<GetAddressUnitsResource400 | GetAddressUnitsResource401>,
+		GetAddressUnitsResourceResponse,
+		ErrorWrapper<GetAddressUnitsResourceStatus400 | GetAddressUnitsResourceStatus401>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		GetAddressUnitsResourcePathParams
-	>({ method: "GET", url: `/address/${addressId}/unit`, ...requestConfig });
+		{ addressId: number }
+	>({
+		method: "GET",
+		url: `/address/${pathParams.addressId}/unit`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Create an address unit
- * {@link /address/:addressId/unit}
+ * @link /address/{addressId}/unit
  */
-export async function putAddressUnitsResource({
-	pathParams: { addressId },
-	body,
-	config = {},
-}: {
-	pathParams: PutAddressUnitsResourcePathParams;
-	body: PutAddressUnitsResourceMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function putAddressUnitsResource(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { addressId: number };
+		body: PutAddressUnitsResourceBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!addressId) {
+	if (!pathParams.addressId) {
 		throw new Error(`Missing required path parameter: addressId`);
 	}
-
 	const data = await request<
-		PutAddressUnitsResourceMutationResponse,
+		PutAddressUnitsResourceResponse,
 		ErrorWrapper<
-			PutAddressUnitsResource400 | PutAddressUnitsResource401 | PutAddressUnitsResource403
+			| PutAddressUnitsResourceStatus400
+			| PutAddressUnitsResourceStatus401
+			| PutAddressUnitsResourceStatus403
 		>,
-		PutAddressUnitsResourceMutationRequest,
+		PutAddressUnitsResourceBody,
 		Record<string, string>,
 		Record<string, string>,
-		PutAddressUnitsResourcePathParams
-	>({ method: "PUT", url: `/address/${addressId}/unit`, body, ...requestConfig });
+		{ addressId: number }
+	>({
+		method: "PUT",
+		url: `/address/${pathParams.addressId}/unit`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Delete address units asynchronously
- * {@link /address/:addressId/unit}
+ * @link /address/{addressId}/unit
  */
-export async function deleteAddressUnitsResource({
-	pathParams: { addressId },
-	body,
-	config = {},
-}: {
-	pathParams: DeleteAddressUnitsResourcePathParams;
-	body: DeleteAddressUnitsResourceMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deleteAddressUnitsResource(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { addressId: number };
+		body: DeleteAddressUnitsResourceBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!addressId) {
+	if (!pathParams.addressId) {
 		throw new Error(`Missing required path parameter: addressId`);
 	}
-
 	const data = await request<
-		DeleteAddressUnitsResourceMutationResponse,
+		DeleteAddressUnitsResourceResponse,
 		ErrorWrapper<
-			| DeleteAddressUnitsResource400
-			| DeleteAddressUnitsResource401
-			| DeleteAddressUnitsResource403
-			| DeleteAddressUnitsResource423
+			| DeleteAddressUnitsResourceStatus400
+			| DeleteAddressUnitsResourceStatus401
+			| DeleteAddressUnitsResourceStatus403
+			| DeleteAddressUnitsResourceStatus423
 		>,
-		DeleteAddressUnitsResourceMutationRequest,
+		DeleteAddressUnitsResourceBody,
 		Record<string, string>,
 		Record<string, string>,
-		DeleteAddressUnitsResourcePathParams
-	>({ method: "DELETE", url: `/address/${addressId}/unit`, body, ...requestConfig });
+		{ addressId: number }
+	>({
+		method: "DELETE",
+		url: `/address/${pathParams.addressId}/unit`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Delete an address unit
- * {@link /address/:addressId/unit/:id}
+ * @link /address/{addressId}/unit/{id}
  */
-export async function deleteAddressUnitResource({
-	pathParams: { addressId, id },
-	config = {},
-}: {
-	pathParams: DeleteAddressUnitResourcePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deleteAddressUnitResource(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { addressId: number; id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!addressId) {
+	if (!pathParams.addressId) {
 		throw new Error(`Missing required path parameter: addressId`);
 	}
 
-	if (!id) {
+	if (!pathParams.id) {
 		throw new Error(`Missing required path parameter: id`);
 	}
-
 	const data = await request<
-		DeleteAddressUnitResourceMutationResponse,
+		DeleteAddressUnitResourceResponse,
 		ErrorWrapper<
-			DeleteAddressUnitResource401 | DeleteAddressUnitResource403 | DeleteAddressUnitResource423
+			| DeleteAddressUnitResourceStatus401
+			| DeleteAddressUnitResourceStatus403
+			| DeleteAddressUnitResourceStatus423
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		DeleteAddressUnitResourcePathParams
-	>({ method: "DELETE", url: `/address/${addressId}/unit/${id}`, ...requestConfig });
+		{ addressId: number; id: string }
+	>({
+		method: "DELETE",
+		url: `/address/${pathParams.addressId}/unit/${pathParams.id}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Get all registered decentral webhooks
- * {@link /api/decentralWebhook}
+ * @link /api/decentralWebhook
  */
-export async function getDecentralWebhooksResource({
-	config = {},
-}: {
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getDecentralWebhooksResource(
+	{ config }: { config?: Partial<FetcherConfig> & { client?: typeof defaultClient } } = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		GetDecentralWebhooksResourceQueryResponse,
-		ErrorWrapper<GetDecentralWebhooksResource401 | GetDecentralWebhooksResource403>,
+		GetDecentralWebhooksResourceResponse,
+		ErrorWrapper<GetDecentralWebhooksResourceStatus401 | GetDecentralWebhooksResourceStatus403>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
 		Record<string, string>
-	>({ method: "GET", url: `/api/decentralWebhook`, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/api/decentralWebhook`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Create decentral webhook
- * {@link /api/decentralWebhook}
+ * @link /api/decentralWebhook
  */
-export async function putDecentralWebhooksResource({
-	body,
-	config = {},
-}: {
-	body: PutDecentralWebhooksResourceMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function putDecentralWebhooksResource(
+	{
+		body,
+		config,
+	}: {
+		body: PutDecentralWebhooksResourceBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		PutDecentralWebhooksResourceMutationResponse,
+		PutDecentralWebhooksResourceResponse,
 		ErrorWrapper<
-			| PutDecentralWebhooksResource400
-			| PutDecentralWebhooksResource401
-			| PutDecentralWebhooksResource403
+			| PutDecentralWebhooksResourceStatus400
+			| PutDecentralWebhooksResourceStatus401
+			| PutDecentralWebhooksResourceStatus403
 		>,
-		PutDecentralWebhooksResourceMutationRequest,
+		PutDecentralWebhooksResourceBody,
 		Record<string, string>,
 		Record<string, string>,
 		Record<string, string>
-	>({ method: "PUT", url: `/api/decentralWebhook`, body, ...requestConfig });
+	>({
+		method: "PUT",
+		url: `/api/decentralWebhook`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Unregister a decentral webhook
- * {@link /api/decentralWebhook/:id}
+ * @link /api/decentralWebhook/{id}
  */
-export async function deleteDecentralWebhookResource({
-	pathParams: { id },
-	config = {},
-}: {
-	pathParams: DeleteDecentralWebhookResourcePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deleteDecentralWebhookResource(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { id: number };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!id) {
+	if (!pathParams.id) {
 		throw new Error(`Missing required path parameter: id`);
 	}
-
 	const data = await request<
-		DeleteDecentralWebhookResourceMutationResponse,
-		ErrorWrapper<DeleteDecentralWebhookResource401 | DeleteDecentralWebhookResource403>,
+		DeleteDecentralWebhookResourceResponse,
+		ErrorWrapper<DeleteDecentralWebhookResourceStatus401 | DeleteDecentralWebhookResourceStatus403>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		DeleteDecentralWebhookResourcePathParams
-	>({ method: "DELETE", url: `/api/decentralWebhook/${id}`, ...requestConfig });
+		{ id: number }
+	>({
+		method: "DELETE",
+		url: `/api/decentralWebhook/${pathParams.id}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Get a list of API keys
- * {@link /api/key}
+ * @link /api/key
  */
-export async function getApiKeysResource({
-	config = {},
-}: {
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getApiKeysResource(
+	{ config }: { config?: Partial<FetcherConfig> & { client?: typeof defaultClient } } = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		GetApiKeysResourceQueryResponse,
-		ErrorWrapper<GetApiKeysResource401>,
+		GetApiKeysResourceResponse,
+		ErrorWrapper<GetApiKeysResourceStatus401>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
 		Record<string, string>
-	>({ method: "GET", url: `/api/key`, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/api/key`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Create an API key
- * {@link /api/key}
+ * @link /api/key
  */
-export async function putApiKeysResource({
-	body,
-	config = {},
-}: {
-	body: PutApiKeysResourceMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function putApiKeysResource(
+	{
+		body,
+		config,
+	}: {
+		body: PutApiKeysResourceBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		PutApiKeysResourceMutationResponse,
-		ErrorWrapper<PutApiKeysResource400 | PutApiKeysResource401>,
-		PutApiKeysResourceMutationRequest,
+		PutApiKeysResourceResponse,
+		ErrorWrapper<PutApiKeysResourceStatus400 | PutApiKeysResourceStatus401>,
+		PutApiKeysResourceBody,
 		Record<string, string>,
 		Record<string, string>,
 		Record<string, string>
-	>({ method: "PUT", url: `/api/key`, body, ...requestConfig });
+	>({
+		method: "PUT",
+		url: `/api/key`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Update an API key
- * {@link /api/key/:apiKeyId}
+ * @link /api/key/{apiKeyId}
  */
-export async function postApiKeyResource({
-	pathParams: { apiKeyId },
-	body,
-	config = {},
-}: {
-	pathParams: PostApiKeyResourcePathParams;
-	body: PostApiKeyResourceMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function postApiKeyResource(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { apiKeyId: number };
+		body: PostApiKeyResourceBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!apiKeyId) {
+	if (!pathParams.apiKeyId) {
 		throw new Error(`Missing required path parameter: apiKeyId`);
 	}
-
 	const data = await request<
-		PostApiKeyResourceMutationResponse,
-		ErrorWrapper<PostApiKeyResource400 | PostApiKeyResource401>,
-		PostApiKeyResourceMutationRequest,
+		PostApiKeyResourceResponse,
+		ErrorWrapper<
+			PostApiKeyResourceStatus400 | PostApiKeyResourceStatus401 | PostApiKeyResourceStatus503
+		>,
+		PostApiKeyResourceBody,
 		Record<string, string>,
 		Record<string, string>,
-		PostApiKeyResourcePathParams
-	>({ method: "POST", url: `/api/key/${apiKeyId}`, body, ...requestConfig });
+		{ apiKeyId: number }
+	>({
+		method: "POST",
+		url: `/api/key/${pathParams.apiKeyId}`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Delete an API key
- * {@link /api/key/:apiKeyId}
+ * @link /api/key/{apiKeyId}
  */
-export async function deleteApiKeyResource({
-	pathParams: { apiKeyId },
-	config = {},
-}: {
-	pathParams: DeleteApiKeyResourcePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deleteApiKeyResource(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { apiKeyId: number };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!apiKeyId) {
+	if (!pathParams.apiKeyId) {
 		throw new Error(`Missing required path parameter: apiKeyId`);
 	}
-
 	const data = await request<
-		DeleteApiKeyResourceMutationResponse,
-		ErrorWrapper<DeleteApiKeyResource401>,
+		DeleteApiKeyResourceResponse,
+		ErrorWrapper<DeleteApiKeyResourceStatus401>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		DeleteApiKeyResourcePathParams
-	>({ method: "DELETE", url: `/api/key/${apiKeyId}`, ...requestConfig });
+		{ apiKeyId: number }
+	>({
+		method: "DELETE",
+		url: `/api/key/${pathParams.apiKeyId}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Get an advanced API key
- * {@link /api/key/:apiKeyId/advanced}
+ * @link /api/key/{apiKeyId}/advanced
  */
-export async function getApiKeyAdvancedResource({
-	pathParams: { apiKeyId },
-	config = {},
-}: {
-	pathParams: GetApiKeyAdvancedResourcePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getApiKeyAdvancedResource(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { apiKeyId: number };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!apiKeyId) {
+	if (!pathParams.apiKeyId) {
 		throw new Error(`Missing required path parameter: apiKeyId`);
 	}
-
 	const data = await request<
-		GetApiKeyAdvancedResourceQueryResponse,
+		GetApiKeyAdvancedResourceResponse,
 		ErrorWrapper<
-			GetApiKeyAdvancedResource401 | GetApiKeyAdvancedResource403 | GetApiKeyAdvancedResource404
+			| GetApiKeyAdvancedResourceStatus401
+			| GetApiKeyAdvancedResourceStatus403
+			| GetApiKeyAdvancedResourceStatus404
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		GetApiKeyAdvancedResourcePathParams
-	>({ method: "GET", url: `/api/key/${apiKeyId}/advanced`, ...requestConfig });
+		{ apiKeyId: number }
+	>({
+		method: "GET",
+		url: `/api/key/${pathParams.apiKeyId}/advanced`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Update an advanced API key
- * {@link /api/key/:apiKeyId/advanced}
+ * @link /api/key/{apiKeyId}/advanced
  */
-export async function postApiKeyAdvancedResource({
-	pathParams: { apiKeyId },
-	body,
-	config = {},
-}: {
-	pathParams: PostApiKeyAdvancedResourcePathParams;
-	body: PostApiKeyAdvancedResourceMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function postApiKeyAdvancedResource(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { apiKeyId: number };
+		body: PostApiKeyAdvancedResourceBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!apiKeyId) {
+	if (!pathParams.apiKeyId) {
 		throw new Error(`Missing required path parameter: apiKeyId`);
 	}
-
 	const data = await request<
-		PostApiKeyAdvancedResourceMutationResponse,
-		ErrorWrapper<PostApiKeyAdvancedResource400 | PostApiKeyAdvancedResource401>,
-		PostApiKeyAdvancedResourceMutationRequest,
+		PostApiKeyAdvancedResourceResponse,
+		ErrorWrapper<PostApiKeyAdvancedResourceStatus400 | PostApiKeyAdvancedResourceStatus401>,
+		PostApiKeyAdvancedResourceBody,
 		Record<string, string>,
 		Record<string, string>,
-		PostApiKeyAdvancedResourcePathParams
-	>({ method: "POST", url: `/api/key/${apiKeyId}/advanced`, body, ...requestConfig });
+		{ apiKeyId: number }
+	>({
+		method: "POST",
+		url: `/api/key/${pathParams.apiKeyId}/advanced`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Create an advanced API key
- * {@link /api/key/:apiKeyId/advanced}
+ * @link /api/key/{apiKeyId}/advanced
  */
-export async function putApiKeyAdvancedResource({
-	pathParams: { apiKeyId },
-	body,
-	config = {},
-}: {
-	pathParams: PutApiKeyAdvancedResourcePathParams;
-	body: PutApiKeyAdvancedResourceMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function putApiKeyAdvancedResource(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { apiKeyId: number };
+		body: PutApiKeyAdvancedResourceBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!apiKeyId) {
+	if (!pathParams.apiKeyId) {
 		throw new Error(`Missing required path parameter: apiKeyId`);
 	}
-
 	const data = await request<
-		PutApiKeyAdvancedResourceMutationResponse,
-		ErrorWrapper<PutApiKeyAdvancedResource400 | PutApiKeyAdvancedResource401>,
-		PutApiKeyAdvancedResourceMutationRequest,
+		PutApiKeyAdvancedResourceResponse,
+		ErrorWrapper<PutApiKeyAdvancedResourceStatus400 | PutApiKeyAdvancedResourceStatus401>,
+		PutApiKeyAdvancedResourceBody,
 		Record<string, string>,
 		Record<string, string>,
-		PutApiKeyAdvancedResourcePathParams
-	>({ method: "PUT", url: `/api/key/${apiKeyId}/advanced`, body, ...requestConfig });
+		{ apiKeyId: number }
+	>({
+		method: "PUT",
+		url: `/api/key/${pathParams.apiKeyId}/advanced`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Delete an advanced API key
- * {@link /api/key/:apiKeyId/advanced}
+ * @link /api/key/{apiKeyId}/advanced
  */
-export async function deleteApiKeyAdvancedResource({
-	pathParams: { apiKeyId },
-	config = {},
-}: {
-	pathParams: DeleteApiKeyAdvancedResourcePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deleteApiKeyAdvancedResource(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { apiKeyId: number };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!apiKeyId) {
+	if (!pathParams.apiKeyId) {
 		throw new Error(`Missing required path parameter: apiKeyId`);
 	}
-
 	const data = await request<
-		DeleteApiKeyAdvancedResourceMutationResponse,
-		ErrorWrapper<DeleteApiKeyAdvancedResource401>,
+		DeleteApiKeyAdvancedResourceResponse,
+		ErrorWrapper<DeleteApiKeyAdvancedResourceStatus401>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		DeleteApiKeyAdvancedResourcePathParams
-	>({ method: "DELETE", url: `/api/key/${apiKeyId}/advanced`, ...requestConfig });
+		{ apiKeyId: number }
+	>({
+		method: "DELETE",
+		url: `/api/key/${pathParams.apiKeyId}/advanced`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Reactivate a deactivated advanced webhook integration
- * {@link /api/key/:apiKeyId/advanced/reactivate}
+ * @link /api/key/{apiKeyId}/advanced/reactivate
  */
-export async function postApiKeyAdvancedReactivateResource({
-	pathParams: { apiKeyId },
-	config = {},
-}: {
-	pathParams: PostApiKeyAdvancedReactivateResourcePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function postApiKeyAdvancedReactivateResource(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { apiKeyId: number };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!apiKeyId) {
+	if (!pathParams.apiKeyId) {
 		throw new Error(`Missing required path parameter: apiKeyId`);
 	}
-
 	const data = await request<
-		PostApiKeyAdvancedReactivateResourceMutationResponse,
-		ErrorWrapper<PostApiKeyAdvancedReactivateResource400 | PostApiKeyAdvancedReactivateResource401>,
+		PostApiKeyAdvancedReactivateResourceResponse,
+		ErrorWrapper<
+			PostApiKeyAdvancedReactivateResourceStatus400 | PostApiKeyAdvancedReactivateResourceStatus401
+		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		PostApiKeyAdvancedReactivateResourcePathParams
-	>({ method: "POST", url: `/api/key/${apiKeyId}/advanced/reactivate`, ...requestConfig });
+		{ apiKeyId: number }
+	>({
+		method: "POST",
+		url: `/api/key/${pathParams.apiKeyId}/advanced/reactivate`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Get a list of API key tokens
- * {@link /api/key/:apiKeyId/token}
+ * @link /api/key/{apiKeyId}/token
  */
-export async function getApiKeyTokensResource({
-	pathParams: { apiKeyId },
-	config = {},
-}: {
-	pathParams: GetApiKeyTokensResourcePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getApiKeyTokensResource(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { apiKeyId: number };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!apiKeyId) {
+	if (!pathParams.apiKeyId) {
 		throw new Error(`Missing required path parameter: apiKeyId`);
 	}
-
 	const data = await request<
-		GetApiKeyTokensResourceQueryResponse,
-		ErrorWrapper<GetApiKeyTokensResource401>,
+		GetApiKeyTokensResourceResponse,
+		ErrorWrapper<GetApiKeyTokensResourceStatus401>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		GetApiKeyTokensResourcePathParams
-	>({ method: "GET", url: `/api/key/${apiKeyId}/token`, ...requestConfig });
+		{ apiKeyId: number }
+	>({
+		method: "GET",
+		url: `/api/key/${pathParams.apiKeyId}/token`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Create an API key token
- * {@link /api/key/:apiKeyId/token}
+ * @link /api/key/{apiKeyId}/token
  */
-export async function putApiKeyTokensResource({
-	pathParams: { apiKeyId },
-	body,
-	config = {},
-}: {
-	pathParams: PutApiKeyTokensResourcePathParams;
-	body: PutApiKeyTokensResourceMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function putApiKeyTokensResource(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { apiKeyId: number };
+		body: PutApiKeyTokensResourceBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!apiKeyId) {
+	if (!pathParams.apiKeyId) {
 		throw new Error(`Missing required path parameter: apiKeyId`);
 	}
-
 	const data = await request<
-		PutApiKeyTokensResourceMutationResponse,
-		ErrorWrapper<PutApiKeyTokensResource400 | PutApiKeyTokensResource401>,
-		PutApiKeyTokensResourceMutationRequest,
+		PutApiKeyTokensResourceResponse,
+		ErrorWrapper<PutApiKeyTokensResourceStatus400 | PutApiKeyTokensResourceStatus401>,
+		PutApiKeyTokensResourceBody,
 		Record<string, string>,
 		Record<string, string>,
-		PutApiKeyTokensResourcePathParams
-	>({ method: "PUT", url: `/api/key/${apiKeyId}/token`, body, ...requestConfig });
+		{ apiKeyId: number }
+	>({
+		method: "PUT",
+		url: `/api/key/${pathParams.apiKeyId}/token`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Update an API key token
- * {@link /api/key/:apiKeyId/token/:id}
+ * @link /api/key/{apiKeyId}/token/{id}
  */
-export async function postApiKeyTokenResource({
-	pathParams: { apiKeyId, id },
-	body,
-	config = {},
-}: {
-	pathParams: PostApiKeyTokenResourcePathParams;
-	body: PostApiKeyTokenResourceMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function postApiKeyTokenResource(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { apiKeyId: number; id: string };
+		body: PostApiKeyTokenResourceBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!apiKeyId) {
+	if (!pathParams.apiKeyId) {
 		throw new Error(`Missing required path parameter: apiKeyId`);
 	}
 
-	if (!id) {
+	if (!pathParams.id) {
 		throw new Error(`Missing required path parameter: id`);
 	}
-
 	const data = await request<
-		PostApiKeyTokenResourceMutationResponse,
-		ErrorWrapper<PostApiKeyTokenResource400 | PostApiKeyTokenResource401>,
-		PostApiKeyTokenResourceMutationRequest,
+		PostApiKeyTokenResourceResponse,
+		ErrorWrapper<PostApiKeyTokenResourceStatus400 | PostApiKeyTokenResourceStatus401>,
+		PostApiKeyTokenResourceBody,
 		Record<string, string>,
 		Record<string, string>,
-		PostApiKeyTokenResourcePathParams
-	>({ method: "POST", url: `/api/key/${apiKeyId}/token/${id}`, body, ...requestConfig });
+		{ apiKeyId: number; id: string }
+	>({
+		method: "POST",
+		url: `/api/key/${pathParams.apiKeyId}/token/${pathParams.id}`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Delete an API key token
- * {@link /api/key/:apiKeyId/token/:id}
+ * @link /api/key/{apiKeyId}/token/{id}
  */
-export async function deleteApiKeyTokenResource({
-	pathParams: { apiKeyId, id },
-	config = {},
-}: {
-	pathParams: DeleteApiKeyTokenResourcePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deleteApiKeyTokenResource(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { apiKeyId: number; id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!apiKeyId) {
+	if (!pathParams.apiKeyId) {
 		throw new Error(`Missing required path parameter: apiKeyId`);
 	}
 
-	if (!id) {
+	if (!pathParams.id) {
 		throw new Error(`Missing required path parameter: id`);
 	}
-
 	const data = await request<
-		DeleteApiKeyTokenResourceMutationResponse,
-		ErrorWrapper<DeleteApiKeyTokenResource401>,
+		DeleteApiKeyTokenResourceResponse,
+		ErrorWrapper<DeleteApiKeyTokenResourceStatus401>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		DeleteApiKeyTokenResourcePathParams
-	>({ method: "DELETE", url: `/api/key/${apiKeyId}/token/${id}`, ...requestConfig });
+		{ apiKeyId: number; id: string }
+	>({
+		method: "DELETE",
+		url: `/api/key/${pathParams.apiKeyId}/token/${pathParams.id}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Get a list of webhook logs (descending)
- * {@link /api/key/:apiKeyId/webhook/logs}
+ * @link /api/key/{apiKeyId}/webhook/logs
  */
-export async function getWebhookLogsResource({
-	pathParams: { apiKeyId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: GetWebhookLogsResourcePathParams;
-	queryParams?: GetWebhookLogsResourceQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getWebhookLogsResource(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { apiKeyId: number };
+		queryParams?: { id?: string; limit?: number };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!apiKeyId) {
+	if (!pathParams.apiKeyId) {
 		throw new Error(`Missing required path parameter: apiKeyId`);
 	}
-
 	const data = await request<
-		GetWebhookLogsResourceQueryResponse,
-		ErrorWrapper<GetWebhookLogsResource401>,
+		GetWebhookLogsResourceResponse,
+		ErrorWrapper<GetWebhookLogsResourceStatus401>,
 		null,
 		Record<string, string>,
-		GetWebhookLogsResourceQueryParams,
-		GetWebhookLogsResourcePathParams
-	>({ method: "GET", url: `/api/key/${apiKeyId}/webhook/logs`, queryParams, ...requestConfig });
+		{ id?: string; limit?: number },
+		{ apiKeyId: number }
+	>({
+		method: "GET",
+		url: `/api/key/${pathParams.apiKeyId}/webhook/logs`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Update the web config for a group of smartlocks
- * {@link /bulk-web-config}
+ * @link /bulk-web-config
  */
-export async function postSmartlockBulkWebConfigResource({
-	body,
-	config = {},
-}: {
-	body: PostSmartlockBulkWebConfigResourceMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function postSmartlockBulkWebConfigResource(
+	{
+		body,
+		config,
+	}: {
+		body: PostSmartlockBulkWebConfigResourceBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		PostSmartlockBulkWebConfigResourceMutationResponse,
-		ErrorWrapper<PostSmartlockBulkWebConfigResource400 | PostSmartlockBulkWebConfigResource401>,
-		PostSmartlockBulkWebConfigResourceMutationRequest,
+		PostSmartlockBulkWebConfigResourceResponse,
+		ErrorWrapper<
+			PostSmartlockBulkWebConfigResourceStatus400 | PostSmartlockBulkWebConfigResourceStatus401
+		>,
+		PostSmartlockBulkWebConfigResourceBody,
 		Record<string, string>,
 		Record<string, string>,
 		Record<string, string>
-	>({ method: "POST", url: `/bulk-web-config`, body, ...requestConfig });
+	>({
+		method: "POST",
+		url: `/bulk-web-config`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Get a list of companies
- * {@link /company}
+ * @link /company
  */
-export async function getCompaniesResource({
-	config = {},
-}: {
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getCompaniesResource(
+	{ config }: { config?: Partial<FetcherConfig> & { client?: typeof defaultClient } } = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		GetCompaniesResourceQueryResponse,
-		ErrorWrapper<GetCompaniesResource401 | GetCompaniesResource403>,
+		GetCompaniesResourceResponse,
+		ErrorWrapper<GetCompaniesResourceStatus401 | GetCompaniesResourceStatus403>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
 		Record<string, string>
-	>({ method: "GET", url: `/company`, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/company`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Get all notifications attached to your account
- * {@link /notification}
+ * @link /notification
  */
-export async function getNotificationsResource({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: GetNotificationsResourceQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getNotificationsResource(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { referenceId?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		GetNotificationsResourceQueryResponse,
-		ErrorWrapper<GetNotificationsResource401>,
+		GetNotificationsResourceResponse,
+		ErrorWrapper<GetNotificationsResourceStatus401>,
 		null,
 		Record<string, string>,
-		GetNotificationsResourceQueryParams,
+		{ referenceId?: string },
 		Record<string, string>
-	>({ method: "GET", url: `/notification`, queryParams, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/notification`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Create a notification configuration
- * {@link /notification}
+ * @link /notification
  */
-export async function putNotificationsResource({
-	body,
-	config = {},
-}: {
-	body: PutNotificationsResourceMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function putNotificationsResource(
+	{
+		body,
+		config,
+	}: {
+		body: PutNotificationsResourceBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		PutNotificationsResourceMutationResponse,
+		PutNotificationsResourceResponse,
 		ErrorWrapper<
-			PutNotificationsResource400 | PutNotificationsResource401 | PutNotificationsResource403
+			| PutNotificationsResourceStatus400
+			| PutNotificationsResourceStatus401
+			| PutNotificationsResourceStatus403
 		>,
-		PutNotificationsResourceMutationRequest,
+		PutNotificationsResourceBody,
 		Record<string, string>,
 		Record<string, string>,
 		Record<string, string>
-	>({ method: "PUT", url: `/notification`, body, ...requestConfig });
+	>({
+		method: "PUT",
+		url: `/notification`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Get a notification configuration
- * {@link /notification/:notificationId}
+ * @link /notification/{notificationId}
  */
-export async function getNotificationResource({
-	pathParams: { notificationId },
-	config = {},
-}: {
-	pathParams: GetNotificationResourcePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getNotificationResource(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { notificationId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!notificationId) {
+	if (!pathParams.notificationId) {
 		throw new Error(`Missing required path parameter: notificationId`);
 	}
-
 	const data = await request<
-		GetNotificationResourceQueryResponse,
+		GetNotificationResourceResponse,
 		ErrorWrapper<
-			GetNotificationResource401 | GetNotificationResource403 | GetNotificationResource404
+			| GetNotificationResourceStatus401
+			| GetNotificationResourceStatus403
+			| GetNotificationResourceStatus404
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		GetNotificationResourcePathParams
-	>({ method: "GET", url: `/notification/${notificationId}`, ...requestConfig });
+		{ notificationId: string }
+	>({
+		method: "GET",
+		url: `/notification/${pathParams.notificationId}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Update a notification configuration
- * {@link /notification/:notificationId}
+ * @link /notification/{notificationId}
  */
-export async function postNotificationResource({
-	pathParams: { notificationId },
-	body,
-	config = {},
-}: {
-	pathParams: PostNotificationResourcePathParams;
-	body: PostNotificationResourceMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function postNotificationResource(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { notificationId: string };
+		body: PostNotificationResourceBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!notificationId) {
+	if (!pathParams.notificationId) {
 		throw new Error(`Missing required path parameter: notificationId`);
 	}
-
 	const data = await request<
-		PostNotificationResourceMutationResponse,
+		PostNotificationResourceResponse,
 		ErrorWrapper<
-			PostNotificationResource400 | PostNotificationResource401 | PostNotificationResource403
+			| PostNotificationResourceStatus400
+			| PostNotificationResourceStatus401
+			| PostNotificationResourceStatus403
 		>,
-		PostNotificationResourceMutationRequest,
+		PostNotificationResourceBody,
 		Record<string, string>,
 		Record<string, string>,
-		PostNotificationResourcePathParams
-	>({ method: "POST", url: `/notification/${notificationId}`, body, ...requestConfig });
+		{ notificationId: string }
+	>({
+		method: "POST",
+		url: `/notification/${pathParams.notificationId}`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Delete a notification configuration
- * {@link /notification/:notificationId}
+ * @link /notification/{notificationId}
  */
-export async function deleteNotificationResource({
-	pathParams: { notificationId },
-	config = {},
-}: {
-	pathParams: DeleteNotificationResourcePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deleteNotificationResource(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { notificationId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!notificationId) {
+	if (!pathParams.notificationId) {
 		throw new Error(`Missing required path parameter: notificationId`);
 	}
-
 	const data = await request<
-		DeleteNotificationResourceMutationResponse,
+		DeleteNotificationResourceResponse,
 		ErrorWrapper<
-			DeleteNotificationResource401 | DeleteNotificationResource403 | DeleteNotificationResource405
+			| DeleteNotificationResourceStatus401
+			| DeleteNotificationResourceStatus403
+			| DeleteNotificationResourceStatus405
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		DeleteNotificationResourcePathParams
-	>({ method: "DELETE", url: `/notification/${notificationId}`, ...requestConfig });
+		{ notificationId: string }
+	>({
+		method: "DELETE",
+		url: `/notification/${pathParams.notificationId}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Get all intercom brands
- * {@link /opener/brand}
+ * @link /opener/brand
  */
-export async function getOpenerBrandsResource({
-	config = {},
-}: {
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getOpenerBrandsResource(
+	{ config }: { config?: Partial<FetcherConfig> & { client?: typeof defaultClient } } = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		GetOpenerBrandsResourceQueryResponse,
+		GetOpenerBrandsResourceResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
 		Record<string, string>
-	>({ method: "GET", url: `/opener/brand`, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/opener/brand`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Get an intercom brand
- * {@link /opener/brand/:brandId}
+ * @link /opener/brand/{brandId}
  */
-export async function getOpenerBrandResource({
-	pathParams: { brandId },
-	config = {},
-}: {
-	pathParams: GetOpenerBrandResourcePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getOpenerBrandResource(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { brandId: number };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!brandId) {
+	if (!pathParams.brandId) {
 		throw new Error(`Missing required path parameter: brandId`);
 	}
-
 	const data = await request<
-		GetOpenerBrandResourceQueryResponse,
+		GetOpenerBrandResourceResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		GetOpenerBrandResourcePathParams
-	>({ method: "GET", url: `/opener/brand/${brandId}`, ...requestConfig });
+		{ brandId: number }
+	>({
+		method: "GET",
+		url: `/opener/brand/${pathParams.brandId}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Get a list of intercom models
- * {@link /opener/intercom}
+ * @link /opener/intercom
  */
-export async function getOpenerIntercomsResource({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: GetOpenerIntercomsResourceQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getOpenerIntercomsResource(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { brandId?: number; ignoreVerified?: boolean; recentlyChanged?: boolean };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		GetOpenerIntercomsResourceQueryResponse,
+		GetOpenerIntercomsResourceResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
-		GetOpenerIntercomsResourceQueryParams,
+		{ brandId?: number; ignoreVerified?: boolean; recentlyChanged?: boolean },
 		Record<string, string>
-	>({ method: "GET", url: `/opener/intercom`, queryParams, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/opener/intercom`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Get an intercom model
- * {@link /opener/intercom/:intercomId}
+ * @link /opener/intercom/{intercomId}
  */
-export async function getOpenerIntercomResource({
-	pathParams: { intercomId },
-	config = {},
-}: {
-	pathParams: GetOpenerIntercomResourcePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getOpenerIntercomResource(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { intercomId: number };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!intercomId) {
+	if (!pathParams.intercomId) {
 		throw new Error(`Missing required path parameter: intercomId`);
 	}
-
 	const data = await request<
-		GetOpenerIntercomResourceQueryResponse,
+		GetOpenerIntercomResourceResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		GetOpenerIntercomResourcePathParams
-	>({ method: "GET", url: `/opener/intercom/${intercomId}`, ...requestConfig });
+		{ intercomId: number }
+	>({
+		method: "GET",
+		url: `/opener/intercom/${pathParams.intercomId}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Get a list of services
- * {@link /service}
+ * @link /service
  */
-export async function getServicesResource({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: GetServicesResourceQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getServicesResource(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { serviceIds?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		GetServicesResourceQueryResponse,
-		ErrorWrapper<GetServicesResource401>,
+		GetServicesResourceResponse,
+		ErrorWrapper<GetServicesResourceStatus401>,
 		null,
 		Record<string, string>,
-		GetServicesResourceQueryParams,
+		{ serviceIds?: string },
 		Record<string, string>
-	>({ method: "GET", url: `/service`, queryParams, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/service`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Get a service
- * {@link /service/:serviceId}
+ * @link /service/{serviceId}
  */
-export async function getServiceResource({
-	pathParams: { serviceId },
-	config = {},
-}: {
-	pathParams: GetServiceResourcePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getServiceResource(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { serviceId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!serviceId) {
+	if (!pathParams.serviceId) {
 		throw new Error(`Missing required path parameter: serviceId`);
 	}
-
 	const data = await request<
-		GetServiceResourceQueryResponse,
-		ErrorWrapper<GetServiceResource401>,
+		GetServiceResourceResponse,
+		ErrorWrapper<GetServiceResourceStatus401>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		GetServiceResourcePathParams
-	>({ method: "GET", url: `/service/${serviceId}`, ...requestConfig });
+		{ serviceId: string }
+	>({
+		method: "GET",
+		url: `/service/${pathParams.serviceId}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Link a service
- * {@link /service/:serviceId/link}
+ * @link /service/{serviceId}/link
  */
-export async function postServiceLinkResource({
-	pathParams: { serviceId },
-	config = {},
-}: {
-	pathParams: PostServiceLinkResourcePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function postServiceLinkResource(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { serviceId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!serviceId) {
+	if (!pathParams.serviceId) {
 		throw new Error(`Missing required path parameter: serviceId`);
 	}
-
 	const data = await request<
-		PostServiceLinkResourceMutationResponse,
-		ErrorWrapper<PostServiceLinkResource400 | PostServiceLinkResource401>,
+		PostServiceLinkResourceResponse,
+		ErrorWrapper<PostServiceLinkResourceStatus400 | PostServiceLinkResourceStatus401>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		PostServiceLinkResourcePathParams
-	>({ method: "POST", url: `/service/${serviceId}/link`, ...requestConfig });
+		{ serviceId: string }
+	>({
+		method: "POST",
+		url: `/service/${pathParams.serviceId}/link`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Sync a service
- * {@link /service/:serviceId/sync}
+ * @link /service/{serviceId}/sync
  */
-export async function postServiceSyncResource({
-	pathParams: { serviceId },
-	config = {},
-}: {
-	pathParams: PostServiceSyncResourcePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function postServiceSyncResource(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { serviceId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!serviceId) {
+	if (!pathParams.serviceId) {
 		throw new Error(`Missing required path parameter: serviceId`);
 	}
-
 	const data = await request<
-		PostServiceSyncResourceMutationResponse,
-		ErrorWrapper<PostServiceSyncResource400 | PostServiceSyncResource401>,
+		PostServiceSyncResourceResponse,
+		ErrorWrapper<PostServiceSyncResourceStatus400 | PostServiceSyncResourceStatus401>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		PostServiceSyncResourcePathParams
-	>({ method: "POST", url: `/service/${serviceId}/sync`, ...requestConfig });
+		{ serviceId: string }
+	>({
+		method: "POST",
+		url: `/service/${pathParams.serviceId}/sync`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Unlink a service
- * {@link /service/:serviceId/unlink}
+ * @link /service/{serviceId}/unlink
  */
-export async function postServiceUnlinkResource({
-	pathParams: { serviceId },
-	config = {},
-}: {
-	pathParams: PostServiceUnlinkResourcePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function postServiceUnlinkResource(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { serviceId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!serviceId) {
+	if (!pathParams.serviceId) {
 		throw new Error(`Missing required path parameter: serviceId`);
 	}
-
 	const data = await request<
-		PostServiceUnlinkResourceMutationResponse,
-		ErrorWrapper<PostServiceUnlinkResource400 | PostServiceUnlinkResource401>,
+		PostServiceUnlinkResourceResponse,
+		ErrorWrapper<PostServiceUnlinkResourceStatus400 | PostServiceUnlinkResourceStatus401>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		PostServiceUnlinkResourcePathParams
-	>({ method: "POST", url: `/service/${serviceId}/unlink`, ...requestConfig });
+		{ serviceId: string }
+	>({
+		method: "POST",
+		url: `/service/${pathParams.serviceId}/unlink`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Get a list of smartlocks
- * {@link /smartlock}
+ * @link /smartlock
  */
-export async function getSmartlocksResource({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: GetSmartlocksResourceQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getSmartlocksResource(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { authId?: number; type?: number };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		GetSmartlocksResourceQueryResponse,
-		ErrorWrapper<GetSmartlocksResource401>,
+		GetSmartlocksResourceResponse,
+		ErrorWrapper<GetSmartlocksResourceStatus401>,
 		null,
 		Record<string, string>,
-		GetSmartlocksResourceQueryParams,
+		{ authId?: number; type?: number },
 		Record<string, string>
-	>({ method: "GET", url: `/smartlock`, queryParams, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/smartlock`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Get a list of smartlock authorizations for your smartlocks
- * {@link /smartlock/auth}
+ * @link /smartlock/auth
  */
-export async function getSmartlocksAuthsResource({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: GetSmartlocksAuthsResourceQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getSmartlocksAuthsResource(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { accountUserId?: number; types?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		GetSmartlocksAuthsResourceQueryResponse,
-		ErrorWrapper<GetSmartlocksAuthsResource401>,
+		GetSmartlocksAuthsResourceResponse,
+		ErrorWrapper<GetSmartlocksAuthsResourceStatus401>,
 		null,
 		Record<string, string>,
-		GetSmartlocksAuthsResourceQueryParams,
+		{ accountUserId?: number; types?: string },
 		Record<string, string>
-	>({ method: "GET", url: `/smartlock/auth`, queryParams, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/smartlock/auth`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Update smartlock authorizations asynchronously
- * {@link /smartlock/auth}
+ * @link /smartlock/auth
  */
-export async function postSmartlocksAuthsResource({
-	body,
-	config = {},
-}: {
-	body: PostSmartlocksAuthsResourceMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function postSmartlocksAuthsResource(
+	{
+		body,
+		config,
+	}: {
+		body: PostSmartlocksAuthsResourceBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		PostSmartlocksAuthsResourceMutationResponse,
+		PostSmartlocksAuthsResourceResponse,
 		ErrorWrapper<
-			| PostSmartlocksAuthsResource400
-			| PostSmartlocksAuthsResource401
-			| PostSmartlocksAuthsResource403
-			| PostSmartlocksAuthsResource409
-			| PostSmartlocksAuthsResource423
+			| PostSmartlocksAuthsResourceStatus400
+			| PostSmartlocksAuthsResourceStatus401
+			| PostSmartlocksAuthsResourceStatus403
+			| PostSmartlocksAuthsResourceStatus409
+			| PostSmartlocksAuthsResourceStatus423
 		>,
-		PostSmartlocksAuthsResourceMutationRequest,
+		PostSmartlocksAuthsResourceBody,
 		Record<string, string>,
 		Record<string, string>,
 		Record<string, string>
-	>({ method: "POST", url: `/smartlock/auth`, body, ...requestConfig });
+	>({
+		method: "POST",
+		url: `/smartlock/auth`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Create smartlock authorizations asynchronously
- * {@link /smartlock/auth}
+ * @link /smartlock/auth
  */
-export async function putSmartlocksAuthsResource({
-	body,
-	config = {},
-}: {
-	body: PutSmartlocksAuthsResourceMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function putSmartlocksAuthsResource(
+	{
+		body,
+		config,
+	}: {
+		body: PutSmartlocksAuthsResourceBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		PutSmartlocksAuthsResourceMutationResponse,
+		PutSmartlocksAuthsResourceResponse,
 		ErrorWrapper<
-			| PutSmartlocksAuthsResource400
-			| PutSmartlocksAuthsResource402
-			| PutSmartlocksAuthsResource409
-			| PutSmartlocksAuthsResource426
+			| PutSmartlocksAuthsResourceStatus400
+			| PutSmartlocksAuthsResourceStatus402
+			| PutSmartlocksAuthsResourceStatus409
+			| PutSmartlocksAuthsResourceStatus426
 		>,
-		PutSmartlocksAuthsResourceMutationRequest,
+		PutSmartlocksAuthsResourceBody,
 		Record<string, string>,
 		Record<string, string>,
 		Record<string, string>
-	>({ method: "PUT", url: `/smartlock/auth`, body, ...requestConfig });
+	>({
+		method: "PUT",
+		url: `/smartlock/auth`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Delete smartlock authorizations asynchronously
- * {@link /smartlock/auth}
+ * @link /smartlock/auth
  */
-export async function deleteSmartlocksAuthsResource({
-	body,
-	config = {},
-}: {
-	body: DeleteSmartlocksAuthsResourceMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deleteSmartlocksAuthsResource(
+	{
+		body,
+		config,
+	}: {
+		body: DeleteSmartlocksAuthsResourceBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		DeleteSmartlocksAuthsResourceMutationResponse,
+		DeleteSmartlocksAuthsResourceResponse,
 		ErrorWrapper<
-			| DeleteSmartlocksAuthsResource400
-			| DeleteSmartlocksAuthsResource401
-			| DeleteSmartlocksAuthsResource403
-			| DeleteSmartlocksAuthsResource423
+			| DeleteSmartlocksAuthsResourceStatus400
+			| DeleteSmartlocksAuthsResourceStatus401
+			| DeleteSmartlocksAuthsResourceStatus403
+			| DeleteSmartlocksAuthsResourceStatus423
 		>,
-		DeleteSmartlocksAuthsResourceMutationRequest,
+		DeleteSmartlocksAuthsResourceBody,
 		Record<string, string>,
 		Record<string, string>,
 		Record<string, string>
-	>({ method: "DELETE", url: `/smartlock/auth`, body, ...requestConfig });
+	>({
+		method: "DELETE",
+		url: `/smartlock/auth`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Create smartlock authorizations asynchronously
- * {@link /smartlock/auth/advanced}
+ * @link /smartlock/auth/advanced
  */
-export async function putSmartlockAuthsAdvancedResource({
-	body,
-	config = {},
-}: {
-	body: PutSmartlockAuthsAdvancedResourceMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function putSmartlockAuthsAdvancedResource(
+	{
+		body,
+		config,
+	}: {
+		body: PutSmartlockAuthsAdvancedResourceBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		PutSmartlockAuthsAdvancedResourceMutationResponse,
+		PutSmartlockAuthsAdvancedResourceResponse,
 		ErrorWrapper<
-			| PutSmartlockAuthsAdvancedResource400
-			| PutSmartlockAuthsAdvancedResource402
-			| PutSmartlockAuthsAdvancedResource409
-			| PutSmartlockAuthsAdvancedResource426
+			| PutSmartlockAuthsAdvancedResourceStatus400
+			| PutSmartlockAuthsAdvancedResourceStatus402
+			| PutSmartlockAuthsAdvancedResourceStatus409
+			| PutSmartlockAuthsAdvancedResourceStatus426
 		>,
-		PutSmartlockAuthsAdvancedResourceMutationRequest,
+		PutSmartlockAuthsAdvancedResourceBody,
 		Record<string, string>,
 		Record<string, string>,
 		Record<string, string>
-	>({ method: "PUT", url: `/smartlock/auth/advanced`, body, ...requestConfig });
+	>({
+		method: "PUT",
+		url: `/smartlock/auth/advanced`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Get a paginated list of smartlock authorizations for your smartlocks
- * {@link /smartlock/auth/paged}
+ * @link /smartlock/auth/paged
  */
-export async function getSmartlocksAuthsPaginatedResource({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: GetSmartlocksAuthsPaginatedResourceQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getSmartlocksAuthsPaginatedResource(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { page?: number; size?: number; accountUserId?: number; types?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		GetSmartlocksAuthsPaginatedResourceQueryResponse,
-		ErrorWrapper<GetSmartlocksAuthsPaginatedResource401>,
+		GetSmartlocksAuthsPaginatedResourceResponse,
+		ErrorWrapper<GetSmartlocksAuthsPaginatedResourceStatus401>,
 		null,
 		Record<string, string>,
-		GetSmartlocksAuthsPaginatedResourceQueryParams,
+		{ page?: number; size?: number; accountUserId?: number; types?: string },
 		Record<string, string>
-	>({ method: "GET", url: `/smartlock/auth/paged`, queryParams, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/smartlock/auth/paged`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Get a list of smartlock logs for all of your smartlocks
- * {@link /smartlock/log}
+ * @link /smartlock/log
  */
-export async function getSmartlocksLogsResource({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: GetSmartlocksLogsResourceQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getSmartlocksLogsResource(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: {
+			accountUserId?: number;
+			fromDate?: string;
+			toDate?: string;
+			action?: number;
+			id?: string;
+			limit?: number;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		GetSmartlocksLogsResourceQueryResponse,
-		ErrorWrapper<GetSmartlocksLogsResource401>,
+		GetSmartlocksLogsResourceResponse,
+		ErrorWrapper<GetSmartlocksLogsResourceStatus401>,
 		null,
 		Record<string, string>,
-		GetSmartlocksLogsResourceQueryParams,
+		{
+			accountUserId?: number;
+			fromDate?: string;
+			toDate?: string;
+			action?: number;
+			id?: string;
+			limit?: number;
+		},
 		Record<string, string>
-	>({ method: "GET", url: `/smartlock/log`, queryParams, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/smartlock/log`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Get a smartlock
- * {@link /smartlock/:smartlockId}
+ * @link /smartlock/{smartlockId}
  */
-export async function getSmartlockResource({
-	pathParams: { smartlockId },
-	config = {},
-}: {
-	pathParams: GetSmartlockResourcePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getSmartlockResource(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { smartlockId: number };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!smartlockId) {
+	if (!pathParams.smartlockId) {
 		throw new Error(`Missing required path parameter: smartlockId`);
 	}
-
 	const data = await request<
-		GetSmartlockResourceQueryResponse,
-		ErrorWrapper<GetSmartlockResource401 | GetSmartlockResource403 | GetSmartlockResource404>,
+		GetSmartlockResourceResponse,
+		ErrorWrapper<
+			GetSmartlockResourceStatus401 | GetSmartlockResourceStatus403 | GetSmartlockResourceStatus404
+		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		GetSmartlockResourcePathParams
-	>({ method: "GET", url: `/smartlock/${smartlockId}`, ...requestConfig });
+		{ smartlockId: number }
+	>({
+		method: "GET",
+		url: `/smartlock/${pathParams.smartlockId}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Update a smartlock
- * {@link /smartlock/:smartlockId}
+ * @link /smartlock/{smartlockId}
  */
-export async function postSmartlockResource({
-	pathParams: { smartlockId },
-	body,
-	config = {},
-}: {
-	pathParams: PostSmartlockResourcePathParams;
-	body: PostSmartlockResourceMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function postSmartlockResource(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { smartlockId: number };
+		body: PostSmartlockResourceBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!smartlockId) {
+	if (!pathParams.smartlockId) {
 		throw new Error(`Missing required path parameter: smartlockId`);
 	}
-
 	const data = await request<
-		PostSmartlockResourceMutationResponse,
-		ErrorWrapper<PostSmartlockResource400 | PostSmartlockResource401 | PostSmartlockResource403>,
-		PostSmartlockResourceMutationRequest,
+		PostSmartlockResourceResponse,
+		ErrorWrapper<
+			| PostSmartlockResourceStatus400
+			| PostSmartlockResourceStatus401
+			| PostSmartlockResourceStatus403
+		>,
+		PostSmartlockResourceBody,
 		Record<string, string>,
 		Record<string, string>,
-		PostSmartlockResourcePathParams
-	>({ method: "POST", url: `/smartlock/${smartlockId}`, body, ...requestConfig });
+		{ smartlockId: number }
+	>({
+		method: "POST",
+		url: `/smartlock/${pathParams.smartlockId}`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Delete a smartlock
- * {@link /smartlock/:smartlockId}
+ * @link /smartlock/{smartlockId}
  */
-export async function deleteSmartlockResource({
-	pathParams: { smartlockId },
-	config = {},
-}: {
-	pathParams: DeleteSmartlockResourcePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deleteSmartlockResource(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { smartlockId: number };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!smartlockId) {
+	if (!pathParams.smartlockId) {
 		throw new Error(`Missing required path parameter: smartlockId`);
 	}
-
 	const data = await request<
-		DeleteSmartlockResourceMutationResponse,
+		DeleteSmartlockResourceResponse,
 		ErrorWrapper<
-			DeleteSmartlockResource400 | DeleteSmartlockResource401 | DeleteSmartlockResource403
+			| DeleteSmartlockResourceStatus400
+			| DeleteSmartlockResourceStatus401
+			| DeleteSmartlockResourceStatus403
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		DeleteSmartlockResourcePathParams
-	>({ method: "DELETE", url: `/smartlock/${smartlockId}`, ...requestConfig });
+		{ smartlockId: number }
+	>({
+		method: "DELETE",
+		url: `/smartlock/${pathParams.smartlockId}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Lock & unlock a smartlock with options
- * {@link /smartlock/:smartlockId/action}
+ * @link /smartlock/{smartlockId}/action
  */
-export async function postSmartlockActionResource({
-	pathParams: { smartlockId },
-	config = {},
-}: {
-	pathParams: PostSmartlockActionResourcePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function postSmartlockActionResource(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { smartlockId: string };
+		body: PostSmartlockActionResourceBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!smartlockId) {
+	if (!pathParams.smartlockId) {
 		throw new Error(`Missing required path parameter: smartlockId`);
 	}
-
 	const data = await request<
-		PostSmartlockActionResourceMutationResponse,
+		PostSmartlockActionResourceResponse,
 		ErrorWrapper<
-			| PostSmartlockActionResource400
-			| PostSmartlockActionResource401
-			| PostSmartlockActionResource402
+			| PostSmartlockActionResourceStatus400
+			| PostSmartlockActionResourceStatus401
+			| PostSmartlockActionResourceStatus402
 		>,
-		null,
+		PostSmartlockActionResourceBody,
 		Record<string, string>,
 		Record<string, string>,
-		PostSmartlockActionResourcePathParams
-	>({ method: "POST", url: `/smartlock/${smartlockId}/action`, ...requestConfig });
+		{ smartlockId: string }
+	>({
+		method: "POST",
+		url: `/smartlock/${pathParams.smartlockId}/action`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Lock & unlock a smartlock with callback
- * {@link /smartlock/:smartlockId/action/advanced}
+ * @link /smartlock/{smartlockId}/action/advanced
  */
-export async function postSmartlockActionAdvancedResource({
-	pathParams: { smartlockId },
-	config = {},
-}: {
-	pathParams: PostSmartlockActionAdvancedResourcePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function postSmartlockActionAdvancedResource(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { smartlockId: string };
+		body: PostSmartlockActionAdvancedResourceBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!smartlockId) {
+	if (!pathParams.smartlockId) {
 		throw new Error(`Missing required path parameter: smartlockId`);
 	}
-
 	const data = await request<
-		PostSmartlockActionAdvancedResourceMutationResponse,
+		PostSmartlockActionAdvancedResourceResponse,
 		ErrorWrapper<
-			| PostSmartlockActionAdvancedResource400
-			| PostSmartlockActionAdvancedResource402
-			| PostSmartlockActionAdvancedResource409
-			| PostSmartlockActionAdvancedResource426
+			| PostSmartlockActionAdvancedResourceStatus400
+			| PostSmartlockActionAdvancedResourceStatus402
+			| PostSmartlockActionAdvancedResourceStatus409
+			| PostSmartlockActionAdvancedResourceStatus426
 		>,
-		null,
+		PostSmartlockActionAdvancedResourceBody,
 		Record<string, string>,
 		Record<string, string>,
-		PostSmartlockActionAdvancedResourcePathParams
-	>({ method: "POST", url: `/smartlock/${smartlockId}/action/advanced`, ...requestConfig });
+		{ smartlockId: string }
+	>({
+		method: "POST",
+		url: `/smartlock/${pathParams.smartlockId}/action/advanced`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Lock a smartlock
- * {@link /smartlock/:smartlockId/action/lock}
+ * @link /smartlock/{smartlockId}/action/lock
  */
-export async function postSmartlockLockActionResource({
-	pathParams: { smartlockId },
-	config = {},
-}: {
-	pathParams: PostSmartlockLockActionResourcePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function postSmartlockLockActionResource(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { smartlockId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!smartlockId) {
+	if (!pathParams.smartlockId) {
 		throw new Error(`Missing required path parameter: smartlockId`);
 	}
-
 	const data = await request<
-		PostSmartlockLockActionResourceMutationResponse,
+		PostSmartlockLockActionResourceResponse,
 		ErrorWrapper<
-			| PostSmartlockLockActionResource400
-			| PostSmartlockLockActionResource401
-			| PostSmartlockLockActionResource405
+			| PostSmartlockLockActionResourceStatus400
+			| PostSmartlockLockActionResourceStatus401
+			| PostSmartlockLockActionResourceStatus405
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		PostSmartlockLockActionResourcePathParams
-	>({ method: "POST", url: `/smartlock/${smartlockId}/action/lock`, ...requestConfig });
+		{ smartlockId: string }
+	>({
+		method: "POST",
+		url: `/smartlock/${pathParams.smartlockId}/action/lock`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Lock a smartlock
- * {@link /smartlock/:smartlockId/action/lock/advanced}
+ * @link /smartlock/{smartlockId}/action/lock/advanced
  */
-export async function postSmartlockLockActionAdvancedResource({
-	pathParams: { smartlockId },
-	config = {},
-}: {
-	pathParams: PostSmartlockLockActionAdvancedResourcePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function postSmartlockLockActionAdvancedResource(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { smartlockId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!smartlockId) {
+	if (!pathParams.smartlockId) {
 		throw new Error(`Missing required path parameter: smartlockId`);
 	}
-
 	const data = await request<
-		PostSmartlockLockActionAdvancedResourceMutationResponse,
+		PostSmartlockLockActionAdvancedResourceResponse,
 		ErrorWrapper<
-			| PostSmartlockLockActionAdvancedResource400
-			| PostSmartlockLockActionAdvancedResource401
-			| PostSmartlockLockActionAdvancedResource405
+			| PostSmartlockLockActionAdvancedResourceStatus400
+			| PostSmartlockLockActionAdvancedResourceStatus401
+			| PostSmartlockLockActionAdvancedResourceStatus405
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		PostSmartlockLockActionAdvancedResourcePathParams
-	>({ method: "POST", url: `/smartlock/${smartlockId}/action/lock/advanced`, ...requestConfig });
+		{ smartlockId: string }
+	>({
+		method: "POST",
+		url: `/smartlock/${pathParams.smartlockId}/action/lock/advanced`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Unlock a smartlock
- * {@link /smartlock/:smartlockId/action/unlock}
+ * @link /smartlock/{smartlockId}/action/unlock
  */
-export async function postSmartlockUnlockActionResource({
-	pathParams: { smartlockId },
-	config = {},
-}: {
-	pathParams: PostSmartlockUnlockActionResourcePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function postSmartlockUnlockActionResource(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { smartlockId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!smartlockId) {
+	if (!pathParams.smartlockId) {
 		throw new Error(`Missing required path parameter: smartlockId`);
 	}
-
 	const data = await request<
-		PostSmartlockUnlockActionResourceMutationResponse,
+		PostSmartlockUnlockActionResourceResponse,
 		ErrorWrapper<
-			| PostSmartlockUnlockActionResource400
-			| PostSmartlockUnlockActionResource401
-			| PostSmartlockUnlockActionResource405
+			| PostSmartlockUnlockActionResourceStatus400
+			| PostSmartlockUnlockActionResourceStatus401
+			| PostSmartlockUnlockActionResourceStatus405
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		PostSmartlockUnlockActionResourcePathParams
-	>({ method: "POST", url: `/smartlock/${smartlockId}/action/unlock`, ...requestConfig });
+		{ smartlockId: string }
+	>({
+		method: "POST",
+		url: `/smartlock/${pathParams.smartlockId}/action/unlock`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Unlock a smartlock
- * {@link /smartlock/:smartlockId/action/unlock/advanced}
+ * @link /smartlock/{smartlockId}/action/unlock/advanced
  */
-export async function postSmartlockUnlockActionAdvancedResource({
-	pathParams: { smartlockId },
-	config = {},
-}: {
-	pathParams: PostSmartlockUnlockActionAdvancedResourcePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function postSmartlockUnlockActionAdvancedResource(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { smartlockId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!smartlockId) {
+	if (!pathParams.smartlockId) {
 		throw new Error(`Missing required path parameter: smartlockId`);
 	}
-
 	const data = await request<
-		PostSmartlockUnlockActionAdvancedResourceMutationResponse,
+		PostSmartlockUnlockActionAdvancedResourceResponse,
 		ErrorWrapper<
-			| PostSmartlockUnlockActionAdvancedResource400
-			| PostSmartlockUnlockActionAdvancedResource401
-			| PostSmartlockUnlockActionAdvancedResource405
+			| PostSmartlockUnlockActionAdvancedResourceStatus400
+			| PostSmartlockUnlockActionAdvancedResourceStatus401
+			| PostSmartlockUnlockActionAdvancedResourceStatus405
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		PostSmartlockUnlockActionAdvancedResourcePathParams
-	>({ method: "POST", url: `/smartlock/${smartlockId}/action/unlock/advanced`, ...requestConfig });
+		{ smartlockId: string }
+	>({
+		method: "POST",
+		url: `/smartlock/${pathParams.smartlockId}/action/unlock/advanced`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Update a smartlock admin PIN
- * {@link /smartlock/:smartlockId/admin/pin}
+ * @link /smartlock/{smartlockId}/admin/pin
  */
-export async function postSmartlockAdminPinResource({
-	pathParams: { smartlockId },
-	body,
-	config = {},
-}: {
-	pathParams: PostSmartlockAdminPinResourcePathParams;
-	body: PostSmartlockAdminPinResourceMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function postSmartlockAdminPinResource(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { smartlockId: number };
+		body: PostSmartlockAdminPinResourceBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!smartlockId) {
+	if (!pathParams.smartlockId) {
 		throw new Error(`Missing required path parameter: smartlockId`);
 	}
-
 	const data = await request<
-		PostSmartlockAdminPinResourceMutationResponse,
-		ErrorWrapper<PostSmartlockAdminPinResource400 | PostSmartlockAdminPinResource401>,
-		PostSmartlockAdminPinResourceMutationRequest,
+		PostSmartlockAdminPinResourceResponse,
+		ErrorWrapper<PostSmartlockAdminPinResourceStatus400 | PostSmartlockAdminPinResourceStatus401>,
+		PostSmartlockAdminPinResourceBody,
 		Record<string, string>,
 		Record<string, string>,
-		PostSmartlockAdminPinResourcePathParams
-	>({ method: "POST", url: `/smartlock/${smartlockId}/admin/pin`, body, ...requestConfig });
+		{ smartlockId: number }
+	>({
+		method: "POST",
+		url: `/smartlock/${pathParams.smartlockId}/admin/pin`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Update a smartlock advanced config
- * {@link /smartlock/:smartlockId/advanced/config}
+ * @link /smartlock/{smartlockId}/advanced/config
  */
-export async function postSmartlockAdvancedConfigResource({
-	pathParams: { smartlockId },
-	body,
-	config = {},
-}: {
-	pathParams: PostSmartlockAdvancedConfigResourcePathParams;
-	body: PostSmartlockAdvancedConfigResourceMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function postSmartlockAdvancedConfigResource(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { smartlockId: number };
+		body: PostSmartlockAdvancedConfigResourceBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!smartlockId) {
+	if (!pathParams.smartlockId) {
 		throw new Error(`Missing required path parameter: smartlockId`);
 	}
-
 	const data = await request<
-		PostSmartlockAdvancedConfigResourceMutationResponse,
-		ErrorWrapper<PostSmartlockAdvancedConfigResource400 | PostSmartlockAdvancedConfigResource401>,
-		PostSmartlockAdvancedConfigResourceMutationRequest,
+		PostSmartlockAdvancedConfigResourceResponse,
+		ErrorWrapper<
+			PostSmartlockAdvancedConfigResourceStatus400 | PostSmartlockAdvancedConfigResourceStatus401
+		>,
+		PostSmartlockAdvancedConfigResourceBody,
 		Record<string, string>,
 		Record<string, string>,
-		PostSmartlockAdvancedConfigResourcePathParams
-	>({ method: "POST", url: `/smartlock/${smartlockId}/advanced/config`, body, ...requestConfig });
+		{ smartlockId: number }
+	>({
+		method: "POST",
+		url: `/smartlock/${pathParams.smartlockId}/advanced/config`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Update an opener advanced config
- * {@link /smartlock/:smartlockId/advanced/openerconfig}
+ * @link /smartlock/{smartlockId}/advanced/openerconfig
  */
-export async function postSmartlockOpenerAdvancedConfigResource({
-	pathParams: { smartlockId },
-	body,
-	config = {},
-}: {
-	pathParams: PostSmartlockOpenerAdvancedConfigResourcePathParams;
-	body: PostSmartlockOpenerAdvancedConfigResourceMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function postSmartlockOpenerAdvancedConfigResource(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { smartlockId: number };
+		body: PostSmartlockOpenerAdvancedConfigResourceBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!smartlockId) {
+	if (!pathParams.smartlockId) {
 		throw new Error(`Missing required path parameter: smartlockId`);
 	}
-
 	const data = await request<
-		PostSmartlockOpenerAdvancedConfigResourceMutationResponse,
+		PostSmartlockOpenerAdvancedConfigResourceResponse,
 		ErrorWrapper<
-			PostSmartlockOpenerAdvancedConfigResource400 | PostSmartlockOpenerAdvancedConfigResource401
+			| PostSmartlockOpenerAdvancedConfigResourceStatus400
+			| PostSmartlockOpenerAdvancedConfigResourceStatus401
 		>,
-		PostSmartlockOpenerAdvancedConfigResourceMutationRequest,
+		PostSmartlockOpenerAdvancedConfigResourceBody,
 		Record<string, string>,
 		Record<string, string>,
-		PostSmartlockOpenerAdvancedConfigResourcePathParams
+		{ smartlockId: number }
 	>({
 		method: "POST",
-		url: `/smartlock/${smartlockId}/advanced/openerconfig`,
-		body,
+		url: `/smartlock/${pathParams.smartlockId}/advanced/openerconfig`,
+		body: body,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
  * @summary Update a smartdoor advanced config
- * {@link /smartlock/:smartlockId/advanced/smartdoorconfig}
+ * @link /smartlock/{smartlockId}/advanced/smartdoorconfig
  */
-export async function postSmartdoorAdvancedConfigResource({
-	pathParams: { smartlockId },
-	body,
-	config = {},
-}: {
-	pathParams: PostSmartdoorAdvancedConfigResourcePathParams;
-	body: PostSmartdoorAdvancedConfigResourceMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function postSmartdoorAdvancedConfigResource(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { smartlockId: number };
+		body: PostSmartdoorAdvancedConfigResourceBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!smartlockId) {
+	if (!pathParams.smartlockId) {
 		throw new Error(`Missing required path parameter: smartlockId`);
 	}
-
 	const data = await request<
-		PostSmartdoorAdvancedConfigResourceMutationResponse,
-		ErrorWrapper<PostSmartdoorAdvancedConfigResource400 | PostSmartdoorAdvancedConfigResource401>,
-		PostSmartdoorAdvancedConfigResourceMutationRequest,
+		PostSmartdoorAdvancedConfigResourceResponse,
+		ErrorWrapper<
+			PostSmartdoorAdvancedConfigResourceStatus400 | PostSmartdoorAdvancedConfigResourceStatus401
+		>,
+		PostSmartdoorAdvancedConfigResourceBody,
 		Record<string, string>,
 		Record<string, string>,
-		PostSmartdoorAdvancedConfigResourcePathParams
+		{ smartlockId: number }
 	>({
 		method: "POST",
-		url: `/smartlock/${smartlockId}/advanced/smartdoorconfig`,
-		body,
+		url: `/smartlock/${pathParams.smartlockId}/advanced/smartdoorconfig`,
+		body: body,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
  * @summary Get a list of smartlock authorizations
- * {@link /smartlock/:smartlockId/auth}
+ * @link /smartlock/{smartlockId}/auth
  */
-export async function getSmartlockAuthsResource({
-	pathParams: { smartlockId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: GetSmartlockAuthsResourcePathParams;
-	queryParams?: GetSmartlockAuthsResourceQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getSmartlockAuthsResource(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { smartlockId: number };
+		queryParams?: { types?: string; includeEmail?: boolean };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!smartlockId) {
+	if (!pathParams.smartlockId) {
 		throw new Error(`Missing required path parameter: smartlockId`);
 	}
-
 	const data = await request<
-		GetSmartlockAuthsResourceQueryResponse,
-		ErrorWrapper<GetSmartlockAuthsResource401 | GetSmartlockAuthsResource403>,
+		GetSmartlockAuthsResourceResponse,
+		ErrorWrapper<GetSmartlockAuthsResourceStatus401 | GetSmartlockAuthsResourceStatus403>,
 		null,
 		Record<string, string>,
-		GetSmartlockAuthsResourceQueryParams,
-		GetSmartlockAuthsResourcePathParams
-	>({ method: "GET", url: `/smartlock/${smartlockId}/auth`, queryParams, ...requestConfig });
+		{ types?: string; includeEmail?: boolean },
+		{ smartlockId: number }
+	>({
+		method: "GET",
+		url: `/smartlock/${pathParams.smartlockId}/auth`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Create a smartlock authorization asynchronously
- * {@link /smartlock/:smartlockId/auth}
+ * @link /smartlock/{smartlockId}/auth
  */
-export async function putSmartlockAuthsResource({
-	pathParams: { smartlockId },
-	body,
-	config = {},
-}: {
-	pathParams: PutSmartlockAuthsResourcePathParams;
-	body: PutSmartlockAuthsResourceMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function putSmartlockAuthsResource(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { smartlockId: number };
+		body: PutSmartlockAuthsResourceBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!smartlockId) {
+	if (!pathParams.smartlockId) {
 		throw new Error(`Missing required path parameter: smartlockId`);
 	}
-
 	const data = await request<
-		PutSmartlockAuthsResourceMutationResponse,
+		PutSmartlockAuthsResourceResponse,
 		ErrorWrapper<
-			| PutSmartlockAuthsResource400
-			| PutSmartlockAuthsResource402
-			| PutSmartlockAuthsResource409
-			| PutSmartlockAuthsResource426
+			| PutSmartlockAuthsResourceStatus400
+			| PutSmartlockAuthsResourceStatus402
+			| PutSmartlockAuthsResourceStatus409
+			| PutSmartlockAuthsResourceStatus426
 		>,
-		PutSmartlockAuthsResourceMutationRequest,
+		PutSmartlockAuthsResourceBody,
 		Record<string, string>,
 		Record<string, string>,
-		PutSmartlockAuthsResourcePathParams
-	>({ method: "PUT", url: `/smartlock/${smartlockId}/auth`, body, ...requestConfig });
+		{ smartlockId: number }
+	>({
+		method: "PUT",
+		url: `/smartlock/${pathParams.smartlockId}/auth`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Generate a new smartlock auth with a shared key
- * {@link /smartlock/:smartlockId/auth/advanced/sharedkey}
+ * @link /smartlock/{smartlockId}/auth/advanced/sharedkey
  */
-export async function postSmartlockAuthWithSharedKeyResource({
-	pathParams: { smartlockId },
-	body,
-	config = {},
-}: {
-	pathParams: PostSmartlockAuthWithSharedKeyResourcePathParams;
-	body: PostSmartlockAuthWithSharedKeyResourceMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function postSmartlockAuthWithSharedKeyResource(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { smartlockId: number };
+		body: PostSmartlockAuthWithSharedKeyResourceBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!smartlockId) {
+	if (!pathParams.smartlockId) {
 		throw new Error(`Missing required path parameter: smartlockId`);
 	}
-
 	const data = await request<
-		PostSmartlockAuthWithSharedKeyResourceMutationResponse,
+		PostSmartlockAuthWithSharedKeyResourceResponse,
 		ErrorWrapper<
-			| PostSmartlockAuthWithSharedKeyResource401
-			| PostSmartlockAuthWithSharedKeyResource403
-			| PostSmartlockAuthWithSharedKeyResource404
+			| PostSmartlockAuthWithSharedKeyResourceStatus401
+			| PostSmartlockAuthWithSharedKeyResourceStatus403
+			| PostSmartlockAuthWithSharedKeyResourceStatus404
 		>,
-		PostSmartlockAuthWithSharedKeyResourceMutationRequest,
+		PostSmartlockAuthWithSharedKeyResourceBody,
 		Record<string, string>,
 		Record<string, string>,
-		PostSmartlockAuthWithSharedKeyResourcePathParams
+		{ smartlockId: number }
 	>({
 		method: "POST",
-		url: `/smartlock/${smartlockId}/auth/advanced/sharedkey`,
-		body,
+		url: `/smartlock/${pathParams.smartlockId}/auth/advanced/sharedkey`,
+		body: body,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
  * @summary Get a smartlock authorization
- * {@link /smartlock/:smartlockId/auth/:id}
+ * @link /smartlock/{smartlockId}/auth/{id}
  */
-export async function getSmartlockAuthResource({
-	pathParams: { smartlockId, id },
-	config = {},
-}: {
-	pathParams: GetSmartlockAuthResourcePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getSmartlockAuthResource(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { smartlockId: number; id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!smartlockId) {
+	if (!pathParams.smartlockId) {
 		throw new Error(`Missing required path parameter: smartlockId`);
 	}
 
-	if (!id) {
+	if (!pathParams.id) {
 		throw new Error(`Missing required path parameter: id`);
 	}
-
 	const data = await request<
-		GetSmartlockAuthResourceQueryResponse,
-		ErrorWrapper<GetSmartlockAuthResource401 | GetSmartlockAuthResource403>,
+		GetSmartlockAuthResourceResponse,
+		ErrorWrapper<GetSmartlockAuthResourceStatus401 | GetSmartlockAuthResourceStatus403>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		GetSmartlockAuthResourcePathParams
-	>({ method: "GET", url: `/smartlock/${smartlockId}/auth/${id}`, ...requestConfig });
+		{ smartlockId: number; id: string }
+	>({
+		method: "GET",
+		url: `/smartlock/${pathParams.smartlockId}/auth/${pathParams.id}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Update a smartlock authorization asynchronously
- * {@link /smartlock/:smartlockId/auth/:id}
+ * @link /smartlock/{smartlockId}/auth/{id}
  */
-export async function postSmartlockAuthResource({
-	pathParams: { smartlockId, id },
-	body,
-	config = {},
-}: {
-	pathParams: PostSmartlockAuthResourcePathParams;
-	body: PostSmartlockAuthResourceMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function postSmartlockAuthResource(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { smartlockId: number; id: string };
+		body: PostSmartlockAuthResourceBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!smartlockId) {
+	if (!pathParams.smartlockId) {
 		throw new Error(`Missing required path parameter: smartlockId`);
 	}
 
-	if (!id) {
+	if (!pathParams.id) {
 		throw new Error(`Missing required path parameter: id`);
 	}
-
 	const data = await request<
-		PostSmartlockAuthResourceMutationResponse,
+		PostSmartlockAuthResourceResponse,
 		ErrorWrapper<
-			| PostSmartlockAuthResource400
-			| PostSmartlockAuthResource401
-			| PostSmartlockAuthResource403
-			| PostSmartlockAuthResource409
-			| PostSmartlockAuthResource423
+			| PostSmartlockAuthResourceStatus400
+			| PostSmartlockAuthResourceStatus401
+			| PostSmartlockAuthResourceStatus403
+			| PostSmartlockAuthResourceStatus409
+			| PostSmartlockAuthResourceStatus423
 		>,
-		PostSmartlockAuthResourceMutationRequest,
+		PostSmartlockAuthResourceBody,
 		Record<string, string>,
 		Record<string, string>,
-		PostSmartlockAuthResourcePathParams
-	>({ method: "POST", url: `/smartlock/${smartlockId}/auth/${id}`, body, ...requestConfig });
+		{ smartlockId: number; id: string }
+	>({
+		method: "POST",
+		url: `/smartlock/${pathParams.smartlockId}/auth/${pathParams.id}`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Delete a smartlock authorization asynchronously
- * {@link /smartlock/:smartlockId/auth/:id}
+ * @link /smartlock/{smartlockId}/auth/{id}
  */
-export async function deleteSmartlockAuthResource({
-	pathParams: { smartlockId, id },
-	config = {},
-}: {
-	pathParams: DeleteSmartlockAuthResourcePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deleteSmartlockAuthResource(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { smartlockId: number; id: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!smartlockId) {
+	if (!pathParams.smartlockId) {
 		throw new Error(`Missing required path parameter: smartlockId`);
 	}
 
-	if (!id) {
+	if (!pathParams.id) {
 		throw new Error(`Missing required path parameter: id`);
 	}
-
 	const data = await request<
-		DeleteSmartlockAuthResourceMutationResponse,
+		DeleteSmartlockAuthResourceResponse,
 		ErrorWrapper<
-			| DeleteSmartlockAuthResource401
-			| DeleteSmartlockAuthResource403
-			| DeleteSmartlockAuthResource423
+			| DeleteSmartlockAuthResourceStatus401
+			| DeleteSmartlockAuthResourceStatus403
+			| DeleteSmartlockAuthResourceStatus423
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		DeleteSmartlockAuthResourcePathParams
-	>({ method: "DELETE", url: `/smartlock/${smartlockId}/auth/${id}`, ...requestConfig });
+		{ smartlockId: number; id: string }
+	>({
+		method: "DELETE",
+		url: `/smartlock/${pathParams.smartlockId}/auth/${pathParams.id}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Update a smartlock config
- * {@link /smartlock/:smartlockId/config}
+ * @link /smartlock/{smartlockId}/config
  */
-export async function postSmartlockConfigResource({
-	pathParams: { smartlockId },
-	body,
-	config = {},
-}: {
-	pathParams: PostSmartlockConfigResourcePathParams;
-	body: PostSmartlockConfigResourceMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function postSmartlockConfigResource(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { smartlockId: number };
+		body: PostSmartlockConfigResourceBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!smartlockId) {
+	if (!pathParams.smartlockId) {
 		throw new Error(`Missing required path parameter: smartlockId`);
 	}
-
 	const data = await request<
-		PostSmartlockConfigResourceMutationResponse,
-		ErrorWrapper<PostSmartlockConfigResource400 | PostSmartlockConfigResource401>,
-		PostSmartlockConfigResourceMutationRequest,
+		PostSmartlockConfigResourceResponse,
+		ErrorWrapper<PostSmartlockConfigResourceStatus400 | PostSmartlockConfigResourceStatus401>,
+		PostSmartlockConfigResourceBody,
 		Record<string, string>,
 		Record<string, string>,
-		PostSmartlockConfigResourcePathParams
-	>({ method: "POST", url: `/smartlock/${smartlockId}/config`, body, ...requestConfig });
+		{ smartlockId: number }
+	>({
+		method: "POST",
+		url: `/smartlock/${pathParams.smartlockId}/config`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Get a list of smartlock logs
- * {@link /smartlock/:smartlockId/log}
+ * @link /smartlock/{smartlockId}/log
  */
-export async function getSmartlockLogsResource({
-	pathParams: { smartlockId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: GetSmartlockLogsResourcePathParams;
-	queryParams?: GetSmartlockLogsResourceQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getSmartlockLogsResource(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { smartlockId: number };
+		queryParams?: {
+			authId?: string;
+			accountUserId?: number;
+			fromDate?: string;
+			toDate?: string;
+			action?: number;
+			id?: string;
+			limit?: number;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!smartlockId) {
+	if (!pathParams.smartlockId) {
 		throw new Error(`Missing required path parameter: smartlockId`);
 	}
-
 	const data = await request<
-		GetSmartlockLogsResourceQueryResponse,
-		ErrorWrapper<GetSmartlockLogsResource401>,
+		GetSmartlockLogsResourceResponse,
+		ErrorWrapper<GetSmartlockLogsResourceStatus401>,
 		null,
 		Record<string, string>,
-		GetSmartlockLogsResourceQueryParams,
-		GetSmartlockLogsResourcePathParams
-	>({ method: "GET", url: `/smartlock/${smartlockId}/log`, queryParams, ...requestConfig });
+		{
+			authId?: string;
+			accountUserId?: number;
+			fromDate?: string;
+			toDate?: string;
+			action?: number;
+			id?: string;
+			limit?: number;
+		},
+		{ smartlockId: number }
+	>({
+		method: "GET",
+		url: `/smartlock/${pathParams.smartlockId}/log`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Sync a smartlock
- * {@link /smartlock/:smartlockId/sync}
+ * @link /smartlock/{smartlockId}/sync
  */
-export async function postSmartlockSyncResource({
-	pathParams: { smartlockId },
-	config = {},
-}: {
-	pathParams: PostSmartlockSyncResourcePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function postSmartlockSyncResource(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { smartlockId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!smartlockId) {
+	if (!pathParams.smartlockId) {
 		throw new Error(`Missing required path parameter: smartlockId`);
 	}
-
 	const data = await request<
-		PostSmartlockSyncResourceMutationResponse,
-		ErrorWrapper<PostSmartlockSyncResource400 | PostSmartlockSyncResource401>,
+		PostSmartlockSyncResourceResponse,
+		ErrorWrapper<PostSmartlockSyncResourceStatus400 | PostSmartlockSyncResourceStatus401>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		PostSmartlockSyncResourcePathParams
-	>({ method: "POST", url: `/smartlock/${smartlockId}/sync`, ...requestConfig });
+		{ smartlockId: string }
+	>({
+		method: "POST",
+		url: `/smartlock/${pathParams.smartlockId}/sync`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Update a smartlock web config
- * {@link /smartlock/:smartlockId/web/config}
+ * @link /smartlock/{smartlockId}/web/config
  */
-export async function postSmartlockWebConfigResource({
-	pathParams: { smartlockId },
-	body,
-	config = {},
-}: {
-	pathParams: PostSmartlockWebConfigResourcePathParams;
-	body: PostSmartlockWebConfigResourceMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function postSmartlockWebConfigResource(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { smartlockId: number };
+		body: PostSmartlockWebConfigResourceBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!smartlockId) {
+	if (!pathParams.smartlockId) {
 		throw new Error(`Missing required path parameter: smartlockId`);
 	}
-
 	const data = await request<
-		PostSmartlockWebConfigResourceMutationResponse,
-		ErrorWrapper<PostSmartlockWebConfigResource400 | PostSmartlockWebConfigResource401>,
-		PostSmartlockWebConfigResourceMutationRequest,
+		PostSmartlockWebConfigResourceResponse,
+		ErrorWrapper<PostSmartlockWebConfigResourceStatus400 | PostSmartlockWebConfigResourceStatus401>,
+		PostSmartlockWebConfigResourceBody,
 		Record<string, string>,
 		Record<string, string>,
-		PostSmartlockWebConfigResourcePathParams
-	>({ method: "POST", url: `/smartlock/${smartlockId}/web/config`, body, ...requestConfig });
+		{ smartlockId: number }
+	>({
+		method: "POST",
+		url: `/smartlock/${pathParams.smartlockId}/web/config`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 

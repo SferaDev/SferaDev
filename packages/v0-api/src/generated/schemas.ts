@@ -90,9 +90,9 @@ export const chatDetailSchema = z
 						experimentalContent: z
 							.array(
 								z.union([
-									z.tuple([z.enum([0]), z.array(z.string())]),
+									z.tuple([z.literal(0), z.array(z.string())]),
 									z.tuple([
-										z.enum([1]),
+										z.literal(1),
 										z
 											.object({
 												toJSONSchema: z.string(),
@@ -203,8 +203,8 @@ export const chatDetailSchema = z
 							.optional()
 							.describe("The reason why the message generation finished."),
 						apiUrl: z.string().describe("API URL to access this message via the API."),
-						authorId: z.null().describe("The ID of the user who sent the message."),
-						parentId: z.null().optional().describe("The ID of the parent message."),
+						authorId: z.string().nullable().describe("The ID of the user who sent the message."),
+						parentId: z.string().nullish().describe("The ID of the parent message."),
 						attachments: z
 							.array(
 								z
@@ -685,9 +685,9 @@ export const messageDetailSchema = z
 		experimentalContent: z
 			.array(
 				z.union([
-					z.tuple([z.enum([0]), z.array(z.string())]),
+					z.tuple([z.literal(0), z.array(z.string())]),
 					z.tuple([
-						z.enum([1]),
+						z.literal(1),
 						z
 							.object({
 								toJSONSchema: z.string(),
@@ -794,8 +794,8 @@ export const messageDetailSchema = z
 			.optional()
 			.describe("The reason why the message generation finished."),
 		apiUrl: z.string().describe("API URL to access this message via the API."),
-		authorId: z.null().describe("The ID of the user who sent the message."),
-		parentId: z.null().optional().describe("The ID of the parent message."),
+		authorId: z.string().nullable().describe("The ID of the user who sent the message."),
+		parentId: z.string().nullish().describe("The ID of the parent message."),
 		attachments: z
 			.array(
 				z
@@ -832,9 +832,9 @@ export const messageSummarySchema = z
 		experimentalContent: z
 			.array(
 				z.union([
-					z.tuple([z.enum([0]), z.array(z.string())]),
+					z.tuple([z.literal(0), z.array(z.string())]),
 					z.tuple([
-						z.enum([1]),
+						z.literal(1),
 						z
 							.object({
 								toJSONSchema: z.string(),
@@ -941,8 +941,8 @@ export const messageSummarySchema = z
 			.optional()
 			.describe("The reason why the message generation finished."),
 		apiUrl: z.string().describe("API URL to access this message via the API."),
-		authorId: z.null().describe("The ID of the user who sent the message."),
-		parentId: z.null().optional().describe("The ID of the parent message."),
+		authorId: z.string().nullable().describe("The ID of the user who sent the message."),
+		parentId: z.string().nullish().describe("The ID of the parent message."),
 		attachments: z
 			.array(
 				z
@@ -987,9 +987,9 @@ export const messageSummaryListSchema = z
 						experimentalContent: z
 							.array(
 								z.union([
-									z.tuple([z.enum([0]), z.array(z.string())]),
+									z.tuple([z.literal(0), z.array(z.string())]),
 									z.tuple([
-										z.enum([1]),
+										z.literal(1),
 										z
 											.object({
 												toJSONSchema: z.string(),
@@ -1100,8 +1100,8 @@ export const messageSummaryListSchema = z
 							.optional()
 							.describe("The reason why the message generation finished."),
 						apiUrl: z.string().describe("API URL to access this message via the API."),
-						authorId: z.null().describe("The ID of the user who sent the message."),
-						parentId: z.null().optional().describe("The ID of the parent message."),
+						authorId: z.string().nullable().describe("The ID of the user who sent the message."),
+						parentId: z.string().nullish().describe("The ID of the parent message."),
 						attachments: z
 							.array(
 								z
@@ -1718,8 +1718,9 @@ export const chatsCreateStatus429Schema = z.unknown();
 
 export const chatsCreateStatus500Schema = z.unknown();
 
-export const chatsCreateResponseSchema = z.union([
-	chatsCreateStatus200Schema,
+export const chatsCreateResponseSchema = chatsCreateStatus200Schema;
+
+export const chatsCreateErrorSchema = z.union([
 	chatsCreateStatus401Schema,
 	chatsCreateStatus403Schema,
 	chatsCreateStatus404Schema,
@@ -1792,8 +1793,9 @@ export const chatsFindStatus429Schema = z.unknown();
 
 export const chatsFindStatus500Schema = z.unknown();
 
-export const chatsFindResponseSchema = z.union([
-	chatsFindStatus200Schema,
+export const chatsFindResponseSchema = chatsFindStatus200Schema;
+
+export const chatsFindErrorSchema = z.union([
 	chatsFindStatus401Schema,
 	chatsFindStatus403Schema,
 	chatsFindStatus404Schema,
@@ -1822,8 +1824,9 @@ export const chatsInitStatus429Schema = z.unknown();
 
 export const chatsInitStatus500Schema = z.unknown();
 
-export const chatsInitResponseSchema = z.union([
-	chatsInitStatus200Schema,
+export const chatsInitResponseSchema = chatsInitStatus200Schema;
+
+export const chatsInitErrorSchema = z.union([
 	chatsInitStatus401Schema,
 	chatsInitStatus403Schema,
 	chatsInitStatus404Schema,
@@ -1858,8 +1861,9 @@ export const chatsDeleteStatus429Schema = z.unknown();
 
 export const chatsDeleteStatus500Schema = z.unknown();
 
-export const chatsDeleteResponseSchema = z.union([
-	chatsDeleteStatus200Schema,
+export const chatsDeleteResponseSchema = chatsDeleteStatus200Schema;
+
+export const chatsDeleteErrorSchema = z.union([
 	chatsDeleteStatus401Schema,
 	chatsDeleteStatus403Schema,
 	chatsDeleteStatus404Schema,
@@ -1892,8 +1896,9 @@ export const chatsGetByIdStatus429Schema = z.unknown();
 
 export const chatsGetByIdStatus500Schema = z.unknown();
 
-export const chatsGetByIdResponseSchema = z.union([
-	chatsGetByIdStatus200Schema,
+export const chatsGetByIdResponseSchema = chatsGetByIdStatus200Schema;
+
+export const chatsGetByIdErrorSchema = z.union([
 	chatsGetByIdStatus401Schema,
 	chatsGetByIdStatus403Schema,
 	chatsGetByIdStatus404Schema,
@@ -1926,8 +1931,9 @@ export const chatsUpdateStatus429Schema = z.unknown();
 
 export const chatsUpdateStatus500Schema = z.unknown();
 
-export const chatsUpdateResponseSchema = z.union([
-	chatsUpdateStatus200Schema,
+export const chatsUpdateResponseSchema = chatsUpdateStatus200Schema;
+
+export const chatsUpdateErrorSchema = z.union([
 	chatsUpdateStatus401Schema,
 	chatsUpdateStatus403Schema,
 	chatsUpdateStatus404Schema,
@@ -1960,8 +1966,9 @@ export const chatsFavoriteStatus429Schema = z.unknown();
 
 export const chatsFavoriteStatus500Schema = z.unknown();
 
-export const chatsFavoriteResponseSchema = z.union([
-	chatsFavoriteStatus200Schema,
+export const chatsFavoriteResponseSchema = chatsFavoriteStatus200Schema;
+
+export const chatsFavoriteErrorSchema = z.union([
 	chatsFavoriteStatus401Schema,
 	chatsFavoriteStatus403Schema,
 	chatsFavoriteStatus404Schema,
@@ -1994,8 +2001,9 @@ export const chatsForkStatus429Schema = z.unknown();
 
 export const chatsForkStatus500Schema = z.unknown();
 
-export const chatsForkResponseSchema = z.union([
-	chatsForkStatus200Schema,
+export const chatsForkResponseSchema = chatsForkStatus200Schema;
+
+export const chatsForkErrorSchema = z.union([
 	chatsForkStatus401Schema,
 	chatsForkStatus403Schema,
 	chatsForkStatus404Schema,
@@ -2028,8 +2036,9 @@ export const projectsGetByChatIdStatus429Schema = z.unknown();
 
 export const projectsGetByChatIdStatus500Schema = z.unknown();
 
-export const projectsGetByChatIdResponseSchema = z.union([
-	projectsGetByChatIdStatus200Schema,
+export const projectsGetByChatIdResponseSchema = projectsGetByChatIdStatus200Schema;
+
+export const projectsGetByChatIdErrorSchema = z.union([
 	projectsGetByChatIdStatus401Schema,
 	projectsGetByChatIdStatus403Schema,
 	projectsGetByChatIdStatus404Schema,
@@ -2079,8 +2088,9 @@ export const chatsFindMessagesStatus429Schema = z.unknown();
 
 export const chatsFindMessagesStatus500Schema = z.unknown();
 
-export const chatsFindMessagesResponseSchema = z.union([
-	chatsFindMessagesStatus200Schema,
+export const chatsFindMessagesResponseSchema = chatsFindMessagesStatus200Schema;
+
+export const chatsFindMessagesErrorSchema = z.union([
 	chatsFindMessagesStatus401Schema,
 	chatsFindMessagesStatus403Schema,
 	chatsFindMessagesStatus404Schema,
@@ -2115,8 +2125,9 @@ export const chatsSendMessageStatus429Schema = z.unknown();
 
 export const chatsSendMessageStatus500Schema = z.unknown();
 
-export const chatsSendMessageResponseSchema = z.union([
-	chatsSendMessageStatus200Schema,
+export const chatsSendMessageResponseSchema = chatsSendMessageStatus200Schema;
+
+export const chatsSendMessageErrorSchema = z.union([
 	chatsSendMessageStatus401Schema,
 	chatsSendMessageStatus403Schema,
 	chatsSendMessageStatus404Schema,
@@ -2155,8 +2166,9 @@ export const chatsGetMessageStatus429Schema = z.unknown();
 
 export const chatsGetMessageStatus500Schema = z.unknown();
 
-export const chatsGetMessageResponseSchema = z.union([
-	chatsGetMessageStatus200Schema,
+export const chatsGetMessageResponseSchema = chatsGetMessageStatus200Schema;
+
+export const chatsGetMessageErrorSchema = z.union([
 	chatsGetMessageStatus401Schema,
 	chatsGetMessageStatus403Schema,
 	chatsGetMessageStatus404Schema,
@@ -2206,8 +2218,9 @@ export const chatsFindVersionsStatus429Schema = z.unknown();
 
 export const chatsFindVersionsStatus500Schema = z.unknown();
 
-export const chatsFindVersionsResponseSchema = z.union([
-	chatsFindVersionsStatus200Schema,
+export const chatsFindVersionsResponseSchema = chatsFindVersionsStatus200Schema;
+
+export const chatsFindVersionsErrorSchema = z.union([
 	chatsFindVersionsStatus401Schema,
 	chatsFindVersionsStatus403Schema,
 	chatsFindVersionsStatus404Schema,
@@ -2253,8 +2266,9 @@ export const chatsGetVersionStatus429Schema = z.unknown();
 
 export const chatsGetVersionStatus500Schema = z.unknown();
 
-export const chatsGetVersionResponseSchema = z.union([
-	chatsGetVersionStatus200Schema,
+export const chatsGetVersionResponseSchema = chatsGetVersionStatus200Schema;
+
+export const chatsGetVersionErrorSchema = z.union([
 	chatsGetVersionStatus401Schema,
 	chatsGetVersionStatus403Schema,
 	chatsGetVersionStatus404Schema,
@@ -2295,8 +2309,9 @@ export const chatsUpdateVersionStatus429Schema = z.unknown();
 
 export const chatsUpdateVersionStatus500Schema = z.unknown();
 
-export const chatsUpdateVersionResponseSchema = z.union([
-	chatsUpdateVersionStatus200Schema,
+export const chatsUpdateVersionResponseSchema = chatsUpdateVersionStatus200Schema;
+
+export const chatsUpdateVersionErrorSchema = z.union([
 	chatsUpdateVersionStatus401Schema,
 	chatsUpdateVersionStatus403Schema,
 	chatsUpdateVersionStatus404Schema,
@@ -2350,8 +2365,9 @@ export const chatsDownloadVersionStatus429Schema = z.unknown();
 
 export const chatsDownloadVersionStatus500Schema = z.unknown();
 
-export const chatsDownloadVersionResponseSchema = z.union([
-	chatsDownloadVersionStatus200Schema,
+export const chatsDownloadVersionResponseSchema = chatsDownloadVersionStatus200Schema;
+
+export const chatsDownloadVersionErrorSchema = z.union([
 	chatsDownloadVersionStatus401Schema,
 	chatsDownloadVersionStatus403Schema,
 	chatsDownloadVersionStatus404Schema,
@@ -2388,8 +2404,9 @@ export const chatsDeleteVersionFilesStatus429Schema = z.unknown();
 
 export const chatsDeleteVersionFilesStatus500Schema = z.unknown();
 
-export const chatsDeleteVersionFilesResponseSchema = z.union([
-	chatsDeleteVersionFilesStatus200Schema,
+export const chatsDeleteVersionFilesResponseSchema = chatsDeleteVersionFilesStatus200Schema;
+
+export const chatsDeleteVersionFilesErrorSchema = z.union([
 	chatsDeleteVersionFilesStatus401Schema,
 	chatsDeleteVersionFilesStatus403Schema,
 	chatsDeleteVersionFilesStatus404Schema,
@@ -2428,8 +2445,9 @@ export const chatsResumeStatus429Schema = z.unknown();
 
 export const chatsResumeStatus500Schema = z.unknown();
 
-export const chatsResumeResponseSchema = z.union([
-	chatsResumeStatus200Schema,
+export const chatsResumeResponseSchema = chatsResumeStatus200Schema;
+
+export const chatsResumeErrorSchema = z.union([
 	chatsResumeStatus401Schema,
 	chatsResumeStatus403Schema,
 	chatsResumeStatus404Schema,
@@ -2468,8 +2486,9 @@ export const chatsStopStatus429Schema = z.unknown();
 
 export const chatsStopStatus500Schema = z.unknown();
 
-export const chatsStopResponseSchema = z.union([
-	chatsStopStatus200Schema,
+export const chatsStopResponseSchema = chatsStopStatus200Schema;
+
+export const chatsStopErrorSchema = z.union([
 	chatsStopStatus401Schema,
 	chatsStopStatus403Schema,
 	chatsStopStatus404Schema,
@@ -2504,8 +2523,9 @@ export const chatsResolveTaskStatus429Schema = z.unknown();
 
 export const chatsResolveTaskStatus500Schema = z.unknown();
 
-export const chatsResolveTaskResponseSchema = z.union([
-	chatsResolveTaskStatus200Schema,
+export const chatsResolveTaskResponseSchema = chatsResolveTaskStatus200Schema;
+
+export const chatsResolveTaskErrorSchema = z.union([
 	chatsResolveTaskStatus401Schema,
 	chatsResolveTaskStatus403Schema,
 	chatsResolveTaskStatus404Schema,
@@ -2547,8 +2567,9 @@ export const deploymentsFindStatus429Schema = z.unknown();
 
 export const deploymentsFindStatus500Schema = z.unknown();
 
-export const deploymentsFindResponseSchema = z.union([
-	deploymentsFindStatus200Schema,
+export const deploymentsFindResponseSchema = deploymentsFindStatus200Schema;
+
+export const deploymentsFindErrorSchema = z.union([
 	deploymentsFindStatus401Schema,
 	deploymentsFindStatus403Schema,
 	deploymentsFindStatus404Schema,
@@ -2577,8 +2598,9 @@ export const deploymentsCreateStatus429Schema = z.unknown();
 
 export const deploymentsCreateStatus500Schema = z.unknown();
 
-export const deploymentsCreateResponseSchema = z.union([
-	deploymentsCreateStatus200Schema,
+export const deploymentsCreateResponseSchema = deploymentsCreateStatus200Schema;
+
+export const deploymentsCreateErrorSchema = z.union([
 	deploymentsCreateStatus401Schema,
 	deploymentsCreateStatus403Schema,
 	deploymentsCreateStatus404Schema,
@@ -2611,8 +2633,9 @@ export const deploymentsGetByIdStatus429Schema = z.unknown();
 
 export const deploymentsGetByIdStatus500Schema = z.unknown();
 
-export const deploymentsGetByIdResponseSchema = z.union([
-	deploymentsGetByIdStatus200Schema,
+export const deploymentsGetByIdResponseSchema = deploymentsGetByIdStatus200Schema;
+
+export const deploymentsGetByIdErrorSchema = z.union([
 	deploymentsGetByIdStatus401Schema,
 	deploymentsGetByIdStatus403Schema,
 	deploymentsGetByIdStatus404Schema,
@@ -2645,8 +2668,9 @@ export const deploymentsDeleteStatus429Schema = z.unknown();
 
 export const deploymentsDeleteStatus500Schema = z.unknown();
 
-export const deploymentsDeleteResponseSchema = z.union([
-	deploymentsDeleteStatus200Schema,
+export const deploymentsDeleteResponseSchema = deploymentsDeleteStatus200Schema;
+
+export const deploymentsDeleteErrorSchema = z.union([
 	deploymentsDeleteStatus401Schema,
 	deploymentsDeleteStatus403Schema,
 	deploymentsDeleteStatus404Schema,
@@ -2688,8 +2712,9 @@ export const deploymentsFindLogsStatus429Schema = z.unknown();
 
 export const deploymentsFindLogsStatus500Schema = z.unknown();
 
-export const deploymentsFindLogsResponseSchema = z.union([
-	deploymentsFindLogsStatus200Schema,
+export const deploymentsFindLogsResponseSchema = deploymentsFindLogsStatus200Schema;
+
+export const deploymentsFindLogsErrorSchema = z.union([
 	deploymentsFindLogsStatus401Schema,
 	deploymentsFindLogsStatus403Schema,
 	deploymentsFindLogsStatus404Schema,
@@ -2724,8 +2749,9 @@ export const deploymentsFindErrorsStatus429Schema = z.unknown();
 
 export const deploymentsFindErrorsStatus500Schema = z.unknown();
 
-export const deploymentsFindErrorsResponseSchema = z.union([
-	deploymentsFindErrorsStatus200Schema,
+export const deploymentsFindErrorsResponseSchema = deploymentsFindErrorsStatus200Schema;
+
+export const deploymentsFindErrorsErrorSchema = z.union([
 	deploymentsFindErrorsStatus401Schema,
 	deploymentsFindErrorsStatus403Schema,
 	deploymentsFindErrorsStatus404Schema,
@@ -2754,8 +2780,9 @@ export const hooksFindStatus429Schema = z.unknown();
 
 export const hooksFindStatus500Schema = z.unknown();
 
-export const hooksFindResponseSchema = z.union([
-	hooksFindStatus200Schema,
+export const hooksFindResponseSchema = hooksFindStatus200Schema;
+
+export const hooksFindErrorSchema = z.union([
 	hooksFindStatus401Schema,
 	hooksFindStatus403Schema,
 	hooksFindStatus404Schema,
@@ -2784,8 +2811,9 @@ export const hooksCreateStatus429Schema = z.unknown();
 
 export const hooksCreateStatus500Schema = z.unknown();
 
-export const hooksCreateResponseSchema = z.union([
-	hooksCreateStatus200Schema,
+export const hooksCreateResponseSchema = hooksCreateStatus200Schema;
+
+export const hooksCreateErrorSchema = z.union([
 	hooksCreateStatus401Schema,
 	hooksCreateStatus403Schema,
 	hooksCreateStatus404Schema,
@@ -2818,8 +2846,9 @@ export const hooksGetByIdStatus429Schema = z.unknown();
 
 export const hooksGetByIdStatus500Schema = z.unknown();
 
-export const hooksGetByIdResponseSchema = z.union([
-	hooksGetByIdStatus200Schema,
+export const hooksGetByIdResponseSchema = hooksGetByIdStatus200Schema;
+
+export const hooksGetByIdErrorSchema = z.union([
 	hooksGetByIdStatus401Schema,
 	hooksGetByIdStatus403Schema,
 	hooksGetByIdStatus404Schema,
@@ -2852,8 +2881,9 @@ export const hooksUpdateStatus429Schema = z.unknown();
 
 export const hooksUpdateStatus500Schema = z.unknown();
 
-export const hooksUpdateResponseSchema = z.union([
-	hooksUpdateStatus200Schema,
+export const hooksUpdateResponseSchema = hooksUpdateStatus200Schema;
+
+export const hooksUpdateErrorSchema = z.union([
 	hooksUpdateStatus401Schema,
 	hooksUpdateStatus403Schema,
 	hooksUpdateStatus404Schema,
@@ -2886,8 +2916,9 @@ export const hooksDeleteStatus429Schema = z.unknown();
 
 export const hooksDeleteStatus500Schema = z.unknown();
 
-export const hooksDeleteResponseSchema = z.union([
-	hooksDeleteStatus200Schema,
+export const hooksDeleteResponseSchema = hooksDeleteStatus200Schema;
+
+export const hooksDeleteErrorSchema = z.union([
 	hooksDeleteStatus401Schema,
 	hooksDeleteStatus403Schema,
 	hooksDeleteStatus404Schema,
@@ -2916,8 +2947,10 @@ export const integrationsVercelProjectsFindStatus429Schema = z.unknown();
 
 export const integrationsVercelProjectsFindStatus500Schema = z.unknown();
 
-export const integrationsVercelProjectsFindResponseSchema = z.union([
-	integrationsVercelProjectsFindStatus200Schema,
+export const integrationsVercelProjectsFindResponseSchema =
+	integrationsVercelProjectsFindStatus200Schema;
+
+export const integrationsVercelProjectsFindErrorSchema = z.union([
 	integrationsVercelProjectsFindStatus401Schema,
 	integrationsVercelProjectsFindStatus403Schema,
 	integrationsVercelProjectsFindStatus404Schema,
@@ -2946,8 +2979,10 @@ export const integrationsVercelProjectsCreateStatus429Schema = z.unknown();
 
 export const integrationsVercelProjectsCreateStatus500Schema = z.unknown();
 
-export const integrationsVercelProjectsCreateResponseSchema = z.union([
-	integrationsVercelProjectsCreateStatus200Schema,
+export const integrationsVercelProjectsCreateResponseSchema =
+	integrationsVercelProjectsCreateStatus200Schema;
+
+export const integrationsVercelProjectsCreateErrorSchema = z.union([
 	integrationsVercelProjectsCreateStatus401Schema,
 	integrationsVercelProjectsCreateStatus403Schema,
 	integrationsVercelProjectsCreateStatus404Schema,
@@ -2976,8 +3011,9 @@ export const projectsFindStatus429Schema = z.unknown();
 
 export const projectsFindStatus500Schema = z.unknown();
 
-export const projectsFindResponseSchema = z.union([
-	projectsFindStatus200Schema,
+export const projectsFindResponseSchema = projectsFindStatus200Schema;
+
+export const projectsFindErrorSchema = z.union([
 	projectsFindStatus401Schema,
 	projectsFindStatus403Schema,
 	projectsFindStatus404Schema,
@@ -3006,8 +3042,9 @@ export const projectsCreateStatus429Schema = z.unknown();
 
 export const projectsCreateStatus500Schema = z.unknown();
 
-export const projectsCreateResponseSchema = z.union([
-	projectsCreateStatus200Schema,
+export const projectsCreateResponseSchema = projectsCreateStatus200Schema;
+
+export const projectsCreateErrorSchema = z.union([
 	projectsCreateStatus401Schema,
 	projectsCreateStatus403Schema,
 	projectsCreateStatus404Schema,
@@ -3040,8 +3077,9 @@ export const projectsGetByIdStatus429Schema = z.unknown();
 
 export const projectsGetByIdStatus500Schema = z.unknown();
 
-export const projectsGetByIdResponseSchema = z.union([
-	projectsGetByIdStatus200Schema,
+export const projectsGetByIdResponseSchema = projectsGetByIdStatus200Schema;
+
+export const projectsGetByIdErrorSchema = z.union([
 	projectsGetByIdStatus401Schema,
 	projectsGetByIdStatus403Schema,
 	projectsGetByIdStatus404Schema,
@@ -3074,8 +3112,9 @@ export const projectsUpdateStatus429Schema = z.unknown();
 
 export const projectsUpdateStatus500Schema = z.unknown();
 
-export const projectsUpdateResponseSchema = z.union([
-	projectsUpdateStatus200Schema,
+export const projectsUpdateResponseSchema = projectsUpdateStatus200Schema;
+
+export const projectsUpdateErrorSchema = z.union([
 	projectsUpdateStatus401Schema,
 	projectsUpdateStatus403Schema,
 	projectsUpdateStatus404Schema,
@@ -3118,8 +3157,9 @@ export const projectsDeleteStatus429Schema = z.unknown();
 
 export const projectsDeleteStatus500Schema = z.unknown();
 
-export const projectsDeleteResponseSchema = z.union([
-	projectsDeleteStatus200Schema,
+export const projectsDeleteResponseSchema = projectsDeleteStatus200Schema;
+
+export const projectsDeleteErrorSchema = z.union([
 	projectsDeleteStatus401Schema,
 	projectsDeleteStatus403Schema,
 	projectsDeleteStatus404Schema,
@@ -3152,8 +3192,9 @@ export const projectsAssignStatus429Schema = z.unknown();
 
 export const projectsAssignStatus500Schema = z.unknown();
 
-export const projectsAssignResponseSchema = z.union([
-	projectsAssignStatus200Schema,
+export const projectsAssignResponseSchema = projectsAssignStatus200Schema;
+
+export const projectsAssignErrorSchema = z.union([
 	projectsAssignStatus401Schema,
 	projectsAssignStatus403Schema,
 	projectsAssignStatus404Schema,
@@ -3193,8 +3234,9 @@ export const projectsFindEnvVarsStatus429Schema = z.unknown();
 
 export const projectsFindEnvVarsStatus500Schema = z.unknown();
 
-export const projectsFindEnvVarsResponseSchema = z.union([
-	projectsFindEnvVarsStatus200Schema,
+export const projectsFindEnvVarsResponseSchema = projectsFindEnvVarsStatus200Schema;
+
+export const projectsFindEnvVarsErrorSchema = z.union([
 	projectsFindEnvVarsStatus401Schema,
 	projectsFindEnvVarsStatus403Schema,
 	projectsFindEnvVarsStatus404Schema,
@@ -3232,8 +3274,9 @@ export const projectsCreateEnvVarsStatus429Schema = z.unknown();
 
 export const projectsCreateEnvVarsStatus500Schema = z.unknown();
 
-export const projectsCreateEnvVarsResponseSchema = z.union([
-	projectsCreateEnvVarsStatus200Schema,
+export const projectsCreateEnvVarsResponseSchema = projectsCreateEnvVarsStatus200Schema;
+
+export const projectsCreateEnvVarsErrorSchema = z.union([
 	projectsCreateEnvVarsStatus401Schema,
 	projectsCreateEnvVarsStatus403Schema,
 	projectsCreateEnvVarsStatus404Schema,
@@ -3271,8 +3314,9 @@ export const projectsUpdateEnvVarsStatus429Schema = z.unknown();
 
 export const projectsUpdateEnvVarsStatus500Schema = z.unknown();
 
-export const projectsUpdateEnvVarsResponseSchema = z.union([
-	projectsUpdateEnvVarsStatus200Schema,
+export const projectsUpdateEnvVarsResponseSchema = projectsUpdateEnvVarsStatus200Schema;
+
+export const projectsUpdateEnvVarsErrorSchema = z.union([
 	projectsUpdateEnvVarsStatus401Schema,
 	projectsUpdateEnvVarsStatus403Schema,
 	projectsUpdateEnvVarsStatus404Schema,
@@ -3305,8 +3349,9 @@ export const projectsDeleteEnvVarsStatus429Schema = z.unknown();
 
 export const projectsDeleteEnvVarsStatus500Schema = z.unknown();
 
-export const projectsDeleteEnvVarsResponseSchema = z.union([
-	projectsDeleteEnvVarsStatus200Schema,
+export const projectsDeleteEnvVarsResponseSchema = projectsDeleteEnvVarsStatus200Schema;
+
+export const projectsDeleteEnvVarsErrorSchema = z.union([
 	projectsDeleteEnvVarsStatus401Schema,
 	projectsDeleteEnvVarsStatus403Schema,
 	projectsDeleteEnvVarsStatus404Schema,
@@ -3348,8 +3393,9 @@ export const projectsGetEnvVarStatus429Schema = z.unknown();
 
 export const projectsGetEnvVarStatus500Schema = z.unknown();
 
-export const projectsGetEnvVarResponseSchema = z.union([
-	projectsGetEnvVarStatus200Schema,
+export const projectsGetEnvVarResponseSchema = projectsGetEnvVarStatus200Schema;
+
+export const projectsGetEnvVarErrorSchema = z.union([
 	projectsGetEnvVarStatus401Schema,
 	projectsGetEnvVarStatus403Schema,
 	projectsGetEnvVarStatus404Schema,
@@ -3385,8 +3431,9 @@ export const rateLimitsFindStatus429Schema = z.unknown();
 
 export const rateLimitsFindStatus500Schema = z.unknown();
 
-export const rateLimitsFindResponseSchema = z.union([
-	rateLimitsFindStatus200Schema,
+export const rateLimitsFindResponseSchema = rateLimitsFindStatus200Schema;
+
+export const rateLimitsFindErrorSchema = z.union([
 	rateLimitsFindStatus401Schema,
 	rateLimitsFindStatus403Schema,
 	rateLimitsFindStatus404Schema,
@@ -3415,8 +3462,9 @@ export const userGetStatus429Schema = z.unknown();
 
 export const userGetStatus500Schema = z.unknown();
 
-export const userGetResponseSchema = z.union([
-	userGetStatus200Schema,
+export const userGetResponseSchema = userGetStatus200Schema;
+
+export const userGetErrorSchema = z.union([
 	userGetStatus401Schema,
 	userGetStatus403Schema,
 	userGetStatus404Schema,
@@ -3450,8 +3498,9 @@ export const userGetBillingStatus429Schema = z.unknown();
 
 export const userGetBillingStatus500Schema = z.unknown();
 
-export const userGetBillingResponseSchema = z.union([
-	userGetBillingStatus200Schema,
+export const userGetBillingResponseSchema = userGetBillingStatus200Schema;
+
+export const userGetBillingErrorSchema = z.union([
 	userGetBillingStatus401Schema,
 	userGetBillingStatus403Schema,
 	userGetBillingStatus404Schema,
@@ -3480,8 +3529,9 @@ export const userGetPlanStatus429Schema = z.unknown();
 
 export const userGetPlanStatus500Schema = z.unknown();
 
-export const userGetPlanResponseSchema = z.union([
-	userGetPlanStatus200Schema,
+export const userGetPlanResponseSchema = userGetPlanStatus200Schema;
+
+export const userGetPlanErrorSchema = z.union([
 	userGetPlanStatus401Schema,
 	userGetPlanStatus403Schema,
 	userGetPlanStatus404Schema,
@@ -3510,8 +3560,9 @@ export const userGetScopesStatus429Schema = z.unknown();
 
 export const userGetScopesStatus500Schema = z.unknown();
 
-export const userGetScopesResponseSchema = z.union([
-	userGetScopesStatus200Schema,
+export const userGetScopesResponseSchema = userGetScopesStatus200Schema;
+
+export const userGetScopesErrorSchema = z.union([
 	userGetScopesStatus401Schema,
 	userGetScopesStatus403Schema,
 	userGetScopesStatus404Schema,
@@ -3548,8 +3599,9 @@ export const chatsRestoreStatus429Schema = z.unknown();
 
 export const chatsRestoreStatus500Schema = z.unknown();
 
-export const chatsRestoreResponseSchema = z.union([
-	chatsRestoreStatus200Schema,
+export const chatsRestoreResponseSchema = chatsRestoreStatus200Schema;
+
+export const chatsRestoreErrorSchema = z.union([
 	chatsRestoreStatus401Schema,
 	chatsRestoreStatus403Schema,
 	chatsRestoreStatus404Schema,
@@ -3618,8 +3670,9 @@ export const reportsGetUsageStatus429Schema = z.unknown();
 
 export const reportsGetUsageStatus500Schema = z.unknown();
 
-export const reportsGetUsageResponseSchema = z.union([
-	reportsGetUsageStatus200Schema,
+export const reportsGetUsageResponseSchema = reportsGetUsageStatus200Schema;
+
+export const reportsGetUsageErrorSchema = z.union([
 	reportsGetUsageStatus401Schema,
 	reportsGetUsageStatus403Schema,
 	reportsGetUsageStatus404Schema,
@@ -3671,8 +3724,9 @@ export const reportsGetAIUsageStatus429Schema = z.unknown();
 
 export const reportsGetAIUsageStatus500Schema = z.unknown();
 
-export const reportsGetAIUsageResponseSchema = z.union([
-	reportsGetAIUsageStatus200Schema,
+export const reportsGetAIUsageResponseSchema = reportsGetAIUsageStatus200Schema;
+
+export const reportsGetAIUsageErrorSchema = z.union([
 	reportsGetAIUsageStatus401Schema,
 	reportsGetAIUsageStatus403Schema,
 	reportsGetAIUsageStatus404Schema,
@@ -3713,8 +3767,9 @@ export const reportsGetUserActivityStatus429Schema = z.unknown();
 
 export const reportsGetUserActivityStatus500Schema = z.unknown();
 
-export const reportsGetUserActivityResponseSchema = z.union([
-	reportsGetUserActivityStatus200Schema,
+export const reportsGetUserActivityResponseSchema = reportsGetUserActivityStatus200Schema;
+
+export const reportsGetUserActivityErrorSchema = z.union([
 	reportsGetUserActivityStatus401Schema,
 	reportsGetUserActivityStatus403Schema,
 	reportsGetUserActivityStatus404Schema,
@@ -3743,8 +3798,9 @@ export const mcpServersFindStatus429Schema = z.unknown();
 
 export const mcpServersFindStatus500Schema = z.unknown();
 
-export const mcpServersFindResponseSchema = z.union([
-	mcpServersFindStatus200Schema,
+export const mcpServersFindResponseSchema = mcpServersFindStatus200Schema;
+
+export const mcpServersFindErrorSchema = z.union([
 	mcpServersFindStatus401Schema,
 	mcpServersFindStatus403Schema,
 	mcpServersFindStatus404Schema,
@@ -3773,8 +3829,9 @@ export const mcpServersCreateStatus429Schema = z.unknown();
 
 export const mcpServersCreateStatus500Schema = z.unknown();
 
-export const mcpServersCreateResponseSchema = z.union([
-	mcpServersCreateStatus200Schema,
+export const mcpServersCreateResponseSchema = mcpServersCreateStatus200Schema;
+
+export const mcpServersCreateErrorSchema = z.union([
 	mcpServersCreateStatus401Schema,
 	mcpServersCreateStatus403Schema,
 	mcpServersCreateStatus404Schema,
@@ -3807,8 +3864,9 @@ export const mcpServersGetByIdStatus429Schema = z.unknown();
 
 export const mcpServersGetByIdStatus500Schema = z.unknown();
 
-export const mcpServersGetByIdResponseSchema = z.union([
-	mcpServersGetByIdStatus200Schema,
+export const mcpServersGetByIdResponseSchema = mcpServersGetByIdStatus200Schema;
+
+export const mcpServersGetByIdErrorSchema = z.union([
 	mcpServersGetByIdStatus401Schema,
 	mcpServersGetByIdStatus403Schema,
 	mcpServersGetByIdStatus404Schema,
@@ -3841,8 +3899,9 @@ export const mcpServersUpdateStatus429Schema = z.unknown();
 
 export const mcpServersUpdateStatus500Schema = z.unknown();
 
-export const mcpServersUpdateResponseSchema = z.union([
-	mcpServersUpdateStatus200Schema,
+export const mcpServersUpdateResponseSchema = mcpServersUpdateStatus200Schema;
+
+export const mcpServersUpdateErrorSchema = z.union([
 	mcpServersUpdateStatus401Schema,
 	mcpServersUpdateStatus403Schema,
 	mcpServersUpdateStatus404Schema,
@@ -3875,8 +3934,9 @@ export const mcpServersDeleteStatus429Schema = z.unknown();
 
 export const mcpServersDeleteStatus500Schema = z.unknown();
 
-export const mcpServersDeleteResponseSchema = z.union([
-	mcpServersDeleteStatus200Schema,
+export const mcpServersDeleteResponseSchema = mcpServersDeleteStatus200Schema;
+
+export const mcpServersDeleteErrorSchema = z.union([
 	mcpServersDeleteStatus401Schema,
 	mcpServersDeleteStatus403Schema,
 	mcpServersDeleteStatus404Schema,
@@ -3909,8 +3969,10 @@ export const mcpServersCreateOAuthAuthorizationUrlStatus429Schema = z.unknown();
 
 export const mcpServersCreateOAuthAuthorizationUrlStatus500Schema = z.unknown();
 
-export const mcpServersCreateOAuthAuthorizationUrlResponseSchema = z.union([
-	mcpServersCreateOAuthAuthorizationUrlStatus200Schema,
+export const mcpServersCreateOAuthAuthorizationUrlResponseSchema =
+	mcpServersCreateOAuthAuthorizationUrlStatus200Schema;
+
+export const mcpServersCreateOAuthAuthorizationUrlErrorSchema = z.union([
 	mcpServersCreateOAuthAuthorizationUrlStatus401Schema,
 	mcpServersCreateOAuthAuthorizationUrlStatus403Schema,
 	mcpServersCreateOAuthAuthorizationUrlStatus404Schema,

@@ -37,7 +37,7 @@ export default defineConfig(async () => {
 
 	return {
 		...createConfig({ skipZod: true }),
-		input: { data: openAPIDocument },
+		input: openAPIDocument,
 	};
 });
 

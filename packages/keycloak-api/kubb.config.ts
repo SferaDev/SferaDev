@@ -26,7 +26,7 @@ export default defineConfig(async () => {
 				outputPath: "./src/account/generated",
 				importPath: "../../utils/fetcher",
 			}),
-			input: { data: accountSpec },
+			input: accountSpec,
 		};
 	}
 
@@ -35,7 +35,7 @@ export default defineConfig(async () => {
 			outputPath: "./src/admin/generated",
 			importPath: "../../utils/fetcher",
 		}),
-		input: { data: adminSpec },
+		input: adminSpec,
 	};
 });
 

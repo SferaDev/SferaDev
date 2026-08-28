@@ -25,10 +25,11 @@
 		"lefthook": "catalog:",
 		"tsx": "catalog:",
 		"turbo": "catalog:",
+		"@typescript/typescript6": "catalog:",
 		"typescript": "catalog:",
 		"zod": "catalog:"
 	},
-	"packageManager": "pnpm@11.22.0",
+	"packageManager": "pnpm@11.24.0",
 	"engines": {
 		"node": ">=22"
 	}

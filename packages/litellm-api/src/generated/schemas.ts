@@ -146,10 +146,11 @@ export const listModelCatalogModelCatalogGetStatus200Schema =
 
 export const listModelCatalogModelCatalogGetStatus422Schema = HTTPValidationErrorSchema;
 
-export const listModelCatalogModelCatalogGetResponseSchema = z.union([
-	listModelCatalogModelCatalogGetStatus200Schema,
-	listModelCatalogModelCatalogGetStatus422Schema,
-]);
+export const listModelCatalogModelCatalogGetResponseSchema =
+	listModelCatalogModelCatalogGetStatus200Schema;
+
+export const listModelCatalogModelCatalogGetErrorSchema =
+	listModelCatalogModelCatalogGetStatus422Schema;
 
 export const getModelCatalogEntryModelCatalogModelIdGetPathModelIdSchema = z.string();
 
@@ -158,7 +159,8 @@ export const getModelCatalogEntryModelCatalogModelIdGetStatus200Schema =
 
 export const getModelCatalogEntryModelCatalogModelIdGetStatus422Schema = HTTPValidationErrorSchema;
 
-export const getModelCatalogEntryModelCatalogModelIdGetResponseSchema = z.union([
-	getModelCatalogEntryModelCatalogModelIdGetStatus200Schema,
-	getModelCatalogEntryModelCatalogModelIdGetStatus422Schema,
-]);
+export const getModelCatalogEntryModelCatalogModelIdGetResponseSchema =
+	getModelCatalogEntryModelCatalogModelIdGetStatus200Schema;
+
+export const getModelCatalogEntryModelCatalogModelIdGetErrorSchema =
+	getModelCatalogEntryModelCatalogModelIdGetStatus422Schema;

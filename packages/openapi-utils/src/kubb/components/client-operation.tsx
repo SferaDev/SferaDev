@@ -1,9 +1,6 @@
-import { type ast, URLPath } from "@kubb/core";
-import type { PluginClient } from "@kubb/plugin-client";
 import type { ResolverTs } from "@kubb/plugin-ts";
-import type { ResolverZod } from "@kubb/plugin-zod";
-import { File, Function as JSXFunction } from "@kubb/renderer-jsx";
-import type { KubbReactNode } from "@kubb/renderer-jsx/types";
+import { File, Function as JSXFunction, type KubbReactNode } from "kubb/jsx";
+import type { ast } from "kubb/kit";
 
 type SchemaName = { name: string };
 
@@ -13,13 +10,10 @@ export type TypeSchemas = {
 	errors: Array<SchemaName>;
 };
 
-export type ZodSchemas = {
-	response: SchemaName;
-	request: SchemaName | undefined;
-};
-
-export function resolveTypeSchemas(node: ast.OperationNode, tsResolver: ResolverTs): TypeSchemas {
-	const responseName = tsResolver.resolveResponseName(node);
+export function resolveTypeSchemas(
+	node: ast.HttpOperationNode,
+	tsResolver: ResolverTs,
+): TypeSchemas {
 	const dataSchema = node.requestBody?.content?.[0]?.schema;
 
 	const errorResponses = node.responses.filter((res) => {
@@ -29,23 +23,15 @@ export function resolveTypeSchemas(node: ast.OperationNode, tsResolver: Resolver
 	});
 
 	return {
-		response: { name: responseName },
-		request: dataSchema ? { name: tsResolver.resolveDataName(node) } : undefined,
+		response: { name: tsResolver.response.response(node) },
+		request: dataSchema ? { name: tsResolver.response.body(node) } : undefined,
 		errors: errorResponses.map((res) => ({
-			name: tsResolver.resolveResponseStatusName(node, res.statusCode),
+			name: tsResolver.response.status(node, res.statusCode),
 		})),
 	};
 }
 
-export function resolveZodSchemas(node: ast.OperationNode, zodResolver: ResolverZod): ZodSchemas {
-	const dataSchema = node.requestBody?.content?.[0]?.schema;
-	return {
-		response: { name: zodResolver.resolveResponseName(node) },
-		request: dataSchema ? { name: zodResolver.resolveDataName(node) } : undefined,
-	};
-}
-
-function getJSDocComments(node: ast.OperationNode): string[] {
+function getJSDocComments(node: ast.HttpOperationNode): string[] {
 	const comments: string[] = [];
 	if (node.summary) comments.push(`@summary ${node.summary}`);
 	if (node.description) comments.push(`@description ${node.description}`);
@@ -54,49 +40,16 @@ function getJSDocComments(node: ast.OperationNode): string[] {
 	return comments;
 }
 
-type PathParam = { name: string; original: string; type: string; optional: boolean };
+type Param = { name: string; type: string; optional: boolean };
 
-function getPathParams(
-	node: ast.OperationNode,
-	paramsCasing: PluginClient["resolvedOptions"]["paramsCasing"],
-): PathParam[] {
-	const path = node.parameters.filter((p) => p.in === "path");
-	return path.map((p) => ({
-		name: paramsCasing === "camelcase" ? toCamelCase(p.name) : p.name,
-		original: p.name,
-		type: schemaTypeAnnotation(p.schema),
-		optional: !p.required,
-	}));
-}
-
-function getQueryParams(
-	node: ast.OperationNode,
-	paramsCasing: PluginClient["resolvedOptions"]["paramsCasing"],
-): PathParam[] {
-	const query = node.parameters.filter((p) => p.in === "query");
-	return query.map((p) => ({
-		name: paramsCasing === "camelcase" ? toCamelCase(p.name) : p.name,
-		original: p.name,
-		type: schemaTypeAnnotation(p.schema),
-		optional: !p.required,
-	}));
-}
-
-function getHeaderParams(
-	node: ast.OperationNode,
-	paramsCasing: PluginClient["resolvedOptions"]["paramsCasing"],
-): PathParam[] {
-	const headers = node.parameters.filter((p) => p.in === "header");
-	return headers.map((p) => ({
-		name: paramsCasing === "camelcase" ? toCamelCase(p.name) : p.name,
-		original: p.name,
-		type: schemaTypeAnnotation(p.schema),
-		optional: !p.required,
-	}));
-}
-
-function toCamelCase(name: string): string {
-	return name.replace(/[-_\s]+(.)?/g, (_, ch?: string) => (ch ? ch.toUpperCase() : ""));
+function paramsAt(node: ast.HttpOperationNode, where: "path" | "query" | "header"): Param[] {
+	return node.parameters
+		.filter((param) => param.in === where)
+		.map((param) => ({
+			name: param.name,
+			type: schemaTypeAnnotation(param.schema),
+			optional: !param.required,
+		}));
 }
 
 function schemaTypeAnnotation(schema: ast.SchemaNode | undefined): string {
@@ -141,7 +94,7 @@ function schemaTypeAnnotation(schema: ast.SchemaNode | undefined): string {
 	}
 }
 
-function buildParamObjectType(params: PathParam[], allOptional: boolean): string {
+function buildParamObjectType(params: Param[], allOptional: boolean): string {
 	if (params.length === 0) return "Record<string, never>";
 	const entries = params.map((p) => {
 		const optional = allOptional || p.optional ? "?" : "";
@@ -152,29 +105,14 @@ function buildParamObjectType(params: PathParam[], allOptional: boolean): string
 
 type Props = {
 	name: string;
-	urlName: string;
-	baseURL: string | undefined;
-	paramsCasing: PluginClient["resolvedOptions"]["paramsCasing"];
-	parser: PluginClient["resolvedOptions"]["parser"] | undefined;
-	node: ast.OperationNode;
+	node: ast.HttpOperationNode;
 	typeSchemas: TypeSchemas;
-	zodSchemas: ZodSchemas | undefined;
 };
 
-export function ClientOperation({
-	name,
-	urlName,
-	baseURL,
-	paramsCasing,
-	parser,
-	node,
-	typeSchemas,
-	zodSchemas,
-}: Props): KubbReactNode {
-	void URLPath;
-	const pathParams = getPathParams(node, paramsCasing);
-	const queryParams = getQueryParams(node, paramsCasing);
-	const headerParams = getHeaderParams(node, paramsCasing);
+export function ClientOperation({ name, node, typeSchemas }: Props): KubbReactNode {
+	const pathParams = paramsAt(node, "path");
+	const queryParams = paramsAt(node, "query");
+	const headerParams = paramsAt(node, "header");
 
 	const requestBodyContent = node.requestBody?.content?.[0];
 	const contentType = requestBodyContent?.contentType ?? "application/json";
@@ -249,24 +187,17 @@ export function ClientOperation({
 \t}\n`
 			: "";
 
-	const bodyExpression = hasBody
-		? parser === "zod" && zodSchemas?.request
-			? `${zodSchemas.request.name}.parse(${isFormData ? "formData" : "body"})`
-			: isFormData
-				? "formData"
-				: "body"
-		: undefined;
+	const bodyExpression = hasBody ? (isFormData ? "formData" : "body") : undefined;
 
-	const urlTemplate = node.path.replace(/\{([^}]+)\}/g, (_, raw: string) => {
-		const cased = paramsCasing === "camelcase" ? toCamelCase(raw) : raw;
-		return `\${pathParams.${cased}}`;
-	});
+	const urlTemplate = node.path.replace(
+		/\{([^}]+)\}/g,
+		(_, raw: string) => `\${pathParams.${raw}}`,
+	);
 
 	const clientCallParts: string[] = [
 		`method: ${JSON.stringify(node.method.toUpperCase())}`,
 		`url: \`${urlTemplate}\``,
 	];
-	if (baseURL && !urlName) clientCallParts.push(`baseUrl: ${JSON.stringify(baseURL)}`);
 	if (queryParams.length > 0) clientCallParts.push("queryParams");
 	if (bodyExpression !== undefined) clientCallParts.push(`body: ${bodyExpression}`);
 	clientCallParts.push("...requestConfig");
@@ -274,16 +205,11 @@ export function ClientOperation({
 
 	const callArgs = `{\n\t\t${clientCallParts.join(",\n\t\t")},\n\t}`;
 
-	const responseReturn =
-		parser === "zod" && zodSchemas
-			? `return ${zodSchemas.response.name}.parse(data);`
-			: "return data;";
-
 	const body = `\tconst { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 ${requiresPathParamChecks ? `\t${requiresPathParamChecks}\n` : ""}${formDataBlock}\tconst data = await request<${generics.join(", ")}>(${callArgs});
 
-\t${responseReturn}`;
+\treturn data;`;
 
 	return (
 		<File.Source name={name} isExportable isIndexable>

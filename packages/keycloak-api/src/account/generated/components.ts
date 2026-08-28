@@ -6,538 +6,649 @@
 import type { ErrorWrapper, FetcherConfig } from "../../utils/fetcher";
 import defaultClient from "../../utils/fetcher";
 import type {
-	BuildLinkingUriPathParams,
-	BuildLinkingUriQueryParams,
-	BuildLinkingUriQueryResponse,
-	CreateConsentMutationResponse,
-	CreateConsentPathParams,
-	DeleteConsentMutationResponse,
-	DeleteConsentPathParams,
-	DeleteCredentialMutationResponse,
-	DeleteCredentialPathParams,
-	DeleteCurrentSessionMutationResponse,
-	DeleteLinkedProviderMutationResponse,
-	DeleteLinkedProviderPathParams,
-	DeleteSessionMutationResponse,
-	DeleteSessionPathParams,
-	GetAccountQueryParams,
-	GetAccountQueryResponse,
-	GetApplicationsQueryParams,
-	GetApplicationsQueryResponse,
-	GetConsentPathParams,
-	GetConsentQueryResponse,
-	GetCredentialsQueryParams,
-	GetCredentialsQueryResponse,
-	GetDevicesQueryResponse,
-	GetGroupsQueryParams,
-	GetGroupsQueryResponse,
-	GetLinkedAccountsQueryResponse,
-	GetOrganizationsQueryResponse,
-	GetSessionsQueryResponse,
-	UpdateAccountMutationRequest,
-	UpdateAccountMutationResponse,
-	UpdateConsentMutationResponse,
-	UpdateConsentPathParams,
-	UpdateCredentialLabelMutationRequest,
-	UpdateCredentialLabelMutationResponse,
-	UpdateCredentialLabelPathParams,
+	BuildLinkingUriResponse,
+	CreateConsentResponse,
+	DeleteConsentResponse,
+	DeleteCredentialResponse,
+	DeleteCurrentSessionResponse,
+	DeleteLinkedProviderResponse,
+	DeleteSessionResponse,
+	GetAccountResponse,
+	GetApplicationsResponse,
+	GetConsentResponse,
+	GetCredentialsResponse,
+	GetDevicesResponse,
+	GetGroupsResponse,
+	GetLinkedAccountsResponse,
+	GetOrganizationsResponse,
+	GetSessionsResponse,
+	UpdateAccountBody,
+	UpdateAccountResponse,
+	UpdateConsentResponse,
+	UpdateCredentialLabelBody,
+	UpdateCredentialLabelResponse,
 } from "./types";
 
 /**
- * @description Get user details for currently logged in user
  * @summary Get account
- * {@link /account/}
+ * @description Get user details for currently logged in user
+ * @link /account/
  */
-export async function getAccount({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: GetAccountQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getAccount(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { userProfileMetadata?: boolean };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		GetAccountQueryResponse,
+		GetAccountResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
-		GetAccountQueryParams,
+		{ userProfileMetadata?: boolean },
 		Record<string, string>
-	>({ method: "GET", url: `/account/`, queryParams, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/account/`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Update account
- * {@link /account/}
+ * @link /account/
  */
-export async function updateAccount({
-	body,
-	config = {},
-}: {
-	body: UpdateAccountMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function updateAccount(
+	{
+		body,
+		config,
+	}: {
+		body: UpdateAccountBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		UpdateAccountMutationResponse,
+		UpdateAccountResponse,
 		ErrorWrapper<Error>,
-		UpdateAccountMutationRequest,
+		UpdateAccountBody,
 		Record<string, string>,
 		Record<string, string>,
 		Record<string, string>
-	>({ method: "POST", url: `/account/`, body, ...requestConfig });
+	>({
+		method: "POST",
+		url: `/account/`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Get applications
- * {@link /account/applications}
+ * @link /account/applications
  */
-export async function getApplications({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: GetApplicationsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getApplications(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { name?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		GetApplicationsQueryResponse,
+		GetApplicationsResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
-		GetApplicationsQueryParams,
+		{ name?: string },
 		Record<string, string>
-	>({ method: "GET", url: `/account/applications`, queryParams, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/account/applications`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Get consent
- * {@link /account/applications/:clientId/consent}
+ * @link /account/applications/{clientId}/consent
  */
-export async function getConsent({
-	pathParams: { clientId },
-	config = {},
-}: {
-	pathParams: GetConsentPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getConsent(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { clientId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!clientId) {
+	if (!pathParams.clientId) {
 		throw new Error(`Missing required path parameter: clientId`);
 	}
-
 	const data = await request<
-		GetConsentQueryResponse,
+		GetConsentResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		GetConsentPathParams
-	>({ method: "GET", url: `/account/applications/${clientId}/consent`, ...requestConfig });
+		{ clientId: string }
+	>({
+		method: "GET",
+		url: `/account/applications/${pathParams.clientId}/consent`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Create consent
- * {@link /account/applications/:clientId/consent}
+ * @link /account/applications/{clientId}/consent
  */
-export async function createConsent({
-	pathParams: { clientId },
-	config = {},
-}: {
-	pathParams: CreateConsentPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function createConsent(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { clientId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!clientId) {
+	if (!pathParams.clientId) {
 		throw new Error(`Missing required path parameter: clientId`);
 	}
-
 	const data = await request<
-		CreateConsentMutationResponse,
+		CreateConsentResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		CreateConsentPathParams
-	>({ method: "POST", url: `/account/applications/${clientId}/consent`, ...requestConfig });
+		{ clientId: string }
+	>({
+		method: "POST",
+		url: `/account/applications/${pathParams.clientId}/consent`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Update consent
- * {@link /account/applications/:clientId/consent}
+ * @link /account/applications/{clientId}/consent
  */
-export async function updateConsent({
-	pathParams: { clientId },
-	config = {},
-}: {
-	pathParams: UpdateConsentPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function updateConsent(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { clientId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!clientId) {
+	if (!pathParams.clientId) {
 		throw new Error(`Missing required path parameter: clientId`);
 	}
-
 	const data = await request<
-		UpdateConsentMutationResponse,
+		UpdateConsentResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		UpdateConsentPathParams
-	>({ method: "PUT", url: `/account/applications/${clientId}/consent`, ...requestConfig });
+		{ clientId: string }
+	>({
+		method: "PUT",
+		url: `/account/applications/${pathParams.clientId}/consent`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Delete consent
- * {@link /account/applications/:clientId/consent}
+ * @link /account/applications/{clientId}/consent
  */
-export async function deleteConsent({
-	pathParams: { clientId },
-	config = {},
-}: {
-	pathParams: DeleteConsentPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deleteConsent(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { clientId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!clientId) {
+	if (!pathParams.clientId) {
 		throw new Error(`Missing required path parameter: clientId`);
 	}
-
 	const data = await request<
-		DeleteConsentMutationResponse,
+		DeleteConsentResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		DeleteConsentPathParams
-	>({ method: "DELETE", url: `/account/applications/${clientId}/consent`, ...requestConfig });
+		{ clientId: string }
+	>({
+		method: "DELETE",
+		url: `/account/applications/${pathParams.clientId}/consent`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Get credentials for currently logged in user
  * @summary Get credentials
- * {@link /account/credentials}
+ * @description Get credentials for currently logged in user
+ * @link /account/credentials
  */
-export async function getCredentials({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: GetCredentialsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getCredentials(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { type?: string; "user-credentials"?: boolean };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		GetCredentialsQueryResponse,
+		GetCredentialsResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
-		GetCredentialsQueryParams,
+		{ type?: string; "user-credentials"?: boolean },
 		Record<string, string>
-	>({ method: "GET", url: `/account/credentials`, queryParams, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/account/credentials`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Delete the credential
- * {@link /account/credentials/:credentialId}
+ * @link /account/credentials/{credentialId}
  */
-export async function deleteCredential({
-	pathParams: { credentialId },
-	config = {},
-}: {
-	pathParams: DeleteCredentialPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deleteCredential(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { credentialId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!credentialId) {
+	if (!pathParams.credentialId) {
 		throw new Error(`Missing required path parameter: credentialId`);
 	}
-
 	const data = await request<
-		DeleteCredentialMutationResponse,
+		DeleteCredentialResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		DeleteCredentialPathParams
-	>({ method: "DELETE", url: `/account/credentials/${credentialId}`, ...requestConfig });
+		{ credentialId: string }
+	>({
+		method: "DELETE",
+		url: `/account/credentials/${pathParams.credentialId}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Update a user label of specified credential of current user
- * {@link /account/credentials/:credentialId/label}
+ * @link /account/credentials/{credentialId}/label
  */
-export async function updateCredentialLabel({
-	pathParams: { credentialId },
-	body,
-	config = {},
-}: {
-	pathParams: UpdateCredentialLabelPathParams;
-	body?: UpdateCredentialLabelMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function updateCredentialLabel(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { credentialId: string };
+		body?: UpdateCredentialLabelBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!credentialId) {
+	if (!pathParams.credentialId) {
 		throw new Error(`Missing required path parameter: credentialId`);
 	}
-
 	const data = await request<
-		UpdateCredentialLabelMutationResponse,
+		UpdateCredentialLabelResponse,
 		ErrorWrapper<Error>,
-		UpdateCredentialLabelMutationRequest,
+		UpdateCredentialLabelBody,
 		Record<string, string>,
 		Record<string, string>,
-		UpdateCredentialLabelPathParams
-	>({ method: "PUT", url: `/account/credentials/${credentialId}/label`, body, ...requestConfig });
+		{ credentialId: string }
+	>({
+		method: "PUT",
+		url: `/account/credentials/${pathParams.credentialId}/label`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Get sessions for currently logged in user
  * @summary Get sessions
- * {@link /account/sessions}
+ * @description Get sessions for currently logged in user
+ * @link /account/sessions
  */
-export async function getSessions({
-	config = {},
-}: {
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getSessions(
+	{ config }: { config?: Partial<FetcherConfig> & { client?: typeof defaultClient } } = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		GetSessionsQueryResponse,
+		GetSessionsResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
 		Record<string, string>
-	>({ method: "GET", url: `/account/sessions`, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/account/sessions`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Delete current session
- * {@link /account/sessions}
+ * @link /account/sessions
  */
-export async function deleteCurrentSession({
-	config = {},
-}: {
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deleteCurrentSession(
+	{ config }: { config?: Partial<FetcherConfig> & { client?: typeof defaultClient } } = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		DeleteCurrentSessionMutationResponse,
+		DeleteCurrentSessionResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
 		Record<string, string>
-	>({ method: "DELETE", url: `/account/sessions`, ...requestConfig });
+	>({
+		method: "DELETE",
+		url: `/account/sessions`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Get devices for currently logged in user
  * @summary Get devices
- * {@link /account/sessions/devices}
+ * @description Get devices for currently logged in user
+ * @link /account/sessions/devices
  */
-export async function getDevices({
-	config = {},
-}: {
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getDevices(
+	{ config }: { config?: Partial<FetcherConfig> & { client?: typeof defaultClient } } = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		GetDevicesQueryResponse,
+		GetDevicesResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
 		Record<string, string>
-	>({ method: "GET", url: `/account/sessions/devices`, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/account/sessions/devices`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Delete the session
- * {@link /account/sessions/:sessionId}
+ * @link /account/sessions/{sessionId}
  */
-export async function deleteSession({
-	pathParams: { sessionId },
-	config = {},
-}: {
-	pathParams: DeleteSessionPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deleteSession(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { sessionId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!sessionId) {
+	if (!pathParams.sessionId) {
 		throw new Error(`Missing required path parameter: sessionId`);
 	}
-
 	const data = await request<
-		DeleteSessionMutationResponse,
+		DeleteSessionResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		DeleteSessionPathParams
-	>({ method: "DELETE", url: `/account/sessions/${sessionId}`, ...requestConfig });
+		{ sessionId: string }
+	>({
+		method: "DELETE",
+		url: `/account/sessions/${pathParams.sessionId}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Get linked accounts for currently logged in user
  * @summary Get linked accounts
- * {@link /account/linked-accounts}
+ * @description Get linked accounts for currently logged in user
+ * @link /account/linked-accounts
  */
-export async function getLinkedAccounts({
-	config = {},
-}: {
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getLinkedAccounts(
+	{ config }: { config?: Partial<FetcherConfig> & { client?: typeof defaultClient } } = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		GetLinkedAccountsQueryResponse,
+		GetLinkedAccountsResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
 		Record<string, string>
-	>({ method: "GET", url: `/account/linked-accounts`, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/account/linked-accounts`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Build account linking URI
  * @summary Build account linking URI
- * {@link /account/linked-accounts/:providerId}
+ * @description Build account linking URI
+ * @link /account/linked-accounts/{providerId}
  */
-export async function buildLinkingUri({
-	pathParams: { providerId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: BuildLinkingUriPathParams;
-	queryParams: BuildLinkingUriQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function buildLinkingUri(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { providerId: string };
+		queryParams?: { redirectUri?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!providerId) {
+	if (!pathParams.providerId) {
 		throw new Error(`Missing required path parameter: providerId`);
 	}
-
 	const data = await request<
-		BuildLinkingUriQueryResponse,
+		BuildLinkingUriResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
-		BuildLinkingUriQueryParams,
-		BuildLinkingUriPathParams
+		{ redirectUri?: string },
+		{ providerId: string }
 	>({
 		method: "GET",
-		url: `/account/linked-accounts/${providerId}`,
+		url: `/account/linked-accounts/${pathParams.providerId}`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
  * @summary Delete the linked provider
- * {@link /account/linked-accounts/:providerId}
+ * @link /account/linked-accounts/{providerId}
  */
-export async function deleteLinkedProvider({
-	pathParams: { providerId },
-	config = {},
-}: {
-	pathParams: DeleteLinkedProviderPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deleteLinkedProvider(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { providerId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!providerId) {
+	if (!pathParams.providerId) {
 		throw new Error(`Missing required path parameter: providerId`);
 	}
-
 	const data = await request<
-		DeleteLinkedProviderMutationResponse,
+		DeleteLinkedProviderResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		DeleteLinkedProviderPathParams
-	>({ method: "DELETE", url: `/account/linked-accounts/${providerId}`, ...requestConfig });
+		{ providerId: string }
+	>({
+		method: "DELETE",
+		url: `/account/linked-accounts/${pathParams.providerId}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
  * @summary Get groups that this user is a member of
- * {@link /account/groups}
+ * @link /account/groups
  */
-export async function getGroups({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: GetGroupsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getGroups(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { briefRepresentation?: boolean };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		GetGroupsQueryResponse,
+		GetGroupsResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
-		GetGroupsQueryParams,
+		{ briefRepresentation?: boolean },
 		Record<string, string>
-	>({ method: "GET", url: `/account/groups`, queryParams, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/account/groups`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Get organizations for currently logged in user
  * @summary Get organizations
- * {@link /account/organizations}
+ * @description Get organizations for currently logged in user
+ * @link /account/organizations
  */
-export async function getOrganizations({
-	config = {},
-}: {
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getOrganizations(
+	{ config }: { config?: Partial<FetcherConfig> & { client?: typeof defaultClient } } = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		GetOrganizationsQueryResponse,
+		GetOrganizationsResponse,
 		ErrorWrapper<Error>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
 		Record<string, string>
-	>({ method: "GET", url: `/account/organizations`, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/account/organizations`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 

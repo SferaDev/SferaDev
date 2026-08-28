@@ -1,10 +1,8 @@
 import { adapterOas } from "@kubb/adapter-oas";
-import type { UserConfig } from "@kubb/core";
-import { pluginClient } from "@kubb/plugin-client";
 import { pluginTs } from "@kubb/plugin-ts";
 import { pluginZod } from "@kubb/plugin-zod";
-import { extraGenerator } from "./client/extra";
-import { clientGenerator } from "./client/operations";
+import type { UserConfig } from "kubb";
+import { pluginClient } from "./plugin";
 
 interface ConfigOptions {
 	outputPath?: string;
@@ -21,7 +19,7 @@ function buildConfig({
 		root: ".",
 		adapter: adapterOas({
 			validate: false,
-			serverIndex: 0,
+			server: { index: 0 },
 			contentType: "application/json",
 			dateType: "string",
 			unknownType: "unknown",
@@ -29,30 +27,29 @@ function buildConfig({
 		}),
 		output: {
 			path: outputPath,
-			extension: {
-				".ts": "",
-			},
 			format: "biome",
 			lint: false,
 			clean: true,
+			// kubb's `format` only runs `biome format`, which leaves import order alone. CI gates on
+			// `biome check`, whose organizeImports assist does sort them — so without this the tree is
+			// red the moment anything is regenerated.
+			postGenerate: [`biome check --write ${outputPath}`],
 		},
 		plugins: [
 			pluginTs({
 				output: {
 					path: "./types.ts",
+					mode: "file",
 				},
-				enumType: "asConst",
+				enum: { type: "asConst" },
 				optionalType: "questionTokenAndUndefined",
 			}),
 			pluginClient({
 				output: {
 					path: "./components.ts",
+					mode: "file",
 				},
-				dataReturnType: "data",
-				paramsType: "object",
-				urlType: "export",
 				importPath,
-				generators: [clientGenerator, extraGenerator],
 			}),
 			...(skipZod
 				? []
@@ -60,6 +57,7 @@ function buildConfig({
 						pluginZod({
 							output: {
 								path: "./schemas.ts",
+								mode: "file",
 								banner: "// @ts-nocheck",
 							},
 							importPath: "zod",

@@ -194,44 +194,145 @@ Purely cosmetic to pnpm — verify with a byte-identical `pnpm-lock.yaml` after
 **every** pin and leaves the explaining comment stranded above the now-wrong value. Re-pinning is a
 default step of this review, not a contingency.
 
-Identical in #594, #601 and #626: `typescript` 6.0.3 → 7.0.2 **and** `@kubb/renderer-jsx`
-beta.10 → beta.35, together, every time.
+Identical in #594, #601, #626 and #635: `typescript` 6.0.3 → 7.0.2 **and** the `@kubb/*` set,
+together, every time.
 
 Only the TypeScript one turns CI red; the `@kubb` one is an unmet peer that no gate catches — so
 **re-check every pin, not just whichever one broke the build.** A green `Check` is not evidence the
 other holds survived. `grep -n "KEEP-BACK" -A6 pnpm-workspace.yaml` and compare each value, then
 verify what actually resolved (an override can defeat a re-pin — see `pin-governance.md`).
 
-The TypeScript hold is still required as of 2026-08-17: bunchee 7.0.1 fails all 12 package builds
-on TS 7.0.2 with "Detected TypeScript 7.0.2 … install `@typescript/typescript6`".
+**All three of those holds were released on 2026-08-28 (#635)** — TypeScript 7 via the
+`@typescript/typescript6` shim, the `@kubb/*` family to 5.0.3 stable, and `better-auth` to 1.7.2
+with a schema migration. `pin-governance.md` records what each release cost. The *class* below is
+what survives; the specific packages are history.
+
+### A "not all published" family blocks a whole major — check for a local replacement
+
+*Seen 2026-08-28 (#635): the `@kubb/*` 5.x migration.*
+
+The blocker was one package: `@kubb/plugin-client` never shipped a stable 5.x (npm `latest` is
+still 4.39.3). Holding the whole family on a beta for that is the expensive reading. The cheap one:
+**ask what that package actually did for you.** Here it was a ~35-line plugin shell — the two
+generators it hosted were already ours — so it was replaced by a local `plugin.ts` and the family
+went stable. `xataio/frontend@4c5d294` had solved the same problem the same way.
+
+The v5 restructure also collapsed the family behind one entry point, which is the shape to expect
+from a monorepo major:
+
+| v4 / beta | v5 stable |
+| --- | --- |
+| `@kubb/core` | `kubb/kit` |
+| `@kubb/renderer-jsx` (+ `/types`) | `kubb/jsx` |
+| `@kubb/cli` | bundled in `kubb` |
+| `@kubb/plugin-client` | no stable release — replace locally |
+| `resolver.resolveFile(e, {root, output, group})` | `resolver.file({...e, root, output})` |
+| `resolver.resolveName(x)` | `resolver.name(x)` |
+| `resolver.resolveBanner(inputNode, ctx)` | `resolver.default.banner(ctx.meta, ctx)` |
+| `tsResolver.resolveResponseName(n)` | `tsResolver.response.response(n)` |
+| `ctx.getPlugin(name)` | `ctx.requirePlugin(name)` |
+| `output.extension: {'.ts': ''}` | moved to `parserTs`, and it is the default |
+| `input: { data: doc }` | `input: doc` |
+
+Two traps worth naming:
+
+- **`input: { data: doc }` silently produced an empty build** in early v5. kubb now hard-errors
+  (*"The `input` option uses the v4 `{ path }` / `{ data }` wrapper"*), but that is the shape of
+  thing to look for whenever a codegen tool crosses a major: a config key that changed meaning
+  rather than name.
+- **Regenerating mixes tool changes with upstream spec drift**, because every `kubb.config.ts`
+  fetches a live spec. To review the tool's effect you must hold the spec constant: regenerate on a
+  `main` worktree *at the same moment*, then diff the two generated trees. Diffing against the
+  committed output instead attributes weeks of upstream API churn to the bump.
+
+The generated-surface delta was ~90 fewer exported type names per client — `*RequestConfig` →
+`*Options`, per-parameter types (`FooPathBarId`) → grouped (`FooPath`), some single-value enums
+inlined. **The client functions were byte-identical**, which is what made it a `minor` rather than
+a `major`: check the emitted function set before deciding severity.
+
+```bash
+grep -oE "^export async function [a-zA-Z0-9_]+" <pkg>/src/generated/components.ts | sort
+```
+
+### kubb's `format: "biome"` does not sort imports
+
+*Seen 2026-08-28.* kubb's output hook runs `biome format --write`, but CI gates on `biome check`,
+whose `organizeImports` **assist** also sorts named imports. So a fresh generation is red the
+moment it lands. Fixed in `openapi-utils`' shared config with an output `postGenerate` hook:
+
+```ts
+postGenerate: [`biome check --write ${outputPath}`]
+```
+
+Same class as `drizzle-kit generate`, which writes `drizzle/meta/*.json` with 2-space indent while
+this repo commits tabs — run `biome check --write apps/platform/drizzle` after generating a
+migration.
 
 ---
 
-## Tests
+## Runtime — a bump that needs a database migration
 
-### `ai-gateway-proxy` integration tests fail locally with `GatewayAuthenticationError`
+### A minor bump requires a schema change nothing in CI can see
 
-*Seen 2026-08.* `packages/ai-gateway-proxy/vitest.config.ts` calls dotenv's `config()`, so an
-untracked `packages/ai-gateway-proxy/.env` is loaded even when the shell has no
-`AI_GATEWAY_API_KEY`. A stale key in that file flips `hasApiKey` to true, the
-`describe.skipIf(!hasApiKey)` block runs, and 11 tests fail — 8 with
-`GatewayAuthenticationError`, 3 with downstream `expected 0 to be greater than 0` /
-`AI_NoOutputGeneratedError` from streams that never produced tokens.
+*Seen 2026-08-28 (#635): `better-auth` 1.6.29 → **1.7.2**.*
 
-**This is local-only and not a regression** — CI has no `.env` and no secret, so it reports
-`13 skipped` and goes green. Confirm which you are looking at before blaming an `ai` /
-`@ai-sdk/*` bump:
+The most dangerous shape in this review: a **minor** version step that carries breaking changes and
+a **database migration**. It compiles, `pnpm check` and `pnpm test` are green, the Vercel preview
+deploys — and the app fails the first time the library touches the table.
+
+better-auth 1.7.0 rescoped account identity onto `(issuer, accountId)`. `@better-auth/core`'s table
+definition marks `account.issuer` as `required: true` and adds a unique index on
+`["issuer", "accountId"]`. `apps/platform/src/db/schema.ts` defines `accounts` with no `issuer`
+column, `apps/platform/drizzle/` has no migration adding one, and 1.7 additionally documents an
+account-identity **backfill** to run before deploying. Held at 1.6.29.
+
+**The generalisable move — read the installed artifact, not the changelog.** For any library that
+owns a schema, the shipped table definition is the authoritative answer and takes one grep:
 
 ```bash
-ls -la packages/ai-gateway-proxy/.env
-mv packages/ai-gateway-proxy/.env packages/ai-gateway-proxy/.env.localbak
-pnpm --filter ai-gateway-proxy test    # expect "13 skipped" — matches CI
-mv packages/ai-gateway-proxy/.env.localbak packages/ai-gateway-proxy/.env
+# what the new version actually requires
+grep -rn "issuer\|required: true" node_modules/.pnpm/@better-auth+core@*/node_modules/@better-auth/core/dist/db/get-tables.mjs
+# what the repo actually has
+grep -n -A20 "pgTable(\"accounts\"" apps/platform/src/db/schema.ts
+ls apps/platform/drizzle/
 ```
 
-The corollary is the uncomfortable one: an expired key looks exactly like a broken bump, and a
-*valid* key is the only thing that distinguishes them. Absent one, the AI SDK bump is unverified —
-say so rather than reading the skips as a pass.
+Apply the same suspicion to any bump of `drizzle-orm`, `better-auth`, or a plugin of theirs:
+**does the new version want a column, index or table that the committed schema does not have?**
+If yes, either keep it back or do the migration in the same PR — and say which, because a green
+board is actively misleading here.
+
+**Doing the migration (what #635 ended up doing).** Four steps, and the last two are the ones that
+are usually skipped:
+
+1. **Diff the shipped table definitions, don't read the changelog.** `npm pack` both versions and
+   diff. For better-auth 1.6.29 → 1.7.2 the entire delta across every table this repo uses was
+   four lines — `account.issuer`, its unique index, and two optional `jwks` columns — which is a
+   far smaller and more actionable answer than the release notes' twenty breaking-change bullets.
+   Remember plugin tables live in their own files (`dist/plugins/<name>/schema.mjs`).
+2. **Read the *value* the library writes, not just the column.** A required new column needs a
+   backfill, and the backfill has to match what the library itself would have written or the rows
+   are silently unreachable. Here: `createLocalAccountIssuer` → `local:credential` and
+   `createOAuthAccountIssuer` → `local:oauth:<providerId>`, with only `generic-oauth` providers
+   carrying a real issuer.
+3. **Hand-edit the generated migration.** `drizzle-kit generate` emits
+   `ADD COLUMN "x" text NOT NULL` with no default, which **fails on any populated table**. Rewrite
+   as add-nullable → backfill → `SET NOT NULL` → add constraint, and keep the reasoning in a
+   comment at the top of the `.sql`.
+4. **Prove it on a populated database.** This is cheap and it is the only real evidence:
+
+   ```bash
+   docker run -d --name mig-test -e POSTGRES_PASSWORD=test -e POSTGRES_DB=platform \
+     -p 55433:5432 postgres:17-alpine
+   docker exec -i mig-test psql -U postgres -d platform < apps/platform/drizzle/0000_*.sql
+   # seed a row per provider shape, then run the new migration with ON_ERROR_STOP=1
+   ```
+
+   Then run the app's real auth against it — `tsx` a script that imports `apps/platform/src/auth.ts`
+   and calls `auth.api.signUpEmail` / `signInEmail`. #635 did this and the fresh row better-auth
+   wrote carried `local:credential`, **byte-identical to the backfill**, which is the actual proof
+   the backfill convention is right rather than plausible. Confirm the naive migration fails first,
+   so you know the fix was load-bearing.
 
 ---
 

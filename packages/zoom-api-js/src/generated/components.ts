@@ -6,1112 +6,993 @@
 import type { ErrorWrapper, FetcherConfig } from "../utils/fetcher";
 import defaultClient from "../utils/fetcher";
 import type {
-	AddBatchRegistrants400,
-	AddBatchRegistrants404,
-	AddBatchRegistrants429,
-	AddBatchRegistrantsMutationRequest,
-	AddBatchRegistrantsMutationResponse,
-	AddBatchRegistrantsPathParams,
-	AddBatchWebinarRegistrants400,
-	AddBatchWebinarRegistrants404,
-	AddBatchWebinarRegistrants429,
-	AddBatchWebinarRegistrantsMutationRequest,
-	AddBatchWebinarRegistrantsMutationResponse,
-	AddBatchWebinarRegistrantsPathParams,
-	AddDevice400,
-	AddDevice429,
-	AddDeviceMutationRequest,
-	AddDeviceMutationResponse,
-	AnalyticsDetails400,
-	AnalyticsDetails404,
-	AnalyticsDetails429,
-	AnalyticsDetailsPathParams,
-	AnalyticsDetailsQueryParams,
-	AnalyticsDetailsQueryResponse,
-	AnalyticsSummary400,
-	AnalyticsSummary404,
-	AnalyticsSummary429,
-	AnalyticsSummaryPathParams,
-	AnalyticsSummaryQueryParams,
-	AnalyticsSummaryQueryResponse,
-	AssginGroup400,
-	AssginGroup401,
-	AssginGroup404,
-	AssginGroup429,
-	AssginGroupMutationResponse,
-	AssginGroupPathParams,
-	AssginGroupQueryParams,
-	AssigndevicetoauserCommonarea400,
-	AssigndevicetoauserCommonarea429,
-	AssigndevicetoauserCommonareaMutationRequest,
-	AssigndevicetoauserCommonareaMutationResponse,
-	ChangeDeviceAssociation400,
-	ChangeDeviceAssociation404,
-	ChangeDeviceAssociation429,
-	ChangeDeviceAssociationMutationRequest,
-	ChangeDeviceAssociationMutationResponse,
-	ChangeDeviceAssociationPathParams,
-	CreateBatchPolls400,
-	CreateBatchPolls404,
-	CreateBatchPolls429,
-	CreateBatchPollsMutationRequest,
-	CreateBatchPollsMutationResponse,
-	CreateBatchPollsPathParams,
-	CreateWebinarBrandingNameTag400,
-	CreateWebinarBrandingNameTag404,
-	CreateWebinarBrandingNameTag429,
-	CreateWebinarBrandingNameTagMutationRequest,
-	CreateWebinarBrandingNameTagMutationResponse,
-	CreateWebinarBrandingNameTagPathParams,
-	DeleteArchivedFiles400,
-	DeleteArchivedFiles404,
-	DeleteArchivedFiles429,
-	DeleteArchivedFilesMutationResponse,
-	DeleteArchivedFilesPathParams,
-	DeleteDevice400,
-	DeleteDevice404,
-	DeleteDevice429,
-	DeleteDeviceMutationResponse,
-	DeleteDevicePathParams,
-	DeleteMeetingChatMessageById400,
-	DeleteMeetingChatMessageById404,
-	DeleteMeetingChatMessageById429,
-	DeleteMeetingChatMessageByIdMutationResponse,
-	DeleteMeetingChatMessageByIdPathParams,
-	DeleteMeetingChatMessageByIdQueryParams,
-	DeleteMeetingTranscript400,
-	DeleteMeetingTranscript403,
-	DeleteMeetingTranscript404,
-	DeleteMeetingTranscript429,
-	DeleteMeetingTranscriptMutationResponse,
-	DeleteMeetingTranscriptPathParams,
-	Deletemeetingorwebinarsummary400,
-	Deletemeetingorwebinarsummary403,
-	Deletemeetingorwebinarsummary404,
-	Deletemeetingorwebinarsummary429,
-	DeletemeetingorwebinarsummaryMutationResponse,
-	DeletemeetingorwebinarsummaryPathParams,
-	DeleteSIPPhonePhones401,
-	DeleteSIPPhonePhones403,
-	DeleteSIPPhonePhones404,
-	DeleteSIPPhonePhones429,
-	DeleteSIPPhonePhonesMutationResponse,
-	DeleteSIPPhonePhonesPathParams,
-	DeleteWebinarBrandingNameTag400,
-	DeleteWebinarBrandingNameTag404,
-	DeleteWebinarBrandingNameTag429,
-	DeleteWebinarBrandingNameTagMutationResponse,
-	DeleteWebinarBrandingNameTagPathParams,
-	DeleteWebinarBrandingNameTagQueryParams,
-	DeleteWebinarBrandingVB400,
-	DeleteWebinarBrandingVB404,
-	DeleteWebinarBrandingVB429,
-	DeleteWebinarBrandingVBMutationResponse,
-	DeleteWebinarBrandingVBPathParams,
-	DeleteWebinarBrandingVBQueryParams,
-	DeleteWebinarBrandingWallpaper400,
-	DeleteWebinarBrandingWallpaper404,
-	DeleteWebinarBrandingWallpaper429,
-	DeleteWebinarBrandingWallpaperMutationResponse,
-	DeleteWebinarBrandingWallpaperPathParams,
-	DeleteWebinarChatMessageById400,
-	DeleteWebinarChatMessageById404,
-	DeleteWebinarChatMessageById429,
-	DeleteWebinarChatMessageByIdMutationResponse,
-	DeleteWebinarChatMessageByIdPathParams,
-	DeleteWebinarChatMessageByIdQueryParams,
-	DeleteWebinarRegistrant400,
-	DeleteWebinarRegistrant404,
-	DeleteWebinarRegistrant429,
-	DeleteWebinarRegistrantMutationResponse,
-	DeleteWebinarRegistrantPathParams,
-	DeleteWebinarRegistrantQueryParams,
-	DeleteZpaDeviceByVendorAndMacAddress400,
-	DeleteZpaDeviceByVendorAndMacAddress404,
-	DeleteZpaDeviceByVendorAndMacAddress429,
-	DeleteZpaDeviceByVendorAndMacAddressMutationResponse,
-	DeleteZpaDeviceByVendorAndMacAddressPathParams,
-	DeviceCreate400,
-	DeviceCreate401,
-	DeviceCreate403,
-	DeviceCreate404,
-	DeviceCreate429,
-	DeviceCreateMutationRequest,
-	DeviceCreateMutationResponse,
-	DeviceDelete400,
-	DeviceDelete401,
-	DeviceDelete403,
-	DeviceDelete404,
-	DeviceDelete429,
-	DeviceDeleteMutationResponse,
-	DeviceDeletePathParams,
-	DeviceList400,
-	DeviceList401,
-	DeviceList403,
-	DeviceList429,
-	DeviceListQueryParams,
-	DeviceListQueryResponse,
-	DeviceUpdate400,
-	DeviceUpdate401,
-	DeviceUpdate403,
-	DeviceUpdate404,
-	DeviceUpdate429,
-	DeviceUpdateMutationRequest,
-	DeviceUpdateMutationResponse,
-	DeviceUpdatePathParams,
-	EnableSIPPhonePhones400,
-	EnableSIPPhonePhones401,
-	EnableSIPPhonePhones403,
-	EnableSIPPhonePhones404,
-	EnableSIPPhonePhones429,
-	EnableSIPPhonePhonesMutationRequest,
-	EnableSIPPhonePhonesMutationResponse,
-	GetArchivedFileStatistics400,
-	GetArchivedFileStatistics429,
-	GetArchivedFileStatisticsQueryParams,
-	GetArchivedFileStatisticsQueryResponse,
-	GetArchivedFiles404,
-	GetArchivedFiles429,
-	GetArchivedFilesPathParams,
-	GetArchivedFilesQueryResponse,
-	Getameetingsummary400,
-	Getameetingsummary403,
-	Getameetingsummary404,
-	Getameetingsummary429,
-	GetameetingsummaryPathParams,
-	GetameetingsummaryQueryResponse,
-	GetBillingInvoicesReports400,
-	GetBillingInvoicesReports404,
-	GetBillingInvoicesReports429,
-	GetBillingInvoicesReportsQueryParams,
-	GetBillingInvoicesReportsQueryResponse,
-	GetBillingReport400,
-	GetBillingReport429,
-	GetBillingReportQueryResponse,
-	GetDevice400,
-	GetDevice404,
-	GetDevice429,
-	GetDevicePathParams,
-	GetDeviceQueryResponse,
-	Getdisclaimerreport400,
-	Getdisclaimerreport401,
-	Getdisclaimerreport403,
-	Getdisclaimerreport429,
-	GetdisclaimerreportQueryParams,
-	GetdisclaimerreportQueryResponse,
-	Gethistorymeetingandwebinarlist400,
-	Gethistorymeetingandwebinarlist401,
-	Gethistorymeetingandwebinarlist403,
-	Gethistorymeetingandwebinarlist429,
-	GethistorymeetingandwebinarlistQueryParams,
-	GethistorymeetingandwebinarlistQueryResponse,
-	GetMeetingLiveStreamDetails400,
-	GetMeetingLiveStreamDetails404,
-	GetMeetingLiveStreamDetails429,
-	GetMeetingLiveStreamDetailsPathParams,
-	GetMeetingLiveStreamDetailsQueryResponse,
-	GetMeetingTranscript403,
-	GetMeetingTranscript404,
-	GetMeetingTranscript429,
-	GetMeetingTranscriptPathParams,
-	GetMeetingTranscriptQueryResponse,
-	Getremotesupportreport400,
-	Getremotesupportreport401,
-	Getremotesupportreport429,
-	GetremotesupportreportQueryParams,
-	GetremotesupportreportQueryResponse,
-	GetSipDialingWithPasscode400,
-	GetSipDialingWithPasscode404,
-	GetSipDialingWithPasscode429,
-	GetSipDialingWithPasscodeMutationRequest,
-	GetSipDialingWithPasscodeMutationResponse,
-	GetSipDialingWithPasscodePathParams,
-	GetTrackingSources400,
-	GetTrackingSources404,
-	GetTrackingSources429,
-	GetTrackingSourcesPathParams,
-	GetTrackingSourcesQueryResponse,
-	GetWebinarBranding400,
-	GetWebinarBranding404,
-	GetWebinarBranding429,
-	GetWebinarBrandingPathParams,
-	GetWebinarBrandingQueryResponse,
-	GetWebinarLiveStreamDetails400,
-	GetWebinarLiveStreamDetails404,
-	GetWebinarLiveStreamDetails429,
-	GetWebinarLiveStreamDetailsPathParams,
-	GetWebinarLiveStreamDetailsQueryResponse,
-	GetWebinarSipDialingWithPasscode400,
-	GetWebinarSipDialingWithPasscode429,
-	GetWebinarSipDialingWithPasscodeMutationRequest,
-	GetWebinarSipDialingWithPasscodeMutationResponse,
-	GetWebinarSipDialingWithPasscodePathParams,
-	GetZpaDeviceListProfileSettingOfaUser400,
-	GetZpaDeviceListProfileSettingOfaUser401,
-	GetZpaDeviceListProfileSettingOfaUser403,
-	GetZpaDeviceListProfileSettingOfaUser429,
-	GetZpaDeviceListProfileSettingOfaUserQueryParams,
-	GetZpaDeviceListProfileSettingOfaUserQueryResponse,
-	GetZpaVersioninfo400,
-	GetZpaVersioninfo404,
-	GetZpaVersioninfo429,
-	GetZpaVersioninfoPathParams,
-	GetZpaVersioninfoQueryResponse,
-	Getzdmgroupinfo400,
-	Getzdmgroupinfo403,
-	Getzdmgroupinfo429,
-	GetzdmgroupinfoQueryParams,
-	GetzdmgroupinfoQueryResponse,
-	InMeetingControl400,
-	InMeetingControl403,
-	InMeetingControl404,
-	InMeetingControl429,
-	InMeetingControlMutationRequest,
-	InMeetingControlMutationResponse,
-	InMeetingControlPathParams,
-	ListArchivedFiles400,
-	ListArchivedFiles429,
-	ListArchivedFilesQueryParams,
-	ListArchivedFilesQueryResponse,
-	ListDevices400,
-	ListDevices429,
-	ListDevicesQueryParams,
-	ListDevicesQueryResponse,
-	ListMeetingTemplates400,
-	ListMeetingTemplates404,
-	ListMeetingTemplates429,
-	ListMeetingTemplatesPathParams,
-	ListMeetingTemplatesQueryResponse,
-	Listmeetingsummaries400,
-	Listmeetingsummaries403,
-	Listmeetingsummaries429,
-	ListmeetingsummariesQueryParams,
-	ListmeetingsummariesQueryResponse,
-	ListPastMeetingPolls400,
-	ListPastMeetingPolls429,
-	ListPastMeetingPollsPathParams,
-	ListPastMeetingPollsQueryResponse,
-	ListPastMeetingQA401,
-	ListPastMeetingQA404,
-	ListPastMeetingQA429,
-	ListPastMeetingQAPathParams,
-	ListPastMeetingQAQueryResponse,
-	ListPastWebinarPollResults400,
-	ListPastWebinarPollResults404,
-	ListPastWebinarPollResults429,
-	ListPastWebinarPollResultsPathParams,
-	ListPastWebinarPollResultsQueryResponse,
-	ListPastWebinarQA400,
-	ListPastWebinarQA404,
-	ListPastWebinarQA429,
-	ListPastWebinarQAPathParams,
-	ListPastWebinarQAQueryResponse,
-	ListSIPPhonePhones400,
-	ListSIPPhonePhones401,
-	ListSIPPhonePhones403,
-	ListSIPPhonePhones429,
-	ListSIPPhonePhonesQueryParams,
-	ListSIPPhonePhonesQueryResponse,
-	ListUpcomingMeeting404,
-	ListUpcomingMeeting429,
-	ListUpcomingMeetingPathParams,
-	ListUpcomingMeetingQueryResponse,
-	ListWebinarParticipants400,
-	ListWebinarParticipants404,
-	ListWebinarParticipants429,
-	ListWebinarParticipantsPathParams,
-	ListWebinarParticipantsQueryParams,
-	ListWebinarParticipantsQueryResponse,
-	ListWebinarTemplates400,
-	ListWebinarTemplates404,
-	ListWebinarTemplates429,
-	ListWebinarTemplatesPathParams,
-	ListWebinarTemplatesQueryResponse,
-	Meeting400,
-	Meeting404,
-	Meeting429,
-	MeetingAppAdd400,
-	MeetingAppAdd404,
-	MeetingAppAdd429,
-	MeetingAppAddMutationResponse,
-	MeetingAppAddPathParams,
-	MeetingAppDelete400,
-	MeetingAppDelete404,
-	MeetingAppDelete429,
-	MeetingAppDeleteMutationResponse,
-	MeetingAppDeletePathParams,
-	MeetingCreate400,
-	MeetingCreate404,
-	MeetingCreate429,
-	MeetingCreateMutationRequest,
-	MeetingCreateMutationResponse,
-	MeetingCreatePathParams,
-	MeetingDelete400,
-	MeetingDelete404,
-	MeetingDelete429,
-	MeetingDeleteMutationResponse,
-	MeetingDeletePathParams,
-	MeetingDeleteQueryParams,
-	MeetingInvitation400,
-	MeetingInvitation404,
-	MeetingInvitation429,
-	MeetingInvitationPathParams,
-	MeetingInvitationQueryResponse,
-	MeetingInviteLinksCreate400,
-	MeetingInviteLinksCreate404,
-	MeetingInviteLinksCreate429,
-	MeetingInviteLinksCreateMutationRequest,
-	MeetingInviteLinksCreateMutationResponse,
-	MeetingInviteLinksCreatePathParams,
-	MeetingLiveStreamingJoinToken400,
-	MeetingLiveStreamingJoinToken404,
-	MeetingLiveStreamingJoinToken429,
-	MeetingLiveStreamingJoinTokenPathParams,
-	MeetingLiveStreamingJoinTokenQueryResponse,
-	MeetingLiveStreamStatusUpdate400,
-	MeetingLiveStreamStatusUpdate404,
-	MeetingLiveStreamStatusUpdate429,
-	MeetingLiveStreamStatusUpdateMutationRequest,
-	MeetingLiveStreamStatusUpdateMutationResponse,
-	MeetingLiveStreamStatusUpdatePathParams,
-	MeetingLiveStreamUpdate400,
-	MeetingLiveStreamUpdate404,
-	MeetingLiveStreamUpdate429,
-	MeetingLiveStreamUpdateMutationRequest,
-	MeetingLiveStreamUpdateMutationResponse,
-	MeetingLiveStreamUpdatePathParams,
-	MeetingLocalArchivingArchiveToken400,
-	MeetingLocalArchivingArchiveToken404,
-	MeetingLocalArchivingArchiveToken429,
-	MeetingLocalArchivingArchiveTokenPathParams,
-	MeetingLocalArchivingArchiveTokenQueryResponse,
-	MeetingLocalRecordingJoinToken400,
-	MeetingLocalRecordingJoinToken404,
-	MeetingLocalRecordingJoinToken429,
-	MeetingLocalRecordingJoinTokenPathParams,
-	MeetingLocalRecordingJoinTokenQueryParams,
-	MeetingLocalRecordingJoinTokenQueryResponse,
-	MeetingPathParams,
-	MeetingPollCreate400,
-	MeetingPollCreate404,
-	MeetingPollCreate429,
-	MeetingPollCreateMutationRequest,
-	MeetingPollCreateMutationResponse,
-	MeetingPollCreatePathParams,
-	MeetingPollDelete400,
-	MeetingPollDelete404,
-	MeetingPollDelete429,
-	MeetingPollDeleteMutationResponse,
-	MeetingPollDeletePathParams,
-	MeetingPollGet400,
-	MeetingPollGet404,
-	MeetingPollGet429,
-	MeetingPollGetPathParams,
-	MeetingPollGetQueryResponse,
-	MeetingPolls400,
-	MeetingPolls404,
-	MeetingPolls429,
-	MeetingPollsPathParams,
-	MeetingPollsQueryParams,
-	MeetingPollsQueryResponse,
-	MeetingPollUpdate400,
-	MeetingPollUpdate404,
-	MeetingPollUpdate429,
-	MeetingPollUpdateMutationRequest,
-	MeetingPollUpdateMutationResponse,
-	MeetingPollUpdatePathParams,
-	MeetingQueryParams,
-	MeetingQueryResponse,
-	MeetingRecordingRegistrantCreate404,
-	MeetingRecordingRegistrantCreate429,
-	MeetingRecordingRegistrantCreateMutationRequest,
-	MeetingRecordingRegistrantCreateMutationResponse,
-	MeetingRecordingRegistrantCreatePathParams,
-	MeetingRecordingRegistrantStatus404,
-	MeetingRecordingRegistrantStatus429,
-	MeetingRecordingRegistrantStatusMutationRequest,
-	MeetingRecordingRegistrantStatusMutationResponse,
-	MeetingRecordingRegistrantStatusPathParams,
-	MeetingRecordingRegistrants404,
-	MeetingRecordingRegistrants429,
-	MeetingRecordingRegistrantsPathParams,
-	MeetingRecordingRegistrantsQueryParams,
-	MeetingRecordingRegistrantsQueryResponse,
-	MeetingRegistrantCreate400,
-	MeetingRegistrantCreate404,
-	MeetingRegistrantCreate429,
-	MeetingRegistrantCreateMutationRequest,
-	MeetingRegistrantCreateMutationResponse,
-	MeetingRegistrantCreatePathParams,
-	MeetingRegistrantCreateQueryParams,
-	MeetingRegistrantGet400,
-	MeetingRegistrantGet404,
-	MeetingRegistrantGet429,
-	MeetingRegistrantGetPathParams,
-	MeetingRegistrantGetQueryResponse,
-	MeetingRegistrantQuestionUpdate400,
-	MeetingRegistrantQuestionUpdate404,
-	MeetingRegistrantQuestionUpdate429,
-	MeetingRegistrantQuestionUpdateMutationRequest,
-	MeetingRegistrantQuestionUpdateMutationResponse,
-	MeetingRegistrantQuestionUpdatePathParams,
-	MeetingRegistrantStatus400,
-	MeetingRegistrantStatus404,
-	MeetingRegistrantStatus429,
-	MeetingRegistrantStatusMutationRequest,
-	MeetingRegistrantStatusMutationResponse,
-	MeetingRegistrantStatusPathParams,
-	MeetingRegistrantStatusQueryParams,
-	MeetingRegistrants400,
-	MeetingRegistrants404,
-	MeetingRegistrants429,
-	MeetingRegistrantsPathParams,
-	MeetingRegistrantsQueryParams,
-	MeetingRegistrantsQueryResponse,
-	MeetingRegistrantsQuestionsGet400,
-	MeetingRegistrantsQuestionsGet404,
-	MeetingRegistrantsQuestionsGet429,
-	MeetingRegistrantsQuestionsGetPathParams,
-	MeetingRegistrantsQuestionsGetQueryResponse,
-	MeetingRTMSStatusUpdate400,
-	MeetingRTMSStatusUpdate403,
-	MeetingRTMSStatusUpdate404,
-	MeetingRTMSStatusUpdate429,
-	MeetingRTMSStatusUpdateMutationRequest,
-	MeetingRTMSStatusUpdateMutationResponse,
-	MeetingRTMSStatusUpdatePathParams,
-	Meetingregistrantdelete400,
-	Meetingregistrantdelete404,
-	Meetingregistrantdelete429,
-	MeetingregistrantdeleteMutationResponse,
-	MeetingregistrantdeletePathParams,
-	MeetingregistrantdeleteQueryParams,
+	AddBatchRegistrantsBody,
+	AddBatchRegistrantsResponse,
+	AddBatchRegistrantsStatus400,
+	AddBatchRegistrantsStatus404,
+	AddBatchRegistrantsStatus429,
+	AddBatchWebinarRegistrantsBody,
+	AddBatchWebinarRegistrantsResponse,
+	AddBatchWebinarRegistrantsStatus400,
+	AddBatchWebinarRegistrantsStatus404,
+	AddBatchWebinarRegistrantsStatus429,
+	AddDeviceBody,
+	AddDeviceResponse,
+	AddDeviceStatus400,
+	AddDeviceStatus429,
+	AnalyticsDetailsResponse,
+	AnalyticsDetailsStatus400,
+	AnalyticsDetailsStatus404,
+	AnalyticsDetailsStatus429,
+	AnalyticsSummaryResponse,
+	AnalyticsSummaryStatus400,
+	AnalyticsSummaryStatus404,
+	AnalyticsSummaryStatus429,
+	AssginGroupResponse,
+	AssginGroupStatus400,
+	AssginGroupStatus401,
+	AssginGroupStatus404,
+	AssginGroupStatus429,
+	AssigndevicetoauserCommonareaBody,
+	AssigndevicetoauserCommonareaResponse,
+	AssigndevicetoauserCommonareaStatus400,
+	AssigndevicetoauserCommonareaStatus429,
+	ChangeDeviceAssociationBody,
+	ChangeDeviceAssociationResponse,
+	ChangeDeviceAssociationStatus400,
+	ChangeDeviceAssociationStatus404,
+	ChangeDeviceAssociationStatus429,
+	CreateBatchPollsBody,
+	CreateBatchPollsResponse,
+	CreateBatchPollsStatus400,
+	CreateBatchPollsStatus404,
+	CreateBatchPollsStatus429,
+	CreateWebinarBrandingNameTagBody,
+	CreateWebinarBrandingNameTagResponse,
+	CreateWebinarBrandingNameTagStatus400,
+	CreateWebinarBrandingNameTagStatus404,
+	CreateWebinarBrandingNameTagStatus429,
+	DeleteArchivedFilesResponse,
+	DeleteArchivedFilesStatus400,
+	DeleteArchivedFilesStatus404,
+	DeleteArchivedFilesStatus429,
+	DeleteDeviceResponse,
+	DeleteDeviceStatus400,
+	DeleteDeviceStatus404,
+	DeleteDeviceStatus429,
+	DeleteMeetingChatMessageByIdResponse,
+	DeleteMeetingChatMessageByIdStatus400,
+	DeleteMeetingChatMessageByIdStatus404,
+	DeleteMeetingChatMessageByIdStatus429,
+	DeleteMeetingTranscriptResponse,
+	DeleteMeetingTranscriptStatus400,
+	DeleteMeetingTranscriptStatus403,
+	DeleteMeetingTranscriptStatus404,
+	DeleteMeetingTranscriptStatus429,
+	DeletemeetingorwebinarsummaryResponse,
+	DeletemeetingorwebinarsummaryStatus400,
+	DeletemeetingorwebinarsummaryStatus403,
+	DeletemeetingorwebinarsummaryStatus404,
+	DeletemeetingorwebinarsummaryStatus429,
+	DeleteSIPPhonePhonesResponse,
+	DeleteSIPPhonePhonesStatus401,
+	DeleteSIPPhonePhonesStatus403,
+	DeleteSIPPhonePhonesStatus404,
+	DeleteSIPPhonePhonesStatus429,
+	DeleteWebinarBrandingNameTagResponse,
+	DeleteWebinarBrandingNameTagStatus400,
+	DeleteWebinarBrandingNameTagStatus404,
+	DeleteWebinarBrandingNameTagStatus429,
+	DeleteWebinarBrandingVBResponse,
+	DeleteWebinarBrandingVBStatus400,
+	DeleteWebinarBrandingVBStatus404,
+	DeleteWebinarBrandingVBStatus429,
+	DeleteWebinarBrandingWallpaperResponse,
+	DeleteWebinarBrandingWallpaperStatus400,
+	DeleteWebinarBrandingWallpaperStatus404,
+	DeleteWebinarBrandingWallpaperStatus429,
+	DeleteWebinarChatMessageByIdResponse,
+	DeleteWebinarChatMessageByIdStatus400,
+	DeleteWebinarChatMessageByIdStatus404,
+	DeleteWebinarChatMessageByIdStatus429,
+	DeleteWebinarRegistrantResponse,
+	DeleteWebinarRegistrantStatus400,
+	DeleteWebinarRegistrantStatus404,
+	DeleteWebinarRegistrantStatus429,
+	DeleteZpaDeviceByVendorAndMacAddressResponse,
+	DeleteZpaDeviceByVendorAndMacAddressStatus400,
+	DeleteZpaDeviceByVendorAndMacAddressStatus404,
+	DeleteZpaDeviceByVendorAndMacAddressStatus429,
+	DeviceCreateBody,
+	DeviceCreateResponse,
+	DeviceCreateStatus400,
+	DeviceCreateStatus401,
+	DeviceCreateStatus403,
+	DeviceCreateStatus404,
+	DeviceCreateStatus429,
+	DeviceDeleteResponse,
+	DeviceDeleteStatus400,
+	DeviceDeleteStatus401,
+	DeviceDeleteStatus403,
+	DeviceDeleteStatus404,
+	DeviceDeleteStatus429,
+	DeviceListResponse,
+	DeviceListStatus400,
+	DeviceListStatus401,
+	DeviceListStatus403,
+	DeviceListStatus429,
+	DeviceUpdateBody,
+	DeviceUpdateResponse,
+	DeviceUpdateStatus400,
+	DeviceUpdateStatus401,
+	DeviceUpdateStatus403,
+	DeviceUpdateStatus404,
+	DeviceUpdateStatus429,
+	EnableSIPPhonePhonesBody,
+	EnableSIPPhonePhonesResponse,
+	EnableSIPPhonePhonesStatus400,
+	EnableSIPPhonePhonesStatus401,
+	EnableSIPPhonePhonesStatus403,
+	EnableSIPPhonePhonesStatus404,
+	EnableSIPPhonePhonesStatus429,
+	GetArchivedFileStatisticsResponse,
+	GetArchivedFileStatisticsStatus400,
+	GetArchivedFileStatisticsStatus429,
+	GetArchivedFilesResponse,
+	GetArchivedFilesStatus404,
+	GetArchivedFilesStatus429,
+	GetameetingsummaryResponse,
+	GetameetingsummaryStatus400,
+	GetameetingsummaryStatus403,
+	GetameetingsummaryStatus404,
+	GetameetingsummaryStatus429,
+	GetBillingInvoicesReportsResponse,
+	GetBillingInvoicesReportsStatus400,
+	GetBillingInvoicesReportsStatus404,
+	GetBillingInvoicesReportsStatus429,
+	GetBillingReportResponse,
+	GetBillingReportStatus400,
+	GetBillingReportStatus429,
+	GetDeviceResponse,
+	GetDeviceStatus400,
+	GetDeviceStatus404,
+	GetDeviceStatus429,
+	GetdisclaimerreportResponse,
+	GetdisclaimerreportStatus400,
+	GetdisclaimerreportStatus401,
+	GetdisclaimerreportStatus403,
+	GetdisclaimerreportStatus429,
+	GethistorymeetingandwebinarlistResponse,
+	GethistorymeetingandwebinarlistStatus400,
+	GethistorymeetingandwebinarlistStatus401,
+	GethistorymeetingandwebinarlistStatus403,
+	GethistorymeetingandwebinarlistStatus429,
+	GetMeetingLiveStreamDetailsResponse,
+	GetMeetingLiveStreamDetailsStatus400,
+	GetMeetingLiveStreamDetailsStatus404,
+	GetMeetingLiveStreamDetailsStatus429,
+	GetMeetingTranscriptResponse,
+	GetMeetingTranscriptStatus403,
+	GetMeetingTranscriptStatus404,
+	GetMeetingTranscriptStatus429,
+	GetremotesupportreportResponse,
+	GetremotesupportreportStatus400,
+	GetremotesupportreportStatus401,
+	GetremotesupportreportStatus429,
+	GetSipDialingWithPasscodeBody,
+	GetSipDialingWithPasscodeResponse,
+	GetSipDialingWithPasscodeStatus400,
+	GetSipDialingWithPasscodeStatus404,
+	GetSipDialingWithPasscodeStatus429,
+	GetTrackingSourcesResponse,
+	GetTrackingSourcesStatus400,
+	GetTrackingSourcesStatus404,
+	GetTrackingSourcesStatus429,
+	GetWebinarBrandingResponse,
+	GetWebinarBrandingStatus400,
+	GetWebinarBrandingStatus404,
+	GetWebinarBrandingStatus429,
+	GetWebinarLiveStreamDetailsResponse,
+	GetWebinarLiveStreamDetailsStatus400,
+	GetWebinarLiveStreamDetailsStatus404,
+	GetWebinarLiveStreamDetailsStatus429,
+	GetWebinarSipDialingWithPasscodeBody,
+	GetWebinarSipDialingWithPasscodeResponse,
+	GetWebinarSipDialingWithPasscodeStatus400,
+	GetWebinarSipDialingWithPasscodeStatus429,
+	GetZpaDeviceListProfileSettingOfaUserResponse,
+	GetZpaDeviceListProfileSettingOfaUserStatus400,
+	GetZpaDeviceListProfileSettingOfaUserStatus401,
+	GetZpaDeviceListProfileSettingOfaUserStatus403,
+	GetZpaDeviceListProfileSettingOfaUserStatus429,
+	GetZpaVersioninfoResponse,
+	GetZpaVersioninfoStatus400,
+	GetZpaVersioninfoStatus404,
+	GetZpaVersioninfoStatus429,
+	GetzdmgroupinfoResponse,
+	GetzdmgroupinfoStatus400,
+	GetzdmgroupinfoStatus403,
+	GetzdmgroupinfoStatus429,
+	InMeetingControlBody,
+	InMeetingControlResponse,
+	InMeetingControlStatus400,
+	InMeetingControlStatus403,
+	InMeetingControlStatus404,
+	InMeetingControlStatus429,
+	ListArchivedFilesResponse,
+	ListArchivedFilesStatus400,
+	ListArchivedFilesStatus429,
+	ListArchiveFileDownloadAuditResponse,
+	ListArchiveFileDownloadAuditStatus400,
+	ListArchiveFileDownloadAuditStatus401,
+	ListArchiveFileDownloadAuditStatus429,
+	ListDevicesResponse,
+	ListDevicesStatus400,
+	ListDevicesStatus429,
+	ListMeetingTemplatesResponse,
+	ListMeetingTemplatesStatus400,
+	ListMeetingTemplatesStatus404,
+	ListMeetingTemplatesStatus429,
+	ListmeetingsummariesResponse,
+	ListmeetingsummariesStatus400,
+	ListmeetingsummariesStatus403,
+	ListmeetingsummariesStatus429,
+	ListPastMeetingPollsResponse,
+	ListPastMeetingPollsStatus400,
+	ListPastMeetingPollsStatus429,
+	ListPastMeetingQAResponse,
+	ListPastMeetingQAStatus401,
+	ListPastMeetingQAStatus404,
+	ListPastMeetingQAStatus429,
+	ListPastWebinarPollResultsResponse,
+	ListPastWebinarPollResultsStatus400,
+	ListPastWebinarPollResultsStatus404,
+	ListPastWebinarPollResultsStatus429,
+	ListPastWebinarQAResponse,
+	ListPastWebinarQAStatus400,
+	ListPastWebinarQAStatus404,
+	ListPastWebinarQAStatus429,
+	ListSIPPhonePhonesResponse,
+	ListSIPPhonePhonesStatus400,
+	ListSIPPhonePhonesStatus401,
+	ListSIPPhonePhonesStatus403,
+	ListSIPPhonePhonesStatus429,
+	ListUpcomingMeetingResponse,
+	ListUpcomingMeetingStatus404,
+	ListUpcomingMeetingStatus429,
+	ListUserMeetingSummariesResponse,
+	ListUserMeetingSummariesStatus400,
+	ListUserMeetingSummariesStatus403,
+	ListUserMeetingSummariesStatus404,
+	ListUserMeetingSummariesStatus429,
+	ListWebinarParticipantsResponse,
+	ListWebinarParticipantsStatus400,
+	ListWebinarParticipantsStatus404,
+	ListWebinarParticipantsStatus429,
+	ListWebinarTemplatesResponse,
+	ListWebinarTemplatesStatus400,
+	ListWebinarTemplatesStatus404,
+	ListWebinarTemplatesStatus429,
+	MeetingAppAddResponse,
+	MeetingAppAddStatus400,
+	MeetingAppAddStatus404,
+	MeetingAppAddStatus429,
+	MeetingAppDeleteResponse,
+	MeetingAppDeleteStatus400,
+	MeetingAppDeleteStatus404,
+	MeetingAppDeleteStatus429,
+	MeetingCreateBody,
+	MeetingCreateResponse,
+	MeetingCreateStatus400,
+	MeetingCreateStatus404,
+	MeetingCreateStatus429,
+	MeetingDeleteResponse,
+	MeetingDeleteStatus400,
+	MeetingDeleteStatus404,
+	MeetingDeleteStatus429,
+	MeetingInvitationResponse,
+	MeetingInvitationStatus400,
+	MeetingInvitationStatus404,
+	MeetingInvitationStatus429,
+	MeetingInviteLinksCreateBody,
+	MeetingInviteLinksCreateResponse,
+	MeetingInviteLinksCreateStatus400,
+	MeetingInviteLinksCreateStatus404,
+	MeetingInviteLinksCreateStatus429,
+	MeetingLiveStreamingJoinTokenResponse,
+	MeetingLiveStreamingJoinTokenStatus400,
+	MeetingLiveStreamingJoinTokenStatus404,
+	MeetingLiveStreamingJoinTokenStatus429,
+	MeetingLiveStreamStatusUpdateBody,
+	MeetingLiveStreamStatusUpdateResponse,
+	MeetingLiveStreamStatusUpdateStatus400,
+	MeetingLiveStreamStatusUpdateStatus404,
+	MeetingLiveStreamStatusUpdateStatus429,
+	MeetingLiveStreamUpdateBody,
+	MeetingLiveStreamUpdateResponse,
+	MeetingLiveStreamUpdateStatus400,
+	MeetingLiveStreamUpdateStatus404,
+	MeetingLiveStreamUpdateStatus429,
+	MeetingLocalArchivingArchiveTokenResponse,
+	MeetingLocalArchivingArchiveTokenStatus400,
+	MeetingLocalArchivingArchiveTokenStatus404,
+	MeetingLocalArchivingArchiveTokenStatus429,
+	MeetingLocalRecordingJoinTokenResponse,
+	MeetingLocalRecordingJoinTokenStatus400,
+	MeetingLocalRecordingJoinTokenStatus404,
+	MeetingLocalRecordingJoinTokenStatus429,
+	MeetingPollCreateBody,
+	MeetingPollCreateResponse,
+	MeetingPollCreateStatus400,
+	MeetingPollCreateStatus404,
+	MeetingPollCreateStatus429,
+	MeetingPollDeleteResponse,
+	MeetingPollDeleteStatus400,
+	MeetingPollDeleteStatus404,
+	MeetingPollDeleteStatus429,
+	MeetingPollGetResponse,
+	MeetingPollGetStatus400,
+	MeetingPollGetStatus404,
+	MeetingPollGetStatus429,
+	MeetingPollsResponse,
+	MeetingPollsStatus400,
+	MeetingPollsStatus404,
+	MeetingPollsStatus429,
+	MeetingPollUpdateBody,
+	MeetingPollUpdateResponse,
+	MeetingPollUpdateStatus400,
+	MeetingPollUpdateStatus404,
+	MeetingPollUpdateStatus429,
+	MeetingRecordingRegistrantCreateBody,
+	MeetingRecordingRegistrantCreateResponse,
+	MeetingRecordingRegistrantCreateStatus404,
+	MeetingRecordingRegistrantCreateStatus429,
+	MeetingRecordingRegistrantStatusBody,
+	MeetingRecordingRegistrantStatusResponse,
+	MeetingRecordingRegistrantStatusStatus404,
+	MeetingRecordingRegistrantStatusStatus429,
+	MeetingRecordingRegistrantsResponse,
+	MeetingRecordingRegistrantsStatus404,
+	MeetingRecordingRegistrantsStatus429,
+	MeetingRegistrantCreateBody,
+	MeetingRegistrantCreateResponse,
+	MeetingRegistrantCreateStatus400,
+	MeetingRegistrantCreateStatus404,
+	MeetingRegistrantCreateStatus429,
+	MeetingRegistrantGetResponse,
+	MeetingRegistrantGetStatus400,
+	MeetingRegistrantGetStatus404,
+	MeetingRegistrantGetStatus429,
+	MeetingRegistrantQuestionUpdateBody,
+	MeetingRegistrantQuestionUpdateResponse,
+	MeetingRegistrantQuestionUpdateStatus400,
+	MeetingRegistrantQuestionUpdateStatus404,
+	MeetingRegistrantQuestionUpdateStatus429,
+	MeetingRegistrantStatusBody,
+	MeetingRegistrantStatusResponse,
+	MeetingRegistrantStatusStatus400,
+	MeetingRegistrantStatusStatus404,
+	MeetingRegistrantStatusStatus429,
+	MeetingRegistrantsQuestionsGetResponse,
+	MeetingRegistrantsQuestionsGetStatus400,
+	MeetingRegistrantsQuestionsGetStatus404,
+	MeetingRegistrantsQuestionsGetStatus429,
+	MeetingRegistrantsResponse,
+	MeetingRegistrantsStatus400,
+	MeetingRegistrantsStatus404,
+	MeetingRegistrantsStatus429,
+	MeetingResponse,
+	MeetingRTMSStatusUpdateBody,
+	MeetingRTMSStatusUpdateResponse,
+	MeetingRTMSStatusUpdateStatus400,
+	MeetingRTMSStatusUpdateStatus403,
+	MeetingRTMSStatusUpdateStatus404,
+	MeetingRTMSStatusUpdateStatus429,
+	MeetingregistrantdeleteResponse,
+	MeetingregistrantdeleteStatus400,
+	MeetingregistrantdeleteStatus404,
+	MeetingregistrantdeleteStatus429,
 	MeetingStatus400,
 	MeetingStatus404,
 	MeetingStatus429,
-	MeetingStatusMutationRequest,
-	MeetingStatusMutationResponse,
-	MeetingStatusPathParams,
-	MeetingSurveyDelete400,
-	MeetingSurveyDelete404,
-	MeetingSurveyDelete429,
-	MeetingSurveyDeleteMutationResponse,
-	MeetingSurveyDeletePathParams,
-	MeetingSurveyGet400,
-	MeetingSurveyGet404,
-	MeetingSurveyGet429,
-	MeetingSurveyGetPathParams,
-	MeetingSurveyGetQueryResponse,
-	MeetingSurveyUpdate400,
-	MeetingSurveyUpdate404,
-	MeetingSurveyUpdate429,
-	MeetingSurveyUpdateMutationRequest,
-	MeetingSurveyUpdateMutationResponse,
-	MeetingSurveyUpdatePathParams,
-	Meetings400,
-	Meetings403,
-	Meetings404,
-	Meetings429,
-	MeetingsPathParams,
-	MeetingsQueryParams,
-	MeetingsQueryResponse,
-	MeetingTemplateCreate400,
-	MeetingTemplateCreate404,
-	MeetingTemplateCreate429,
-	MeetingTemplateCreateMutationRequest,
-	MeetingTemplateCreateMutationResponse,
-	MeetingTemplateCreatePathParams,
-	MeetingToken400,
-	MeetingToken404,
-	MeetingToken429,
-	MeetingTokenPathParams,
-	MeetingTokenQueryParams,
-	MeetingTokenQueryResponse,
-	MeetingUpdate400,
-	MeetingUpdate401,
-	MeetingUpdate404,
-	MeetingUpdate429,
-	MeetingUpdateMutationRequest,
-	MeetingUpdateMutationResponse,
-	MeetingUpdatePathParams,
-	MeetingUpdateQueryParams,
-	PastMeetingDetails400,
-	PastMeetingDetails404,
-	PastMeetingDetails429,
-	PastMeetingDetailsPathParams,
-	PastMeetingDetailsQueryResponse,
-	PastMeetingParticipants400,
-	PastMeetingParticipants404,
-	PastMeetingParticipants429,
-	PastMeetingParticipantsPathParams,
-	PastMeetingParticipantsQueryParams,
-	PastMeetingParticipantsQueryResponse,
-	PastMeetings401,
-	PastMeetings404,
-	PastMeetings429,
-	PastMeetingsPathParams,
-	PastMeetingsQueryParams,
-	PastMeetingsQueryResponse,
-	PastWebinars400,
-	PastWebinars404,
-	PastWebinars429,
-	PastWebinarsPathParams,
-	PastWebinarsQueryResponse,
-	RecordingDelete400,
-	RecordingDelete404,
-	RecordingDelete429,
-	RecordingDeleteMutationResponse,
-	RecordingDeleteOne400,
-	RecordingDeleteOne404,
-	RecordingDeleteOne429,
-	RecordingDeleteOneMutationResponse,
-	RecordingDeleteOnePathParams,
-	RecordingDeleteOneQueryParams,
-	RecordingDeletePathParams,
-	RecordingDeleteQueryParams,
-	RecordingGet400,
-	RecordingGet404,
-	RecordingGet429,
-	RecordingGetPathParams,
-	RecordingGetQueryParams,
-	RecordingGetQueryResponse,
-	RecordingRegistrantQuestionUpdate404,
-	RecordingRegistrantQuestionUpdate429,
-	RecordingRegistrantQuestionUpdateMutationRequest,
-	RecordingRegistrantQuestionUpdateMutationResponse,
-	RecordingRegistrantQuestionUpdatePathParams,
-	RecordingRegistrantsQuestionsGet404,
-	RecordingRegistrantsQuestionsGet429,
-	RecordingRegistrantsQuestionsGetPathParams,
-	RecordingRegistrantsQuestionsGetQueryResponse,
-	RecordingSettingsUpdate404,
-	RecordingSettingsUpdate429,
-	RecordingSettingsUpdateMutationRequest,
-	RecordingSettingsUpdateMutationResponse,
-	RecordingSettingsUpdatePathParams,
-	RecordingSettingUpdate404,
-	RecordingSettingUpdate429,
-	RecordingSettingUpdatePathParams,
-	RecordingSettingUpdateQueryResponse,
-	RecordingStatusUpdate400,
-	RecordingStatusUpdate404,
-	RecordingStatusUpdate429,
-	RecordingStatusUpdateMutationRequest,
-	RecordingStatusUpdateMutationResponse,
-	RecordingStatusUpdateOne400,
-	RecordingStatusUpdateOne404,
-	RecordingStatusUpdateOne429,
-	RecordingStatusUpdateOneMutationRequest,
-	RecordingStatusUpdateOneMutationResponse,
-	RecordingStatusUpdateOnePathParams,
-	RecordingStatusUpdatePathParams,
-	RecordingsList401,
-	RecordingsList404,
-	RecordingsList429,
-	RecordingsListPathParams,
-	RecordingsListQueryParams,
-	RecordingsListQueryResponse,
-	ReportCloudRecording400,
-	ReportCloudRecording429,
-	ReportCloudRecordingQueryParams,
-	ReportCloudRecordingQueryResponse,
-	ReportDaily400,
-	ReportDaily429,
-	ReportDailyQueryParams,
-	ReportDailyQueryResponse,
-	ReportMeetingactivitylogs400,
-	ReportMeetingactivitylogs403,
-	ReportMeetingactivitylogs404,
-	ReportMeetingactivitylogs429,
-	ReportMeetingactivitylogsQueryParams,
-	ReportMeetingactivitylogsQueryResponse,
-	ReportMeetingDetails400,
-	ReportMeetingDetails404,
-	ReportMeetingDetails429,
-	ReportMeetingDetailsPathParams,
-	ReportMeetingDetailsQueryResponse,
-	ReportMeetingParticipants400,
-	ReportMeetingParticipants404,
-	ReportMeetingParticipants429,
-	ReportMeetingParticipantsPathParams,
-	ReportMeetingParticipantsQueryParams,
-	ReportMeetingParticipantsQueryResponse,
-	ReportMeetingPolls400,
-	ReportMeetingPolls404,
-	ReportMeetingPolls429,
-	ReportMeetingPollsPathParams,
-	ReportMeetingPollsQueryResponse,
-	ReportMeetingQA400,
-	ReportMeetingQA404,
-	ReportMeetingQA429,
-	ReportMeetingQAPathParams,
-	ReportMeetingQAQueryResponse,
-	ReportMeetingSurvey400,
-	ReportMeetingSurvey404,
-	ReportMeetingSurvey429,
-	ReportMeetingSurveyPathParams,
-	ReportMeetingSurveyQueryResponse,
-	ReportMeetings400,
-	ReportMeetings404,
-	ReportMeetings429,
-	ReportMeetingsPathParams,
-	ReportMeetingsQueryParams,
-	ReportMeetingsQueryResponse,
-	ReportOperationLogs400,
-	ReportOperationLogs429,
-	ReportOperationLogsQueryParams,
-	ReportOperationLogsQueryResponse,
-	ReportSignInSignOutActivities400,
-	ReportSignInSignOutActivities429,
-	ReportSignInSignOutActivitiesQueryParams,
-	ReportSignInSignOutActivitiesQueryResponse,
-	ReportTelephone400,
-	ReportTelephone401,
-	ReportTelephone403,
-	ReportTelephone429,
-	ReportTelephoneQueryParams,
-	ReportTelephoneQueryResponse,
-	ReportUpcomingEvents400,
-	ReportUpcomingEvents429,
-	ReportUpcomingEventsQueryParams,
-	ReportUpcomingEventsQueryResponse,
-	ReportUsers400,
-	ReportUsers429,
-	ReportUsersQueryParams,
-	ReportUsersQueryResponse,
-	ReportWebinarDetails400,
-	ReportWebinarDetails404,
-	ReportWebinarDetails429,
-	ReportWebinarDetailsPathParams,
-	ReportWebinarDetailsQueryResponse,
-	ReportWebinarParticipants400,
-	ReportWebinarParticipants404,
-	ReportWebinarParticipants429,
-	ReportWebinarParticipantsPathParams,
-	ReportWebinarParticipantsQueryParams,
-	ReportWebinarParticipantsQueryResponse,
-	ReportWebinarPolls400,
-	ReportWebinarPolls404,
-	ReportWebinarPolls429,
-	ReportWebinarPollsPathParams,
-	ReportWebinarPollsQueryResponse,
-	ReportWebinarQA400,
-	ReportWebinarQA404,
-	ReportWebinarQA429,
-	ReportWebinarQAPathParams,
-	ReportWebinarQAQueryResponse,
-	ReportWebinarSurvey400,
-	ReportWebinarSurvey404,
-	ReportWebinarSurvey429,
-	ReportWebinarSurveyPathParams,
-	ReportWebinarSurveyQueryResponse,
-	SetWebinarBrandingVB400,
-	SetWebinarBrandingVB404,
-	SetWebinarBrandingVB429,
-	SetWebinarBrandingVBMutationResponse,
-	SetWebinarBrandingVBPathParams,
-	SetWebinarBrandingVBQueryParams,
-	TrackingfieldCreate429,
-	TrackingfieldCreateMutationRequest,
-	TrackingfieldCreateMutationResponse,
-	TrackingfieldDelete404,
-	TrackingfieldDelete429,
-	TrackingfieldDeleteMutationResponse,
-	TrackingfieldDeletePathParams,
-	TrackingfieldGet404,
-	TrackingfieldGet429,
-	TrackingfieldGetPathParams,
-	TrackingfieldGetQueryResponse,
-	TrackingfieldList429,
-	TrackingfieldListQueryResponse,
-	TrackingfieldUpdate400,
-	TrackingfieldUpdate404,
-	TrackingfieldUpdate429,
-	TrackingfieldUpdateMutationRequest,
-	TrackingfieldUpdateMutationResponse,
-	TrackingfieldUpdatePathParams,
-	Tsp429,
-	TspQueryResponse,
-	TspUpdate400,
-	TspUpdate429,
-	TspUpdateMutationRequest,
-	TspUpdateMutationResponse,
-	TspUrlUpdate400,
-	TspUrlUpdate404,
-	TspUrlUpdate429,
-	TspUrlUpdateMutationRequest,
-	TspUrlUpdateMutationResponse,
-	TspUrlUpdatePathParams,
-	UpdateArchivedFile400,
-	UpdateArchivedFile404,
-	UpdateArchivedFile429,
-	UpdateArchivedFileMutationRequest,
-	UpdateArchivedFileMutationResponse,
-	UpdateArchivedFilePathParams,
-	UpdateDevice400,
-	UpdateDevice404,
-	UpdateDevice429,
-	UpdateDeviceMutationRequest,
-	UpdateDeviceMutationResponse,
-	UpdateDevicePathParams,
-	UpdateMeetingChatMessageById400,
-	UpdateMeetingChatMessageById404,
-	UpdateMeetingChatMessageById429,
-	UpdateMeetingChatMessageByIdMutationRequest,
-	UpdateMeetingChatMessageByIdMutationResponse,
-	UpdateMeetingChatMessageByIdPathParams,
-	UpdateSIPPhonePhones400,
-	UpdateSIPPhonePhones401,
-	UpdateSIPPhonePhones403,
-	UpdateSIPPhonePhones404,
-	UpdateSIPPhonePhones429,
-	UpdateSIPPhonePhonesMutationRequest,
-	UpdateSIPPhonePhonesMutationResponse,
-	UpdateSIPPhonePhonesPathParams,
-	UpdateWebinarBrandingNameTag400,
-	UpdateWebinarBrandingNameTag404,
-	UpdateWebinarBrandingNameTag429,
-	UpdateWebinarBrandingNameTagMutationRequest,
-	UpdateWebinarBrandingNameTagMutationResponse,
-	UpdateWebinarBrandingNameTagPathParams,
-	UpgradeZpasApp400,
-	UpgradeZpasApp429,
-	UpgradeZpasAppMutationRequest,
-	UpgradeZpasAppMutationResponse,
-	UploadWebinarBrandingVB400,
-	UploadWebinarBrandingVB404,
-	UploadWebinarBrandingVB429,
-	UploadWebinarBrandingVBMutationResponse,
-	UploadWebinarBrandingVBPathParams,
-	UploadWebinarBrandingWallpaper400,
-	UploadWebinarBrandingWallpaper404,
-	UploadWebinarBrandingWallpaper429,
-	UploadWebinarBrandingWallpaperMutationResponse,
-	UploadWebinarBrandingWallpaperPathParams,
-	UserPACs400,
-	UserPACs404,
-	UserPACs429,
-	UserPACsPathParams,
-	UserPACsQueryResponse,
-	UserTSP400,
-	UserTSP404,
-	UserTSP429,
-	UserTSPCreate400,
-	UserTSPCreate404,
-	UserTSPCreate429,
-	UserTSPCreateMutationRequest,
-	UserTSPCreateMutationResponse,
-	UserTSPCreatePathParams,
-	UserTSPDelete400,
-	UserTSPDelete404,
-	UserTSPDelete429,
-	UserTSPDeleteMutationResponse,
-	UserTSPDeletePathParams,
-	UserTSPPathParams,
-	UserTSPQueryResponse,
-	UserTSPs400,
-	UserTSPs404,
-	UserTSPs429,
-	UserTSPsPathParams,
-	UserTSPsQueryResponse,
-	UserTSPUpdate400,
-	UserTSPUpdate404,
-	UserTSPUpdate429,
-	UserTSPUpdateMutationRequest,
-	UserTSPUpdateMutationResponse,
-	UserTSPUpdatePathParams,
-	Webinar400,
-	Webinar404,
-	Webinar429,
-	WebinarAbsentees400,
-	WebinarAbsentees404,
-	WebinarAbsentees429,
-	WebinarAbsenteesPathParams,
-	WebinarAbsenteesQueryParams,
-	WebinarAbsenteesQueryResponse,
-	WebinarCreate400,
-	WebinarCreate404,
-	WebinarCreate429,
-	WebinarCreateMutationRequest,
-	WebinarCreateMutationResponse,
-	WebinarCreatePathParams,
-	WebinarDelete400,
-	WebinarDelete404,
-	WebinarDelete429,
-	WebinarDeleteMutationResponse,
-	WebinarDeletePathParams,
-	WebinarDeleteQueryParams,
-	WebinarInviteLinksCreate400,
-	WebinarInviteLinksCreate404,
-	WebinarInviteLinksCreate429,
-	WebinarInviteLinksCreateMutationRequest,
-	WebinarInviteLinksCreateMutationResponse,
-	WebinarInviteLinksCreatePathParams,
-	WebinarLiveStreamingJoinToken400,
-	WebinarLiveStreamingJoinToken404,
-	WebinarLiveStreamingJoinToken429,
-	WebinarLiveStreamingJoinTokenPathParams,
-	WebinarLiveStreamingJoinTokenQueryResponse,
-	WebinarLiveStreamStatusUpdate400,
-	WebinarLiveStreamStatusUpdate404,
-	WebinarLiveStreamStatusUpdate429,
-	WebinarLiveStreamStatusUpdateMutationRequest,
-	WebinarLiveStreamStatusUpdateMutationResponse,
-	WebinarLiveStreamStatusUpdatePathParams,
-	WebinarLiveStreamUpdate400,
-	WebinarLiveStreamUpdate404,
-	WebinarLiveStreamUpdate429,
-	WebinarLiveStreamUpdateMutationRequest,
-	WebinarLiveStreamUpdateMutationResponse,
-	WebinarLiveStreamUpdatePathParams,
-	WebinarLocalArchivingArchiveToken400,
-	WebinarLocalArchivingArchiveToken404,
-	WebinarLocalArchivingArchiveToken429,
-	WebinarLocalArchivingArchiveTokenPathParams,
-	WebinarLocalArchivingArchiveTokenQueryResponse,
-	WebinarLocalRecordingJoinToken400,
-	WebinarLocalRecordingJoinToken404,
-	WebinarLocalRecordingJoinToken429,
-	WebinarLocalRecordingJoinTokenPathParams,
-	WebinarLocalRecordingJoinTokenQueryResponse,
-	WebinarPanelistCreate400,
-	WebinarPanelistCreate404,
-	WebinarPanelistCreate429,
-	WebinarPanelistCreateMutationRequest,
-	WebinarPanelistCreateMutationResponse,
-	WebinarPanelistCreatePathParams,
-	WebinarPanelistDelete400,
-	WebinarPanelistDelete404,
-	WebinarPanelistDelete429,
-	WebinarPanelistDeleteMutationResponse,
-	WebinarPanelistDeletePathParams,
-	WebinarPanelists400,
-	WebinarPanelists404,
-	WebinarPanelists429,
-	WebinarPanelistsDelete400,
-	WebinarPanelistsDelete404,
-	WebinarPanelistsDelete429,
-	WebinarPanelistsDeleteMutationResponse,
-	WebinarPanelistsDeletePathParams,
-	WebinarPanelistsPathParams,
-	WebinarPanelistsQueryResponse,
-	WebinarPathParams,
-	WebinarPollCreate400,
-	WebinarPollCreate404,
-	WebinarPollCreate429,
-	WebinarPollCreateMutationRequest,
-	WebinarPollCreateMutationResponse,
-	WebinarPollCreatePathParams,
-	WebinarPollDelete400,
-	WebinarPollDelete404,
-	WebinarPollDelete429,
-	WebinarPollDeleteMutationResponse,
-	WebinarPollDeletePathParams,
-	WebinarPollGet400,
-	WebinarPollGet404,
-	WebinarPollGet429,
-	WebinarPollGetPathParams,
-	WebinarPollGetQueryResponse,
-	WebinarPolls400,
-	WebinarPolls404,
-	WebinarPolls429,
-	WebinarPollsPathParams,
-	WebinarPollsQueryParams,
-	WebinarPollsQueryResponse,
-	WebinarPollUpdate400,
-	WebinarPollUpdate404,
-	WebinarPollUpdate429,
-	WebinarPollUpdateMutationRequest,
-	WebinarPollUpdateMutationResponse,
-	WebinarPollUpdatePathParams,
-	WebinarQueryParams,
-	WebinarQueryResponse,
-	WebinarRegistrantCreate400,
-	WebinarRegistrantCreate404,
-	WebinarRegistrantCreate429,
-	WebinarRegistrantCreateMutationRequest,
-	WebinarRegistrantCreateMutationResponse,
-	WebinarRegistrantCreatePathParams,
-	WebinarRegistrantCreateQueryParams,
-	WebinarRegistrantGet400,
-	WebinarRegistrantGet404,
-	WebinarRegistrantGet429,
-	WebinarRegistrantGetPathParams,
-	WebinarRegistrantGetQueryParams,
-	WebinarRegistrantGetQueryResponse,
-	WebinarRegistrantQuestionUpdate400,
-	WebinarRegistrantQuestionUpdate404,
-	WebinarRegistrantQuestionUpdate429,
-	WebinarRegistrantQuestionUpdateMutationRequest,
-	WebinarRegistrantQuestionUpdateMutationResponse,
-	WebinarRegistrantQuestionUpdatePathParams,
-	WebinarRegistrantStatus400,
-	WebinarRegistrantStatus404,
-	WebinarRegistrantStatus429,
-	WebinarRegistrantStatusMutationRequest,
-	WebinarRegistrantStatusMutationResponse,
-	WebinarRegistrantStatusPathParams,
-	WebinarRegistrantStatusQueryParams,
-	WebinarRegistrants400,
-	WebinarRegistrants404,
-	WebinarRegistrants429,
-	WebinarRegistrantsPathParams,
-	WebinarRegistrantsQueryParams,
-	WebinarRegistrantsQueryResponse,
-	WebinarRegistrantsQuestionsGet400,
-	WebinarRegistrantsQuestionsGet404,
-	WebinarRegistrantsQuestionsGet429,
-	WebinarRegistrantsQuestionsGetPathParams,
-	WebinarRegistrantsQuestionsGetQueryResponse,
+	MeetingStatusBody,
+	MeetingStatusResponse,
+	MeetingStatusStatus400,
+	MeetingStatusStatus404,
+	MeetingStatusStatus429,
+	MeetingSurveyDeleteResponse,
+	MeetingSurveyDeleteStatus400,
+	MeetingSurveyDeleteStatus404,
+	MeetingSurveyDeleteStatus429,
+	MeetingSurveyGetResponse,
+	MeetingSurveyGetStatus400,
+	MeetingSurveyGetStatus404,
+	MeetingSurveyGetStatus429,
+	MeetingSurveyUpdateBody,
+	MeetingSurveyUpdateResponse,
+	MeetingSurveyUpdateStatus400,
+	MeetingSurveyUpdateStatus404,
+	MeetingSurveyUpdateStatus429,
+	MeetingsResponse,
+	MeetingsStatus400,
+	MeetingsStatus403,
+	MeetingsStatus404,
+	MeetingsStatus429,
+	MeetingTemplateCreateBody,
+	MeetingTemplateCreateResponse,
+	MeetingTemplateCreateStatus400,
+	MeetingTemplateCreateStatus404,
+	MeetingTemplateCreateStatus429,
+	MeetingTokenResponse,
+	MeetingTokenStatus400,
+	MeetingTokenStatus404,
+	MeetingTokenStatus429,
+	MeetingUpdateBody,
+	MeetingUpdateResponse,
+	MeetingUpdateStatus400,
+	MeetingUpdateStatus401,
+	MeetingUpdateStatus404,
+	MeetingUpdateStatus429,
+	PastMeetingDetailsResponse,
+	PastMeetingDetailsStatus400,
+	PastMeetingDetailsStatus404,
+	PastMeetingDetailsStatus429,
+	PastMeetingParticipantsResponse,
+	PastMeetingParticipantsStatus400,
+	PastMeetingParticipantsStatus404,
+	PastMeetingParticipantsStatus429,
+	PastMeetingsResponse,
+	PastMeetingsStatus401,
+	PastMeetingsStatus404,
+	PastMeetingsStatus429,
+	PastWebinarsResponse,
+	PastWebinarsStatus400,
+	PastWebinarsStatus404,
+	PastWebinarsStatus429,
+	RecordingDeleteOneResponse,
+	RecordingDeleteOneStatus400,
+	RecordingDeleteOneStatus404,
+	RecordingDeleteOneStatus429,
+	RecordingDeleteResponse,
+	RecordingDeleteStatus400,
+	RecordingDeleteStatus404,
+	RecordingDeleteStatus429,
+	RecordingGetResponse,
+	RecordingGetStatus400,
+	RecordingGetStatus404,
+	RecordingGetStatus429,
+	RecordingRegistrantQuestionUpdateBody,
+	RecordingRegistrantQuestionUpdateResponse,
+	RecordingRegistrantQuestionUpdateStatus404,
+	RecordingRegistrantQuestionUpdateStatus429,
+	RecordingRegistrantsQuestionsGetResponse,
+	RecordingRegistrantsQuestionsGetStatus404,
+	RecordingRegistrantsQuestionsGetStatus429,
+	RecordingSettingsUpdateBody,
+	RecordingSettingsUpdateResponse,
+	RecordingSettingsUpdateStatus404,
+	RecordingSettingsUpdateStatus429,
+	RecordingSettingUpdateResponse,
+	RecordingSettingUpdateStatus404,
+	RecordingSettingUpdateStatus429,
+	RecordingStatusUpdateBody,
+	RecordingStatusUpdateOneBody,
+	RecordingStatusUpdateOneResponse,
+	RecordingStatusUpdateOneStatus400,
+	RecordingStatusUpdateOneStatus404,
+	RecordingStatusUpdateOneStatus429,
+	RecordingStatusUpdateResponse,
+	RecordingStatusUpdateStatus400,
+	RecordingStatusUpdateStatus404,
+	RecordingStatusUpdateStatus429,
+	RecordingsListResponse,
+	RecordingsListStatus401,
+	RecordingsListStatus404,
+	RecordingsListStatus429,
+	ReportCloudRecordingResponse,
+	ReportCloudRecordingStatus400,
+	ReportCloudRecordingStatus429,
+	ReportDailyResponse,
+	ReportDailyStatus400,
+	ReportDailyStatus429,
+	ReportMeetingactivitylogsResponse,
+	ReportMeetingactivitylogsStatus400,
+	ReportMeetingactivitylogsStatus403,
+	ReportMeetingactivitylogsStatus404,
+	ReportMeetingactivitylogsStatus429,
+	ReportMeetingDetailsResponse,
+	ReportMeetingDetailsStatus400,
+	ReportMeetingDetailsStatus404,
+	ReportMeetingDetailsStatus429,
+	ReportMeetingParticipantsResponse,
+	ReportMeetingParticipantsStatus400,
+	ReportMeetingParticipantsStatus404,
+	ReportMeetingParticipantsStatus429,
+	ReportMeetingPollsResponse,
+	ReportMeetingPollsStatus400,
+	ReportMeetingPollsStatus404,
+	ReportMeetingPollsStatus429,
+	ReportMeetingQAResponse,
+	ReportMeetingQAStatus400,
+	ReportMeetingQAStatus404,
+	ReportMeetingQAStatus429,
+	ReportMeetingSurveyResponse,
+	ReportMeetingSurveyStatus400,
+	ReportMeetingSurveyStatus404,
+	ReportMeetingSurveyStatus429,
+	ReportMeetingsResponse,
+	ReportMeetingsStatus400,
+	ReportMeetingsStatus404,
+	ReportMeetingsStatus429,
+	ReportOperationLogsResponse,
+	ReportOperationLogsStatus400,
+	ReportOperationLogsStatus429,
+	ReportSignInSignOutActivitiesResponse,
+	ReportSignInSignOutActivitiesStatus400,
+	ReportSignInSignOutActivitiesStatus429,
+	ReportTelephoneResponse,
+	ReportTelephoneStatus400,
+	ReportTelephoneStatus401,
+	ReportTelephoneStatus403,
+	ReportTelephoneStatus429,
+	ReportUpcomingEventsResponse,
+	ReportUpcomingEventsStatus400,
+	ReportUpcomingEventsStatus429,
+	ReportUsersResponse,
+	ReportUsersStatus400,
+	ReportUsersStatus429,
+	ReportWebinarDetailsResponse,
+	ReportWebinarDetailsStatus400,
+	ReportWebinarDetailsStatus404,
+	ReportWebinarDetailsStatus429,
+	ReportWebinarParticipantsResponse,
+	ReportWebinarParticipantsStatus400,
+	ReportWebinarParticipantsStatus404,
+	ReportWebinarParticipantsStatus429,
+	ReportWebinarPollsResponse,
+	ReportWebinarPollsStatus400,
+	ReportWebinarPollsStatus404,
+	ReportWebinarPollsStatus429,
+	ReportWebinarQAResponse,
+	ReportWebinarQAStatus400,
+	ReportWebinarQAStatus404,
+	ReportWebinarQAStatus429,
+	ReportWebinarSurveyResponse,
+	ReportWebinarSurveyStatus400,
+	ReportWebinarSurveyStatus404,
+	ReportWebinarSurveyStatus429,
+	SetWebinarBrandingVBResponse,
+	SetWebinarBrandingVBStatus400,
+	SetWebinarBrandingVBStatus404,
+	SetWebinarBrandingVBStatus429,
+	TrackingfieldCreateBody,
+	TrackingfieldCreateResponse,
+	TrackingfieldCreateStatus429,
+	TrackingfieldDeleteResponse,
+	TrackingfieldDeleteStatus404,
+	TrackingfieldDeleteStatus429,
+	TrackingfieldGetResponse,
+	TrackingfieldGetStatus404,
+	TrackingfieldGetStatus429,
+	TrackingfieldListResponse,
+	TrackingfieldListStatus429,
+	TrackingfieldUpdateBody,
+	TrackingfieldUpdateResponse,
+	TrackingfieldUpdateStatus400,
+	TrackingfieldUpdateStatus404,
+	TrackingfieldUpdateStatus429,
+	TspResponse,
+	TspStatus429,
+	TspUpdateBody,
+	TspUpdateResponse,
+	TspUpdateStatus400,
+	TspUpdateStatus429,
+	TspUrlUpdateBody,
+	TspUrlUpdateResponse,
+	TspUrlUpdateStatus400,
+	TspUrlUpdateStatus404,
+	TspUrlUpdateStatus429,
+	UpdateArchivedFileBody,
+	UpdateArchivedFileResponse,
+	UpdateArchivedFileStatus400,
+	UpdateArchivedFileStatus404,
+	UpdateArchivedFileStatus429,
+	UpdateDeviceBody,
+	UpdateDeviceResponse,
+	UpdateDeviceStatus400,
+	UpdateDeviceStatus404,
+	UpdateDeviceStatus429,
+	UpdateMeetingChatMessageByIdBody,
+	UpdateMeetingChatMessageByIdResponse,
+	UpdateMeetingChatMessageByIdStatus400,
+	UpdateMeetingChatMessageByIdStatus404,
+	UpdateMeetingChatMessageByIdStatus429,
+	UpdateSIPPhonePhonesBody,
+	UpdateSIPPhonePhonesResponse,
+	UpdateSIPPhonePhonesStatus400,
+	UpdateSIPPhonePhonesStatus401,
+	UpdateSIPPhonePhonesStatus403,
+	UpdateSIPPhonePhonesStatus404,
+	UpdateSIPPhonePhonesStatus429,
+	UpdateWebinarBrandingNameTagBody,
+	UpdateWebinarBrandingNameTagResponse,
+	UpdateWebinarBrandingNameTagStatus400,
+	UpdateWebinarBrandingNameTagStatus404,
+	UpdateWebinarBrandingNameTagStatus429,
+	UpgradeZpasAppBody,
+	UpgradeZpasAppResponse,
+	UpgradeZpasAppStatus400,
+	UpgradeZpasAppStatus429,
+	UploadWebinarBrandingVBResponse,
+	UploadWebinarBrandingVBStatus400,
+	UploadWebinarBrandingVBStatus404,
+	UploadWebinarBrandingVBStatus429,
+	UploadWebinarBrandingWallpaperResponse,
+	UploadWebinarBrandingWallpaperStatus400,
+	UploadWebinarBrandingWallpaperStatus404,
+	UploadWebinarBrandingWallpaperStatus429,
+	UserPACsResponse,
+	UserPACsStatus400,
+	UserPACsStatus404,
+	UserPACsStatus429,
+	UserTSPCreateBody,
+	UserTSPCreateResponse,
+	UserTSPCreateStatus400,
+	UserTSPCreateStatus404,
+	UserTSPCreateStatus429,
+	UserTSPDeleteResponse,
+	UserTSPDeleteStatus400,
+	UserTSPDeleteStatus404,
+	UserTSPDeleteStatus429,
+	UserTSPResponse,
+	UserTSPStatus400,
+	UserTSPStatus404,
+	UserTSPStatus429,
+	UserTSPsResponse,
+	UserTSPsStatus400,
+	UserTSPsStatus404,
+	UserTSPsStatus429,
+	UserTSPUpdateBody,
+	UserTSPUpdateResponse,
+	UserTSPUpdateStatus400,
+	UserTSPUpdateStatus404,
+	UserTSPUpdateStatus429,
+	WebinarAbsenteesResponse,
+	WebinarAbsenteesStatus400,
+	WebinarAbsenteesStatus404,
+	WebinarAbsenteesStatus429,
+	WebinarCreateBody,
+	WebinarCreateResponse,
+	WebinarCreateStatus400,
+	WebinarCreateStatus404,
+	WebinarCreateStatus429,
+	WebinarDeleteResponse,
+	WebinarDeleteStatus400,
+	WebinarDeleteStatus404,
+	WebinarDeleteStatus429,
+	WebinarInviteLinksCreateBody,
+	WebinarInviteLinksCreateResponse,
+	WebinarInviteLinksCreateStatus400,
+	WebinarInviteLinksCreateStatus404,
+	WebinarInviteLinksCreateStatus429,
+	WebinarLiveStreamingJoinTokenResponse,
+	WebinarLiveStreamingJoinTokenStatus400,
+	WebinarLiveStreamingJoinTokenStatus404,
+	WebinarLiveStreamingJoinTokenStatus429,
+	WebinarLiveStreamStatusUpdateBody,
+	WebinarLiveStreamStatusUpdateResponse,
+	WebinarLiveStreamStatusUpdateStatus400,
+	WebinarLiveStreamStatusUpdateStatus404,
+	WebinarLiveStreamStatusUpdateStatus429,
+	WebinarLiveStreamUpdateBody,
+	WebinarLiveStreamUpdateResponse,
+	WebinarLiveStreamUpdateStatus400,
+	WebinarLiveStreamUpdateStatus404,
+	WebinarLiveStreamUpdateStatus429,
+	WebinarLocalArchivingArchiveTokenResponse,
+	WebinarLocalArchivingArchiveTokenStatus400,
+	WebinarLocalArchivingArchiveTokenStatus404,
+	WebinarLocalArchivingArchiveTokenStatus429,
+	WebinarLocalRecordingJoinTokenResponse,
+	WebinarLocalRecordingJoinTokenStatus400,
+	WebinarLocalRecordingJoinTokenStatus404,
+	WebinarLocalRecordingJoinTokenStatus429,
+	WebinarPanelistCreateBody,
+	WebinarPanelistCreateResponse,
+	WebinarPanelistCreateStatus400,
+	WebinarPanelistCreateStatus404,
+	WebinarPanelistCreateStatus429,
+	WebinarPanelistDeleteResponse,
+	WebinarPanelistDeleteStatus400,
+	WebinarPanelistDeleteStatus404,
+	WebinarPanelistDeleteStatus429,
+	WebinarPanelistsDeleteResponse,
+	WebinarPanelistsDeleteStatus400,
+	WebinarPanelistsDeleteStatus404,
+	WebinarPanelistsDeleteStatus429,
+	WebinarPanelistsResponse,
+	WebinarPanelistsStatus400,
+	WebinarPanelistsStatus404,
+	WebinarPanelistsStatus429,
+	WebinarPollCreateBody,
+	WebinarPollCreateResponse,
+	WebinarPollCreateStatus400,
+	WebinarPollCreateStatus404,
+	WebinarPollCreateStatus429,
+	WebinarPollDeleteResponse,
+	WebinarPollDeleteStatus400,
+	WebinarPollDeleteStatus404,
+	WebinarPollDeleteStatus429,
+	WebinarPollGetResponse,
+	WebinarPollGetStatus400,
+	WebinarPollGetStatus404,
+	WebinarPollGetStatus429,
+	WebinarPollsResponse,
+	WebinarPollsStatus400,
+	WebinarPollsStatus404,
+	WebinarPollsStatus429,
+	WebinarPollUpdateBody,
+	WebinarPollUpdateResponse,
+	WebinarPollUpdateStatus400,
+	WebinarPollUpdateStatus404,
+	WebinarPollUpdateStatus429,
+	WebinarRegistrantCreateBody,
+	WebinarRegistrantCreateResponse,
+	WebinarRegistrantCreateStatus400,
+	WebinarRegistrantCreateStatus404,
+	WebinarRegistrantCreateStatus429,
+	WebinarRegistrantGetResponse,
+	WebinarRegistrantGetStatus400,
+	WebinarRegistrantGetStatus404,
+	WebinarRegistrantGetStatus429,
+	WebinarRegistrantQuestionUpdateBody,
+	WebinarRegistrantQuestionUpdateResponse,
+	WebinarRegistrantQuestionUpdateStatus400,
+	WebinarRegistrantQuestionUpdateStatus404,
+	WebinarRegistrantQuestionUpdateStatus429,
+	WebinarRegistrantStatusBody,
+	WebinarRegistrantStatusResponse,
+	WebinarRegistrantStatusStatus400,
+	WebinarRegistrantStatusStatus404,
+	WebinarRegistrantStatusStatus429,
+	WebinarRegistrantsQuestionsGetResponse,
+	WebinarRegistrantsQuestionsGetStatus400,
+	WebinarRegistrantsQuestionsGetStatus404,
+	WebinarRegistrantsQuestionsGetStatus429,
+	WebinarRegistrantsResponse,
+	WebinarRegistrantsStatus400,
+	WebinarRegistrantsStatus404,
+	WebinarRegistrantsStatus429,
+	WebinarResponse,
 	WebinarStatus400,
 	WebinarStatus404,
 	WebinarStatus429,
-	WebinarStatusMutationRequest,
-	WebinarStatusMutationResponse,
-	WebinarStatusPathParams,
-	WebinarSurveyDelete400,
-	WebinarSurveyDelete404,
-	WebinarSurveyDelete429,
-	WebinarSurveyDeleteMutationResponse,
-	WebinarSurveyDeletePathParams,
-	WebinarSurveyGet400,
-	WebinarSurveyGet404,
-	WebinarSurveyGet429,
-	WebinarSurveyGetPathParams,
-	WebinarSurveyGetQueryResponse,
-	WebinarSurveyUpdate400,
-	WebinarSurveyUpdate404,
-	WebinarSurveyUpdate429,
-	WebinarSurveyUpdateMutationRequest,
-	WebinarSurveyUpdateMutationResponse,
-	WebinarSurveyUpdatePathParams,
-	Webinars400,
-	Webinars404,
-	Webinars429,
-	WebinarsPathParams,
-	WebinarsQueryParams,
-	WebinarsQueryResponse,
-	WebinarTemplateCreate400,
-	WebinarTemplateCreate404,
-	WebinarTemplateCreate429,
-	WebinarTemplateCreateMutationRequest,
-	WebinarTemplateCreateMutationResponse,
-	WebinarTemplateCreatePathParams,
-	WebinarToken400,
-	WebinarToken404,
-	WebinarToken429,
-	WebinarTokenPathParams,
-	WebinarTokenQueryParams,
-	WebinarTokenQueryResponse,
-	WebinarUpdate400,
-	WebinarUpdate404,
-	WebinarUpdate429,
-	WebinarUpdateMutationRequest,
-	WebinarUpdateMutationResponse,
-	WebinarUpdatePathParams,
-	WebinarUpdateQueryParams,
+	WebinarStatusBody,
+	WebinarStatusResponse,
+	WebinarStatusStatus400,
+	WebinarStatusStatus404,
+	WebinarStatusStatus429,
+	WebinarSurveyDeleteResponse,
+	WebinarSurveyDeleteStatus400,
+	WebinarSurveyDeleteStatus404,
+	WebinarSurveyDeleteStatus429,
+	WebinarSurveyGetResponse,
+	WebinarSurveyGetStatus400,
+	WebinarSurveyGetStatus404,
+	WebinarSurveyGetStatus429,
+	WebinarSurveyUpdateBody,
+	WebinarSurveyUpdateResponse,
+	WebinarSurveyUpdateStatus400,
+	WebinarSurveyUpdateStatus404,
+	WebinarSurveyUpdateStatus429,
+	WebinarsResponse,
+	WebinarsStatus400,
+	WebinarsStatus404,
+	WebinarsStatus429,
+	WebinarTemplateCreateBody,
+	WebinarTemplateCreateResponse,
+	WebinarTemplateCreateStatus400,
+	WebinarTemplateCreateStatus404,
+	WebinarTemplateCreateStatus429,
+	WebinarTokenResponse,
+	WebinarTokenStatus400,
+	WebinarTokenStatus404,
+	WebinarTokenStatus429,
+	WebinarUpdateBody,
+	WebinarUpdateResponse,
+	WebinarUpdateStatus400,
+	WebinarUpdateStatus404,
+	WebinarUpdateStatus429,
 } from "./types";
 
 /**
+ * @summary List archived files
  * @description Get an account's archived meeting or webinar files.
- * Zoom's [archiving solution](https://support.zoom.us/hc/en-us/articles/360050431572-Archiving-indicators) lets account administrators set up an automated mechanism to record, collect, and archive meeting data to a third-party platform of their choice to satisfy FINRA or other compliance requirements.
- * **Prerequisites:**
+ *  Zoom's [archiving solution](https://support.zoom.us/hc/en-us/articles/360050431572-Archiving-indicators) lets account administrators set up an automated mechanism to record, collect, and archive meeting data to a third-party platform of their choice to satisfy FINRA or other compliance requirements.
+ *  **Prerequisites:**
  * * The [**Meeting and Webinar Archiving** feature](https://support.zoom.us/hc/en-us/articles/4405656451213--Archiving-for-meetings-and-webinars) enabled for your account by [Zoom Support](https://support.zoom.us/hc/en-us/articles/201362003).
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `recording:read:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `archiving:read:list_archived_files:admin`,`archiving:read:list_archived_files:master`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `MEDIUM`
- * @summary List archived files
- * {@link /archive_files}
+ * @link /archive_files
  */
-export async function listArchivedFiles({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: ListArchivedFilesQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function listArchivedFiles(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: {
+			page_size?: number;
+			next_page_token?: string;
+			from?: string;
+			to?: string;
+			query_date_type?: "meeting_start_time" | "archive_complete_time";
+			group_id?: string;
+			group_ids?: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		ListArchivedFilesQueryResponse,
-		ErrorWrapper<ListArchivedFiles400 | ListArchivedFiles429>,
+		ListArchivedFilesResponse,
+		ErrorWrapper<ListArchivedFilesStatus400 | ListArchivedFilesStatus429>,
 		null,
 		Record<string, string>,
-		ListArchivedFilesQueryParams,
+		{
+			page_size?: number;
+			next_page_token?: string;
+			from?: string;
+			to?: string;
+			query_date_type?: "meeting_start_time" | "archive_complete_time";
+			group_id?: string;
+			group_ids?: string;
+		},
 		Record<string, string>
-	>({ method: "GET", url: `/archive_files`, queryParams, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/archive_files`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Get statistics about an account's archived meeting or webinar files.
- * Zoom's [archiving solution](https://support.zoom.us/hc/en-us/articles/360050431572-Archiving-indicators) lets account administrators set up an automated mechanism to record, collect, and archive meeting data to a third-party platform of their choice to satisfy FINRA and other compliance requirements.
+ * @summary List archived file download audit logs
+ * @description Get an account's archived meeting or webinar file download audit logs. The response groups audit records by meeting or webinar instance, archive file, and source IP address.
+ * Zoom's [archiving solution](https://support.zoom.us/hc/en-us/articles/360050431572-Archiving-indicators) lets account administrators set up an automated mechanism to record, collect, and archive meeting data to a third-party platform of their choice to satisfy FINRA or other compliance requirements.
  * **Prerequisites:**
+ * * The [**Meeting and Webinar Archiving** feature](https://support.zoom.us/hc/en-us/articles/4405656451213--Archiving-for-meetings-and-webinars) enabled for your account by [Zoom Support](https://support.zoom.us/hc/en-us/articles/201362003).
+ * * A paid account.
+ * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
+ * @link /archive_files/download_audit
+ */
+export async function listArchiveFileDownloadAudit(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { page_size?: number; next_page_token?: string; from?: string; to?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	const data = await request<
+		ListArchiveFileDownloadAuditResponse,
+		ErrorWrapper<
+			| ListArchiveFileDownloadAuditStatus400
+			| ListArchiveFileDownloadAuditStatus401
+			| ListArchiveFileDownloadAuditStatus429
+		>,
+		null,
+		Record<string, string>,
+		{ page_size?: number; next_page_token?: string; from?: string; to?: string },
+		Record<string, string>
+	>({
+		method: "GET",
+		url: `/archive_files/download_audit`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Get archived file statistics
+ * @description Get statistics about an account's archived meeting or webinar files.
+ *  Zoom's [archiving solution](https://support.zoom.us/hc/en-us/articles/360050431572-Archiving-indicators) lets account administrators set up an automated mechanism to record, collect, and archive meeting data to a third-party platform of their choice to satisfy FINRA and other compliance requirements.
+ *  **Prerequisites:**
  * * The [**Meeting and Webinar Archiving** feature](https://support.zoom.us/hc/en-us/articles/4405656451213--Archiving-for-meetings-and-webinars) enabled for your account by [Zoom Support](https://support.zoom.us/hc/en-us/articles/201362003).
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `recording:read:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `archiving:read:archived_file_statistics:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `MEDIUM`
- * @summary Get archived file statistics
- * {@link /archive_files/statistics}
+ * @link /archive_files/statistics
  */
-export async function getArchivedFileStatistics({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: GetArchivedFileStatisticsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getArchivedFileStatistics(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { from?: string; to?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		GetArchivedFileStatisticsQueryResponse,
-		ErrorWrapper<GetArchivedFileStatistics400 | GetArchivedFileStatistics429>,
+		GetArchivedFileStatisticsResponse,
+		ErrorWrapper<GetArchivedFileStatisticsStatus400 | GetArchivedFileStatisticsStatus429>,
 		null,
 		Record<string, string>,
-		GetArchivedFileStatisticsQueryParams,
+		{ from?: string; to?: string },
 		Record<string, string>
-	>({ method: "GET", url: `/archive_files/statistics`, queryParams, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/archive_files/statistics`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Update an archived file's auto-delete status
  * @description Update an archived file's auto-delete status.
- * **Prerequisites:**
+ *  **Prerequisites:**
  * * [Zoom Support](https://support.zoom.us/hc/en-us/articles/201362003) must enable the [**Meeting and Webinar Archiving** feature](https://support.zoom.us/hc/en-us/articles/4405656451213--Archiving-for-meetings-and-webinars) for your account.
  * * Open the disabling auto-delete feature in OP. Contact [Zoom Support](https://support.zoom.us/hc/en-us/articles/201362003) to open.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `recording:write`,`recording:write:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `archiving:update:archived_file_auto_delete_status`,`archiving:update:archived_file_auto_delete_status:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Update an archived file's auto-delete status
- * {@link /archive_files/:fileId}
+ * @link /archive_files/{fileId}
  */
-export async function updateArchivedFile({
-	pathParams: { fileId },
-	body,
-	config = {},
-}: {
-	pathParams: UpdateArchivedFilePathParams;
-	body: UpdateArchivedFileMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function updateArchivedFile(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { fileId: string };
+		body?: UpdateArchivedFileBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!fileId) {
+	if (!pathParams.fileId) {
 		throw new Error(`Missing required path parameter: fileId`);
 	}
-
 	const data = await request<
-		UpdateArchivedFileMutationResponse,
-		ErrorWrapper<UpdateArchivedFile400 | UpdateArchivedFile404 | UpdateArchivedFile429>,
-		UpdateArchivedFileMutationRequest,
+		UpdateArchivedFileResponse,
+		ErrorWrapper<
+			UpdateArchivedFileStatus400 | UpdateArchivedFileStatus404 | UpdateArchivedFileStatus429
+		>,
+		UpdateArchivedFileBody,
 		Record<string, string>,
 		Record<string, string>,
-		UpdateArchivedFilePathParams
-	>({ method: "PATCH", url: `/archive_files/${fileId}`, body, ...requestConfig });
+		{ fileId: string }
+	>({
+		method: "PATCH",
+		url: `/archive_files/${pathParams.fileId}`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Get a meeting's archive token for local archiving
  * @description Get a meeting's archive token to allow local archiving. The archive token allows a meeting SDK app or bot to get archive permission to access the meeting's raw audio and video media stream in real-time.
  * **Prerequisites:**
  * * A Pro or higher plan for the meeting host.
@@ -1119,682 +1000,812 @@ export async function updateArchivedFile({
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting_token:read:admin:local_archiving`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:read:local_archiving_token:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Get a meeting's archive token for local archiving
- * {@link /meetings/:meetingId/jointoken/local_archiving}
+ * @link /meetings/{meetingId}/jointoken/local_archiving
  */
-export async function meetingLocalArchivingArchiveToken({
-	pathParams: { meetingId },
-	config = {},
-}: {
-	pathParams: MeetingLocalArchivingArchiveTokenPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function meetingLocalArchivingArchiveToken(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { meetingId: bigint };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!meetingId) {
+	if (!pathParams.meetingId) {
 		throw new Error(`Missing required path parameter: meetingId`);
 	}
-
 	const data = await request<
-		MeetingLocalArchivingArchiveTokenQueryResponse,
+		MeetingLocalArchivingArchiveTokenResponse,
 		ErrorWrapper<
-			| MeetingLocalArchivingArchiveToken400
-			| MeetingLocalArchivingArchiveToken404
-			| MeetingLocalArchivingArchiveToken429
+			| MeetingLocalArchivingArchiveTokenStatus400
+			| MeetingLocalArchivingArchiveTokenStatus404
+			| MeetingLocalArchivingArchiveTokenStatus429
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		MeetingLocalArchivingArchiveTokenPathParams
-	>({ method: "GET", url: `/meetings/${meetingId}/jointoken/local_archiving`, ...requestConfig });
+		{ meetingId: bigint }
+	>({
+		method: "GET",
+		url: `/meetings/${pathParams.meetingId}/jointoken/local_archiving`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Get a meeting's archived files
  * @description Return a specific meeting instance's [archived files](https://support.zoom.us/hc/en-us/articles/360050431572-Archiving-indicators).
  * See [Archived JSON schemas](/docs/api/references/archived-json-schema/) for in-meeting chat message and subgroup archiving activity JSON schemas.
- * **Prerequisites:**
+ *  **Prerequisites:**
  * * The [**Meeting and Webinar Archiving** feature](https://support.zoom.us/hc/en-us/articles/4405656451213--Archiving-for-meetings-and-webinars) enabled for your account by [Zoom Support](https://support.zoom.us/hc/en-us/articles/201362003).
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `recording:read`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `archiving:read:archived_files:admin`,`archiving:read:archived_files`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Get a meeting's archived files
- * {@link /past_meetings/:meetingUUID/archive_files}
+ * @link /past_meetings/{meetingUUID}/archive_files
  */
-export async function getArchivedFiles({
-	pathParams: { meetingUUID },
-	config = {},
-}: {
-	pathParams: GetArchivedFilesPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getArchivedFiles(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { meetingUUID: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!meetingUUID) {
+	if (!pathParams.meetingUUID) {
 		throw new Error(`Missing required path parameter: meetingUUID`);
 	}
-
 	const data = await request<
-		GetArchivedFilesQueryResponse,
-		ErrorWrapper<GetArchivedFiles404 | GetArchivedFiles429>,
+		GetArchivedFilesResponse,
+		ErrorWrapper<GetArchivedFilesStatus404 | GetArchivedFilesStatus429>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		GetArchivedFilesPathParams
-	>({ method: "GET", url: `/past_meetings/${meetingUUID}/archive_files`, ...requestConfig });
+		{ meetingUUID: string }
+	>({
+		method: "GET",
+		url: `/past_meetings/${pathParams.meetingUUID}/archive_files`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Delete a meeting's archived files
  * @description Delete all of a meeting's archived files.
- * **Prerequisites:**
+ *  **Prerequisites:**
  * * The [**Meeting and Webinar Archiving** feature](https://support.zoom.us/hc/en-us/articles/4405656451213--Archiving-for-meetings-and-webinars) enabled for your account by [Zoom Support](https://support.zoom.us/hc/en-us/articles/201362003).
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `recording:write:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `archiving:delete:archived_files:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Delete a meeting's archived files
- * {@link /past_meetings/:meetingUUID/archive_files}
+ * @link /past_meetings/{meetingUUID}/archive_files
  */
-export async function deleteArchivedFiles({
-	pathParams: { meetingUUID },
-	config = {},
-}: {
-	pathParams: DeleteArchivedFilesPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deleteArchivedFiles(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { meetingUUID: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!meetingUUID) {
+	if (!pathParams.meetingUUID) {
 		throw new Error(`Missing required path parameter: meetingUUID`);
 	}
-
 	const data = await request<
-		DeleteArchivedFilesMutationResponse,
-		ErrorWrapper<DeleteArchivedFiles400 | DeleteArchivedFiles404 | DeleteArchivedFiles429>,
+		DeleteArchivedFilesResponse,
+		ErrorWrapper<
+			DeleteArchivedFilesStatus400 | DeleteArchivedFilesStatus404 | DeleteArchivedFilesStatus429
+		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		DeleteArchivedFilesPathParams
-	>({ method: "DELETE", url: `/past_meetings/${meetingUUID}/archive_files`, ...requestConfig });
+		{ meetingUUID: string }
+	>({
+		method: "DELETE",
+		url: `/past_meetings/${pathParams.meetingUUID}/archive_files`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Get meeting recordings
  * @description Returns all of a meeting's [recordings](https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0062627#h_7420acb5-1897-4061-87b4-5b76e99c03b4). Use the `download_url` property listed in the response to download the recording files.  To access a password-protected cloud recording, send the `download_access_token` or the user's [OAuth access token](/docs/integrations/oauth/) as a Bearer token in the Authorization header. For example:
- * `curl -H 'Authorization: Bearer <ACCESS_TOKEN>' https://{{base-domain}}/rec/archive/download/xyz`
- * Learn more about [enabling cloud recordings](https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0063923) and [managing cloud recording settings](https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0065362).
+ *  `curl -H 'Authorization: Bearer <ACCESS_TOKEN>' https://{{base-domain}}/rec/archive/download/xyz`
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `recording:read`,`phone_recording:read:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `cloud_recording:read:list_recording_files:admin`,`cloud_recording:read:list_recording_files`,`cloud_recording:read:list_recording_files:master`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Get meeting recordings
- * {@link /meetings/:meetingId/recordings}
+ * @link /meetings/{meetingId}/recordings
  */
-export async function recordingGet({
-	pathParams: { meetingId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: RecordingGetPathParams;
-	queryParams?: RecordingGetQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function recordingGet(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { meetingId: string };
+		queryParams?: { include_fields?: string; ttl?: number };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!meetingId) {
+	if (!pathParams.meetingId) {
 		throw new Error(`Missing required path parameter: meetingId`);
 	}
-
 	const data = await request<
-		RecordingGetQueryResponse,
-		ErrorWrapper<RecordingGet400 | RecordingGet404 | RecordingGet429>,
+		RecordingGetResponse,
+		ErrorWrapper<RecordingGetStatus400 | RecordingGetStatus404 | RecordingGetStatus429>,
 		null,
 		Record<string, string>,
-		RecordingGetQueryParams,
-		RecordingGetPathParams
-	>({ method: "GET", url: `/meetings/${meetingId}/recordings`, queryParams, ...requestConfig });
+		{ include_fields?: string; ttl?: number },
+		{ meetingId: string }
+	>({
+		method: "GET",
+		url: `/meetings/${pathParams.meetingId}/recordings`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Delete meeting or webinar recordings
  * @description Delete all of a meeting's or webinar's recording files.
  * **Prerequisites**
  * * Enable Cloud Recording on the user's account. Learn more about [enabling cloud recordings](https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0063923) and [managing cloud recording settings](https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0065362).
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `recording:write:admin`,`recording:write`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `cloud_recording:delete:meeting_recording`,`cloud_recording:delete:meeting_recording:admin`,`cloud_recording:delete:meeting_recording:master`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Delete meeting or webinar recordings
- * {@link /meetings/:meetingId/recordings}
+ * @link /meetings/{meetingId}/recordings
  */
-export async function recordingDelete({
-	pathParams: { meetingId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: RecordingDeletePathParams;
-	queryParams?: RecordingDeleteQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function recordingDelete(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { meetingId: string };
+		queryParams?: { action?: "trash" | "delete" };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!meetingId) {
+	if (!pathParams.meetingId) {
 		throw new Error(`Missing required path parameter: meetingId`);
 	}
-
 	const data = await request<
-		RecordingDeleteMutationResponse,
-		ErrorWrapper<RecordingDelete400 | RecordingDelete404 | RecordingDelete429>,
+		RecordingDeleteResponse,
+		ErrorWrapper<RecordingDeleteStatus400 | RecordingDeleteStatus404 | RecordingDeleteStatus429>,
 		null,
 		Record<string, string>,
-		RecordingDeleteQueryParams,
-		RecordingDeletePathParams
-	>({ method: "DELETE", url: `/meetings/${meetingId}/recordings`, queryParams, ...requestConfig });
+		{ action?: "trash" | "delete" },
+		{ meetingId: string }
+	>({
+		method: "DELETE",
+		url: `/meetings/${pathParams.meetingId}/recordings`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Get a meeting or webinar recording's analytics details
  * @description Retrieve a meeting or webinar recording's [analytics details](https://support.zoom.us/hc/en-us/articles/205347605-Managing-cloud-recordings#h_0b665029-ce74-4849-9794-d1aa0320d163). **Maximum duration:** 1 month.
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `cloud_recording:read:recording_analytics_details`,`cloud_recording:read:recording_analytics_details:master`,`cloud_recording:read:recording_analytics_details:admin`
- * @summary Get a meeting or webinar recording's analytics details
- * {@link /meetings/:meetingId/recordings/analytics_details}
+ * @link /meetings/{meetingId}/recordings/analytics_details
  */
-export async function analyticsDetails({
-	pathParams: { meetingId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: AnalyticsDetailsPathParams;
-	queryParams?: AnalyticsDetailsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function analyticsDetails(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { meetingId: string };
+		queryParams?: {
+			page_size?: number;
+			next_page_token?: string;
+			from?: string;
+			to?: string;
+			type?: "by_view" | "by_download";
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!meetingId) {
+	if (!pathParams.meetingId) {
 		throw new Error(`Missing required path parameter: meetingId`);
 	}
-
 	const data = await request<
-		AnalyticsDetailsQueryResponse,
-		ErrorWrapper<AnalyticsDetails400 | AnalyticsDetails404 | AnalyticsDetails429>,
+		AnalyticsDetailsResponse,
+		ErrorWrapper<AnalyticsDetailsStatus400 | AnalyticsDetailsStatus404 | AnalyticsDetailsStatus429>,
 		null,
 		Record<string, string>,
-		AnalyticsDetailsQueryParams,
-		AnalyticsDetailsPathParams
+		{
+			page_size?: number;
+			next_page_token?: string;
+			from?: string;
+			to?: string;
+			type?: "by_view" | "by_download";
+		},
+		{ meetingId: string }
 	>({
 		method: "GET",
-		url: `/meetings/${meetingId}/recordings/analytics_details`,
+		url: `/meetings/${pathParams.meetingId}/recordings/analytics_details`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
+ * @summary Get a meeting or webinar recording's analytics summary
  * @description Retrieve meeting recording's [analytics summary](https://support.zoom.us/hc/en-us/articles/205347605-Managing-cloud-recordings#h_0b665029-ce74-4849-9794-d1aa0320d163). **Maximum duration:** 1 month.
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `cloud_recording:read:recording_analytics_summary`,`cloud_recording:read:recording_analytics_summary:master`,`cloud_recording:read:recording_analytics_summary:admin`
- * @summary Get a meeting or webinar recording's analytics summary
- * {@link /meetings/:meetingId/recordings/analytics_summary}
+ * @link /meetings/{meetingId}/recordings/analytics_summary
  */
-export async function analyticsSummary({
-	pathParams: { meetingId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: AnalyticsSummaryPathParams;
-	queryParams?: AnalyticsSummaryQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function analyticsSummary(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { meetingId: string };
+		queryParams?: { from?: string; to?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!meetingId) {
+	if (!pathParams.meetingId) {
 		throw new Error(`Missing required path parameter: meetingId`);
 	}
-
 	const data = await request<
-		AnalyticsSummaryQueryResponse,
-		ErrorWrapper<AnalyticsSummary400 | AnalyticsSummary404 | AnalyticsSummary429>,
+		AnalyticsSummaryResponse,
+		ErrorWrapper<AnalyticsSummaryStatus400 | AnalyticsSummaryStatus404 | AnalyticsSummaryStatus429>,
 		null,
 		Record<string, string>,
-		AnalyticsSummaryQueryParams,
-		AnalyticsSummaryPathParams
+		{ from?: string; to?: string },
+		{ meetingId: string }
 	>({
 		method: "GET",
-		url: `/meetings/${meetingId}/recordings/analytics_summary`,
+		url: `/meetings/${pathParams.meetingId}/recordings/analytics_summary`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
+ * @summary List recording registrants
  * @description Get a list of registrants of a past meeting's [on-demand cloud recordings](https://support.zoom.us/hc/en-us/articles/360000488283-On-demand-recordings). Users must [register](/api-reference/zoom-api/methods#operation/meetingRecordingRegistrantCreate) to view the recordings.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `recording:read:admin`,`recording:read`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `cloud_recording:read:list_recording_registrants`,`cloud_recording:read:list_recording_registrants:admin`,`cloud_recording:read:list_recording_registrants:master`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `MEDIUM`
- * @summary List recording registrants
- * {@link /meetings/:meetingId/recordings/registrants}
+ * @link /meetings/{meetingId}/recordings/registrants
  */
-export async function meetingRecordingRegistrants({
-	pathParams: { meetingId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: MeetingRecordingRegistrantsPathParams;
-	queryParams?: MeetingRecordingRegistrantsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function meetingRecordingRegistrants(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { meetingId: bigint };
+		queryParams?: {
+			status?: "pending" | "approved" | "denied";
+			page_size?: number;
+			page_number?: number;
+			next_page_token?: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!meetingId) {
+	if (!pathParams.meetingId) {
 		throw new Error(`Missing required path parameter: meetingId`);
 	}
-
 	const data = await request<
-		MeetingRecordingRegistrantsQueryResponse,
-		ErrorWrapper<MeetingRecordingRegistrants404 | MeetingRecordingRegistrants429>,
+		MeetingRecordingRegistrantsResponse,
+		ErrorWrapper<MeetingRecordingRegistrantsStatus404 | MeetingRecordingRegistrantsStatus429>,
 		null,
 		Record<string, string>,
-		MeetingRecordingRegistrantsQueryParams,
-		MeetingRecordingRegistrantsPathParams
+		{
+			status?: "pending" | "approved" | "denied";
+			page_size?: number;
+			page_number?: number;
+			next_page_token?: string;
+		},
+		{ meetingId: bigint }
 	>({
 		method: "GET",
-		url: `/meetings/${meetingId}/recordings/registrants`,
+		url: `/meetings/${pathParams.meetingId}/recordings/registrants`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
+ * @summary Create a recording registrant
  * @description Register a user to gain access to **On-demand cloud recordings** of a previous meeting.
  * Cloud recordings of past Zoom meetings can be made [on-demand](https://support.zoom.us/hc/en-us/articles/360000488283-On-demand-Recordings). Users should be [registered](/api-reference/zoom-api/methods#operation/meetingRecordingRegistrantCreate) to view these recordings.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `recording:write:admin`,`recording:write`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `cloud_recording:write:recording_registrant`,`cloud_recording:write:recording_registrant:master`,`cloud_recording:write:recording_registrant:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Create a recording registrant
- * {@link /meetings/:meetingId/recordings/registrants}
+ * @link /meetings/{meetingId}/recordings/registrants
  */
-export async function meetingRecordingRegistrantCreate({
-	pathParams: { meetingId },
-	body,
-	config = {},
-}: {
-	pathParams: MeetingRecordingRegistrantCreatePathParams;
-	body?: MeetingRecordingRegistrantCreateMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function meetingRecordingRegistrantCreate(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { meetingId: bigint };
+		body?: MeetingRecordingRegistrantCreateBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!meetingId) {
+	if (!pathParams.meetingId) {
 		throw new Error(`Missing required path parameter: meetingId`);
 	}
-
 	const data = await request<
-		MeetingRecordingRegistrantCreateMutationResponse,
-		ErrorWrapper<MeetingRecordingRegistrantCreate404 | MeetingRecordingRegistrantCreate429>,
-		MeetingRecordingRegistrantCreateMutationRequest,
+		MeetingRecordingRegistrantCreateResponse,
+		ErrorWrapper<
+			MeetingRecordingRegistrantCreateStatus404 | MeetingRecordingRegistrantCreateStatus429
+		>,
+		MeetingRecordingRegistrantCreateBody,
 		Record<string, string>,
 		Record<string, string>,
-		MeetingRecordingRegistrantCreatePathParams
+		{ meetingId: bigint }
 	>({
 		method: "POST",
-		url: `/meetings/${meetingId}/recordings/registrants`,
-		body,
+		url: `/meetings/${pathParams.meetingId}/recordings/registrants`,
+		body: body,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
+ * @summary Get registration questions
  * @description Retrieve a list of questions that are displayed for users to complete when registering to view the recording of a specific meeting.
  * For [on-demand](https://support.zoom.us/hc/en-us/articles/360000488283-On-demand-Recordings) meeting recordings, you can include fields with questions that will be shown to registrants when they register to view the recording.
  * Learn more about [enabling cloud recordings](https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0063923) and [managing cloud recording settings](https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0065362).
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `recording:read:admin`,`recording:read`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `cloud_recording:read:registration_questions`,`cloud_recording:read:registration_questions:master`,`cloud_recording:read:registration_questions:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Get registration questions
- * {@link /meetings/:meetingId/recordings/registrants/questions}
+ * @link /meetings/{meetingId}/recordings/registrants/questions
  */
-export async function recordingRegistrantsQuestionsGet({
-	pathParams: { meetingId },
-	config = {},
-}: {
-	pathParams: RecordingRegistrantsQuestionsGetPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function recordingRegistrantsQuestionsGet(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { meetingId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!meetingId) {
+	if (!pathParams.meetingId) {
 		throw new Error(`Missing required path parameter: meetingId`);
 	}
-
 	const data = await request<
-		RecordingRegistrantsQuestionsGetQueryResponse,
-		ErrorWrapper<RecordingRegistrantsQuestionsGet404 | RecordingRegistrantsQuestionsGet429>,
+		RecordingRegistrantsQuestionsGetResponse,
+		ErrorWrapper<
+			RecordingRegistrantsQuestionsGetStatus404 | RecordingRegistrantsQuestionsGetStatus429
+		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		RecordingRegistrantsQuestionsGetPathParams
+		{ meetingId: string }
 	>({
 		method: "GET",
-		url: `/meetings/${meetingId}/recordings/registrants/questions`,
+		url: `/meetings/${pathParams.meetingId}/recordings/registrants/questions`,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
+ * @summary Update registration questions
  * @description Update registration questions for users to answer while registering to view a recording.
  * For [on-demand](https://support.zoom.us/hc/en-us/articles/360000488283-On-demand-Recordings) meeting recordings, you can include fields with questions that will be shown to registrants when they register to view the recording.
  * Learn more about [enabling cloud recordings](https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0063923) and [managing cloud recording settings](https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0065362).
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `recording:write:admin`,`recording:write`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `cloud_recording:update:registration_questions:admin`,`cloud_recording:update:registration_questions`,`cloud_recording:update:registration_questions:master`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Update registration questions
- * {@link /meetings/:meetingId/recordings/registrants/questions}
+ * @link /meetings/{meetingId}/recordings/registrants/questions
  */
-export async function recordingRegistrantQuestionUpdate({
-	pathParams: { meetingId },
-	body,
-	config = {},
-}: {
-	pathParams: RecordingRegistrantQuestionUpdatePathParams;
-	body?: RecordingRegistrantQuestionUpdateMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function recordingRegistrantQuestionUpdate(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { meetingId: string };
+		body?: RecordingRegistrantQuestionUpdateBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!meetingId) {
+	if (!pathParams.meetingId) {
 		throw new Error(`Missing required path parameter: meetingId`);
 	}
-
 	const data = await request<
-		RecordingRegistrantQuestionUpdateMutationResponse,
-		ErrorWrapper<RecordingRegistrantQuestionUpdate404 | RecordingRegistrantQuestionUpdate429>,
-		RecordingRegistrantQuestionUpdateMutationRequest,
+		RecordingRegistrantQuestionUpdateResponse,
+		ErrorWrapper<
+			RecordingRegistrantQuestionUpdateStatus404 | RecordingRegistrantQuestionUpdateStatus429
+		>,
+		RecordingRegistrantQuestionUpdateBody,
 		Record<string, string>,
 		Record<string, string>,
-		RecordingRegistrantQuestionUpdatePathParams
+		{ meetingId: string }
 	>({
 		method: "PATCH",
-		url: `/meetings/${meetingId}/recordings/registrants/questions`,
-		body,
+		url: `/meetings/${pathParams.meetingId}/recordings/registrants/questions`,
+		body: body,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
+ * @summary Update a registrant's status
  * @description Update a registrant's status.
  * A registrant can either be approved or denied from viewing the [on-demand](https://support.zoom.us/hc/en-us/articles/360000488283-On-demand-Recordings) recording.
  * Learn more about [enabling cloud recordings](https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0063923) and [managing cloud recording settings](https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0065362).
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `recording:write:admin`,`recording:write`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `cloud_recording:update:registrant_status`,`cloud_recording:update:registrant_status:master`,`cloud_recording:update:registrant_status:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `MEDIUM`
- * @summary Update a registrant's status
- * {@link /meetings/:meetingId/recordings/registrants/status}
+ * @link /meetings/{meetingId}/recordings/registrants/status
  */
-export async function meetingRecordingRegistrantStatus({
-	pathParams: { meetingId },
-	body,
-	config = {},
-}: {
-	pathParams: MeetingRecordingRegistrantStatusPathParams;
-	body: MeetingRecordingRegistrantStatusMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function meetingRecordingRegistrantStatus(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { meetingId: bigint };
+		body?: MeetingRecordingRegistrantStatusBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!meetingId) {
+	if (!pathParams.meetingId) {
 		throw new Error(`Missing required path parameter: meetingId`);
 	}
-
 	const data = await request<
-		MeetingRecordingRegistrantStatusMutationResponse,
-		ErrorWrapper<MeetingRecordingRegistrantStatus404 | MeetingRecordingRegistrantStatus429>,
-		MeetingRecordingRegistrantStatusMutationRequest,
+		MeetingRecordingRegistrantStatusResponse,
+		ErrorWrapper<
+			MeetingRecordingRegistrantStatusStatus404 | MeetingRecordingRegistrantStatusStatus429
+		>,
+		MeetingRecordingRegistrantStatusBody,
 		Record<string, string>,
 		Record<string, string>,
-		MeetingRecordingRegistrantStatusPathParams
+		{ meetingId: bigint }
 	>({
 		method: "PUT",
-		url: `/meetings/${meetingId}/recordings/registrants/status`,
-		body,
+		url: `/meetings/${pathParams.meetingId}/recordings/registrants/status`,
+		body: body,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
+ * @summary Get meeting recording settings
  * @description Retrieve settings applied to a meeting's [cloud recording](https://support.zoom.us/hc/en-us/articles/203741855-Cloud-Recording).
  * Response includes recording content access information, which requires the current user to have the `View the recording content` permission to access it.
  * Learn more about [enabling cloud recordings](https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0063923) and [managing cloud recording settings](https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0065362).
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `recording:read:admin`,`recording:read`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `cloud_recording:read:recording_settings`,`cloud_recording:read:recording_settings:admin`,`cloud_recording:read:recording_settings:master`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Get meeting recording settings
- * {@link /meetings/:meetingId/recordings/settings}
+ * @link /meetings/{meetingId}/recordings/settings
  */
-export async function recordingSettingUpdate({
-	pathParams: { meetingId },
-	config = {},
-}: {
-	pathParams: RecordingSettingUpdatePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function recordingSettingUpdate(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { meetingId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!meetingId) {
+	if (!pathParams.meetingId) {
 		throw new Error(`Missing required path parameter: meetingId`);
 	}
-
 	const data = await request<
-		RecordingSettingUpdateQueryResponse,
-		ErrorWrapper<RecordingSettingUpdate404 | RecordingSettingUpdate429>,
+		RecordingSettingUpdateResponse,
+		ErrorWrapper<RecordingSettingUpdateStatus404 | RecordingSettingUpdateStatus429>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		RecordingSettingUpdatePathParams
-	>({ method: "GET", url: `/meetings/${meetingId}/recordings/settings`, ...requestConfig });
+		{ meetingId: string }
+	>({
+		method: "GET",
+		url: `/meetings/${pathParams.meetingId}/recordings/settings`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Update meeting recording settings
  * @description Update settings applied to a meeting's [cloud recording](https://support.zoom.us/hc/en-us/articles/203741855-Cloud-Recording).
  * The request contains the recording content access information, which requires the current user to have the `view recording content` and `recording editing` permissions to access.
  * Learn more about [enabling cloud recordings](https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0063923) and [managing cloud recording settings](https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0065362).
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `recording:write:admin`,`recording:write`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `cloud_recording:update:recording_settings`,`cloud_recording:update:recording_settings:master`,`cloud_recording:update:recording_settings:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Update meeting recording settings
- * {@link /meetings/:meetingId/recordings/settings}
+ * @link /meetings/{meetingId}/recordings/settings
  */
-export async function recordingSettingsUpdate({
-	pathParams: { meetingId },
-	body,
-	config = {},
-}: {
-	pathParams: RecordingSettingsUpdatePathParams;
-	body?: RecordingSettingsUpdateMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function recordingSettingsUpdate(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { meetingId: string };
+		body?: RecordingSettingsUpdateBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!meetingId) {
+	if (!pathParams.meetingId) {
 		throw new Error(`Missing required path parameter: meetingId`);
 	}
-
 	const data = await request<
-		RecordingSettingsUpdateMutationResponse,
-		ErrorWrapper<RecordingSettingsUpdate404 | RecordingSettingsUpdate429>,
-		RecordingSettingsUpdateMutationRequest,
+		RecordingSettingsUpdateResponse,
+		ErrorWrapper<RecordingSettingsUpdateStatus404 | RecordingSettingsUpdateStatus429>,
+		RecordingSettingsUpdateBody,
 		Record<string, string>,
 		Record<string, string>,
-		RecordingSettingsUpdatePathParams
-	>({ method: "PATCH", url: `/meetings/${meetingId}/recordings/settings`, body, ...requestConfig });
+		{ meetingId: string }
+	>({
+		method: "PATCH",
+		url: `/meetings/${pathParams.meetingId}/recordings/settings`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Delete a recording file for a meeting or webinar
  * @description Delete a specific recording file from a meeting or webinar. Note: To use this API, you must enable the **The host can delete cloud recordings** setting. Find this setting in the **Recording** tab of the **Settings** interface in the [Zoom web portal](https://zoom.us/).
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `recording:write:admin`,`recording:write`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `cloud_recording:delete:recording_file`,`cloud_recording:delete:recording_file:admin`,`cloud_recording:delete:recording_file:master`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Delete a recording file for a meeting or webinar
- * {@link /meetings/:meetingId/recordings/:recordingId}
+ * @link /meetings/{meetingId}/recordings/{recordingId}
  */
-export async function recordingDeleteOne({
-	pathParams: { meetingId, recordingId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: RecordingDeleteOnePathParams;
-	queryParams?: RecordingDeleteOneQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function recordingDeleteOne(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { meetingId: string; recordingId: string };
+		queryParams?: { action?: "trash" | "delete" };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!meetingId) {
+	if (!pathParams.meetingId) {
 		throw new Error(`Missing required path parameter: meetingId`);
 	}
 
-	if (!recordingId) {
+	if (!pathParams.recordingId) {
 		throw new Error(`Missing required path parameter: recordingId`);
 	}
-
 	const data = await request<
-		RecordingDeleteOneMutationResponse,
-		ErrorWrapper<RecordingDeleteOne400 | RecordingDeleteOne404 | RecordingDeleteOne429>,
+		RecordingDeleteOneResponse,
+		ErrorWrapper<
+			RecordingDeleteOneStatus400 | RecordingDeleteOneStatus404 | RecordingDeleteOneStatus429
+		>,
 		null,
 		Record<string, string>,
-		RecordingDeleteOneQueryParams,
-		RecordingDeleteOnePathParams
+		{ action?: "trash" | "delete" },
+		{ meetingId: string; recordingId: string }
 	>({
 		method: "DELETE",
-		url: `/meetings/${meetingId}/recordings/${recordingId}`,
+		url: `/meetings/${pathParams.meetingId}/recordings/${pathParams.recordingId}`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
+ * @summary Recover a single recording
  * @description Recover a single recording file from the meeting.
  * Zoom lets users recover recordings from trash for up to 30 days from the deletion date.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `recording:write:admin`,`recording:write`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `cloud_recording:update:recover_single_recording`,`cloud_recording:update:recover_single_recording:master`,`cloud_recording:update:recover_single_recording:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Recover a single recording
- * {@link /meetings/:meetingId/recordings/:recordingId/status}
+ * @link /meetings/{meetingId}/recordings/{recordingId}/status
  */
-export async function recordingStatusUpdateOne({
-	pathParams: { meetingId, recordingId },
-	body,
-	config = {},
-}: {
-	pathParams: RecordingStatusUpdateOnePathParams;
-	body?: RecordingStatusUpdateOneMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function recordingStatusUpdateOne(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { meetingId: string; recordingId: string };
+		body?: RecordingStatusUpdateOneBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!meetingId) {
+	if (!pathParams.meetingId) {
 		throw new Error(`Missing required path parameter: meetingId`);
 	}
 
-	if (!recordingId) {
+	if (!pathParams.recordingId) {
 		throw new Error(`Missing required path parameter: recordingId`);
 	}
-
 	const data = await request<
-		RecordingStatusUpdateOneMutationResponse,
+		RecordingStatusUpdateOneResponse,
 		ErrorWrapper<
-			RecordingStatusUpdateOne400 | RecordingStatusUpdateOne404 | RecordingStatusUpdateOne429
+			| RecordingStatusUpdateOneStatus400
+			| RecordingStatusUpdateOneStatus404
+			| RecordingStatusUpdateOneStatus429
 		>,
-		RecordingStatusUpdateOneMutationRequest,
+		RecordingStatusUpdateOneBody,
 		Record<string, string>,
 		Record<string, string>,
-		RecordingStatusUpdateOnePathParams
+		{ meetingId: string; recordingId: string }
 	>({
 		method: "PUT",
-		url: `/meetings/${meetingId}/recordings/${recordingId}/status`,
-		body,
+		url: `/meetings/${pathParams.meetingId}/recordings/${pathParams.recordingId}/status`,
+		body: body,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
+ * @summary Get a meeting transcript
  * @description Return a meeting's [transcript](https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0076632) information. Use the `download_url` property listed in the response to download the transcript content.
  * To download the trancript, send the user's [OAuth access token](/docs/integrations/oauth/) as a Bearer token in the Authorization header.
- * `curl -H 'Authorization: Bearer <ACCESS_TOKEN>' https://{{base-domain}}//rec/meeting/transcript/download/xyz`
+ *  `curl -H 'Authorization: Bearer <ACCESS_TOKEN>' https://{{base-domain}}//rec/meeting/transcript/download/xyz`
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `recording:read`,`recording:write`,`recording:read:admin`,`recording:write:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `cloud_recording:read:meeting_transcript`,`cloud_recording:read:meeting_transcript:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `MEDIUM`
- * @summary Get a meeting transcript
- * {@link /meetings/:meetingId/transcript}
+ * @link /meetings/{meetingId}/transcript
  */
-export async function getMeetingTranscript({
-	pathParams: { meetingId },
-	config = {},
-}: {
-	pathParams: GetMeetingTranscriptPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getMeetingTranscript(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { meetingId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!meetingId) {
+	if (!pathParams.meetingId) {
 		throw new Error(`Missing required path parameter: meetingId`);
 	}
-
 	const data = await request<
-		GetMeetingTranscriptQueryResponse,
-		ErrorWrapper<GetMeetingTranscript403 | GetMeetingTranscript404 | GetMeetingTranscript429>,
+		GetMeetingTranscriptResponse,
+		ErrorWrapper<
+			GetMeetingTranscriptStatus403 | GetMeetingTranscriptStatus404 | GetMeetingTranscriptStatus429
+		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		GetMeetingTranscriptPathParams
-	>({ method: "GET", url: `/meetings/${meetingId}/transcript`, ...requestConfig });
+		{ meetingId: string }
+	>({
+		method: "GET",
+		url: `/meetings/${pathParams.meetingId}/transcript`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Delete a meeting or webinar transcript
  * @description Delete a transcript for a meeting or webinar.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `recording:write`,`recording:write:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `cloud_recording:delete:meeting_transcript`,`cloud_recording:delete:meeting_transcript:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `MEDIUM`
- * @summary Delete a meeting or webinar transcript
- * {@link /meetings/:meetingId/transcript}
+ * @link /meetings/{meetingId}/transcript
  */
-export async function deleteMeetingTranscript({
-	pathParams: { meetingId },
-	config = {},
-}: {
-	pathParams: DeleteMeetingTranscriptPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deleteMeetingTranscript(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { meetingId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!meetingId) {
+	if (!pathParams.meetingId) {
 		throw new Error(`Missing required path parameter: meetingId`);
 	}
-
 	const data = await request<
-		DeleteMeetingTranscriptMutationResponse,
+		DeleteMeetingTranscriptResponse,
 		ErrorWrapper<
-			| DeleteMeetingTranscript400
-			| DeleteMeetingTranscript403
-			| DeleteMeetingTranscript404
-			| DeleteMeetingTranscript429
+			| DeleteMeetingTranscriptStatus400
+			| DeleteMeetingTranscriptStatus403
+			| DeleteMeetingTranscriptStatus404
+			| DeleteMeetingTranscriptStatus429
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		DeleteMeetingTranscriptPathParams
-	>({ method: "DELETE", url: `/meetings/${meetingId}/transcript`, ...requestConfig });
+		{ meetingId: string }
+	>({
+		method: "DELETE",
+		url: `/meetings/${pathParams.meetingId}/transcript`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Recover meeting recordings
  * @description Recover all deleted [cloud recordings](https://support.zoom.us/hc/en-us/articles/203741855-Cloud-Recording) of a specific meeting.
  * Zoom lets users recover recordings from trash for up to 30 days from the deletion date.
  * **Prerequisites**:
@@ -1802,36 +1813,48 @@ export async function deleteMeetingTranscript({
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `recording:write:admin`,`recording:write`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `cloud_recording:update:recover_meeting_recordings`,`cloud_recording:update:recover_meeting_recordings:master`,`cloud_recording:update:recover_meeting_recordings:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Recover meeting recordings
- * {@link /meetings/:meetingUUID/recordings/status}
+ * @link /meetings/{meetingUUID}/recordings/status
  */
-export async function recordingStatusUpdate({
-	pathParams: { meetingUUID },
-	body,
-	config = {},
-}: {
-	pathParams: RecordingStatusUpdatePathParams;
-	body?: RecordingStatusUpdateMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function recordingStatusUpdate(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { meetingUUID: string };
+		body?: RecordingStatusUpdateBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!meetingUUID) {
+	if (!pathParams.meetingUUID) {
 		throw new Error(`Missing required path parameter: meetingUUID`);
 	}
-
 	const data = await request<
-		RecordingStatusUpdateMutationResponse,
-		ErrorWrapper<RecordingStatusUpdate400 | RecordingStatusUpdate404 | RecordingStatusUpdate429>,
-		RecordingStatusUpdateMutationRequest,
+		RecordingStatusUpdateResponse,
+		ErrorWrapper<
+			| RecordingStatusUpdateStatus400
+			| RecordingStatusUpdateStatus404
+			| RecordingStatusUpdateStatus429
+		>,
+		RecordingStatusUpdateBody,
 		Record<string, string>,
 		Record<string, string>,
-		RecordingStatusUpdatePathParams
-	>({ method: "PUT", url: `/meetings/${meetingUUID}/recordings/status`, body, ...requestConfig });
+		{ meetingUUID: string }
+	>({
+		method: "PUT",
+		url: `/meetings/${pathParams.meetingUUID}/recordings/status`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary List all recordings
  * @description Lists all [cloud recordings](https://support.zoom.us/hc/en-us/articles/203741855-Cloud-Recording) for a user.
  * For user-level apps, pass the [`me` value](https://developers.zoom.us/docs/api/rest/using-zoom-apis/#the-me-keyword) instead of the `userId` parameter.  To access a user's passcode protected cloud recording, send the user's [OAuth access token](https://developers.zoom.us/docs/integrations/oauth/) as a bearer token in the authorization header.
  * Example:  `curl -H "Authorization: Bearer <ACCESS_TOKEN>" https://{{base-domain}}/rec/archive/download/xyz`
@@ -1841,587 +1864,788 @@ export async function recordingStatusUpdate({
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `recording:read:admin`,`recording:read`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `cloud_recording:read:list_user_recordings`,`cloud_recording:read:list_user_recordings:master`,`cloud_recording:read:list_user_recordings:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `MEDIUM`
- * @summary List all recordings
- * {@link /users/:userId/recordings}
+ * @link /users/{userId}/recordings
  */
-export async function recordingsList({
-	pathParams: { userId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: RecordingsListPathParams;
-	queryParams?: RecordingsListQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function recordingsList(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { userId: string };
+		queryParams?: {
+			page_size?: number;
+			next_page_token?: string;
+			mc?: string;
+			trash?: boolean;
+			from?: string;
+			to?: string;
+			trash_type?: string;
+			meeting_id?: number;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!userId) {
+	if (!pathParams.userId) {
 		throw new Error(`Missing required path parameter: userId`);
 	}
-
 	const data = await request<
-		RecordingsListQueryResponse,
-		ErrorWrapper<RecordingsList401 | RecordingsList404 | RecordingsList429>,
+		RecordingsListResponse,
+		ErrorWrapper<RecordingsListStatus401 | RecordingsListStatus404 | RecordingsListStatus429>,
 		null,
 		Record<string, string>,
-		RecordingsListQueryParams,
-		RecordingsListPathParams
-	>({ method: "GET", url: `/users/${userId}/recordings`, queryParams, ...requestConfig });
+		{
+			page_size?: number;
+			next_page_token?: string;
+			mc?: string;
+			trash?: boolean;
+			from?: string;
+			to?: string;
+			trash_type?: string;
+			meeting_id?: number;
+		},
+		{ userId: string }
+	>({
+		method: "GET",
+		url: `/users/${pathParams.userId}/recordings`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary List devices
  * @description This API lets you list devices.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `device:read:admin`,`device:write:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `HEAVY`
- * @summary List devices
- * {@link /devices}
+ * @link /devices
  */
-export async function listDevices({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: ListDevicesQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function listDevices(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: {
+			search_text?: string;
+			platform_os?: "win" | "mac" | "ipad" | "iphone" | "android" | "linux";
+			is_enrolled_in_zdm?: boolean;
+			device_type?: -1 | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
+			device_vendor?: string;
+			device_model?: string;
+			device_status?: -1 | 0 | 1;
+			page_size?: number;
+			next_page_token?: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		ListDevicesQueryResponse,
-		ErrorWrapper<ListDevices400 | ListDevices429>,
+		ListDevicesResponse,
+		ErrorWrapper<ListDevicesStatus400 | ListDevicesStatus429>,
 		null,
 		Record<string, string>,
-		ListDevicesQueryParams,
+		{
+			search_text?: string;
+			platform_os?: "win" | "mac" | "ipad" | "iphone" | "android" | "linux";
+			is_enrolled_in_zdm?: boolean;
+			device_type?: -1 | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
+			device_vendor?: string;
+			device_model?: string;
+			device_status?: -1 | 0 | 1;
+			page_size?: number;
+			next_page_token?: string;
+		},
 		Record<string, string>
-	>({ method: "GET", url: `/devices`, queryParams, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/devices`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Add a new device
  * @description Add a new device to Zoom account.
  * **Scope:** `device:write:admin`
- * **[Rate Limit Label](https://developers.zoom.us/docs/api/rest/rate-limits/):** `Medium`
+ *  **[Rate Limit Label](https://developers.zoom.us/docs/api/rest/rate-limits/):** `Medium`
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `device:write:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `MEDIUM`
- * @summary Add a new device
- * {@link /devices}
+ * @link /devices
  */
-export async function addDevice({
-	body,
-	config = {},
-}: {
-	body: AddDeviceMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function addDevice(
+	{
+		body,
+		config,
+	}: {
+		body?: AddDeviceBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		AddDeviceMutationResponse,
-		ErrorWrapper<AddDevice400 | AddDevice429>,
-		AddDeviceMutationRequest,
+		AddDeviceResponse,
+		ErrorWrapper<AddDeviceStatus400 | AddDeviceStatus429>,
+		AddDeviceBody,
 		Record<string, string>,
 		Record<string, string>,
 		Record<string, string>
-	>({ method: "POST", url: `/devices`, body, ...requestConfig });
+	>({
+		method: "POST",
+		url: `/devices`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Get ZDM group info
  * @description Get Zoom Device Manager (ZDM) group information for an account.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `device:read:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `device:read:list_groups:admin`,`device:read:list_groups:master`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `MEDIUM`
- * @summary Get ZDM group info
- * {@link /devices/groups}
+ * @link /devices/groups
  */
-export async function getzdmgroupinfo({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: GetzdmgroupinfoQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getzdmgroupinfo(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { page_size?: number; next_page_token?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		GetzdmgroupinfoQueryResponse,
-		ErrorWrapper<Getzdmgroupinfo400 | Getzdmgroupinfo403 | Getzdmgroupinfo429>,
+		GetzdmgroupinfoResponse,
+		ErrorWrapper<GetzdmgroupinfoStatus400 | GetzdmgroupinfoStatus403 | GetzdmgroupinfoStatus429>,
 		null,
 		Record<string, string>,
-		GetzdmgroupinfoQueryParams,
+		{ page_size?: number; next_page_token?: string },
 		Record<string, string>
-	>({ method: "GET", url: `/devices/groups`, queryParams, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/devices/groups`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Assign a device to a user or commonarea
  * @description Assign a device to a user or common area, or move a device to another user or common area, or remove a device.
  * **Prerequisites:**
  * * Device must be enrolled in Zoom Device Management (ZDM).
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `device:write:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `device:write:zpa_device:admin`,`device:write:zpa_device:master`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `MEDIUM`
- * @summary Assign a device to a user or commonarea
- * {@link /devices/zpa/assignment}
+ * @link /devices/zpa/assignment
  */
-export async function assigndevicetoauserCommonarea({
-	body,
-	config = {},
-}: {
-	body: AssigndevicetoauserCommonareaMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function assigndevicetoauserCommonarea(
+	{
+		body,
+		config,
+	}: {
+		body?: AssigndevicetoauserCommonareaBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		AssigndevicetoauserCommonareaMutationResponse,
-		ErrorWrapper<AssigndevicetoauserCommonarea400 | AssigndevicetoauserCommonarea429>,
-		AssigndevicetoauserCommonareaMutationRequest,
+		AssigndevicetoauserCommonareaResponse,
+		ErrorWrapper<AssigndevicetoauserCommonareaStatus400 | AssigndevicetoauserCommonareaStatus429>,
+		AssigndevicetoauserCommonareaBody,
 		Record<string, string>,
 		Record<string, string>,
 		Record<string, string>
-	>({ method: "POST", url: `/devices/zpa/assignment`, body, ...requestConfig });
+	>({
+		method: "POST",
+		url: `/devices/zpa/assignment`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Get Zoom Phone Appliance settings by user ID
  * @description Get a user's Zoom Phone Appliance (ZPA) device profile settings. For user-level apps, pass the `me` value instead of the `userId` parameter.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `device:read:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `device:read:user_setting:admin`,`device:read:user_setting:master`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `MEDIUM`
- * @summary Get Zoom Phone Appliance settings by user ID
- * {@link /devices/zpa/settings}
+ * @link /devices/zpa/settings
  */
-export async function getZpaDeviceListProfileSettingOfaUser({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: GetZpaDeviceListProfileSettingOfaUserQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getZpaDeviceListProfileSettingOfaUser(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { user_id?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		GetZpaDeviceListProfileSettingOfaUserQueryResponse,
+		GetZpaDeviceListProfileSettingOfaUserResponse,
 		ErrorWrapper<
-			| GetZpaDeviceListProfileSettingOfaUser400
-			| GetZpaDeviceListProfileSettingOfaUser401
-			| GetZpaDeviceListProfileSettingOfaUser403
-			| GetZpaDeviceListProfileSettingOfaUser429
+			| GetZpaDeviceListProfileSettingOfaUserStatus400
+			| GetZpaDeviceListProfileSettingOfaUserStatus401
+			| GetZpaDeviceListProfileSettingOfaUserStatus403
+			| GetZpaDeviceListProfileSettingOfaUserStatus429
 		>,
 		null,
 		Record<string, string>,
-		GetZpaDeviceListProfileSettingOfaUserQueryParams,
+		{ user_id?: string },
 		Record<string, string>
-	>({ method: "GET", url: `/devices/zpa/settings`, queryParams, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/devices/zpa/settings`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Upgrade ZPA firmware or app
  * @description Upgrade ZPA firmware or app by Zoom Device Manager (ZDM) group ID.
  * **Prerequisites:**
  * * Account owner or admin permissions.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `device:write:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `device:write:zpa_os_app:admin`,`device:write:zpa_os_app:master`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `HEAVY`
- * @summary Upgrade ZPA firmware or app
- * {@link /devices/zpa/upgrade}
+ * @link /devices/zpa/upgrade
  */
-export async function upgradeZpasApp({
-	body,
-	config = {},
-}: {
-	body: UpgradeZpasAppMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function upgradeZpasApp(
+	{
+		body,
+		config,
+	}: {
+		body?: UpgradeZpasAppBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		UpgradeZpasAppMutationResponse,
-		ErrorWrapper<UpgradeZpasApp400 | UpgradeZpasApp429>,
-		UpgradeZpasAppMutationRequest,
+		UpgradeZpasAppResponse,
+		ErrorWrapper<UpgradeZpasAppStatus400 | UpgradeZpasAppStatus429>,
+		UpgradeZpasAppBody,
 		Record<string, string>,
 		Record<string, string>,
 		Record<string, string>
-	>({ method: "POST", url: `/devices/zpa/upgrade`, body, ...requestConfig });
+	>({
+		method: "POST",
+		url: `/devices/zpa/upgrade`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Delete ZPA device by vendor and mac address
  * @description Remove a ZPA device from the device manager, by vendor and mac address.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `device:write:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `device:delete:zpa_device:admin`,`device:delete:zpa_device:master`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `MEDIUM`
- * @summary Delete ZPA device by vendor and mac address
- * {@link /devices/zpa/vendors/:vendor/mac_addresses/:macAddress}
+ * @link /devices/zpa/vendors/{vendor}/mac_addresses/{macAddress}
  */
-export async function deleteZpaDeviceByVendorAndMacAddress({
-	pathParams: { vendor, macAddress },
-	config = {},
-}: {
-	pathParams: DeleteZpaDeviceByVendorAndMacAddressPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deleteZpaDeviceByVendorAndMacAddress(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { vendor: string; macAddress: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!vendor) {
+	if (!pathParams.vendor) {
 		throw new Error(`Missing required path parameter: vendor`);
 	}
 
-	if (!macAddress) {
+	if (!pathParams.macAddress) {
 		throw new Error(`Missing required path parameter: macAddress`);
 	}
-
 	const data = await request<
-		DeleteZpaDeviceByVendorAndMacAddressMutationResponse,
+		DeleteZpaDeviceByVendorAndMacAddressResponse,
 		ErrorWrapper<
-			| DeleteZpaDeviceByVendorAndMacAddress400
-			| DeleteZpaDeviceByVendorAndMacAddress404
-			| DeleteZpaDeviceByVendorAndMacAddress429
+			| DeleteZpaDeviceByVendorAndMacAddressStatus400
+			| DeleteZpaDeviceByVendorAndMacAddressStatus404
+			| DeleteZpaDeviceByVendorAndMacAddressStatus429
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		DeleteZpaDeviceByVendorAndMacAddressPathParams
+		{ vendor: string; macAddress: string }
 	>({
 		method: "DELETE",
-		url: `/devices/zpa/vendors/${vendor}/mac_addresses/${macAddress}`,
+		url: `/devices/zpa/vendors/${pathParams.vendor}/mac_addresses/${pathParams.macAddress}`,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
+ * @summary Get ZPA version info
  * @description Get ZPA firmware and app version information that can be upgraded for devices.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `device:read:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `device:read:list_zpa_versions:admin`,`device:read:list_zpa_versions:master`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `MEDIUM`
- * @summary Get ZPA version info
- * {@link /devices/zpa/zdm_groups/:zdmGroupId/versions}
+ * @link /devices/zpa/zdm_groups/{zdmGroupId}/versions
  */
-export async function getZpaVersioninfo({
-	pathParams: { zdmGroupId },
-	config = {},
-}: {
-	pathParams: GetZpaVersioninfoPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getZpaVersioninfo(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { zdmGroupId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!zdmGroupId) {
+	if (!pathParams.zdmGroupId) {
 		throw new Error(`Missing required path parameter: zdmGroupId`);
 	}
-
 	const data = await request<
-		GetZpaVersioninfoQueryResponse,
-		ErrorWrapper<GetZpaVersioninfo400 | GetZpaVersioninfo404 | GetZpaVersioninfo429>,
+		GetZpaVersioninfoResponse,
+		ErrorWrapper<
+			GetZpaVersioninfoStatus400 | GetZpaVersioninfoStatus404 | GetZpaVersioninfoStatus429
+		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		GetZpaVersioninfoPathParams
-	>({ method: "GET", url: `/devices/zpa/zdm_groups/${zdmGroupId}/versions`, ...requestConfig });
+		{ zdmGroupId: string }
+	>({
+		method: "GET",
+		url: `/devices/zpa/zdm_groups/${pathParams.zdmGroupId}/versions`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Get device detail
  * @description Retrieve a device's details.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `device:read:admin`,`device:write:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `HEAVY`
- * @summary Get device detail
- * {@link /devices/:deviceId}
+ * @link /devices/{deviceId}
  */
-export async function getDevice({
-	pathParams: { deviceId },
-	config = {},
-}: {
-	pathParams: GetDevicePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getDevice(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { deviceId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!deviceId) {
+	if (!pathParams.deviceId) {
 		throw new Error(`Missing required path parameter: deviceId`);
 	}
-
 	const data = await request<
-		GetDeviceQueryResponse,
-		ErrorWrapper<GetDevice400 | GetDevice404 | GetDevice429>,
+		GetDeviceResponse,
+		ErrorWrapper<GetDeviceStatus400 | GetDeviceStatus404 | GetDeviceStatus429>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		GetDevicePathParams
-	>({ method: "GET", url: `/devices/${deviceId}`, ...requestConfig });
+		{ deviceId: string }
+	>({
+		method: "GET",
+		url: `/devices/${pathParams.deviceId}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Delete device
  * @description Delete a device from a Zoom account.
  * **Prerequisites:**
  * * Device must be enrolled in ZMD (Zoom Device Management)
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `device:write:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `HEAVY`
- * @summary Delete device
- * {@link /devices/:deviceId}
+ * @link /devices/{deviceId}
  */
-export async function deleteDevice({
-	pathParams: { deviceId },
-	config = {},
-}: {
-	pathParams: DeleteDevicePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deleteDevice(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { deviceId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!deviceId) {
+	if (!pathParams.deviceId) {
 		throw new Error(`Missing required path parameter: deviceId`);
 	}
-
 	const data = await request<
-		DeleteDeviceMutationResponse,
-		ErrorWrapper<DeleteDevice400 | DeleteDevice404 | DeleteDevice429>,
+		DeleteDeviceResponse,
+		ErrorWrapper<DeleteDeviceStatus400 | DeleteDeviceStatus404 | DeleteDeviceStatus429>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		DeleteDevicePathParams
-	>({ method: "DELETE", url: `/devices/${deviceId}`, ...requestConfig });
+		{ deviceId: string }
+	>({
+		method: "DELETE",
+		url: `/devices/${pathParams.deviceId}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Change device
  * @description Change device name.
  * **Prerequisites:**
  * * Device must be enrolled in ZMD (Zoom Device Management)
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `device:write:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `MEDIUM`
- * @summary Change device
- * {@link /devices/:deviceId}
+ * @link /devices/{deviceId}
  */
-export async function updateDevice({
-	pathParams: { deviceId },
-	body,
-	config = {},
-}: {
-	pathParams: UpdateDevicePathParams;
-	body: UpdateDeviceMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function updateDevice(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { deviceId: string };
+		body?: UpdateDeviceBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!deviceId) {
+	if (!pathParams.deviceId) {
 		throw new Error(`Missing required path parameter: deviceId`);
 	}
-
 	const data = await request<
-		UpdateDeviceMutationResponse,
-		ErrorWrapper<UpdateDevice400 | UpdateDevice404 | UpdateDevice429>,
-		UpdateDeviceMutationRequest,
+		UpdateDeviceResponse,
+		ErrorWrapper<UpdateDeviceStatus400 | UpdateDeviceStatus404 | UpdateDeviceStatus429>,
+		UpdateDeviceBody,
 		Record<string, string>,
 		Record<string, string>,
-		UpdateDevicePathParams
-	>({ method: "PATCH", url: `/devices/${deviceId}`, body, ...requestConfig });
+		{ deviceId: string }
+	>({
+		method: "PATCH",
+		url: `/devices/${pathParams.deviceId}`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Assign a device to a group
  * @description Assign a device to a new group.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `device:write:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `device:write:group:admin`,`device:write:group:master`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Assign a device to a group
- * {@link /devices/:deviceId/assign_group}
+ * @link /devices/{deviceId}/assign_group
  */
-export async function assginGroup({
-	pathParams: { deviceId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: AssginGroupPathParams;
-	queryParams: AssginGroupQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function assginGroup(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { deviceId: string };
+		queryParams?: { group_id?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!deviceId) {
+	if (!pathParams.deviceId) {
 		throw new Error(`Missing required path parameter: deviceId`);
 	}
-
 	const data = await request<
-		AssginGroupMutationResponse,
-		ErrorWrapper<AssginGroup400 | AssginGroup401 | AssginGroup404 | AssginGroup429>,
+		AssginGroupResponse,
+		ErrorWrapper<
+			AssginGroupStatus400 | AssginGroupStatus401 | AssginGroupStatus404 | AssginGroupStatus429
+		>,
 		null,
 		Record<string, string>,
-		AssginGroupQueryParams,
-		AssginGroupPathParams
-	>({ method: "PATCH", url: `/devices/${deviceId}/assign_group`, queryParams, ...requestConfig });
+		{ group_id?: string },
+		{ deviceId: string }
+	>({
+		method: "PATCH",
+		url: `/devices/${pathParams.deviceId}/assign_group`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Change device association
  * @description Change a device's association from one Zoom Room to another. **Prerequisites** Device must be enrolled in ZDM (Zoom Device Management). \n\n**Note** Currently, only Poly TC10’s may make Zoom Room assignments.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `device:write:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `device:update:zdm_device_assignment:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `MEDIUM`
- * @summary Change device association
- * {@link /devices/:deviceId/assignment}
+ * @link /devices/{deviceId}/assignment
  */
-export async function changeDeviceAssociation({
-	pathParams: { deviceId },
-	body,
-	config = {},
-}: {
-	pathParams: ChangeDeviceAssociationPathParams;
-	body: ChangeDeviceAssociationMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function changeDeviceAssociation(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { deviceId: string };
+		body?: ChangeDeviceAssociationBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!deviceId) {
+	if (!pathParams.deviceId) {
 		throw new Error(`Missing required path parameter: deviceId`);
 	}
-
 	const data = await request<
-		ChangeDeviceAssociationMutationResponse,
+		ChangeDeviceAssociationResponse,
 		ErrorWrapper<
-			ChangeDeviceAssociation400 | ChangeDeviceAssociation404 | ChangeDeviceAssociation429
+			| ChangeDeviceAssociationStatus400
+			| ChangeDeviceAssociationStatus404
+			| ChangeDeviceAssociationStatus429
 		>,
-		ChangeDeviceAssociationMutationRequest,
+		ChangeDeviceAssociationBody,
 		Record<string, string>,
 		Record<string, string>,
-		ChangeDeviceAssociationPathParams
-	>({ method: "PATCH", url: `/devices/${deviceId}/assignment`, body, ...requestConfig });
+		{ deviceId: string }
+	>({
+		method: "PATCH",
+		url: `/devices/${pathParams.deviceId}/assignment`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary List H.323/SIP devices
  * @description A H.323 or SIP device can make a video call to a [Room Connector](https://support.zoom.us/hc/en-us/articles/201363273-Getting-Started-With-H-323-SIP-Room-Connector) to join a Zoom cloud meeting. A Room Connector can also call out to a H.323 or SIP device to join a Zoom cloud meeting. Use this API to list all H.323/SIP Devices on a Zoom account.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `h323:read:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `h323_device:read:list_devices:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `MEDIUM`
- * @summary List H.323/SIP devices
- * {@link /h323/devices}
+ * @link /h323/devices
  */
-export async function deviceList({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: DeviceListQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deviceList(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { page_size?: number; page_number?: number; next_page_token?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		DeviceListQueryResponse,
-		ErrorWrapper<DeviceList400 | DeviceList401 | DeviceList403 | DeviceList429>,
+		DeviceListResponse,
+		ErrorWrapper<
+			DeviceListStatus400 | DeviceListStatus401 | DeviceListStatus403 | DeviceListStatus429
+		>,
 		null,
 		Record<string, string>,
-		DeviceListQueryParams,
+		{ page_size?: number; page_number?: number; next_page_token?: string },
 		Record<string, string>
-	>({ method: "GET", url: `/h323/devices`, queryParams, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/h323/devices`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Create a H.323/SIP device
  * @description A H.323 or SIP device can make a video call to a [Room Connector](https://support.zoom.us/hc/en-us/articles/201363273-Getting-Started-With-H-323-SIP-Room-Connector) to join a Zoom cloud meeting. A Room Connector can also call out to a H.323 or SIP device to join a Zoom cloud meeting. Use this API to add a H.323/SIP device to your Zoom account
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `h323:write:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `h323_device:write:device:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Create a H.323/SIP device
- * {@link /h323/devices}
+ * @link /h323/devices
  */
-export async function deviceCreate({
-	body,
-	config = {},
-}: {
-	body: DeviceCreateMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deviceCreate(
+	{
+		body,
+		config,
+	}: {
+		body?: DeviceCreateBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		DeviceCreateMutationResponse,
+		DeviceCreateResponse,
 		ErrorWrapper<
-			DeviceCreate400 | DeviceCreate401 | DeviceCreate403 | DeviceCreate404 | DeviceCreate429
+			| DeviceCreateStatus400
+			| DeviceCreateStatus401
+			| DeviceCreateStatus403
+			| DeviceCreateStatus404
+			| DeviceCreateStatus429
 		>,
-		DeviceCreateMutationRequest,
+		DeviceCreateBody,
 		Record<string, string>,
 		Record<string, string>,
 		Record<string, string>
-	>({ method: "POST", url: `/h323/devices`, body, ...requestConfig });
+	>({
+		method: "POST",
+		url: `/h323/devices`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Delete a H.323/SIP device
  * @description A H.323 or SIP device can make a video call to a [Room Connector](https://support.zoom.us/hc/en-us/articles/201363273-Getting-Started-With-H-323-SIP-Room-Connector) to join a Zoom cloud meeting. A Room Connector can also call out to a H.323 or SIP device to join a Zoom cloud meeting. Use this API to delete a H.323/SIP device from your Zoom account.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `h323:write:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `h323_device:delete:device:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Delete a H.323/SIP device
- * {@link /h323/devices/:deviceId}
+ * @link /h323/devices/{deviceId}
  */
-export async function deviceDelete({
-	pathParams: { deviceId },
-	config = {},
-}: {
-	pathParams: DeviceDeletePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deviceDelete(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { deviceId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!deviceId) {
+	if (!pathParams.deviceId) {
 		throw new Error(`Missing required path parameter: deviceId`);
 	}
-
 	const data = await request<
-		DeviceDeleteMutationResponse,
+		DeviceDeleteResponse,
 		ErrorWrapper<
-			DeviceDelete400 | DeviceDelete401 | DeviceDelete403 | DeviceDelete404 | DeviceDelete429
+			| DeviceDeleteStatus400
+			| DeviceDeleteStatus401
+			| DeviceDeleteStatus403
+			| DeviceDeleteStatus404
+			| DeviceDeleteStatus429
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		DeviceDeletePathParams
-	>({ method: "DELETE", url: `/h323/devices/${deviceId}`, ...requestConfig });
+		{ deviceId: string }
+	>({
+		method: "DELETE",
+		url: `/h323/devices/${pathParams.deviceId}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Update a H.323/SIP device
  * @description Edit information for a H.323/SIP device from your Zoom account.
- * A H.323 or SIP device can make a video call to a [Room Connector](https://support.zoom.us/hc/en-us/articles/201363273-Getting-Started-With-H-323-SIP-Room-Connector) to join a Zoom cloud meeting. A Room Connector can also call out to a H.323 or SIP device to join a Zoom cloud meeting.
+ *  A H.323 or SIP device can make a video call to a [Room Connector](https://support.zoom.us/hc/en-us/articles/201363273-Getting-Started-With-H-323-SIP-Room-Connector) to join a Zoom cloud meeting. A Room Connector can also call out to a H.323 or SIP device to join a Zoom cloud meeting.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `h323:write:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `h323_device:update:device:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Update a H.323/SIP device
- * {@link /h323/devices/:deviceId}
+ * @link /h323/devices/{deviceId}
  */
-export async function deviceUpdate({
-	pathParams: { deviceId },
-	body,
-	config = {},
-}: {
-	pathParams: DeviceUpdatePathParams;
-	body: DeviceUpdateMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deviceUpdate(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { deviceId: string };
+		body?: DeviceUpdateBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!deviceId) {
+	if (!pathParams.deviceId) {
 		throw new Error(`Missing required path parameter: deviceId`);
 	}
-
 	const data = await request<
-		DeviceUpdateMutationResponse,
+		DeviceUpdateResponse,
 		ErrorWrapper<
-			DeviceUpdate400 | DeviceUpdate401 | DeviceUpdate403 | DeviceUpdate404 | DeviceUpdate429
+			| DeviceUpdateStatus400
+			| DeviceUpdateStatus401
+			| DeviceUpdateStatus403
+			| DeviceUpdateStatus404
+			| DeviceUpdateStatus429
 		>,
-		DeviceUpdateMutationRequest,
+		DeviceUpdateBody,
 		Record<string, string>,
 		Record<string, string>,
-		DeviceUpdatePathParams
-	>({ method: "PATCH", url: `/h323/devices/${deviceId}`, body, ...requestConfig });
+		{ deviceId: string }
+	>({
+		method: "PATCH",
+		url: `/h323/devices/${pathParams.deviceId}`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Add a meeting app
  * @description Add an auto-open app in a meeting. This endpoint lets a developer auto-open an app in a specific meeting. This is only for configuring an app to automatically open before a given session. This can't open the app while a meeting or webinar is in session.
  * **Prerequisites**:
  * * The meeting must not be a live meeting.
@@ -2429,34 +2653,41 @@ export async function deviceUpdate({
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:write`,`meeting:write:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:write:open_app`,`meeting:write:open_app:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Add a meeting app
- * {@link /meetings/:meetingId/open_apps}
+ * @link /meetings/{meetingId}/open_apps
  */
-export async function meetingAppAdd({
-	pathParams: { meetingId },
-	config = {},
-}: {
-	pathParams: MeetingAppAddPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function meetingAppAdd(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { meetingId: bigint };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!meetingId) {
+	if (!pathParams.meetingId) {
 		throw new Error(`Missing required path parameter: meetingId`);
 	}
-
 	const data = await request<
-		MeetingAppAddMutationResponse,
-		ErrorWrapper<MeetingAppAdd400 | MeetingAppAdd404 | MeetingAppAdd429>,
+		MeetingAppAddResponse,
+		ErrorWrapper<MeetingAppAddStatus400 | MeetingAppAddStatus404 | MeetingAppAddStatus429>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		MeetingAppAddPathParams
-	>({ method: "POST", url: `/meetings/${meetingId}/open_apps`, ...requestConfig });
+		{ meetingId: bigint }
+	>({
+		method: "POST",
+		url: `/meetings/${pathParams.meetingId}/open_apps`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Delete a meeting app
  * @description Delete a meeting auto-open app.
  * **Prerequisites**:
  * * The meeting must not be a live meeting.
@@ -2464,130 +2695,143 @@ export async function meetingAppAdd({
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:write`,`meeting:write:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:delete:open_app`,`meeting:delete:open_app:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Delete a meeting app
- * {@link /meetings/:meetingId/open_apps}
+ * @link /meetings/{meetingId}/open_apps
  */
-export async function meetingAppDelete({
-	pathParams: { meetingId },
-	config = {},
-}: {
-	pathParams: MeetingAppDeletePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function meetingAppDelete(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { meetingId: bigint };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!meetingId) {
+	if (!pathParams.meetingId) {
 		throw new Error(`Missing required path parameter: meetingId`);
 	}
-
 	const data = await request<
-		MeetingAppDeleteMutationResponse,
-		ErrorWrapper<MeetingAppDelete400 | MeetingAppDelete404 | MeetingAppDelete429>,
+		MeetingAppDeleteResponse,
+		ErrorWrapper<MeetingAppDeleteStatus400 | MeetingAppDeleteStatus404 | MeetingAppDeleteStatus429>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		MeetingAppDeletePathParams
-	>({ method: "DELETE", url: `/meetings/${meetingId}/open_apps`, ...requestConfig });
+		{ meetingId: bigint }
+	>({
+		method: "DELETE",
+		url: `/meetings/${pathParams.meetingId}/open_apps`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Delete a live meeting message
  * @description Delete a message in a live meeting, based on ID.
  * **Prerequisites:**
  * * Have Zoom enable the DLP for the in-meeting chat feature to use this API.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:write`,`meeting:write:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:delete:live_meeting_chat_message`,`meeting:delete:live_meeting_chat_message:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `MEDIUM`
- * @summary Delete a live meeting message
- * {@link /live_meetings/:meetingId/chat/messages/:messageId}
+ * @link /live_meetings/{meetingId}/chat/messages/{messageId}
  */
-export async function deleteMeetingChatMessageById({
-	pathParams: { meetingId, messageId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: DeleteMeetingChatMessageByIdPathParams;
-	queryParams?: DeleteMeetingChatMessageByIdQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deleteMeetingChatMessageById(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { meetingId: bigint; messageId: string };
+		queryParams?: { file_ids?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!meetingId) {
+	if (!pathParams.meetingId) {
 		throw new Error(`Missing required path parameter: meetingId`);
 	}
 
-	if (!messageId) {
+	if (!pathParams.messageId) {
 		throw new Error(`Missing required path parameter: messageId`);
 	}
-
 	const data = await request<
-		DeleteMeetingChatMessageByIdMutationResponse,
+		DeleteMeetingChatMessageByIdResponse,
 		ErrorWrapper<
-			| DeleteMeetingChatMessageById400
-			| DeleteMeetingChatMessageById404
-			| DeleteMeetingChatMessageById429
+			| DeleteMeetingChatMessageByIdStatus400
+			| DeleteMeetingChatMessageByIdStatus404
+			| DeleteMeetingChatMessageByIdStatus429
 		>,
 		null,
 		Record<string, string>,
-		DeleteMeetingChatMessageByIdQueryParams,
-		DeleteMeetingChatMessageByIdPathParams
+		{ file_ids?: string },
+		{ meetingId: bigint; messageId: string }
 	>({
 		method: "DELETE",
-		url: `/live_meetings/${meetingId}/chat/messages/${messageId}`,
+		url: `/live_meetings/${pathParams.meetingId}/chat/messages/${pathParams.messageId}`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
+ * @summary Update a live meeting message
  * @description Update a message in a live meeting, based on ID. **Prerequisites:** * Have Zoom enable the DLP for the in-meeting chat feature to use this API.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:write`,`meeting:write:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:update:live_meeting_chat_message`,`meeting:update:live_meeting_chat_message:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `MEDIUM`
- * @summary Update a live meeting message
- * {@link /live_meetings/:meetingId/chat/messages/:messageId}
+ * @link /live_meetings/{meetingId}/chat/messages/{messageId}
  */
-export async function updateMeetingChatMessageById({
-	pathParams: { meetingId, messageId },
-	body,
-	config = {},
-}: {
-	pathParams: UpdateMeetingChatMessageByIdPathParams;
-	body: UpdateMeetingChatMessageByIdMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function updateMeetingChatMessageById(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { meetingId: bigint; messageId: string };
+		body?: UpdateMeetingChatMessageByIdBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!meetingId) {
+	if (!pathParams.meetingId) {
 		throw new Error(`Missing required path parameter: meetingId`);
 	}
 
-	if (!messageId) {
+	if (!pathParams.messageId) {
 		throw new Error(`Missing required path parameter: messageId`);
 	}
-
 	const data = await request<
-		UpdateMeetingChatMessageByIdMutationResponse,
+		UpdateMeetingChatMessageByIdResponse,
 		ErrorWrapper<
-			| UpdateMeetingChatMessageById400
-			| UpdateMeetingChatMessageById404
-			| UpdateMeetingChatMessageById429
+			| UpdateMeetingChatMessageByIdStatus400
+			| UpdateMeetingChatMessageByIdStatus404
+			| UpdateMeetingChatMessageByIdStatus429
 		>,
-		UpdateMeetingChatMessageByIdMutationRequest,
+		UpdateMeetingChatMessageByIdBody,
 		Record<string, string>,
 		Record<string, string>,
-		UpdateMeetingChatMessageByIdPathParams
+		{ meetingId: bigint; messageId: string }
 	>({
 		method: "PATCH",
-		url: `/live_meetings/${meetingId}/chat/messages/${messageId}`,
-		body,
+		url: `/live_meetings/${pathParams.meetingId}/chat/messages/${pathParams.messageId}`,
+		body: body,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
+ * @summary In-meeting controls
  * @description [In-meeting](https://support.zoom.us/hc/en-us/articles/360021921032-In-Meeting-Controls) controls include starting, stopping, pausing, and resuming a recording; inviting participants; updating the waiting room with a custom message; and starting, stopping, or disabling the AI Companion.
  * **Note:** This API's recording control only works for cloud recordings, **not** for local recordings.
  * **Prerequisites:**
@@ -2598,83 +2842,97 @@ export async function updateMeetingChatMessageById({
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:write`,`meeting:write:admin`,`meeting:master`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:update:in_meeting_controls`,`meeting:update:in_meeting_controls:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `MEDIUM`
- * @summary In-meeting controls
- * {@link /live_meetings/:meetingId/events}
+ * @link /live_meetings/{meetingId}/events
  */
-export async function inMeetingControl({
-	pathParams: { meetingId },
-	body,
-	config = {},
-}: {
-	pathParams: InMeetingControlPathParams;
-	body?: InMeetingControlMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function inMeetingControl(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { meetingId: string };
+		body?: InMeetingControlBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!meetingId) {
+	if (!pathParams.meetingId) {
 		throw new Error(`Missing required path parameter: meetingId`);
 	}
-
 	const data = await request<
-		InMeetingControlMutationResponse,
+		InMeetingControlResponse,
 		ErrorWrapper<
-			InMeetingControl400 | InMeetingControl403 | InMeetingControl404 | InMeetingControl429
+			| InMeetingControlStatus400
+			| InMeetingControlStatus403
+			| InMeetingControlStatus404
+			| InMeetingControlStatus429
 		>,
-		InMeetingControlMutationRequest,
+		InMeetingControlBody,
 		Record<string, string>,
 		Record<string, string>,
-		InMeetingControlPathParams
-	>({ method: "PATCH", url: `/live_meetings/${meetingId}/events`, body, ...requestConfig });
+		{ meetingId: string }
+	>({
+		method: "PATCH",
+		url: `/live_meetings/${pathParams.meetingId}/events`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Get a meeting's join token for local recording
  * @description Get a meeting's join token to allow for local recording. The join token lets a recording bot implemented using Zoom Meeting SDK to connect to a Zoom meeting. The recording bot can then automatically start locally recording. This supports both regular and raw local recording types.
  * **Prerequisites:**
  * * The **Local recording** user setting enabled in the Zoom web portal.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting_token:read:admin:local_recording`,`meeting_token:read:local_recording`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:read:local_recording_token`,`meeting:read:local_recording_token:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Get a meeting's join token for local recording
- * {@link /meetings/:meetingId/jointoken/local_recording}
+ * @link /meetings/{meetingId}/jointoken/local_recording
  */
-export async function meetingLocalRecordingJoinToken({
-	pathParams: { meetingId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: MeetingLocalRecordingJoinTokenPathParams;
-	queryParams?: MeetingLocalRecordingJoinTokenQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function meetingLocalRecordingJoinToken(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { meetingId: bigint };
+		queryParams?: { bypass_waiting_room?: boolean };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!meetingId) {
+	if (!pathParams.meetingId) {
 		throw new Error(`Missing required path parameter: meetingId`);
 	}
-
 	const data = await request<
-		MeetingLocalRecordingJoinTokenQueryResponse,
+		MeetingLocalRecordingJoinTokenResponse,
 		ErrorWrapper<
-			| MeetingLocalRecordingJoinToken400
-			| MeetingLocalRecordingJoinToken404
-			| MeetingLocalRecordingJoinToken429
+			| MeetingLocalRecordingJoinTokenStatus400
+			| MeetingLocalRecordingJoinTokenStatus404
+			| MeetingLocalRecordingJoinTokenStatus429
 		>,
 		null,
 		Record<string, string>,
-		MeetingLocalRecordingJoinTokenQueryParams,
-		MeetingLocalRecordingJoinTokenPathParams
+		{ bypass_waiting_room?: boolean },
+		{ meetingId: bigint }
 	>({
 		method: "GET",
-		url: `/meetings/${meetingId}/jointoken/local_recording`,
+		url: `/meetings/${pathParams.meetingId}/jointoken/local_recording`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
+ * @summary Get meeting's token
  * @description Get a meeting's [closed caption token (caption URL)](https://support.zoom.us/hc/en-us/articles/115002212983-Using-a-third-party-closed-captioning-service). This token lets you use a third-party service to stream text to their closed captioning software to the Zoom meeting.
  * **Prerequisites:**
  * * The **Closed captioning** setting enabled in the Zoom web portal.
@@ -2682,36 +2940,44 @@ export async function meetingLocalRecordingJoinToken({
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:read`,`meeting:read:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:read:token`,`meeting:read:token:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Get meeting's token
- * {@link /meetings/:meetingId/token}
+ * @link /meetings/{meetingId}/token
  */
-export async function meetingToken({
-	pathParams: { meetingId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: MeetingTokenPathParams;
-	queryParams?: MeetingTokenQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function meetingToken(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { meetingId: bigint };
+		queryParams?: { type?: "closed_caption_token" };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!meetingId) {
+	if (!pathParams.meetingId) {
 		throw new Error(`Missing required path parameter: meetingId`);
 	}
-
 	const data = await request<
-		MeetingTokenQueryResponse,
-		ErrorWrapper<MeetingToken400 | MeetingToken404 | MeetingToken429>,
+		MeetingTokenResponse,
+		ErrorWrapper<MeetingTokenStatus400 | MeetingTokenStatus404 | MeetingTokenStatus429>,
 		null,
 		Record<string, string>,
-		MeetingTokenQueryParams,
-		MeetingTokenPathParams
-	>({ method: "GET", url: `/meetings/${meetingId}/token`, queryParams, ...requestConfig });
+		{ type?: "closed_caption_token" },
+		{ meetingId: bigint }
+	>({
+		method: "GET",
+		url: `/meetings/${pathParams.meetingId}/token`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Perform batch registration
  * @description Register up to 30 registrants at once for a meeting that requires [registration](https://support.zoom.us/hc/en-us/articles/211579443-Registration-for-Meetings).
  * **Prerequisites:**
  * * The meeting host must be a Licensed user.
@@ -2719,108 +2985,137 @@ export async function meetingToken({
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:write`,`meeting:write:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:write:batch_registrants`,`meeting:write:batch_registrants:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `HEAVY`
- * @summary Perform batch registration
- * {@link /meetings/:meetingId/batch_registrants}
+ * @link /meetings/{meetingId}/batch_registrants
  */
-export async function addBatchRegistrants({
-	pathParams: { meetingId },
-	body,
-	config = {},
-}: {
-	pathParams: AddBatchRegistrantsPathParams;
-	body?: AddBatchRegistrantsMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function addBatchRegistrants(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { meetingId: string };
+		body?: AddBatchRegistrantsBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!meetingId) {
+	if (!pathParams.meetingId) {
 		throw new Error(`Missing required path parameter: meetingId`);
 	}
-
 	const data = await request<
-		AddBatchRegistrantsMutationResponse,
-		ErrorWrapper<AddBatchRegistrants400 | AddBatchRegistrants404 | AddBatchRegistrants429>,
-		AddBatchRegistrantsMutationRequest,
+		AddBatchRegistrantsResponse,
+		ErrorWrapper<
+			AddBatchRegistrantsStatus400 | AddBatchRegistrantsStatus404 | AddBatchRegistrantsStatus429
+		>,
+		AddBatchRegistrantsBody,
 		Record<string, string>,
 		Record<string, string>,
-		AddBatchRegistrantsPathParams
-	>({ method: "POST", url: `/meetings/${meetingId}/batch_registrants`, body, ...requestConfig });
+		{ meetingId: string }
+	>({
+		method: "POST",
+		url: `/meetings/${pathParams.meetingId}/batch_registrants`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Get meeting invitation
  * @description Retrieve the meeting invitation note for a specific meeting.
  * **Prerequisites**:
  * * Host user must have a Zoom Meetings Basic license or higher.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:read`,`meeting:read:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:read:invitation`,`meeting:read:invitation:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Get meeting invitation
- * {@link /meetings/:meetingId/invitation}
+ * @link /meetings/{meetingId}/invitation
  */
-export async function meetingInvitation({
-	pathParams: { meetingId },
-	config = {},
-}: {
-	pathParams: MeetingInvitationPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function meetingInvitation(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { meetingId: bigint };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!meetingId) {
+	if (!pathParams.meetingId) {
 		throw new Error(`Missing required path parameter: meetingId`);
 	}
-
 	const data = await request<
-		MeetingInvitationQueryResponse,
-		ErrorWrapper<MeetingInvitation400 | MeetingInvitation404 | MeetingInvitation429>,
+		MeetingInvitationResponse,
+		ErrorWrapper<
+			MeetingInvitationStatus400 | MeetingInvitationStatus404 | MeetingInvitationStatus429
+		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		MeetingInvitationPathParams
-	>({ method: "GET", url: `/meetings/${meetingId}/invitation`, ...requestConfig });
+		{ meetingId: bigint }
+	>({
+		method: "GET",
+		url: `/meetings/${pathParams.meetingId}/invitation`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Create a meeting's invite links
  * @description Create a batch of invitation links for a meeting.
  * **Prerequisites**:
  * * The `ttl` value, in seconds, defines the invite link's expiration time. It must be between `0` or no expiration and `7776000` or 90 days, and has a default value of `7200` or 2 hours.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:write:admin`,`meeting:write`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:write:invite_links`,`meeting:write:invite_links:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Create a meeting's invite links
- * {@link /meetings/:meetingId/invite_links}
+ * @link /meetings/{meetingId}/invite_links
  */
-export async function meetingInviteLinksCreate({
-	pathParams: { meetingId },
-	body,
-	config = {},
-}: {
-	pathParams: MeetingInviteLinksCreatePathParams;
-	body?: MeetingInviteLinksCreateMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function meetingInviteLinksCreate(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { meetingId: bigint };
+		body?: MeetingInviteLinksCreateBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!meetingId) {
+	if (!pathParams.meetingId) {
 		throw new Error(`Missing required path parameter: meetingId`);
 	}
-
 	const data = await request<
-		MeetingInviteLinksCreateMutationResponse,
+		MeetingInviteLinksCreateResponse,
 		ErrorWrapper<
-			MeetingInviteLinksCreate400 | MeetingInviteLinksCreate404 | MeetingInviteLinksCreate429
+			| MeetingInviteLinksCreateStatus400
+			| MeetingInviteLinksCreateStatus404
+			| MeetingInviteLinksCreateStatus429
 		>,
-		MeetingInviteLinksCreateMutationRequest,
+		MeetingInviteLinksCreateBody,
 		Record<string, string>,
 		Record<string, string>,
-		MeetingInviteLinksCreatePathParams
-	>({ method: "POST", url: `/meetings/${meetingId}/invite_links`, body, ...requestConfig });
+		{ meetingId: bigint }
+	>({
+		method: "POST",
+		url: `/meetings/${pathParams.meetingId}/invite_links`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary List meeting registrants
  * @description List users that have registered for a meeting. A host or a user with admin permission can require [registration for a Zoom meeting](https://support.zoom.us/hc/en-us/articles/211579443-Registration-for-Meetings).
  * **Prerequisites**:
  * * Host user type must be **Pro** or higher plan.
@@ -2828,82 +3123,109 @@ export async function meetingInviteLinksCreate({
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:read:admin`,`meeting:read`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:read:list_registrants`,`meeting:read:list_registrants:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `MEDIUM`
- * @summary List meeting registrants
- * {@link /meetings/:meetingId/registrants}
+ * @link /meetings/{meetingId}/registrants
  */
-export async function meetingRegistrants({
-	pathParams: { meetingId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: MeetingRegistrantsPathParams;
-	queryParams?: MeetingRegistrantsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function meetingRegistrants(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { meetingId: bigint };
+		queryParams?: {
+			occurrence_id?: string;
+			status?: "pending" | "approved" | "denied";
+			page_size?: number;
+			page_number?: number;
+			next_page_token?: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!meetingId) {
+	if (!pathParams.meetingId) {
 		throw new Error(`Missing required path parameter: meetingId`);
 	}
-
 	const data = await request<
-		MeetingRegistrantsQueryResponse,
-		ErrorWrapper<MeetingRegistrants400 | MeetingRegistrants404 | MeetingRegistrants429>,
+		MeetingRegistrantsResponse,
+		ErrorWrapper<
+			MeetingRegistrantsStatus400 | MeetingRegistrantsStatus404 | MeetingRegistrantsStatus429
+		>,
 		null,
 		Record<string, string>,
-		MeetingRegistrantsQueryParams,
-		MeetingRegistrantsPathParams
-	>({ method: "GET", url: `/meetings/${meetingId}/registrants`, queryParams, ...requestConfig });
+		{
+			occurrence_id?: string;
+			status?: "pending" | "approved" | "denied";
+			page_size?: number;
+			page_number?: number;
+			next_page_token?: string;
+		},
+		{ meetingId: bigint }
+	>({
+		method: "GET",
+		url: `/meetings/${pathParams.meetingId}/registrants`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Add a meeting registrant
  * @description Create and submit a user's registration to a meeting. See [Customizing webinar registration](https://support.zoom.us/hc/en-us/articles/202835649-Customizing-webinar-registration) for details on how to set the requirements for these fields. Note that there is a maximum limit of 4,999 registrants per meeting and users will see an error if the meeting's capacity is reached.
- * **Prerequisites:**
+ *  **Prerequisites:**
  * * The host must be a **Licensed** user type.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:write:admin`,`meeting:write`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:write:registrant`,`meeting:write:registrant:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Add a meeting registrant
- * {@link /meetings/:meetingId/registrants}
+ * @link /meetings/{meetingId}/registrants
  */
-export async function meetingRegistrantCreate({
-	pathParams: { meetingId },
-	body,
-	queryParams,
-	config = {},
-}: {
-	pathParams: MeetingRegistrantCreatePathParams;
-	body?: MeetingRegistrantCreateMutationRequest;
-	queryParams?: MeetingRegistrantCreateQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function meetingRegistrantCreate(
+	{
+		pathParams,
+		body,
+		queryParams,
+		config,
+	}: {
+		pathParams: { meetingId: bigint };
+		body?: MeetingRegistrantCreateBody;
+		queryParams?: { occurrence_ids?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!meetingId) {
+	if (!pathParams.meetingId) {
 		throw new Error(`Missing required path parameter: meetingId`);
 	}
-
 	const data = await request<
-		MeetingRegistrantCreateMutationResponse,
+		MeetingRegistrantCreateResponse,
 		ErrorWrapper<
-			MeetingRegistrantCreate400 | MeetingRegistrantCreate404 | MeetingRegistrantCreate429
+			| MeetingRegistrantCreateStatus400
+			| MeetingRegistrantCreateStatus404
+			| MeetingRegistrantCreateStatus429
 		>,
-		MeetingRegistrantCreateMutationRequest,
+		MeetingRegistrantCreateBody,
 		Record<string, string>,
-		MeetingRegistrantCreateQueryParams,
-		MeetingRegistrantCreatePathParams
+		{ occurrence_ids?: string },
+		{ meetingId: bigint }
 	>({
 		method: "POST",
-		url: `/meetings/${meetingId}/registrants`,
+		url: `/meetings/${pathParams.meetingId}/registrants`,
 		queryParams,
-		body,
+		body: body,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
+ * @summary List registration questions
  * @description List registration questions that will be displayed to users while [registering for a meeting](https://support.zoom.us/hc/en-us/articles/211579443-Registration-for-Meetings).
  * **Prerequisites**:
  * * Host user type must be **Pro** or higher plan.
@@ -2911,38 +3233,45 @@ export async function meetingRegistrantCreate({
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:read`,`meeting:read:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:read:list_registration_questions`,`meeting:read:list_registration_questions:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary List registration questions
- * {@link /meetings/:meetingId/registrants/questions}
+ * @link /meetings/{meetingId}/registrants/questions
  */
-export async function meetingRegistrantsQuestionsGet({
-	pathParams: { meetingId },
-	config = {},
-}: {
-	pathParams: MeetingRegistrantsQuestionsGetPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function meetingRegistrantsQuestionsGet(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { meetingId: bigint };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!meetingId) {
+	if (!pathParams.meetingId) {
 		throw new Error(`Missing required path parameter: meetingId`);
 	}
-
 	const data = await request<
-		MeetingRegistrantsQuestionsGetQueryResponse,
+		MeetingRegistrantsQuestionsGetResponse,
 		ErrorWrapper<
-			| MeetingRegistrantsQuestionsGet400
-			| MeetingRegistrantsQuestionsGet404
-			| MeetingRegistrantsQuestionsGet429
+			| MeetingRegistrantsQuestionsGetStatus400
+			| MeetingRegistrantsQuestionsGetStatus404
+			| MeetingRegistrantsQuestionsGetStatus429
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		MeetingRegistrantsQuestionsGetPathParams
-	>({ method: "GET", url: `/meetings/${meetingId}/registrants/questions`, ...requestConfig });
+		{ meetingId: bigint }
+	>({
+		method: "GET",
+		url: `/meetings/${pathParams.meetingId}/registrants/questions`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Update registration questions
  * @description Update registration questions that will be displayed to users while [registering for a meeting](https://support.zoom.us/hc/en-us/articles/211579443-Registration-for-Meetings).
  * **Prerequisites**:
  * * Host user type must be **Pro** or higher plan.
@@ -2950,45 +3279,48 @@ export async function meetingRegistrantsQuestionsGet({
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:write`,`meeting:write:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:update:registration_question`,`meeting:update:registration_question:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Update registration questions
- * {@link /meetings/:meetingId/registrants/questions}
+ * @link /meetings/{meetingId}/registrants/questions
  */
-export async function meetingRegistrantQuestionUpdate({
-	pathParams: { meetingId },
-	body,
-	config = {},
-}: {
-	pathParams: MeetingRegistrantQuestionUpdatePathParams;
-	body?: MeetingRegistrantQuestionUpdateMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function meetingRegistrantQuestionUpdate(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { meetingId: bigint };
+		body?: MeetingRegistrantQuestionUpdateBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!meetingId) {
+	if (!pathParams.meetingId) {
 		throw new Error(`Missing required path parameter: meetingId`);
 	}
-
 	const data = await request<
-		MeetingRegistrantQuestionUpdateMutationResponse,
+		MeetingRegistrantQuestionUpdateResponse,
 		ErrorWrapper<
-			| MeetingRegistrantQuestionUpdate400
-			| MeetingRegistrantQuestionUpdate404
-			| MeetingRegistrantQuestionUpdate429
+			| MeetingRegistrantQuestionUpdateStatus400
+			| MeetingRegistrantQuestionUpdateStatus404
+			| MeetingRegistrantQuestionUpdateStatus429
 		>,
-		MeetingRegistrantQuestionUpdateMutationRequest,
+		MeetingRegistrantQuestionUpdateBody,
 		Record<string, string>,
 		Record<string, string>,
-		MeetingRegistrantQuestionUpdatePathParams
+		{ meetingId: bigint }
 	>({
 		method: "PATCH",
-		url: `/meetings/${meetingId}/registrants/questions`,
-		body,
+		url: `/meetings/${pathParams.meetingId}/registrants/questions`,
+		body: body,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
+ * @summary Update registrant's status
  * @description Update a meeting registrant's status by either approving, cancelling or denying a registrant from joining the meeting.
  * **Prerequisites**:
  * * Host user type must be **Pro** or higher plan.
@@ -2997,135 +3329,154 @@ export async function meetingRegistrantQuestionUpdate({
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:write:admin`,`meeting:write`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:update:registrant_status`,`meeting:update:registrant_status:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `MEDIUM`
- * @summary Update registrant's status
- * {@link /meetings/:meetingId/registrants/status}
+ * @link /meetings/{meetingId}/registrants/status
  */
-export async function meetingRegistrantStatus({
-	pathParams: { meetingId },
-	body,
-	queryParams,
-	config = {},
-}: {
-	pathParams: MeetingRegistrantStatusPathParams;
-	body: MeetingRegistrantStatusMutationRequest;
-	queryParams?: MeetingRegistrantStatusQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function meetingRegistrantStatus(
+	{
+		pathParams,
+		body,
+		queryParams,
+		config,
+	}: {
+		pathParams: { meetingId: bigint };
+		body?: MeetingRegistrantStatusBody;
+		queryParams?: { occurrence_id?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!meetingId) {
+	if (!pathParams.meetingId) {
 		throw new Error(`Missing required path parameter: meetingId`);
 	}
-
 	const data = await request<
-		MeetingRegistrantStatusMutationResponse,
+		MeetingRegistrantStatusResponse,
 		ErrorWrapper<
-			MeetingRegistrantStatus400 | MeetingRegistrantStatus404 | MeetingRegistrantStatus429
+			| MeetingRegistrantStatusStatus400
+			| MeetingRegistrantStatusStatus404
+			| MeetingRegistrantStatusStatus429
 		>,
-		MeetingRegistrantStatusMutationRequest,
+		MeetingRegistrantStatusBody,
 		Record<string, string>,
-		MeetingRegistrantStatusQueryParams,
-		MeetingRegistrantStatusPathParams
+		{ occurrence_id?: string },
+		{ meetingId: bigint }
 	>({
 		method: "PUT",
-		url: `/meetings/${meetingId}/registrants/status`,
+		url: `/meetings/${pathParams.meetingId}/registrants/status`,
 		queryParams,
-		body,
+		body: body,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
+ * @summary Get a meeting registrant
  * @description Retrieve details on a specific user who has registered for the meeting. A host or a user with administrative permissions can require [registration for Zoom meetings](https://support.zoom.us/hc/en-us/articles/211579443-Registration-for-Meetings).
  * **Prerequisites:**
  * * The account must have a Meeting plan
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:read:admin`,`meeting:read`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:read:registrant`,`meeting:read:registrant:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Get a meeting registrant
- * {@link /meetings/:meetingId/registrants/:registrantId}
+ * @link /meetings/{meetingId}/registrants/{registrantId}
  */
-export async function meetingRegistrantGet({
-	pathParams: { meetingId, registrantId },
-	config = {},
-}: {
-	pathParams: MeetingRegistrantGetPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function meetingRegistrantGet(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { meetingId: bigint; registrantId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!meetingId) {
+	if (!pathParams.meetingId) {
 		throw new Error(`Missing required path parameter: meetingId`);
 	}
 
-	if (!registrantId) {
+	if (!pathParams.registrantId) {
 		throw new Error(`Missing required path parameter: registrantId`);
 	}
-
 	const data = await request<
-		MeetingRegistrantGetQueryResponse,
-		ErrorWrapper<MeetingRegistrantGet400 | MeetingRegistrantGet404 | MeetingRegistrantGet429>,
+		MeetingRegistrantGetResponse,
+		ErrorWrapper<
+			MeetingRegistrantGetStatus400 | MeetingRegistrantGetStatus404 | MeetingRegistrantGetStatus429
+		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		MeetingRegistrantGetPathParams
-	>({ method: "GET", url: `/meetings/${meetingId}/registrants/${registrantId}`, ...requestConfig });
+		{ meetingId: bigint; registrantId: string }
+	>({
+		method: "GET",
+		url: `/meetings/${pathParams.meetingId}/registrants/${pathParams.registrantId}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Delete a meeting registrant
  * @description Delete a meeting registrant.
  * **Prerequisites**:
  * * Host user type must be Pro or higher plan.
  * * Registration must be enabled for the meeting.
  * * For recurring meetings:
- * * The `registration_type` must be 2 or 3 to require the `occurrence_id` field.
- * * If the `registration_type` is 1, the `occurrence_id` is not needed, as registrants can attend any occurrence.
+ *   * The `registration_type` must be 2 or 3 to require the `occurrence_id` field.
+ *   * If the `registration_type` is 1, the `occurrence_id` is not needed, as registrants can attend any occurrence.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:write:admin`,`meeting:write`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:delete:registrant`,`meeting:delete:registrant:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Delete a meeting registrant
- * {@link /meetings/:meetingId/registrants/:registrantId}
+ * @link /meetings/{meetingId}/registrants/{registrantId}
  */
-export async function meetingregistrantdelete({
-	pathParams: { meetingId, registrantId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: MeetingregistrantdeletePathParams;
-	queryParams?: MeetingregistrantdeleteQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function meetingregistrantdelete(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { meetingId: number; registrantId: string };
+		queryParams?: { occurrence_id?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!meetingId) {
+	if (!pathParams.meetingId) {
 		throw new Error(`Missing required path parameter: meetingId`);
 	}
 
-	if (!registrantId) {
+	if (!pathParams.registrantId) {
 		throw new Error(`Missing required path parameter: registrantId`);
 	}
-
 	const data = await request<
-		MeetingregistrantdeleteMutationResponse,
+		MeetingregistrantdeleteResponse,
 		ErrorWrapper<
-			Meetingregistrantdelete400 | Meetingregistrantdelete404 | Meetingregistrantdelete429
+			| MeetingregistrantdeleteStatus400
+			| MeetingregistrantdeleteStatus404
+			| MeetingregistrantdeleteStatus429
 		>,
 		null,
 		Record<string, string>,
-		MeetingregistrantdeleteQueryParams,
-		MeetingregistrantdeletePathParams
+		{ occurrence_id?: string },
+		{ meetingId: number; registrantId: string }
 	>({
 		method: "DELETE",
-		url: `/meetings/${meetingId}/registrants/${registrantId}`,
+		url: `/meetings/${pathParams.meetingId}/registrants/${pathParams.registrantId}`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
+ * @summary Get a meeting's join token for live streaming
  * @description Get a meeting's join token to allow live streaming. The join token allows a recording bot implemented using Zoom meeting SDK to connect to a Zoom meeting &quot;hosted by the issuer of the token&quot;, and can call the streaming method automatically. It supports both regular live streaming, and raw streaming.
  * **Prerequisites:**
  * * A Pro or higher plan for the meeting host.
@@ -3133,38 +3484,45 @@ export async function meetingregistrantdelete({
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting_token:read:admin:live_streaming`,`meeting_token:read:live_streaming`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:read:live_streaming_token`,`meeting:read:live_streaming_token:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Get a meeting's join token for live streaming
- * {@link /meetings/:meetingId/jointoken/live_streaming}
+ * @link /meetings/{meetingId}/jointoken/live_streaming
  */
-export async function meetingLiveStreamingJoinToken({
-	pathParams: { meetingId },
-	config = {},
-}: {
-	pathParams: MeetingLiveStreamingJoinTokenPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function meetingLiveStreamingJoinToken(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { meetingId: bigint };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!meetingId) {
+	if (!pathParams.meetingId) {
 		throw new Error(`Missing required path parameter: meetingId`);
 	}
-
 	const data = await request<
-		MeetingLiveStreamingJoinTokenQueryResponse,
+		MeetingLiveStreamingJoinTokenResponse,
 		ErrorWrapper<
-			| MeetingLiveStreamingJoinToken400
-			| MeetingLiveStreamingJoinToken404
-			| MeetingLiveStreamingJoinToken429
+			| MeetingLiveStreamingJoinTokenStatus400
+			| MeetingLiveStreamingJoinTokenStatus404
+			| MeetingLiveStreamingJoinTokenStatus429
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		MeetingLiveStreamingJoinTokenPathParams
-	>({ method: "GET", url: `/meetings/${meetingId}/jointoken/live_streaming`, ...requestConfig });
+		{ meetingId: bigint }
+	>({
+		method: "GET",
+		url: `/meetings/${pathParams.meetingId}/jointoken/live_streaming`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Get livestream details
  * @description Zoom allows users to [livestream a meeting](https://support.zoom.us/hc/en-us/articles/115001777826-Live-Streaming-Meetings-or-Webinars-Using-a-Custom-Service) to a custom platform. Get a meeting's livestream configuration details such as Stream URL, Stream Key and Page URL.
  * **Prerequisites:**
  * * Meeting host must be a licensed user with a Pro or higher plan.
@@ -3172,116 +3530,141 @@ export async function meetingLiveStreamingJoinToken({
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:read:admin`,`meeting:read`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:read:livestream`,`meeting:read:livestream:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Get livestream details
- * {@link /meetings/:meetingId/livestream}
+ * @link /meetings/{meetingId}/livestream
  */
-export async function getMeetingLiveStreamDetails({
-	pathParams: { meetingId },
-	config = {},
-}: {
-	pathParams: GetMeetingLiveStreamDetailsPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getMeetingLiveStreamDetails(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { meetingId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!meetingId) {
+	if (!pathParams.meetingId) {
 		throw new Error(`Missing required path parameter: meetingId`);
 	}
-
 	const data = await request<
-		GetMeetingLiveStreamDetailsQueryResponse,
+		GetMeetingLiveStreamDetailsResponse,
 		ErrorWrapper<
-			| GetMeetingLiveStreamDetails400
-			| GetMeetingLiveStreamDetails404
-			| GetMeetingLiveStreamDetails429
+			| GetMeetingLiveStreamDetailsStatus400
+			| GetMeetingLiveStreamDetailsStatus404
+			| GetMeetingLiveStreamDetailsStatus429
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		GetMeetingLiveStreamDetailsPathParams
-	>({ method: "GET", url: `/meetings/${meetingId}/livestream`, ...requestConfig });
+		{ meetingId: string }
+	>({
+		method: "GET",
+		url: `/meetings/${pathParams.meetingId}/livestream`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Update a livestream
  * @description Update a meeting's livestream information. Zoom allows users to [livestream a meeting](https://support.zoom.us/hc/en-us/articles/115001777826-Live-Streaming-Meetings-or-Webinars-Using-a-Custom-Service) to a custom platform.
  * **Prerequisites:**
  * * Meeting host must have a Pro license.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:write:admin`,`meeting:write`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:update:livestream`,`meeting:update:livestream:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Update a livestream
- * {@link /meetings/:meetingId/livestream}
+ * @link /meetings/{meetingId}/livestream
  */
-export async function meetingLiveStreamUpdate({
-	pathParams: { meetingId },
-	body,
-	config = {},
-}: {
-	pathParams: MeetingLiveStreamUpdatePathParams;
-	body: MeetingLiveStreamUpdateMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function meetingLiveStreamUpdate(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { meetingId: bigint };
+		body?: MeetingLiveStreamUpdateBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!meetingId) {
+	if (!pathParams.meetingId) {
 		throw new Error(`Missing required path parameter: meetingId`);
 	}
-
 	const data = await request<
-		MeetingLiveStreamUpdateMutationResponse,
+		MeetingLiveStreamUpdateResponse,
 		ErrorWrapper<
-			MeetingLiveStreamUpdate400 | MeetingLiveStreamUpdate404 | MeetingLiveStreamUpdate429
+			| MeetingLiveStreamUpdateStatus400
+			| MeetingLiveStreamUpdateStatus404
+			| MeetingLiveStreamUpdateStatus429
 		>,
-		MeetingLiveStreamUpdateMutationRequest,
+		MeetingLiveStreamUpdateBody,
 		Record<string, string>,
 		Record<string, string>,
-		MeetingLiveStreamUpdatePathParams
-	>({ method: "PATCH", url: `/meetings/${meetingId}/livestream`, body, ...requestConfig });
+		{ meetingId: bigint }
+	>({
+		method: "PATCH",
+		url: `/meetings/${pathParams.meetingId}/livestream`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Update livestream status
  * @description Zoom allows users to [livestream a meeting](https://support.zoom.us/hc/en-us/articles/115001777826-Live-Streaming-Meetings-or-Webinars-Using-a-Custom-Service) to a custom platform. Update the status of a meeting's livestream.
  * **Prerequisites:**
  * * Meeting host must have a Pro license.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:write:admin`,`meeting:write`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:update:livestream_status`,`meeting:update:livestream_status:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Update livestream status
- * {@link /meetings/:meetingId/livestream/status}
+ * @link /meetings/{meetingId}/livestream/status
  */
-export async function meetingLiveStreamStatusUpdate({
-	pathParams: { meetingId },
-	body,
-	config = {},
-}: {
-	pathParams: MeetingLiveStreamStatusUpdatePathParams;
-	body?: MeetingLiveStreamStatusUpdateMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function meetingLiveStreamStatusUpdate(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { meetingId: bigint };
+		body?: MeetingLiveStreamStatusUpdateBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!meetingId) {
+	if (!pathParams.meetingId) {
 		throw new Error(`Missing required path parameter: meetingId`);
 	}
-
 	const data = await request<
-		MeetingLiveStreamStatusUpdateMutationResponse,
+		MeetingLiveStreamStatusUpdateResponse,
 		ErrorWrapper<
-			| MeetingLiveStreamStatusUpdate400
-			| MeetingLiveStreamStatusUpdate404
-			| MeetingLiveStreamStatusUpdate429
+			| MeetingLiveStreamStatusUpdateStatus400
+			| MeetingLiveStreamStatusUpdateStatus404
+			| MeetingLiveStreamStatusUpdateStatus429
 		>,
-		MeetingLiveStreamStatusUpdateMutationRequest,
+		MeetingLiveStreamStatusUpdateBody,
 		Record<string, string>,
 		Record<string, string>,
-		MeetingLiveStreamStatusUpdatePathParams
-	>({ method: "PATCH", url: `/meetings/${meetingId}/livestream/status`, body, ...requestConfig });
+		{ meetingId: bigint }
+	>({
+		method: "PATCH",
+		url: `/meetings/${pathParams.meetingId}/livestream/status`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Update participant Real-Time Media Streams (RTMS) app status
  * @description Update the Real-Time Media Streams (RTMS) status for a specific participant in an ongoing meeting. Zoom lets individuals control their own RTMS during a meeting.
  * **Prerequisites:**
  * * The meeting must be in progress.
@@ -3290,118 +3673,141 @@ export async function meetingLiveStreamStatusUpdate({
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:write:admin`,`meeting:write`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:update:participant_rtms_app_status`,`meeting:update:participant_rtms_app_status:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `MEDIUM`
- * @summary Update participant Real-Time Media Streams (RTMS) app status
- * {@link /live_meetings/:meetingId/rtms_app/status}
+ * @link /live_meetings/{meetingId}/rtms_app/status
  */
-export async function meetingRTMSStatusUpdate({
-	pathParams: { meetingId },
-	body,
-	config = {},
-}: {
-	pathParams: MeetingRTMSStatusUpdatePathParams;
-	body?: MeetingRTMSStatusUpdateMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function meetingRTMSStatusUpdate(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { meetingId: bigint };
+		body?: MeetingRTMSStatusUpdateBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!meetingId) {
+	if (!pathParams.meetingId) {
 		throw new Error(`Missing required path parameter: meetingId`);
 	}
-
 	const data = await request<
-		MeetingRTMSStatusUpdateMutationResponse,
+		MeetingRTMSStatusUpdateResponse,
 		ErrorWrapper<
-			| MeetingRTMSStatusUpdate400
-			| MeetingRTMSStatusUpdate403
-			| MeetingRTMSStatusUpdate404
-			| MeetingRTMSStatusUpdate429
+			| MeetingRTMSStatusUpdateStatus400
+			| MeetingRTMSStatusUpdateStatus403
+			| MeetingRTMSStatusUpdateStatus404
+			| MeetingRTMSStatusUpdateStatus429
 		>,
-		MeetingRTMSStatusUpdateMutationRequest,
+		MeetingRTMSStatusUpdateBody,
 		Record<string, string>,
 		Record<string, string>,
-		MeetingRTMSStatusUpdatePathParams
+		{ meetingId: bigint }
 	>({
 		method: "PATCH",
-		url: `/live_meetings/${meetingId}/rtms_app/status`,
-		body,
+		url: `/live_meetings/${pathParams.meetingId}/rtms_app/status`,
+		body: body,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
+ * @summary Get a meeting
  * @description Retrieve the given meeting's details.
  * **Prerequisites**
  * * Host user must have a Zoom Meetings Basic license or higher.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:read`,`meeting:read:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:read:meeting`,`meeting:read:meeting:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Get a meeting
- * {@link /meetings/:meetingId}
+ * @link /meetings/{meetingId}
  */
-export async function meeting({
-	pathParams: { meetingId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: MeetingPathParams;
-	queryParams?: MeetingQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function meeting(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { meetingId: bigint };
+		queryParams?: { occurrence_id?: string; show_previous_occurrences?: boolean };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!meetingId) {
+	if (!pathParams.meetingId) {
 		throw new Error(`Missing required path parameter: meetingId`);
 	}
-
 	const data = await request<
-		MeetingQueryResponse,
-		ErrorWrapper<Meeting400 | Meeting404 | Meeting429>,
+		MeetingResponse,
+		ErrorWrapper<MeetingStatus400 | MeetingStatus404 | MeetingStatus429>,
 		null,
 		Record<string, string>,
-		MeetingQueryParams,
-		MeetingPathParams
-	>({ method: "GET", url: `/meetings/${meetingId}`, queryParams, ...requestConfig });
+		{ occurrence_id?: string; show_previous_occurrences?: boolean },
+		{ meetingId: bigint }
+	>({
+		method: "GET",
+		url: `/meetings/${pathParams.meetingId}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Delete a meeting
  * @description Delete a meeting.
  * **Prerequisites**:
  * * For recurring meetings, the `occurrence_id` is required to delete a specific occurrence. If not provided, the entire recurring series will be deleted.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:write:admin`,`meeting:write`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:delete:meeting`,`meeting:delete:meeting:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Delete a meeting
- * {@link /meetings/:meetingId}
+ * @link /meetings/{meetingId}
  */
-export async function meetingDelete({
-	pathParams: { meetingId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: MeetingDeletePathParams;
-	queryParams?: MeetingDeleteQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function meetingDelete(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { meetingId: bigint };
+		queryParams?: {
+			occurrence_id?: string;
+			schedule_for_reminder?: boolean;
+			cancel_meeting_reminder?: boolean;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!meetingId) {
+	if (!pathParams.meetingId) {
 		throw new Error(`Missing required path parameter: meetingId`);
 	}
-
 	const data = await request<
-		MeetingDeleteMutationResponse,
-		ErrorWrapper<MeetingDelete400 | MeetingDelete404 | MeetingDelete429>,
+		MeetingDeleteResponse,
+		ErrorWrapper<MeetingDeleteStatus400 | MeetingDeleteStatus404 | MeetingDeleteStatus429>,
 		null,
 		Record<string, string>,
-		MeetingDeleteQueryParams,
-		MeetingDeletePathParams
-	>({ method: "DELETE", url: `/meetings/${meetingId}`, queryParams, ...requestConfig });
+		{ occurrence_id?: string; schedule_for_reminder?: boolean; cancel_meeting_reminder?: boolean },
+		{ meetingId: bigint }
+	>({
+		method: "DELETE",
+		url: `/meetings/${pathParams.meetingId}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Update a meeting
  * @description Updates meeting details.
  * **Prerequisites**
  * * The `start_time` value must be a future date. If the value is omitted or a date is in the past, the API ignores this value and does not update any recurring meetings.
@@ -3410,112 +3816,144 @@ export async function meetingDelete({
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:write`,`meeting:write:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:update:meeting:admin`,`meeting:update:meeting`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Update a meeting
- * {@link /meetings/:meetingId}
+ * @link /meetings/{meetingId}
  */
-export async function meetingUpdate({
-	pathParams: { meetingId },
-	body,
-	queryParams,
-	config = {},
-}: {
-	pathParams: MeetingUpdatePathParams;
-	body?: MeetingUpdateMutationRequest;
-	queryParams?: MeetingUpdateQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function meetingUpdate(
+	{
+		pathParams,
+		body,
+		queryParams,
+		config,
+	}: {
+		pathParams: { meetingId: bigint };
+		body?: MeetingUpdateBody;
+		queryParams?: { occurrence_id?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!meetingId) {
+	if (!pathParams.meetingId) {
 		throw new Error(`Missing required path parameter: meetingId`);
 	}
-
 	const data = await request<
-		MeetingUpdateMutationResponse,
-		ErrorWrapper<MeetingUpdate400 | MeetingUpdate401 | MeetingUpdate404 | MeetingUpdate429>,
-		MeetingUpdateMutationRequest,
+		MeetingUpdateResponse,
+		ErrorWrapper<
+			| MeetingUpdateStatus400
+			| MeetingUpdateStatus401
+			| MeetingUpdateStatus404
+			| MeetingUpdateStatus429
+		>,
+		MeetingUpdateBody,
 		Record<string, string>,
-		MeetingUpdateQueryParams,
-		MeetingUpdatePathParams
-	>({ method: "PATCH", url: `/meetings/${meetingId}`, queryParams, body, ...requestConfig });
+		{ occurrence_id?: string },
+		{ meetingId: bigint }
+	>({
+		method: "PATCH",
+		url: `/meetings/${pathParams.meetingId}`,
+		queryParams,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Get a meeting SIP URI with passcode
  * @description Get a meeting's SIP URI. The URI consists of the meeting ID, and may include the user-supplied passcode and participant identifier code. The API return data also includes additional fields to indicate whether the API caller has a valid Cloud Room Connector subscription, the participant identifier code from the URI, and the SIP URI validity period in seconds.
  * **Prerequisites**:
  * * The SIP URI is valid for 2 hours, or 7200 seconds, by default. After this period, the URI will expire and the API must be called again to retrieve a new one.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:write:sip_dialing`,`meeting:write:admin:sip_dialing`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:write:sip_dialing`,`meeting:write:sip_dialing:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `MEDIUM`
- * @summary Get a meeting SIP URI with passcode
- * {@link /meetings/:meetingId/sip_dialing}
+ * @link /meetings/{meetingId}/sip_dialing
  */
-export async function getSipDialingWithPasscode({
-	pathParams: { meetingId },
-	body,
-	config = {},
-}: {
-	pathParams: GetSipDialingWithPasscodePathParams;
-	body?: GetSipDialingWithPasscodeMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getSipDialingWithPasscode(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { meetingId: bigint };
+		body?: GetSipDialingWithPasscodeBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!meetingId) {
+	if (!pathParams.meetingId) {
 		throw new Error(`Missing required path parameter: meetingId`);
 	}
-
 	const data = await request<
-		GetSipDialingWithPasscodeMutationResponse,
+		GetSipDialingWithPasscodeResponse,
 		ErrorWrapper<
-			GetSipDialingWithPasscode400 | GetSipDialingWithPasscode404 | GetSipDialingWithPasscode429
+			| GetSipDialingWithPasscodeStatus400
+			| GetSipDialingWithPasscodeStatus404
+			| GetSipDialingWithPasscodeStatus429
 		>,
-		GetSipDialingWithPasscodeMutationRequest,
+		GetSipDialingWithPasscodeBody,
 		Record<string, string>,
 		Record<string, string>,
-		GetSipDialingWithPasscodePathParams
-	>({ method: "POST", url: `/meetings/${meetingId}/sip_dialing`, body, ...requestConfig });
+		{ meetingId: bigint }
+	>({
+		method: "POST",
+		url: `/meetings/${pathParams.meetingId}/sip_dialing`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Update meeting status
  * @description Update the status of a meeting.
  * **Prerequisites**:
  * * Host user must have a Zoom Meetings Basic license or higher.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:write:admin`,`meeting:write`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:update:status`,`meeting:update:status:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Update meeting status
- * {@link /meetings/:meetingId/status}
+ * @link /meetings/{meetingId}/status
  */
-export async function meetingStatus({
-	pathParams: { meetingId },
-	body,
-	config = {},
-}: {
-	pathParams: MeetingStatusPathParams;
-	body?: MeetingStatusMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function meetingStatus(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { meetingId: bigint };
+		body?: MeetingStatusBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!meetingId) {
+	if (!pathParams.meetingId) {
 		throw new Error(`Missing required path parameter: meetingId`);
 	}
-
 	const data = await request<
-		MeetingStatusMutationResponse,
-		ErrorWrapper<MeetingStatus400 | MeetingStatus404 | MeetingStatus429>,
-		MeetingStatusMutationRequest,
+		MeetingStatusResponse,
+		ErrorWrapper<MeetingStatusStatus400 | MeetingStatusStatus404 | MeetingStatusStatus429>,
+		MeetingStatusBody,
 		Record<string, string>,
 		Record<string, string>,
-		MeetingStatusPathParams
-	>({ method: "PUT", url: `/meetings/${meetingId}/status`, body, ...requestConfig });
+		{ meetingId: bigint }
+	>({
+		method: "PUT",
+		url: `/meetings/${pathParams.meetingId}/status`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Get past meeting details
  * @description Get information about a past meeting.
  * **Prerequisites**
  * * The meeting must have ended before you can retrieve the data.
@@ -3523,34 +3961,43 @@ export async function meetingStatus({
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:read:admin`,`meeting:read`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:read:past_meeting`,`meeting:read:past_meeting:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Get past meeting details
- * {@link /past_meetings/:meetingId}
+ * @link /past_meetings/{meetingId}
  */
-export async function pastMeetingDetails({
-	pathParams: { meetingId },
-	config = {},
-}: {
-	pathParams: PastMeetingDetailsPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function pastMeetingDetails(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { meetingId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!meetingId) {
+	if (!pathParams.meetingId) {
 		throw new Error(`Missing required path parameter: meetingId`);
 	}
-
 	const data = await request<
-		PastMeetingDetailsQueryResponse,
-		ErrorWrapper<PastMeetingDetails400 | PastMeetingDetails404 | PastMeetingDetails429>,
+		PastMeetingDetailsResponse,
+		ErrorWrapper<
+			PastMeetingDetailsStatus400 | PastMeetingDetailsStatus404 | PastMeetingDetailsStatus429
+		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		PastMeetingDetailsPathParams
-	>({ method: "GET", url: `/past_meetings/${meetingId}`, ...requestConfig });
+		{ meetingId: string }
+	>({
+		method: "GET",
+		url: `/past_meetings/${pathParams.meetingId}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary List past meeting instances
  * @description Return a list of past meeting instances.
  * **Prerequisites**
  * * The meeting must have already occurred at least once. This endpoint only returns instances of meetings that have ended.
@@ -3558,81 +4005,96 @@ export async function pastMeetingDetails({
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:read:admin`,`meeting:read`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:read:list_past_instances`,`meeting:read:list_past_instances:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `MEDIUM`
- * @summary List past meeting instances
- * {@link /past_meetings/:meetingId/instances}
+ * @link /past_meetings/{meetingId}/instances
  */
-export async function pastMeetings({
-	pathParams: { meetingId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: PastMeetingsPathParams;
-	queryParams?: PastMeetingsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function pastMeetings(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { meetingId: bigint };
+		queryParams?: { from?: string; to?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!meetingId) {
+	if (!pathParams.meetingId) {
 		throw new Error(`Missing required path parameter: meetingId`);
 	}
-
 	const data = await request<
-		PastMeetingsQueryResponse,
-		ErrorWrapper<PastMeetings401 | PastMeetings404 | PastMeetings429>,
+		PastMeetingsResponse,
+		ErrorWrapper<PastMeetingsStatus401 | PastMeetingsStatus404 | PastMeetingsStatus429>,
 		null,
 		Record<string, string>,
-		PastMeetingsQueryParams,
-		PastMeetingsPathParams
-	>({ method: "GET", url: `/past_meetings/${meetingId}/instances`, queryParams, ...requestConfig });
+		{ from?: string; to?: string },
+		{ meetingId: bigint }
+	>({
+		method: "GET",
+		url: `/past_meetings/${pathParams.meetingId}/instances`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
- * @description Retrieve information on participants from a past meeting. Note the API doesn't return results if there's only one participant in a meeting.
+ * @summary Get past meeting participants
+ * @description Retrieve participant information for a past meeting.
  * **Prerequisites:**
- * * Paid account on a Pro or higher plan.
- * **Note**: Please double encode your UUID when using this API if the UUID begins with a '/'or contains '//' in it.
- * **NOTE:** After meetings with hundreds of participants, the attendance data takes some time to be generated. If you receive a duration of 0 for users' time in the meeting, you may have called the endpoint before the data is fully processed. Implement a short delay or retry logic before fetching participant data.
+ * * A paid account with a Pro plan or higher.
+ * * If the meeting UUID starts with `/` or contains `//`, you must double-encode the UUID before sending the request.
+ * * The meeting must be within the last 15 months. Participant data is not available for meetings older than 15 months.
+ * * By default, this endpoint does not return participant data for meetings with only one participant. To include one-participant meetings, enable the account setting **Show one person meetings and webinars on Dashboard and Reports**.
+ * * For meetings with hundreds of participants, attendance data may take time to be generated. If participant durations are returned as `0`, the request may have been made before processing completed. Wait briefly and retry.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:read:admin`,`meeting:read`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:read:list_past_participants`,`meeting:read:list_past_participants:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `MEDIUM`
- * @summary Get past meeting participants
- * {@link /past_meetings/:meetingId/participants}
+ * @link /past_meetings/{meetingId}/participants
  */
-export async function pastMeetingParticipants({
-	pathParams: { meetingId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: PastMeetingParticipantsPathParams;
-	queryParams?: PastMeetingParticipantsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function pastMeetingParticipants(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { meetingId: string };
+		queryParams?: { page_size?: number; next_page_token?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!meetingId) {
+	if (!pathParams.meetingId) {
 		throw new Error(`Missing required path parameter: meetingId`);
 	}
-
 	const data = await request<
-		PastMeetingParticipantsQueryResponse,
+		PastMeetingParticipantsResponse,
 		ErrorWrapper<
-			PastMeetingParticipants400 | PastMeetingParticipants404 | PastMeetingParticipants429
+			| PastMeetingParticipantsStatus400
+			| PastMeetingParticipantsStatus404
+			| PastMeetingParticipantsStatus429
 		>,
 		null,
 		Record<string, string>,
-		PastMeetingParticipantsQueryParams,
-		PastMeetingParticipantsPathParams
+		{ page_size?: number; next_page_token?: string },
+		{ meetingId: string }
 	>({
 		method: "GET",
-		url: `/past_meetings/${meetingId}/participants`,
+		url: `/past_meetings/${pathParams.meetingId}/participants`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
+ * @summary List past meetings' Q&A
  * @description List Q&amp;A of a specific meeting.
  * The question &amp; answer (Q&amp;A) feature for Zoom Meetings lets attendees ask questions during a meeting and lets the other attendees answer those questions.
  * **Prerequisites**:
@@ -3642,34 +4104,43 @@ export async function pastMeetingParticipants({
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:read:admin`,`meeting:read`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:read:past_qa`,`meeting:read:past_qa:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `MEDIUM`
- * @summary List past meetings' Q&A
- * {@link /past_meetings/:meetingId/qa}
+ * @link /past_meetings/{meetingId}/qa
  */
-export async function listPastMeetingQA({
-	pathParams: { meetingId },
-	config = {},
-}: {
-	pathParams: ListPastMeetingQAPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function listPastMeetingQA(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { meetingId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!meetingId) {
+	if (!pathParams.meetingId) {
 		throw new Error(`Missing required path parameter: meetingId`);
 	}
-
 	const data = await request<
-		ListPastMeetingQAQueryResponse,
-		ErrorWrapper<ListPastMeetingQA401 | ListPastMeetingQA404 | ListPastMeetingQA429>,
+		ListPastMeetingQAResponse,
+		ErrorWrapper<
+			ListPastMeetingQAStatus401 | ListPastMeetingQAStatus404 | ListPastMeetingQAStatus429
+		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		ListPastMeetingQAPathParams
-	>({ method: "GET", url: `/past_meetings/${meetingId}/qa`, ...requestConfig });
+		{ meetingId: string }
+	>({
+		method: "GET",
+		url: `/past_meetings/${pathParams.meetingId}/qa`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary List meetings
  * @description List a meeting host user's scheduled meetings. For user-level apps, pass [the `me` value](/docs/api/rest/using-zoom-apis/#the-me-keyword) instead of the `userId` parameter.
  * **Prerequisites:**
  * * This API **only** supports scheduled meetings. This API does not return information about instant meetings.
@@ -3678,36 +4149,60 @@ export async function listPastMeetingQA({
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:read:admin`,`meeting:read`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:read:list_meetings`,`meeting:read:list_meetings:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `MEDIUM`
- * @summary List meetings
- * {@link /users/:userId/meetings}
+ * @link /users/{userId}/meetings
  */
-export async function meetings({
-	pathParams: { userId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: MeetingsPathParams;
-	queryParams?: MeetingsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function meetings(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { userId: string };
+		queryParams?: {
+			type?: "scheduled" | "live" | "upcoming" | "upcoming_meetings" | "previous_meetings";
+			page_size?: number;
+			next_page_token?: string;
+			page_number?: number;
+			from?: string;
+			to?: string;
+			timezone?: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!userId) {
+	if (!pathParams.userId) {
 		throw new Error(`Missing required path parameter: userId`);
 	}
-
 	const data = await request<
-		MeetingsQueryResponse,
-		ErrorWrapper<Meetings400 | Meetings403 | Meetings404 | Meetings429>,
+		MeetingsResponse,
+		ErrorWrapper<MeetingsStatus400 | MeetingsStatus403 | MeetingsStatus404 | MeetingsStatus429>,
 		null,
 		Record<string, string>,
-		MeetingsQueryParams,
-		MeetingsPathParams
-	>({ method: "GET", url: `/users/${userId}/meetings`, queryParams, ...requestConfig });
+		{
+			type?: "scheduled" | "live" | "upcoming" | "upcoming_meetings" | "previous_meetings";
+			page_size?: number;
+			next_page_token?: string;
+			page_number?: number;
+			from?: string;
+			to?: string;
+			timezone?: string;
+		},
+		{ userId: string }
+	>({
+		method: "GET",
+		url: `/users/${pathParams.userId}/meetings`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Create a meeting
  * @description [Creates a meeting](https://support.zoom.us/hc/en-us/articles/201362413-Scheduling-meetings) for a user. For user-level apps, pass [the `me` value](/docs/api/using-zoom-apis/#the-me-keyword) instead of the `userId` parameter.
  * **Prerequisites:**
  * * A meeting's `start_url` value is the URL a host or an alternative host can use to start a meeting. The `start_url` value's expiration time is **two hours** for all regular users.
@@ -3717,36 +4212,44 @@ export async function meetings({
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:write:admin`,`meeting:write`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:write:meeting`,`meeting:write:meeting:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Create a meeting
- * {@link /users/:userId/meetings}
+ * @link /users/{userId}/meetings
  */
-export async function meetingCreate({
-	pathParams: { userId },
-	body,
-	config = {},
-}: {
-	pathParams: MeetingCreatePathParams;
-	body?: MeetingCreateMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function meetingCreate(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { userId: string };
+		body?: MeetingCreateBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!userId) {
+	if (!pathParams.userId) {
 		throw new Error(`Missing required path parameter: userId`);
 	}
-
 	const data = await request<
-		MeetingCreateMutationResponse,
-		ErrorWrapper<MeetingCreate400 | MeetingCreate404 | MeetingCreate429>,
-		MeetingCreateMutationRequest,
+		MeetingCreateResponse,
+		ErrorWrapper<MeetingCreateStatus400 | MeetingCreateStatus404 | MeetingCreateStatus429>,
+		MeetingCreateBody,
 		Record<string, string>,
 		Record<string, string>,
-		MeetingCreatePathParams
-	>({ method: "POST", url: `/users/${userId}/meetings`, body, ...requestConfig });
+		{ userId: string }
+	>({
+		method: "POST",
+		url: `/users/${pathParams.userId}/meetings`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary List upcoming meetings
  * @description List a Zoom user's upcoming meetings. For user-level apps, pass [the `me` value](/docs/api/rest/using-zoom-apis/#the-me-keyword) instead of the `userId` parameter.
  * **Notes**:
  * * This API includes the meetings that Zoom users schedule and the meetings they are invited to join.
@@ -3756,70 +4259,84 @@ export async function meetingCreate({
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:read`,`meeting:read:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:read:list_upcoming_meetings`,`meeting:read:list_upcoming_meetings:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `MEDIUM`
- * @summary List upcoming meetings
- * {@link /users/:userId/upcoming_meetings}
+ * @link /users/{userId}/upcoming_meetings
  */
-export async function listUpcomingMeeting({
-	pathParams: { userId },
-	config = {},
-}: {
-	pathParams: ListUpcomingMeetingPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function listUpcomingMeeting(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { userId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!userId) {
+	if (!pathParams.userId) {
 		throw new Error(`Missing required path parameter: userId`);
 	}
-
 	const data = await request<
-		ListUpcomingMeetingQueryResponse,
-		ErrorWrapper<ListUpcomingMeeting404 | ListUpcomingMeeting429>,
+		ListUpcomingMeetingResponse,
+		ErrorWrapper<ListUpcomingMeetingStatus404 | ListUpcomingMeetingStatus429>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		ListUpcomingMeetingPathParams
-	>({ method: "GET", url: `/users/${userId}/upcoming_meetings`, ...requestConfig });
+		{ userId: string }
+	>({
+		method: "GET",
+		url: `/users/${pathParams.userId}/upcoming_meetings`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary List a user's PAC accounts
  * @description Retrieve a list of a user's [personal audio conference (PAC)](https://support.zoom.us/hc/en-us/articles/204517069-Getting-Started-with-Personal-Audio-Conference) accounts. For user-level apps, pass [the `me` value](https://developers.zoom.us/docs/api/rest/using-zoom-apis/#the-me-keyword) instead of the `userId` parameter.
- * PAC allows Pro or higher account holders to host meetings through PSTN (phone dial-in) only.
- * **Prerequisites**
+ *  PAC allows Pro or higher account holders to host meetings through PSTN (phone dial-in) only.
+ *  **Prerequisites**
  * * A Pro or higher plan with an [Audio Conferencing](https://support.zoom.us/hc/en-us/articles/204517069-Getting-Started-with-Personal-Audio-Conference) subscription.
  * * The [**Personal Audio Conference**](https://support.zoom.us/hc/en-us/articles/204517069-Getting-Started-with-Personal-Audio-Conference#h_01F5BPM447M6QDJXX50RSFXKJ3) setting enabled in the user's profile.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `pac:read:admin`,`pac:read`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `pac:read:list_pac_accounts`,`pac:read:list_pac_accounts:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary List a user's PAC accounts
- * {@link /users/:userId/pac}
+ * @link /users/{userId}/pac
  */
-export async function userPACs({
-	pathParams: { userId },
-	config = {},
-}: {
-	pathParams: UserPACsPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function userPACs(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { userId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!userId) {
+	if (!pathParams.userId) {
 		throw new Error(`Missing required path parameter: userId`);
 	}
-
 	const data = await request<
-		UserPACsQueryResponse,
-		ErrorWrapper<UserPACs400 | UserPACs404 | UserPACs429>,
+		UserPACsResponse,
+		ErrorWrapper<UserPACsStatus400 | UserPACsStatus404 | UserPACsStatus429>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		UserPACsPathParams
-	>({ method: "GET", url: `/users/${userId}/pac`, ...requestConfig });
+		{ userId: string }
+	>({
+		method: "GET",
+		url: `/users/${pathParams.userId}/pac`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Perform batch poll creation
  * @description Polls allow the meeting host to survey attendees. Create batch [polls](https://support.zoom.us/hc/en-us/articles/213756303-Polling-for-Meetings) for a meeting.
  * **Prerequisites**:
  * * Host user type must be **Pro** or higher plan.
@@ -3828,36 +4345,44 @@ export async function userPACs({
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:write:admin`,`meeting:write`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:write:batch_polls`,`meeting:write:batch_polls:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Perform batch poll creation
- * {@link /meetings/:meetingId/batch_polls}
+ * @link /meetings/{meetingId}/batch_polls
  */
-export async function createBatchPolls({
-	pathParams: { meetingId },
-	body,
-	config = {},
-}: {
-	pathParams: CreateBatchPollsPathParams;
-	body?: CreateBatchPollsMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function createBatchPolls(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { meetingId: string };
+		body?: CreateBatchPollsBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!meetingId) {
+	if (!pathParams.meetingId) {
 		throw new Error(`Missing required path parameter: meetingId`);
 	}
-
 	const data = await request<
-		CreateBatchPollsMutationResponse,
-		ErrorWrapper<CreateBatchPolls400 | CreateBatchPolls404 | CreateBatchPolls429>,
-		CreateBatchPollsMutationRequest,
+		CreateBatchPollsResponse,
+		ErrorWrapper<CreateBatchPollsStatus400 | CreateBatchPollsStatus404 | CreateBatchPollsStatus429>,
+		CreateBatchPollsBody,
 		Record<string, string>,
 		Record<string, string>,
-		CreateBatchPollsPathParams
-	>({ method: "POST", url: `/meetings/${meetingId}/batch_polls`, body, ...requestConfig });
+		{ meetingId: string }
+	>({
+		method: "POST",
+		url: `/meetings/${pathParams.meetingId}/batch_polls`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary List meeting polls
  * @description Polls allow the meeting host to survey attendees. List all [polls](https://support.zoom.us/hc/en-us/articles/213756303-Polling-for-Meetings) of a meeting.
  * **Prerequisites**:
  * * Host user type must be **Pro** or higher plan.
@@ -3865,36 +4390,44 @@ export async function createBatchPolls({
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:read:admin`,`meeting:read`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:read:list_polls`,`meeting:read:list_polls:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary List meeting polls
- * {@link /meetings/:meetingId/polls}
+ * @link /meetings/{meetingId}/polls
  */
-export async function meetingPolls({
-	pathParams: { meetingId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: MeetingPollsPathParams;
-	queryParams?: MeetingPollsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function meetingPolls(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { meetingId: bigint };
+		queryParams?: { anonymous?: boolean };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!meetingId) {
+	if (!pathParams.meetingId) {
 		throw new Error(`Missing required path parameter: meetingId`);
 	}
-
 	const data = await request<
-		MeetingPollsQueryResponse,
-		ErrorWrapper<MeetingPolls400 | MeetingPolls404 | MeetingPolls429>,
+		MeetingPollsResponse,
+		ErrorWrapper<MeetingPollsStatus400 | MeetingPollsStatus404 | MeetingPollsStatus429>,
 		null,
 		Record<string, string>,
-		MeetingPollsQueryParams,
-		MeetingPollsPathParams
-	>({ method: "GET", url: `/meetings/${meetingId}/polls`, queryParams, ...requestConfig });
+		{ anonymous?: boolean },
+		{ meetingId: bigint }
+	>({
+		method: "GET",
+		url: `/meetings/${pathParams.meetingId}/polls`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Create a meeting poll
  * @description Polls allow the meeting host to survey attendees. Create a [poll](https://support.zoom.us/hc/en-us/articles/213756303-Polling-for-Meetings) for a meeting.
  * **Prerequisites**:
  * * Host user type must be **Pro** or higher plan.
@@ -3903,36 +4436,46 @@ export async function meetingPolls({
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:write:admin`,`meeting:write`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:write:poll`,`meeting:write:poll:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Create a meeting poll
- * {@link /meetings/:meetingId/polls}
+ * @link /meetings/{meetingId}/polls
  */
-export async function meetingPollCreate({
-	pathParams: { meetingId },
-	body,
-	config = {},
-}: {
-	pathParams: MeetingPollCreatePathParams;
-	body?: MeetingPollCreateMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function meetingPollCreate(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { meetingId: bigint };
+		body?: MeetingPollCreateBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!meetingId) {
+	if (!pathParams.meetingId) {
 		throw new Error(`Missing required path parameter: meetingId`);
 	}
-
 	const data = await request<
-		MeetingPollCreateMutationResponse,
-		ErrorWrapper<MeetingPollCreate400 | MeetingPollCreate404 | MeetingPollCreate429>,
-		MeetingPollCreateMutationRequest,
+		MeetingPollCreateResponse,
+		ErrorWrapper<
+			MeetingPollCreateStatus400 | MeetingPollCreateStatus404 | MeetingPollCreateStatus429
+		>,
+		MeetingPollCreateBody,
 		Record<string, string>,
 		Record<string, string>,
-		MeetingPollCreatePathParams
-	>({ method: "POST", url: `/meetings/${meetingId}/polls`, body, ...requestConfig });
+		{ meetingId: bigint }
+	>({
+		method: "POST",
+		url: `/meetings/${pathParams.meetingId}/polls`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Get a meeting poll
  * @description Retrieves information about a specific meeting [poll](https://support.zoom.us/hc/en-us/articles/213756303-Polling-for-Meetings).
  * **Prerequisites**:
  * * Host must have Pro or higher plan.
@@ -3940,38 +4483,45 @@ export async function meetingPollCreate({
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:read:admin`,`meeting:read`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:read:poll`,`meeting:read:poll:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Get a meeting poll
- * {@link /meetings/:meetingId/polls/:pollId}
+ * @link /meetings/{meetingId}/polls/{pollId}
  */
-export async function meetingPollGet({
-	pathParams: { meetingId, pollId },
-	config = {},
-}: {
-	pathParams: MeetingPollGetPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function meetingPollGet(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { meetingId: bigint; pollId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!meetingId) {
+	if (!pathParams.meetingId) {
 		throw new Error(`Missing required path parameter: meetingId`);
 	}
 
-	if (!pollId) {
+	if (!pathParams.pollId) {
 		throw new Error(`Missing required path parameter: pollId`);
 	}
-
 	const data = await request<
-		MeetingPollGetQueryResponse,
-		ErrorWrapper<MeetingPollGet400 | MeetingPollGet404 | MeetingPollGet429>,
+		MeetingPollGetResponse,
+		ErrorWrapper<MeetingPollGetStatus400 | MeetingPollGetStatus404 | MeetingPollGetStatus429>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		MeetingPollGetPathParams
-	>({ method: "GET", url: `/meetings/${meetingId}/polls/${pollId}`, ...requestConfig });
+		{ meetingId: bigint; pollId: string }
+	>({
+		method: "GET",
+		url: `/meetings/${pathParams.meetingId}/polls/${pathParams.pollId}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Update a meeting poll
  * @description Polls allow the meeting host to survey attendees. Update information of a specific meeting [poll](https://support.zoom.us/hc/en-us/articles/213756303-Polling-for-Meetings).
  * **Prerequisites**:
  * * Host user type must be **Pro** or higher plan.
@@ -3980,40 +4530,50 @@ export async function meetingPollGet({
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:write:admin`,`meeting:write`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:update:poll`,`meeting:update:poll:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Update a meeting poll
- * {@link /meetings/:meetingId/polls/:pollId}
+ * @link /meetings/{meetingId}/polls/{pollId}
  */
-export async function meetingPollUpdate({
-	pathParams: { meetingId, pollId },
-	body,
-	config = {},
-}: {
-	pathParams: MeetingPollUpdatePathParams;
-	body?: MeetingPollUpdateMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function meetingPollUpdate(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { meetingId: bigint; pollId: string };
+		body?: MeetingPollUpdateBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!meetingId) {
+	if (!pathParams.meetingId) {
 		throw new Error(`Missing required path parameter: meetingId`);
 	}
 
-	if (!pollId) {
+	if (!pathParams.pollId) {
 		throw new Error(`Missing required path parameter: pollId`);
 	}
-
 	const data = await request<
-		MeetingPollUpdateMutationResponse,
-		ErrorWrapper<MeetingPollUpdate400 | MeetingPollUpdate404 | MeetingPollUpdate429>,
-		MeetingPollUpdateMutationRequest,
+		MeetingPollUpdateResponse,
+		ErrorWrapper<
+			MeetingPollUpdateStatus400 | MeetingPollUpdateStatus404 | MeetingPollUpdateStatus429
+		>,
+		MeetingPollUpdateBody,
 		Record<string, string>,
 		Record<string, string>,
-		MeetingPollUpdatePathParams
-	>({ method: "PUT", url: `/meetings/${meetingId}/polls/${pollId}`, body, ...requestConfig });
+		{ meetingId: bigint; pollId: string }
+	>({
+		method: "PUT",
+		url: `/meetings/${pathParams.meetingId}/polls/${pathParams.pollId}`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Delete a meeting poll
  * @description Polls allow the meeting host to survey attendees. Delete a meeting [poll](https://support.zoom.us/hc/en-us/articles/213756303-Polling-for-Meetings).
  * **Prerequisites**:
  * * Host user type must be **Pro**.
@@ -4022,38 +4582,47 @@ export async function meetingPollUpdate({
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:write:admin`,`meeting:write`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:delete:poll`,`meeting:delete:poll:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Delete a meeting poll
- * {@link /meetings/:meetingId/polls/:pollId}
+ * @link /meetings/{meetingId}/polls/{pollId}
  */
-export async function meetingPollDelete({
-	pathParams: { meetingId, pollId },
-	config = {},
-}: {
-	pathParams: MeetingPollDeletePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function meetingPollDelete(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { meetingId: bigint; pollId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!meetingId) {
+	if (!pathParams.meetingId) {
 		throw new Error(`Missing required path parameter: meetingId`);
 	}
 
-	if (!pollId) {
+	if (!pathParams.pollId) {
 		throw new Error(`Missing required path parameter: pollId`);
 	}
-
 	const data = await request<
-		MeetingPollDeleteMutationResponse,
-		ErrorWrapper<MeetingPollDelete400 | MeetingPollDelete404 | MeetingPollDelete429>,
+		MeetingPollDeleteResponse,
+		ErrorWrapper<
+			MeetingPollDeleteStatus400 | MeetingPollDeleteStatus404 | MeetingPollDeleteStatus429
+		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		MeetingPollDeletePathParams
-	>({ method: "DELETE", url: `/meetings/${meetingId}/polls/${pollId}`, ...requestConfig });
+		{ meetingId: bigint; pollId: string }
+	>({
+		method: "DELETE",
+		url: `/meetings/${pathParams.meetingId}/polls/${pathParams.pollId}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary List past meeting's poll results
  * @description [Polls](https://support.zoom.us/hc/en-us/articles/213756303-Polling-for-Meetings) allow the meeting host to survey attendees. List poll results of a meeting.
  * **Prerequisites**:
  * * Host user type must be **Pro**.
@@ -4061,315 +4630,592 @@ export async function meetingPollDelete({
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:read:admin`,`meeting:read`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:read:list_poll_results`,`meeting:read:list_poll_results:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `MEDIUM`
- * @summary List past meeting's poll results
- * {@link /past_meetings/:meetingId/polls}
+ * @link /past_meetings/{meetingId}/polls
  */
-export async function listPastMeetingPolls({
-	pathParams: { meetingId },
-	config = {},
-}: {
-	pathParams: ListPastMeetingPollsPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function listPastMeetingPolls(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { meetingId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!meetingId) {
+	if (!pathParams.meetingId) {
 		throw new Error(`Missing required path parameter: meetingId`);
 	}
-
 	const data = await request<
-		ListPastMeetingPollsQueryResponse,
-		ErrorWrapper<ListPastMeetingPolls400 | ListPastMeetingPolls429>,
+		ListPastMeetingPollsResponse,
+		ErrorWrapper<ListPastMeetingPollsStatus400 | ListPastMeetingPollsStatus429>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		ListPastMeetingPollsPathParams
-	>({ method: "GET", url: `/past_meetings/${meetingId}/polls`, ...requestConfig });
+		{ meetingId: string }
+	>({
+		method: "GET",
+		url: `/past_meetings/${pathParams.meetingId}/polls`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Get sign In / sign out activity report
  * @description Retrieve a list of sign in / sign out activity logs [report](https://support.zoom.us/hc/en-us/articles/201363213-Getting-Started-with-Reports) of users under a Zoom account.
  * **Prerequisites**
  * * Pro or higher plan.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `report:read:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `report:read:user_activities:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `Heavy`
- * @summary Get sign In / sign out activity report
- * {@link /report/activities}
+ * @link /report/activities
  */
-export async function reportSignInSignOutActivities({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: ReportSignInSignOutActivitiesQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function reportSignInSignOutActivities(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { from?: string; to?: string; page_size?: number; next_page_token?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		ReportSignInSignOutActivitiesQueryResponse,
-		ErrorWrapper<ReportSignInSignOutActivities400 | ReportSignInSignOutActivities429>,
+		ReportSignInSignOutActivitiesResponse,
+		ErrorWrapper<ReportSignInSignOutActivitiesStatus400 | ReportSignInSignOutActivitiesStatus429>,
 		null,
 		Record<string, string>,
-		ReportSignInSignOutActivitiesQueryParams,
+		{ from?: string; to?: string; page_size?: number; next_page_token?: string },
 		Record<string, string>
-	>({ method: "GET", url: `/report/activities`, queryParams, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/report/activities`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Get billing reports
  * @description Get department billing reports of a Zoom account.
  * **Prerequisites:**
  * * Pro or a higher account with Department Billing option enabled. Contact Zoom Support team for details.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `report:read:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `report:read:billing:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `Heavy`
- * @summary Get billing reports
- * {@link /report/billing}
+ * @link /report/billing
  */
-export async function getBillingReport({
-	config = {},
-}: {
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getBillingReport(
+	{ config }: { config?: Partial<FetcherConfig> & { client?: typeof defaultClient } } = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		GetBillingReportQueryResponse,
-		ErrorWrapper<GetBillingReport400 | GetBillingReport429>,
+		GetBillingReportResponse,
+		ErrorWrapper<GetBillingReportStatus400 | GetBillingReportStatus429>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
 		Record<string, string>
-	>({ method: "GET", url: `/report/billing`, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/report/billing`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Get billing invoice reports
  * @description Get department billing invoices reports for a specific billing period. Provide the `billing_id` of the billing period for which you would like to retrieve the invoices. Retrieve this ID from the **Get Billing Reports** API.
  * **Prerequisites:**
  * * Pro or a higher account with Department Billing option enabled. Contact the Zoom Support team to enable this feature.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `report:read:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `report:read:billing_invoice:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `HEAVY`
- * @summary Get billing invoice reports
- * {@link /report/billing/invoices}
+ * @link /report/billing/invoices
  */
-export async function getBillingInvoicesReports({
-	queryParams,
-	config = {},
-}: {
-	queryParams: GetBillingInvoicesReportsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getBillingInvoicesReports(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { billing_id?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		GetBillingInvoicesReportsQueryResponse,
+		GetBillingInvoicesReportsResponse,
 		ErrorWrapper<
-			GetBillingInvoicesReports400 | GetBillingInvoicesReports404 | GetBillingInvoicesReports429
+			| GetBillingInvoicesReportsStatus400
+			| GetBillingInvoicesReportsStatus404
+			| GetBillingInvoicesReportsStatus429
 		>,
 		null,
 		Record<string, string>,
-		GetBillingInvoicesReportsQueryParams,
+		{ billing_id?: string },
 		Record<string, string>
-	>({ method: "GET", url: `/report/billing/invoices`, queryParams, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/report/billing/invoices`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Get cloud recording usage report
  * @description Retrieve cloud recording usage report for a specified period. You can only get cloud recording reports that is one day earlier than the current date and for the most recent period of 6 months. The date gap between from and to dates should be smaller or equal to 30 days.
  * **Prerequisites**
  * * Pro or higher plan.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `report:read:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `Heavy`
- * @summary Get cloud recording usage report
- * {@link /report/cloud_recording}
+ * @link /report/cloud_recording
  */
-export async function reportCloudRecording({
-	queryParams,
-	config = {},
-}: {
-	queryParams: ReportCloudRecordingQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function reportCloudRecording(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { from?: string; to?: string; group_id?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		ReportCloudRecordingQueryResponse,
-		ErrorWrapper<ReportCloudRecording400 | ReportCloudRecording429>,
+		ReportCloudRecordingResponse,
+		ErrorWrapper<ReportCloudRecordingStatus400 | ReportCloudRecordingStatus429>,
 		null,
 		Record<string, string>,
-		ReportCloudRecordingQueryParams,
+		{ from?: string; to?: string; group_id?: string },
 		Record<string, string>
-	>({ method: "GET", url: `/report/cloud_recording`, queryParams, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/report/cloud_recording`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Get daily usage report
  * @description Retrieve daily report to access the account-wide usage of Zoom services for each day in a given month. It lists the number of new users, meetings, participants, and meeting minutes.
  * **Prerequisites**
  * * Pro or higher plan.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `report:read:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `HEAVY`
- * @summary Get daily usage report
- * {@link /report/daily}
+ * @link /report/daily
  */
-export async function reportDaily({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: ReportDailyQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function reportDaily(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { year?: number; month?: number; group_id?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		ReportDailyQueryResponse,
-		ErrorWrapper<ReportDaily400 | ReportDaily429>,
+		ReportDailyResponse,
+		ErrorWrapper<ReportDailyStatus400 | ReportDailyStatus429>,
 		null,
 		Record<string, string>,
-		ReportDailyQueryParams,
+		{ year?: number; month?: number; group_id?: string },
 		Record<string, string>
-	>({ method: "GET", url: `/report/daily`, queryParams, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/report/daily`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Get disclaimer report
  * @description Retrieve a list of disclaimer records.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `report:read:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `report:read:disclaimer:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `HEAVY`
- * @summary Get disclaimer report
- * {@link /report/disclaimer}
+ * @link /report/disclaimer
  */
-export async function getdisclaimerreport({
-	queryParams,
-	config = {},
-}: {
-	queryParams: GetdisclaimerreportQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getdisclaimerreport(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: {
+			from?: string;
+			to?: string;
+			search_value?: string;
+			disclaimer_type?:
+				| "login"
+				| "joinMeeting"
+				| "recording"
+				| "remoteControl"
+				| "meetingConnector"
+				| "archive"
+				| "summary"
+				| "query"
+				| "AICompanion"
+				| "caption"
+				| "joinSDKMeeting"
+				| "NDI"
+				| "joinWebinar"
+				| "internalMMRGuestJoin"
+				| "liveStream"
+				| "phoneACR"
+				| "viewBOActivity"
+				| "webinarBO"
+				| "unmuteAudio"
+				| "joinOnZoom"
+				| "GDPR"
+				| "chinaMeeting"
+				| "zappJoin"
+				| "softUpdateReminder"
+				| "all";
+			group_id?: string;
+			page_size?: number;
+			next_page_token?: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		GetdisclaimerreportQueryResponse,
+		GetdisclaimerreportResponse,
 		ErrorWrapper<
-			| Getdisclaimerreport400
-			| Getdisclaimerreport401
-			| Getdisclaimerreport403
-			| Getdisclaimerreport429
+			| GetdisclaimerreportStatus400
+			| GetdisclaimerreportStatus401
+			| GetdisclaimerreportStatus403
+			| GetdisclaimerreportStatus429
 		>,
 		null,
 		Record<string, string>,
-		GetdisclaimerreportQueryParams,
+		{
+			from?: string;
+			to?: string;
+			search_value?: string;
+			disclaimer_type?:
+				| "login"
+				| "joinMeeting"
+				| "recording"
+				| "remoteControl"
+				| "meetingConnector"
+				| "archive"
+				| "summary"
+				| "query"
+				| "AICompanion"
+				| "caption"
+				| "joinSDKMeeting"
+				| "NDI"
+				| "joinWebinar"
+				| "internalMMRGuestJoin"
+				| "liveStream"
+				| "phoneACR"
+				| "viewBOActivity"
+				| "webinarBO"
+				| "unmuteAudio"
+				| "joinOnZoom"
+				| "GDPR"
+				| "chinaMeeting"
+				| "zappJoin"
+				| "softUpdateReminder"
+				| "all";
+			group_id?: string;
+			page_size?: number;
+			next_page_token?: string;
+		},
 		Record<string, string>
-	>({ method: "GET", url: `/report/disclaimer`, queryParams, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/report/disclaimer`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Get history meeting and webinar list
  * @description Retrieve a list of history meetings and webinars.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `report:read:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `report:read:list_history_meetings:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `HEAVY`
- * @summary Get history meeting and webinar list
- * {@link /report/history_meetings}
+ * @link /report/history_meetings
  */
-export async function gethistorymeetingandwebinarlist({
-	queryParams,
-	config = {},
-}: {
-	queryParams: GethistorymeetingandwebinarlistQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function gethistorymeetingandwebinarlist(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: {
+			from?: string;
+			to?: string;
+			date_type?: "start_time" | "end_time";
+			meeting_type?: "meeting" | "webinar" | "all";
+			report_type?: "all" | "poll" | "survey" | "qa" | "resource" | "reaction";
+			search_key?: string;
+			page_size?: number;
+			next_page_token?: string;
+			group_id?: string;
+			meeting_feature?:
+				| "screen_sharing"
+				| "video_on"
+				| "remote_control"
+				| "closed_caption"
+				| "language_interpretation"
+				| "telephone_usage"
+				| "in_meeting_chat"
+				| "poll"
+				| "join_by_room"
+				| "waiting_room"
+				| "live_transcription"
+				| "reaction"
+				| "zoom_apps"
+				| "annotation"
+				| "raise_hand"
+				| "virtual_background"
+				| "whiteboard"
+				| "immersive_scene"
+				| "avatar"
+				| "switch_to_mobile"
+				| "file_sharing"
+				| "meeting_summary"
+				| "meeting_questions"
+				| "record_to_computer"
+				| "record_to_cloud"
+				| "live_translation"
+				| "registration"
+				| "smart_recording"
+				| "multi_speaker"
+				| "meeting_wallpaper"
+				| "gen_ai_virtual_background"
+				| "multi_share"
+				| "document_collaboration"
+				| "portrait_lighting"
+				| "personalized_audio_isolation"
+				| "color_themes";
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		GethistorymeetingandwebinarlistQueryResponse,
+		GethistorymeetingandwebinarlistResponse,
 		ErrorWrapper<
-			| Gethistorymeetingandwebinarlist400
-			| Gethistorymeetingandwebinarlist401
-			| Gethistorymeetingandwebinarlist403
-			| Gethistorymeetingandwebinarlist429
+			| GethistorymeetingandwebinarlistStatus400
+			| GethistorymeetingandwebinarlistStatus401
+			| GethistorymeetingandwebinarlistStatus403
+			| GethistorymeetingandwebinarlistStatus429
 		>,
 		null,
 		Record<string, string>,
-		GethistorymeetingandwebinarlistQueryParams,
+		{
+			from?: string;
+			to?: string;
+			date_type?: "start_time" | "end_time";
+			meeting_type?: "meeting" | "webinar" | "all";
+			report_type?: "all" | "poll" | "survey" | "qa" | "resource" | "reaction";
+			search_key?: string;
+			page_size?: number;
+			next_page_token?: string;
+			group_id?: string;
+			meeting_feature?:
+				| "screen_sharing"
+				| "video_on"
+				| "remote_control"
+				| "closed_caption"
+				| "language_interpretation"
+				| "telephone_usage"
+				| "in_meeting_chat"
+				| "poll"
+				| "join_by_room"
+				| "waiting_room"
+				| "live_transcription"
+				| "reaction"
+				| "zoom_apps"
+				| "annotation"
+				| "raise_hand"
+				| "virtual_background"
+				| "whiteboard"
+				| "immersive_scene"
+				| "avatar"
+				| "switch_to_mobile"
+				| "file_sharing"
+				| "meeting_summary"
+				| "meeting_questions"
+				| "record_to_computer"
+				| "record_to_cloud"
+				| "live_translation"
+				| "registration"
+				| "smart_recording"
+				| "multi_speaker"
+				| "meeting_wallpaper"
+				| "gen_ai_virtual_background"
+				| "multi_share"
+				| "document_collaboration"
+				| "portrait_lighting"
+				| "personalized_audio_isolation"
+				| "color_themes";
+		},
 		Record<string, string>
-	>({ method: "GET", url: `/report/history_meetings`, queryParams, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/report/history_meetings`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Get a meeting activities report
  * @description Retrieve a list of a meeting activity logs. Contact Zoom Support to enable the meeting audit trail log feature on your account.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `report:read:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `report:read:meeting_activity_log:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `HEAVY`
- * @summary Get a meeting activities report
- * {@link /report/meeting_activities}
+ * @link /report/meeting_activities
  */
-export async function reportMeetingactivitylogs({
-	queryParams,
-	config = {},
-}: {
-	queryParams: ReportMeetingactivitylogsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function reportMeetingactivitylogs(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: {
+			from?: string;
+			to?: string;
+			page_size?: number;
+			next_page_token?: string;
+			meeting_number?: string;
+			search_key?: string;
+			activity_type?:
+				| "All Activities"
+				| "Meeting Created"
+				| "Meeting Started"
+				| "User Join"
+				| "User Left"
+				| "Remote Control"
+				| "In-Meeting Chat"
+				| "Meeting Ended";
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		ReportMeetingactivitylogsQueryResponse,
+		ReportMeetingactivitylogsResponse,
 		ErrorWrapper<
-			| ReportMeetingactivitylogs400
-			| ReportMeetingactivitylogs403
-			| ReportMeetingactivitylogs404
-			| ReportMeetingactivitylogs429
+			| ReportMeetingactivitylogsStatus400
+			| ReportMeetingactivitylogsStatus403
+			| ReportMeetingactivitylogsStatus404
+			| ReportMeetingactivitylogsStatus429
 		>,
 		null,
 		Record<string, string>,
-		ReportMeetingactivitylogsQueryParams,
+		{
+			from?: string;
+			to?: string;
+			page_size?: number;
+			next_page_token?: string;
+			meeting_number?: string;
+			search_key?: string;
+			activity_type?:
+				| "All Activities"
+				| "Meeting Created"
+				| "Meeting Started"
+				| "User Join"
+				| "User Left"
+				| "Remote Control"
+				| "In-Meeting Chat"
+				| "Meeting Ended";
+		},
 		Record<string, string>
-	>({ method: "GET", url: `/report/meeting_activities`, queryParams, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/report/meeting_activities`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Get meeting detail reports
  * @description Get a detailed report for a past meeting.
  * **Prerequisites**
  * * Pro or a higher plan.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `report:read:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `report:read:meeting:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `HEAVY`
- * @summary Get meeting detail reports
- * {@link /report/meetings/:meetingId}
+ * @link /report/meetings/{meetingId}
  */
-export async function reportMeetingDetails({
-	pathParams: { meetingId },
-	config = {},
-}: {
-	pathParams: ReportMeetingDetailsPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function reportMeetingDetails(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { meetingId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!meetingId) {
+	if (!pathParams.meetingId) {
 		throw new Error(`Missing required path parameter: meetingId`);
 	}
-
 	const data = await request<
-		ReportMeetingDetailsQueryResponse,
-		ErrorWrapper<ReportMeetingDetails400 | ReportMeetingDetails404 | ReportMeetingDetails429>,
+		ReportMeetingDetailsResponse,
+		ErrorWrapper<
+			ReportMeetingDetailsStatus400 | ReportMeetingDetailsStatus404 | ReportMeetingDetailsStatus429
+		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		ReportMeetingDetailsPathParams
-	>({ method: "GET", url: `/report/meetings/${meetingId}`, ...requestConfig });
+		{ meetingId: string }
+	>({
+		method: "GET",
+		url: `/report/meetings/${pathParams.meetingId}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Get meeting participant reports
  * @description Return a report of a past meeting with two or more participants, including the host. To return a report for past meeting with only **one** participant, use the [**List meeting participants**](/docs/api/accounts/#tag/dashboards/GET/metrics/meetings/{meetingId}/participants) API.
  * **Note:**
  * This API may return empty values for participants' `user_name`, `ip_address`, `location`, and `email` responses when the account calling this API:
@@ -4379,145 +5225,179 @@ export async function reportMeetingDetails({
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `report:read:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `report:read:list_meeting_participants:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `HEAVY`
- * @summary Get meeting participant reports
- * {@link /report/meetings/:meetingId/participants}
+ * @link /report/meetings/{meetingId}/participants
  */
-export async function reportMeetingParticipants({
-	pathParams: { meetingId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: ReportMeetingParticipantsPathParams;
-	queryParams?: ReportMeetingParticipantsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function reportMeetingParticipants(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { meetingId: string };
+		queryParams?: {
+			page_size?: number;
+			next_page_token?: string;
+			include_fields?: "registrant_id";
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!meetingId) {
+	if (!pathParams.meetingId) {
 		throw new Error(`Missing required path parameter: meetingId`);
 	}
-
 	const data = await request<
-		ReportMeetingParticipantsQueryResponse,
+		ReportMeetingParticipantsResponse,
 		ErrorWrapper<
-			ReportMeetingParticipants400 | ReportMeetingParticipants404 | ReportMeetingParticipants429
+			| ReportMeetingParticipantsStatus400
+			| ReportMeetingParticipantsStatus404
+			| ReportMeetingParticipantsStatus429
 		>,
 		null,
 		Record<string, string>,
-		ReportMeetingParticipantsQueryParams,
-		ReportMeetingParticipantsPathParams
+		{ page_size?: number; next_page_token?: string; include_fields?: "registrant_id" },
+		{ meetingId: string }
 	>({
 		method: "GET",
-		url: `/report/meetings/${meetingId}/participants`,
+		url: `/report/meetings/${pathParams.meetingId}/participants`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
+ * @summary Get meeting poll reports
  * @description Use this API to get a report of [poll](https://support.zoom.us/hc/en-us/articles/213756303-Polling-for-Meetings) results for a past meeting.
- * **Prerequisites:**
+ *  **Prerequisites:**
  * * A Pro or a higher plan.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `report:read:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `report:read:list_meeting_polls:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `Heavy`
- * @summary Get meeting poll reports
- * {@link /report/meetings/:meetingId/polls}
+ * @link /report/meetings/{meetingId}/polls
  */
-export async function reportMeetingPolls({
-	pathParams: { meetingId },
-	config = {},
-}: {
-	pathParams: ReportMeetingPollsPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function reportMeetingPolls(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { meetingId: unknown };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!meetingId) {
+	if (!pathParams.meetingId) {
 		throw new Error(`Missing required path parameter: meetingId`);
 	}
-
 	const data = await request<
-		ReportMeetingPollsQueryResponse,
-		ErrorWrapper<ReportMeetingPolls400 | ReportMeetingPolls404 | ReportMeetingPolls429>,
+		ReportMeetingPollsResponse,
+		ErrorWrapper<
+			ReportMeetingPollsStatus400 | ReportMeetingPollsStatus404 | ReportMeetingPollsStatus429
+		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		ReportMeetingPollsPathParams
-	>({ method: "GET", url: `/report/meetings/${meetingId}/polls`, ...requestConfig });
+		{ meetingId: unknown }
+	>({
+		method: "GET",
+		url: `/report/meetings/${pathParams.meetingId}/polls`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Get meeting Q&A report
  * @description Retrieve a report on questions asked and answered by participants from past meetings.
  * **Prerequisites:**
  * * Pro plan or higher.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `report:read:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `report:read:meeting_qna:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `HEAVY`
- * @summary Get meeting Q&A report
- * {@link /report/meetings/:meetingId/qa}
+ * @link /report/meetings/{meetingId}/qa
  */
-export async function reportMeetingQA({
-	pathParams: { meetingId },
-	config = {},
-}: {
-	pathParams: ReportMeetingQAPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function reportMeetingQA(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { meetingId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!meetingId) {
+	if (!pathParams.meetingId) {
 		throw new Error(`Missing required path parameter: meetingId`);
 	}
-
 	const data = await request<
-		ReportMeetingQAQueryResponse,
-		ErrorWrapper<ReportMeetingQA400 | ReportMeetingQA404 | ReportMeetingQA429>,
+		ReportMeetingQAResponse,
+		ErrorWrapper<ReportMeetingQAStatus400 | ReportMeetingQAStatus404 | ReportMeetingQAStatus429>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		ReportMeetingQAPathParams
-	>({ method: "GET", url: `/report/meetings/${meetingId}/qa`, ...requestConfig });
+		{ meetingId: string }
+	>({
+		method: "GET",
+		url: `/report/meetings/${pathParams.meetingId}/qa`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Get meeting survey report
  * @description Retrieve a report on past [meeting survey](https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0057559).
  * **Prerequisites:**
  * * Pro or a higher plan.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `report:read:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `report:read:meeting_survey:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `HEAVY`
- * @summary Get meeting survey report
- * {@link /report/meetings/:meetingId/survey}
+ * @link /report/meetings/{meetingId}/survey
  */
-export async function reportMeetingSurvey({
-	pathParams: { meetingId },
-	config = {},
-}: {
-	pathParams: ReportMeetingSurveyPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function reportMeetingSurvey(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { meetingId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!meetingId) {
+	if (!pathParams.meetingId) {
 		throw new Error(`Missing required path parameter: meetingId`);
 	}
-
 	const data = await request<
-		ReportMeetingSurveyQueryResponse,
-		ErrorWrapper<ReportMeetingSurvey400 | ReportMeetingSurvey404 | ReportMeetingSurvey429>,
+		ReportMeetingSurveyResponse,
+		ErrorWrapper<
+			ReportMeetingSurveyStatus400 | ReportMeetingSurveyStatus404 | ReportMeetingSurveyStatus429
+		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		ReportMeetingSurveyPathParams
-	>({ method: "GET", url: `/report/meetings/${meetingId}/survey`, ...requestConfig });
+		{ meetingId: string }
+	>({
+		method: "GET",
+		url: `/report/meetings/${pathParams.meetingId}/survey`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Get operation logs report
  * @description The [Operations Logs](https://support.zoom.us/hc/en-us/articles/360032748331-Operation-Logs) report allows you to audit admin and user activity, such as adding a new user, changing account settings, and deleting recordings.
  * Use this API to retrieve operation logs report for a specified period of time.
  * **Prerequisites:**
@@ -4525,118 +5405,229 @@ export async function reportMeetingSurvey({
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `report:read:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `report:read:operation_logs:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `HEAVY`
- * @summary Get operation logs report
- * {@link /report/operationlogs}
+ * @link /report/operationlogs
  */
-export async function reportOperationLogs({
-	queryParams,
-	config = {},
-}: {
-	queryParams: ReportOperationLogsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function reportOperationLogs(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: {
+			from?: string;
+			to?: string;
+			page_size?: number;
+			next_page_token?: string;
+			category_type?:
+				| "all"
+				| "user"
+				| "user_settings"
+				| "account"
+				| "billing"
+				| "im"
+				| "recording"
+				| "phone_contacts"
+				| "webinar"
+				| "sub_account"
+				| "role"
+				| "zoom_rooms";
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		ReportOperationLogsQueryResponse,
-		ErrorWrapper<ReportOperationLogs400 | ReportOperationLogs429>,
+		ReportOperationLogsResponse,
+		ErrorWrapper<ReportOperationLogsStatus400 | ReportOperationLogsStatus429>,
 		null,
 		Record<string, string>,
-		ReportOperationLogsQueryParams,
+		{
+			from?: string;
+			to?: string;
+			page_size?: number;
+			next_page_token?: string;
+			category_type?:
+				| "all"
+				| "user"
+				| "user_settings"
+				| "account"
+				| "billing"
+				| "im"
+				| "recording"
+				| "phone_contacts"
+				| "webinar"
+				| "sub_account"
+				| "role"
+				| "zoom_rooms";
+		},
 		Record<string, string>
-	>({ method: "GET", url: `/report/operationlogs`, queryParams, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/report/operationlogs`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Get remote support report
  * @description Retrieve a list of remote support records.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `report:read:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `report:read:remote_support:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `HEAVY`
- * @summary Get remote support report
- * {@link /report/remote_support}
+ * @link /report/remote_support
  */
-export async function getremotesupportreport({
-	queryParams,
-	config = {},
-}: {
-	queryParams: GetremotesupportreportQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getremotesupportreport(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { from?: string; to?: string; next_page_token?: string; page_size?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		GetremotesupportreportQueryResponse,
-		ErrorWrapper<Getremotesupportreport400 | Getremotesupportreport401 | Getremotesupportreport429>,
+		GetremotesupportreportResponse,
+		ErrorWrapper<
+			| GetremotesupportreportStatus400
+			| GetremotesupportreportStatus401
+			| GetremotesupportreportStatus429
+		>,
 		null,
 		Record<string, string>,
-		GetremotesupportreportQueryParams,
+		{ from?: string; to?: string; next_page_token?: string; page_size?: string },
 		Record<string, string>
-	>({ method: "GET", url: `/report/remote_support`, queryParams, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/report/remote_support`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Get telephone reports
  * @description The [telephone report](https://support.zoom.us/hc/en-us/articles/206514816-Telephone-reports) allows you to view who dialed into meetings via phone (Audio Conferencing or SIP Connected Audio) and which number they dialed into and other details. Use this API to get telephone report for a specified period of time.
  * **Prerequisites:**
  * * Pro or higher plan.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `report:read:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `report:read:telephone:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `HEAVY`
- * @summary Get telephone reports
- * {@link /report/telephone}
+ * @link /report/telephone
  */
-export async function reportTelephone({
-	queryParams,
-	config = {},
-}: {
-	queryParams: ReportTelephoneQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function reportTelephone(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: {
+			type?: "1" | "2" | "3";
+			query_date_type?: "start_time" | "end_time" | "meeting_start_time" | "meeting_end_time";
+			from?: string;
+			to?: string;
+			page_size?: number;
+			page_number?: number;
+			next_page_token?: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		ReportTelephoneQueryResponse,
-		ErrorWrapper<ReportTelephone400 | ReportTelephone401 | ReportTelephone403 | ReportTelephone429>,
+		ReportTelephoneResponse,
+		ErrorWrapper<
+			| ReportTelephoneStatus400
+			| ReportTelephoneStatus401
+			| ReportTelephoneStatus403
+			| ReportTelephoneStatus429
+		>,
 		null,
 		Record<string, string>,
-		ReportTelephoneQueryParams,
+		{
+			type?: "1" | "2" | "3";
+			query_date_type?: "start_time" | "end_time" | "meeting_start_time" | "meeting_end_time";
+			from?: string;
+			to?: string;
+			page_size?: number;
+			page_number?: number;
+			next_page_token?: string;
+		},
 		Record<string, string>
-	>({ method: "GET", url: `/report/telephone`, queryParams, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/report/telephone`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Get upcoming events report
  * @description Use this API to list upcoming meeting and/or webinar events within a specified period of time. The report's time range is limited to one month.
  * **Prerequisites:**
  * * A Pro or higher plan
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `report:read:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `report:read:upcoming_meetings_webinars:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `Heavy`
- * @summary Get upcoming events report
- * {@link /report/upcoming_events}
+ * @link /report/upcoming_events
  */
-export async function reportUpcomingEvents({
-	queryParams,
-	config = {},
-}: {
-	queryParams: ReportUpcomingEventsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function reportUpcomingEvents(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: {
+			from?: string;
+			to?: string;
+			page_size?: number;
+			next_page_token?: string;
+			type?: "meeting" | "webinar" | "all";
+			group_id?: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		ReportUpcomingEventsQueryResponse,
-		ErrorWrapper<ReportUpcomingEvents400 | ReportUpcomingEvents429>,
+		ReportUpcomingEventsResponse,
+		ErrorWrapper<ReportUpcomingEventsStatus400 | ReportUpcomingEventsStatus429>,
 		null,
 		Record<string, string>,
-		ReportUpcomingEventsQueryParams,
+		{
+			from?: string;
+			to?: string;
+			page_size?: number;
+			next_page_token?: string;
+			type?: "meeting" | "webinar" | "all";
+			group_id?: string;
+		},
 		Record<string, string>
-	>({ method: "GET", url: `/report/upcoming_events`, queryParams, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/report/upcoming_events`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Get active or inactive host reports
  * @description Retrieve a host report for a specified period of time within the last six months.
  * The report time range is limited to a month.
  * You can specify the type of report and date range using the query parameters.
@@ -4649,30 +5640,55 @@ export async function reportUpcomingEvents({
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `report:read:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `report:read:list_users:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `HEAVY`
- * @summary Get active or inactive host reports
- * {@link /report/users}
+ * @link /report/users
  */
-export async function reportUsers({
-	queryParams,
-	config = {},
-}: {
-	queryParams: ReportUsersQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function reportUsers(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: {
+			type?: "active" | "inactive";
+			from?: string;
+			to?: string;
+			page_size?: number;
+			page_number?: number;
+			next_page_token?: string;
+			group_id?: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		ReportUsersQueryResponse,
-		ErrorWrapper<ReportUsers400 | ReportUsers429>,
+		ReportUsersResponse,
+		ErrorWrapper<ReportUsersStatus400 | ReportUsersStatus429>,
 		null,
 		Record<string, string>,
-		ReportUsersQueryParams,
+		{
+			type?: "active" | "inactive";
+			from?: string;
+			to?: string;
+			page_size?: number;
+			page_number?: number;
+			next_page_token?: string;
+			group_id?: string;
+		},
 		Record<string, string>
-	>({ method: "GET", url: `/report/users`, queryParams, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/report/users`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Get meeting reports
  * @description Retrieve [report](https://support.zoom.us/hc/en-us/articles/216378603-Meeting-Reporting) on past meetings and webinars for a specified time period. The time range for the report is limited to a month and the month must fall within the past six months.
  * Meetings and webinars are returned only if they have two or more unique participants.
  * **Prerequisites:**
@@ -4680,215 +5696,278 @@ export async function reportUsers({
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `report:read:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `report:read:user:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `HEAVY`
- * @summary Get meeting reports
- * {@link /report/users/:userId/meetings}
+ * @link /report/users/{userId}/meetings
  */
-export async function reportMeetings({
-	pathParams: { userId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: ReportMeetingsPathParams;
-	queryParams: ReportMeetingsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function reportMeetings(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { userId: string };
+		queryParams?: {
+			from?: string;
+			to?: string;
+			page_size?: number;
+			next_page_token?: string;
+			type?: "past" | "pastOne" | "pastJoined";
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!userId) {
+	if (!pathParams.userId) {
 		throw new Error(`Missing required path parameter: userId`);
 	}
-
 	const data = await request<
-		ReportMeetingsQueryResponse,
-		ErrorWrapper<ReportMeetings400 | ReportMeetings404 | ReportMeetings429>,
+		ReportMeetingsResponse,
+		ErrorWrapper<ReportMeetingsStatus400 | ReportMeetingsStatus404 | ReportMeetingsStatus429>,
 		null,
 		Record<string, string>,
-		ReportMeetingsQueryParams,
-		ReportMeetingsPathParams
-	>({ method: "GET", url: `/report/users/${userId}/meetings`, queryParams, ...requestConfig });
+		{
+			from?: string;
+			to?: string;
+			page_size?: number;
+			next_page_token?: string;
+			type?: "past" | "pastOne" | "pastJoined";
+		},
+		{ userId: string }
+	>({
+		method: "GET",
+		url: `/report/users/${pathParams.userId}/meetings`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Get webinar detail reports
  * @description Retrieve a [report](https://support.zoom.us/hc/en-us/articles/201393719-Webinar-Reporting) containing past webinar details.
  * **Prerequisites:**
  * * Pro or higher plan with Webinar add-on.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `report:read:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `report:read:webinar:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `Heavy`
- * @summary Get webinar detail reports
- * {@link /report/webinars/:webinarId}
+ * @link /report/webinars/{webinarId}
  */
-export async function reportWebinarDetails({
-	pathParams: { webinarId },
-	config = {},
-}: {
-	pathParams: ReportWebinarDetailsPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function reportWebinarDetails(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { webinarId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!webinarId) {
+	if (!pathParams.webinarId) {
 		throw new Error(`Missing required path parameter: webinarId`);
 	}
-
 	const data = await request<
-		ReportWebinarDetailsQueryResponse,
-		ErrorWrapper<ReportWebinarDetails400 | ReportWebinarDetails404 | ReportWebinarDetails429>,
+		ReportWebinarDetailsResponse,
+		ErrorWrapper<
+			ReportWebinarDetailsStatus400 | ReportWebinarDetailsStatus404 | ReportWebinarDetailsStatus429
+		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		ReportWebinarDetailsPathParams
-	>({ method: "GET", url: `/report/webinars/${webinarId}`, ...requestConfig });
+		{ webinarId: string }
+	>({
+		method: "GET",
+		url: `/report/webinars/${pathParams.webinarId}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Get webinar participant reports
  * @description Get a detailed report on each webinar attendee. You can get webinar participant reports for the last 6 months.
- * **Prerequisites:**
+ *  **Prerequisites:**
  * * A Pro or a higher plan with Webinar add-on enabled.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `report:read:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `report:read:list_webinar_participants:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `HEAVY`
- * @summary Get webinar participant reports
- * {@link /report/webinars/:webinarId/participants}
+ * @link /report/webinars/{webinarId}/participants
  */
-export async function reportWebinarParticipants({
-	pathParams: { webinarId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: ReportWebinarParticipantsPathParams;
-	queryParams?: ReportWebinarParticipantsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function reportWebinarParticipants(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { webinarId: string };
+		queryParams?: {
+			page_size?: number;
+			next_page_token?: string;
+			include_fields?: "registrant_id";
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!webinarId) {
+	if (!pathParams.webinarId) {
 		throw new Error(`Missing required path parameter: webinarId`);
 	}
-
 	const data = await request<
-		ReportWebinarParticipantsQueryResponse,
+		ReportWebinarParticipantsResponse,
 		ErrorWrapper<
-			ReportWebinarParticipants400 | ReportWebinarParticipants404 | ReportWebinarParticipants429
+			| ReportWebinarParticipantsStatus400
+			| ReportWebinarParticipantsStatus404
+			| ReportWebinarParticipantsStatus429
 		>,
 		null,
 		Record<string, string>,
-		ReportWebinarParticipantsQueryParams,
-		ReportWebinarParticipantsPathParams
+		{ page_size?: number; next_page_token?: string; include_fields?: "registrant_id" },
+		{ webinarId: string }
 	>({
 		method: "GET",
-		url: `/report/webinars/${webinarId}/participants`,
+		url: `/report/webinars/${pathParams.webinarId}/participants`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
+ * @summary Get webinar poll reports
  * @description Retrieve a report on past [webinar polls](https://support.zoom.us/hc/en-us/articles/203749865-Polling-for-Webinars).
  * **Prerequisites:**
  * * Pro or a higher plan with Webinar add-on enabled.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `report:read:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `report:read:list_webinar_polls:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `Heavy`
- * @summary Get webinar poll reports
- * {@link /report/webinars/:webinarId/polls}
+ * @link /report/webinars/{webinarId}/polls
  */
-export async function reportWebinarPolls({
-	pathParams: { webinarId },
-	config = {},
-}: {
-	pathParams: ReportWebinarPollsPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function reportWebinarPolls(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { webinarId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!webinarId) {
+	if (!pathParams.webinarId) {
 		throw new Error(`Missing required path parameter: webinarId`);
 	}
-
 	const data = await request<
-		ReportWebinarPollsQueryResponse,
-		ErrorWrapper<ReportWebinarPolls400 | ReportWebinarPolls404 | ReportWebinarPolls429>,
+		ReportWebinarPollsResponse,
+		ErrorWrapper<
+			ReportWebinarPollsStatus400 | ReportWebinarPollsStatus404 | ReportWebinarPollsStatus429
+		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		ReportWebinarPollsPathParams
-	>({ method: "GET", url: `/report/webinars/${webinarId}/polls`, ...requestConfig });
+		{ webinarId: string }
+	>({
+		method: "GET",
+		url: `/report/webinars/${pathParams.webinarId}/polls`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Get webinar Q&A report
  * @description Retrieve a report on questions asked by participants and answered by panelists, co-hosts and hosts from past webinars.
  * **Prerequisites:**
  * * Pro or a higher plan with the Webinar add-on enabled.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `report:read:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `report:read:webinar_qna:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `HEAVY`
- * @summary Get webinar Q&A report
- * {@link /report/webinars/:webinarId/qa}
+ * @link /report/webinars/{webinarId}/qa
  */
-export async function reportWebinarQA({
-	pathParams: { webinarId },
-	config = {},
-}: {
-	pathParams: ReportWebinarQAPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function reportWebinarQA(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { webinarId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!webinarId) {
+	if (!pathParams.webinarId) {
 		throw new Error(`Missing required path parameter: webinarId`);
 	}
-
 	const data = await request<
-		ReportWebinarQAQueryResponse,
-		ErrorWrapper<ReportWebinarQA400 | ReportWebinarQA404 | ReportWebinarQA429>,
+		ReportWebinarQAResponse,
+		ErrorWrapper<ReportWebinarQAStatus400 | ReportWebinarQAStatus404 | ReportWebinarQAStatus429>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		ReportWebinarQAPathParams
-	>({ method: "GET", url: `/report/webinars/${webinarId}/qa`, ...requestConfig });
+		{ webinarId: string }
+	>({
+		method: "GET",
+		url: `/report/webinars/${pathParams.webinarId}/qa`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Get webinar survey report
  * @description Retrieve a report on past [webinar survey](https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0057559).
  * **Prerequisites:**
  * * Pro or a higher plan with Webinar add-on enabled.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `report:read:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `report:read:webinar_survey:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `HEAVY`
- * @summary Get webinar survey report
- * {@link /report/webinars/:webinarId/survey}
+ * @link /report/webinars/{webinarId}/survey
  */
-export async function reportWebinarSurvey({
-	pathParams: { webinarId },
-	config = {},
-}: {
-	pathParams: ReportWebinarSurveyPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function reportWebinarSurvey(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { webinarId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!webinarId) {
+	if (!pathParams.webinarId) {
 		throw new Error(`Missing required path parameter: webinarId`);
 	}
-
 	const data = await request<
-		ReportWebinarSurveyQueryResponse,
-		ErrorWrapper<ReportWebinarSurvey400 | ReportWebinarSurvey404 | ReportWebinarSurvey429>,
+		ReportWebinarSurveyResponse,
+		ErrorWrapper<
+			ReportWebinarSurveyStatus400 | ReportWebinarSurveyStatus404 | ReportWebinarSurveyStatus429
+		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		ReportWebinarSurveyPathParams
-	>({ method: "GET", url: `/report/webinars/${webinarId}/survey`, ...requestConfig });
+		{ webinarId: string }
+	>({
+		method: "GET",
+		url: `/report/webinars/${pathParams.webinarId}/survey`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary List SIP phones
  * @description List SIP phones on an account.
  * Zoom's Phone System Integration (PSI), also referred as SIP phones, enables an organization to leverage the Zoom client to complete a Softphone registration to supported premise based PBX system. End users will have the ability to have Softphone functionality within a single client while maintaining a comparable interface to Zoom Phone.
  * **Prerequisites**:
@@ -4897,32 +5976,44 @@ export async function reportWebinarSurvey({
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `sip_phone:read:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `sip_phone:read:list_sip_phones:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `MEDIUM`
- * @summary List SIP phones
- * {@link /sip_phones/phones}
+ * @link /sip_phones/phones
  */
-export async function listSIPPhonePhones({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: ListSIPPhonePhonesQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function listSIPPhonePhones(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { search_key?: string; page_size?: number; next_page_token?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		ListSIPPhonePhonesQueryResponse,
+		ListSIPPhonePhonesResponse,
 		ErrorWrapper<
-			ListSIPPhonePhones400 | ListSIPPhonePhones401 | ListSIPPhonePhones403 | ListSIPPhonePhones429
+			| ListSIPPhonePhonesStatus400
+			| ListSIPPhonePhonesStatus401
+			| ListSIPPhonePhonesStatus403
+			| ListSIPPhonePhonesStatus429
 		>,
 		null,
 		Record<string, string>,
-		ListSIPPhonePhonesQueryParams,
+		{ search_key?: string; page_size?: number; next_page_token?: string },
 		Record<string, string>
-	>({ method: "GET", url: `/sip_phones/phones`, queryParams, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/sip_phones/phones`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Enable SIP phone
  * @description Enable a user to use a SIP phone.
  * Zoom's Phone System Integration (PSI), also referred as SIP phones, enables an organization to leverage the Zoom client to complete a softphone registration to supported premise based PBX system. End users will have the ability to have softphone functionality within a single client while maintaining a comparable interface to Zoom Phone.
  * **Prerequisites**:
@@ -4931,76 +6022,92 @@ export async function listSIPPhonePhones({
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `sip_phone:write:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `sip_phone:write:sip_phone:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Enable SIP phone
- * {@link /sip_phones/phones}
+ * @link /sip_phones/phones
  */
-export async function enableSIPPhonePhones({
-	body,
-	config = {},
-}: {
-	body: EnableSIPPhonePhonesMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function enableSIPPhonePhones(
+	{
+		body,
+		config,
+	}: {
+		body?: EnableSIPPhonePhonesBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		EnableSIPPhonePhonesMutationResponse,
+		EnableSIPPhonePhonesResponse,
 		ErrorWrapper<
-			| EnableSIPPhonePhones400
-			| EnableSIPPhonePhones401
-			| EnableSIPPhonePhones403
-			| EnableSIPPhonePhones404
-			| EnableSIPPhonePhones429
+			| EnableSIPPhonePhonesStatus400
+			| EnableSIPPhonePhonesStatus401
+			| EnableSIPPhonePhonesStatus403
+			| EnableSIPPhonePhonesStatus404
+			| EnableSIPPhonePhonesStatus429
 		>,
-		EnableSIPPhonePhonesMutationRequest,
+		EnableSIPPhonePhonesBody,
 		Record<string, string>,
 		Record<string, string>,
 		Record<string, string>
-	>({ method: "POST", url: `/sip_phones/phones`, body, ...requestConfig });
+	>({
+		method: "POST",
+		url: `/sip_phones/phones`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Delete SIP phone
  * @description Delete a Zoom account's SIP phone.
- * **Prerequisites**:
+ *  **Prerequisites**:
  * * Currently only supported on Cisco and Avaya PBX systems.
  * * The user must enable **SIP Phone Integration** by contacting the [Zoom Sales](https://zoom.us/contactsales) team.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `sip_phone:write:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `sip_phone:delete:sip_phone:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Delete SIP phone
- * {@link /sip_phones/phones/:phoneId}
+ * @link /sip_phones/phones/{phoneId}
  */
-export async function deleteSIPPhonePhones({
-	pathParams: { phoneId },
-	config = {},
-}: {
-	pathParams: DeleteSIPPhonePhonesPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deleteSIPPhonePhones(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { phoneId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!phoneId) {
+	if (!pathParams.phoneId) {
 		throw new Error(`Missing required path parameter: phoneId`);
 	}
-
 	const data = await request<
-		DeleteSIPPhonePhonesMutationResponse,
+		DeleteSIPPhonePhonesResponse,
 		ErrorWrapper<
-			| DeleteSIPPhonePhones401
-			| DeleteSIPPhonePhones403
-			| DeleteSIPPhonePhones404
-			| DeleteSIPPhonePhones429
+			| DeleteSIPPhonePhonesStatus401
+			| DeleteSIPPhonePhonesStatus403
+			| DeleteSIPPhonePhonesStatus404
+			| DeleteSIPPhonePhonesStatus429
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		DeleteSIPPhonePhonesPathParams
-	>({ method: "DELETE", url: `/sip_phones/phones/${phoneId}`, ...requestConfig });
+		{ phoneId: string }
+	>({
+		method: "DELETE",
+		url: `/sip_phones/phones/${pathParams.phoneId}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Update SIP phone
  * @description Update the information of a specific SIP phone on a Zoom account.
  * Zoom's Phone System Integration (PSI), also referred as SIP phones, lets an organization leverage the Zoom client to complete a softphone registration to supported premise based PBX system. End users can have softphone functionality within a single client while maintaining a comparable interface to a Zoom Phone.
  * **Prerequisites**:
@@ -5009,42 +6116,50 @@ export async function deleteSIPPhonePhones({
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `sip_phone:write:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `sip_phone:update:sip_phone:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Update SIP phone
- * {@link /sip_phones/phones/:phoneId}
+ * @link /sip_phones/phones/{phoneId}
  */
-export async function updateSIPPhonePhones({
-	pathParams: { phoneId },
-	body,
-	config = {},
-}: {
-	pathParams: UpdateSIPPhonePhonesPathParams;
-	body?: UpdateSIPPhonePhonesMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function updateSIPPhonePhones(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { phoneId: string };
+		body?: UpdateSIPPhonePhonesBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!phoneId) {
+	if (!pathParams.phoneId) {
 		throw new Error(`Missing required path parameter: phoneId`);
 	}
-
 	const data = await request<
-		UpdateSIPPhonePhonesMutationResponse,
+		UpdateSIPPhonePhonesResponse,
 		ErrorWrapper<
-			| UpdateSIPPhonePhones400
-			| UpdateSIPPhonePhones401
-			| UpdateSIPPhonePhones403
-			| UpdateSIPPhonePhones404
-			| UpdateSIPPhonePhones429
+			| UpdateSIPPhonePhonesStatus400
+			| UpdateSIPPhonePhonesStatus401
+			| UpdateSIPPhonePhonesStatus403
+			| UpdateSIPPhonePhonesStatus404
+			| UpdateSIPPhonePhonesStatus429
 		>,
-		UpdateSIPPhonePhonesMutationRequest,
+		UpdateSIPPhonePhonesBody,
 		Record<string, string>,
 		Record<string, string>,
-		UpdateSIPPhonePhonesPathParams
-	>({ method: "PATCH", url: `/sip_phones/phones/${phoneId}`, body, ...requestConfig });
+		{ phoneId: string }
+	>({
+		method: "PATCH",
+		url: `/sip_phones/phones/${pathParams.phoneId}`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary List an account's meeting or webinar summaries
  * @description Retrieve a list of all meeting or webinar summaries available for an account.
  * **Prerequisites**
  * * The host must have a Pro, Business, or higher subscription plan.
@@ -5055,30 +6170,53 @@ export async function updateSIPPhonePhones({
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting_summary:read:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:read:list_summaries:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `MEDIUM`
- * @summary List an account's meeting or webinar summaries
- * {@link /meetings/meeting_summaries}
+ * @link /meetings/meeting_summaries
  */
-export async function listmeetingsummaries({
-	queryParams,
-	config = {},
-}: {
-	queryParams?: ListmeetingsummariesQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function listmeetingsummaries(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: {
+			page_size?: number;
+			next_page_token?: string;
+			from?: string;
+			to?: string;
+			time_filter_field?: "summary_start_time" | "summary_created_time";
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		ListmeetingsummariesQueryResponse,
-		ErrorWrapper<Listmeetingsummaries400 | Listmeetingsummaries403 | Listmeetingsummaries429>,
+		ListmeetingsummariesResponse,
+		ErrorWrapper<
+			ListmeetingsummariesStatus400 | ListmeetingsummariesStatus403 | ListmeetingsummariesStatus429
+		>,
 		null,
 		Record<string, string>,
-		ListmeetingsummariesQueryParams,
+		{
+			page_size?: number;
+			next_page_token?: string;
+			from?: string;
+			to?: string;
+			time_filter_field?: "summary_start_time" | "summary_created_time";
+		},
 		Record<string, string>
-	>({ method: "GET", url: `/meetings/meeting_summaries`, queryParams, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/meetings/meeting_summaries`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Get a meeting or webinar summary
  * @description Retrieve the summary of a meeting or webinar.
  * **Prerequisites**
  * - The host must have a Pro, Business, or higher subscription plan.
@@ -5089,36 +6227,46 @@ export async function listmeetingsummaries({
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting_summary:read`,`meeting_summary:read:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:read:summary`,`meeting:read:summary:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Get a meeting or webinar summary
- * {@link /meetings/:meetingId/meeting_summary}
+ * @link /meetings/{meetingId}/meeting_summary
  */
-export async function getameetingsummary({
-	pathParams: { meetingId },
-	config = {},
-}: {
-	pathParams: GetameetingsummaryPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getameetingsummary(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { meetingId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!meetingId) {
+	if (!pathParams.meetingId) {
 		throw new Error(`Missing required path parameter: meetingId`);
 	}
-
 	const data = await request<
-		GetameetingsummaryQueryResponse,
+		GetameetingsummaryResponse,
 		ErrorWrapper<
-			Getameetingsummary400 | Getameetingsummary403 | Getameetingsummary404 | Getameetingsummary429
+			| GetameetingsummaryStatus400
+			| GetameetingsummaryStatus403
+			| GetameetingsummaryStatus404
+			| GetameetingsummaryStatus429
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		GetameetingsummaryPathParams
-	>({ method: "GET", url: `/meetings/${meetingId}/meeting_summary`, ...requestConfig });
+		{ meetingId: string }
+	>({
+		method: "GET",
+		url: `/meetings/${pathParams.meetingId}/meeting_summary`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Delete a meeting or webinar summary
  * @description Delete the summary of a meeting or webinar.
  * **Prerequisites**
  * * The host must have a Pro, Business, or higher subscription plan.
@@ -5128,141 +6276,239 @@ export async function getameetingsummary({
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting_summary:write`,`meeting_summary:write:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:delete:summary`,`meeting:delete:summary:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Delete a meeting or webinar summary
- * {@link /meetings/:meetingId/meeting_summary}
+ * @link /meetings/{meetingId}/meeting_summary
  */
-export async function deletemeetingorwebinarsummary({
-	pathParams: { meetingId },
-	config = {},
-}: {
-	pathParams: DeletemeetingorwebinarsummaryPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deletemeetingorwebinarsummary(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { meetingId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!meetingId) {
+	if (!pathParams.meetingId) {
 		throw new Error(`Missing required path parameter: meetingId`);
 	}
-
 	const data = await request<
-		DeletemeetingorwebinarsummaryMutationResponse,
+		DeletemeetingorwebinarsummaryResponse,
 		ErrorWrapper<
-			| Deletemeetingorwebinarsummary400
-			| Deletemeetingorwebinarsummary403
-			| Deletemeetingorwebinarsummary404
-			| Deletemeetingorwebinarsummary429
+			| DeletemeetingorwebinarsummaryStatus400
+			| DeletemeetingorwebinarsummaryStatus403
+			| DeletemeetingorwebinarsummaryStatus404
+			| DeletemeetingorwebinarsummaryStatus429
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		DeletemeetingorwebinarsummaryPathParams
-	>({ method: "DELETE", url: `/meetings/${meetingId}/meeting_summary`, ...requestConfig });
+		{ meetingId: string }
+	>({
+		method: "DELETE",
+		url: `/meetings/${pathParams.meetingId}/meeting_summary`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary List a user's meeting or webinar summaries
+ * @description Retrieve a list of meeting or webinar summaries hosted by the specified user.
+ * **Prerequisites**
+ * * The host must have a Pro, Business, or higher subscription plan.
+ * * For meetings - the host's **Meeting Summary with AI Companion** user setting must be enabled.
+ * * For webinars - the host's **Webinar Summary with AI Companion** user setting must be enabled.
+ * * End-to-End Encrypted (E2EE) meetings do not support summaries.
+ * The specified user must belong to the current account.
+ * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting_summary:read`,`meeting_summary:read:admin`
+ * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:read:list_summaries`,`meeting:read:list_summaries:admin`
+ * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `MEDIUM`
+ * @link /users/{userId}/meeting_summaries
+ */
+export async function listUserMeetingSummaries(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { userId: string };
+		queryParams?: {
+			page_size?: number;
+			next_page_token?: string;
+			from?: string;
+			to?: string;
+			time_filter_field?: "summary_start_time" | "summary_created_time";
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.userId) {
+		throw new Error(`Missing required path parameter: userId`);
+	}
+	const data = await request<
+		ListUserMeetingSummariesResponse,
+		ErrorWrapper<
+			| ListUserMeetingSummariesStatus400
+			| ListUserMeetingSummariesStatus403
+			| ListUserMeetingSummariesStatus404
+			| ListUserMeetingSummariesStatus429
+		>,
+		null,
+		Record<string, string>,
+		{
+			page_size?: number;
+			next_page_token?: string;
+			from?: string;
+			to?: string;
+			time_filter_field?: "summary_start_time" | "summary_created_time";
+		},
+		{ userId: string }
+	>({
+		method: "GET",
+		url: `/users/${pathParams.userId}/meeting_summaries`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Get a meeting survey
  * @description Display information about a [meeting survey](https://support.zoom.us/hc/en-us/articles/4404969060621-Post-meeting-survey-and-reporting).  **Prerequisites:** * The host has a **Pro** license. * The [**Meeting Survey**](https://support.zoom.us/hc/en-us/articles/4404939095053-Enabling-meeting-surveys) feature is enabled on the host's account. * The meeting must be a scheduled meeting. Instant meetings do not have survey features enabled.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:read`,`meeting:read:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:read:survey`,`meeting:read:survey:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Get a meeting survey
- * {@link /meetings/:meetingId/survey}
+ * @link /meetings/{meetingId}/survey
  */
-export async function meetingSurveyGet({
-	pathParams: { meetingId },
-	config = {},
-}: {
-	pathParams: MeetingSurveyGetPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function meetingSurveyGet(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { meetingId: bigint };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!meetingId) {
+	if (!pathParams.meetingId) {
 		throw new Error(`Missing required path parameter: meetingId`);
 	}
-
 	const data = await request<
-		MeetingSurveyGetQueryResponse,
-		ErrorWrapper<MeetingSurveyGet400 | MeetingSurveyGet404 | MeetingSurveyGet429>,
+		MeetingSurveyGetResponse,
+		ErrorWrapper<MeetingSurveyGetStatus400 | MeetingSurveyGetStatus404 | MeetingSurveyGetStatus429>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		MeetingSurveyGetPathParams
-	>({ method: "GET", url: `/meetings/${meetingId}/survey`, ...requestConfig });
+		{ meetingId: bigint }
+	>({
+		method: "GET",
+		url: `/meetings/${pathParams.meetingId}/survey`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Delete a meeting survey
  * @description Delete a [meeting survey](https://support.zoom.us/hc/en-us/articles/4404969060621-Post-meeting-survey-and-reporting).
- * **Prerequisites:**
+ *  **Prerequisites:**
  * * The host must be a **Pro** user type.
  * * The [**Meeting Survey**](https://support.zoom.us/hc/en-us/articles/4404939095053-Enabling-meeting-surveys) feature enabled in the host's account.
  * * The meeting must be a scheduled meeting. Instant meetings do not have survey features enabled.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:write`,`meeting:write:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:delete:survey`,`meeting:delete:survey:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Delete a meeting survey
- * {@link /meetings/:meetingId/survey}
+ * @link /meetings/{meetingId}/survey
  */
-export async function meetingSurveyDelete({
-	pathParams: { meetingId },
-	config = {},
-}: {
-	pathParams: MeetingSurveyDeletePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function meetingSurveyDelete(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { meetingId: bigint };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!meetingId) {
+	if (!pathParams.meetingId) {
 		throw new Error(`Missing required path parameter: meetingId`);
 	}
-
 	const data = await request<
-		MeetingSurveyDeleteMutationResponse,
-		ErrorWrapper<MeetingSurveyDelete400 | MeetingSurveyDelete404 | MeetingSurveyDelete429>,
+		MeetingSurveyDeleteResponse,
+		ErrorWrapper<
+			MeetingSurveyDeleteStatus400 | MeetingSurveyDeleteStatus404 | MeetingSurveyDeleteStatus429
+		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		MeetingSurveyDeletePathParams
-	>({ method: "DELETE", url: `/meetings/${meetingId}/survey`, ...requestConfig });
+		{ meetingId: bigint }
+	>({
+		method: "DELETE",
+		url: `/meetings/${pathParams.meetingId}/survey`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Update a meeting survey
  * @description Update a [meeting survey](https://support.zoom.us/hc/en-us/articles/4404969060621-Post-meeting-survey-and-reporting).  **Prerequisites:** * The host must be a **Pro** user type. * The [**Meeting Survey**](https://support.zoom.us/hc/en-us/articles/4404939095053-Enabling-meeting-surveys) feature is enabled in the host's account. * The meeting must be a scheduled meeting. Instant meetings do not have survey features enabled.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:write`,`meeting:write:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:update:survey`,`meeting:update:survey:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Update a meeting survey
- * {@link /meetings/:meetingId/survey}
+ * @link /meetings/{meetingId}/survey
  */
-export async function meetingSurveyUpdate({
-	pathParams: { meetingId },
-	body,
-	config = {},
-}: {
-	pathParams: MeetingSurveyUpdatePathParams;
-	body?: MeetingSurveyUpdateMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function meetingSurveyUpdate(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { meetingId: bigint };
+		body?: MeetingSurveyUpdateBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!meetingId) {
+	if (!pathParams.meetingId) {
 		throw new Error(`Missing required path parameter: meetingId`);
 	}
-
 	const data = await request<
-		MeetingSurveyUpdateMutationResponse,
-		ErrorWrapper<MeetingSurveyUpdate400 | MeetingSurveyUpdate404 | MeetingSurveyUpdate429>,
-		MeetingSurveyUpdateMutationRequest,
+		MeetingSurveyUpdateResponse,
+		ErrorWrapper<
+			MeetingSurveyUpdateStatus400 | MeetingSurveyUpdateStatus404 | MeetingSurveyUpdateStatus429
+		>,
+		MeetingSurveyUpdateBody,
 		Record<string, string>,
 		Record<string, string>,
-		MeetingSurveyUpdatePathParams
-	>({ method: "PATCH", url: `/meetings/${meetingId}/survey`, body, ...requestConfig });
+		{ meetingId: bigint }
+	>({
+		method: "PATCH",
+		url: `/meetings/${pathParams.meetingId}/survey`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Get account's TSP information
  * @description Get information on Telephony Service Provider (TSP) on an account level.
  * **Prerequisites**
  * * TSP audio must be enabled on the Zoom account before using this API.
@@ -5270,28 +6516,32 @@ export async function meetingSurveyUpdate({
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `tsp:read:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `tsp:read:tsp:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Get account's TSP information
- * {@link /tsp}
+ * @link /tsp
  */
-export async function tsp({
-	config = {},
-}: {
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function tsp(
+	{ config }: { config?: Partial<FetcherConfig> & { client?: typeof defaultClient } } = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		TspQueryResponse,
-		ErrorWrapper<Tsp429>,
+		TspResponse,
+		ErrorWrapper<TspStatus429>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
 		Record<string, string>
-	>({ method: "GET", url: `/tsp`, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/tsp`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Update an account's TSP information
  * @description Update information of the Telephony Service Provider (TSP) set up on an account.
  * **Prerequisites**
  * * Enable TSP on the Zoom account before using this API.
@@ -5299,30 +6549,39 @@ export async function tsp({
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `tsp:write:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `tsp:update:tsp:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Update an account's TSP information
- * {@link /tsp}
+ * @link /tsp
  */
-export async function tspUpdate({
-	body,
-	config = {},
-}: {
-	body?: TspUpdateMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function tspUpdate(
+	{
+		body,
+		config,
+	}: {
+		body?: TspUpdateBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		TspUpdateMutationResponse,
-		ErrorWrapper<TspUpdate400 | TspUpdate429>,
-		TspUpdateMutationRequest,
+		TspUpdateResponse,
+		ErrorWrapper<TspUpdateStatus400 | TspUpdateStatus429>,
+		TspUpdateBody,
 		Record<string, string>,
 		Record<string, string>,
 		Record<string, string>
-	>({ method: "PATCH", url: `/tsp`, body, ...requestConfig });
+	>({
+		method: "PATCH",
+		url: `/tsp`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary List user's TSP accounts
  * @description List all of a user's TSP accounts. A user can have a maximum of two TSP accounts.
  * **Prerequisites**
  * * TSP (Telephony Service Provider) audio must be enabled on the Zoom account before using this API.
@@ -5330,34 +6589,41 @@ export async function tspUpdate({
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `tsp:read:admin`,`tsp:read`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `tsp:read:list_tsp_accounts`,`tsp:read:list_tsp_accounts:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `MEDIUM`
- * @summary List user's TSP accounts
- * {@link /users/:userId/tsp}
+ * @link /users/{userId}/tsp
  */
-export async function userTSPs({
-	pathParams: { userId },
-	config = {},
-}: {
-	pathParams: UserTSPsPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function userTSPs(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { userId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!userId) {
+	if (!pathParams.userId) {
 		throw new Error(`Missing required path parameter: userId`);
 	}
-
 	const data = await request<
-		UserTSPsQueryResponse,
-		ErrorWrapper<UserTSPs400 | UserTSPs404 | UserTSPs429>,
+		UserTSPsResponse,
+		ErrorWrapper<UserTSPsStatus400 | UserTSPsStatus404 | UserTSPsStatus429>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		UserTSPsPathParams
-	>({ method: "GET", url: `/users/${userId}/tsp`, ...requestConfig });
+		{ userId: string }
+	>({
+		method: "GET",
+		url: `/users/${pathParams.userId}/tsp`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Add a user's TSP account
  * @description Add a user's TSP account.
  * **Prerequisites**
  * * TSP (Telephony Service Provider) audio must be enabled on the Zoom account before using this API.
@@ -5365,36 +6631,44 @@ export async function userTSPs({
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `tsp:write:admin`,`tsp:write`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `tsp:write:tsp_account`,`tsp:write:tsp_account:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Add a user's TSP account
- * {@link /users/:userId/tsp}
+ * @link /users/{userId}/tsp
  */
-export async function userTSPCreate({
-	pathParams: { userId },
-	body,
-	config = {},
-}: {
-	pathParams: UserTSPCreatePathParams;
-	body: UserTSPCreateMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function userTSPCreate(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { userId: string };
+		body?: UserTSPCreateBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!userId) {
+	if (!pathParams.userId) {
 		throw new Error(`Missing required path parameter: userId`);
 	}
-
 	const data = await request<
-		UserTSPCreateMutationResponse,
-		ErrorWrapper<UserTSPCreate400 | UserTSPCreate404 | UserTSPCreate429>,
-		UserTSPCreateMutationRequest,
+		UserTSPCreateResponse,
+		ErrorWrapper<UserTSPCreateStatus400 | UserTSPCreateStatus404 | UserTSPCreateStatus429>,
+		UserTSPCreateBody,
 		Record<string, string>,
 		Record<string, string>,
-		UserTSPCreatePathParams
-	>({ method: "POST", url: `/users/${userId}/tsp`, body, ...requestConfig });
+		{ userId: string }
+	>({
+		method: "POST",
+		url: `/users/${pathParams.userId}/tsp`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Set global dial-in URL for a TSP user
  * @description Set the URL for a global dial-in page of a user whose Zoom account has TSP and special TSP with third-party audio conferencing options enabled. A global dial-in page can provide a list of global access numbers to use to conduct audio conferencing.
  * **Prerequisites**
  * * TSP (Telephony Service Provider) audio must be enabled on the Zoom account before using this API.
@@ -5402,36 +6676,44 @@ export async function userTSPCreate({
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `tsp:write:admin`,`tsp:write`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `tsp:update:tsp_settings`,`tsp:update:tsp_settings:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Set global dial-in URL for a TSP user
- * {@link /users/:userId/tsp/settings}
+ * @link /users/{userId}/tsp/settings
  */
-export async function tspUrlUpdate({
-	pathParams: { userId },
-	body,
-	config = {},
-}: {
-	pathParams: TspUrlUpdatePathParams;
-	body?: TspUrlUpdateMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function tspUrlUpdate(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { userId: string };
+		body?: TspUrlUpdateBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!userId) {
+	if (!pathParams.userId) {
 		throw new Error(`Missing required path parameter: userId`);
 	}
-
 	const data = await request<
-		TspUrlUpdateMutationResponse,
-		ErrorWrapper<TspUrlUpdate400 | TspUrlUpdate404 | TspUrlUpdate429>,
-		TspUrlUpdateMutationRequest,
+		TspUrlUpdateResponse,
+		ErrorWrapper<TspUrlUpdateStatus400 | TspUrlUpdateStatus404 | TspUrlUpdateStatus429>,
+		TspUrlUpdateBody,
 		Record<string, string>,
 		Record<string, string>,
-		TspUrlUpdatePathParams
-	>({ method: "PATCH", url: `/users/${userId}/tsp/settings`, body, ...requestConfig });
+		{ userId: string }
+	>({
+		method: "PATCH",
+		url: `/users/${pathParams.userId}/tsp/settings`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Get a user's TSP account
  * @description Retrieve details of a specific TSP account enabled for a specific user. Each user can have a maximum of two TSP accounts.
  * **Prerequisites**
  * * TSP (Telephony Service Provider) audio must be enabled on the Zoom account before using this API.
@@ -5439,38 +6721,45 @@ export async function tspUrlUpdate({
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `tsp:read:admin`,`tsp:read`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `tsp:read:tsp_account`,`tsp:read:tsp_account:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Get a user's TSP account
- * {@link /users/:userId/tsp/:tspId}
+ * @link /users/{userId}/tsp/{tspId}
  */
-export async function userTSP({
-	pathParams: { userId, tspId },
-	config = {},
-}: {
-	pathParams: UserTSPPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function userTSP(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { userId: string; tspId: "1" | "2" };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!userId) {
+	if (!pathParams.userId) {
 		throw new Error(`Missing required path parameter: userId`);
 	}
 
-	if (!tspId) {
+	if (!pathParams.tspId) {
 		throw new Error(`Missing required path parameter: tspId`);
 	}
-
 	const data = await request<
-		UserTSPQueryResponse,
-		ErrorWrapper<UserTSP400 | UserTSP404 | UserTSP429>,
+		UserTSPResponse,
+		ErrorWrapper<UserTSPStatus400 | UserTSPStatus404 | UserTSPStatus429>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		UserTSPPathParams
-	>({ method: "GET", url: `/users/${userId}/tsp/${tspId}`, ...requestConfig });
+		{ userId: string; tspId: "1" | "2" }
+	>({
+		method: "GET",
+		url: `/users/${pathParams.userId}/tsp/${pathParams.tspId}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Delete a user's TSP account
  * @description Delete a user's TSP account.
  * **Prerequisites**
  * * TSP (Telephony Service Provider) audio must be enabled on the Zoom account before using this API.
@@ -5478,38 +6767,45 @@ export async function userTSP({
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `tsp:write:admin`,`tsp:write`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `tsp:delete:tsp_account`,`tsp:delete:tsp_account:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Delete a user's TSP account
- * {@link /users/:userId/tsp/:tspId}
+ * @link /users/{userId}/tsp/{tspId}
  */
-export async function userTSPDelete({
-	pathParams: { userId, tspId },
-	config = {},
-}: {
-	pathParams: UserTSPDeletePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function userTSPDelete(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { userId: string; tspId: "1" | "2" };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!userId) {
+	if (!pathParams.userId) {
 		throw new Error(`Missing required path parameter: userId`);
 	}
 
-	if (!tspId) {
+	if (!pathParams.tspId) {
 		throw new Error(`Missing required path parameter: tspId`);
 	}
-
 	const data = await request<
-		UserTSPDeleteMutationResponse,
-		ErrorWrapper<UserTSPDelete400 | UserTSPDelete404 | UserTSPDelete429>,
+		UserTSPDeleteResponse,
+		ErrorWrapper<UserTSPDeleteStatus400 | UserTSPDeleteStatus404 | UserTSPDeleteStatus429>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		UserTSPDeletePathParams
-	>({ method: "DELETE", url: `/users/${userId}/tsp/${tspId}`, ...requestConfig });
+		{ userId: string; tspId: "1" | "2" }
+	>({
+		method: "DELETE",
+		url: `/users/${pathParams.userId}/tsp/${pathParams.tspId}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Update a TSP account
  * @description Update a user's Telephony Service Provider (TSP) account.
  * **Prerequisites**
  * * TSP audio enabled on the Zoom account before using this API.
@@ -5517,40 +6813,48 @@ export async function userTSPDelete({
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `tsp:write:admin`,`tsp:write`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `tsp:update:tsp_account`,`tsp:update:tsp_account:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Update a TSP account
- * {@link /users/:userId/tsp/:tspId}
+ * @link /users/{userId}/tsp/{tspId}
  */
-export async function userTSPUpdate({
-	pathParams: { userId, tspId },
-	body,
-	config = {},
-}: {
-	pathParams: UserTSPUpdatePathParams;
-	body: UserTSPUpdateMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function userTSPUpdate(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { userId: string; tspId: "1" | "2" };
+		body?: UserTSPUpdateBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!userId) {
+	if (!pathParams.userId) {
 		throw new Error(`Missing required path parameter: userId`);
 	}
 
-	if (!tspId) {
+	if (!pathParams.tspId) {
 		throw new Error(`Missing required path parameter: tspId`);
 	}
-
 	const data = await request<
-		UserTSPUpdateMutationResponse,
-		ErrorWrapper<UserTSPUpdate400 | UserTSPUpdate404 | UserTSPUpdate429>,
-		UserTSPUpdateMutationRequest,
+		UserTSPUpdateResponse,
+		ErrorWrapper<UserTSPUpdateStatus400 | UserTSPUpdateStatus404 | UserTSPUpdateStatus429>,
+		UserTSPUpdateBody,
 		Record<string, string>,
 		Record<string, string>,
-		UserTSPUpdatePathParams
-	>({ method: "PATCH", url: `/users/${userId}/tsp/${tspId}`, body, ...requestConfig });
+		{ userId: string; tspId: "1" | "2" }
+	>({
+		method: "PATCH",
+		url: `/users/${pathParams.userId}/tsp/${pathParams.tspId}`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary List meeting templates
  * @description List available [meeting templates](https://support.zoom.us/hc/en-us/articles/360036559151-Meeting-templates) for a user. For user-level apps, pass [the `me` value](/docs/api/rest/using-zoom-apis/#the-me-keyword) instead of the `userId` parameter.
  * **Prerequisites**:
  * * Host user must have a Zoom Meetings Basic license or higher.
@@ -5558,34 +6862,43 @@ export async function userTSPUpdate({
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:read`,`meeting:read:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:read:list_templates`,`meeting:read:list_templates:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `MEDIUM`
- * @summary List meeting templates
- * {@link /users/:userId/meeting_templates}
+ * @link /users/{userId}/meeting_templates
  */
-export async function listMeetingTemplates({
-	pathParams: { userId },
-	config = {},
-}: {
-	pathParams: ListMeetingTemplatesPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function listMeetingTemplates(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { userId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!userId) {
+	if (!pathParams.userId) {
 		throw new Error(`Missing required path parameter: userId`);
 	}
-
 	const data = await request<
-		ListMeetingTemplatesQueryResponse,
-		ErrorWrapper<ListMeetingTemplates400 | ListMeetingTemplates404 | ListMeetingTemplates429>,
+		ListMeetingTemplatesResponse,
+		ErrorWrapper<
+			ListMeetingTemplatesStatus400 | ListMeetingTemplatesStatus404 | ListMeetingTemplatesStatus429
+		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		ListMeetingTemplatesPathParams
-	>({ method: "GET", url: `/users/${userId}/meeting_templates`, ...requestConfig });
+		{ userId: string }
+	>({
+		method: "GET",
+		url: `/users/${pathParams.userId}/meeting_templates`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Create a meeting template from an existing meeting
  * @description Create a meeting template from an existing meeting.
  * **Prerequisites**
  * * Host user must have a Zoom Meetings Basic license or higher.
@@ -5594,317 +6907,384 @@ export async function listMeetingTemplates({
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:write:admin`,`meeting:write`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:write:template`,`meeting:write:template:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `MEDIUM`
- * @summary Create a meeting template from an existing meeting
- * {@link /users/:userId/meeting_templates}
+ * @link /users/{userId}/meeting_templates
  */
-export async function meetingTemplateCreate({
-	pathParams: { userId },
-	body,
-	config = {},
-}: {
-	pathParams: MeetingTemplateCreatePathParams;
-	body?: MeetingTemplateCreateMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function meetingTemplateCreate(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { userId: string };
+		body?: MeetingTemplateCreateBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!userId) {
+	if (!pathParams.userId) {
 		throw new Error(`Missing required path parameter: userId`);
 	}
-
 	const data = await request<
-		MeetingTemplateCreateMutationResponse,
-		ErrorWrapper<MeetingTemplateCreate400 | MeetingTemplateCreate404 | MeetingTemplateCreate429>,
-		MeetingTemplateCreateMutationRequest,
+		MeetingTemplateCreateResponse,
+		ErrorWrapper<
+			| MeetingTemplateCreateStatus400
+			| MeetingTemplateCreateStatus404
+			| MeetingTemplateCreateStatus429
+		>,
+		MeetingTemplateCreateBody,
 		Record<string, string>,
 		Record<string, string>,
-		MeetingTemplateCreatePathParams
-	>({ method: "POST", url: `/users/${userId}/meeting_templates`, body, ...requestConfig });
+		{ userId: string }
+	>({
+		method: "POST",
+		url: `/users/${pathParams.userId}/meeting_templates`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary List tracking fields
  * @description List all the [tracking fields](https://support.zoom.us/hc/en-us/articles/115000293426-Scheduling-Tracking-Fields) on your Zoom account. Tracking fields let you analyze usage by various fields within an organization.
  * **Prerequisites:**
  * * A Business, Education, API or higher plan.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `tracking_fields:read:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `tracking_field:read:list_tracking_fields:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `MEDIUM`
- * @summary List tracking fields
- * {@link /tracking_fields}
+ * @link /tracking_fields
  */
-export async function trackingfieldList({
-	config = {},
-}: {
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function trackingfieldList(
+	{ config }: { config?: Partial<FetcherConfig> & { client?: typeof defaultClient } } = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		TrackingfieldListQueryResponse,
-		ErrorWrapper<TrackingfieldList429>,
+		TrackingfieldListResponse,
+		ErrorWrapper<TrackingfieldListStatus429>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
 		Record<string, string>
-	>({ method: "GET", url: `/tracking_fields`, ...requestConfig });
+	>({
+		method: "GET",
+		url: `/tracking_fields`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Create a tracking field
  * @description Use this API to create a new [tracking field](https://support.zoom.us/hc/en-us/articles/115000293426-Scheduling-Tracking-Fields). Tracking fields let you analyze usage by various fields within an organization. When scheduling a meeting, tracking fields will be included in the meeting options.
  * **Prerequisites:**
  * * A Business, Education, API or higher plan.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `tracking_fields:write:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `tracking_field:write:tracking_field:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Create a tracking field
- * {@link /tracking_fields}
+ * @link /tracking_fields
  */
-export async function trackingfieldCreate({
-	body,
-	config = {},
-}: {
-	body?: TrackingfieldCreateMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function trackingfieldCreate(
+	{
+		body,
+		config,
+	}: {
+		body?: TrackingfieldCreateBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		TrackingfieldCreateMutationResponse,
-		ErrorWrapper<TrackingfieldCreate429>,
-		TrackingfieldCreateMutationRequest,
+		TrackingfieldCreateResponse,
+		ErrorWrapper<TrackingfieldCreateStatus429>,
+		TrackingfieldCreateBody,
 		Record<string, string>,
 		Record<string, string>,
 		Record<string, string>
-	>({ method: "POST", url: `/tracking_fields`, body, ...requestConfig });
+	>({
+		method: "POST",
+		url: `/tracking_fields`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Get a tracking field
  * @description Use this API to return information about a [tracking field](https://support.zoom.us/hc/en-us/articles/115000293426-Scheduling-Tracking-Fields).
  * **Prerequisites:**
  * * A Business, Education, API or higher plan.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `tracking_fields:read:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `tracking_field:read:tracking_field:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Get a tracking field
- * {@link /tracking_fields/:fieldId}
+ * @link /tracking_fields/{fieldId}
  */
-export async function trackingfieldGet({
-	pathParams: { fieldId },
-	config = {},
-}: {
-	pathParams: TrackingfieldGetPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function trackingfieldGet(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { fieldId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!fieldId) {
+	if (!pathParams.fieldId) {
 		throw new Error(`Missing required path parameter: fieldId`);
 	}
-
 	const data = await request<
-		TrackingfieldGetQueryResponse,
-		ErrorWrapper<TrackingfieldGet404 | TrackingfieldGet429>,
+		TrackingfieldGetResponse,
+		ErrorWrapper<TrackingfieldGetStatus404 | TrackingfieldGetStatus429>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		TrackingfieldGetPathParams
-	>({ method: "GET", url: `/tracking_fields/${fieldId}`, ...requestConfig });
+		{ fieldId: string }
+	>({
+		method: "GET",
+		url: `/tracking_fields/${pathParams.fieldId}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Delete a tracking field
  * @description Delete a [tracking field](https://support.zoom.us/hc/en-us/articles/115000293426-Scheduling-Tracking-Fields).
  * **Prerequisites:**
  * * A Business, Education, API or higher plan.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `tracking_fields:write:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `tracking_field:delete:tracking_field:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Delete a tracking field
- * {@link /tracking_fields/:fieldId}
+ * @link /tracking_fields/{fieldId}
  */
-export async function trackingfieldDelete({
-	pathParams: { fieldId },
-	config = {},
-}: {
-	pathParams: TrackingfieldDeletePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function trackingfieldDelete(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { fieldId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!fieldId) {
+	if (!pathParams.fieldId) {
 		throw new Error(`Missing required path parameter: fieldId`);
 	}
-
 	const data = await request<
-		TrackingfieldDeleteMutationResponse,
-		ErrorWrapper<TrackingfieldDelete404 | TrackingfieldDelete429>,
+		TrackingfieldDeleteResponse,
+		ErrorWrapper<TrackingfieldDeleteStatus404 | TrackingfieldDeleteStatus429>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		TrackingfieldDeletePathParams
-	>({ method: "DELETE", url: `/tracking_fields/${fieldId}`, ...requestConfig });
+		{ fieldId: string }
+	>({
+		method: "DELETE",
+		url: `/tracking_fields/${pathParams.fieldId}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Update a tracking field
  * @description Update a [tracking field](https://support.zoom.us/hc/en-us/articles/115000293426-Scheduling-Tracking-Fields).
  * **Prerequisites:**
  * * A Business, Education, API or higher plan.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `tracking_fields:write:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `tracking_field:update:tracking_field:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Update a tracking field
- * {@link /tracking_fields/:fieldId}
+ * @link /tracking_fields/{fieldId}
  */
-export async function trackingfieldUpdate({
-	pathParams: { fieldId },
-	body,
-	config = {},
-}: {
-	pathParams: TrackingfieldUpdatePathParams;
-	body?: TrackingfieldUpdateMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function trackingfieldUpdate(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { fieldId: string };
+		body?: TrackingfieldUpdateBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!fieldId) {
+	if (!pathParams.fieldId) {
 		throw new Error(`Missing required path parameter: fieldId`);
 	}
-
 	const data = await request<
-		TrackingfieldUpdateMutationResponse,
-		ErrorWrapper<TrackingfieldUpdate400 | TrackingfieldUpdate404 | TrackingfieldUpdate429>,
-		TrackingfieldUpdateMutationRequest,
+		TrackingfieldUpdateResponse,
+		ErrorWrapper<
+			TrackingfieldUpdateStatus400 | TrackingfieldUpdateStatus404 | TrackingfieldUpdateStatus429
+		>,
+		TrackingfieldUpdateBody,
 		Record<string, string>,
 		Record<string, string>,
-		TrackingfieldUpdatePathParams
-	>({ method: "PATCH", url: `/tracking_fields/${fieldId}`, body, ...requestConfig });
+		{ fieldId: string }
+	>({
+		method: "PATCH",
+		url: `/tracking_fields/${pathParams.fieldId}`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Delete a live webinar message
  * @description Deletes a message in a live webinar based on ID.
  * **Prerequisites:**
  * * Have Zoom enable the DLP for the in-meeting chat feature to use this API.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:write`,`webinar:write:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:delete:live_webinar_chat_message`,`webinar:delete:live_webinar_chat_message:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `MEDIUM`
- * @summary Delete a live webinar message
- * {@link /live_webinars/:webinarId/chat/messages/:messageId}
+ * @link /live_webinars/{webinarId}/chat/messages/{messageId}
  */
-export async function deleteWebinarChatMessageById({
-	pathParams: { webinarId, messageId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: DeleteWebinarChatMessageByIdPathParams;
-	queryParams?: DeleteWebinarChatMessageByIdQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deleteWebinarChatMessageById(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { webinarId: bigint; messageId: string };
+		queryParams?: { file_ids?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!webinarId) {
+	if (!pathParams.webinarId) {
 		throw new Error(`Missing required path parameter: webinarId`);
 	}
 
-	if (!messageId) {
+	if (!pathParams.messageId) {
 		throw new Error(`Missing required path parameter: messageId`);
 	}
-
 	const data = await request<
-		DeleteWebinarChatMessageByIdMutationResponse,
+		DeleteWebinarChatMessageByIdResponse,
 		ErrorWrapper<
-			| DeleteWebinarChatMessageById400
-			| DeleteWebinarChatMessageById404
-			| DeleteWebinarChatMessageById429
+			| DeleteWebinarChatMessageByIdStatus400
+			| DeleteWebinarChatMessageByIdStatus404
+			| DeleteWebinarChatMessageByIdStatus429
 		>,
 		null,
 		Record<string, string>,
-		DeleteWebinarChatMessageByIdQueryParams,
-		DeleteWebinarChatMessageByIdPathParams
+		{ file_ids?: string },
+		{ webinarId: bigint; messageId: string }
 	>({
 		method: "DELETE",
-		url: `/live_webinars/${webinarId}/chat/messages/${messageId}`,
+		url: `/live_webinars/${pathParams.webinarId}/chat/messages/${pathParams.messageId}`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
+ * @summary Get webinar absentees
  * @description List absentees of a webinar.
  * **Prerequisites**
  * * A Pro or higher plan with a [Webinar plan](https://zoom.us/webinar) add-on.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:read:admin`,`webinar:read`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:read:list_absentees`,`webinar:read:list_absentees:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `HEAVY`
- * @summary Get webinar absentees
- * {@link /past_webinars/:webinarId/absentees}
+ * @link /past_webinars/{webinarId}/absentees
  */
-export async function webinarAbsentees({
-	pathParams: { webinarId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: WebinarAbsenteesPathParams;
-	queryParams?: WebinarAbsenteesQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function webinarAbsentees(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { webinarId: string };
+		queryParams?: { occurrence_id?: string; page_size?: number; next_page_token?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!webinarId) {
+	if (!pathParams.webinarId) {
 		throw new Error(`Missing required path parameter: webinarId`);
 	}
-
 	const data = await request<
-		WebinarAbsenteesQueryResponse,
-		ErrorWrapper<WebinarAbsentees400 | WebinarAbsentees404 | WebinarAbsentees429>,
+		WebinarAbsenteesResponse,
+		ErrorWrapper<WebinarAbsenteesStatus400 | WebinarAbsenteesStatus404 | WebinarAbsenteesStatus429>,
 		null,
 		Record<string, string>,
-		WebinarAbsenteesQueryParams,
-		WebinarAbsenteesPathParams
-	>({ method: "GET", url: `/past_webinars/${webinarId}/absentees`, queryParams, ...requestConfig });
+		{ occurrence_id?: string; page_size?: number; next_page_token?: string },
+		{ webinarId: string }
+	>({
+		method: "GET",
+		url: `/past_webinars/${pathParams.webinarId}/absentees`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary List past webinar instances
  * @description List past webinar instances.
  * **Prerequisites**
  * * A Pro or higher plan with a [Webinar plan](https://zoom.us/webinar) add-on.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:read:admin`,`webinar:read`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:read:list_past_instances`,`webinar:read:list_past_instances:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary List past webinar instances
- * {@link /past_webinars/:webinarId/instances}
+ * @link /past_webinars/{webinarId}/instances
  */
-export async function pastWebinars({
-	pathParams: { webinarId },
-	config = {},
-}: {
-	pathParams: PastWebinarsPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function pastWebinars(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { webinarId: bigint };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!webinarId) {
+	if (!pathParams.webinarId) {
 		throw new Error(`Missing required path parameter: webinarId`);
 	}
-
 	const data = await request<
-		PastWebinarsQueryResponse,
-		ErrorWrapper<PastWebinars400 | PastWebinars404 | PastWebinars429>,
+		PastWebinarsResponse,
+		ErrorWrapper<PastWebinarsStatus400 | PastWebinarsStatus404 | PastWebinarsStatus429>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		PastWebinarsPathParams
-	>({ method: "GET", url: `/past_webinars/${webinarId}/instances`, ...requestConfig });
+		{ webinarId: bigint }
+	>({
+		method: "GET",
+		url: `/past_webinars/${pathParams.webinarId}/instances`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary List webinar participants
  * @description Retrieve a list of all the participants who attended a webinar hosted in the past.
  * **Prerequisites:**
  * * A Pro or higher plan with a webinar add-on.
@@ -5912,79 +7292,93 @@ export async function pastWebinars({
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:read:admin`,`webinar:read`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:read:list_past_participants:admin`,`webinar:read:list_past_participants`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `MEDIUM`
- * @summary List webinar participants
- * {@link /past_webinars/:webinarId/participants}
+ * @link /past_webinars/{webinarId}/participants
  */
-export async function listWebinarParticipants({
-	pathParams: { webinarId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: ListWebinarParticipantsPathParams;
-	queryParams?: ListWebinarParticipantsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function listWebinarParticipants(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { webinarId: string };
+		queryParams?: { page_size?: number; next_page_token?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!webinarId) {
+	if (!pathParams.webinarId) {
 		throw new Error(`Missing required path parameter: webinarId`);
 	}
-
 	const data = await request<
-		ListWebinarParticipantsQueryResponse,
+		ListWebinarParticipantsResponse,
 		ErrorWrapper<
-			ListWebinarParticipants400 | ListWebinarParticipants404 | ListWebinarParticipants429
+			| ListWebinarParticipantsStatus400
+			| ListWebinarParticipantsStatus404
+			| ListWebinarParticipantsStatus429
 		>,
 		null,
 		Record<string, string>,
-		ListWebinarParticipantsQueryParams,
-		ListWebinarParticipantsPathParams
+		{ page_size?: number; next_page_token?: string },
+		{ webinarId: string }
 	>({
 		method: "GET",
-		url: `/past_webinars/${webinarId}/participants`,
+		url: `/past_webinars/${pathParams.webinarId}/participants`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
+ * @summary List past webinar poll results
  * @description The polling feature for webinar lets you create single-choice or multiple-choice polling questions for your webinars. This API endpoint retrieves the results for webinar polls of a specific webinar.
  * **Prerequisites:**
  * * [Webinar license](https://zoom.us/webinar)
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:read:admin`,`webinar:read`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:read:list_past_polls`,`webinar:read:list_past_polls:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `MEDIUM`
- * @summary List past webinar poll results
- * {@link /past_webinars/:webinarId/polls}
+ * @link /past_webinars/{webinarId}/polls
  */
-export async function listPastWebinarPollResults({
-	pathParams: { webinarId },
-	config = {},
-}: {
-	pathParams: ListPastWebinarPollResultsPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function listPastWebinarPollResults(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { webinarId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!webinarId) {
+	if (!pathParams.webinarId) {
 		throw new Error(`Missing required path parameter: webinarId`);
 	}
-
 	const data = await request<
-		ListPastWebinarPollResultsQueryResponse,
+		ListPastWebinarPollResultsResponse,
 		ErrorWrapper<
-			ListPastWebinarPollResults400 | ListPastWebinarPollResults404 | ListPastWebinarPollResults429
+			| ListPastWebinarPollResultsStatus400
+			| ListPastWebinarPollResultsStatus404
+			| ListPastWebinarPollResultsStatus429
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		ListPastWebinarPollResultsPathParams
-	>({ method: "GET", url: `/past_webinars/${webinarId}/polls`, ...requestConfig });
+		{ webinarId: string }
+	>({
+		method: "GET",
+		url: `/past_webinars/${pathParams.webinarId}/polls`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary List Q&As of a past webinar
  * @description List the Q&amp;A of a specific past webinar.
  * The [question and answer (Q&amp;A)](https://support.zoom.us/hc/en-us/articles/203686015-Getting-Started-with-Question-Answer) feature for webinars lets attendees ask questions during the webinar and for the panelists, co-hosts and host to answer their questions.
  * **Prerequisites**
@@ -5992,141 +7386,189 @@ export async function listPastWebinarPollResults({
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:read:admin`,`webinar:read`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:read:past_qa`,`webinar:read:past_qa:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `MEDIUM`
- * @summary List Q&As of a past webinar
- * {@link /past_webinars/:webinarId/qa}
+ * @link /past_webinars/{webinarId}/qa
  */
-export async function listPastWebinarQA({
-	pathParams: { webinarId },
-	config = {},
-}: {
-	pathParams: ListPastWebinarQAPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function listPastWebinarQA(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { webinarId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!webinarId) {
+	if (!pathParams.webinarId) {
 		throw new Error(`Missing required path parameter: webinarId`);
 	}
-
 	const data = await request<
-		ListPastWebinarQAQueryResponse,
-		ErrorWrapper<ListPastWebinarQA400 | ListPastWebinarQA404 | ListPastWebinarQA429>,
+		ListPastWebinarQAResponse,
+		ErrorWrapper<
+			ListPastWebinarQAStatus400 | ListPastWebinarQAStatus404 | ListPastWebinarQAStatus429
+		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		ListPastWebinarQAPathParams
-	>({ method: "GET", url: `/past_webinars/${webinarId}/qa`, ...requestConfig });
+		{ webinarId: string }
+	>({
+		method: "GET",
+		url: `/past_webinars/${pathParams.webinarId}/qa`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary List webinar templates
  * @description Display a list of a user's [webinar templates](https://support.zoom.us/hc/en-us/articles/115001079746-Webinar-Templates). For user-level apps, pass [the `me` value](/docs/api-reference/using-zoom-apis#mekeyword) instead of the `userId` parameter. When you schedule a webinar, save the settings for that webinar as a template for scheduling future webinars.  To use a template when scheduling a webinar, use the `id` value in this API response in the `template_id` field of the [**Create a webinar**](/docs/api-reference/zoom-api/methods#operation/webinarCreate) API. **Prerequisites:** * A Pro or a higher account with the [Zoom Webinar plan](https://zoom.us/pricing/webinar).
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:read`,`webinar:read:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:read:list_templates`,`webinar:read:list_templates:admin`
- * @summary List webinar templates
- * {@link /users/:userId/webinar_templates}
+ * @link /users/{userId}/webinar_templates
  */
-export async function listWebinarTemplates({
-	pathParams: { userId },
-	config = {},
-}: {
-	pathParams: ListWebinarTemplatesPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function listWebinarTemplates(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { userId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!userId) {
+	if (!pathParams.userId) {
 		throw new Error(`Missing required path parameter: userId`);
 	}
-
 	const data = await request<
-		ListWebinarTemplatesQueryResponse,
-		ErrorWrapper<ListWebinarTemplates400 | ListWebinarTemplates404 | ListWebinarTemplates429>,
+		ListWebinarTemplatesResponse,
+		ErrorWrapper<
+			ListWebinarTemplatesStatus400 | ListWebinarTemplatesStatus404 | ListWebinarTemplatesStatus429
+		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		ListWebinarTemplatesPathParams
-	>({ method: "GET", url: `/users/${userId}/webinar_templates`, ...requestConfig });
+		{ userId: string }
+	>({
+		method: "GET",
+		url: `/users/${pathParams.userId}/webinar_templates`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Create a webinar template
  * @description Create a webinar template from an existing webinar.
  * **Prerequisites**
  * * A Pro or higher plan with a [Webinar plan](https://zoom.us/webinar) add-on.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:write:admin`,`webinar:write`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:write:template`,`webinar:write:template:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `MEDIUM`
- * @summary Create a webinar template
- * {@link /users/:userId/webinar_templates}
+ * @link /users/{userId}/webinar_templates
  */
-export async function webinarTemplateCreate({
-	pathParams: { userId },
-	body,
-	config = {},
-}: {
-	pathParams: WebinarTemplateCreatePathParams;
-	body?: WebinarTemplateCreateMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function webinarTemplateCreate(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { userId: string };
+		body?: WebinarTemplateCreateBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!userId) {
+	if (!pathParams.userId) {
 		throw new Error(`Missing required path parameter: userId`);
 	}
-
 	const data = await request<
-		WebinarTemplateCreateMutationResponse,
-		ErrorWrapper<WebinarTemplateCreate400 | WebinarTemplateCreate404 | WebinarTemplateCreate429>,
-		WebinarTemplateCreateMutationRequest,
+		WebinarTemplateCreateResponse,
+		ErrorWrapper<
+			| WebinarTemplateCreateStatus400
+			| WebinarTemplateCreateStatus404
+			| WebinarTemplateCreateStatus429
+		>,
+		WebinarTemplateCreateBody,
 		Record<string, string>,
 		Record<string, string>,
-		WebinarTemplateCreatePathParams
-	>({ method: "POST", url: `/users/${userId}/webinar_templates`, body, ...requestConfig });
+		{ userId: string }
+	>({
+		method: "POST",
+		url: `/users/${pathParams.userId}/webinar_templates`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary List webinars
  * @description List all the webinars scheduled by or on behalf a webinar host. For user-level apps, pass [the `me` value](https://developers.zoom.us/docs/api/rest/using-zoom-apis/#the-me-keyword) instead of the `userId` parameter.
- * Zoom users with a [webinar plan](https://zoom.us/webinar) have access to creating and managing webinars. Webinars let a host broadcast a Zoom meeting to up to 10,000 attendees.
+ *  Zoom users with a [webinar plan](https://zoom.us/webinar) have access to creating and managing webinars. Webinars let a host broadcast a Zoom meeting to up to 10,000 attendees.
  * **Note** This API only returns a user's [unexpired webinars](https://support.zoom.us/hc/en-us/articles/201362373-Meeting-ID#h_c73f9b08-c1c0-4a1a-b538-e01ebb98e844).
- * **Prerequisites**
+ *  **Prerequisites**
  * * A Pro or higher plan with the webinar add-on.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:read:admin`,`webinar:read`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:read:list_webinars`,`webinar:read:list_webinars:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `MEDIUM`
- * @summary List webinars
- * {@link /users/:userId/webinars}
+ * @link /users/{userId}/webinars
  */
-export async function webinars({
-	pathParams: { userId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: WebinarsPathParams;
-	queryParams?: WebinarsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function webinars(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { userId: string };
+		queryParams?: {
+			type?: "scheduled" | "upcoming";
+			page_size?: number;
+			page_number?: number;
+			include_events_webinar?: boolean;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!userId) {
+	if (!pathParams.userId) {
 		throw new Error(`Missing required path parameter: userId`);
 	}
-
 	const data = await request<
-		WebinarsQueryResponse,
-		ErrorWrapper<Webinars400 | Webinars404 | Webinars429>,
+		WebinarsResponse,
+		ErrorWrapper<WebinarsStatus400 | WebinarsStatus404 | WebinarsStatus429>,
 		null,
 		Record<string, string>,
-		WebinarsQueryParams,
-		WebinarsPathParams
-	>({ method: "GET", url: `/users/${userId}/webinars`, queryParams, ...requestConfig });
+		{
+			type?: "scheduled" | "upcoming";
+			page_size?: number;
+			page_number?: number;
+			include_events_webinar?: boolean;
+		},
+		{ userId: string }
+	>({
+		method: "GET",
+		url: `/users/${pathParams.userId}/webinars`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Create a webinar
  * @description Schedule a webinar for a user who is a webinar host. For user-level apps, pass [the `me` value](/docs/api/using-zoom-apis/#the-me-keyword) instead of the `userId` parameter.
- * Webinars allow a host to broadcast a Zoom meeting to up to 10,000 attendees.
+ *  Webinars allow a host to broadcast a Zoom meeting to up to 10,000 attendees.
  * **Rate limit**
  * Up to a maximum of **100 requests per day**. The rate limit is applied to the `userId` of the **webinar host** used to make the request.
  * **Prerequisites**
@@ -6134,108 +7576,132 @@ export async function webinars({
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:write`,`webinar:write:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:write:webinar`,`webinar:write:webinar:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Create a webinar
- * {@link /users/:userId/webinars}
+ * @link /users/{userId}/webinars
  */
-export async function webinarCreate({
-	pathParams: { userId },
-	body,
-	config = {},
-}: {
-	pathParams: WebinarCreatePathParams;
-	body?: WebinarCreateMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function webinarCreate(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { userId: string };
+		body?: WebinarCreateBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!userId) {
+	if (!pathParams.userId) {
 		throw new Error(`Missing required path parameter: userId`);
 	}
-
 	const data = await request<
-		WebinarCreateMutationResponse,
-		ErrorWrapper<WebinarCreate400 | WebinarCreate404 | WebinarCreate429>,
-		WebinarCreateMutationRequest,
+		WebinarCreateResponse,
+		ErrorWrapper<WebinarCreateStatus400 | WebinarCreateStatus404 | WebinarCreateStatus429>,
+		WebinarCreateBody,
 		Record<string, string>,
 		Record<string, string>,
-		WebinarCreatePathParams
-	>({ method: "POST", url: `/users/${userId}/webinars`, body, ...requestConfig });
+		{ userId: string }
+	>({
+		method: "POST",
+		url: `/users/${pathParams.userId}/webinars`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Get a webinar
  * @description Get details for a scheduled Zoom webinar.
  * **Prerequisites**
  * * Pro or higher plan with a Webinar add-on.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:read:admin`,`webinar:read`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:read:webinar`,`webinar:read:webinar:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Get a webinar
- * {@link /webinars/:webinarId}
+ * @link /webinars/{webinarId}
  */
-export async function webinar({
-	pathParams: { webinarId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: WebinarPathParams;
-	queryParams?: WebinarQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function webinar(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { webinarId: string };
+		queryParams?: { occurrence_id?: string; show_previous_occurrences?: boolean };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!webinarId) {
+	if (!pathParams.webinarId) {
 		throw new Error(`Missing required path parameter: webinarId`);
 	}
-
 	const data = await request<
-		WebinarQueryResponse,
-		ErrorWrapper<Webinar400 | Webinar404 | Webinar429>,
+		WebinarResponse,
+		ErrorWrapper<WebinarStatus400 | WebinarStatus404 | WebinarStatus429>,
 		null,
 		Record<string, string>,
-		WebinarQueryParams,
-		WebinarPathParams
-	>({ method: "GET", url: `/webinars/${webinarId}`, queryParams, ...requestConfig });
+		{ occurrence_id?: string; show_previous_occurrences?: boolean },
+		{ webinarId: string }
+	>({
+		method: "GET",
+		url: `/webinars/${pathParams.webinarId}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Delete a webinar
  * @description Delete a webinar.
  * **Prerequisites:**
  * * Pro or higher plan with the webinar add-on.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:write:admin`,`webinar:write`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:delete:webinar`,`webinar:delete:webinar:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Delete a webinar
- * {@link /webinars/:webinarId}
+ * @link /webinars/{webinarId}
  */
-export async function webinarDelete({
-	pathParams: { webinarId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: WebinarDeletePathParams;
-	queryParams?: WebinarDeleteQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function webinarDelete(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { webinarId: bigint };
+		queryParams?: { occurrence_id?: string; cancel_webinar_reminder?: boolean };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!webinarId) {
+	if (!pathParams.webinarId) {
 		throw new Error(`Missing required path parameter: webinarId`);
 	}
-
 	const data = await request<
-		WebinarDeleteMutationResponse,
-		ErrorWrapper<WebinarDelete400 | WebinarDelete404 | WebinarDelete429>,
+		WebinarDeleteResponse,
+		ErrorWrapper<WebinarDeleteStatus400 | WebinarDeleteStatus404 | WebinarDeleteStatus429>,
 		null,
 		Record<string, string>,
-		WebinarDeleteQueryParams,
-		WebinarDeletePathParams
-	>({ method: "DELETE", url: `/webinars/${webinarId}`, queryParams, ...requestConfig });
+		{ occurrence_id?: string; cancel_webinar_reminder?: boolean },
+		{ webinarId: bigint }
+	>({
+		method: "DELETE",
+		url: `/webinars/${pathParams.webinarId}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Update a webinar
  * @description Make updates to a scheduled webinar.
  * **100 requests per day**. The rate limit is applied to the `userId` of the **webinar host** used to make the request.
  * **Prerequisites**
@@ -6243,38 +7709,47 @@ export async function webinarDelete({
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:write`,`webinar:write:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:update:webinar`,`webinar:update:webinar:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Update a webinar
- * {@link /webinars/:webinarId}
+ * @link /webinars/{webinarId}
  */
-export async function webinarUpdate({
-	pathParams: { webinarId },
-	body,
-	queryParams,
-	config = {},
-}: {
-	pathParams: WebinarUpdatePathParams;
-	body?: WebinarUpdateMutationRequest;
-	queryParams?: WebinarUpdateQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function webinarUpdate(
+	{
+		pathParams,
+		body,
+		queryParams,
+		config,
+	}: {
+		pathParams: { webinarId: bigint };
+		body?: WebinarUpdateBody;
+		queryParams?: { occurrence_id?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!webinarId) {
+	if (!pathParams.webinarId) {
 		throw new Error(`Missing required path parameter: webinarId`);
 	}
-
 	const data = await request<
-		WebinarUpdateMutationResponse,
-		ErrorWrapper<WebinarUpdate400 | WebinarUpdate404 | WebinarUpdate429>,
-		WebinarUpdateMutationRequest,
+		WebinarUpdateResponse,
+		ErrorWrapper<WebinarUpdateStatus400 | WebinarUpdateStatus404 | WebinarUpdateStatus429>,
+		WebinarUpdateBody,
 		Record<string, string>,
-		WebinarUpdateQueryParams,
-		WebinarUpdatePathParams
-	>({ method: "PATCH", url: `/webinars/${webinarId}`, queryParams, body, ...requestConfig });
+		{ occurrence_id?: string },
+		{ webinarId: bigint }
+	>({
+		method: "PATCH",
+		url: `/webinars/${pathParams.webinarId}`,
+		queryParams,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Perform batch registration
  * @description Register up to 30 registrants at once for a scheduled webinar that requires [registration](https://support.zoom.us/hc/en-us/articles/204619915-Scheduling-a-webinar-with-registration).
  * **Prerequisites:**
  * * The webinar host must be a licensed user.
@@ -6282,38 +7757,48 @@ export async function webinarUpdate({
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:write`,`webinar:write:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:write:batch_registrants`,`webinar:write:batch_registrants:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `HEAVY`
- * @summary Perform batch registration
- * {@link /webinars/:webinarId/batch_registrants}
+ * @link /webinars/{webinarId}/batch_registrants
  */
-export async function addBatchWebinarRegistrants({
-	pathParams: { webinarId },
-	body,
-	config = {},
-}: {
-	pathParams: AddBatchWebinarRegistrantsPathParams;
-	body?: AddBatchWebinarRegistrantsMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function addBatchWebinarRegistrants(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { webinarId: string };
+		body?: AddBatchWebinarRegistrantsBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!webinarId) {
+	if (!pathParams.webinarId) {
 		throw new Error(`Missing required path parameter: webinarId`);
 	}
-
 	const data = await request<
-		AddBatchWebinarRegistrantsMutationResponse,
+		AddBatchWebinarRegistrantsResponse,
 		ErrorWrapper<
-			AddBatchWebinarRegistrants400 | AddBatchWebinarRegistrants404 | AddBatchWebinarRegistrants429
+			| AddBatchWebinarRegistrantsStatus400
+			| AddBatchWebinarRegistrantsStatus404
+			| AddBatchWebinarRegistrantsStatus429
 		>,
-		AddBatchWebinarRegistrantsMutationRequest,
+		AddBatchWebinarRegistrantsBody,
 		Record<string, string>,
 		Record<string, string>,
-		AddBatchWebinarRegistrantsPathParams
-	>({ method: "POST", url: `/webinars/${webinarId}/batch_registrants`, body, ...requestConfig });
+		{ webinarId: string }
+	>({
+		method: "POST",
+		url: `/webinars/${pathParams.webinarId}/batch_registrants`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Get webinar's session branding
  * @description Get the webinar's [session branding](https://support.zoom.us/hc/en-us/articles/4836268732045-Using-Webinar-Session-Branding) information. Session branding lets hosts visually customize a webinar by setting a webinar wallpaper that displays behind video tiles. Session branding also lets hosts set the virtual background for and apply name tags to hosts, alternative hosts, panelists, interpreters, and speakers.
  * **Prerequisites**
  * * A Pro or higher plan with a [Webinar plan](https://zoom.us/webinar) add-on.
@@ -6321,534 +7806,611 @@ export async function addBatchWebinarRegistrants({
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:read`,`webinar:read:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:read:branding`,`webinar:read:branding:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Get webinar's session branding
- * {@link /webinars/:webinarId/branding}
+ * @link /webinars/{webinarId}/branding
  */
-export async function getWebinarBranding({
-	pathParams: { webinarId },
-	config = {},
-}: {
-	pathParams: GetWebinarBrandingPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getWebinarBranding(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { webinarId: bigint };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!webinarId) {
+	if (!pathParams.webinarId) {
 		throw new Error(`Missing required path parameter: webinarId`);
 	}
-
 	const data = await request<
-		GetWebinarBrandingQueryResponse,
-		ErrorWrapper<GetWebinarBranding400 | GetWebinarBranding404 | GetWebinarBranding429>,
+		GetWebinarBrandingResponse,
+		ErrorWrapper<
+			GetWebinarBrandingStatus400 | GetWebinarBrandingStatus404 | GetWebinarBrandingStatus429
+		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		GetWebinarBrandingPathParams
-	>({ method: "GET", url: `/webinars/${webinarId}/branding`, ...requestConfig });
+		{ webinarId: bigint }
+	>({
+		method: "GET",
+		url: `/webinars/${pathParams.webinarId}/branding`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Create a webinar's branding name tag
  * @description Create a webinar's [session branding](https://support.zoom.us/hc/en-us/articles/4836268732045-Using-Webinar-Session-Branding) name tag. There's a limit of 20 name tags per webinar. **Prerequisites:**
  * *  The **Webinar Session Branding** setting enabled.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:write`,`webinar:write:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:write:branding_name_tag`,`webinar:write:branding_name_tag:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `MEDIUM`
- * @summary Create a webinar's branding name tag
- * {@link /webinars/:webinarId/branding/name_tags}
+ * @link /webinars/{webinarId}/branding/name_tags
  */
-export async function createWebinarBrandingNameTag({
-	pathParams: { webinarId },
-	body,
-	config = {},
-}: {
-	pathParams: CreateWebinarBrandingNameTagPathParams;
-	body: CreateWebinarBrandingNameTagMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function createWebinarBrandingNameTag(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { webinarId: bigint };
+		body?: CreateWebinarBrandingNameTagBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!webinarId) {
+	if (!pathParams.webinarId) {
 		throw new Error(`Missing required path parameter: webinarId`);
 	}
-
 	const data = await request<
-		CreateWebinarBrandingNameTagMutationResponse,
+		CreateWebinarBrandingNameTagResponse,
 		ErrorWrapper<
-			| CreateWebinarBrandingNameTag400
-			| CreateWebinarBrandingNameTag404
-			| CreateWebinarBrandingNameTag429
+			| CreateWebinarBrandingNameTagStatus400
+			| CreateWebinarBrandingNameTagStatus404
+			| CreateWebinarBrandingNameTagStatus429
 		>,
-		CreateWebinarBrandingNameTagMutationRequest,
+		CreateWebinarBrandingNameTagBody,
 		Record<string, string>,
 		Record<string, string>,
-		CreateWebinarBrandingNameTagPathParams
-	>({ method: "POST", url: `/webinars/${webinarId}/branding/name_tags`, body, ...requestConfig });
+		{ webinarId: bigint }
+	>({
+		method: "POST",
+		url: `/webinars/${pathParams.webinarId}/branding/name_tags`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Delete a webinar's branding name tag
  * @description Delete a webinar's [session branding](https://support.zoom.us/hc/en-us/articles/4836268732045-Using-Webinar-Session-Branding) name tag.
- * **Prerequisites:**
+ *  **Prerequisites:**
  * * The **Webinar Session Branding** setting enabled.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:write`,`webinar:write:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:delete:branding_name_tag`,`webinar:delete:branding_name_tag:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Delete a webinar's branding name tag
- * {@link /webinars/:webinarId/branding/name_tags}
+ * @link /webinars/{webinarId}/branding/name_tags
  */
-export async function deleteWebinarBrandingNameTag({
-	pathParams: { webinarId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: DeleteWebinarBrandingNameTagPathParams;
-	queryParams?: DeleteWebinarBrandingNameTagQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deleteWebinarBrandingNameTag(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { webinarId: bigint };
+		queryParams?: { name_tag_ids?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!webinarId) {
+	if (!pathParams.webinarId) {
 		throw new Error(`Missing required path parameter: webinarId`);
 	}
-
 	const data = await request<
-		DeleteWebinarBrandingNameTagMutationResponse,
+		DeleteWebinarBrandingNameTagResponse,
 		ErrorWrapper<
-			| DeleteWebinarBrandingNameTag400
-			| DeleteWebinarBrandingNameTag404
-			| DeleteWebinarBrandingNameTag429
+			| DeleteWebinarBrandingNameTagStatus400
+			| DeleteWebinarBrandingNameTagStatus404
+			| DeleteWebinarBrandingNameTagStatus429
 		>,
 		null,
 		Record<string, string>,
-		DeleteWebinarBrandingNameTagQueryParams,
-		DeleteWebinarBrandingNameTagPathParams
+		{ name_tag_ids?: string },
+		{ webinarId: bigint }
 	>({
 		method: "DELETE",
-		url: `/webinars/${webinarId}/branding/name_tags`,
+		url: `/webinars/${pathParams.webinarId}/branding/name_tags`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
+ * @summary Update a webinar's branding name tag
  * @description Update a webinar's [session branding](https://support.zoom.us/hc/en-us/articles/4836268732045-Using-Webinar-Session-Branding) name tag. **Prerequisites:**
  * *  The **Webinar Session Branding** setting enabled.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:write`,`webinar:write:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:update:branding_name_tag`,`webinar:update:branding_name_tag:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `MEDIUM`
- * @summary Update a webinar's branding name tag
- * {@link /webinars/:webinarId/branding/name_tags/:nameTagId}
+ * @link /webinars/{webinarId}/branding/name_tags/{nameTagId}
  */
-export async function updateWebinarBrandingNameTag({
-	pathParams: { webinarId, nameTagId },
-	body,
-	config = {},
-}: {
-	pathParams: UpdateWebinarBrandingNameTagPathParams;
-	body?: UpdateWebinarBrandingNameTagMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function updateWebinarBrandingNameTag(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { webinarId: bigint; nameTagId: string };
+		body?: UpdateWebinarBrandingNameTagBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!webinarId) {
+	if (!pathParams.webinarId) {
 		throw new Error(`Missing required path parameter: webinarId`);
 	}
 
-	if (!nameTagId) {
+	if (!pathParams.nameTagId) {
 		throw new Error(`Missing required path parameter: nameTagId`);
 	}
-
 	const data = await request<
-		UpdateWebinarBrandingNameTagMutationResponse,
+		UpdateWebinarBrandingNameTagResponse,
 		ErrorWrapper<
-			| UpdateWebinarBrandingNameTag400
-			| UpdateWebinarBrandingNameTag404
-			| UpdateWebinarBrandingNameTag429
+			| UpdateWebinarBrandingNameTagStatus400
+			| UpdateWebinarBrandingNameTagStatus404
+			| UpdateWebinarBrandingNameTagStatus429
 		>,
-		UpdateWebinarBrandingNameTagMutationRequest,
+		UpdateWebinarBrandingNameTagBody,
 		Record<string, string>,
 		Record<string, string>,
-		UpdateWebinarBrandingNameTagPathParams
+		{ webinarId: bigint; nameTagId: string }
 	>({
 		method: "PATCH",
-		url: `/webinars/${webinarId}/branding/name_tags/${nameTagId}`,
-		body,
+		url: `/webinars/${pathParams.webinarId}/branding/name_tags/${pathParams.nameTagId}`,
+		body: body,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
+ * @summary Upload a webinar's branding virtual background
  * @description Upload a webinar's session branding [virtual background](https://support.zoom.us/hc/en-us/articles/210707503-Virtual-Background). Hosts and panelists can select and use these virtual backgrounds during the webinar. Branding virtual background files have these restrictions:
  * * A webinar cannot exceed more than 10 virtual background files.
  * * You can only upload image files that are in JPG/JPEG, GIF or PNG format.
  * * The virtual background file size cannot exceed 15 megabytes (MB).
- * **Prerequisites:**
+ *  **Prerequisites:**
  * *  The **Webinar Session Branding** setting enabled.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:write`,`webinar:write:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:write:branding_virtual_background`,`webinar:write:branding_virtual_background:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `MEDIUM`
- * @summary Upload a webinar's branding virtual background
- * {@link /webinars/:webinarId/branding/virtual_backgrounds}
+ * @link /webinars/{webinarId}/branding/virtual_backgrounds
  */
-export async function uploadWebinarBrandingVB({
-	pathParams: { webinarId },
-	config = {},
-}: {
-	pathParams: UploadWebinarBrandingVBPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function uploadWebinarBrandingVB(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { webinarId: bigint };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!webinarId) {
+	if (!pathParams.webinarId) {
 		throw new Error(`Missing required path parameter: webinarId`);
 	}
-
 	const data = await request<
-		UploadWebinarBrandingVBMutationResponse,
+		UploadWebinarBrandingVBResponse,
 		ErrorWrapper<
-			UploadWebinarBrandingVB400 | UploadWebinarBrandingVB404 | UploadWebinarBrandingVB429
+			| UploadWebinarBrandingVBStatus400
+			| UploadWebinarBrandingVBStatus404
+			| UploadWebinarBrandingVBStatus429
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		UploadWebinarBrandingVBPathParams
+		{ webinarId: bigint }
 	>({
 		method: "POST",
-		url: `/webinars/${webinarId}/branding/virtual_backgrounds`,
+		url: `/webinars/${pathParams.webinarId}/branding/virtual_backgrounds`,
 		...requestConfig,
-		headers: { "Content-Type": "multipart/form-data", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
+ * @summary Delete a webinar's branding virtual backgrounds
  * @description Delete a webinar's session branding [virtual background](https://support.zoom.us/hc/en-us/articles/210707503-Virtual-Background).
- * **Prerequisites:**
+ *  **Prerequisites:**
  * * The **Webinar Session Branding** setting enabled.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:write`,`webinar:write:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:delete:branding_virtual_background`,`webinar:delete:branding_virtual_background:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Delete a webinar's branding virtual backgrounds
- * {@link /webinars/:webinarId/branding/virtual_backgrounds}
+ * @link /webinars/{webinarId}/branding/virtual_backgrounds
  */
-export async function deleteWebinarBrandingVB({
-	pathParams: { webinarId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: DeleteWebinarBrandingVBPathParams;
-	queryParams?: DeleteWebinarBrandingVBQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deleteWebinarBrandingVB(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { webinarId: bigint };
+		queryParams?: { ids?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!webinarId) {
+	if (!pathParams.webinarId) {
 		throw new Error(`Missing required path parameter: webinarId`);
 	}
-
 	const data = await request<
-		DeleteWebinarBrandingVBMutationResponse,
+		DeleteWebinarBrandingVBResponse,
 		ErrorWrapper<
-			DeleteWebinarBrandingVB400 | DeleteWebinarBrandingVB404 | DeleteWebinarBrandingVB429
+			| DeleteWebinarBrandingVBStatus400
+			| DeleteWebinarBrandingVBStatus404
+			| DeleteWebinarBrandingVBStatus429
 		>,
 		null,
 		Record<string, string>,
-		DeleteWebinarBrandingVBQueryParams,
-		DeleteWebinarBrandingVBPathParams
+		{ ids?: string },
+		{ webinarId: bigint }
 	>({
 		method: "DELETE",
-		url: `/webinars/${webinarId}/branding/virtual_backgrounds`,
+		url: `/webinars/${pathParams.webinarId}/branding/virtual_backgrounds`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
+ * @summary Set webinar's default branding virtual background
  * @description Set a webinar's default session branding [virtual background](https://support.zoom.us/hc/en-us/articles/210707503-Virtual-Background).
- * **Prerequisites:**
+ *  **Prerequisites:**
  * * The **Webinar Session Branding** setting enabled.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:write`,`webinar:write:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:update:branding_virtual_background`,`webinar:update:branding_virtual_background:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Set webinar's default branding virtual background
- * {@link /webinars/:webinarId/branding/virtual_backgrounds}
+ * @link /webinars/{webinarId}/branding/virtual_backgrounds
  */
-export async function setWebinarBrandingVB({
-	pathParams: { webinarId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: SetWebinarBrandingVBPathParams;
-	queryParams?: SetWebinarBrandingVBQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function setWebinarBrandingVB(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { webinarId: bigint };
+		queryParams?: { id?: string; set_default_for_all_panelists?: boolean };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!webinarId) {
+	if (!pathParams.webinarId) {
 		throw new Error(`Missing required path parameter: webinarId`);
 	}
-
 	const data = await request<
-		SetWebinarBrandingVBMutationResponse,
-		ErrorWrapper<SetWebinarBrandingVB400 | SetWebinarBrandingVB404 | SetWebinarBrandingVB429>,
+		SetWebinarBrandingVBResponse,
+		ErrorWrapper<
+			SetWebinarBrandingVBStatus400 | SetWebinarBrandingVBStatus404 | SetWebinarBrandingVBStatus429
+		>,
 		null,
 		Record<string, string>,
-		SetWebinarBrandingVBQueryParams,
-		SetWebinarBrandingVBPathParams
+		{ id?: string; set_default_for_all_panelists?: boolean },
+		{ webinarId: bigint }
 	>({
 		method: "PATCH",
-		url: `/webinars/${webinarId}/branding/virtual_backgrounds`,
+		url: `/webinars/${pathParams.webinarId}/branding/virtual_backgrounds`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
+ * @summary Upload a webinar's branding wallpaper
  * @description Upload a webinar's session branding wallpaper file. Webinar branding wallpaper files have these requirements:
  * * A webinar can only have one wallpaper file.
  * * You can only upload image files that are in JPG/JPEG, GIF, or PNG format.
  * * Image files must be 16:9 ratio. The recommended image size is 1920 x 1080 pixels.
  * * The wallpaper file size cannot exceed 15 megabytes.
- * **Prerequisites:**
+ *  **Prerequisites:**
  * *  The **Webinar Session Branding** setting enabled.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:write`,`webinar:write:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:write:branding_wallpaper`,`webinar:write:branding_wallpaper:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `MEDIUM`
- * @summary Upload a webinar's branding wallpaper
- * {@link /webinars/:webinarId/branding/wallpaper}
+ * @link /webinars/{webinarId}/branding/wallpaper
  */
-export async function uploadWebinarBrandingWallpaper({
-	pathParams: { webinarId },
-	config = {},
-}: {
-	pathParams: UploadWebinarBrandingWallpaperPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function uploadWebinarBrandingWallpaper(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { webinarId: bigint };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!webinarId) {
+	if (!pathParams.webinarId) {
 		throw new Error(`Missing required path parameter: webinarId`);
 	}
-
 	const data = await request<
-		UploadWebinarBrandingWallpaperMutationResponse,
+		UploadWebinarBrandingWallpaperResponse,
 		ErrorWrapper<
-			| UploadWebinarBrandingWallpaper400
-			| UploadWebinarBrandingWallpaper404
-			| UploadWebinarBrandingWallpaper429
+			| UploadWebinarBrandingWallpaperStatus400
+			| UploadWebinarBrandingWallpaperStatus404
+			| UploadWebinarBrandingWallpaperStatus429
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		UploadWebinarBrandingWallpaperPathParams
+		{ webinarId: bigint }
 	>({
 		method: "POST",
-		url: `/webinars/${webinarId}/branding/wallpaper`,
+		url: `/webinars/${pathParams.webinarId}/branding/wallpaper`,
 		...requestConfig,
-		headers: { "Content-Type": "multipart/form-data", ...requestConfig.headers },
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
+ * @summary Delete a webinar's branding wallpaper
  * @description Delete a webinar's session branding wallpaper file.
- * **Prerequisites:**
+ *  **Prerequisites:**
  * * The **Webinar Session Branding** setting enabled.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:write`,`webinar:write:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:delete:branding_wallpaper`,`webinar:delete:branding_wallpaper:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Delete a webinar's branding wallpaper
- * {@link /webinars/:webinarId/branding/wallpaper}
+ * @link /webinars/{webinarId}/branding/wallpaper
  */
-export async function deleteWebinarBrandingWallpaper({
-	pathParams: { webinarId },
-	config = {},
-}: {
-	pathParams: DeleteWebinarBrandingWallpaperPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deleteWebinarBrandingWallpaper(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { webinarId: bigint };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!webinarId) {
+	if (!pathParams.webinarId) {
 		throw new Error(`Missing required path parameter: webinarId`);
 	}
-
 	const data = await request<
-		DeleteWebinarBrandingWallpaperMutationResponse,
+		DeleteWebinarBrandingWallpaperResponse,
 		ErrorWrapper<
-			| DeleteWebinarBrandingWallpaper400
-			| DeleteWebinarBrandingWallpaper404
-			| DeleteWebinarBrandingWallpaper429
+			| DeleteWebinarBrandingWallpaperStatus400
+			| DeleteWebinarBrandingWallpaperStatus404
+			| DeleteWebinarBrandingWallpaperStatus429
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		DeleteWebinarBrandingWallpaperPathParams
-	>({ method: "DELETE", url: `/webinars/${webinarId}/branding/wallpaper`, ...requestConfig });
+		{ webinarId: bigint }
+	>({
+		method: "DELETE",
+		url: `/webinars/${pathParams.webinarId}/branding/wallpaper`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Create webinar's invite links
  * @description Create a batch of invitation links for a webinar.
  * **Prerequisites:**
  * * Business, Education or API Plan with the Webinar add-on.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:write:admin`,`webinar:write`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:write:invite_links`,`webinar:write:invite_links:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Create webinar's invite links
- * {@link /webinars/:webinarId/invite_links}
+ * @link /webinars/{webinarId}/invite_links
  */
-export async function webinarInviteLinksCreate({
-	pathParams: { webinarId },
-	body,
-	config = {},
-}: {
-	pathParams: WebinarInviteLinksCreatePathParams;
-	body?: WebinarInviteLinksCreateMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function webinarInviteLinksCreate(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { webinarId: bigint };
+		body?: WebinarInviteLinksCreateBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!webinarId) {
+	if (!pathParams.webinarId) {
 		throw new Error(`Missing required path parameter: webinarId`);
 	}
-
 	const data = await request<
-		WebinarInviteLinksCreateMutationResponse,
+		WebinarInviteLinksCreateResponse,
 		ErrorWrapper<
-			WebinarInviteLinksCreate400 | WebinarInviteLinksCreate404 | WebinarInviteLinksCreate429
+			| WebinarInviteLinksCreateStatus400
+			| WebinarInviteLinksCreateStatus404
+			| WebinarInviteLinksCreateStatus429
 		>,
-		WebinarInviteLinksCreateMutationRequest,
+		WebinarInviteLinksCreateBody,
 		Record<string, string>,
 		Record<string, string>,
-		WebinarInviteLinksCreatePathParams
-	>({ method: "POST", url: `/webinars/${webinarId}/invite_links`, body, ...requestConfig });
+		{ webinarId: bigint }
+	>({
+		method: "POST",
+		url: `/webinars/${pathParams.webinarId}/invite_links`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Get a webinar's join token for live streaming
  * @description Retrieve a webinar's archive token to allow live streaming. The join token lets a recording bot implemented using Zoom meeting SDK connect to a Zoom meeting **hosted by the issuer of the token**, and can call the streaming method automatically. It supports both regular live streaming and raw streaming.
- * **Prerequisites:**
+ *  **Prerequisites:**
  * * A Pro or higher plan with a Webinar add-on.
  * * The **Allow livestreaming of webinars** user setting enabled in the Zoom web portal.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar_token:read:admin:live_streaming`,`webinar_token:read:live_streaming`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:read:live_streaming_token`,`webinar:read:live_streaming_token:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Get a webinar's join token for live streaming
- * {@link /webinars/:webinarId/jointoken/live_streaming}
+ * @link /webinars/{webinarId}/jointoken/live_streaming
  */
-export async function webinarLiveStreamingJoinToken({
-	pathParams: { webinarId },
-	config = {},
-}: {
-	pathParams: WebinarLiveStreamingJoinTokenPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function webinarLiveStreamingJoinToken(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { webinarId: bigint };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!webinarId) {
+	if (!pathParams.webinarId) {
 		throw new Error(`Missing required path parameter: webinarId`);
 	}
-
 	const data = await request<
-		WebinarLiveStreamingJoinTokenQueryResponse,
+		WebinarLiveStreamingJoinTokenResponse,
 		ErrorWrapper<
-			| WebinarLiveStreamingJoinToken400
-			| WebinarLiveStreamingJoinToken404
-			| WebinarLiveStreamingJoinToken429
+			| WebinarLiveStreamingJoinTokenStatus400
+			| WebinarLiveStreamingJoinTokenStatus404
+			| WebinarLiveStreamingJoinTokenStatus429
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		WebinarLiveStreamingJoinTokenPathParams
-	>({ method: "GET", url: `/webinars/${webinarId}/jointoken/live_streaming`, ...requestConfig });
+		{ webinarId: bigint }
+	>({
+		method: "GET",
+		url: `/webinars/${pathParams.webinarId}/jointoken/live_streaming`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Get a webinar's archive token for local archiving
  * @description Use this API to get a webinar's archive token to allow local archiving. The archive token allows a meeting SDK app or bot to get archive permission to access the webinar's raw audio and video media stream in real-time.
- * **Prerequisites:**
+ *  **Prerequisites:**
  * * A Pro or higher plan with a Webinar Add-on.
  * * The **Archive meetings and webinars** account setting enabled in the Zoom web portal.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar_token:read:admin:local_archiving`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:read:local_archiving_token:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Get a webinar's archive token for local archiving
- * {@link /webinars/:webinarId/jointoken/local_archiving}
+ * @link /webinars/{webinarId}/jointoken/local_archiving
  */
-export async function webinarLocalArchivingArchiveToken({
-	pathParams: { webinarId },
-	config = {},
-}: {
-	pathParams: WebinarLocalArchivingArchiveTokenPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function webinarLocalArchivingArchiveToken(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { webinarId: bigint };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!webinarId) {
+	if (!pathParams.webinarId) {
 		throw new Error(`Missing required path parameter: webinarId`);
 	}
-
 	const data = await request<
-		WebinarLocalArchivingArchiveTokenQueryResponse,
+		WebinarLocalArchivingArchiveTokenResponse,
 		ErrorWrapper<
-			| WebinarLocalArchivingArchiveToken400
-			| WebinarLocalArchivingArchiveToken404
-			| WebinarLocalArchivingArchiveToken429
+			| WebinarLocalArchivingArchiveTokenStatus400
+			| WebinarLocalArchivingArchiveTokenStatus404
+			| WebinarLocalArchivingArchiveTokenStatus429
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		WebinarLocalArchivingArchiveTokenPathParams
-	>({ method: "GET", url: `/webinars/${webinarId}/jointoken/local_archiving`, ...requestConfig });
+		{ webinarId: bigint }
+	>({
+		method: "GET",
+		url: `/webinars/${pathParams.webinarId}/jointoken/local_archiving`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Get a webinar's join token for local recording
  * @description Retrieve a webinar's join token to allow for local recording. The join token lets a recording bot implemented using Zoom Meeting SDK connect to a Zoom webinar. The recording bot can then automatically start locally recording. This supports both regular and raw local recording.
- * **Prerequisites:**
+ *  **Prerequisites:**
  * * A Pro or higher plan with a Webinar add-on.
  * * The **Local recording** user setting enabled in the Zoom web portal.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar_token:read:admin:local_recording`,`webinar_token:read:local_recording`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:read:local_recording_token`,`webinar:read:local_recording_token:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Get a webinar's join token for local recording
- * {@link /webinars/:webinarId/jointoken/local_recording}
+ * @link /webinars/{webinarId}/jointoken/local_recording
  */
-export async function webinarLocalRecordingJoinToken({
-	pathParams: { webinarId },
-	config = {},
-}: {
-	pathParams: WebinarLocalRecordingJoinTokenPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function webinarLocalRecordingJoinToken(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { webinarId: bigint };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!webinarId) {
+	if (!pathParams.webinarId) {
 		throw new Error(`Missing required path parameter: webinarId`);
 	}
-
 	const data = await request<
-		WebinarLocalRecordingJoinTokenQueryResponse,
+		WebinarLocalRecordingJoinTokenResponse,
 		ErrorWrapper<
-			| WebinarLocalRecordingJoinToken400
-			| WebinarLocalRecordingJoinToken404
-			| WebinarLocalRecordingJoinToken429
+			| WebinarLocalRecordingJoinTokenStatus400
+			| WebinarLocalRecordingJoinTokenStatus404
+			| WebinarLocalRecordingJoinTokenStatus429
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		WebinarLocalRecordingJoinTokenPathParams
-	>({ method: "GET", url: `/webinars/${webinarId}/jointoken/local_recording`, ...requestConfig });
+		{ webinarId: bigint }
+	>({
+		method: "GET",
+		url: `/webinars/${pathParams.webinarId}/jointoken/local_recording`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Get live stream details
  * @description Get a webinar's live stream configuration details, such as Stream URL, Stream Key and Page URL.
  * Zoom allows users to [live stream a webinar](https://support.zoom.us/hc/en-us/articles/115001777826-Live-Streaming-Meetings-or-Webinars-Using-a-Custom-Service) to a custom platform.
  * **Prerequisites:**
@@ -6857,38 +8419,45 @@ export async function webinarLocalRecordingJoinToken({
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:read:admin`,`webinar:read`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:read:livestream`,`webinar:read:livestream:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Get live stream details
- * {@link /webinars/:webinarId/livestream}
+ * @link /webinars/{webinarId}/livestream
  */
-export async function getWebinarLiveStreamDetails({
-	pathParams: { webinarId },
-	config = {},
-}: {
-	pathParams: GetWebinarLiveStreamDetailsPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getWebinarLiveStreamDetails(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { webinarId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!webinarId) {
+	if (!pathParams.webinarId) {
 		throw new Error(`Missing required path parameter: webinarId`);
 	}
-
 	const data = await request<
-		GetWebinarLiveStreamDetailsQueryResponse,
+		GetWebinarLiveStreamDetailsResponse,
 		ErrorWrapper<
-			| GetWebinarLiveStreamDetails400
-			| GetWebinarLiveStreamDetails404
-			| GetWebinarLiveStreamDetails429
+			| GetWebinarLiveStreamDetailsStatus400
+			| GetWebinarLiveStreamDetailsStatus404
+			| GetWebinarLiveStreamDetailsStatus429
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		GetWebinarLiveStreamDetailsPathParams
-	>({ method: "GET", url: `/webinars/${webinarId}/livestream`, ...requestConfig });
+		{ webinarId: string }
+	>({
+		method: "GET",
+		url: `/webinars/${pathParams.webinarId}/livestream`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Update a live stream
  * @description Update a webinar's live stream information.
  * **Prerequisites:**
  * * Pro or higher plan with the webinar add-on.
@@ -6896,38 +8465,48 @@ export async function getWebinarLiveStreamDetails({
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:write:admin`,`webinar:write`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:update:livestream`,`webinar:update:livestream:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Update a live stream
- * {@link /webinars/:webinarId/livestream}
+ * @link /webinars/{webinarId}/livestream
  */
-export async function webinarLiveStreamUpdate({
-	pathParams: { webinarId },
-	body,
-	config = {},
-}: {
-	pathParams: WebinarLiveStreamUpdatePathParams;
-	body: WebinarLiveStreamUpdateMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function webinarLiveStreamUpdate(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { webinarId: bigint };
+		body?: WebinarLiveStreamUpdateBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!webinarId) {
+	if (!pathParams.webinarId) {
 		throw new Error(`Missing required path parameter: webinarId`);
 	}
-
 	const data = await request<
-		WebinarLiveStreamUpdateMutationResponse,
+		WebinarLiveStreamUpdateResponse,
 		ErrorWrapper<
-			WebinarLiveStreamUpdate400 | WebinarLiveStreamUpdate404 | WebinarLiveStreamUpdate429
+			| WebinarLiveStreamUpdateStatus400
+			| WebinarLiveStreamUpdateStatus404
+			| WebinarLiveStreamUpdateStatus429
 		>,
-		WebinarLiveStreamUpdateMutationRequest,
+		WebinarLiveStreamUpdateBody,
 		Record<string, string>,
 		Record<string, string>,
-		WebinarLiveStreamUpdatePathParams
-	>({ method: "PATCH", url: `/webinars/${webinarId}/livestream`, body, ...requestConfig });
+		{ webinarId: bigint }
+	>({
+		method: "PATCH",
+		url: `/webinars/${pathParams.webinarId}/livestream`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Update live stream status
  * @description Lets users [live stream a webinar](https://support.zoom.us/hc/en-us/articles/115001777826-Live-Streaming-Meetings-or-Webinars-Using-a-Custom-Service) to a custom platform. Update the status of a webinar's live stream.
  * **Prerequisites:**
  * * Pro or higher plan with a Webinar Add-on.
@@ -6935,40 +8514,48 @@ export async function webinarLiveStreamUpdate({
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:write:admin`,`webinar:write`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:update:livestream_status`,`webinar:update:livestream_status:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Update live stream status
- * {@link /webinars/:webinarId/livestream/status}
+ * @link /webinars/{webinarId}/livestream/status
  */
-export async function webinarLiveStreamStatusUpdate({
-	pathParams: { webinarId },
-	body,
-	config = {},
-}: {
-	pathParams: WebinarLiveStreamStatusUpdatePathParams;
-	body?: WebinarLiveStreamStatusUpdateMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function webinarLiveStreamStatusUpdate(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { webinarId: bigint };
+		body?: WebinarLiveStreamStatusUpdateBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!webinarId) {
+	if (!pathParams.webinarId) {
 		throw new Error(`Missing required path parameter: webinarId`);
 	}
-
 	const data = await request<
-		WebinarLiveStreamStatusUpdateMutationResponse,
+		WebinarLiveStreamStatusUpdateResponse,
 		ErrorWrapper<
-			| WebinarLiveStreamStatusUpdate400
-			| WebinarLiveStreamStatusUpdate404
-			| WebinarLiveStreamStatusUpdate429
+			| WebinarLiveStreamStatusUpdateStatus400
+			| WebinarLiveStreamStatusUpdateStatus404
+			| WebinarLiveStreamStatusUpdateStatus429
 		>,
-		WebinarLiveStreamStatusUpdateMutationRequest,
+		WebinarLiveStreamStatusUpdateBody,
 		Record<string, string>,
 		Record<string, string>,
-		WebinarLiveStreamStatusUpdatePathParams
-	>({ method: "PATCH", url: `/webinars/${webinarId}/livestream/status`, body, ...requestConfig });
+		{ webinarId: bigint }
+	>({
+		method: "PATCH",
+		url: `/webinars/${pathParams.webinarId}/livestream/status`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary List panelists
  * @description List all of a webinar's panelists.
  * Webinar panelists can view and send video, screen share, annotate, and do much more compared to webinar attendees.
  * **Prerequisites:**
@@ -6976,453 +8563,574 @@ export async function webinarLiveStreamStatusUpdate({
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:read:admin`,`webinar:read`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:read:list_panelists`,`webinar:read:list_panelists:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `MEDIUM`
- * @summary List panelists
- * {@link /webinars/:webinarId/panelists}
+ * @link /webinars/{webinarId}/panelists
  */
-export async function webinarPanelists({
-	pathParams: { webinarId },
-	config = {},
-}: {
-	pathParams: WebinarPanelistsPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function webinarPanelists(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { webinarId: bigint };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!webinarId) {
+	if (!pathParams.webinarId) {
 		throw new Error(`Missing required path parameter: webinarId`);
 	}
-
 	const data = await request<
-		WebinarPanelistsQueryResponse,
-		ErrorWrapper<WebinarPanelists400 | WebinarPanelists404 | WebinarPanelists429>,
+		WebinarPanelistsResponse,
+		ErrorWrapper<WebinarPanelistsStatus400 | WebinarPanelistsStatus404 | WebinarPanelistsStatus429>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		WebinarPanelistsPathParams
-	>({ method: "GET", url: `/webinars/${webinarId}/panelists`, ...requestConfig });
+		{ webinarId: bigint }
+	>({
+		method: "GET",
+		url: `/webinars/${pathParams.webinarId}/panelists`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Add panelists
  * @description Panelists in a webinar can view and send video, screen share, annotate, and do much more compared to attendees in a webinar.
- * [Add panelists](https://support.zoom.us/hc/en-us/articles/115005657826-Inviting-Panelists-to-a-Webinar#h_7550d59e-23f5-4703-9e22-e76bded1ed70) to a scheduled webinar.
+ *  [Add panelists](https://support.zoom.us/hc/en-us/articles/115005657826-Inviting-Panelists-to-a-Webinar#h_7550d59e-23f5-4703-9e22-e76bded1ed70) to a scheduled webinar.
  * **Prerequisites:**
  * * Pro or a higher plan with the [Webinar Add-on](https://zoom.us/webinar).
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:write:admin`,`webinar:write`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:write:panelist`,`webinar:write:panelist:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `MEDIUM`
- * @summary Add panelists
- * {@link /webinars/:webinarId/panelists}
+ * @link /webinars/{webinarId}/panelists
  */
-export async function webinarPanelistCreate({
-	pathParams: { webinarId },
-	body,
-	config = {},
-}: {
-	pathParams: WebinarPanelistCreatePathParams;
-	body?: WebinarPanelistCreateMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function webinarPanelistCreate(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { webinarId: bigint };
+		body?: WebinarPanelistCreateBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!webinarId) {
+	if (!pathParams.webinarId) {
 		throw new Error(`Missing required path parameter: webinarId`);
 	}
-
 	const data = await request<
-		WebinarPanelistCreateMutationResponse,
-		ErrorWrapper<WebinarPanelistCreate400 | WebinarPanelistCreate404 | WebinarPanelistCreate429>,
-		WebinarPanelistCreateMutationRequest,
+		WebinarPanelistCreateResponse,
+		ErrorWrapper<
+			| WebinarPanelistCreateStatus400
+			| WebinarPanelistCreateStatus404
+			| WebinarPanelistCreateStatus429
+		>,
+		WebinarPanelistCreateBody,
 		Record<string, string>,
 		Record<string, string>,
-		WebinarPanelistCreatePathParams
-	>({ method: "POST", url: `/webinars/${webinarId}/panelists`, body, ...requestConfig });
+		{ webinarId: bigint }
+	>({
+		method: "POST",
+		url: `/webinars/${pathParams.webinarId}/panelists`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Remove all panelists
  * @description Remove all the panelists from a webinar.
  * **Prerequisites:**
  * * Pro or a higher plan with the [webinar add-on](https://zoom.us/webinar).
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:write:admin`,`webinar:write`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:delete:panelist`,`webinar:delete:panelist:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Remove all panelists
- * {@link /webinars/:webinarId/panelists}
+ * @link /webinars/{webinarId}/panelists
  */
-export async function webinarPanelistsDelete({
-	pathParams: { webinarId },
-	config = {},
-}: {
-	pathParams: WebinarPanelistsDeletePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function webinarPanelistsDelete(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { webinarId: bigint };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!webinarId) {
+	if (!pathParams.webinarId) {
 		throw new Error(`Missing required path parameter: webinarId`);
 	}
-
 	const data = await request<
-		WebinarPanelistsDeleteMutationResponse,
-		ErrorWrapper<WebinarPanelistsDelete400 | WebinarPanelistsDelete404 | WebinarPanelistsDelete429>,
+		WebinarPanelistsDeleteResponse,
+		ErrorWrapper<
+			| WebinarPanelistsDeleteStatus400
+			| WebinarPanelistsDeleteStatus404
+			| WebinarPanelistsDeleteStatus429
+		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		WebinarPanelistsDeletePathParams
-	>({ method: "DELETE", url: `/webinars/${webinarId}/panelists`, ...requestConfig });
+		{ webinarId: bigint }
+	>({
+		method: "DELETE",
+		url: `/webinars/${pathParams.webinarId}/panelists`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Remove a panelist
  * @description [Remove](https://support.zoom.us/hc/en-us/articles/115005657826-Inviting-Panelists-to-a-Webinar#h_de31f237-a91c-4fb2-912b-ecfba8ec5ffb) a single panelist from a webinar.
- * Retrieve the `panelistId` by calling **List Panelists API**.
+ *   Retrieve the `panelistId` by calling **List Panelists API**.
  * **Prerequisites:**
  * * Pro or a higher plan with the [webinar add-on](https://zoom.us/webinar).
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:write:admin`,`webinar:write`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:delete:panelist`,`webinar:delete:panelist:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Remove a panelist
- * {@link /webinars/:webinarId/panelists/:panelistId}
+ * @link /webinars/{webinarId}/panelists/{panelistId}
  */
-export async function webinarPanelistDelete({
-	pathParams: { webinarId, panelistId },
-	config = {},
-}: {
-	pathParams: WebinarPanelistDeletePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function webinarPanelistDelete(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { webinarId: bigint; panelistId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!webinarId) {
+	if (!pathParams.webinarId) {
 		throw new Error(`Missing required path parameter: webinarId`);
 	}
 
-	if (!panelistId) {
+	if (!pathParams.panelistId) {
 		throw new Error(`Missing required path parameter: panelistId`);
 	}
-
 	const data = await request<
-		WebinarPanelistDeleteMutationResponse,
-		ErrorWrapper<WebinarPanelistDelete400 | WebinarPanelistDelete404 | WebinarPanelistDelete429>,
+		WebinarPanelistDeleteResponse,
+		ErrorWrapper<
+			| WebinarPanelistDeleteStatus400
+			| WebinarPanelistDeleteStatus404
+			| WebinarPanelistDeleteStatus429
+		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		WebinarPanelistDeletePathParams
-	>({ method: "DELETE", url: `/webinars/${webinarId}/panelists/${panelistId}`, ...requestConfig });
+		{ webinarId: bigint; panelistId: string }
+	>({
+		method: "DELETE",
+		url: `/webinars/${pathParams.webinarId}/panelists/${pathParams.panelistId}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary List a webinar's polls
  * @description Lists all the [polls](https://support.zoom.us/hc/en-us/articles/203749865-Polling-for-Webinars) of a webinar.
  * **Prerequisites**
  * * A Pro or higher plan with a [Webinar plan](https://zoom.us/webinar) add-on.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:read:admin`,`webinar:read`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:read:list_polls`,`webinar:read:list_polls:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary List a webinar's polls
- * {@link /webinars/:webinarId/polls}
+ * @link /webinars/{webinarId}/polls
  */
-export async function webinarPolls({
-	pathParams: { webinarId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: WebinarPollsPathParams;
-	queryParams?: WebinarPollsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function webinarPolls(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { webinarId: bigint };
+		queryParams?: { anonymous?: boolean };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!webinarId) {
+	if (!pathParams.webinarId) {
 		throw new Error(`Missing required path parameter: webinarId`);
 	}
-
 	const data = await request<
-		WebinarPollsQueryResponse,
-		ErrorWrapper<WebinarPolls400 | WebinarPolls404 | WebinarPolls429>,
+		WebinarPollsResponse,
+		ErrorWrapper<WebinarPollsStatus400 | WebinarPollsStatus404 | WebinarPollsStatus429>,
 		null,
 		Record<string, string>,
-		WebinarPollsQueryParams,
-		WebinarPollsPathParams
-	>({ method: "GET", url: `/webinars/${webinarId}/polls`, queryParams, ...requestConfig });
+		{ anonymous?: boolean },
+		{ webinarId: bigint }
+	>({
+		method: "GET",
+		url: `/webinars/${pathParams.webinarId}/polls`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Create a webinar's poll
  * @description Creates a [poll](https://support.zoom.us/hc/en-us/articles/203749865-Polling-for-Webinars) for a webinar.
  * **Prerequisites**
  * * A Pro or higher plan with a [Webinar plan](https://zoom.us/webinar) add-on.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:write:admin`,`webinar:write`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:write:poll`,`webinar:write:poll:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Create a webinar's poll
- * {@link /webinars/:webinarId/polls}
+ * @link /webinars/{webinarId}/polls
  */
-export async function webinarPollCreate({
-	pathParams: { webinarId },
-	body,
-	config = {},
-}: {
-	pathParams: WebinarPollCreatePathParams;
-	body?: WebinarPollCreateMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function webinarPollCreate(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { webinarId: bigint };
+		body?: WebinarPollCreateBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!webinarId) {
+	if (!pathParams.webinarId) {
 		throw new Error(`Missing required path parameter: webinarId`);
 	}
-
 	const data = await request<
-		WebinarPollCreateMutationResponse,
-		ErrorWrapper<WebinarPollCreate400 | WebinarPollCreate404 | WebinarPollCreate429>,
-		WebinarPollCreateMutationRequest,
+		WebinarPollCreateResponse,
+		ErrorWrapper<
+			WebinarPollCreateStatus400 | WebinarPollCreateStatus404 | WebinarPollCreateStatus429
+		>,
+		WebinarPollCreateBody,
 		Record<string, string>,
 		Record<string, string>,
-		WebinarPollCreatePathParams
-	>({ method: "POST", url: `/webinars/${webinarId}/polls`, body, ...requestConfig });
+		{ webinarId: bigint }
+	>({
+		method: "POST",
+		url: `/webinars/${pathParams.webinarId}/polls`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Get a webinar poll
  * @description Returns a webinar's [poll](https://support.zoom.us/hc/en-us/articles/203749865-Polling-for-Webinars) details.
  * **Prerequisites**
  * * A Pro or higher plan with a [Webinar plan](https://zoom.us/webinar) add-on.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:read:admin`,`webinar:read`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:read:poll`,`webinar:read:poll:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Get a webinar poll
- * {@link /webinars/:webinarId/polls/:pollId}
+ * @link /webinars/{webinarId}/polls/{pollId}
  */
-export async function webinarPollGet({
-	pathParams: { webinarId, pollId },
-	config = {},
-}: {
-	pathParams: WebinarPollGetPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function webinarPollGet(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { webinarId: bigint; pollId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!webinarId) {
+	if (!pathParams.webinarId) {
 		throw new Error(`Missing required path parameter: webinarId`);
 	}
 
-	if (!pollId) {
+	if (!pathParams.pollId) {
 		throw new Error(`Missing required path parameter: pollId`);
 	}
-
 	const data = await request<
-		WebinarPollGetQueryResponse,
-		ErrorWrapper<WebinarPollGet400 | WebinarPollGet404 | WebinarPollGet429>,
+		WebinarPollGetResponse,
+		ErrorWrapper<WebinarPollGetStatus400 | WebinarPollGetStatus404 | WebinarPollGetStatus429>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		WebinarPollGetPathParams
-	>({ method: "GET", url: `/webinars/${webinarId}/polls/${pollId}`, ...requestConfig });
+		{ webinarId: bigint; pollId: string }
+	>({
+		method: "GET",
+		url: `/webinars/${pathParams.webinarId}/polls/${pathParams.pollId}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Update a webinar poll
  * @description Updates a webinar's [poll](https://support.zoom.us/hc/en-us/articles/203749865-Polling-for-Webinars).
  * **Prerequisites**
  * * A Pro or higher plan with a [Webinar plan](https://zoom.us/webinar) add-on.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:write:admin`,`webinar:write`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:update:poll`,`webinar:update:poll:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Update a webinar poll
- * {@link /webinars/:webinarId/polls/:pollId}
+ * @link /webinars/{webinarId}/polls/{pollId}
  */
-export async function webinarPollUpdate({
-	pathParams: { webinarId, pollId },
-	body,
-	config = {},
-}: {
-	pathParams: WebinarPollUpdatePathParams;
-	body?: WebinarPollUpdateMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function webinarPollUpdate(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { webinarId: bigint; pollId: string };
+		body?: WebinarPollUpdateBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!webinarId) {
+	if (!pathParams.webinarId) {
 		throw new Error(`Missing required path parameter: webinarId`);
 	}
 
-	if (!pollId) {
+	if (!pathParams.pollId) {
 		throw new Error(`Missing required path parameter: pollId`);
 	}
-
 	const data = await request<
-		WebinarPollUpdateMutationResponse,
-		ErrorWrapper<WebinarPollUpdate400 | WebinarPollUpdate404 | WebinarPollUpdate429>,
-		WebinarPollUpdateMutationRequest,
+		WebinarPollUpdateResponse,
+		ErrorWrapper<
+			WebinarPollUpdateStatus400 | WebinarPollUpdateStatus404 | WebinarPollUpdateStatus429
+		>,
+		WebinarPollUpdateBody,
 		Record<string, string>,
 		Record<string, string>,
-		WebinarPollUpdatePathParams
-	>({ method: "PUT", url: `/webinars/${webinarId}/polls/${pollId}`, body, ...requestConfig });
+		{ webinarId: bigint; pollId: string }
+	>({
+		method: "PUT",
+		url: `/webinars/${pathParams.webinarId}/polls/${pathParams.pollId}`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Delete a webinar poll
  * @description Delete a webinar's [poll](https://support.zoom.us/hc/en-us/articles/203749865-Polling-for-Webinars).
  * **Prerequisites**
  * * A Pro or higher plan with a [Webinar plan](https://zoom.us/webinar) add-on.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:write:admin`,`webinar:write`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:delete:poll`,`webinar:delete:poll:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Delete a webinar poll
- * {@link /webinars/:webinarId/polls/:pollId}
+ * @link /webinars/{webinarId}/polls/{pollId}
  */
-export async function webinarPollDelete({
-	pathParams: { webinarId, pollId },
-	config = {},
-}: {
-	pathParams: WebinarPollDeletePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function webinarPollDelete(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { webinarId: bigint; pollId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!webinarId) {
+	if (!pathParams.webinarId) {
 		throw new Error(`Missing required path parameter: webinarId`);
 	}
 
-	if (!pollId) {
+	if (!pathParams.pollId) {
 		throw new Error(`Missing required path parameter: pollId`);
 	}
-
 	const data = await request<
-		WebinarPollDeleteMutationResponse,
-		ErrorWrapper<WebinarPollDelete400 | WebinarPollDelete404 | WebinarPollDelete429>,
+		WebinarPollDeleteResponse,
+		ErrorWrapper<
+			WebinarPollDeleteStatus400 | WebinarPollDeleteStatus404 | WebinarPollDeleteStatus429
+		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		WebinarPollDeletePathParams
-	>({ method: "DELETE", url: `/webinars/${webinarId}/polls/${pollId}`, ...requestConfig });
+		{ webinarId: bigint; pollId: string }
+	>({
+		method: "DELETE",
+		url: `/webinars/${pathParams.webinarId}/polls/${pathParams.pollId}`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary List webinar registrants
  * @description List all users that have registered for a given webinar. Zoom users with a [webinar plan](https://zoom.us/webinar) have access to creating and managing webinars. The webinar functionality lets a host broadcast a Zoom meeting to up to 10,000 attendees. Scheduling a [webinar with registration](https://support.zoom.us/hc/en-us/articles/204619915-Scheduling-a-Webinar-with-Registration) requires your registrants to complete a brief form before receiving the link to join the webinar.
  * **Prerequisites**
  * * Pro or higher plan with a Webinar add-on.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:read:admin`,`webinar:read`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:read:list_registrants`,`webinar:read:list_registrants:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `MEDIUM`
- * @summary List webinar registrants
- * {@link /webinars/:webinarId/registrants}
+ * @link /webinars/{webinarId}/registrants
  */
-export async function webinarRegistrants({
-	pathParams: { webinarId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: WebinarRegistrantsPathParams;
-	queryParams?: WebinarRegistrantsQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function webinarRegistrants(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { webinarId: bigint };
+		queryParams?: {
+			occurrence_id?: string;
+			status?: "pending" | "approved" | "denied";
+			tracking_source_id?: string;
+			page_size?: number;
+			page_number?: number;
+			next_page_token?: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!webinarId) {
+	if (!pathParams.webinarId) {
 		throw new Error(`Missing required path parameter: webinarId`);
 	}
-
 	const data = await request<
-		WebinarRegistrantsQueryResponse,
-		ErrorWrapper<WebinarRegistrants400 | WebinarRegistrants404 | WebinarRegistrants429>,
+		WebinarRegistrantsResponse,
+		ErrorWrapper<
+			WebinarRegistrantsStatus400 | WebinarRegistrantsStatus404 | WebinarRegistrantsStatus429
+		>,
 		null,
 		Record<string, string>,
-		WebinarRegistrantsQueryParams,
-		WebinarRegistrantsPathParams
-	>({ method: "GET", url: `/webinars/${webinarId}/registrants`, queryParams, ...requestConfig });
+		{
+			occurrence_id?: string;
+			status?: "pending" | "approved" | "denied";
+			tracking_source_id?: string;
+			page_size?: number;
+			page_number?: number;
+			next_page_token?: string;
+		},
+		{ webinarId: bigint }
+	>({
+		method: "GET",
+		url: `/webinars/${pathParams.webinarId}/registrants`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Add a webinar registrant
  * @description Create and submit a user's registration for a webinar. Zoom users with a [Webinar plan](https://zoom.us/webinar) have access to creating and managing webinars. Webinars allow hosts to broadcast a Zoom meeting to up to 10,000 attendees. Scheduling a [webinar with registration](https://support.zoom.us/hc/en-us/articles/204619915-Scheduling-a-Webinar-with-Registration) requires your registrants to complete a brief form before receiving the link to join the webinar.
  * **Prerequisites:**
  * * A Pro or higher plan with the Webinar add-on.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:write:admin`,`webinar:write`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:write:registrant`,`webinar:write:registrant:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Add a webinar registrant
- * {@link /webinars/:webinarId/registrants}
+ * @link /webinars/{webinarId}/registrants
  */
-export async function webinarRegistrantCreate({
-	pathParams: { webinarId },
-	body,
-	queryParams,
-	config = {},
-}: {
-	pathParams: WebinarRegistrantCreatePathParams;
-	body: WebinarRegistrantCreateMutationRequest;
-	queryParams?: WebinarRegistrantCreateQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function webinarRegistrantCreate(
+	{
+		pathParams,
+		body,
+		queryParams,
+		config,
+	}: {
+		pathParams: { webinarId: bigint };
+		body?: WebinarRegistrantCreateBody;
+		queryParams?: { occurrence_ids?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!webinarId) {
+	if (!pathParams.webinarId) {
 		throw new Error(`Missing required path parameter: webinarId`);
 	}
-
 	const data = await request<
-		WebinarRegistrantCreateMutationResponse,
+		WebinarRegistrantCreateResponse,
 		ErrorWrapper<
-			WebinarRegistrantCreate400 | WebinarRegistrantCreate404 | WebinarRegistrantCreate429
+			| WebinarRegistrantCreateStatus400
+			| WebinarRegistrantCreateStatus404
+			| WebinarRegistrantCreateStatus429
 		>,
-		WebinarRegistrantCreateMutationRequest,
+		WebinarRegistrantCreateBody,
 		Record<string, string>,
-		WebinarRegistrantCreateQueryParams,
-		WebinarRegistrantCreatePathParams
+		{ occurrence_ids?: string },
+		{ webinarId: bigint }
 	>({
 		method: "POST",
-		url: `/webinars/${webinarId}/registrants`,
+		url: `/webinars/${pathParams.webinarId}/registrants`,
 		queryParams,
-		body,
+		body: body,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
+ * @summary List registration questions
  * @description List registration questions and fields that are to be answered by users while registering for a webinar.
- * Scheduling a [webinar with registration](https://support.zoom.us/hc/en-us/articles/204619915-Scheduling-a-Webinar-with-Registration) requires your registrants to complete a brief form with fields and questions before they can receive the link to join the webinar.
+ *  Scheduling a [webinar with registration](https://support.zoom.us/hc/en-us/articles/204619915-Scheduling-a-Webinar-with-Registration) requires your registrants to complete a brief form with fields and questions before they can receive the link to join the webinar.
  * **Prerequisites:**
  * * Pro or higher plan with the webinar add-on.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:read:admin`,`webinar:read`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:read:list_registration_questions`,`webinar:read:list_registration_questions:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary List registration questions
- * {@link /webinars/:webinarId/registrants/questions}
+ * @link /webinars/{webinarId}/registrants/questions
  */
-export async function webinarRegistrantsQuestionsGet({
-	pathParams: { webinarId },
-	config = {},
-}: {
-	pathParams: WebinarRegistrantsQuestionsGetPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function webinarRegistrantsQuestionsGet(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { webinarId: bigint };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!webinarId) {
+	if (!pathParams.webinarId) {
 		throw new Error(`Missing required path parameter: webinarId`);
 	}
-
 	const data = await request<
-		WebinarRegistrantsQuestionsGetQueryResponse,
+		WebinarRegistrantsQuestionsGetResponse,
 		ErrorWrapper<
-			| WebinarRegistrantsQuestionsGet400
-			| WebinarRegistrantsQuestionsGet404
-			| WebinarRegistrantsQuestionsGet429
+			| WebinarRegistrantsQuestionsGetStatus400
+			| WebinarRegistrantsQuestionsGetStatus404
+			| WebinarRegistrantsQuestionsGetStatus429
 		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		WebinarRegistrantsQuestionsGetPathParams
-	>({ method: "GET", url: `/webinars/${webinarId}/registrants/questions`, ...requestConfig });
+		{ webinarId: bigint }
+	>({
+		method: "GET",
+		url: `/webinars/${pathParams.webinarId}/registrants/questions`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Update registration questions
  * @description Update registration questions and fields of a scheduled webinar for users to answer during webinar registration. Scheduling a [webinar with registration](https://support.zoom.us/hc/en-us/articles/204619915-Scheduling-a-Webinar-with-Registration) requires your registrants to complete a brief form with fields and questions before they can receive the link to join the webinar.
  * **Prerequisites:**
  * * Pro or higher plan with a Webinar Add-on.
@@ -7430,45 +9138,48 @@ export async function webinarRegistrantsQuestionsGet({
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:write:admin`,`webinar:write`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:update:registration_question`,`webinar:update:registration_question:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Update registration questions
- * {@link /webinars/:webinarId/registrants/questions}
+ * @link /webinars/{webinarId}/registrants/questions
  */
-export async function webinarRegistrantQuestionUpdate({
-	pathParams: { webinarId },
-	body,
-	config = {},
-}: {
-	pathParams: WebinarRegistrantQuestionUpdatePathParams;
-	body?: WebinarRegistrantQuestionUpdateMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function webinarRegistrantQuestionUpdate(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { webinarId: bigint };
+		body?: WebinarRegistrantQuestionUpdateBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!webinarId) {
+	if (!pathParams.webinarId) {
 		throw new Error(`Missing required path parameter: webinarId`);
 	}
-
 	const data = await request<
-		WebinarRegistrantQuestionUpdateMutationResponse,
+		WebinarRegistrantQuestionUpdateResponse,
 		ErrorWrapper<
-			| WebinarRegistrantQuestionUpdate400
-			| WebinarRegistrantQuestionUpdate404
-			| WebinarRegistrantQuestionUpdate429
+			| WebinarRegistrantQuestionUpdateStatus400
+			| WebinarRegistrantQuestionUpdateStatus404
+			| WebinarRegistrantQuestionUpdateStatus429
 		>,
-		WebinarRegistrantQuestionUpdateMutationRequest,
+		WebinarRegistrantQuestionUpdateBody,
 		Record<string, string>,
 		Record<string, string>,
-		WebinarRegistrantQuestionUpdatePathParams
+		{ webinarId: bigint }
 	>({
 		method: "PATCH",
-		url: `/webinars/${webinarId}/registrants/questions`,
-		body,
+		url: `/webinars/${pathParams.webinarId}/registrants/questions`,
+		body: body,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
+ * @summary Update registrant's status
  * @description Update webinar registrants' registration status. You can approve or deny a registrant, or revoke a registrant's approval.
  * **Prerequisites**
  * * A Pro or higher plan with a [Webinar plan](https://zoom.us/webinar) add-on.
@@ -7476,315 +9187,374 @@ export async function webinarRegistrantQuestionUpdate({
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:write:admin`,`webinar:write`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:update:registrant_status`,`webinar:update:registrant_status:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `MEDIUM`
- * @summary Update registrant's status
- * {@link /webinars/:webinarId/registrants/status}
+ * @link /webinars/{webinarId}/registrants/status
  */
-export async function webinarRegistrantStatus({
-	pathParams: { webinarId },
-	body,
-	queryParams,
-	config = {},
-}: {
-	pathParams: WebinarRegistrantStatusPathParams;
-	body: WebinarRegistrantStatusMutationRequest;
-	queryParams?: WebinarRegistrantStatusQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function webinarRegistrantStatus(
+	{
+		pathParams,
+		body,
+		queryParams,
+		config,
+	}: {
+		pathParams: { webinarId: bigint };
+		body?: WebinarRegistrantStatusBody;
+		queryParams?: { occurrence_id?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!webinarId) {
+	if (!pathParams.webinarId) {
 		throw new Error(`Missing required path parameter: webinarId`);
 	}
-
 	const data = await request<
-		WebinarRegistrantStatusMutationResponse,
+		WebinarRegistrantStatusResponse,
 		ErrorWrapper<
-			WebinarRegistrantStatus400 | WebinarRegistrantStatus404 | WebinarRegistrantStatus429
+			| WebinarRegistrantStatusStatus400
+			| WebinarRegistrantStatusStatus404
+			| WebinarRegistrantStatusStatus429
 		>,
-		WebinarRegistrantStatusMutationRequest,
+		WebinarRegistrantStatusBody,
 		Record<string, string>,
-		WebinarRegistrantStatusQueryParams,
-		WebinarRegistrantStatusPathParams
+		{ occurrence_id?: string },
+		{ webinarId: bigint }
 	>({
 		method: "PUT",
-		url: `/webinars/${webinarId}/registrants/status`,
+		url: `/webinars/${pathParams.webinarId}/registrants/status`,
 		queryParams,
-		body,
+		body: body,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
+ * @summary Get a webinar registrant
  * @description Zoom users with a [webinar plan](https://zoom.us/webinar) have access to creating and managing webinars. The webinar feature lets a host broadcast a Zoom meeting to up to 10,000 attendees. Scheduling a [webinar with registration](https://support.zoom.us/hc/en-us/articles/204619915-Scheduling-a-Webinar-with-Registration) requires your registrants to complete a brief form before receiving the link to join the webinar.
- * Use this API to get details on a specific user who has registered for the webinar.
+ *  Use this API to get details on a specific user who has registered for the webinar.
  * **Prerequisites:**
  * * The account must have a webinar plan.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:read:admin`,`webinar:read`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:read:registrant`,`webinar:read:registrant:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Get a webinar registrant
- * {@link /webinars/:webinarId/registrants/:registrantId}
+ * @link /webinars/{webinarId}/registrants/{registrantId}
  */
-export async function webinarRegistrantGet({
-	pathParams: { webinarId, registrantId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: WebinarRegistrantGetPathParams;
-	queryParams?: WebinarRegistrantGetQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function webinarRegistrantGet(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { webinarId: bigint; registrantId: string };
+		queryParams?: { occurrence_id?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!webinarId) {
+	if (!pathParams.webinarId) {
 		throw new Error(`Missing required path parameter: webinarId`);
 	}
 
-	if (!registrantId) {
+	if (!pathParams.registrantId) {
 		throw new Error(`Missing required path parameter: registrantId`);
 	}
-
 	const data = await request<
-		WebinarRegistrantGetQueryResponse,
-		ErrorWrapper<WebinarRegistrantGet400 | WebinarRegistrantGet404 | WebinarRegistrantGet429>,
+		WebinarRegistrantGetResponse,
+		ErrorWrapper<
+			WebinarRegistrantGetStatus400 | WebinarRegistrantGetStatus404 | WebinarRegistrantGetStatus429
+		>,
 		null,
 		Record<string, string>,
-		WebinarRegistrantGetQueryParams,
-		WebinarRegistrantGetPathParams
+		{ occurrence_id?: string },
+		{ webinarId: bigint; registrantId: string }
 	>({
 		method: "GET",
-		url: `/webinars/${webinarId}/registrants/${registrantId}`,
+		url: `/webinars/${pathParams.webinarId}/registrants/${pathParams.registrantId}`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
+ * @summary Delete a webinar registrant
  * @description Delete a webinar registrant.
  * **Prerequisites**
  * * A Pro or higher plan with a [Webinar plan](https://zoom.us/webinar) add-on.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:write:admin`,`webinar:write`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:delete:registrant`,`webinar:delete:registrant:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Delete a webinar registrant
- * {@link /webinars/:webinarId/registrants/:registrantId}
+ * @link /webinars/{webinarId}/registrants/{registrantId}
  */
-export async function deleteWebinarRegistrant({
-	pathParams: { webinarId, registrantId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: DeleteWebinarRegistrantPathParams;
-	queryParams?: DeleteWebinarRegistrantQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function deleteWebinarRegistrant(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { webinarId: number; registrantId: string };
+		queryParams?: { occurrence_id?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!webinarId) {
+	if (!pathParams.webinarId) {
 		throw new Error(`Missing required path parameter: webinarId`);
 	}
 
-	if (!registrantId) {
+	if (!pathParams.registrantId) {
 		throw new Error(`Missing required path parameter: registrantId`);
 	}
-
 	const data = await request<
-		DeleteWebinarRegistrantMutationResponse,
+		DeleteWebinarRegistrantResponse,
 		ErrorWrapper<
-			DeleteWebinarRegistrant400 | DeleteWebinarRegistrant404 | DeleteWebinarRegistrant429
+			| DeleteWebinarRegistrantStatus400
+			| DeleteWebinarRegistrantStatus404
+			| DeleteWebinarRegistrantStatus429
 		>,
 		null,
 		Record<string, string>,
-		DeleteWebinarRegistrantQueryParams,
-		DeleteWebinarRegistrantPathParams
+		{ occurrence_id?: string },
+		{ webinarId: number; registrantId: string }
 	>({
 		method: "DELETE",
-		url: `/webinars/${webinarId}/registrants/${registrantId}`,
+		url: `/webinars/${pathParams.webinarId}/registrants/${pathParams.registrantId}`,
 		queryParams,
 		...requestConfig,
+		headers: { ...requestConfig.headers },
 	});
+
 	return data;
 }
 
 /**
+ * @summary Get a webinar SIP URI with passcode
  * @description Get a webinar's SIP URI. The URI consists of the webinar ID, an optional user-supplied passcode, and participant identifier code. The API return data also includes additional fields to indicate whether the API caller has a valid Cloud Room Connector subscription, the participant identifier code from the URI, and the SIP URI validity period in seconds.
  * **Prerequisites**
  * * A Pro or higher plan with a [Webinar plan](https://zoom.us/webinar) add-on.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:write:sip_dialing`,`webinar:write:admin:sip_dialing`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:write:sip_dialing`,`webinar:write:sip_dialing:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Get a webinar SIP URI with passcode
- * {@link /webinars/:webinarId/sip_dialing}
+ * @link /webinars/{webinarId}/sip_dialing
  */
-export async function getWebinarSipDialingWithPasscode({
-	pathParams: { webinarId },
-	body,
-	config = {},
-}: {
-	pathParams: GetWebinarSipDialingWithPasscodePathParams;
-	body?: GetWebinarSipDialingWithPasscodeMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getWebinarSipDialingWithPasscode(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { webinarId: bigint };
+		body?: GetWebinarSipDialingWithPasscodeBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!webinarId) {
+	if (!pathParams.webinarId) {
 		throw new Error(`Missing required path parameter: webinarId`);
 	}
-
 	const data = await request<
-		GetWebinarSipDialingWithPasscodeMutationResponse,
-		ErrorWrapper<GetWebinarSipDialingWithPasscode400 | GetWebinarSipDialingWithPasscode429>,
-		GetWebinarSipDialingWithPasscodeMutationRequest,
+		GetWebinarSipDialingWithPasscodeResponse,
+		ErrorWrapper<
+			GetWebinarSipDialingWithPasscodeStatus400 | GetWebinarSipDialingWithPasscodeStatus429
+		>,
+		GetWebinarSipDialingWithPasscodeBody,
 		Record<string, string>,
 		Record<string, string>,
-		GetWebinarSipDialingWithPasscodePathParams
-	>({ method: "POST", url: `/webinars/${webinarId}/sip_dialing`, body, ...requestConfig });
+		{ webinarId: bigint }
+	>({
+		method: "POST",
+		url: `/webinars/${pathParams.webinarId}/sip_dialing`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Update webinar status
  * @description Update a webinar's status. Use this API to end an ongoing webinar.
  * **Prerequisites:**
  * * The account must hold a valid [Webinar plan](https://zoom.us/webinar).
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:write:admin`,`webinar:write`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:update:status`,`webinar:update:status:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Update webinar status
- * {@link /webinars/:webinarId/status}
+ * @link /webinars/{webinarId}/status
  */
-export async function webinarStatus({
-	pathParams: { webinarId },
-	body,
-	config = {},
-}: {
-	pathParams: WebinarStatusPathParams;
-	body?: WebinarStatusMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function webinarStatus(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { webinarId: bigint };
+		body?: WebinarStatusBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!webinarId) {
+	if (!pathParams.webinarId) {
 		throw new Error(`Missing required path parameter: webinarId`);
 	}
-
 	const data = await request<
-		WebinarStatusMutationResponse,
-		ErrorWrapper<WebinarStatus400 | WebinarStatus404 | WebinarStatus429>,
-		WebinarStatusMutationRequest,
+		WebinarStatusResponse,
+		ErrorWrapper<WebinarStatusStatus400 | WebinarStatusStatus404 | WebinarStatusStatus429>,
+		WebinarStatusBody,
 		Record<string, string>,
 		Record<string, string>,
-		WebinarStatusPathParams
-	>({ method: "PUT", url: `/webinars/${webinarId}/status`, body, ...requestConfig });
+		{ webinarId: bigint }
+	>({
+		method: "PUT",
+		url: `/webinars/${pathParams.webinarId}/status`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Get a webinar survey
  * @description Return information about a [webinar survey](https://support.zoom.us/hc/en-us/articles/360048745651).
- * **Prerequisites:**
+ *  **Prerequisites:**
  * * A Pro or higher plan with the Webinar add-on.
  * * The [**Webinar Survey**](https://support.zoom.us/hc/en-us/articles/360061293191-Enabling-webinar-survey) feature enabled in the host's account.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:read:admin`,`webinar:read`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:read:survey`,`webinar:read:survey:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Get a webinar survey
- * {@link /webinars/:webinarId/survey}
+ * @link /webinars/{webinarId}/survey
  */
-export async function webinarSurveyGet({
-	pathParams: { webinarId },
-	config = {},
-}: {
-	pathParams: WebinarSurveyGetPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function webinarSurveyGet(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { webinarId: bigint };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!webinarId) {
+	if (!pathParams.webinarId) {
 		throw new Error(`Missing required path parameter: webinarId`);
 	}
-
 	const data = await request<
-		WebinarSurveyGetQueryResponse,
-		ErrorWrapper<WebinarSurveyGet400 | WebinarSurveyGet404 | WebinarSurveyGet429>,
+		WebinarSurveyGetResponse,
+		ErrorWrapper<WebinarSurveyGetStatus400 | WebinarSurveyGetStatus404 | WebinarSurveyGetStatus429>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		WebinarSurveyGetPathParams
-	>({ method: "GET", url: `/webinars/${webinarId}/survey`, ...requestConfig });
+		{ webinarId: bigint }
+	>({
+		method: "GET",
+		url: `/webinars/${pathParams.webinarId}/survey`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Delete a webinar survey
  * @description Delete a [webinar survey](https://support.zoom.us/hc/en-us/articles/360048745651).
- * **Prerequisites:**
+ *  **Prerequisites:**
  * * A Pro or higher plan with the Webinar Add-on.
  * * The [**Webinar Survey**](https://support.zoom.us/hc/en-us/articles/360061293191-Enabling-webinar-survey) feature enabled in the host's account.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:write`,`webinar:write:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:delete:survey`,`webinar:delete:survey:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Delete a webinar survey
- * {@link /webinars/:webinarId/survey}
+ * @link /webinars/{webinarId}/survey
  */
-export async function webinarSurveyDelete({
-	pathParams: { webinarId },
-	config = {},
-}: {
-	pathParams: WebinarSurveyDeletePathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function webinarSurveyDelete(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { webinarId: bigint };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!webinarId) {
+	if (!pathParams.webinarId) {
 		throw new Error(`Missing required path parameter: webinarId`);
 	}
-
 	const data = await request<
-		WebinarSurveyDeleteMutationResponse,
-		ErrorWrapper<WebinarSurveyDelete400 | WebinarSurveyDelete404 | WebinarSurveyDelete429>,
+		WebinarSurveyDeleteResponse,
+		ErrorWrapper<
+			WebinarSurveyDeleteStatus400 | WebinarSurveyDeleteStatus404 | WebinarSurveyDeleteStatus429
+		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		WebinarSurveyDeletePathParams
-	>({ method: "DELETE", url: `/webinars/${webinarId}/survey`, ...requestConfig });
+		{ webinarId: bigint }
+	>({
+		method: "DELETE",
+		url: `/webinars/${pathParams.webinarId}/survey`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Update a webinar survey
  * @description Update a [webinar survey](https://support.zoom.us/hc/en-us/articles/360048745651).  **Prerequisites:** * A Pro or higher plan with the Webinar add-on. * Enable the [**Webinar Survey**](https://support.zoom.us/hc/en-us/articles/360061293191-Enabling-webinar-survey) feature in the host's account.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:write`,`webinar:write:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:update:survey`,`webinar:update:survey:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Update a webinar survey
- * {@link /webinars/:webinarId/survey}
+ * @link /webinars/{webinarId}/survey
  */
-export async function webinarSurveyUpdate({
-	pathParams: { webinarId },
-	body,
-	config = {},
-}: {
-	pathParams: WebinarSurveyUpdatePathParams;
-	body?: WebinarSurveyUpdateMutationRequest;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function webinarSurveyUpdate(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { webinarId: bigint };
+		body?: WebinarSurveyUpdateBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!webinarId) {
+	if (!pathParams.webinarId) {
 		throw new Error(`Missing required path parameter: webinarId`);
 	}
-
 	const data = await request<
-		WebinarSurveyUpdateMutationResponse,
-		ErrorWrapper<WebinarSurveyUpdate400 | WebinarSurveyUpdate404 | WebinarSurveyUpdate429>,
-		WebinarSurveyUpdateMutationRequest,
+		WebinarSurveyUpdateResponse,
+		ErrorWrapper<
+			WebinarSurveyUpdateStatus400 | WebinarSurveyUpdateStatus404 | WebinarSurveyUpdateStatus429
+		>,
+		WebinarSurveyUpdateBody,
 		Record<string, string>,
 		Record<string, string>,
-		WebinarSurveyUpdatePathParams
-	>({ method: "PATCH", url: `/webinars/${webinarId}/survey`, body, ...requestConfig });
+		{ webinarId: bigint }
+	>({
+		method: "PATCH",
+		url: `/webinars/${pathParams.webinarId}/survey`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Get webinar's token
  * @description Use this API to get a webinar's [closed caption token (caption URL)](https://support.zoom.us/hc/en-us/articles/115002212983-Using-a-third-party-closed-captioning-service). This token lets you use a third-party service to stream text to their closed captioning software to the Zoom webinar.
  * **Prerequisites:**
  * * A Pro or higher plan with the Webinar add-on.
@@ -7794,73 +9564,90 @@ export async function webinarSurveyUpdate({
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:read`,`webinar:read:admin`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:read:token`,`webinar:read:token:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `LIGHT`
- * @summary Get webinar's token
- * {@link /webinars/:webinarId/token}
+ * @link /webinars/{webinarId}/token
  */
-export async function webinarToken({
-	pathParams: { webinarId },
-	queryParams,
-	config = {},
-}: {
-	pathParams: WebinarTokenPathParams;
-	queryParams?: WebinarTokenQueryParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function webinarToken(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { webinarId: bigint };
+		queryParams?: { type?: "closed_caption_token" };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!webinarId) {
+	if (!pathParams.webinarId) {
 		throw new Error(`Missing required path parameter: webinarId`);
 	}
-
 	const data = await request<
-		WebinarTokenQueryResponse,
-		ErrorWrapper<WebinarToken400 | WebinarToken404 | WebinarToken429>,
+		WebinarTokenResponse,
+		ErrorWrapper<WebinarTokenStatus400 | WebinarTokenStatus404 | WebinarTokenStatus429>,
 		null,
 		Record<string, string>,
-		WebinarTokenQueryParams,
-		WebinarTokenPathParams
-	>({ method: "GET", url: `/webinars/${webinarId}/token`, queryParams, ...requestConfig });
+		{ type?: "closed_caption_token" },
+		{ webinarId: bigint }
+	>({
+		method: "GET",
+		url: `/webinars/${pathParams.webinarId}/token`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 /**
+ * @summary Get webinar tracking sources
  * @description [Webinar Registration Tracking Sources](https://support.zoom.us/hc/en-us/articles/360000315683-Webinar-Registration-Source-Tracking) allow you to see where your registrants are coming from if you share the webinar registration page in multiple platforms. You can then use the source tracking to see the number of registrants generated from each platform.
- * Use this API to list information on all the tracking sources of a Webinar.
+ *   Use this API to list information on all the tracking sources of a Webinar.
  * **Prerequisites**:
  * * [Webinar license](https://zoom.us/webinar).
  * * Registration must be required for the Webinar.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:read:admin`,`webinar:read`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `webinar:read:list_tracking_sources`,`webinar:read:list_tracking_sources:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `MEDIUM`
- * @summary Get webinar tracking sources
- * {@link /webinars/:webinarId/tracking_sources}
+ * @link /webinars/{webinarId}/tracking_sources
  */
-export async function getTrackingSources({
-	pathParams: { webinarId },
-	config = {},
-}: {
-	pathParams: GetTrackingSourcesPathParams;
-	config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-}) {
-	const { client: request = defaultClient, ...requestConfig } = config;
+export async function getTrackingSources(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { webinarId: bigint };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
-	if (!webinarId) {
+	if (!pathParams.webinarId) {
 		throw new Error(`Missing required path parameter: webinarId`);
 	}
-
 	const data = await request<
-		GetTrackingSourcesQueryResponse,
-		ErrorWrapper<GetTrackingSources400 | GetTrackingSources404 | GetTrackingSources429>,
+		GetTrackingSourcesResponse,
+		ErrorWrapper<
+			GetTrackingSourcesStatus400 | GetTrackingSourcesStatus404 | GetTrackingSourcesStatus429
+		>,
 		null,
 		Record<string, string>,
 		Record<string, string>,
-		GetTrackingSourcesPathParams
-	>({ method: "GET", url: `/webinars/${webinarId}/tracking_sources`, ...requestConfig });
+		{ webinarId: bigint }
+	>({
+		method: "GET",
+		url: `/webinars/${pathParams.webinarId}/tracking_sources`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
 	return data;
 }
 
 export const operationsByPath = {
 	"GET /archive_files": listArchivedFiles,
+	"GET /archive_files/download_audit": listArchiveFileDownloadAudit,
 	"GET /archive_files/statistics": getArchivedFileStatistics,
 	"PATCH /archive_files/{fileId}": updateArchivedFile,
 	"GET /meetings/{meetingId}/jointoken/local_archiving": meetingLocalArchivingArchiveToken,
@@ -7974,6 +9761,7 @@ export const operationsByPath = {
 	"GET /meetings/meeting_summaries": listmeetingsummaries,
 	"GET /meetings/{meetingId}/meeting_summary": getameetingsummary,
 	"DELETE /meetings/{meetingId}/meeting_summary": deletemeetingorwebinarsummary,
+	"GET /users/{userId}/meeting_summaries": listUserMeetingSummaries,
 	"GET /meetings/{meetingId}/survey": meetingSurveyGet,
 	"DELETE /meetings/{meetingId}/survey": meetingSurveyDelete,
 	"PATCH /meetings/{meetingId}/survey": meetingSurveyUpdate,
@@ -8050,6 +9838,7 @@ export const operationsByPath = {
 export const operationsByTag = {
 	archiving: {
 		listArchivedFiles,
+		listArchiveFileDownloadAudit,
 		getArchivedFileStatistics,
 		updateArchivedFile,
 		meetingLocalArchivingArchiveToken,
@@ -8188,6 +9977,7 @@ export const operationsByTag = {
 		listmeetingsummaries,
 		getameetingsummary,
 		deletemeetingorwebinarsummary,
+		listUserMeetingSummaries,
 	},
 	surveys: {
 		meetingSurveyGet,
@@ -8276,6 +10066,7 @@ export const tagDictionary = {
 	archiving: {
 		GET: [
 			"listArchivedFiles",
+			"listArchiveFileDownloadAudit",
 			"getArchivedFileStatistics",
 			"meetingLocalArchivingArchiveToken",
 			"getArchivedFiles",
@@ -8401,7 +10192,7 @@ export const tagDictionary = {
 		PATCH: ["updateSIPPhonePhones"],
 	},
 	summaries: {
-		GET: ["listmeetingsummaries", "getameetingsummary"],
+		GET: ["listmeetingsummaries", "getameetingsummary", "listUserMeetingSummaries"],
 		DELETE: ["deletemeetingorwebinarsummary"],
 	},
 	surveys: {

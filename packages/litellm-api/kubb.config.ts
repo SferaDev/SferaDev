@@ -23,7 +23,7 @@ export default defineConfig(async () => {
 
 	return {
 		...baseConfig,
-		input: { data: openAPIDocument },
+		input: openAPIDocument,
 	};
 });
 

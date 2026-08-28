@@ -3,9 +3,6 @@
  * Do not edit manually.
  */
 
-/**
- * @type object
- */
 export type CheckoutResponse = {
 	/**
 	 * @description Stripe Checkout URL — redirect the user here
@@ -14,61 +11,22 @@ export type CheckoutResponse = {
 	url: string;
 };
 
-/**
- * @type object
- */
 export type FreeTierResponse = {
-	/**
-	 * @type string
-	 */
 	ip_hash: string;
-	/**
-	 * @type integer
-	 */
 	requests_today: number;
-	/**
-	 * @type integer
-	 */
 	daily_limit: number;
-	/**
-	 * @type integer
-	 */
 	remaining: number;
 };
 
-/**
- * @type object
- */
 export type ValidationError = {
-	/**
-	 * @type array
-	 */
 	loc: (string | number)[];
-	/**
-	 * @type string
-	 */
 	msg: string;
-	/**
-	 * @type string
-	 */
 	type: string;
-	/**
-	 * @type unknown | undefined
-	 */
 	input?: unknown | undefined;
-	/**
-	 * @type object | undefined
-	 */
 	ctx?: object | undefined;
 };
 
-/**
- * @type object
- */
 export type HTTPValidationError = {
-	/**
-	 * @type array | undefined
-	 */
 	detail?: ValidationError[] | undefined;
 };
 
@@ -83,7 +41,7 @@ export type ModelCatalogEntry = {
 	 */
 	id: string;
 	/**
-	 * @default "model_catalog.entry"
+	 * @default 'model_catalog.entry'
 	 * @type string | undefined
 	 */
 	object?: string | undefined;
@@ -129,55 +87,30 @@ export type ModelCatalogEntry = {
  */
 export type ModelCatalogListResponse = {
 	/**
-	 * @default "list"
+	 * @default 'list'
 	 * @type string | undefined
 	 */
 	object?: string | undefined;
-	/**
-	 * @type array
-	 */
 	data: ModelCatalogEntry[];
 	/**
 	 * @description Total models matching the filters
 	 * @type integer
 	 */
 	total_count: number;
-	/**
-	 * @type boolean
-	 */
 	has_more: boolean;
-	/**
-	 * @type integer
-	 */
 	page: number;
-	/**
-	 * @type integer
-	 */
 	page_size: number;
 };
 
-/**
- * @type object
- */
 export type CreateCheckoutBillingCheckoutPostStatus200 = CheckoutResponse;
 
-/**
- * @type object
- */
-export type CreateCheckoutBillingCheckoutPostRequestConfig = {
-	data?: never | undefined;
-	pathParams?: never | undefined;
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: "/billing/checkout";
+export type CreateCheckoutBillingCheckoutPostOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type CreateCheckoutBillingCheckoutPostResponses = {
 	"200": CreateCheckoutBillingCheckoutPostStatus200;
 };
@@ -187,28 +120,15 @@ export type CreateCheckoutBillingCheckoutPostResponses = {
  */
 export type CreateCheckoutBillingCheckoutPostResponse = CreateCheckoutBillingCheckoutPostStatus200;
 
-/**
- * @type object
- */
 export type CheckUsageBillingUsageGetStatus200 = FreeTierResponse;
 
-/**
- * @type object
- */
-export type CheckUsageBillingUsageGetRequestConfig = {
-	data?: never | undefined;
-	pathParams?: never | undefined;
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: "/billing/usage";
+export type CheckUsageBillingUsageGetOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type CheckUsageBillingUsageGetResponses = {
 	"200": CheckUsageBillingUsageGetStatus200;
 };
@@ -218,57 +138,42 @@ export type CheckUsageBillingUsageGetResponses = {
  */
 export type CheckUsageBillingUsageGetResponse = CheckUsageBillingUsageGetStatus200;
 
-/**
- * @description Filter by provider (e.g. \'openai\', \'anthropic\', \'bedrock\'). Case-insensitive.
- */
-export type ListModelCatalogModelCatalogGetQueryProvider = (string | null) | undefined;
-
-/**
- * @description Filter by mode (e.g. \'chat\', \'embedding\', \'image_generation\').
- */
-export type ListModelCatalogModelCatalogGetQueryMode = (string | null) | undefined;
-
-/**
- * @description Filter by model name. Supports substring match or regex (prefix with \'re:\').
- */
-export type ListModelCatalogModelCatalogGetQueryModel = (string | null) | undefined;
-
-export type ListModelCatalogModelCatalogGetQuerySupportsVision = (boolean | null) | undefined;
-
-export type ListModelCatalogModelCatalogGetQuerySupportsFunctionCalling =
-	| (boolean | null)
-	| undefined;
-
-export type ListModelCatalogModelCatalogGetQuerySupportsReasoning = (boolean | null) | undefined;
-
-export type ListModelCatalogModelCatalogGetQuerySupportsAudioInput = (boolean | null) | undefined;
-
-export type ListModelCatalogModelCatalogGetQuerySupportsAudioOutput = (boolean | null) | undefined;
-
-export type ListModelCatalogModelCatalogGetQuerySupportsPromptCaching =
-	| (boolean | null)
-	| undefined;
-
-export type ListModelCatalogModelCatalogGetQuerySupportsResponseSchema =
-	| (boolean | null)
-	| undefined;
-
-/**
- * @description Page number (1-indexed)
- * @minLength 1
- * @default 1
- * @type integer | undefined
- */
-export type ListModelCatalogModelCatalogGetQueryPage = number | undefined;
-
-/**
- * @description Number of results per page (max 500)
- * @minLength 1
- * @maxLength 500
- * @default 50
- * @type integer | undefined
- */
-export type ListModelCatalogModelCatalogGetQueryPageSize = number | undefined;
+export type ListModelCatalogModelCatalogGetQuery = {
+	/**
+	 * @description Filter by provider (e.g. \'openai\', \'anthropic\', \'bedrock\'). Case-insensitive.
+	 */
+	provider?: (string | null) | undefined;
+	/**
+	 * @description Filter by mode (e.g. \'chat\', \'embedding\', \'image_generation\').
+	 */
+	mode?: (string | null) | undefined;
+	/**
+	 * @description Filter by model name. Supports substring match or regex (prefix with \'re:\').
+	 */
+	model?: (string | null) | undefined;
+	supports_vision?: (boolean | null) | undefined;
+	supports_function_calling?: (boolean | null) | undefined;
+	supports_reasoning?: (boolean | null) | undefined;
+	supports_audio_input?: (boolean | null) | undefined;
+	supports_audio_output?: (boolean | null) | undefined;
+	supports_prompt_caching?: (boolean | null) | undefined;
+	supports_response_schema?: (boolean | null) | undefined;
+	/**
+	 * @description Page number (1-indexed)
+	 * @minLength 1
+	 * @default 1
+	 * @type integer | undefined
+	 */
+	page?: number | undefined;
+	/**
+	 * @description Number of results per page (max 500)
+	 * @minLength 1
+	 * @maxLength 500
+	 * @default 50
+	 * @type integer | undefined
+	 */
+	page_size?: number | undefined;
+};
 
 /**
  * @description Stripe-style list response.
@@ -276,52 +181,15 @@ export type ListModelCatalogModelCatalogGetQueryPageSize = number | undefined;
  */
 export type ListModelCatalogModelCatalogGetStatus200 = ModelCatalogListResponse;
 
-/**
- * @type object
- */
 export type ListModelCatalogModelCatalogGetStatus422 = HTTPValidationError;
 
-/**
- * @type object
- */
-export type ListModelCatalogModelCatalogGetRequestConfig = {
-	data?: never | undefined;
-	pathParams?: never | undefined;
-	/**
-	 * @type object | undefined
-	 */
-	queryParams?:
-		| {
-				provider?: ListModelCatalogModelCatalogGetQueryProvider | undefined;
-				mode?: ListModelCatalogModelCatalogGetQueryMode | undefined;
-				model?: ListModelCatalogModelCatalogGetQueryModel | undefined;
-				supports_vision?: ListModelCatalogModelCatalogGetQuerySupportsVision | undefined;
-				supports_function_calling?:
-					| ListModelCatalogModelCatalogGetQuerySupportsFunctionCalling
-					| undefined;
-				supports_reasoning?: ListModelCatalogModelCatalogGetQuerySupportsReasoning | undefined;
-				supports_audio_input?: ListModelCatalogModelCatalogGetQuerySupportsAudioInput | undefined;
-				supports_audio_output?: ListModelCatalogModelCatalogGetQuerySupportsAudioOutput | undefined;
-				supports_prompt_caching?:
-					| ListModelCatalogModelCatalogGetQuerySupportsPromptCaching
-					| undefined;
-				supports_response_schema?:
-					| ListModelCatalogModelCatalogGetQuerySupportsResponseSchema
-					| undefined;
-				page?: ListModelCatalogModelCatalogGetQueryPage | undefined;
-				page_size?: ListModelCatalogModelCatalogGetQueryPageSize | undefined;
-		  }
-		| undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: "/model_catalog";
+export type ListModelCatalogModelCatalogGetOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query?: ListModelCatalogModelCatalogGetQuery | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type ListModelCatalogModelCatalogGetResponses = {
 	"200": ListModelCatalogModelCatalogGetStatus200;
 	"422": ListModelCatalogModelCatalogGetStatus422;
@@ -334,10 +202,9 @@ export type ListModelCatalogModelCatalogGetResponse =
 	| ListModelCatalogModelCatalogGetStatus200
 	| ListModelCatalogModelCatalogGetStatus422;
 
-/**
- * @type string
- */
-export type GetModelCatalogEntryModelCatalogModelIdGetPathModelId = string;
+export type GetModelCatalogEntryModelCatalogModelIdGetPath = {
+	model_id: string;
+};
 
 /**
  * @description A single model in the catalog.
@@ -345,33 +212,15 @@ export type GetModelCatalogEntryModelCatalogModelIdGetPathModelId = string;
  */
 export type GetModelCatalogEntryModelCatalogModelIdGetStatus200 = ModelCatalogEntry;
 
-/**
- * @type object
- */
 export type GetModelCatalogEntryModelCatalogModelIdGetStatus422 = HTTPValidationError;
 
-/**
- * @type object
- */
-export type GetModelCatalogEntryModelCatalogModelIdGetRequestConfig = {
-	data?: never | undefined;
-	/**
-	 * @type object
-	 */
-	pathParams: {
-		model_id: GetModelCatalogEntryModelCatalogModelIdGetPathModelId;
-	};
-	queryParams?: never | undefined;
-	headerParams?: never | undefined;
-	/**
-	 * @type string
-	 */
-	url: `/model_catalog/${string}`;
+export type GetModelCatalogEntryModelCatalogModelIdGetOptions = {
+	body?: never | undefined;
+	path: GetModelCatalogEntryModelCatalogModelIdGetPath;
+	query?: never | undefined;
+	headers?: never | undefined;
 };
 
-/**
- * @type object
- */
 export type GetModelCatalogEntryModelCatalogModelIdGetResponses = {
 	"200": GetModelCatalogEntryModelCatalogModelIdGetStatus200;
 	"422": GetModelCatalogEntryModelCatalogModelIdGetStatus422;

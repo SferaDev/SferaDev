@@ -81,22 +81,27 @@ straight past them and leaves the comment behind, still reading as if the hold w
 grep -n "KEEP-BACK" -A5 pnpm-workspace.yaml
 ```
 
-Current holds (2026-07 — verify against the file, not this list):
+Current holds (2026-08-28 — verify against the file, not this list):
 
-- **`typescript`** at 6.x. TypeScript 7 dropped the JavaScript compiler API `bunchee` uses to emit
-  declarations, so every package build fails with *"Detected TypeScript 7.0.2 … install
-  `@typescript/typescript6`"*. Note bunchee's peer range already advertises `^7.0`, so the peer
-  range is not evidence — build a package before releasing this hold.
-
-  Re-confirmed 2026-08 on **bunchee 7.0.0**, which the bot bumped in the same PR: the hold is
-  independent of bunchee's major. bunchee 7 peer-accepts `^5.0 || ^6.0 || ^7.0` and builds all 12
-  packages fine against TypeScript 6.0.3, so take the bunchee major and keep the TS pin — they are
-  separate decisions. Releasing the TS hold still means adopting `@typescript/typescript6`, which
-  is its own PR.
-- **`@kubb/renderer-jsx`** must track the other `@kubb/*` entries rather than its own latest; kubb
-  publishes it ahead of `adapter-oas`/`core`, and `@kubb/core` peer-requires the exact matching
-  version.
 - **`@types/vscode`** — see the section below; it is coupled to `engines.vscode`.
+
+**All three long-standing holds were released on 2026-08-28 (#635)**, so the catalog now tracks
+latest for `typescript`, the `@kubb/*` family and `better-auth`. What each release cost, because
+the next reviewer will see the bump and want to know whether it is safe to keep taking it:
+
+- **`typescript` 6 → 7** — released by adding **`@typescript/typescript6`** as a root
+  devDependency. bunchee 7.0.1 has no native TS 7 declaration path and looks for that shim by
+  name; with it installed every build logs *"Using @typescript/typescript6 API for TypeScript
+  7.0.2 type declaration generation"*. **Treat that log line as the regression test** — if bunchee
+  ever stops printing it, declarations are being emitted by some other path and the `.d.ts` output
+  needs re-checking. Keep the shim until bunchee ships native TS 7 support. knip cannot see the
+  edge (nothing imports it), so it is listed in `ignoreDependencies` in `configs/knip.json`.
+- **the `@kubb/*` family, beta.10 → 5.0.3 stable** — see the migration entry in
+  `failure-modes.md`. `@kubb/plugin-client` never shipped a stable 5.x and was replaced by a local
+  plugin, so the catalog no longer carries it, nor `@kubb/core`/`@kubb/cli`/`@kubb/renderer-jsx`
+  (all re-exported through `kubb`).
+- **`better-auth` 1.6 → 1.7** — released with the `account.issuer` migration + backfill in
+  `apps/platform/drizzle/0001_*.sql`. The hold existed only because that migration did not exist.
 
 ## The `@kubb/renderer-jsx` override (released 2026-07)
 
