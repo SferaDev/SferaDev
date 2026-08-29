@@ -99,6 +99,7 @@ import type {
 	BuyCreditsStatus402,
 	BuyCreditsStatus403,
 	BuyCreditsStatus404,
+	BuyCreditsStatus409,
 	BuyCreditsStatus410,
 	BuyCreditsStatus500,
 	BuyDomainsResponse,
@@ -3905,6 +3906,7 @@ export async function buyCredits(
 			| BuyCreditsStatus402
 			| BuyCreditsStatus403
 			| BuyCreditsStatus404
+			| BuyCreditsStatus409
 			| BuyCreditsStatus410
 			| BuyCreditsStatus500
 		>,
