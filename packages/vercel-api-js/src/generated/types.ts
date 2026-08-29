@@ -9013,6 +9013,11 @@ export type UserEvent = {
 										 */
 										hobbyWarningV2SlackSentAt?: number | undefined;
 										/**
+										 * @description Tracks the last time the 100% `warningThresholdsV2` crossing was reported for this owner. This is separate so a recent lower warning does not suppress the full-allocation warning. It also starts the team-wide 24-hour grace period before a soft pause.
+										 * @type number | undefined
+										 */
+										hobbyWarningV2At100SlackSentAt?: number | undefined;
+										/**
 										 * @description Tracks the last time a `blockThresholdV2` breach was reported for this owner. Re-arms on the same rolling window as `hobbyWarningV2SlackSentAt`.
 										 * @type number | undefined
 										 */
@@ -20067,6 +20072,8 @@ export type BuyCreditsStatus403 = unknown;
 
 export type BuyCreditsStatus404 = unknown;
 
+export type BuyCreditsStatus409 = unknown;
+
 export type BuyCreditsStatus410 = unknown;
 
 export type BuyCreditsStatus500 = unknown;
@@ -20085,6 +20092,7 @@ export type BuyCreditsResponses = {
 	"402": BuyCreditsStatus402;
 	"403": BuyCreditsStatus403;
 	"404": BuyCreditsStatus404;
+	"409": BuyCreditsStatus409;
 	"410": BuyCreditsStatus410;
 	"500": BuyCreditsStatus500;
 };
@@ -20099,6 +20107,7 @@ export type BuyCreditsResponse =
 	| BuyCreditsStatus402
 	| BuyCreditsStatus403
 	| BuyCreditsStatus404
+	| BuyCreditsStatus409
 	| BuyCreditsStatus410
 	| BuyCreditsStatus500;
 

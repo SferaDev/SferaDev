@@ -6833,6 +6833,12 @@ export const userEventSchema = z
 											.describe(
 												"Tracks the last time a `warningThresholdsV2` crossing was reported for this owner. Hobby has no billing period, so this re-arms on the same rolling window the service already uses for Hobby alerts.",
 											),
+										hobbyWarningV2At100SlackSentAt: z
+											.number()
+											.optional()
+											.describe(
+												"Tracks the last time the 100% `warningThresholdsV2` crossing was reported for this owner. This is separate so a recent lower warning does not suppress the full-allocation warning. It also starts the team-wide 24-hour grace period before a soft pause.",
+											),
 										hobbyPauseNoticeSlackSentAt: z
 											.number()
 											.optional()
@@ -17396,6 +17402,8 @@ export const buyCreditsStatus403Schema = z.unknown();
 
 export const buyCreditsStatus404Schema = z.unknown();
 
+export const buyCreditsStatus409Schema = z.unknown();
+
 export const buyCreditsStatus410Schema = z.unknown();
 
 export const buyCreditsStatus500Schema = z.unknown();
@@ -17408,6 +17416,7 @@ export const buyCreditsErrorSchema = z.union([
 	buyCreditsStatus402Schema,
 	buyCreditsStatus403Schema,
 	buyCreditsStatus404Schema,
+	buyCreditsStatus409Schema,
 	buyCreditsStatus410Schema,
 	buyCreditsStatus500Schema,
 ]);
