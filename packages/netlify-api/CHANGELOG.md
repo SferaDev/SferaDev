@@ -1,5 +1,16 @@
 # netlify-api
 
+## 1.3.0
+
+### Minor Changes
+
+- 5223c4e: Migrated code generation to kubb v5.
+  
+  The generated client functions are unchanged — same names, same signatures, same behaviour — so
+  calling code needs no updates. Auxiliary type exports were restructured by kubb v5: `*RequestConfig`
+  is now `*Options`, and per-parameter types are now grouped (`FooPathBarId` → `FooPath`,
+  `FooQueryLimit` → `FooQuery`). Only code importing those helper types directly is affected.
+
 ## 1.2.0
 
 ### Minor Changes

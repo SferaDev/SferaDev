@@ -1,5 +1,26 @@
 # zoom-api-js
 
+## 1.1.0
+
+### Minor Changes
+
+- 5223c4e: Migrated code generation to kubb v5.
+  
+  The generated client functions are unchanged — same names, same signatures, same behaviour — so
+  calling code needs no updates. Auxiliary type exports were restructured by kubb v5: `*RequestConfig`
+  is now `*Options`, and per-parameter types are now grouped (`FooPathBarId` → `FooPath`,
+  `FooQueryLimit` → `FooQuery`). Only code importing those helper types directly is affected.
+- 5223c4e: Refreshed the generated clients against the current upstream OpenAPI specs.
+  
+  The kubb v5 migration required regenerating every client, which also picked up spec changes that
+  had accumulated since each was last generated:
+  
+  - **cloudflare-api-js** — last generated 2026-02-19, so this is six months of drift: **1022
+    operations added and 209 removed**. `[BREAKING]` for anyone calling one of the removed
+    operations; they no longer exist in Cloudflare's published schema.
+  - **keycloak-api** — 12 operations added, none removed.
+  - **zoom-api-js** — 2 operations added, none removed.
+
 ## 1.0.0
 
 ### Major Changes
