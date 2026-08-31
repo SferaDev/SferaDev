@@ -1540,6 +1540,7 @@ import type {
 	GetSecurityFirewallEventsStatus401,
 	GetSecurityFirewallEventsStatus403,
 	GetSecurityFirewallEventsStatus404,
+	GetSecurityFirewallEventsStatus408,
 	GetSecurityFirewallEventsStatus410,
 	GetSecurityFirewallEventsStatus500,
 	GetSessionCommandLogsResponse,
@@ -17452,6 +17453,7 @@ export async function getSecurityFirewallEvents(
 			| GetSecurityFirewallEventsStatus401
 			| GetSecurityFirewallEventsStatus403
 			| GetSecurityFirewallEventsStatus404
+			| GetSecurityFirewallEventsStatus408
 			| GetSecurityFirewallEventsStatus410
 			| GetSecurityFirewallEventsStatus500
 		>,

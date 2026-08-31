@@ -39109,6 +39109,8 @@ export type GetSecurityFirewallEventsStatus403 = unknown;
 
 export type GetSecurityFirewallEventsStatus404 = unknown;
 
+export type GetSecurityFirewallEventsStatus408 = unknown;
+
 export type GetSecurityFirewallEventsStatus410 = unknown;
 
 export type GetSecurityFirewallEventsStatus500 = unknown;
@@ -39126,6 +39128,7 @@ export type GetSecurityFirewallEventsResponses = {
 	"401": GetSecurityFirewallEventsStatus401;
 	"403": GetSecurityFirewallEventsStatus403;
 	"404": GetSecurityFirewallEventsStatus404;
+	"408": GetSecurityFirewallEventsStatus408;
 	"410": GetSecurityFirewallEventsStatus410;
 	"500": GetSecurityFirewallEventsStatus500;
 };
@@ -39139,6 +39142,7 @@ export type GetSecurityFirewallEventsResponse =
 	| GetSecurityFirewallEventsStatus401
 	| GetSecurityFirewallEventsStatus403
 	| GetSecurityFirewallEventsStatus404
+	| GetSecurityFirewallEventsStatus408
 	| GetSecurityFirewallEventsStatus410
 	| GetSecurityFirewallEventsStatus500;
 

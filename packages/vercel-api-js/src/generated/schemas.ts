@@ -2424,7 +2424,7 @@ export const userEventSchema = z
 			.describe(
 				'The categories that group this event with related event types. An event can belong to multiple categories (e.g. a firewall event is both Firewall and Security). The first entry is the "primary" category. Use the `/events/types` endpoint to discover the full list of categories.',
 			)
-			.meta({ examples: [{}] }),
+			.meta({ examples: [["deployment"]] }),
 		createdAt: z
 			.number()
 			.describe("Timestamp (in milliseconds) of when the event was generated.")
@@ -5454,7 +5454,9 @@ export const userEventSchema = z
 							.describe(
 								"The unique identifiers of the projects which the Shared Env Var is linked to.",
 							)
-							.meta({ examples: [{}] }),
+							.meta({
+								examples: [["prj_2WjyKQmM8ZnGcJsPWMrHRHrE", "prj_2WjyKQmM8ZnGcJsPWMrasEFg"]],
+							}),
 						type: z
 							.enum(["encrypted", "plain", "sensitive", "system"])
 							.optional()
@@ -5554,7 +5556,9 @@ export const userEventSchema = z
 									.describe(
 										"The unique identifiers of the projects which the Shared Env Var is linked to.",
 									)
-									.meta({ examples: [{}] }),
+									.meta({
+										examples: [["prj_2WjyKQmM8ZnGcJsPWMrHRHrE", "prj_2WjyKQmM8ZnGcJsPWMrasEFg"]],
+									}),
 								type: z
 									.enum(["encrypted", "plain", "sensitive", "system"])
 									.optional()
@@ -5652,7 +5656,9 @@ export const userEventSchema = z
 									.describe(
 										"The unique identifiers of the projects which the Shared Env Var is linked to.",
 									)
-									.meta({ examples: [{}] }),
+									.meta({
+										examples: [["prj_2WjyKQmM8ZnGcJsPWMrHRHrE", "prj_2WjyKQmM8ZnGcJsPWMrasEFg"]],
+									}),
 								type: z
 									.enum(["encrypted", "plain", "sensitive", "system"])
 									.optional()
@@ -12296,7 +12302,7 @@ export const listEventTypeSchema = z
 				]),
 			)
 			.describe("Categories that group this event type with related event types.")
-			.meta({ examples: [{}] }),
+			.meta({ examples: [["deployment"]] }),
 		deprecated: z
 			.union([z.literal(false), z.literal(true)])
 			.optional()
@@ -13599,7 +13605,7 @@ export const namedSandboxSchema = z
 			)
 			.optional()
 			.describe("The regions the sandbox fails over to. Empty when it does not fail over.")
-			.meta({ examples: [{}] }),
+			.meta({ examples: [["cle1", "sfo1"]] }),
 		vcpus: z
 			.number()
 			.optional()
@@ -13739,7 +13745,7 @@ export const sandboxInjectionRuleSchema = z
 			.describe(
 				"The names of HTTP headers that have value that will be injected for requests to this domain.",
 			)
-			.meta({ examples: [{}] }),
+			.meta({ examples: [["Authorization", "X-API-Key"]] }),
 	})
 	.describe("HTTP header injection rules for outgoing requests matching specific domains.");
 
@@ -13757,21 +13763,21 @@ export const sandboxNetworkPolicySchema = z
 			.describe(
 				'List of domain names the sandbox is allowed to connect to. Supports wildcard patterns (e.g., "*.vercel.com" matches all subdomains).',
 			)
-			.meta({ examples: [{}] }),
+			.meta({ examples: [["*.example.com", "api.vercel.com"]] }),
 		allowedCIDRs: z
 			.array(z.string())
 			.optional()
 			.describe(
 				"List of IP address ranges (in CIDR notation) the sandbox is allowed to connect to.",
 			)
-			.meta({ examples: [{}] }),
+			.meta({ examples: [["10.0.0.0/8"]] }),
 		deniedCIDRs: z
 			.array(z.string())
 			.optional()
 			.describe(
 				"List of IP address ranges (in CIDR notation) the sandbox is blocked from connecting to. These rules take precedence over all allowed rules.",
 			)
-			.meta({ examples: [{}] }),
+			.meta({ examples: [["10.0.0.0/8"]] }),
 		injectionRules: z
 			.array(z.unknown())
 			.optional()
@@ -13961,7 +13967,7 @@ export const snapshotSchema = z
 			.array(z.string())
 			.optional()
 			.describe("The regions where the snapshot is available.")
-			.meta({ examples: [{}] }),
+			.meta({ examples: [["iad1", "sfo1"]] }),
 		status: z
 			.enum(["created", "deleted", "failed"])
 			.describe("The status of the snapshot.")
@@ -14021,7 +14027,7 @@ export const sessionCommandSchema = z
 		args: z
 			.array(z.string())
 			.describe("The arguments of the command.")
-			.meta({ examples: [{}] }),
+			.meta({ examples: [["build", "run"]] }),
 		cwd: z
 			.string()
 			.describe("The current working directory of the command.")
@@ -14089,7 +14095,7 @@ export const invitedTeamMemberSchema = z
 			)
 			.optional()
 			.describe("The team roles of the user")
-			.meta({ examples: [{}] }),
+			.meta({ examples: [["MEMBER"]] }),
 		teamPermissions: z
 			.array(
 				z.enum([
@@ -14116,7 +14122,7 @@ export const invitedTeamMemberSchema = z
 			)
 			.optional()
 			.describe("The team permissions of the user")
-			.meta({ examples: [{}] }),
+			.meta({ examples: [["CreateProject"]] }),
 	})
 	.describe("The member was successfully added to the team.");
 
@@ -29616,6 +29622,8 @@ export const getSecurityFirewallEventsStatus403Schema = z.unknown();
 
 export const getSecurityFirewallEventsStatus404Schema = z.unknown();
 
+export const getSecurityFirewallEventsStatus408Schema = z.unknown();
+
 export const getSecurityFirewallEventsStatus410Schema = z.unknown();
 
 export const getSecurityFirewallEventsStatus500Schema = z.unknown();
@@ -29627,6 +29635,7 @@ export const getSecurityFirewallEventsErrorSchema = z.union([
 	getSecurityFirewallEventsStatus401Schema,
 	getSecurityFirewallEventsStatus403Schema,
 	getSecurityFirewallEventsStatus404Schema,
+	getSecurityFirewallEventsStatus408Schema,
 	getSecurityFirewallEventsStatus410Schema,
 	getSecurityFirewallEventsStatus500Schema,
 ]);
@@ -31957,7 +31966,7 @@ export const aggregatePageviewsQueryBySchema = z
 	.describe(
 		"Up to two dimensions used to break down results.\n\nAt most one time granularity is allowed: hour, day, week, month, year.\n\nOther dimensions: country, deviceType, environment, requestPath, referrerHostname, osName, browserName, route, utmSource, utmMedium, utmCampaign, utmContent, utmTerm.\n\nJSON dimensions: flags. Used bare, it breaks down results by key, for example flags returns one group per flag name. With a key, it breaks down results by that key's value, for example flags/beta_banner. Wrap keys containing characters other than letters, digits, and underscores in single quotes, for example flags/'my-flag'.",
 	)
-	.meta({ examples: [{}] });
+	.meta({ examples: [["day", "country"]] });
 
 export const aggregatePageviewsQuerySinceSchema = z
 	.union([z.number(), z.string()])
@@ -32041,7 +32050,7 @@ export const aggregateEventsQueryBySchema = z
 	.describe(
 		"Up to two dimensions used to break down results.\n\nAt most one time granularity is allowed: hour, day, week, month, year.\n\nOther dimensions: country, deviceType, environment, requestPath, referrerHostname, osName, browserName, route, utmSource, utmMedium, utmCampaign, utmContent, utmTerm, eventName.\n\nJSON dimensions: flags, eventData. Used bare, they break down results by key, for example flags returns one group per flag name. With a key, they break down results by that key's value, for example eventData/plan. Wrap keys containing characters other than letters, digits, and underscores in single quotes, for example flags/'my-flag'.",
 	)
-	.meta({ examples: [{}] });
+	.meta({ examples: [["day", "eventName"]] });
 
 export const aggregateEventsQuerySinceSchema = z
 	.union([z.number(), z.string()])
@@ -32970,7 +32979,7 @@ export const getDeploymentsQueryProjectIdsSchema = z
 	.describe(
 		"Filter deployments from the given project IDs. Cannot be used when projectId is specified.",
 	)
-	.meta({ examples: [{}] });
+	.meta({ examples: [["prj_123", "prj_456"]] });
 
 export const getDeploymentsQueryTargetSchema = z
 	.string()
