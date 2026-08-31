@@ -205,18 +205,6 @@ export const networkSchema = z.object({
 			"The date at which the Network was created, represented as a UNIX timestamp since EPOCH.",
 		),
 	egressIpAddresses: z.array(z.string()).optional(),
-	reservedEgressIpAddresses: z
-		.array(z.string())
-		.optional()
-		.describe(
-			"The BYOIP egress (NAT gateway) IP addresses pre-allocated for this network from the region's egress IPAM pool. Present in regions that have an egress pool. Customers can allowlist these addresses before egress is switched over to them, since they are reserved ahead of the switch.",
-		),
-	egressCidrBlock: z
-		.string()
-		.optional()
-		.describe(
-			"The single contiguous CIDR block from which all egress (NAT gateway) IP addresses are allocated. Present only for networks created with the egress CIDR block feature enabled. Customers can allowlist this range instead of individual egress IPs so it keeps working when AZs are added.",
-		),
 	hostedZones: z
 		.object({
 			count: z
