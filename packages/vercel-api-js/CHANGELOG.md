@@ -1,5 +1,13 @@
 # vercel-api-js
 
+## 1.14.1
+
+### Patch Changes
+
+- 6b51aae: Added 'AiGatewayTranscriptsManager' and 'AiGatewayTranscriptsViewer' permissions to relevant team and user event schemas and types.
+- 6b51aae: Added 'ai-gateway-inference-regions-updated' to user event types and event type schemas.
+- 6b51aae: Added new payload structure with 'regions' array to user event payload type.
+
 ## 1.14.0
 
 ### Minor Changes
