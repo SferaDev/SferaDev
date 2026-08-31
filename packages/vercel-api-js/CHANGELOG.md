@@ -1,5 +1,11 @@
 # vercel-api-js
 
+## 1.14.2
+
+### Patch Changes
+
+- e85452d: Removed reservedEgressIpAddresses and egressCidrBlock properties from the Network schema and type.
+
 ## 1.14.1
 
 ### Patch Changes
