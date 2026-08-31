@@ -2526,6 +2526,7 @@ export const userEventTypeEnum = {
 	"ai-gateway-byok-credential-updated": "ai-gateway-byok-credential-updated",
 	"ai-gateway-credits-purchased": "ai-gateway-credits-purchased",
 	"ai-gateway-guardrails-updated": "ai-gateway-guardrails-updated",
+	"ai-gateway-inference-regions-updated": "ai-gateway-inference-regions-updated",
 	"ai-gateway-model-allowlist-models-updated": "ai-gateway-model-allowlist-models-updated",
 	"ai-gateway-model-allowlist-toggled": "ai-gateway-model-allowlist-toggled",
 	"ai-gateway-private-model-created": "ai-gateway-private-model-created",
@@ -4060,6 +4061,8 @@ export const userEventPayloadNewOwnerTeamsTeamPermissionsEnum = {
 	AiGatewayBudgetManager: "AiGatewayBudgetManager",
 	AiGatewayCredits: "AiGatewayCredits",
 	AiGatewaySettings: "AiGatewaySettings",
+	AiGatewayTranscriptsManager: "AiGatewayTranscriptsManager",
+	AiGatewayTranscriptsViewer: "AiGatewayTranscriptsViewer",
 	ConnectorManager: "ConnectorManager",
 	CreateProject: "CreateProject",
 	EnvVariableManager: "EnvVariableManager",
@@ -5157,6 +5160,8 @@ export const userEventPayloadPreviousTeamPermissionsEnum = {
 	AiGatewayBudgetManager: "AiGatewayBudgetManager",
 	AiGatewayCredits: "AiGatewayCredits",
 	AiGatewaySettings: "AiGatewaySettings",
+	AiGatewayTranscriptsManager: "AiGatewayTranscriptsManager",
+	AiGatewayTranscriptsViewer: "AiGatewayTranscriptsViewer",
 	ConnectorManager: "ConnectorManager",
 	CreateProject: "CreateProject",
 	EnvVariableManager: "EnvVariableManager",
@@ -5180,6 +5185,8 @@ export const userEventPayloadTeamPermissionsEnum = {
 	AiGatewayBudgetManager: "AiGatewayBudgetManager",
 	AiGatewayCredits: "AiGatewayCredits",
 	AiGatewaySettings: "AiGatewaySettings",
+	AiGatewayTranscriptsManager: "AiGatewayTranscriptsManager",
+	AiGatewayTranscriptsViewer: "AiGatewayTranscriptsViewer",
 	ConnectorManager: "ConnectorManager",
 	CreateProject: "CreateProject",
 	EnvVariableManager: "EnvVariableManager",
@@ -5897,6 +5904,9 @@ export type UserEvent = {
 						policiesAdded: string[];
 						policiesRemoved: string[];
 						policiesModified: string[];
+				  }
+				| {
+						regions: string[];
 				  }
 				| {
 						retention: {
@@ -12883,6 +12893,7 @@ export const listEventTypeNameEnum = {
 	"ai-gateway-byok-credential-updated": "ai-gateway-byok-credential-updated",
 	"ai-gateway-credits-purchased": "ai-gateway-credits-purchased",
 	"ai-gateway-guardrails-updated": "ai-gateway-guardrails-updated",
+	"ai-gateway-inference-regions-updated": "ai-gateway-inference-regions-updated",
 	"ai-gateway-model-allowlist-models-updated": "ai-gateway-model-allowlist-models-updated",
 	"ai-gateway-model-allowlist-toggled": "ai-gateway-model-allowlist-toggled",
 	"ai-gateway-private-model-created": "ai-gateway-private-model-created",
@@ -13588,6 +13599,7 @@ export const listEventTypeReplacedByEnum = {
 	"ai-gateway-byok-credential-updated": "ai-gateway-byok-credential-updated",
 	"ai-gateway-credits-purchased": "ai-gateway-credits-purchased",
 	"ai-gateway-guardrails-updated": "ai-gateway-guardrails-updated",
+	"ai-gateway-inference-regions-updated": "ai-gateway-inference-regions-updated",
 	"ai-gateway-model-allowlist-models-updated": "ai-gateway-model-allowlist-models-updated",
 	"ai-gateway-model-allowlist-toggled": "ai-gateway-model-allowlist-toggled",
 	"ai-gateway-private-model-created": "ai-gateway-private-model-created",
@@ -15647,6 +15659,8 @@ export const invitedTeamMemberTeamPermissionsEnum = {
 	AiGatewayBudgetManager: "AiGatewayBudgetManager",
 	AiGatewayCredits: "AiGatewayCredits",
 	AiGatewaySettings: "AiGatewaySettings",
+	AiGatewayTranscriptsManager: "AiGatewayTranscriptsManager",
+	AiGatewayTranscriptsViewer: "AiGatewayTranscriptsViewer",
 	ConnectorManager: "ConnectorManager",
 	CreateProject: "CreateProject",
 	EnvVariableManager: "EnvVariableManager",
@@ -15760,6 +15774,8 @@ export const teamDefaultRolesTeamPermissionsEnum = {
 	AiGatewayBudgetManager: "AiGatewayBudgetManager",
 	AiGatewayCredits: "AiGatewayCredits",
 	AiGatewaySettings: "AiGatewaySettings",
+	AiGatewayTranscriptsManager: "AiGatewayTranscriptsManager",
+	AiGatewayTranscriptsViewer: "AiGatewayTranscriptsViewer",
 	ConnectorManager: "ConnectorManager",
 	CreateProject: "CreateProject",
 	EnvVariableManager: "EnvVariableManager",
@@ -15936,6 +15952,8 @@ export const teamMembershipTeamPermissionsEnum = {
 	AiGatewayBudgetManager: "AiGatewayBudgetManager",
 	AiGatewayCredits: "AiGatewayCredits",
 	AiGatewaySettings: "AiGatewaySettings",
+	AiGatewayTranscriptsManager: "AiGatewayTranscriptsManager",
+	AiGatewayTranscriptsViewer: "AiGatewayTranscriptsViewer",
 	ConnectorManager: "ConnectorManager",
 	CreateProject: "CreateProject",
 	EnvVariableManager: "EnvVariableManager",
@@ -16679,6 +16697,8 @@ export const teamLimitedMembershipTeamPermissionsEnum = {
 	AiGatewayBudgetManager: "AiGatewayBudgetManager",
 	AiGatewayCredits: "AiGatewayCredits",
 	AiGatewaySettings: "AiGatewaySettings",
+	AiGatewayTranscriptsManager: "AiGatewayTranscriptsManager",
+	AiGatewayTranscriptsViewer: "AiGatewayTranscriptsViewer",
 	ConnectorManager: "ConnectorManager",
 	CreateProject: "CreateProject",
 	EnvVariableManager: "EnvVariableManager",
