@@ -1,6 +1,6 @@
 {
 	"name": "zoom-api-js",
-	"version": "1.0.0",
+	"version": "1.1.0",
 	"description": "Zoom auto-generated type-safe API client",
 	"type": "module",
 	"author": "SferaDev",

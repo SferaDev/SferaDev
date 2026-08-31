@@ -1,5 +1,44 @@
 # vercel-api-js
 
+## 1.14.0
+
+### Minor Changes
+
+- 20a8254: Added new KMS Issuers API endpoints for listing, creating, updating, deleting issuers, creating and managing issuer policies, and signing operations.
+- 9a8ff0c: Added support for new pricing plan 'flex'.
+- 5223c4e: Migrated code generation to kubb v5.
+  
+  The generated client functions are unchanged — same names, same signatures, same behaviour — so
+  calling code needs no updates. Auxiliary type exports were restructured by kubb v5: `*RequestConfig`
+  is now `*Options`, and per-parameter types are now grouped (`FooPathBarId` → `FooPath`,
+  `FooQueryLimit` → `FooQuery`). Only code importing those helper types directly is affected.
+- 139e0e5: Added revokeInstallationCredential endpoint to allow revoking a credential for an installation.
+
+### Patch Changes
+
+- 9a8ff0c: [BREAKING] Changed ReasonEnum to only include 'limits-exceeded'.
+- 9a8ff0c: Added optional 'deploymentId' for build machine selection events.
+- 9a8ff0c: Added ability to enable polyrepo branch routing on microfrontends group updates.
+- 139e0e5: Added support for optional teamId and slug query parameters for createConnector, deleteSandbox, and getSecurityFirewallEvents endpoints.
+- 20a8254: Removed the experiment property from the Flag type schema and interface.
+- 139e0e5: Corrected and clarified some schema descriptions, enums, and field orderings in various user event payloads.
+- 139e0e5: Added new event types such as domain-ech-change and integration-configuration-credential-revoked for user events.
+- 9a8ff0c: Updated description for updateMicrofrontendsGroup endpoint to cover all group settings.
+- a113c84: Added BuyCreditsStatus409 response type to the buyCredits API and related types.
+- 20a8254: Added new options and fields on the user event and named sandbox types including support for associating events with users and Connex network policy details.
+- 139e0e5: Added incoming triggers configuration and trigger destinations schemas for connectors.
+- 9a8ff0c: Fixed export and order of enum keys and types for image detail/list item status for VCR images, and removed 'vhs' fields from image schemas/types.
+- 139e0e5: Added reservedEgressIpAddresses field to the Network type and schema.
+- 20a8254: Added new enum values and event types related to global config events and permissions.
+- 20a8254: Added new possible status code 422 for requestPromote endpoint.
+- 9a8ff0c: Added 'speedInsightsFree' block state to AuthUser feature blocks.
+- 20a8254: Added full type and schema support for KMS Issuer API endpoints in the generated client.
+- 139e0e5: Removed the importConnectorTokens and createConnectorInstallationRequest endpoints from the API.
+- 9a8ff0c: Added new event types and event fields for project speed insights, tracing, and experiments.
+- 9a8ff0c: Added optional tracing block details to feature blocks.
+- a113c84: Added hobbyWarningV2At100SlackSentAt field to the UserEvent schema and type.
+- 9a8ff0c: Added failover regions to NamedSandbox and available regions to Snapshot schemas.
+
 ## 1.13.0
 
 ### Minor Changes
