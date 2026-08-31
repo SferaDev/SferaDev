@@ -425,7 +425,7 @@ export const listArchiveFileDownloadAuditStatus200Schema = z.object({
 										download_timestamps: z
 											.array(z.iso.datetime())
 											.describe("The timestamps of downloads from this source IP address.")
-											.meta({ examples: [{}] }),
+											.meta({ examples: [["2026-06-17T01:02:03Z", "2026-06-17T03:04:05Z"]] }),
 										total_download_count: z
 											.int()
 											.describe("The total number of downloads from this source IP address.")
