@@ -1,5 +1,11 @@
 # keycloak-api
 
+## 1.1.1
+
+### Patch Changes
+
+- 85c2c42: Marked the 'inviteLink' property of OrganizationInvitationRepresentation as deprecated.
+
 ## 1.1.0
 
 ### Minor Changes
