@@ -1578,6 +1578,10 @@ export type OrganizationInvitationRepresentation = {
 	 */
 	expiresAt?: number | undefined;
 	status?: StatusKey | undefined;
+	/**
+	 * @deprecated
+	 * @type string | undefined
+	 */
 	inviteLink?: string | undefined;
 };
 
