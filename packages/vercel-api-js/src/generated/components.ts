@@ -3545,7 +3545,7 @@ export async function recordEvents(
 		config,
 	}: {
 		queryParams?: { teamId?: string; slug?: string };
-		headers?: { "'x-Artifact-Client-Ci'"?: string; "'x-Artifact-Client-Interactive'"?: number };
+		headers?: { "x-artifact-client-ci"?: string; "x-artifact-client-interactive"?: number };
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
 ) {
@@ -3561,7 +3561,7 @@ export async function recordEvents(
 			| RecordEventsStatus410
 		>,
 		null,
-		{ "'x-Artifact-Client-Ci'"?: string; "'x-Artifact-Client-Interactive'"?: number },
+		{ "x-artifact-client-ci"?: string; "x-artifact-client-interactive"?: number },
 		{ teamId?: string; slug?: string },
 		Record<string, string>
 	>({
@@ -3626,13 +3626,13 @@ export async function uploadArtifact(
 		pathParams: { hash: string };
 		queryParams?: { teamId?: string; slug?: string };
 		headers?: {
-			"'content-Length'"?: number;
-			"'x-Artifact-Duration'"?: number;
-			"'x-Artifact-Client-Ci'"?: string;
-			"'x-Artifact-Client-Interactive'"?: number;
-			"'x-Artifact-Tag'"?: string;
-			"'x-Artifact-Sha'"?: string;
-			"'x-Artifact-Dirty-Hash'"?: string;
+			"Content-Length"?: number;
+			"x-artifact-duration"?: number;
+			"x-artifact-client-ci"?: string;
+			"x-artifact-client-interactive"?: number;
+			"x-artifact-tag"?: string;
+			"x-artifact-sha"?: string;
+			"x-artifact-dirty-hash"?: string;
 		};
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
@@ -3653,13 +3653,13 @@ export async function uploadArtifact(
 		>,
 		null,
 		{
-			"'content-Length'"?: number;
-			"'x-Artifact-Duration'"?: number;
-			"'x-Artifact-Client-Ci'"?: string;
-			"'x-Artifact-Client-Interactive'"?: number;
-			"'x-Artifact-Tag'"?: string;
-			"'x-Artifact-Sha'"?: string;
-			"'x-Artifact-Dirty-Hash'"?: string;
+			"Content-Length"?: number;
+			"x-artifact-duration"?: number;
+			"x-artifact-client-ci"?: string;
+			"x-artifact-client-interactive"?: number;
+			"x-artifact-tag"?: string;
+			"x-artifact-sha"?: string;
+			"x-artifact-dirty-hash"?: string;
 		},
 		{ teamId?: string; slug?: string },
 		{ hash: string }
@@ -3688,7 +3688,7 @@ export async function downloadArtifact(
 	}: {
 		pathParams: { hash: string };
 		queryParams?: { teamId?: string; slug?: string };
-		headers?: { "'x-Artifact-Client-Ci'"?: string; "'x-Artifact-Client-Interactive'"?: number };
+		headers?: { "x-artifact-client-ci"?: string; "x-artifact-client-interactive"?: number };
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
 ) {
@@ -3708,7 +3708,7 @@ export async function downloadArtifact(
 			| DownloadArtifactStatus410
 		>,
 		null,
-		{ "'x-Artifact-Client-Ci'"?: string; "'x-Artifact-Client-Interactive'"?: number },
+		{ "x-artifact-client-ci"?: string; "x-artifact-client-interactive"?: number },
 		{ teamId?: string; slug?: string },
 		{ hash: string }
 	>({
@@ -8531,9 +8531,9 @@ export async function listSharedEnvVariable(
 			projectId?: string;
 			ids?: string;
 			exclude_ids?: string;
-			"'exclude-ids'"?: string;
+			"exclude-ids"?: string;
 			exclude_projectId?: string;
-			"'exclude-projectId'"?: string;
+			"exclude-projectId"?: string;
 			teamId?: string;
 			slug?: string;
 		};
@@ -8558,9 +8558,9 @@ export async function listSharedEnvVariable(
 			projectId?: string;
 			ids?: string;
 			exclude_ids?: string;
-			"'exclude-ids'"?: string;
+			"exclude-ids"?: string;
 			exclude_projectId?: string;
-			"'exclude-projectId'"?: string;
+			"exclude-projectId"?: string;
 			teamId?: string;
 			slug?: string;
 		},
@@ -16629,7 +16629,7 @@ export async function writeSessionFiles(
 	}: {
 		pathParams: { sessionId: string };
 		queryParams?: { teamId?: string; slug?: string };
-		headers?: { "'x-Cwd'"?: string };
+		headers?: { "x-cwd"?: string };
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
 ) {
@@ -16651,7 +16651,7 @@ export async function writeSessionFiles(
 			| WriteSessionFilesStatus500
 		>,
 		null,
-		{ "'x-Cwd'"?: string },
+		{ "x-cwd"?: string },
 		{ teamId?: string; slug?: string },
 		{ sessionId: string }
 	>({
@@ -17570,7 +17570,7 @@ export async function getStorageStoresById(
 		config,
 	}: {
 		pathParams: { id: string };
-		queryParams?: { "'skip-metadata'"?: boolean; "'include-guides'"?: boolean };
+		queryParams?: { "skip-metadata"?: boolean; "include-guides"?: boolean };
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
 ) {
@@ -17590,7 +17590,7 @@ export async function getStorageStoresById(
 		>,
 		null,
 		Record<string, string>,
-		{ "'skip-metadata'"?: boolean; "'include-guides'"?: boolean },
+		{ "skip-metadata"?: boolean; "include-guides"?: boolean },
 		{ id: string }
 	>({
 		method: "GET",
@@ -18490,10 +18490,10 @@ export async function uploadFile(
 	}: {
 		queryParams?: { teamId?: string; slug?: string };
 		headers?: {
-			"'content-Length'"?: number;
-			"'x-Vercel-Digest'"?: string;
-			"'x-Now-Digest'"?: string;
-			"'x-Now-Size'"?: number;
+			"Content-Length"?: number;
+			"x-vercel-digest"?: string;
+			"x-now-digest"?: string;
+			"x-now-size"?: number;
 		};
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
@@ -18511,10 +18511,10 @@ export async function uploadFile(
 		>,
 		null,
 		{
-			"'content-Length'"?: number;
-			"'x-Vercel-Digest'"?: string;
-			"'x-Now-Digest'"?: string;
-			"'x-Now-Size'"?: number;
+			"Content-Length"?: number;
+			"x-vercel-digest"?: string;
+			"x-now-digest"?: string;
+			"x-now-size"?: number;
 		},
 		{ teamId?: string; slug?: string },
 		Record<string, string>
