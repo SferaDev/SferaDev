@@ -856,6 +856,7 @@ import type {
 	DeleteTeamStatus403,
 	DeleteTeamStatus409,
 	DeleteTeamStatus410,
+	DeleteTeamStatus503,
 	DeleteWebhookResponse,
 	DeleteWebhookStatus400,
 	DeleteWebhookStatus401,
@@ -18316,6 +18317,7 @@ export async function deleteTeam(
 			| DeleteTeamStatus403
 			| DeleteTeamStatus409
 			| DeleteTeamStatus410
+			| DeleteTeamStatus503
 		>,
 		null,
 		Record<string, string>,

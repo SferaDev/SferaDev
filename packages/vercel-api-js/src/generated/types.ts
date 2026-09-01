@@ -2569,6 +2569,7 @@ export const userEventTypeEnum = {
 	"authorize-git-deployment": "authorize-git-deployment",
 	"auto-expose-system-envs": "auto-expose-system-envs",
 	avatar: "avatar",
+	"billing-settings-updated": "billing-settings-updated",
 	"bulk-redirects-settings-updated": "bulk-redirects-settings-updated",
 	"bulk-redirects-version-promoted": "bulk-redirects-version-promoted",
 	"bulk-redirects-version-restored": "bulk-redirects-version-restored",
@@ -3593,6 +3594,18 @@ export const userEventPayloadSettlementMethodEnum = {
 export type UserEventPayloadSettlementMethodEnumKey =
 	(typeof userEventPayloadSettlementMethodEnum)[keyof typeof userEventPayloadSettlementMethodEnum];
 
+export const userEventPayloadChangedFieldsEnum = {
+	address: "address",
+	email: "email",
+	language: "language",
+	name: "name",
+	purchaseOrder: "purchaseOrder",
+	tax: "tax",
+} as const;
+
+export type UserEventPayloadChangedFieldsEnumKey =
+	(typeof userEventPayloadChangedFieldsEnum)[keyof typeof userEventPayloadChangedFieldsEnum];
+
 export const userEventPayloadDataPlanSlugEnum = {
 	v0_business: "v0_business",
 	v0_teams: "v0_teams",
@@ -4399,6 +4412,15 @@ export const userEventPayloadNewOwnerFeatureBlocksTracingBlockReasonEnum = {
 
 export type UserEventPayloadNewOwnerFeatureBlocksTracingBlockReasonEnumKey =
 	(typeof userEventPayloadNewOwnerFeatureBlocksTracingBlockReasonEnum)[keyof typeof userEventPayloadNewOwnerFeatureBlocksTracingBlockReasonEnum];
+
+export const userEventPayloadNewOwnerFeatureBlocksSandboxStorageBlockReasonEnum = {
+	admin_override: "admin_override",
+	hard_blocked: "hard_blocked",
+	limits_exceeded: "limits_exceeded",
+} as const;
+
+export type UserEventPayloadNewOwnerFeatureBlocksSandboxStorageBlockReasonEnumKey =
+	(typeof userEventPayloadNewOwnerFeatureBlocksSandboxStorageBlockReasonEnum)[keyof typeof userEventPayloadNewOwnerFeatureBlocksSandboxStorageBlockReasonEnum];
 
 export const userEventPayloadNewOwnerFeatureBlocksVcrBlockReasonEnum = {
 	admin_override: "admin_override",
@@ -5740,6 +5762,7 @@ export type UserEvent = {
 									 */
 									limitAmount: number;
 									refreshPeriod: UserEventPayloadBudgetRefreshPeriodEnumKey;
+									alertThresholds?: number[] | undefined;
 							  } | null)
 							| undefined;
 						/**
@@ -5776,6 +5799,7 @@ export type UserEvent = {
 									 */
 									limitAmount: number;
 									refreshPeriod: UserEventPayloadBudgetRefreshPeriodEnumKey;
+									alertThresholds?: number[] | undefined;
 							  } | null)
 							| undefined;
 						change: UserEventPayloadChangeEnumKey;
@@ -5817,6 +5841,7 @@ export type UserEvent = {
 									 */
 									limitAmount: number;
 									refreshPeriod: UserEventPayloadBudgetRefreshPeriodEnumKey;
+									alertThresholds?: number[] | undefined;
 							  } | null)
 							| undefined;
 						change: UserEventPayloadChangeEnumKey;
@@ -5847,6 +5872,7 @@ export type UserEvent = {
 									 */
 									limitAmount: number;
 									refreshPeriod: UserEventPayloadBudgetRefreshPeriodEnumKey;
+									alertThresholds?: number[] | undefined;
 							  } | null)
 							| undefined;
 						change: UserEventPayloadChangeEnumKey;
@@ -6257,6 +6283,9 @@ export type UserEvent = {
 						paymentMethodId: string;
 						brand?: string | undefined;
 						last4?: string | undefined;
+				  }
+				| {
+						changedFields: UserEventPayloadChangedFieldsEnumKey[];
 				  }
 				| {
 						subscriptionId?: string | undefined;
@@ -9222,6 +9251,14 @@ export type UserEvent = {
 													blockedFrom?: number | undefined;
 													blockedUntil?: number | undefined;
 													blockReason: UserEventPayloadNewOwnerFeatureBlocksTracingBlockReasonEnumKey;
+											  }
+											| undefined;
+										sandboxStorage?:
+											| {
+													updatedAt: number;
+													blockedFrom?: number | undefined;
+													blockedUntil?: number | undefined;
+													blockReason: UserEventPayloadNewOwnerFeatureBlocksSandboxStorageBlockReasonEnumKey;
 											  }
 											| undefined;
 										vcr?:
@@ -12936,6 +12973,7 @@ export const listEventTypeNameEnum = {
 	"authorize-git-deployment": "authorize-git-deployment",
 	"auto-expose-system-envs": "auto-expose-system-envs",
 	avatar: "avatar",
+	"billing-settings-updated": "billing-settings-updated",
 	"bulk-redirects-settings-updated": "bulk-redirects-settings-updated",
 	"bulk-redirects-version-promoted": "bulk-redirects-version-promoted",
 	"bulk-redirects-version-restored": "bulk-redirects-version-restored",
@@ -13642,6 +13680,7 @@ export const listEventTypeReplacedByEnum = {
 	"authorize-git-deployment": "authorize-git-deployment",
 	"auto-expose-system-envs": "auto-expose-system-envs",
 	avatar: "avatar",
+	"billing-settings-updated": "billing-settings-updated",
 	"bulk-redirects-settings-updated": "bulk-redirects-settings-updated",
 	"bulk-redirects-version-promoted": "bulk-redirects-version-promoted",
 	"bulk-redirects-version-restored": "bulk-redirects-version-restored",
@@ -40244,6 +40283,8 @@ export type DeleteTeamStatus409 = unknown;
 
 export type DeleteTeamStatus410 = unknown;
 
+export type DeleteTeamStatus503 = unknown;
+
 export type DeleteTeamOptions = {
 	body?: never | undefined;
 	path: DeleteTeamPath;
@@ -40259,6 +40300,7 @@ export type DeleteTeamResponses = {
 	"403": DeleteTeamStatus403;
 	"409": DeleteTeamStatus409;
 	"410": DeleteTeamStatus410;
+	"503": DeleteTeamStatus503;
 };
 
 /**
@@ -40271,7 +40313,8 @@ export type DeleteTeamResponse =
 	| DeleteTeamStatus402
 	| DeleteTeamStatus403
 	| DeleteTeamStatus409
-	| DeleteTeamStatus410;
+	| DeleteTeamStatus410
+	| DeleteTeamStatus503;
 
 export type DeleteTeamInviteCodePath = {
 	/**
