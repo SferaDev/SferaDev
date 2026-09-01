@@ -19518,7 +19518,7 @@ export type RecordEventsHeaders = {
 	 * @example VERCEL
 	 * @type string | undefined
 	 */
-	"'x-Artifact-Client-Ci'"?: string | undefined;
+	"x-artifact-client-ci"?: string | undefined;
 	/**
 	 * @description 1 if the client is an interactive shell. Otherwise 0
 	 * @minLength 0
@@ -19526,7 +19526,7 @@ export type RecordEventsHeaders = {
 	 * @example 0
 	 * @type integer | undefined
 	 */
-	"'x-Artifact-Client-Interactive'"?: number | undefined;
+	"x-artifact-client-interactive"?: number | undefined;
 };
 
 export type RecordEventsStatus200 = unknown;
@@ -19649,22 +19649,22 @@ export type UploadArtifactQuery = {
 export type UploadArtifactHeaders = {
 	/**
 	 * @description The artifact size in bytes
-	 * @type number | undefined
+	 * @type number
 	 */
-	"'content-Length'"?: number | undefined;
+	"Content-Length": number;
 	/**
 	 * @description The time taken to generate the uploaded artifact in milliseconds.
 	 * @example 400
 	 * @type number | undefined
 	 */
-	"'x-Artifact-Duration'"?: number | undefined;
+	"x-artifact-duration"?: number | undefined;
 	/**
 	 * @description The continuous integration or delivery environment where this artifact was generated.
 	 * @maxLength 50
 	 * @example VERCEL
 	 * @type string | undefined
 	 */
-	"'x-Artifact-Client-Ci'"?: string | undefined;
+	"x-artifact-client-ci"?: string | undefined;
 	/**
 	 * @description 1 if the client is an interactive shell. Otherwise 0
 	 * @minLength 0
@@ -19672,26 +19672,26 @@ export type UploadArtifactHeaders = {
 	 * @example 0
 	 * @type integer | undefined
 	 */
-	"'x-Artifact-Client-Interactive'"?: number | undefined;
+	"x-artifact-client-interactive"?: number | undefined;
 	/**
 	 * @description The base64 encoded tag for this artifact. The value is sent back to clients when the artifact is downloaded as the header `x-artifact-tag`
 	 * @maxLength 600
 	 * @example Tc0BmHvJYMIYJ62/zx87YqO0Flxk+5Ovip25NY825CQ=
 	 * @type string | undefined
 	 */
-	"'x-Artifact-Tag'"?: string | undefined;
+	"x-artifact-tag"?: string | undefined;
 	/**
 	 * @description The SHA of the source control revision that generated this artifact.
 	 * @maxLength 200
 	 * @type string | undefined
 	 */
-	"'x-Artifact-Sha'"?: string | undefined;
+	"x-artifact-sha"?: string | undefined;
 	/**
 	 * @description A hash representing uncommitted changes in the working directory when this artifact was generated.
 	 * @maxLength 200
 	 * @type string | undefined
 	 */
-	"'x-Artifact-Dirty-Hash'"?: string | undefined;
+	"x-artifact-dirty-hash"?: string | undefined;
 };
 
 export type UploadArtifactStatus202 = unknown;
@@ -19710,7 +19710,7 @@ export type UploadArtifactOptions = {
 	body?: never | undefined;
 	path: UploadArtifactPath;
 	query?: UploadArtifactQuery | undefined;
-	headers?: UploadArtifactHeaders | undefined;
+	headers: UploadArtifactHeaders;
 };
 
 export type UploadArtifactResponses = {
@@ -19764,7 +19764,7 @@ export type DownloadArtifactHeaders = {
 	 * @example VERCEL
 	 * @type string | undefined
 	 */
-	"'x-Artifact-Client-Ci'"?: string | undefined;
+	"x-artifact-client-ci"?: string | undefined;
 	/**
 	 * @description 1 if the client is an interactive shell. Otherwise 0
 	 * @minLength 0
@@ -19772,7 +19772,7 @@ export type DownloadArtifactHeaders = {
 	 * @example 0
 	 * @type integer | undefined
 	 */
-	"'x-Artifact-Client-Interactive'"?: number | undefined;
+	"x-artifact-client-interactive"?: number | undefined;
 };
 
 export type DownloadArtifactStatus200 = unknown;
@@ -26366,7 +26366,7 @@ export type ListSharedEnvVariableQuery = {
 	 * @example env_2WjyKQmM8ZnGcJsPWMrHRHrE,env_2WjyKQmM8ZnGcJsPWMrHRCRV
 	 * @type string | undefined
 	 */
-	"'exclude-ids'"?: string | undefined;
+	"exclude-ids"?: string | undefined;
 	/**
 	 * @description Filter SharedEnvVariables that belong to a project
 	 * @example prj_2WjyKQmM8ZnGcJsPWMrHRHrE
@@ -26378,7 +26378,7 @@ export type ListSharedEnvVariableQuery = {
 	 * @example prj_2WjyKQmM8ZnGcJsPWMrHRHrE
 	 * @type string | undefined
 	 */
-	"'exclude-projectId'"?: string | undefined;
+	"exclude-projectId"?: string | undefined;
 	/**
 	 * @description The Team identifier to perform the request on behalf of.
 	 * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
@@ -37885,7 +37885,7 @@ export type WriteSessionFilesHeaders = {
 	 * @example /home/vercel-sandbox
 	 * @type string | undefined
 	 */
-	"'x-Cwd'"?: string | undefined;
+	"x-cwd"?: string | undefined;
 };
 
 export type WriteSessionFilesStatus200 = unknown;
@@ -39257,8 +39257,8 @@ export type GetStorageStoresByIdPath = {
 };
 
 export type GetStorageStoresByIdQuery = {
-	"'skip-metadata'"?: boolean | undefined;
-	"'include-guides'"?: boolean | undefined;
+	"skip-metadata"?: boolean | undefined;
+	"include-guides"?: boolean | undefined;
 };
 
 export type GetStorageStoresByIdStatus200 = unknown;
@@ -40472,26 +40472,26 @@ export type UploadFileHeaders = {
 	 * @description The file size in bytes
 	 * @type number | undefined
 	 */
-	"'content-Length'"?: number | undefined;
+	"Content-Length"?: number | undefined;
 	/**
 	 * @description The file SHA1 used to check the integrity
 	 * @maxLength 40
 	 * @type string | undefined
 	 */
-	"'x-Vercel-Digest'"?: string | undefined;
+	"x-vercel-digest"?: string | undefined;
 	/**
 	 * @description The file SHA1 used to check the integrity
 	 * @deprecated
 	 * @maxLength 40
 	 * @type string | undefined
 	 */
-	"'x-Now-Digest'"?: string | undefined;
+	"x-now-digest"?: string | undefined;
 	/**
 	 * @description The file size as an alternative to `Content-Length`
 	 * @deprecated
 	 * @type number | undefined
 	 */
-	"'x-Now-Size'"?: number | undefined;
+	"x-now-size"?: number | undefined;
 };
 
 export type UploadFileStatus200 = unknown;

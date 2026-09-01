@@ -17012,14 +17012,14 @@ export const deleteAiGatewayRuleErrorSchema = z.union([
 	deleteAiGatewayRuleStatus500Schema,
 ]);
 
-export const recordEventsHeaderxArtifactClientCiSchema = z
+export const recordEventsHeaderXArtifactClientCiSchema = z
 	.string()
 	.max(50)
 	.optional()
 	.describe("The continuous integration or delivery environment where this artifact is downloaded.")
 	.meta({ examples: ["VERCEL"] });
 
-export const recordEventsHeaderxArtifactClientInteractiveSchema = z
+export const recordEventsHeaderXArtifactClientInteractiveSchema = z
 	.int()
 	.min(0)
 	.max(1)
@@ -17095,25 +17095,24 @@ export const statusErrorSchema = z.union([
 	statusStatus410Schema,
 ]);
 
-export const uploadArtifactHeadercontentLengthSchema = z
+export const uploadArtifactHeaderContentLengthSchema = z
 	.number()
-	.optional()
 	.describe("The artifact size in bytes");
 
-export const uploadArtifactHeaderxArtifactDurationSchema = z
+export const uploadArtifactHeaderXArtifactDurationSchema = z
 	.number()
 	.optional()
 	.describe("The time taken to generate the uploaded artifact in milliseconds.")
 	.meta({ examples: [400] });
 
-export const uploadArtifactHeaderxArtifactClientCiSchema = z
+export const uploadArtifactHeaderXArtifactClientCiSchema = z
 	.string()
 	.max(50)
 	.optional()
 	.describe("The continuous integration or delivery environment where this artifact was generated.")
 	.meta({ examples: ["VERCEL"] });
 
-export const uploadArtifactHeaderxArtifactClientInteractiveSchema = z
+export const uploadArtifactHeaderXArtifactClientInteractiveSchema = z
 	.int()
 	.min(0)
 	.max(1)
@@ -17121,7 +17120,7 @@ export const uploadArtifactHeaderxArtifactClientInteractiveSchema = z
 	.describe("1 if the client is an interactive shell. Otherwise 0")
 	.meta({ examples: [0] });
 
-export const uploadArtifactHeaderxArtifactTagSchema = z
+export const uploadArtifactHeaderXArtifactTagSchema = z
 	.string()
 	.max(600)
 	.optional()
@@ -17130,13 +17129,13 @@ export const uploadArtifactHeaderxArtifactTagSchema = z
 	)
 	.meta({ examples: ["Tc0BmHvJYMIYJ62/zx87YqO0Flxk+5Ovip25NY825CQ="] });
 
-export const uploadArtifactHeaderxArtifactShaSchema = z
+export const uploadArtifactHeaderXArtifactShaSchema = z
 	.string()
 	.max(200)
 	.optional()
 	.describe("The SHA of the source control revision that generated this artifact.");
 
-export const uploadArtifactHeaderxArtifactDirtyHashSchema = z
+export const uploadArtifactHeaderXArtifactDirtyHashSchema = z
 	.string()
 	.max(200)
 	.optional()
@@ -17183,14 +17182,14 @@ export const uploadArtifactErrorSchema = z.union([
 	uploadArtifactStatus410Schema,
 ]);
 
-export const downloadArtifactHeaderxArtifactClientCiSchema = z
+export const downloadArtifactHeaderXArtifactClientCiSchema = z
 	.string()
 	.max(50)
 	.optional()
 	.describe("The continuous integration or delivery environment where this artifact is downloaded.")
 	.meta({ examples: ["VERCEL"] });
 
-export const downloadArtifactHeaderxArtifactClientInteractiveSchema = z
+export const downloadArtifactHeaderXArtifactClientInteractiveSchema = z
 	.int()
 	.min(0)
 	.max(1)
@@ -21365,19 +21364,7 @@ export const listSharedEnvVariableQueryExcludeIdsSchema = z
 	.describe("Filter SharedEnvVariables based on comma separated ids")
 	.meta({ examples: ["env_2WjyKQmM8ZnGcJsPWMrHRHrE,env_2WjyKQmM8ZnGcJsPWMrHRCRV"] });
 
-export const listSharedEnvVariableQueryexcludeIdsSchema = z
-	.string()
-	.optional()
-	.describe("Filter SharedEnvVariables based on comma separated ids")
-	.meta({ examples: ["env_2WjyKQmM8ZnGcJsPWMrHRHrE,env_2WjyKQmM8ZnGcJsPWMrHRCRV"] });
-
 export const listSharedEnvVariableQueryExcludeProjectIdSchema = z
-	.string()
-	.optional()
-	.describe("Filter SharedEnvVariables that belong to a project")
-	.meta({ examples: ["prj_2WjyKQmM8ZnGcJsPWMrHRHrE"] });
-
-export const listSharedEnvVariableQueryexcludeProjectIdSchema = z
 	.string()
 	.optional()
 	.describe("Filter SharedEnvVariables that belong to a project")
@@ -28780,7 +28767,7 @@ export const createSessionDirectoryErrorSchema = z.union([
 	createSessionDirectoryStatus500Schema,
 ]);
 
-export const writeSessionFilesHeaderxCwdSchema = z
+export const writeSessionFilesHeaderXCwdSchema = z
 	.string()
 	.optional()
 	.describe(
@@ -29708,9 +29695,9 @@ export const createSpeedInsightsToggleErrorSchema = z.union([
 
 export const getStorageStoresByIdPathIdSchema = z.string();
 
-export const getStorageStoresByIdQueryskipMetadataSchema = z.boolean().optional();
+export const getStorageStoresByIdQuerySkipMetadataSchema = z.boolean().optional();
 
-export const getStorageStoresByIdQueryincludeGuidesSchema = z.boolean().optional();
+export const getStorageStoresByIdQueryIncludeGuidesSchema = z.boolean().optional();
 
 export const getStorageStoresByIdStatus200Schema = z.unknown();
 
@@ -30446,24 +30433,24 @@ export const deleteMicrofrontendsGroupErrorSchema = z.union([
 	deleteMicrofrontendsGroupStatus500Schema,
 ]);
 
-export const uploadFileHeadercontentLengthSchema = z
+export const uploadFileHeaderContentLengthSchema = z
 	.number()
 	.optional()
 	.describe("The file size in bytes");
 
-export const uploadFileHeaderxVercelDigestSchema = z
+export const uploadFileHeaderXVercelDigestSchema = z
 	.string()
 	.max(40)
 	.optional()
 	.describe("The file SHA1 used to check the integrity");
 
-export const uploadFileHeaderxNowDigestSchema = z
+export const uploadFileHeaderXNowDigestSchema = z
 	.string()
 	.max(40)
 	.optional()
 	.describe("The file SHA1 used to check the integrity");
 
-export const uploadFileHeaderxNowSizeSchema = z
+export const uploadFileHeaderXNowSizeSchema = z
 	.number()
 	.optional()
 	.describe("The file size as an alternative to `Content-Length`");
