@@ -1,5 +1,11 @@
 # zoom-api-js
 
+## 1.1.1
+
+### Patch Changes
+
+- b8cc03d: Updated example format for download_timestamps in listArchiveFileDownloadAuditStatus200Schema.
+
 ## 1.1.0
 
 ### Minor Changes
