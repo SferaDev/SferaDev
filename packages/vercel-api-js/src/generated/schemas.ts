@@ -1816,6 +1816,7 @@ export const userEventSchema = z
 				"authorize-git-deployment",
 				"auto-expose-system-envs",
 				"avatar",
+				"billing-settings-updated",
 				"bulk-redirects-settings-updated",
 				"bulk-redirects-version-promoted",
 				"bulk-redirects-version-restored",
@@ -2739,6 +2740,7 @@ export const userEventSchema = z
 							.object({
 								limitAmount: z.number().describe("Spend cap, in dollars."),
 								refreshPeriod: z.enum(["daily", "monthly", "none", "weekly"]),
+								alertThresholds: z.array(z.number()).optional(),
 							})
 							.nullish()
 							.describe(
@@ -2774,6 +2776,7 @@ export const userEventSchema = z
 							.object({
 								limitAmount: z.number().describe("Spend cap, in dollars."),
 								refreshPeriod: z.enum(["daily", "monthly", "none", "weekly"]),
+								alertThresholds: z.array(z.number()).optional(),
 							})
 							.nullish()
 							.describe(
@@ -2820,6 +2823,7 @@ export const userEventSchema = z
 							.object({
 								limitAmount: z.number().describe("Spend cap, in dollars."),
 								refreshPeriod: z.enum(["daily", "monthly", "none", "weekly"]),
+								alertThresholds: z.array(z.number()).optional(),
 							})
 							.nullish()
 							.describe(
@@ -2845,6 +2849,7 @@ export const userEventSchema = z
 							.object({
 								limitAmount: z.number().describe("Spend cap, in dollars."),
 								refreshPeriod: z.enum(["daily", "monthly", "none", "weekly"]),
+								alertThresholds: z.array(z.number()).optional(),
 							})
 							.nullish()
 							.describe(
@@ -3667,6 +3672,13 @@ export const userEventSchema = z
 						paymentMethodId: z.string(),
 						brand: z.string().optional(),
 						last4: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						changedFields: z.array(
+							z.enum(["address", "email", "language", "name", "purchaseOrder", "tax"]),
+						),
 					})
 					.strict(),
 				z
@@ -7165,6 +7177,14 @@ export const userEventSchema = z
 											})
 											.optional(),
 										tracing: z
+											.object({
+												updatedAt: z.number(),
+												blockedFrom: z.number().optional(),
+												blockedUntil: z.number().optional(),
+												blockReason: z.enum(["admin_override", "hard_blocked", "limits_exceeded"]),
+											})
+											.optional(),
+										sandboxStorage: z
 											.object({
 												updatedAt: z.number(),
 												blockedFrom: z.number().optional(),
@@ -11695,6 +11715,7 @@ export const listEventTypeSchema = z
 				"authorize-git-deployment",
 				"auto-expose-system-envs",
 				"avatar",
+				"billing-settings-updated",
 				"bulk-redirects-settings-updated",
 				"bulk-redirects-version-promoted",
 				"bulk-redirects-version-restored",
@@ -12396,6 +12417,7 @@ export const listEventTypeSchema = z
 					"authorize-git-deployment",
 					"auto-expose-system-envs",
 					"avatar",
+					"billing-settings-updated",
 					"bulk-redirects-settings-updated",
 					"bulk-redirects-version-promoted",
 					"bulk-redirects-version-restored",
@@ -30314,6 +30336,8 @@ export const deleteTeamStatus409Schema = z.unknown();
 
 export const deleteTeamStatus410Schema = z.unknown();
 
+export const deleteTeamStatus503Schema = z.unknown();
+
 export const deleteTeamResponseSchema = deleteTeamStatus200Schema;
 
 export const deleteTeamErrorSchema = z.union([
@@ -30323,6 +30347,7 @@ export const deleteTeamErrorSchema = z.union([
 	deleteTeamStatus403Schema,
 	deleteTeamStatus409Schema,
 	deleteTeamStatus410Schema,
+	deleteTeamStatus503Schema,
 ]);
 
 export const deleteTeamInviteCodePathInviteIdSchema = z
