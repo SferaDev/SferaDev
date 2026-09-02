@@ -1,5 +1,23 @@
 # vercel-api-js
 
+## 1.15.0
+
+### Minor Changes
+
+- 732ae95: Added support for 408 status (Request Timeout) to getSecurityFirewallEvents API responses and types.
+- 67b001c: Added a new user event type 'billing-settings-updated'.
+
+### Patch Changes
+
+- 0f58705: Removed duplicate or redundant shared environment variable query parameter schemas.
+- 732ae95: Improved schema examples for various fields to use representative values instead of empty objects for better documentation.
+- 67b001c: Added support for sandboxStorage in newOwnerFeatureBlocks with defined blocking reasons enum.
+- 0f58705: Standardized header and query parameter names to use consistent lower-case and hyphenated format in generated types and functions.
+- 67b001c: Added alertThresholds property to various budget-related user event payloads.
+- 67b001c: Added changedFields object for user events with a defined enum of changed field types.
+- 67b001c: Added support for a 503 error response to the deleteTeam endpoint and related types.
+- 0f58705: Renamed schema exports in generated schemas.ts to use PascalCase for header and query parameter names.
+
 ## 1.14.2
 
 ### Patch Changes
