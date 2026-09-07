@@ -14,17 +14,20 @@
 		"@radix-ui/react-avatar": "catalog:",
 		"@radix-ui/react-slot": "catalog:",
 		"@tailwindcss/typography": "catalog:",
+		"@vercel/analytics": "catalog:",
+		"@vercel/speed-insights": "catalog:",
 		"class-variance-authority": "catalog:",
 		"clsx": "catalog:",
 		"framer-motion": "catalog:",
 		"geist": "catalog:",
 		"gray-matter": "catalog:",
 		"lucide-react": "catalog:",
-		"react-markdown": "catalog:",
+		"motion": "catalog:",
 		"next": "catalog:",
 		"next-themes": "catalog:",
 		"react": "catalog:",
 		"react-dom": "catalog:",
+		"react-markdown": "catalog:",
 		"tailwind-merge": "catalog:"
 	},
 	"devDependencies": {
@@ -35,7 +38,7 @@
 		"@vercel/config": "catalog:",
 		"postcss": "catalog:",
 		"tailwindcss": "catalog:",
-		"tailwindcss-animate": "catalog:",
+		"tw-animate-css": "catalog:",
 		"typescript": "catalog:"
 	}
 }
