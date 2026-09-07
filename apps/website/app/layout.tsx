@@ -8,12 +8,47 @@ import type React from "react";
 import "./globals.css";
 import { Header } from "@/components/header";
 import { ThemeProvider } from "@/components/theme-provider";
+import { feedAlternateTypes, siteConfig, siteUrl } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
-	title: "Alexis Rico - SferaDev",
-	description:
-		"Portfolio of Alexis Rico, showcasing my work in development, and open source contributions.",
+	// Absolute URLs for OpenGraph, canonicals and the generated social images all
+	// resolve against the canonical apex host.
+	metadataBase: new URL(siteUrl),
+	title: { default: siteConfig.title, template: `%s — ${siteConfig.author.name}` },
+	description: siteConfig.description,
+	applicationName: siteConfig.name,
+	keywords: siteConfig.keywords,
+	authors: [{ name: siteConfig.author.name, url: siteUrl }],
+	creator: siteConfig.author.name,
+	publisher: siteConfig.author.name,
+	// Pages that set their own canonical replace this object wholesale, so they
+	// re-declare `types` to keep advertising the feed.
+	alternates: { canonical: "/", types: feedAlternateTypes },
+	openGraph: {
+		type: "website",
+		url: siteUrl,
+		siteName: siteConfig.title,
+		title: siteConfig.title,
+		description: siteConfig.description,
+		locale: siteConfig.locale,
+	},
+	twitter: {
+		card: "summary_large_image",
+		title: siteConfig.title,
+		description: siteConfig.description,
+	},
+	robots: {
+		index: true,
+		follow: true,
+		googleBot: {
+			index: true,
+			follow: true,
+			"max-image-preview": "large",
+			"max-snippet": -1,
+			"max-video-preview": -1,
+		},
+	},
 };
 
 export default function RootLayout({

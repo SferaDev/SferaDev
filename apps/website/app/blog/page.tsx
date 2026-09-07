@@ -1,6 +1,27 @@
+import type { Metadata } from "next";
 import { Footer } from "@/components/footer";
 import { getAllPosts, getAllTags } from "@/lib/blog";
+import { absoluteUrl, feedAlternateTypes, siteConfig } from "@/lib/site";
 import { BlogList } from "./client";
+
+const title = "Blog";
+const description =
+	"Articles by Alexis Rico on serverless databases, TypeScript, open source and developer tooling.";
+
+export const metadata: Metadata = {
+	title,
+	description,
+	alternates: { canonical: "/blog", types: feedAlternateTypes },
+	openGraph: {
+		type: "website",
+		url: absoluteUrl("/blog"),
+		siteName: siteConfig.title,
+		title,
+		description,
+		locale: siteConfig.locale,
+	},
+	twitter: { card: "summary_large_image", title, description },
+};
 
 export default function BlogPage() {
 	const posts = getAllPosts();

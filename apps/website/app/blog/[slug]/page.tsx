@@ -1,11 +1,13 @@
 import rehypeShiki from "@shikijs/rehype";
 import { ArrowLeft, ExternalLink } from "lucide-react";
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { MarkdownAsync } from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { Footer } from "@/components/footer";
 import { getAllSlugs, getPostBySlug, type OutboundLink } from "@/lib/blog";
+import { absoluteUrl, feedAlternateTypes, siteConfig } from "@/lib/site";
 
 interface BlogPostPageProps {
 	params: Promise<{
@@ -47,6 +49,37 @@ const outboundLinkLabel = {
 
 export async function generateStaticParams() {
 	return getAllSlugs().map((slug) => ({ slug }));
+}
+
+export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
+	const { slug } = await params;
+	const post = getPostBySlug(slug);
+	if (!post) return {};
+
+	const url = absoluteUrl(`/blog/${slug}`);
+	const description = post.description ?? post.excerpt;
+
+	return {
+		title: post.title,
+		description,
+		// Posts that were first published elsewhere carry an `originalUrl` in their
+		// frontmatter; the canonical points back at that original so search engines
+		// credit the publication that ran it first. Posts without one are canonical
+		// to their own URL here.
+		alternates: { canonical: post.originalUrl ?? url, types: feedAlternateTypes },
+		openGraph: {
+			type: "article",
+			url,
+			siteName: siteConfig.title,
+			title: post.title,
+			description,
+			locale: siteConfig.locale,
+			publishedTime: new Date(post.date).toISOString(),
+			authors: [siteConfig.author.name],
+			tags: post.tags,
+		},
+		twitter: { card: "summary_large_image", title: post.title, description },
+	};
 }
 
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
