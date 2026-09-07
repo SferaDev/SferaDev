@@ -37,31 +37,76 @@ export const workExperience = [
 	},
 ];
 
-export const openSourceProjects = [
+export const sferarc = {
+	name: "sferarc",
+	tagline: "Developer tooling company",
+	intro:
+		"sferarc is my developer tooling company, separate from my work at Xata. It is where infrastructure I build ships as a product rather than as a library. Its flagship product is PgBeam.",
+	products: [
+		{
+			name: "PgBeam",
+			tagline: "Low-latency Postgres reads, globally distributed",
+			description:
+				"A globally distributed proxy that brings low-latency reads to any PostgreSQL database. It is connection agnostic: swap the connection string and keep the driver, ORM and client you already use.",
+			url: "https://pgbeam.com",
+		},
+	],
+};
+
+/**
+ * Packages shown ahead of the rest of the grid: the platform and AI integration work.
+ * Names must match the npm package names read from the workspace by `lib/packages.ts`.
+ */
+export const featuredPackageNames = ["vercel-api-js", "v0-api", "ai-gateway-proxy"];
+
+export const openSourceIntro =
+	"Most of my open source work is platform integration: type-safe clients generated from upstream OpenAPI specs and regenerated as those specs change, plus the tooling around Vercel's AI Gateway. Everything here is versioned and published on npm, checked for tree-shakability in CI, and documented under /docs.";
+
+export interface CuratedProject {
+	name: string;
+	/** Where the card title points. */
+	url: string;
+	description: string;
+	links: { label: string; url: string }[];
+}
+
+/** Platform work that ships outside npm, so `lib/packages.ts` cannot pick it up. */
+export const platformHighlights: CuratedProject[] = [
 	{
-		name: "OpenAPI Clients",
-		description: "Unofficial type-safe API clients for multiple OpenAPI specs.",
-		link: "https://github.com/SferaDev/openapi-clients",
+		name: "Vercel AI Gateway for VS Code",
+		url: "https://marketplace.visualstudio.com/items?itemName=SferaDev.vscode-extension-vercel-ai",
+		description:
+			"A VS Code extension that exposes Vercel AI Gateway models through the editor's native Language Model API, so they appear wherever VS Code offers a model picker.",
+		links: [
+			{
+				label: "Marketplace",
+				url: "https://marketplace.visualstudio.com/items?itemName=SferaDev.vscode-extension-vercel-ai",
+			},
+			{ label: "Docs", url: "/docs/packages/vscode-extension-vercel-ai" },
+		],
 	},
+];
+
+/** Open source I contribute to but do not publish myself. */
+export const upstreamContributions: CuratedProject[] = [
 	{
 		name: "Keycloak",
-		description: "Contributor to the authentication and authorization system.",
-		link: "https://github.com/keycloak/keycloak/pulls?q=is%3Apr+author%3ASferaDev",
-	},
-	{
-		name: "Rollup CDN Import Plugin",
-		description: "Plugin to auto-import ESM compatible dependencies on Rollup.",
-		link: "https://github.com/SferaDev/rollup-plugin-import-cdn",
+		url: "https://github.com/keycloak/keycloak/pulls?q=is%3Apr+author%3ASferaDev",
+		description:
+			"Contributions to the identity and access management server, mostly around organizations and the admin APIs.",
+		links: [
+			{
+				label: "Pull requests",
+				url: "https://github.com/keycloak/keycloak/pulls?q=is%3Apr+author%3ASferaDev",
+			},
+		],
 	},
 	{
 		name: "Xata SDK",
-		description: "TypeScript type-safe client for Xata databases.",
-		link: "https://github.com/xataio/client-ts",
-	},
-	{
-		name: "PgBeam",
-		description: "PgBeam, a globally distributed proxy for low-latency reads.",
-		link: "https://pgbeam.com",
+		url: "https://github.com/xataio/client-ts",
+		description:
+			"The TypeScript client for Xata, built around a schema-aware, fully typed query builder.",
+		links: [{ label: "GitHub", url: "https://github.com/xataio/client-ts" }],
 	},
 ];
 
@@ -73,6 +118,6 @@ export const personalInfo = {
 		"Principal Software Engineer building serverless databases and developer tools. I specialize in TypeScript and Go, creating type-safe APIs and SDKs.",
 	bio: [
 		"I'm a Principal Software Engineer at Xata, where I work on serverless database infrastructure and developer tooling. My work focuses on building type-safe systems with TypeScript and Go, designing APIs that are intuitive to use, and creating SDKs that provide great developer experiences.",
-		"I'm also building PgBeam, a globally distributed proxy for low-latency reads to any PostgreSQL that optimizes queries by just swapping the connection string.",
+		"Alongside that I run sferarc, my developer tooling company, whose flagship product is PgBeam: a globally distributed proxy that brings low-latency reads to any PostgreSQL database by swapping the connection string.",
 	],
 };
