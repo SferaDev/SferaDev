@@ -194,18 +194,15 @@ Purely cosmetic to pnpm — verify with a byte-identical `pnpm-lock.yaml` after
 **every** pin and leaves the explaining comment stranded above the now-wrong value. Re-pinning is a
 default step of this review, not a contingency.
 
-Identical in #594, #601, #626 and #635: `typescript` 6.0.3 → 7.0.2 **and** the `@kubb/*` set,
-together, every time.
+Only some pins turn CI red — an unmet peer trips no gate at all — so **re-check every pin, not
+just whichever one broke the build.** A green `Check` is not evidence the other holds survived.
+`grep -n "KEEP-BACK" -A6 pnpm-workspace.yaml` and compare each value, then verify what actually
+resolved (an override can defeat a re-pin — see `pin-governance.md`).
 
-Only the TypeScript one turns CI red; the `@kubb` one is an unmet peer that no gate catches — so
-**re-check every pin, not just whichever one broke the build.** A green `Check` is not evidence the
-other holds survived. `grep -n "KEEP-BACK" -A6 pnpm-workspace.yaml` and compare each value, then
-verify what actually resolved (an override can defeat a re-pin — see `pin-governance.md`).
-
-**All three of those holds were released on 2026-08-28 (#635)** — TypeScript 7 via the
-`@typescript/typescript6` shim, the `@kubb/*` family to 5.0.3 stable, and `better-auth` to 1.7.2
-with a schema migration. `pin-governance.md` records what each release cost. The *class* below is
-what survives; the specific packages are history.
+**The catalog has carried no `KEEP-BACK` since #635 released the last three** (2026-08-28), and
+still had none at #648. The one surviving hold is `@types/vscode`, which lives in
+`apps/vscode-ai-gateway/package.json` rather than the catalog and is coupled to `engines.vscode` —
+see the `vsce` entries below. Keep running the grep: it is how you learn a new hold was added.
 
 ### A "not all published" family blocks a whole major — check for a local replacement
 
@@ -333,6 +330,55 @@ are usually skipped:
    wrote carried `local:credential`, **byte-identical to the backfill**, which is the actual proof
    the backfill convention is right rather than plausible. Confirm the naive migration fails first,
    so you know the fix was load-bearing.
+
+### A patch bump *retracts* a schema change you already migrated to
+
+*Seen 2026-09-07 (#648): `better-auth` 1.7.2 → **1.7.3**, ten days after #635 did the 1.7 migration.*
+
+The mirror image of the entry above, and the more dangerous half: 1.7.3 **restored the 1.6 account
+schema**, dropping `issuer` from `@better-auth/core`'s table definition and going back to
+identifying accounts by `(providerId, accountId)`. The migration this repo had just written became
+the thing that broke it.
+
+Two mechanisms combined, and neither is visible to `pnpm check` or `pnpm test`:
+
+1. `issuer` is `NOT NULL` with no default and 1.7.3 never writes it — so **every insert into
+   `accounts` fails**.
+2. 1.7.3 added **schema validation at initialization, on by default in every environment**, and
+   `to-auth-endpoints.mjs` does `await ctx.checkSchema?.()` before dispatching *any* endpoint. A
+   mismatch is therefore not a degraded corner — **every auth request throws
+   `SchemaMismatchError`**.
+
+Symptom strings for the next reviewer: `SchemaMismatchError`, `SCHEMA_MISMATCH`,
+`Drizzle schema mismatch`, `unexpected-required-column`,
+`Required columns Better Auth never writes`.
+
+**The lesson is about direction, not about better-auth.** The entry above teaches "does the new
+version want a column the schema does not have?" This one adds the reverse: **does the schema have
+a required column the new version no longer writes?** Both are answered by the same grep of the
+shipped table definition, so ask them together:
+
+```bash
+CORE=$(ls -d node_modules/.pnpm/@better-auth+core@*/node_modules/@better-auth/core | head -1)
+grep -n -A40 "account: {" "$CORE/dist/db/get-tables.mjs"          # what it writes now
+grep -n -A20 'pgTable("accounts"' apps/platform/src/db/schema.ts  # what we require
+```
+
+A column in the second list and not the first, `NOT NULL` with no default, is the bug. That is
+exactly the rule `schema-diff.mjs` implements, and it generalises past better-auth: **a required
+column the library never writes breaks every insert into that table.**
+
+The fix taken here was the reverse migration — drop the unique constraint *before* the column, per
+the [1.7 upgrade guide](https://www.better-auth.com/docs/guides/1-7-upgrade-guide) — plus removing
+the field from `schema.ts` so `drizzle-kit generate` emits it. No backfill in either direction:
+0001 derived `issuer` deterministically from `provider_id`, so nothing unrecoverable is lost.
+Prove it as the entry above prescribes: seed 1.6-shape rows, run 0001 then 0002 with
+`ON_ERROR_STOP=1`, and confirm `signUpEmail` fails before and succeeds after.
+
+**Holding the bump back was the wrong call here**, and the reasoning is reusable: upstream retracted
+the schema for the whole v1 line, so 1.7.2 is a dead end — the hold could never be released without
+doing this same cleanup. When a library *reverts* a change, a keep-back does not buy time, it just
+defers the same work.
 
 ---
 

@@ -81,9 +81,9 @@ straight past them and leaves the comment behind, still reading as if the hold w
 grep -n "KEEP-BACK" -A5 pnpm-workspace.yaml
 ```
 
-Current holds (2026-08-28 — verify against the file, not this list):
-
-- **`@types/vscode`** — see the section below; it is coupled to `engines.vscode`.
+Current holds (2026-09-07 — verify against the file, not this list): **none in the catalog.** The
+only hold in the repo is **`@types/vscode`**, which is not a catalog entry — see the section below;
+it is coupled to `engines.vscode`.
 
 **All three long-standing holds were released on 2026-08-28 (#635)**, so the catalog now tracks
 latest for `typescript`, the `@kubb/*` family and `better-auth`. What each release cost, because
