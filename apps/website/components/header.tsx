@@ -2,17 +2,10 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { MobileNav } from "@/components/mobile-nav";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { navigation } from "@/lib/navigation";
 import { cn } from "@/lib/utils";
-
-const navigation = [
-	{ href: "/#about", label: "About" },
-	{ href: "/#experience", label: "Experience" },
-	{ href: "/#projects", label: "Projects" },
-	{ href: "/blog", label: "Blog" },
-	// `/docs` is a Vercel rewrite to Mintlify, so there is no RSC payload to prefetch.
-	{ href: "/docs", label: "Docs", prefetch: false },
-];
 
 export function Header() {
 	const [scrolled, setScrolled] = useState(false);
@@ -55,6 +48,7 @@ export function Header() {
 						))}
 					</nav>
 					<ThemeToggle />
+					<MobileNav items={navigation} />
 				</div>
 			</div>
 		</header>
