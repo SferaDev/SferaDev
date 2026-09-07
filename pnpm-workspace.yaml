@@ -41,7 +41,6 @@ catalog:
   drizzle-orm: 0.45.2
   effect: 3.22.1
   es-module-lexer: 2.3.2
-  framer-motion: 13.2.0
   geist: 1.7.2
   gray-matter: 4.0.3
   html-to-image: 1.11.13
