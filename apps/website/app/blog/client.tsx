@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 
-import type { BlogPost } from "@/lib/blog";
+import type { BlogPost, OutboundLink } from "@/lib/blog";
 
 interface BlogListProps {
 	posts: BlogPost[];
@@ -14,10 +14,11 @@ const filterBase = "rounded-md border px-3 py-1.5 font-mono text-xs motion-safe:
 const filterSelected = "border-brand bg-accent text-brand";
 const filterIdle = "border-border bg-card text-muted-foreground hover:text-foreground";
 
-function originalHost(post: BlogPost): string | null {
-	if (!post.originalUrl) return null;
-	return new URL(post.originalUrl).hostname.replace(/^www\./, "");
-}
+/** A republished post credits where its text came from; a link post just points outwards. */
+const outboundLinkLabel = {
+	republication: "Originally on",
+	related: "View on",
+} as const satisfies Record<OutboundLink["kind"], string>;
 
 export function BlogList({ posts, tags }: BlogListProps) {
 	const [selectedTag, setSelectedTag] = useState<string | null>(null);
@@ -56,7 +57,7 @@ export function BlogList({ posts, tags }: BlogListProps) {
 
 			<ul className="space-y-4">
 				{filteredPosts.map((post) => {
-					const host = originalHost(post);
+					const outbound = post.outboundLink;
 					return (
 						<li key={post.slug}>
 							<article className="rounded-lg border border-border bg-card p-4 motion-safe:transition-colors hover:border-brand sm:p-5">
@@ -84,7 +85,11 @@ export function BlogList({ posts, tags }: BlogListProps) {
 											timeZone: "UTC",
 										})}
 									</time>
-									{host && <span>Originally on {host}</span>}
+									{outbound && (
+										<span>
+											{outboundLinkLabel[outbound.kind]} {outbound.host}
+										</span>
+									)}
 									{post.tags.map((tag) => (
 										<span key={tag} className="rounded-sm bg-muted px-2 py-0.5">
 											{tag}

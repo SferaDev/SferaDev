@@ -4,7 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { MarkdownAsync } from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { getAllSlugs, getPostBySlug } from "@/lib/blog";
+import { getAllSlugs, getPostBySlug, type OutboundLink } from "@/lib/blog";
 
 interface BlogPostPageProps {
 	params: Promise<{
@@ -34,6 +34,16 @@ const shikiStyles = `
 }
 `;
 
+/**
+ * `originalUrl` and `externalUrl` both surface a link, but they must not claim the same
+ * thing: one says this text lives somewhere else, the other only points at related
+ * material.
+ */
+const outboundLinkLabel = {
+	republication: "Originally published on",
+	related: "View on",
+} as const satisfies Record<OutboundLink["kind"], string>;
+
 export async function generateStaticParams() {
 	return getAllSlugs().map((slug) => ({ slug }));
 }
@@ -42,10 +52,6 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 	const { slug } = await params;
 	const post = getPostBySlug(slug);
 	if (!post) notFound();
-
-	const originalHost = post.originalUrl
-		? new URL(post.originalUrl).hostname.replace(/^www\./, "")
-		: null;
 
 	return (
 		<>
@@ -92,23 +98,22 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 							</span>
 						))}
 					</div>
-
-					{post.originalUrl && originalHost && (
-						<p className="mt-6 text-sm text-muted-foreground">
-							Originally published on{" "}
-							<a
-								href={post.originalUrl}
-								target="_blank"
-								rel="noopener noreferrer"
-								className="inline-flex items-center gap-1 text-brand underline underline-offset-4 hover:no-underline"
-							>
-								{originalHost}
-								<ExternalLink className="size-3.5" aria-hidden="true" />
-							</a>
-						</p>
-					)}
 				</header>
 
+				{post.outboundLink && (
+					<aside className="mb-10 rounded-lg border border-border bg-card p-4 text-sm text-muted-foreground">
+						{outboundLinkLabel[post.outboundLink.kind]}{" "}
+						<a
+							href={post.outboundLink.url}
+							target="_blank"
+							rel="noopener noreferrer"
+							className="inline-flex items-center gap-1 font-medium text-brand underline underline-offset-4 hover:no-underline"
+						>
+							{post.outboundLink.host}
+							<ExternalLink className="size-3.5" aria-hidden="true" />
+						</a>
+					</aside>
+				)}
 				{post.content && (
 					<article
 						className={[
