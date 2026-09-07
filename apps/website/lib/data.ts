@@ -45,9 +45,9 @@ export const sferarc = {
 	products: [
 		{
 			name: "PgBeam",
-			tagline: "Low-latency Postgres reads, globally distributed",
+			tagline: "Safe Postgres access for AI agents",
 			description:
-				"A globally distributed proxy that brings low-latency reads to any PostgreSQL database. It is connection agnostic: swap the connection string and keep the driver, ORM and client you already use.",
+				"Hand an AI agent a scoped Postgres connection instead of a superuser one. Read-only access, table allowlists, PII masking, budgets, a kill-switch and a full audit trail, all enforced in the wire protocol. Any Postgres, no code changes.",
 			url: "https://pgbeam.com",
 		},
 	],
@@ -118,6 +118,6 @@ export const personalInfo = {
 		"Principal Software Engineer building serverless databases and developer tools. I specialize in TypeScript and Go, creating type-safe APIs and SDKs.",
 	bio: [
 		"I'm a Principal Software Engineer at Xata, where I work on serverless database infrastructure and developer tooling. My work focuses on building type-safe systems with TypeScript and Go, designing APIs that are intuitive to use, and creating SDKs that provide great developer experiences.",
-		"Alongside that I run sferarc, my developer tooling company, whose flagship product is PgBeam: a globally distributed proxy that brings low-latency reads to any PostgreSQL database by swapping the connection string.",
+		"Alongside that I run sferarc, my developer tooling company, whose flagship product is PgBeam: it gives AI agents a scoped Postgres connection instead of a superuser one, enforcing read-only access, table allowlists, PII masking and a full audit trail in the wire protocol.",
 	],
 };
