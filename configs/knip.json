@@ -9,24 +9,6 @@
 			"entry": ["app/**/*.{ts,tsx}", "lib/**/*.ts", "components/**/*.tsx"],
 			"project": ["**/*.{ts,tsx}"]
 		},
-		"apps/print-bridge": {
-			"project": ["src/**/*.ts"],
-			"includeEntryExports": false
-		},
-		"apps/photocall": {
-			"entry": [
-				"vercel.ts",
-				"app/**/*.{ts,tsx}",
-				"components/**/*.tsx",
-				"lib/**/*.ts",
-				"hooks/**/*.ts",
-				"actions/**/*.ts",
-				"tests/**/*.{ts,tsx}",
-				"scripts/**/*.ts"
-			],
-			"project": ["**/*.{ts,tsx}"],
-			"includeEntryExports": false
-		},
 		"apps/openapi": {
 			"entry": ["src/app/**/*.{ts,tsx}", "src/lib/**/*.ts", "src/components/**/*.tsx"],
 			"project": ["src/**/*.{ts,tsx}"],
@@ -35,14 +17,6 @@
 		"apps/vscode-ai-gateway": {
 			"project": ["src/**/*.ts"],
 			"ignoreDependencies": ["@types/json-schema"]
-		},
-		"apps/platform": {
-			"project": ["src/**/*.ts"],
-			"includeEntryExports": false
-		},
-		"packages/platform-sdk": {
-			"entry": ["src/index.ts", "src/**/*.test.ts"],
-			"project": ["src/**/*.ts"]
 		},
 		"packages/ai-gateway-proxy": {
 			"entry": ["src/index.ts"],

@@ -1,9 +1,0 @@
-{
-	"extends": "@sferadev/tsconfig/base.json",
-	"compilerOptions": {
-		"module": "ESNext",
-		"moduleResolution": "bundler"
-	},
-	"include": ["."],
-	"exclude": ["dist", "node_modules"]
-}
