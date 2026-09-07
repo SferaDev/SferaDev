@@ -4,6 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { MarkdownAsync } from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { Footer } from "@/components/footer";
 import { getAllSlugs, getPostBySlug, type OutboundLink } from "@/lib/blog";
 
 interface BlogPostPageProps {
@@ -136,6 +137,8 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 					</article>
 				)}
 			</main>
+
+			<Footer />
 		</>
 	);
 }
