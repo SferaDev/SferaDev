@@ -63,10 +63,14 @@ TURBO_FORCE=true pnpm turbo run tsc --continue 2>&1 | grep "error TS" | sed 's/^
 diff /tmp/main-tsc.txt /tmp/pr-tsc.txt
 ```
 
-**Baseline as of 2026-08-28: 67 errors on `main`**, all in `apps/vscode-ai-gateway` (missing
-`@types/node`, plus two `LanguageModelChatCapabilities` properties that exist in no `@types/vscode`
-version) and in generated API-client sources. An identical list on both sides is the pass
-condition; treat the count as a fingerprint to re-measure, not a number to trust.
+**Baseline as of 2026-09-07 (#648): 27 *unique* `error TS` lines on `main`**, all in
+`apps/vscode-ai-gateway` (missing `@types/node`, plus `LanguageModelChatCapabilities` properties
+that exist in no `@types/vscode` version). The raw line count is larger and drifts; the deduped
+list is the fingerprint. An identical list on both sides is the pass condition — re-measure it
+every run rather than trusting the number written here.
+
+`apps/photocall/tsconfig.tsbuildinfo` is **committed**, so running `tsc` dirties the working tree.
+Restore it before committing; it is not part of any dependency change.
 
 ---
 

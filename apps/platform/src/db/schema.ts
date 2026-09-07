@@ -94,33 +94,23 @@ export const sessions = pgTable("sessions", {
 	updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 
-export const accounts = pgTable(
-	"accounts",
-	{
-		id: text("id").primaryKey(),
-		userId: text("user_id")
-			.references(() => users.id, { onDelete: "cascade" })
-			.notNull(),
-		accountId: text("account_id").notNull(),
-		// better-auth 1.7 keys accounts on (issuer, accountId) rather than (providerId,
-		// accountId), so an account id is only ever trusted within the issuer that minted it.
-		// Built-in social providers get `local:oauth:<providerId>`; credential accounts get
-		// `local:credential`. See createOAuthAccountIssuer/createLocalAccountIssuer in
-		// @better-auth/core.
-		issuer: text("issuer").notNull(),
-		providerId: text("provider_id").notNull(),
-		accessToken: text("access_token"),
-		refreshToken: text("refresh_token"),
-		accessTokenExpiresAt: timestamp("access_token_expires_at"),
-		refreshTokenExpiresAt: timestamp("refresh_token_expires_at"),
-		scope: text("scope"),
-		idToken: text("id_token"),
-		password: text("password"),
-		createdAt: timestamp("created_at").defaultNow().notNull(),
-		updatedAt: timestamp("updated_at").defaultNow().notNull(),
-	},
-	(table) => [unique().on(table.issuer, table.accountId)],
-);
+export const accounts = pgTable("accounts", {
+	id: text("id").primaryKey(),
+	userId: text("user_id")
+		.references(() => users.id, { onDelete: "cascade" })
+		.notNull(),
+	accountId: text("account_id").notNull(),
+	providerId: text("provider_id").notNull(),
+	accessToken: text("access_token"),
+	refreshToken: text("refresh_token"),
+	accessTokenExpiresAt: timestamp("access_token_expires_at"),
+	refreshTokenExpiresAt: timestamp("refresh_token_expires_at"),
+	scope: text("scope"),
+	idToken: text("id_token"),
+	password: text("password"),
+	createdAt: timestamp("created_at").defaultNow().notNull(),
+	updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
 
 export const verifications = pgTable("verifications", {
 	id: text("id").primaryKey(),
