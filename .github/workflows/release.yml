@@ -47,3 +47,17 @@ jobs:
           github-token: ${{ secrets.GIT_TOKEN }}
         env:
           VSCE_PAT: ${{ secrets.VSCE_PAT }}
+
+      # The version PR only ever contains what `changeset version` generated — bumped
+      # manifests and the assembled changelogs — so there is nothing here for a human to
+      # decide beyond "did it still build", which is exactly what the required `Check` job
+      # answers. Merging it publishes, so releases follow changesets landing on main.
+      #
+      # Uses the PAT rather than `github.token` for the same reason the PR itself does:
+      # a merge attributed to the Actions bot pushes to main without triggering this
+      # workflow, and the publish would never run.
+      - name: Enable auto-merge on the version PR
+        if: steps.changesets.outputs.pr-number
+        env:
+          GH_TOKEN: ${{ secrets.GIT_TOKEN }}
+        run: gh pr merge --squash --auto "${{ steps.changesets.outputs.pr-number }}"
