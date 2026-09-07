@@ -28,7 +28,7 @@ export function GET(): Response {
 		"## Blog posts",
 		"",
 		...posts.map((post) => {
-			const summary = post.description ?? post.excerpt;
+			const summary = post.description;
 			return `- [${post.title}](${absoluteUrl(`/blog/${post.slug}`)})${summary ? `: ${summary}` : ""}`;
 		}),
 		"",

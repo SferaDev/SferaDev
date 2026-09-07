@@ -30,11 +30,13 @@ export function GET(): Response {
 	});
 
 	for (const post of posts) {
+		// An item with no description is valid RSS, so an undefined `description`
+		// is passed through rather than filled in with the title or a body excerpt.
 		feed.addItem({
 			title: post.title,
 			id: absoluteUrl(`/blog/${post.slug}`),
 			link: absoluteUrl(`/blog/${post.slug}`),
-			description: post.description ?? post.excerpt,
+			description: post.description,
 			date: post.date,
 			category: post.tags.map((name) => ({ name })),
 			author: [feedAuthor],

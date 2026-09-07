@@ -57,7 +57,11 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
 	if (!post) return {};
 
 	const url = absoluteUrl(`/blog/${slug}`);
-	const description = post.description ?? post.excerpt;
+	// `description` is optional in the frontmatter schema. When a post omits it the
+	// description tags are left out rather than synthesised: the title would only
+	// repeat itself, and a slice of the raw Markdown body would leak link and
+	// heading syntax into search results and share previews.
+	const description = post.description;
 
 	return {
 		title: post.title,

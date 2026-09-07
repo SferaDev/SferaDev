@@ -91,7 +91,7 @@ export function blogPostingSchema(post: BlogPost): WithContext<BlogPosting> {
 		"@context": "https://schema.org",
 		"@type": "BlogPosting",
 		headline: post.title,
-		description: post.description ?? post.excerpt,
+		description: post.description,
 		url: postUrl,
 		mainEntityOfPage: { "@type": "WebPage", "@id": canonicalUrl },
 		image: absoluteUrl(`/blog/${post.slug}/opengraph-image`),
