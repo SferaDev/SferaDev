@@ -1,5 +1,5 @@
 import { getAllPosts } from "@/lib/blog";
-import { absoluteUrl, feedPath, siteConfig } from "@/lib/site";
+import { absoluteUrl, feedPath, siteConfig, siteUrl } from "@/lib/site";
 
 // Built from filesystem content, so it can be prerendered like the other feeds.
 export const dynamic = "force-static";
@@ -20,8 +20,8 @@ export function GET(): Response {
 		"",
 		"## Pages",
 		"",
-		`- [Home](${absoluteUrl("/")}): ${siteConfig.description}`,
-		`- [Blog](${absoluteUrl("/blog")}): Articles about databases, TypeScript and developer tooling.`,
+		`- [Home](${siteUrl}): ${siteConfig.description}`,
+		`- [Blog](${absoluteUrl("/blog")}): ${siteConfig.blogDescription}`,
 		`- [Docs](${absoluteUrl("/docs")}): Project documentation.`,
 		`- [RSS feed](${absoluteUrl(feedPath)}): Blog posts as RSS.`,
 		"",

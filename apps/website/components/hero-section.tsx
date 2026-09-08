@@ -1,4 +1,4 @@
-import { FileText, Mail } from "lucide-react";
+import { Mail } from "lucide-react";
 import Image from "next/image";
 import type React from "react";
 import { AnimatedGradientText } from "@/components/animated-gradient-text";
@@ -62,11 +62,6 @@ export function HeroSection() {
 						aria-label={`Visit ${personalInfo.name}'s GitHub profile`}
 					>
 						<GithubIcon /> GitHub
-					</a>
-				</Button>
-				<Button variant="outline" size="lg" asChild>
-					<a href="/resume.pdf" target="_blank" rel="noopener noreferrer">
-						<FileText aria-hidden="true" /> Résumé
 					</a>
 				</Button>
 			</div>

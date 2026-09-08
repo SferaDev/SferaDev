@@ -5,6 +5,7 @@ import { absoluteUrl, siteConfig, siteUrl } from "@/lib/site";
 /** Stable node identifiers so the same entities are recognised across pages. */
 const personId = `${siteUrl}/#person`;
 const websiteId = `${siteUrl}/#website`;
+const organizationId = `${siteUrl}/#organization`;
 const blogId = `${siteUrl}/blog#blog`;
 
 /**
@@ -17,7 +18,7 @@ const authorNode = {
 	"@type": "Person",
 	"@id": personId,
 	name: siteConfig.author.name,
-	url: absoluteUrl("/"),
+	url: siteUrl,
 } as const;
 
 interface JsonLdProps {
@@ -52,19 +53,32 @@ export function personGraph(): Graph {
 				"@id": personId,
 				name: author.name,
 				alternateName: siteConfig.name,
-				url: absoluteUrl("/"),
-				image: absoluteUrl("/opengraph-image"),
+				url: siteUrl,
+				// A photo of the person, not the branded social card: this is what
+				// feeds knowledge panels.
+				image: absoluteUrl("/profile.png"),
 				email: author.email,
 				jobTitle: author.jobTitle,
 				description: author.description,
 				sameAs: author.profiles,
-				knowsAbout: siteConfig.keywords,
+				knowsAbout: author.knowsAbout,
 				worksFor: { "@type": "Organization", name: author.worksFor.name, url: author.worksFor.url },
+			},
+			{
+				// `founder` is a property of Organization ("who founded this org"), so the
+				// company is its own node pointing back at the person rather than a
+				// `founder` key hung off the Person.
+				"@type": "Organization",
+				"@id": organizationId,
+				name: author.founderOf.name,
+				url: author.founderOf.url,
+				description: author.founderOf.description,
+				founder: { "@id": personId },
 			},
 			{
 				"@type": "WebSite",
 				"@id": websiteId,
-				url: absoluteUrl("/"),
+				url: siteUrl,
 				name: siteConfig.title,
 				description: siteConfig.description,
 				inLanguage: "en",

@@ -26,6 +26,11 @@ export const siteConfig = {
 	tagline: "Serverless databases, developer tools and type-safe APIs in TypeScript and Go.",
 	/** OpenGraph locale for the site; the HTML lang attribute is `en`. */
 	locale: "en_US",
+	/**
+	 * `<meta name="keywords">` terms. Includes the author's own name and handle,
+	 * which is appropriate here but NOT in schema.org `knowsAbout` — see
+	 * {@link siteConfig.author.knowsAbout}.
+	 */
 	keywords: [
 		"Alexis Rico",
 		"SferaDev",
@@ -35,6 +40,9 @@ export const siteConfig = {
 		"Developer tools",
 		"Open source",
 	],
+	/** Shared description for the blog, used by its page metadata and by llms.txt. */
+	blogDescription:
+		"Articles by Alexis Rico on serverless databases, TypeScript, open source and developer tooling.",
 	author: {
 		name: "Alexis Rico",
 		jobTitle: "Principal Software Engineer",
@@ -43,7 +51,28 @@ export const siteConfig = {
 			"Principal Software Engineer building serverless databases and developer tools. I specialize in TypeScript and Go, creating type-safe APIs and SDKs.",
 		/** Profiles linked from JSON-LD via `sameAs`. */
 		profiles: ["https://github.com/SferaDev"],
+		/**
+		 * Subject matter for schema.org `knowsAbout`. Deliberately separate from
+		 * {@link siteConfig.keywords}: `knowsAbout` states what a person knows about,
+		 * so listing their own name there is both wrong and reads as keyword stuffing.
+		 */
+		knowsAbout: [
+			"TypeScript",
+			"Go",
+			"PostgreSQL",
+			"Serverless databases",
+			"Developer tools",
+			"API design",
+			"OpenAPI",
+			"Open source",
+		],
 		worksFor: { name: "Xata", url: "https://xata.io" },
+		/** Company the author runs alongside their employment; surfaced in JSON-LD. */
+		founderOf: {
+			name: "sferarc",
+			url: "https://pgbeam.com",
+			description: "Developer tooling company.",
+		},
 	},
 };
 
