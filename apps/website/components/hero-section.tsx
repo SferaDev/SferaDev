@@ -1,8 +1,6 @@
-"use client";
-
-import { motion } from "framer-motion";
-import { Mail } from "lucide-react";
+import { FileText, Mail } from "lucide-react";
 import Image from "next/image";
+import type React from "react";
 import { AnimatedGradientText } from "@/components/animated-gradient-text";
 import { AuroraBackground } from "@/components/aurora-background";
 import { Button } from "@/components/ui/button";
@@ -27,69 +25,50 @@ export function HeroSection() {
 	return (
 		<section
 			id="hero"
-			className="relative flex flex-col items-center justify-center text-center min-h-[calc(100vh-4rem)] -mt-8 select-none"
+			className="relative flex min-h-[calc(100svh-4rem)] flex-col items-center justify-center gap-8 py-20 text-center"
 		>
 			<AuroraBackground />
-			<div className="relative z-10 flex flex-col items-center">
-				<motion.div
-					initial={{ opacity: 0, y: 20 }}
-					animate={{ opacity: 1, y: 0 }}
-					transition={{ duration: 0.8 }}
-				>
-					<motion.div
-						className="relative mx-auto mb-6 border-4 border-border shadow-lg w-64 h-64 rounded-full overflow-hidden"
-						whileHover={{ scale: 1.05 }}
-					>
-						<Image
-							src="/profile.png"
-							alt={personalInfo.name}
-							fill
-							className="object-cover"
-							priority
-							sizes="256px"
-							fetchPriority="high"
-						/>
-					</motion.div>
-					<AnimatedGradientText className="text-center mt-12 mb-6">
-						<h1 className="text-5xl md:text-7xl p-2 font-bold font-sans tracking-normal">
-							{personalInfo.name}
-						</h1>
-					</AnimatedGradientText>
-				</motion.div>
-				<motion.p
-					className="max-w-2xl mx-auto text-lg text-muted-foreground my-8"
-					initial={{ opacity: 0, y: 20 }}
-					animate={{ opacity: 1, y: 0 }}
-					transition={{ duration: 0.8, delay: 0.2 }}
-				>
+
+			<Image
+				src="/profile.png"
+				alt={personalInfo.name}
+				width={192}
+				height={192}
+				priority
+				fetchPriority="high"
+				className="size-36 animate-in rounded-full object-cover shadow-lg fill-mode-both fade-in zoom-in-95 ring-1 ring-border duration-700 sm:size-44"
+			/>
+
+			<div className="flex flex-col items-center gap-5">
+				<h1 className="animate-in text-balance font-bold text-5xl tracking-tight delay-100 duration-700 fill-mode-both fade-in slide-in-from-bottom-3 sm:text-6xl md:text-7xl">
+					<AnimatedGradientText>{personalInfo.name}</AnimatedGradientText>
+				</h1>
+				<p className="max-w-2xl animate-in text-pretty text-lg text-muted-foreground leading-relaxed delay-200 duration-700 fill-mode-both fade-in slide-in-from-bottom-3">
 					{personalInfo.description}
-				</motion.p>
-				<motion.div
-					className="flex justify-center gap-4"
-					initial={{ opacity: 0, y: 20 }}
-					animate={{ opacity: 1, y: 0 }}
-					transition={{ duration: 0.8, delay: 0.4 }}
-				>
-					<Button
-						asChild
-						size="lg"
-						className="bg-foreground text-background hover:bg-foreground/90"
+				</p>
+			</div>
+
+			<div className="flex animate-in flex-wrap justify-center gap-3 delay-300 duration-700 fill-mode-both fade-in slide-in-from-bottom-3">
+				<Button asChild size="lg">
+					<a href={`mailto:${personalInfo.email}`}>
+						<Mail aria-hidden="true" /> Email
+					</a>
+				</Button>
+				<Button variant="secondary" size="lg" asChild>
+					<a
+						href={personalInfo.github}
+						target="_blank"
+						rel="noopener noreferrer"
+						aria-label={`Visit ${personalInfo.name}'s GitHub profile`}
 					>
-						<a href={`mailto:${personalInfo.email}`}>
-							<Mail className="mr-2 h-4 w-4" /> Email
-						</a>
-					</Button>
-					<Button variant="secondary" size="lg" asChild>
-						<a
-							href={personalInfo.github}
-							target="_blank"
-							rel="noopener noreferrer"
-							aria-label={`Visit ${personalInfo.name}'s GitHub profile`}
-						>
-							<GithubIcon className="mr-2 h-4 w-4" /> GitHub
-						</a>
-					</Button>
-				</motion.div>
+						<GithubIcon /> GitHub
+					</a>
+				</Button>
+				<Button variant="outline" size="lg" asChild>
+					<a href="/resume.pdf" target="_blank" rel="noopener noreferrer">
+						<FileText aria-hidden="true" /> Résumé
+					</a>
+				</Button>
 			</div>
 		</section>
 	);

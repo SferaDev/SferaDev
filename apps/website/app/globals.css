@@ -1,101 +1,218 @@
 @import "tailwindcss";
+@import "tw-animate-css";
 
-@layer base {
-	:root {
-		--background: 0 0% 100%;
-		--foreground: 0 0% 9%;
-		--card: 0 0% 100%;
-		--card-foreground: 0 0% 9%;
-		--popover: 0 0% 100%;
-		--popover-foreground: 0 0% 9%;
-		--primary: 0 0% 9%;
-		--primary-foreground: 0 0% 98%;
-		--secondary: 0 0% 96%;
-		--secondary-foreground: 0 0% 9%;
-		--muted: 0 0% 96%;
-		--muted-foreground: 0 0% 45%;
-		--accent: 0 0% 96%;
-		--accent-foreground: 0 0% 9%;
-		--destructive: 0 84.2% 60.2%;
-		--destructive-foreground: 0 0% 98%;
-		--border: 0 0% 90%;
-		--input: 0 0% 90%;
-		--ring: 0 0% 9%;
-		--radius: 0.5rem;
+@plugin "@tailwindcss/typography";
 
-		/* Theme-aware colors for components */
-		--header-bg: 255 255 255;
-		--header-bg-scrolled: rgba(255, 255, 255, 0.8);
-		--timeline-line-from: 0 0% 85%;
-		--timeline-marker-bg: 0 0% 96%;
-		--aurora-gradient: var(--white-gradient);
-		--bento-shadow: rgba(0, 0, 0, 0.1);
-		--bento-hover: rgba(0, 0, 0, 0.05);
-	}
+@custom-variant dark (&:is(.dark *));
 
-	.dark {
-		--background: 0 0% 3.9%;
-		--foreground: 0 0% 98%;
-		--card: 0 0% 7%;
-		--card-foreground: 0 0% 98%;
-		--popover: 0 0% 3.9%;
-		--popover-foreground: 0 0% 98%;
-		--primary: 0 0% 98%;
-		--primary-foreground: 0 0% 9%;
-		--secondary: 0 0% 14.9%;
-		--secondary-foreground: 0 0% 98%;
-		--muted: 0 0% 14.9%;
-		--muted-foreground: 0 0% 63.9%;
-		--accent: 0 0% 14.9%;
-		--accent-foreground: 0 0% 98%;
-		--destructive: 0 62.8% 30.6%;
-		--destructive-foreground: 0 0% 98%;
-		--border: 0 0% 14.9%;
-		--input: 0 0% 14.9%;
-		--ring: 0 0% 83.1%;
+@theme inline {
+	--font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+	--font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, monospace;
 
-		/* Theme-aware colors for components */
-		--header-bg: 0 0 0;
-		--header-bg-scrolled: rgba(0, 0, 0, 0.5);
-		--timeline-line-from: 0 0% 27%;
-		--timeline-marker-bg: 0 0% 27%;
-		--aurora-gradient: var(--dark-gradient);
-		--bento-shadow: rgba(255, 255, 255, 0.12);
-		--bento-hover: rgba(0, 0, 0, 0.3);
-	}
+	--color-background: var(--background);
+	--color-foreground: var(--foreground);
+	--color-card: var(--card);
+	--color-card-foreground: var(--card-foreground);
+	--color-popover: var(--popover);
+	--color-popover-foreground: var(--popover-foreground);
+	--color-primary: var(--primary);
+	--color-primary-foreground: var(--primary-foreground);
+	--color-secondary: var(--secondary);
+	--color-secondary-foreground: var(--secondary-foreground);
+	--color-muted: var(--muted);
+	--color-muted-foreground: var(--muted-foreground);
+	--color-accent: var(--accent);
+	--color-accent-foreground: var(--accent-foreground);
+	--color-destructive: var(--destructive);
+	--color-destructive-foreground: var(--destructive-foreground);
+	--color-brand: var(--brand);
+	--color-brand-foreground: var(--brand-foreground);
+	--color-border: var(--border);
+	--color-input: var(--input);
+	--color-ring: var(--ring);
+
+	--radius-sm: calc(var(--radius) - 4px);
+	--radius-md: calc(var(--radius) - 2px);
+	--radius-lg: var(--radius);
+	--radius-xl: calc(var(--radius) + 4px);
+
+	--animate-aurora: aurora 24s linear infinite;
+}
+
+:root {
+	--radius: 0.75rem;
+
+	--background: oklch(0.985 0.003 265);
+	--foreground: oklch(0.21 0.024 265);
+	--card: oklch(1 0 0);
+	--card-foreground: oklch(0.21 0.024 265);
+	--popover: oklch(1 0 0);
+	--popover-foreground: oklch(0.21 0.024 265);
+	--primary: oklch(0.24 0.03 265);
+	--primary-foreground: oklch(0.985 0.003 265);
+	--secondary: oklch(0.955 0.006 265);
+	--secondary-foreground: oklch(0.24 0.03 265);
+	--muted: oklch(0.955 0.006 265);
+	--muted-foreground: oklch(0.505 0.02 265);
+	--accent: oklch(0.935 0.012 265);
+	--accent-foreground: oklch(0.24 0.03 265);
+	--destructive: oklch(0.577 0.22 27.3);
+	--destructive-foreground: oklch(0.985 0 0);
+	--border: oklch(0.9 0.008 265);
+	--input: oklch(0.9 0.008 265);
+	--ring: oklch(0.52 0.19 264);
+
+	--brand: oklch(0.52 0.19 264);
+	--brand-foreground: oklch(0.985 0.003 265);
+
+	--aurora-1: oklch(0.72 0.17 264 / 0.35);
+	--aurora-2: oklch(0.78 0.13 200 / 0.3);
+	--aurora-3: oklch(0.8 0.12 330 / 0.22);
+	--grid-line: oklch(0.21 0.024 265 / 0.06);
+}
+
+.dark {
+	--background: oklch(0.16 0.012 265);
+	--foreground: oklch(0.96 0.005 265);
+	--card: oklch(0.205 0.015 265);
+	--card-foreground: oklch(0.96 0.005 265);
+	--popover: oklch(0.205 0.015 265);
+	--popover-foreground: oklch(0.96 0.005 265);
+	--primary: oklch(0.92 0.006 265);
+	--primary-foreground: oklch(0.2 0.015 265);
+	--secondary: oklch(0.265 0.016 265);
+	--secondary-foreground: oklch(0.96 0.005 265);
+	--muted: oklch(0.265 0.016 265);
+	--muted-foreground: oklch(0.725 0.016 265);
+	--accent: oklch(0.305 0.02 265);
+	--accent-foreground: oklch(0.96 0.005 265);
+	--destructive: oklch(0.704 0.191 22.2);
+	--destructive-foreground: oklch(0.985 0 0);
+	--border: oklch(1 0 0 / 12%);
+	--input: oklch(1 0 0 / 16%);
+	--ring: oklch(0.65 0.16 264);
+
+	--brand: oklch(0.76 0.145 264);
+	--brand-foreground: oklch(0.18 0.02 265);
+
+	--aurora-1: oklch(0.6 0.21 264 / 0.4);
+	--aurora-2: oklch(0.6 0.16 200 / 0.3);
+	--aurora-3: oklch(0.55 0.2 330 / 0.28);
+	--grid-line: oklch(0.96 0.005 265 / 0.06);
 }
 
 @layer base {
+	*,
+	::after,
+	::before {
+		@apply border-border;
+	}
+
 	html {
 		scroll-behavior: smooth;
+		-webkit-text-size-adjust: 100%;
+	}
+
+	body {
+		@apply bg-background text-foreground font-sans antialiased;
+		text-rendering: optimizeLegibility;
+	}
+
+	:focus-visible {
+		@apply outline-ring outline-2 outline-offset-2;
+	}
+
+	::selection {
+		background-color: var(--brand);
+		color: var(--brand-foreground);
+	}
+
+	[id] {
+		scroll-margin-top: 6rem;
 	}
 }
 
-@layer utilities {
-	.animate-gradient {
-		animation: gradient 6s linear infinite;
+@keyframes aurora {
+	from {
+		background-position:
+			0% 50%,
+			100% 50%,
+			50% 0%;
+	}
+	to {
+		background-position:
+			100% 50%,
+			0% 50%,
+			50% 100%;
+	}
+}
+
+/*
+ * The gradient tiles every 320px, so shifting the background by exactly one
+ * tile loops seamlessly. Keep the two 320px values in sync.
+ */
+@keyframes gradient-sweep {
+	to {
+		background-position: 320px center;
+	}
+}
+
+@utility gradient-text {
+	background-image: repeating-linear-gradient(
+		110deg,
+		var(--foreground) 0px,
+		var(--brand) 160px,
+		var(--foreground) 320px
+	);
+	background-clip: text;
+	color: transparent;
+	animation: gradient-sweep 8s linear infinite;
+}
+
+/*
+ * Unlayered so it wins over the typography plugin's own `prose`/`prose-invert`
+ * utilities: the design tokens already flip per theme, so `prose` follows them.
+ */
+.prose {
+	--tw-prose-body: var(--muted-foreground);
+	--tw-prose-headings: var(--foreground);
+	--tw-prose-lead: var(--muted-foreground);
+	--tw-prose-links: var(--brand);
+	--tw-prose-bold: var(--foreground);
+	--tw-prose-counters: var(--muted-foreground);
+	--tw-prose-bullets: var(--border);
+	--tw-prose-hr: var(--border);
+	--tw-prose-quotes: var(--foreground);
+	--tw-prose-quote-borders: var(--border);
+	--tw-prose-captions: var(--muted-foreground);
+	--tw-prose-code: var(--foreground);
+	--tw-prose-pre-code: var(--card-foreground);
+	--tw-prose-pre-bg: var(--muted);
+	--tw-prose-th-borders: var(--border);
+	--tw-prose-td-borders: var(--border);
+}
+
+/*
+ * Entrance animations must never hide content. Elements marked `data-reveal`
+ * start hidden only when scripting is available and motion is welcome.
+ */
+@media (prefers-reduced-motion: reduce), (scripting: none) {
+	[data-reveal] {
+		opacity: 1 !important;
+		transform: none !important;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	html {
+		scroll-behavior: auto;
 	}
 
-	@keyframes gradient {
-		to {
-			background-position: 200% center;
-		}
-	}
-
-	.animate-aurora {
-		animation: aurora 20s linear infinite;
-	}
-
-	@keyframes aurora {
-		from {
-			background-position:
-				50% 50%,
-				50% 50%;
-		}
-		to {
-			background-position:
-				350% 50%,
-				350% 50%;
-		}
+	*,
+	::after,
+	::before {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
 	}
 }

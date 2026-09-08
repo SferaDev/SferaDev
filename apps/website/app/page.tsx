@@ -7,10 +7,10 @@ import { ProjectsSection } from "@/components/projects-section";
 export default function PortfolioPage() {
 	return (
 		<>
-			<main className="container mx-auto px-4 max-w-5xl">
+			<main className="mx-auto w-full max-w-5xl px-4 sm:px-6">
 				<HeroSection />
 
-				<div className="space-y-24 md:space-y-32 py-16">
+				<div className="space-y-24 py-16 md:space-y-32">
 					<AboutSection />
 					<ExperienceSection />
 					<ProjectsSection />

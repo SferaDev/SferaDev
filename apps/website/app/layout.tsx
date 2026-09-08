@@ -1,4 +1,6 @@
 import { GoogleAnalytics } from "@next/third-parties/google";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { GeistMono } from "geist/font/mono";
 import { GeistSans } from "geist/font/sans";
 import type { Metadata } from "next";
@@ -21,13 +23,19 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en" className={cn(GeistSans.variable, GeistMono.variable)} suppressHydrationWarning>
-			<body className="min-h-screen font-mono antialiased">
+			<body className="min-h-dvh">
 				<ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
-					<div className="min-h-screen bg-background text-foreground">
-						<Header />
-						{children}
-					</div>
+					<a
+						href="#main-content"
+						className="sr-only rounded-md bg-primary px-4 py-2 font-medium text-primary-foreground text-sm focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-100"
+					>
+						Skip to content
+					</a>
+					<Header />
+					<div id="main-content">{children}</div>
 				</ThemeProvider>
+				<Analytics />
+				<SpeedInsights />
 			</body>
 			<GoogleAnalytics gaId="G-BP4YFYF5ZM" />
 		</html>
