@@ -12,6 +12,7 @@
 	"dependencies": {
 		"@next/third-parties": "catalog:",
 		"@radix-ui/react-slot": "catalog:",
+		"@shikijs/rehype": "catalog:",
 		"@tailwindcss/typography": "catalog:",
 		"@vercel/analytics": "catalog:",
 		"@vercel/speed-insights": "catalog:",
@@ -26,6 +27,7 @@
 		"react": "catalog:",
 		"react-dom": "catalog:",
 		"react-markdown": "catalog:",
+		"remark-gfm": "catalog:",
 		"tailwind-merge": "catalog:",
 		"zod": "catalog:"
 	},

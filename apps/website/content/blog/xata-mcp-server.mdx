@@ -6,20 +6,18 @@ tags: [Xata, OpenAPI, MCP]
 originalUrl: https://xata.io/blog/built-xata-mcp-server
 ---
 
-# From OpenAPI spec to MCP: How we built Xata's MCP server
-
-Learn how we built an OpenAPI-driven MCP server using Kubb, custom code generators, and Vercel’s Next.js MCP adapter.([xata.io](https://xata.io/blog/built-xata-mcp-server?utm_source=chatgpt.com))
+Learn how we built an OpenAPI-driven MCP server using Kubb, custom code generators, and Vercel’s Next.js MCP adapter.
 
 ## What is MCP?
 
-Model Context Protocol (MCP) is an emerging standard that lets AI models securely interact with tools and APIs in real time. Building an MCP server means exposing a set of “tools” (operations) that a Large Language Model (LLM) can call to perform tasks, like fetching data or triggering actions via your backend. We generated our MCP server from our existing OpenAPI spec, making it the single source of truth—fast, consistent, and reliable.([xata.io](https://xata.io/blog/built-xata-mcp-server?utm_source=chatgpt.com))
+Model Context Protocol (MCP) is an emerging standard that lets AI models securely interact with tools and APIs in real time. Building an MCP server means exposing a set of “tools” (operations) that a Large Language Model (LLM) can call to perform tasks, like fetching data or triggering actions via your backend. We generated our MCP server from our existing OpenAPI spec, making it the single source of truth—fast, consistent, and reliable.
 
 ---
 
 ## 🚧 Key Challenges
 
 - **One-to-one endpoint mapping is overwhelming.** LLMs struggle choosing the right tool among many low-level options.
-- **Hand-coding is time consuming and error-prone.** Manually writing tool schemas and handlers is unsustainable for large APIs.([xata.io](https://xata.io/blog/built-xata-mcp-server?utm_source=chatgpt.com))
+- **Hand-coding is time consuming and error-prone.** Manually writing tool schemas and handlers is unsustainable for large APIs.
 
 ---
 
@@ -29,13 +27,13 @@ Model Context Protocol (MCP) is an emerging standard that lets AI models securel
 2. **Curate and enhance** them manually to improve clarity and avoid noise.
 3. **Leverage** OpenAPI as the source of truth—no duplicated maintenance.
 
-We use codegen to generate tool definitions and client calls, then prune or revise them based on real needs.([xata.io](https://xata.io/blog/built-xata-mcp-server?utm_source=chatgpt.com))
+We use codegen to generate tool definitions and client calls, then prune or revise them based on real needs.
 
 ---
 
 ## 1. Migrating from OpenAPI Codegen to Kubb
 
-We replaced our previous rigid generator with **Kubb**, a flexible toolkit for generating types, API clients, Zod validators, React hooks, and MCP code directly from OpenAPI.([xata.io](https://xata.io/blog/built-xata-mcp-server?utm_source=chatgpt.com))
+We replaced our previous rigid generator with **Kubb**, a flexible toolkit for generating types, API clients, Zod validators, React hooks, and MCP code directly from OpenAPI.
 
 ### Why Kubb
 
@@ -71,7 +69,7 @@ pnpm kubb generate
 
 - Generates TypeScript functions per operation (from `operationId`).
 - Uses fetch, built-in auth, and developer ergonomics.
-- Keeps client in sync with the API spec—no outdated or buggy code.([xata.io](https://xata.io/blog/built-xata-mcp-server?utm_source=chatgpt.com))
+- Keeps client in sync with the API spec—no outdated or buggy code.
 
 ### b. MCP Tool Definitions
 
@@ -80,7 +78,7 @@ Using `mcpGenerator`:
 - Produces `initMcpTools(server)` initializing each tool.
 - Curates endpoint exposure; prunes internal ones.
 - Converts developer-facing descriptions into AI-friendly ones.
-- Uses **Zod schemas** for input validation—bad commands fail before hitting API.([xata.io](https://xata.io/blog/built-xata-mcp-server?utm_source=chatgpt.com))
+- Uses **Zod schemas** for input validation—bad commands fail before hitting API.
 
 ---
 
@@ -101,7 +99,7 @@ export const GET = withAuth(
 export const POST = GET;
 ```
 
-👉 Handles both **SSE** and **HTTP**, auth middleware, and persistent conversation state via Redis.([xata.io](https://xata.io/blog/built-xata-mcp-server?utm_source=chatgpt.com))
+👉 Handles both **SSE** and **HTTP**, auth middleware, and persistent conversation state via Redis.
 
 ---
 
@@ -113,7 +111,7 @@ Instead of directly calling REST endpoints, the LLM:
 2. Picks a named tool, e.g. `list_databases`, with args.
 3. The server runs the tool, fetches data via the API client, and returns results.
 
-It functions like an RPC interface—capabilities-based and dynamic.([xata.io](https://xata.io/blog/built-xata-mcp-server?utm_source=chatgpt.com))
+It functions like an RPC interface—capabilities-based and dynamic.
 
 ---
 
@@ -125,8 +123,8 @@ By treating the OpenAPI spec as *executable knowledge*:
 - We enforced strong type safety and validation (via Zod).
 - We enabled a powerful conversational interface backed by real APIs.
 
-🌟 The result: a robust, AI-ready backend—quick to build, easy to maintain.  
+🌟 The result: a robust, AI-ready backend—quick to build, easy to maintain.
 
 ---
 
-If you're interested in AI-backend integration, check out Xata’s serverless Postgres (“Postgres at scale” with branching, PII anonymization) and our MCP server example. Happy coding!([xata.io](https://xata.io/blog/built-xata-mcp-server?utm_source=chatgpt.com))
+If you're interested in AI-backend integration, check out Xata’s serverless Postgres (“Postgres at scale” with branching, PII anonymization) and our MCP server example. Happy coding!
