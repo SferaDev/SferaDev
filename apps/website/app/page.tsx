@@ -3,6 +3,7 @@ import { ExperienceSection } from "@/components/experience-section";
 import { Footer } from "@/components/footer";
 import { HeroSection } from "@/components/hero-section";
 import { ProjectsSection } from "@/components/projects-section";
+import { SferarcSection } from "@/components/sferarc-section";
 
 export default function PortfolioPage() {
 	return (
@@ -13,6 +14,7 @@ export default function PortfolioPage() {
 				<div className="space-y-24 py-16 md:space-y-32">
 					<AboutSection />
 					<ExperienceSection />
+					<SferarcSection />
 					<ProjectsSection />
 				</div>
 			</main>
