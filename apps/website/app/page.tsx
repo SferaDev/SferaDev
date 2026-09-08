@@ -4,10 +4,12 @@ import { Footer } from "@/components/footer";
 import { HeroSection } from "@/components/hero-section";
 import { ProjectsSection } from "@/components/projects-section";
 import { SferarcSection } from "@/components/sferarc-section";
+import { JsonLd, personGraph } from "./json-ld";
 
 export default function PortfolioPage() {
 	return (
 		<>
+			<JsonLd schema={personGraph()} />
 			<main className="mx-auto w-full max-w-5xl px-4 sm:px-6">
 				<HeroSection />
 

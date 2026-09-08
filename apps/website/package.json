@@ -18,6 +18,7 @@
 		"@vercel/speed-insights": "catalog:",
 		"class-variance-authority": "catalog:",
 		"clsx": "catalog:",
+		"feed": "catalog:",
 		"geist": "catalog:",
 		"gray-matter": "catalog:",
 		"lucide-react": "catalog:",
@@ -38,6 +39,7 @@
 		"@types/react-dom": "catalog:",
 		"@vercel/config": "catalog:",
 		"postcss": "catalog:",
+		"schema-dts": "catalog:",
 		"tailwindcss": "catalog:",
 		"tw-animate-css": "catalog:",
 		"typescript": "catalog:"
