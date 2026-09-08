@@ -1,5 +1,6 @@
 import { ArrowUpRight } from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { SectionHeading } from "@/components/ui/section-heading";
 import {
 	type CuratedProject,
 	featuredPackageNames,
@@ -124,10 +125,7 @@ export function ProjectsSection() {
 
 	return (
 		<section id="projects" className="scroll-mt-24">
-			<h2 className="text-4xl font-bold mb-4 text-center">Open Source</h2>
-			<p className="mx-auto max-w-2xl text-center text-lg text-muted-foreground mb-12">
-				{openSourceIntro}
-			</p>
+			<SectionHeading eyebrow="Code" title="Open Source" description={openSourceIntro} />
 
 			<div className="space-y-12">
 				<ProjectGroup label="Platform & AI tooling">

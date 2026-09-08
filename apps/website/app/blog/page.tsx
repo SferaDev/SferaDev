@@ -5,8 +5,7 @@ import { absoluteUrl, feedAlternateTypes, siteConfig } from "@/lib/site";
 import { BlogList } from "./client";
 
 const title = "Blog";
-const description =
-	"Articles by Alexis Rico on serverless databases, TypeScript, open source and developer tooling.";
+const description = siteConfig.blogDescription;
 
 export const metadata: Metadata = {
 	title,

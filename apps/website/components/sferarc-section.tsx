@@ -1,17 +1,17 @@
 import { ArrowUpRight } from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { SectionHeading } from "@/components/ui/section-heading";
 import { sferarc } from "@/lib/data";
 
 export function SferarcSection() {
 	return (
 		<section id="sferarc" className="scroll-mt-24">
-			<h2 className="text-4xl font-bold mb-4 text-center">{sferarc.name}</h2>
-			<p className="font-mono text-xs uppercase tracking-widest text-muted-foreground text-center mb-6">
-				{sferarc.tagline}
-			</p>
-			<p className="mx-auto max-w-2xl text-center text-lg text-muted-foreground mb-12">
-				{sferarc.intro}
-			</p>
+			<SectionHeading
+				eyebrow={sferarc.name}
+				eyebrowCase="preserve"
+				title={sferarc.heading}
+				description={sferarc.intro}
+			/>
 
 			<div className="grid gap-6">
 				{sferarc.products.map((product) => (

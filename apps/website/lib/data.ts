@@ -38,10 +38,11 @@ export const workExperience = [
 ];
 
 export const sferarc = {
+	/** Section heading. The brand itself is the eyebrow, so the lowercase name never has to open a sentence. */
+	heading: "Products",
 	name: "sferarc",
-	tagline: "Developer tooling company",
 	intro:
-		"sferarc is my developer tooling company, separate from my work at Xata. It is where infrastructure I build ships as a product rather than as a library. Its flagship product is PgBeam.",
+		"My developer tooling company, separate from my work at Xata. It is where infrastructure I build ships as a product rather than as a library, starting with PgBeam.",
 	products: [
 		{
 			name: "PgBeam",
@@ -102,11 +103,23 @@ export const upstreamContributions: CuratedProject[] = [
 		],
 	},
 	{
-		name: "Xata SDK",
-		url: "https://github.com/xataio/client-ts",
+		name: "Xata",
+		url: "https://github.com/xataio/xata",
 		description:
-			"The TypeScript client for Xata, built around a schema-aware, fully typed query builder.",
-		links: [{ label: "GitHub", url: "https://github.com/xataio/client-ts" }],
+			"The Postgres platform itself: cloud native, with copy-on-write branching and scale-to-zero.",
+		links: [{ label: "GitHub", url: "https://github.com/xataio/xata" }],
+	},
+	{
+		name: "Xata TS SDK",
+		url: "https://github.com/xataio/ts-sdk",
+		description: "The TypeScript SDK for Xata, and the successor to the deprecated client-ts.",
+		links: [{ label: "GitHub", url: "https://github.com/xataio/ts-sdk" }],
+	},
+	{
+		name: "Xata CLI",
+		url: "https://github.com/xataio/cli",
+		description: "The command line interface for managing Xata projects, branches and migrations.",
+		links: [{ label: "GitHub", url: "https://github.com/xataio/cli" }],
 	},
 ];
 
