@@ -805,10 +805,10 @@ export const metadataServiceSchema = z.object({
 	get defaultMediaType() {
 		return mediaTypeSchema.optional();
 	},
-	allEncodingExtensionNames: z.array(z.string()).optional(),
 	allCharacterSetExtensionNames: z.array(z.string()).optional(),
-	allExtensionNames: z.array(z.string()).optional(),
+	allEncodingExtensionNames: z.array(z.string()).optional(),
 	allLanguageExtensionNames: z.array(z.string()).optional(),
+	allExtensionNames: z.array(z.string()).optional(),
 	allMediaTypeExtensionNames: z.array(z.string()).optional(),
 	stopped: z.boolean().optional(),
 });

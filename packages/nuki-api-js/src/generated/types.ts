@@ -1680,10 +1680,10 @@ export type MetadataService = {
 	defaultEncoding?: Encoding | undefined;
 	defaultLanguage?: Language | undefined;
 	defaultMediaType?: MediaType | undefined;
-	allEncodingExtensionNames?: string[] | undefined;
 	allCharacterSetExtensionNames?: string[] | undefined;
-	allExtensionNames?: string[] | undefined;
+	allEncodingExtensionNames?: string[] | undefined;
 	allLanguageExtensionNames?: string[] | undefined;
+	allExtensionNames?: string[] | undefined;
 	allMediaTypeExtensionNames?: string[] | undefined;
 	stopped?: boolean | undefined;
 };
