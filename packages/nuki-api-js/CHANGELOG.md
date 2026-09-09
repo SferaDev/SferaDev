@@ -1,5 +1,11 @@
 # nuki-api-js
 
+## 1.1.1
+
+### Patch Changes
+
+- 9c499a4: Reordered the properties allEncodingExtensionNames and allExtensionNames in MetadataService schema and type definition to match other field orderings.
+
 ## 1.1.0
 
 ### Minor Changes
