@@ -451,6 +451,104 @@ export type Network = {
 	vpcId?: string | undefined;
 };
 
+export const privateLinkEndpointStatusEnum = {
+	available: "available",
+	creating: "creating",
+	deleting: "deleting",
+	failed: "failed",
+	"pending-acceptance": "pending-acceptance",
+	provisioning: "provisioning",
+	rejected: "rejected",
+} as const;
+
+export type PrivateLinkEndpointStatusEnumKey =
+	(typeof privateLinkEndpointStatusEnum)[keyof typeof privateLinkEndpointStatusEnum];
+
+/**
+ * @description A PrivateLink endpoint, which connects a project to an AWS VPC endpoint service in a single region so that traffic reaches the service over AWS PrivateLink rather than the public internet.
+ * @type object
+ */
+export type PrivateLinkEndpoint = {
+	/**
+	 * @description The unique identifier of the PrivateLink endpoint.
+	 * @example ple_a1b2c3d4e5f6g7h8
+	 * @type string
+	 */
+	endpointId: string;
+	/**
+	 * @description The name of the PrivateLink endpoint, shown in the Vercel dashboard.
+	 * @example payments-db
+	 * @type string
+	 */
+	name: string;
+	/**
+	 * @description The identifier of the team that owns the PrivateLink endpoint.
+	 * @example team_a1b2c3d4e5f6g7h8
+	 * @type string
+	 */
+	teamId: string;
+	/**
+	 * @description The identifier of the project the PrivateLink endpoint belongs to.
+	 * @example prj_a1b2c3d4e5f6g7h8
+	 * @type string
+	 */
+	projectId: string;
+	/**
+	 * @description The Vercel region the endpoint is provisioned in.
+	 * @example iad1
+	 * @type string
+	 */
+	vercelRegion: string;
+	/**
+	 * @description The AWS VPC endpoint service the endpoint connects to.
+	 * @example com.amazonaws.vpce.us-east-1.vpce-svc-0123456789abcdef0
+	 * @type string
+	 */
+	awsServiceName: string;
+	/**
+	 * @description The identifier of the underlying AWS VPC endpoint. Absent until AWS has created the endpoint.
+	 * @example vpce-0123456789abcdef0
+	 * @type string | undefined
+	 */
+	vpcEndpointId?: string | undefined;
+	/**
+	 * @description The regional DNS names assigned to the endpoint by AWS. Use these to reach the service when private DNS is not enabled.
+	 * @example ["vpce-0123456789abcdef0-a1b2c3d4.vpce-svc-0123456789abcdef0.us-east-1.vpce.amazonaws.com"]
+	 * @type array | undefined
+	 */
+	awsDnsEntries?: string[] | undefined;
+	/**
+	 * @description The private DNS names of the endpoint service, populated when private DNS is enabled for the endpoint.
+	 * @example ["payments.internal.example.com"]
+	 * @type array | undefined
+	 */
+	privateDnsNames?: string[] | undefined;
+	/**
+	 * @description The current state of the endpoint. - `creating`: the endpoint is being created. - `pending-acceptance`: waiting for the endpoint service owner to accept the connection. Only occurs for services that require manual acceptance. - `provisioning`: the connection was accepted and AWS is finishing setup. - `available`: the endpoint is fully provisioned and ready to use. - `rejected`: the endpoint service owner rejected the connection. - `failed`: the endpoint could not be provisioned. - `deleting`: the endpoint is being deleted.
+	 * @example available
+	 * @type string
+	 */
+	status: PrivateLinkEndpointStatusEnumKey;
+	/**
+	 * @description A human-readable explanation of why the endpoint could not be provisioned. Only set when `status` is `failed`, and absent for every other status including `rejected`, since AWS does not report a rejection reason.
+	 * @example Endpoint did not become available in time. Try deleting and recreating, or visit https://vercel.com/help if the issue persists.
+	 * @type string | undefined
+	 */
+	statusMessage?: string | undefined;
+	/**
+	 * @description Timestamp in milliseconds since the UNIX epoch for when the endpoint was created.
+	 * @example 1610963878358
+	 * @type number
+	 */
+	createdAt: number;
+	/**
+	 * @description Timestamp in milliseconds since the UNIX epoch for when the endpoint was last updated.
+	 * @example 1610963878358
+	 * @type number
+	 */
+	updatedAt: number;
+};
+
 /**
  * @description Incoming trigger configuration. Only present when enabled.
  * @type object
@@ -490,6 +588,400 @@ export type ConnectTriggerDestination = {
 	path?: string | undefined;
 };
 
+export const connectConnectorCreationModeEnum = {
+	managed: "managed",
+	manual: "manual",
+} as const;
+
+export type ConnectConnectorCreationModeEnumKey =
+	(typeof connectConnectorCreationModeEnum)[keyof typeof connectConnectorCreationModeEnum];
+
+export const connectConnectorTypeEnum = {
+	"api-key": "api-key",
+	"aws-alpha": "aws-alpha",
+	custom: "custom",
+	discord: "discord",
+	github: "github",
+	linear: "linear",
+	linq: "linq",
+	"microsoft-entra": "microsoft-entra",
+	"microsoft-teams": "microsoft-teams",
+	oauth: "oauth",
+	photon: "photon",
+	salesforce: "salesforce",
+	sendblue: "sendblue",
+	slack: "slack",
+	snowflake: "snowflake",
+	"snowflake-wif": "snowflake-wif",
+} as const;
+
+export type ConnectConnectorTypeEnumKey =
+	(typeof connectConnectorTypeEnum)[keyof typeof connectConnectorTypeEnum];
+
+export const connectConnectorSupportsIconEnum = {
+	false: false,
+	maybe: "maybe",
+	true: true,
+} as const;
+
+export type ConnectConnectorSupportsIconEnumKey =
+	(typeof connectConnectorSupportsIconEnum)[keyof typeof connectConnectorSupportsIconEnum];
+
+/**
+ * @description A connector that defines how Vercel accesses an external service.
+ * @type object
+ */
+export type ConnectConnector = {
+	/**
+	 * @description Stable `scl_` connector ID. Use this value directly in `{connector}`.
+	 * @type string
+	 */
+	id: string;
+	/**
+	 * @description Team-scoped UID. URL-encode this value before using it in `{connector}`.
+	 * @type string
+	 */
+	uid: string;
+	/**
+	 * @description Installation used when a token request does not specify an installation.
+	 * @type string | undefined
+	 */
+	defaultInstallationId?: string | undefined;
+	/**
+	 * @description Creation time in epoch milliseconds.
+	 * @type number
+	 */
+	createdAt: number;
+	/**
+	 * @description Last update time in epoch milliseconds.
+	 * @type number
+	 */
+	updatedAt: number;
+	/**
+	 * @description Time when this connector started requiring reinstallation because an installation-affecting app-token grant changed.
+	 * @type number | undefined
+	 */
+	reinstallAt?: number | undefined;
+	/**
+	 * @description Principal that created the connector.
+	 */
+	createdBy?:
+		| (
+				| {
+						/**
+						 * @description Principal kind.
+						 * @type string
+						 */
+						type: "user";
+						/**
+						 * @description Vercel user ID.
+						 * @type string
+						 */
+						id: string;
+				  }
+				| {
+						/**
+						 * @description Principal kind.
+						 * @type string
+						 */
+						type: "project";
+						/**
+						 * @description Vercel project ID.
+						 * @type string
+						 */
+						id: string;
+						/**
+						 * @description Deployment environment of the project principal.
+						 */
+						environment: string;
+				  }
+		  )
+		| undefined;
+	/**
+	 * @description Principal that most recently updated the connector.
+	 */
+	updatedBy?:
+		| (
+				| {
+						/**
+						 * @description Principal kind.
+						 * @type string
+						 */
+						type: "user";
+						/**
+						 * @description Vercel user ID.
+						 * @type string
+						 */
+						id: string;
+				  }
+				| {
+						/**
+						 * @description Principal kind.
+						 * @type string
+						 */
+						type: "project";
+						/**
+						 * @description Vercel project ID.
+						 * @type string
+						 */
+						id: string;
+						/**
+						 * @description Deployment environment of the project principal.
+						 */
+						environment: string;
+				  }
+		  )
+		| undefined;
+	/**
+	 * @description How the connector row was originally created. New create paths stamp this explicitly; older rows may omit it.
+	 * @type string | undefined
+	 */
+	creationMode?: ConnectConnectorCreationModeEnumKey | undefined;
+	/**
+	 * @description Managed connector metadata exposed without leaking the manager connector or installation identifiers.
+	 * @type object | undefined
+	 */
+	managed?:
+		| {
+				/**
+				 * @description Whether Vercel synchronizes provider-side configuration.
+				 * @type boolean | undefined
+				 */
+				sync?: (false | true) | undefined;
+		  }
+		| undefined;
+	/**
+	 * @description Connector implementation type.
+	 * @type string
+	 */
+	type: ConnectConnectorTypeEnumKey;
+	/**
+	 * @description Best-effort identifier of the third-party service this connector represents, independent of `type`. Examples: `\'slack\'`, `\'mcp.linear.app\'`, and `\'auth.example.com\'`. Always present in API responses.
+	 * @type string
+	 */
+	service: string;
+	/**
+	 * @description The connection method this connector was created from, when the create request named one.
+	 * @type string | undefined
+	 */
+	connectionMethod?: string | undefined;
+	/**
+	 * @description Which of the service\'s products/surfaces this connector points at.
+	 * @type string | undefined
+	 */
+	target?: string | undefined;
+	/**
+	 * @description Connector name within the owning team.
+	 * @type string
+	 */
+	name: string;
+	/**
+	 * @description Human-readable connector name.
+	 * @type string
+	 */
+	displayName: string;
+	/**
+	 * @description Provider-side URL for viewing or managing the resource represented by the connector. The destination can be an app, account, phone line, or service instance, depending on the connector type.
+	 * @type string | undefined
+	 */
+	clientUrl?: (string | null) | undefined;
+	/**
+	 * @description Redirect URI registered with the third-party service for this connector, if any. Used by `startAuthorization`/`startInstallation` to replay the exact URI back to the provider\'s token endpoint. Absent on connectors created before this field was introduced; those callers fall back to the `https://connect.vercel.com/callback` default.
+	 * @type string | undefined
+	 */
+	redirectUri?: string | undefined;
+	/**
+	 * @description Human-readable name of the connector type.
+	 * @type string
+	 */
+	typeName: string;
+	/**
+	 * @description Icon identifier supplied by the connector type.
+	 * @type string | undefined
+	 */
+	typeIcon?: string | undefined;
+	/**
+	 * @description Public website for the connected service.
+	 * @type string | undefined
+	 */
+	website?: string | undefined;
+	/**
+	 * @description Developer website for the connected service.
+	 * @type string | undefined
+	 */
+	devsite?: string | undefined;
+	/**
+	 * @description Developer documentation for the connected service.
+	 * @type string | undefined
+	 */
+	docsite?: string | undefined;
+	/**
+	 * @description Connector branding icon. SHA-1 hash that resolves to the uploaded icon through the Vercel avatar service. Consumers render this with `https://vercel.com/api/www/avatar/{icon}`.
+	 * @type string | undefined
+	 */
+	icon?: string | undefined;
+	/**
+	 * @description Hex background color (e.g., `#000000`) for branding.
+	 * @type string | undefined
+	 */
+	backgroundColor?: string | undefined;
+	/**
+	 * @description Hex accent color (e.g., `#000000`) for branding.
+	 * @type string | undefined
+	 */
+	accentColor?: string | undefined;
+	/**
+	 * @description Token subject types supported by the connector.
+	 * @type array
+	 */
+	supportedSubjectTypes: string[];
+	/**
+	 * @description App-token capabilities and known grants for the connector.
+	 * @type object | undefined
+	 */
+	appTokens?:
+		| {
+				/**
+				 * @description Whether one app token can be used across installations.
+				 * @type boolean
+				 */
+				crossInstallation: false | true;
+				/**
+				 * @description Whether callers can narrow app-token grants per request.
+				 * @type boolean
+				 */
+				supportsRefinement: false | true;
+				/**
+				 * @description Whether callers can request resource-specific app tokens.
+				 * @type boolean | undefined
+				 */
+				supportsResources?: (false | true) | undefined;
+				/**
+				 * @description True when changing app token grants requires reinstalling the app, so tokens cannot be partitioned independently by requester environment.
+				 * @type boolean | undefined
+				 */
+				requiresReinstallation?: (false | true) | undefined;
+				/**
+				 * @description Known allowed app-level scopes. For Slack this is the bot scope set configured on the app; for OAuth it is the connector\'s enabled `clientCredentials.scopes` configuration.
+				 * @type array | undefined
+				 */
+				scopes?: string[] | undefined;
+				/**
+				 * @description Supported OAuth authorization-detail type names.
+				 * @type array | undefined
+				 */
+				supportedAuthorizationDetails?: string[] | undefined;
+				/**
+				 * @description Link to the page on the service where this connector\'s app-level permissions are declared and granted, when the service has one and it differs from `clientUrl`.
+				 * @type string | undefined
+				 */
+				permissionsUrl?: string | undefined;
+		  }
+		| undefined;
+	/**
+	 * @description User-token capabilities and known grants for the connector.
+	 * @type object | undefined
+	 */
+	userTokens?:
+		| {
+				/**
+				 * @description Whether one user token can be used across installations.
+				 * @type boolean
+				 */
+				crossInstallation: false | true;
+				/**
+				 * @description Whether callers can narrow user-token grants per request.
+				 * @type boolean
+				 */
+				supportsRefinement: false | true;
+				/**
+				 * @description Whether callers can request resource-specific user tokens.
+				 * @type boolean | undefined
+				 */
+				supportsResources?: (false | true) | undefined;
+				/**
+				 * @description Known allowed user-level scopes. For Slack this is the user scope set configured on the app; for OAuth it is the connector\'s enabled `userAuthorization.scopes` configuration.
+				 * @type array | undefined
+				 */
+				scopes?: string[] | undefined;
+				/**
+				 * @description Supported OAuth authorization-detail type names.
+				 * @type array | undefined
+				 */
+				supportedAuthorizationDetails?: string[] | undefined;
+				/**
+				 * @description User authorization is completed by the Connect consent screen submitting a credential instead of an OAuth redirect.
+				 * @type boolean | undefined
+				 */
+				manualCredentialInput?: (false | true) | undefined;
+		  }
+		| undefined;
+	/**
+	 * @description Whether the connector supports an installation flow.
+	 * @type boolean
+	 */
+	supportsInstallation: false | true;
+	/**
+	 * @description Whether Connect can revoke tokens for this connector.
+	 * @type boolean
+	 */
+	supportsRevocation: false | true;
+	/**
+	 * @description Whether this connector type supports trigger webhooks. Derived from the type definition; indicates that `triggers` and `triggerDestinations` may be meaningful for this connector.
+	 * @type boolean
+	 */
+	supportsTriggers: false | true;
+	/**
+	 * @description Whether the connector icon can propagate to the provider.
+	 * @type string
+	 */
+	supportsIcon: ConnectConnectorSupportsIconEnumKey;
+	/**
+	 * @description Incoming trigger configuration for the connector.
+	 * @type unknown | undefined
+	 */
+	triggers?: unknown | undefined;
+	/**
+	 * @description Known events this connector subscribes to (e.g. Slack bot events, GitHub webhook events). Names are type-specific and validated by the managed-create flow when forwarded to the third-party service.
+	 * @type array | undefined
+	 */
+	events?: string[] | undefined;
+	/**
+	 * @description Destinations that incoming triggers should be forwarded to. Limited to 3 entries. Set the initial destination with `triggerDestination` during creation. Replace the complete set with `PATCH /v1/connect/connectors/{connector}/trigger-destinations`.
+	 * @type array | undefined
+	 */
+	triggerDestinations?: unknown[] | undefined;
+};
+
+/**
+ * @description Cursor for the next page.
+ * @type object
+ */
+export type ConnectPagination = {
+	/**
+	 * @description Opaque value to pass as `cursor` on the next request.
+	 * @type string
+	 */
+	next: string | null;
+};
+
+/**
+ * @description Page of connectors.
+ * @type object
+ */
+export type ConnectConnectorList = {
+	/**
+	 * @description Connectors in this page.
+	 * @type array
+	 */
+	connectors: unknown[];
+	/**
+	 * @description Cursor for the next page.
+	 * @type unknown
+	 */
+	pagination: unknown;
+};
+
 export const connectConnectorCreateResultCreationModeEnum = {
 	managed: "managed",
 	manual: "manual",
@@ -500,6 +992,7 @@ export type ConnectConnectorCreateResultCreationModeEnumKey =
 
 export const connectConnectorCreateResultTypeEnum = {
 	"api-key": "api-key",
+	"aws-alpha": "aws-alpha",
 	custom: "custom",
 	discord: "discord",
 	github: "github",
@@ -753,6 +1246,11 @@ export type ConnectConnectorCreateResult = {
 				 */
 				supportsRefinement: false | true;
 				/**
+				 * @description Whether callers can request resource-specific app tokens.
+				 * @type boolean | undefined
+				 */
+				supportsResources?: (false | true) | undefined;
+				/**
 				 * @description True when changing app token grants requires reinstalling the app, so tokens cannot be partitioned independently by requester environment.
 				 * @type boolean | undefined
 				 */
@@ -790,6 +1288,11 @@ export type ConnectConnectorCreateResult = {
 				 * @type boolean
 				 */
 				supportsRefinement: false | true;
+				/**
+				 * @description Whether callers can request resource-specific user tokens.
+				 * @type boolean | undefined
+				 */
+				supportsResources?: (false | true) | undefined;
 				/**
 				 * @description Known allowed user-level scopes. For Slack this is the user scope set configured on the app; for OAuth it is the connector\'s enabled `userAuthorization.scopes` configuration.
 				 * @type array | undefined
@@ -869,6 +1372,14 @@ export const connectConnectorCreateDataOwnerTypeEnum = {
 
 export type ConnectConnectorCreateDataOwnerTypeEnumKey =
 	(typeof connectConnectorCreateDataOwnerTypeEnum)[keyof typeof connectConnectorCreateDataOwnerTypeEnum];
+
+export const connectConnectorCreateDataShortcutsTypeEnum = {
+	global: "global",
+	message: "message",
+} as const;
+
+export type ConnectConnectorCreateDataShortcutsTypeEnumKey =
+	(typeof connectConnectorCreateDataShortcutsTypeEnum)[keyof typeof connectConnectorCreateDataShortcutsTypeEnum];
 
 /**
  * @description Provider configuration. With type, provide the complete configuration for that type. With service and connectionMethod, provide only credentials and preferences; Connect supplies the type, endpoints, templates, and defaults. Other connector types accept an arbitrary object.
@@ -1332,6 +1843,12 @@ export type ConnectConnectorCreateData =
 			 * @type array | undefined
 			 */
 			serviceUrls?: string[] | undefined;
+			/**
+			 * @description Markdown instructions shown to each user on the authorization screen, explaining how to obtain the key they should paste.
+			 * @maxLength 4000
+			 * @type string | undefined
+			 */
+			instructions?: string | undefined;
 	  }
 	| {
 			/**
@@ -1666,6 +2183,68 @@ export type ConnectConnectorCreateData =
 			 */
 			userScopes?: string[] | undefined;
 			/**
+			 * @description Slash commands configured for the managed Slack app.
+			 * @type array | undefined
+			 */
+			slashCommands?:
+				| {
+						/**
+						 * @description Slash command including its leading slash.
+						 * @maxLength 32
+						 * @pattern ^\\[/]
+						 * @type string
+						 */
+						command: string;
+						/**
+						 * @description Description shown for the slash command in Slack.
+						 * @maxLength 2000
+						 * @type string
+						 */
+						description: string;
+						/**
+						 * @description Optional usage hint shown for the slash command.
+						 * @maxLength 1000
+						 * @type string | undefined
+						 */
+						usageHint?: string | undefined;
+						/**
+						 * @description Whether Slack should escape command arguments.
+						 * @type boolean | undefined
+						 */
+						shouldEscape?: boolean | undefined;
+				  }[]
+				| undefined;
+			/**
+			 * @description Global and message shortcuts configured for the Slack app.
+			 * @type array | undefined
+			 */
+			shortcuts?:
+				| {
+						/**
+						 * @description Where Slack exposes the shortcut.
+						 * @type string
+						 */
+						type: ConnectConnectorCreateDataShortcutsTypeEnumKey;
+						/**
+						 * @description Shortcut display name.
+						 * @type string
+						 */
+						name: string;
+						/**
+						 * @description Identifier included in the shortcut callback.
+						 * @maxLength 255
+						 * @type string
+						 */
+						callbackId: string;
+						/**
+						 * @description Description shown for the shortcut in Slack.
+						 * @maxLength 150
+						 * @type string
+						 */
+						description: string;
+				  }[]
+				| undefined;
+			/**
 			 * @description Additional provider metadata stored with the connector.
 			 * @type object | undefined
 			 */
@@ -1896,6 +2475,1275 @@ export type ConnectCreateConnectorRequest = (unknown | unknown) & {
 	 * @type array | undefined
 	 */
 	events?: string[] | undefined;
+};
+
+/**
+ * @description Existing authorizations no longer cover the connector\'s configured scopes, so they must be re-authorized.
+ * @type object
+ */
+export type ConnectReconsent = {
+	/**
+	 * @description The affected authorization scope. user means each affected user must authorize again.
+	 * @type string
+	 */
+	scope: "user";
+};
+
+/**
+ * @description Provider synchronization errors, when synchronization is required.
+ * @type object
+ */
+export type ConnectServiceSyncError = {
+	/**
+	 * @description Human-readable provider synchronization error.
+	 * @type string
+	 */
+	message: string;
+	/**
+	 * @description Connector fields that caused the synchronization error.
+	 * @type array | undefined
+	 */
+	fields?: string[] | undefined;
+	/**
+	 * @description Provider-specific error details that are safe to expose.
+	 * @type object | undefined
+	 */
+	vendor?:
+		| {
+				[key: string]: unknown;
+		  }
+		| undefined;
+};
+
+export const connectServiceSyncStatusEnum = {
+	done: "done",
+	required: "required",
+} as const;
+
+export type ConnectServiceSyncStatusEnumKey =
+	(typeof connectServiceSyncStatusEnum)[keyof typeof connectServiceSyncStatusEnum];
+
+/**
+ * @description Provider-side configuration synchronization result.
+ * @type object
+ */
+export type ConnectServiceSync = {
+	/**
+	 * @description done means the external service was updated. required means the Vercel update was saved, but provider-side configuration still needs attention.
+	 * @type string
+	 */
+	status: ConnectServiceSyncStatusEnumKey;
+	/**
+	 * @description Provider synchronization errors. Present when serviceSync.status is required.
+	 * @type array | undefined
+	 */
+	errors?: unknown[] | undefined;
+};
+
+/**
+ * @description Updated connector and any required provider follow-up actions.
+ * @type object
+ */
+export type ConnectConnectorUpdateResult = {
+	/**
+	 * @description Updated connector.
+	 * @type unknown
+	 */
+	connector: unknown;
+	/**
+	 * @description When true, prompt a team owner or administrator to reinstall the connector before relying on the change.
+	 * @type boolean | undefined
+	 */
+	reinstallNeeded?: (false | true) | undefined;
+	/**
+	 * @description Present when affected users must authorize the connector\'s new permissions.
+	 * @type unknown | undefined
+	 */
+	reconsentNeeded?: unknown | undefined;
+	/**
+	 * @description Result of synchronizing the change with the external service.
+	 * @type unknown | undefined
+	 */
+	serviceSync?: unknown | undefined;
+};
+
+export const connectConnectorUpdateDataServerConfigJwksKeysUseEnum = {
+	sig: "sig",
+	enc: "enc",
+} as const;
+
+export type ConnectConnectorUpdateDataServerConfigJwksKeysUseEnumKey =
+	(typeof connectConnectorUpdateDataServerConfigJwksKeysUseEnum)[keyof typeof connectConnectorUpdateDataServerConfigJwksKeysUseEnum];
+
+export const connectConnectorUpdateDataOwnerTypeEnum = {
+	user: "user",
+	organization: "organization",
+	User: "User",
+	Organization: "Organization",
+} as const;
+
+export type ConnectConnectorUpdateDataOwnerTypeEnumKey =
+	(typeof connectConnectorUpdateDataOwnerTypeEnum)[keyof typeof connectConnectorUpdateDataOwnerTypeEnum];
+
+export const connectConnectorUpdateDataShortcutsTypeEnum = {
+	global: "global",
+	message: "message",
+} as const;
+
+export type ConnectConnectorUpdateDataShortcutsTypeEnumKey =
+	(typeof connectConnectorUpdateDataShortcutsTypeEnum)[keyof typeof connectConnectorUpdateDataShortcutsTypeEnum];
+
+/**
+ * @description Provider configuration fields for the connector type.
+ */
+export type ConnectConnectorUpdateData =
+	| {
+			/**
+			 * @description Authorization server base URL used for discovery.
+			 * @type string | undefined
+			 */
+			serverUrl?: string | undefined;
+			/**
+			 * @description Authorization server metadata. Values override discovered metadata. Empty known string fields remove their stored overrides.
+			 * @default [object Object]
+			 * @type object | undefined
+			 */
+			serverConfig?:
+				| {
+						/**
+						 * @description Authorization server issuer URL.
+						 * @type string | undefined
+						 */
+						issuer?: string | undefined;
+						/**
+						 * @description OAuth authorization endpoint URL.
+						 * @type string | undefined
+						 */
+						authorizationEndpoint?: string | undefined;
+						/**
+						 * @description OAuth token endpoint URL.
+						 * @type string | undefined
+						 */
+						tokenEndpoint?: string | undefined;
+						/**
+						 * @description OpenID Connect UserInfo endpoint URL.
+						 * @type string | undefined
+						 */
+						userinfoEndpoint?: string | undefined;
+						/**
+						 * @description URL of the authorization server JSON Web Key Set.
+						 * @type string | undefined
+						 */
+						jwksUri?: string | undefined;
+						/**
+						 * @description Inline authorization server JSON Web Key Set.
+						 * @type object | undefined
+						 */
+						jwks?:
+							| {
+									/**
+									 * @description JSON Web Keys published by the authorization server.
+									 * @type array
+									 */
+									keys: {
+										/**
+										 * @description JSON Web Key type.
+										 * @type string
+										 */
+										kty: string;
+										/**
+										 * @description JSON Web Key identifier.
+										 * @type string | undefined
+										 */
+										kid?: string | undefined;
+										/**
+										 * @description Intended key use: signing or encryption.
+										 * @type string | undefined
+										 */
+										use?: ConnectConnectorUpdateDataServerConfigJwksKeysUseEnumKey | undefined;
+										/**
+										 * @description Operations permitted for this key.
+										 * @type array | undefined
+										 */
+										keyOps?: string[] | undefined;
+										/**
+										 * @description Algorithm intended for this key.
+										 * @type string | undefined
+										 */
+										alg?: string | undefined;
+										[key: string]: unknown;
+									}[];
+									[key: string]: unknown;
+							  }
+							| undefined;
+						/**
+						 * @description OAuth token revocation endpoint URL.
+						 * @type string | undefined
+						 */
+						revocationEndpoint?: string | undefined;
+						/**
+						 * @description OAuth token introspection endpoint URL.
+						 * @type string | undefined
+						 */
+						introspectionEndpoint?: string | undefined;
+						/**
+						 * @description OpenID Connect session termination endpoint URL.
+						 * @type string | undefined
+						 */
+						endSessionEndpoint?: string | undefined;
+						/**
+						 * @description OAuth device authorization endpoint URL.
+						 * @type string | undefined
+						 */
+						deviceAuthorizationEndpoint?: string | undefined;
+						/**
+						 * @description OAuth dynamic client registration endpoint URL.
+						 * @type string | undefined
+						 */
+						registrationEndpoint?: string | undefined;
+						/**
+						 * @description OAuth response types supported by the server.
+						 * @type array | undefined
+						 */
+						responseTypesSupported?: string[] | undefined;
+						/**
+						 * @description Token endpoint client authentication methods supported by the server.
+						 * @type array | undefined
+						 */
+						tokenEndpointAuthMethodsSupported?: string[] | undefined;
+						/**
+						 * @description Signing algorithms supported for token endpoint authentication.
+						 * @type array | undefined
+						 */
+						tokenEndpointAuthSigningAlgValuesSupported?: string[] | undefined;
+						/**
+						 * @description OAuth scopes supported by the server.
+						 * @type array | undefined
+						 */
+						scopesSupported?: string[] | undefined;
+						/**
+						 * @description OAuth grant types supported by the server.
+						 * @type array | undefined
+						 */
+						grantTypesSupported?: string[] | undefined;
+						/**
+						 * @description OAuth response modes supported by the server.
+						 * @type array | undefined
+						 */
+						responseModesSupported?: string[] | undefined;
+						/**
+						 * @description OpenID Connect subject identifier types supported by the server.
+						 * @type array | undefined
+						 */
+						subjectTypesSupported?: string[] | undefined;
+						/**
+						 * @description Signing algorithms supported for ID tokens.
+						 * @type array | undefined
+						 */
+						idTokenSigningAlgValuesSupported?: string[] | undefined;
+						/**
+						 * @description Key management algorithms supported for encrypted ID tokens.
+						 * @type array | undefined
+						 */
+						idTokenEncryptionAlgValuesSupported?: string[] | undefined;
+						/**
+						 * @description Content encryption algorithms supported for encrypted ID tokens.
+						 * @type array | undefined
+						 */
+						idTokenEncryptionEncValuesSupported?: string[] | undefined;
+						/**
+						 * @description OpenID Connect claim value types supported by the server.
+						 * @type array | undefined
+						 */
+						claimTypesSupported?: string[] | undefined;
+						/**
+						 * @description Claims that the authorization server can return.
+						 * @type array | undefined
+						 */
+						claimsSupported?: string[] | undefined;
+						/**
+						 * @description PKCE code challenge methods supported by the server.
+						 * @type array | undefined
+						 */
+						codeChallengeMethodsSupported?: string[] | undefined;
+						/**
+						 * @description Authorization prompt values supported by the server.
+						 * @type array | undefined
+						 */
+						promptValuesSupported?: string[] | undefined;
+						/**
+						 * @description Whether authorization requests can use the claims parameter.
+						 * @type boolean | undefined
+						 */
+						claimsParameterSupported?: boolean | undefined;
+						/**
+						 * @description Whether authorization requests can use signed request objects.
+						 * @type boolean | undefined
+						 */
+						requestParameterSupported?: boolean | undefined;
+						/**
+						 * @description Whether authorization requests can use request_uri.
+						 * @type boolean | undefined
+						 */
+						requestUriParameterSupported?: boolean | undefined;
+						/**
+						 * @description Whether request_uri values must be registered in advance.
+						 * @type boolean | undefined
+						 */
+						requireRequestUriRegistration?: boolean | undefined;
+						/**
+						 * @description Authorization server documentation URL.
+						 * @type string | undefined
+						 */
+						serviceDocumentation?: string | undefined;
+						/**
+						 * @description Authorization server privacy policy URL.
+						 * @type string | undefined
+						 */
+						opPolicyUri?: string | undefined;
+						/**
+						 * @description Authorization server terms of service URL.
+						 * @type string | undefined
+						 */
+						opTosUri?: string | undefined;
+						/**
+						 * @description Authorization server logo URL.
+						 * @type string | undefined
+						 */
+						logoUri?: string | undefined;
+						/**
+						 * @description Whether the server supports OAuth client ID metadata documents.
+						 * @type boolean | undefined
+						 */
+						clientIdMetadataDocumentSupported?: boolean | undefined;
+						/**
+						 * @description OAuth authorization-detail types supported by the server.
+						 * @type array | undefined
+						 */
+						authorizationDetailsTypesSupported?: string[] | undefined;
+						[key: string]: unknown;
+				  }
+				| undefined;
+			/**
+			 * @description OAuth client ID.
+			 * @type string | undefined
+			 */
+			clientId?: string | undefined;
+			/**
+			 * @description OAuth client name.
+			 * @type string | undefined
+			 */
+			clientName?: string | undefined;
+			/**
+			 * @description OAuth client secret.
+			 * @type string | undefined
+			 */
+			clientSecret?: string | undefined;
+			/**
+			 * @description OAuth token endpoint authentication method. Common values are client_secret_post, client_secret_basic, none, and private_key_jwt. If omitted, Vercel selects a supported method from serverConfig and otherwise uses client_secret_post.
+			 * @type string | undefined
+			 */
+			tokenEndpointAuthMethod?: string | undefined;
+			/**
+			 * @description OAuth authorization response type. Defaults to code. Other provider-supported values are accepted. An empty string clears the configured type.
+			 * @type string | undefined
+			 */
+			responseType?: string | undefined;
+			/**
+			 * @description Whether user authorization must use PKCE.
+			 * @type boolean | undefined
+			 */
+			pkceRequired?: boolean | undefined;
+			/**
+			 * @description PKCE code challenge method. Supported values are S256 and plain. Vercel prefers S256 when the provider supports it. An empty string clears the configured method.
+			 * @type string | undefined
+			 */
+			codeChallengeMethod?: string | undefined;
+			/**
+			 * @description User authorization grant settings.
+			 * @type object | undefined
+			 */
+			userAuthorization?:
+				| {
+						/**
+						 * @description Whether this OAuth grant is enabled.
+						 * @type boolean
+						 */
+						enabled: boolean;
+						/**
+						 * @description Default scopes to request when token params specify scopes: [\\\"*\\\"].
+						 * @type array | undefined
+						 */
+						scopes?: string[] | undefined;
+				  }
+				| undefined;
+			/**
+			 * @description Refresh token settings.
+			 * @type object | undefined
+			 */
+			refreshTokens?:
+				| {
+						/**
+						 * @description Whether this OAuth grant is enabled.
+						 * @type boolean
+						 */
+						enabled: boolean;
+				  }
+				| undefined;
+			/**
+			 * @description Client credentials grant settings.
+			 * @type object | undefined
+			 */
+			clientCredentials?:
+				| {
+						/**
+						 * @description Whether this OAuth grant is enabled.
+						 * @type boolean
+						 */
+						enabled: boolean;
+						/**
+						 * @description Default scopes to request when token params specify scopes: [\\\"*\\\"].
+						 * @type array | undefined
+						 */
+						scopes?: string[] | undefined;
+				  }
+				| undefined;
+			/**
+			 * @description Allow-list of extra claims to propagate, keyed by source (idToken). Only claims named here and present in that source are exposed.
+			 * @type object | undefined
+			 */
+			forwardedClaims?:
+				| {
+						/**
+						 * @description ID token claim names that Connect can expose.
+						 * @type array | undefined
+						 */
+						idToken?: string[] | undefined;
+				  }
+				| undefined;
+			/**
+			 * @description Default audience used when a token request omits one. An empty string clears the default.
+			 * @type string | undefined
+			 */
+			defaultAudience?: string | undefined;
+			/**
+			 * @description Default token lifetime in seconds to use when the token response omits expires_in.
+			 * @minLength 60
+			 * @type number | undefined
+			 */
+			defaultTokenExpiresIn?: number | undefined;
+			/**
+			 * @description Extra query parameters added to authorization URLs.
+			 * @type object | undefined
+			 */
+			authorizationUrlParams?:
+				| {
+						[key: string]: string;
+				  }
+				| undefined;
+			/**
+			 * @description JWT bearer grant settings.
+			 * @type object | undefined
+			 */
+			jwtBearer?:
+				| {
+						/**
+						 * @description Whether JWT bearer grants are enabled.
+						 * @type boolean | undefined
+						 */
+						enabled?: boolean | undefined;
+						/**
+						 * @description Default scopes to request when token params specify scopes: [\\\"*\\\"].
+						 * @type array | undefined
+						 */
+						scopes?: string[] | undefined;
+						/**
+						 * @description Default JWT subject claim.
+						 * @type string | undefined
+						 */
+						sub?: string | undefined;
+						/**
+						 * @description Default JWT issuer claim.
+						 * @type string | undefined
+						 */
+						iss?: string | undefined;
+						/**
+						 * @description Default JWT audience claim.
+						 * @type string | undefined
+						 */
+						aud?: string | undefined;
+						/**
+						 * @description Additional claims included in generated JWT assertions.
+						 * @type object | undefined
+						 */
+						additionalClaims?:
+							| {
+									[key: string]: unknown;
+							  }
+							| undefined;
+						/**
+						 * @description JWT lifetime in seconds.
+						 * @type number | undefined
+						 */
+						ttl?: number | undefined;
+						/**
+						 * @description Whether JWT bearer requests also use client credentials.
+						 * @type boolean | undefined
+						 */
+						useClientCredentials?: boolean | undefined;
+				  }
+				| undefined;
+			/**
+			 * @description `private_key_jwt` client assertion settings.
+			 * @type object | undefined
+			 */
+			clientAssertion?:
+				| {
+						/**
+						 * @description OAuth client assertion type. Defaults to urn:ietf:params:oauth:client-assertion-type:jwt-bearer. An empty string clears the configured type.
+						 * @type string | undefined
+						 */
+						type?: string | undefined;
+						/**
+						 * @description Client assertion lifetime in seconds.
+						 * @type number | undefined
+						 */
+						ttl?: number | undefined;
+						/**
+						 * @description Additional claims included in the client assertion.
+						 * @type object | undefined
+						 */
+						claims?:
+							| {
+									[key: string]: unknown;
+							  }
+							| undefined;
+				  }
+				| undefined;
+	  }
+	| {
+			/**
+			 * @description Stored API key value IDs to delete.
+			 * @type array | undefined
+			 */
+			toDelete?: string[] | undefined;
+			/**
+			 * @description API key values to add.
+			 * @type array | undefined
+			 */
+			toAdd?:
+				| {
+						/**
+						 * @description API key value.
+						 * @type string
+						 */
+						value: string;
+						/**
+						 * @description Optional scope associated with the API key value.
+						 * @type string | undefined
+						 */
+						scope?: string | undefined;
+						/**
+						 * @description The timestamp when the API key value expires in milliseconds.
+						 * @type integer | undefined
+						 */
+						expiresAt?: number | undefined;
+				  }[]
+				| undefined;
+			/**
+			 * @description Existing API key values to update.
+			 * @type array | undefined
+			 */
+			toUpdate?:
+				| {
+						/**
+						 * @description Stored API key value ID.
+						 * @type string
+						 */
+						id: string;
+						/**
+						 * @description Replacement API key value. Use null to keep the stored value.
+						 */
+						value?: (string | string) | undefined;
+						/**
+						 * @description Replacement scope. Use null to remove the scope.
+						 */
+						scope?: (string | string) | undefined;
+						/**
+						 * @description The timestamp when the API key value expires in milliseconds.
+						 */
+						expiresAt?: (number | string) | undefined;
+				  }[]
+				| undefined;
+			/**
+			 * @description Markdown instructions shown to each user on the authorization screen, explaining how to obtain the key they should paste.
+			 */
+			instructions?: (string | string) | undefined;
+	  }
+	| {
+			/**
+			 * @description GitHub App numeric ID.
+			 * @type integer | undefined
+			 */
+			appId?: number | undefined;
+			/**
+			 * @description GitHub App slug.
+			 * @type string | undefined
+			 */
+			appSlug?: string | undefined;
+			/**
+			 * @description GitHub App display name.
+			 * @type string | undefined
+			 */
+			appName?: string | undefined;
+			/**
+			 * @description GitHub App OAuth client ID.
+			 * @type string | undefined
+			 */
+			clientId?: string | undefined;
+			/**
+			 * @description GitHub App owner.
+			 * @type object | undefined
+			 */
+			owner?:
+				| {
+						/**
+						 * @description GitHub App owner type.
+						 * @type string
+						 */
+						type: ConnectConnectorUpdateDataOwnerTypeEnumKey;
+						/**
+						 * @description GitHub App owner numeric ID.
+						 * @type integer
+						 */
+						id: number;
+						/**
+						 * @description GitHub App owner login.
+						 * @type string
+						 */
+						slug: string;
+						/**
+						 * @description GitHub App owner display name.
+						 * @type string | undefined
+						 */
+						name?: string | undefined;
+				  }
+				| undefined;
+			/**
+			 * @description GitHub App OAuth client secret.
+			 * @type string | undefined
+			 */
+			clientSecret?: string | undefined;
+			/**
+			 * @description GitHub App private key in PEM format.
+			 * @type string | undefined
+			 */
+			privateKeyPem?: string | undefined;
+			/**
+			 * @description GitHub App webhook secret.
+			 * @type string | undefined
+			 */
+			webhookSecret?: string | undefined;
+			/**
+			 * @description Additional provider metadata stored with the connector.
+			 * @type object | undefined
+			 */
+			extras?:
+				| {
+						[key: string]: unknown;
+				  }
+				| undefined;
+	  }
+	| {
+			/**
+			 * @description Linear application ID.
+			 * @type string | undefined
+			 */
+			appId?: string | undefined;
+			/**
+			 * @description Linear application name.
+			 * @type string | undefined
+			 */
+			appName?: string | undefined;
+			/**
+			 * @description Linear OAuth client ID.
+			 * @type string | undefined
+			 */
+			clientId?: string | undefined;
+			/**
+			 * @description Linear OAuth client secret.
+			 * @type string | undefined
+			 */
+			clientSecret?: string | undefined;
+			/**
+			 * @description Linear webhook verification secret.
+			 * @type string | undefined
+			 */
+			webhookSecret?: string | undefined;
+			/**
+			 * @description OAuth scopes requested for Linear application tokens.
+			 * @type array | undefined
+			 */
+			appScopes?: string[] | undefined;
+			/**
+			 * @description OAuth scopes requested for Linear user tokens.
+			 * @type array | undefined
+			 */
+			userScopes?: string[] | undefined;
+			/**
+			 * @description Linear organization that owns the OAuth application.
+			 * @type object | undefined
+			 */
+			ownerOrganization?:
+				| {
+						/**
+						 * @description Linear organization ID.
+						 * @type string
+						 */
+						id: string;
+						/**
+						 * @description Linear organization slug.
+						 * @type string
+						 */
+						slug: string;
+						/**
+						 * @description Linear organization name.
+						 * @type string
+						 */
+						name: string;
+						/**
+						 * @description Linear organization logo URL.
+						 * @type string | undefined
+						 */
+						logoUrl?: (string | null) | undefined;
+				  }
+				| undefined;
+			/**
+			 * @description Linear OAuth application metadata.
+			 * @type object | undefined
+			 */
+			application?:
+				| {
+						/**
+						 * @description Linear OAuth application ID.
+						 * @type string
+						 */
+						id: string;
+						/**
+						 * @description Linear OAuth client ID.
+						 * @type string
+						 */
+						clientId: string;
+						/**
+						 * @description Linear OAuth application name.
+						 * @type string
+						 */
+						name: string;
+						/**
+						 * @description Linear OAuth application description.
+						 * @type string | undefined
+						 */
+						description?: (string | null) | undefined;
+						/**
+						 * @description Linear OAuth application developer name.
+						 * @type string | undefined
+						 */
+						developer?: (string | null) | undefined;
+						/**
+						 * @description Linear OAuth application developer URL.
+						 * @type string | undefined
+						 */
+						developerUrl?: (string | null) | undefined;
+						/**
+						 * @description Linear OAuth application image URL.
+						 * @type string | undefined
+						 */
+						imageUrl?: (string | null) | undefined;
+						/**
+						 * @description Registered redirect URIs for the Linear OAuth application.
+						 * @type array | undefined
+						 */
+						redirectUris?: string[] | undefined;
+						/**
+						 * @description Linear OAuth application distribution mode.
+						 * @type string | undefined
+						 */
+						distribution?: (string | null) | undefined;
+						/**
+						 * @description Linear resource types delivered to the webhook.
+						 * @type array | undefined
+						 */
+						webhookResourceTypes?: string[] | undefined;
+						/**
+						 * @description Linear webhook URL.
+						 * @type string | undefined
+						 */
+						webhookUrl?: (string | null) | undefined;
+						/**
+						 * @description Whether the Linear webhook is enabled.
+						 * @type boolean | undefined
+						 */
+						webhookEnabled?: boolean | undefined;
+						/**
+						 * @description Linear OAuth application creation timestamp.
+						 * @type string | undefined
+						 */
+						createdAt?: string | undefined;
+						/**
+						 * @description Linear OAuth application update timestamp.
+						 * @type string | undefined
+						 */
+						updatedAt?: string | undefined;
+				  }
+				| undefined;
+			/**
+			 * @description Additional provider metadata stored with the connector.
+			 * @type object | undefined
+			 */
+			extras?:
+				| {
+						[key: string]: unknown;
+				  }
+				| undefined;
+	  }
+	| {
+			/**
+			 * @description Salesforce connected app consumer key.
+			 * @type string | undefined
+			 */
+			consumerKey?: string | undefined;
+			/**
+			 * @description Salesforce connected app consumer secret.
+			 * @type string | undefined
+			 */
+			consumerSecret?: string | undefined;
+			/**
+			 * @description Salesforce login host, such as login.salesforce.com.
+			 * @type string | undefined
+			 */
+			loginHost?: string | undefined;
+	  }
+	| {
+			/**
+			 * @description Slack app ID.
+			 * @type string | undefined
+			 */
+			appId?: string | undefined;
+			/**
+			 * @description Slack app display name.
+			 * @type string | undefined
+			 */
+			appName?: string | undefined;
+			/**
+			 * @description Slack app OAuth client ID.
+			 * @type string | undefined
+			 */
+			clientId?: string | undefined;
+			/**
+			 * @description Slack app OAuth client secret.
+			 * @type string | undefined
+			 */
+			clientSecret?: string | undefined;
+			/**
+			 * @description Slack workspace metadata.
+			 * @type object | undefined
+			 */
+			slackTeam?:
+				| {
+						/**
+						 * @description Slack workspace ID.
+						 * @type string
+						 */
+						id: string;
+						/**
+						 * @description Slack workspace name.
+						 * @type string | undefined
+						 */
+						name?: string | undefined;
+						/**
+						 * @description Slack workspace domain.
+						 * @type string | undefined
+						 */
+						domain?: string | undefined;
+				  }
+				| undefined;
+			/**
+			 * @description Slack request signing secret.
+			 * @type string | undefined
+			 */
+			signingSecret?: string | undefined;
+			/**
+			 * @description Legacy Slack webhook verification token.
+			 * @type string | undefined
+			 */
+			verificationToken?: string | undefined;
+			/**
+			 * @description OAuth scopes requested for Slack bot tokens.
+			 * @type array | undefined
+			 */
+			botScopes?: string[] | undefined;
+			/**
+			 * @description OAuth scopes requested for Slack user tokens.
+			 * @type array | undefined
+			 */
+			userScopes?: string[] | undefined;
+			/**
+			 * @description Slash commands configured for the managed Slack app.
+			 * @type array | undefined
+			 */
+			slashCommands?:
+				| {
+						/**
+						 * @description Slash command including its leading slash.
+						 * @maxLength 32
+						 * @pattern ^\\[/]
+						 * @type string
+						 */
+						command: string;
+						/**
+						 * @description Description shown for the slash command in Slack.
+						 * @maxLength 2000
+						 * @type string
+						 */
+						description: string;
+						/**
+						 * @description Optional usage hint shown for the slash command.
+						 * @maxLength 1000
+						 * @type string | undefined
+						 */
+						usageHint?: string | undefined;
+						/**
+						 * @description Whether Slack should escape command arguments.
+						 * @type boolean | undefined
+						 */
+						shouldEscape?: boolean | undefined;
+				  }[]
+				| undefined;
+			/**
+			 * @description Global and message shortcuts configured for the Slack app.
+			 * @type array | undefined
+			 */
+			shortcuts?:
+				| {
+						/**
+						 * @description Where Slack exposes the shortcut.
+						 * @type string
+						 */
+						type: ConnectConnectorUpdateDataShortcutsTypeEnumKey;
+						/**
+						 * @description Shortcut display name.
+						 * @type string
+						 */
+						name: string;
+						/**
+						 * @description Identifier included in the shortcut callback.
+						 * @maxLength 255
+						 * @type string
+						 */
+						callbackId: string;
+						/**
+						 * @description Description shown for the shortcut in Slack.
+						 * @maxLength 150
+						 * @type string
+						 */
+						description: string;
+				  }[]
+				| undefined;
+			/**
+			 * @description Additional provider metadata stored with the connector.
+			 * @type object | undefined
+			 */
+			extras?:
+				| {
+						[key: string]: unknown;
+				  }
+				| undefined;
+	  }
+	| {
+			/**
+			 * @description Snowflake account identifier.
+			 * @type string | undefined
+			 */
+			accountIdentifier?: string | undefined;
+			/**
+			 * @description Default Snowflake role for created sessions.
+			 * @type string | undefined
+			 */
+			defaultSessionRole?: string | undefined;
+	  }
+	| {
+			/**
+			 * @description Snowflake account identifier.
+			 * @type string | undefined
+			 */
+			accountIdentifier?: string | undefined;
+	  }
+	| {
+			/**
+			 * @description Linq partner API token for the shared line.
+			 * @type string | undefined
+			 */
+			apiToken?: string | undefined;
+			phoneNumbers?: string[] | undefined;
+	  }
+	| {
+			/**
+			 * @description Sendblue API key id (`sb-api-key-id`).
+			 * @type string | undefined
+			 */
+			apiKeyId?: string | undefined;
+			/**
+			 * @description Sendblue API secret key (`sb-api-secret-key`).
+			 * @type string | undefined
+			 */
+			apiSecretKey?: string | undefined;
+			/**
+			 * @description E.164 Sendblue lines this connector sends and receives on. Used as the connector\'s display name, and the only lines its webhooks are registered for; an empty array clears them, which also removes the webhook subscription.
+			 * @type array | undefined
+			 */
+			phoneNumbers?: string[] | undefined;
+	  }
+	| {
+			/**
+			 * @description Photon project secret.
+			 * @type string | undefined
+			 */
+			projectSecret?: string | undefined;
+			/**
+			 * @description Photon webhook verification secret.
+			 * @type string | undefined
+			 */
+			webhookSecret?: string | undefined;
+			/**
+			 * @description Whether Connect should recreate the Photon webhook.
+			 * @type boolean | undefined
+			 */
+			repairWebhook?: boolean | undefined;
+	  }
+	| {
+			[key: string]: unknown;
+	  };
+
+/**
+ * @description Connector fields to update.
+ * @type object
+ */
+export type ConnectUpdateConnectorRequest = {
+	/**
+	 * @description Whether the triggers are enabled for this connector.
+	 * @type boolean | undefined
+	 */
+	triggers?: boolean | undefined;
+	/**
+	 * @description Default trigger events for this connector.
+	 * @type array | undefined
+	 */
+	events?: string[] | undefined;
+	/**
+	 * @description Provider configuration fields to update.
+	 * @type unknown | undefined
+	 */
+	data?: unknown | undefined;
+	/**
+	 * @description SHA-1 digest of a PNG or JPEG icon that is at least 640 by 640 pixels. This field does not accept a URL or image bytes.\n\nFirst compute the digest and upload the raw image with [POST /v2/files](https://vercel.com/docs/rest-api/deployments/upload-deployment-files). Send `Content-Length` and the same 40-character digest in `x-vercel-digest`. Then set `icon` to that digest.\n\n```js\nimport { createHash } from \'node:crypto\';\nimport { readFile } from \'node:fs/promises\';\n\nconst VERCEL_TOKEN = process.env.VERCEL_TOKEN;\nconst connectorId = \'scl_...\';\nconst bytes = await readFile(\'icon.png\');\nconst digest = createHash(\'sha1\').update(bytes).digest(\'hex\');\n\nawait fetch(\'https://api.vercel.com/v2/files\', {\n  method: \'POST\',\n  headers: {\n    Authorization: `Bearer ${VERCEL_TOKEN}`,\n    \'Content-Type\': \'application/octet-stream\',\n    \'Content-Length\': String(bytes.length),\n    \'x-vercel-digest\': digest,\n  },\n  body: bytes,\n});\n\nawait fetch(`https://api.vercel.com/v2/connect/connectors/${connectorId}`, {\n  method: \'PATCH\',\n  headers: {\n    Authorization: `Bearer ${VERCEL_TOKEN}`,\n    \'Content-Type\': \'application/json\',\n  },\n  body: JSON.stringify({ icon: digest }),\n});\n```\n
+	 * @pattern ^[0-9a-fA-F]{40}$
+	 * @type string | undefined
+	 */
+	icon?: string | undefined;
+	backgroundColor?: string | undefined;
+	accentColor?: string | undefined;
+	/**
+	 * @description Full team-scoped UID, such as `slack/my-bot`. It cannot contain whitespace, `%`, `#`, control characters, or Vercel-owned namespaces. Changing it breaks callers that use the old UID. The stable connector ID does not change.
+	 * @type string | undefined
+	 */
+	uid?: string | undefined;
+	/**
+	 * @description Display name for the connector. It is trimmed and cannot be empty or contain control characters.
+	 * @type string | undefined
+	 */
+	name?: string | undefined;
+};
+
+/**
+ * @description A destination in the complete replacement set. Each destination targets the default deployment, a branch, or a custom environment.
+ */
+export type ConnectTriggerDestinationInput =
+	| {
+			/**
+			 * @description Project that receives matching trigger requests.
+			 * @minLength 1
+			 * @type string
+			 */
+			projectId: string;
+			/**
+			 * @description Route path on the linked project that receives forwarded trigger requests.
+			 * @minLength 1
+			 * @maxLength 2048
+			 * @type string | undefined
+			 */
+			path?: string | undefined;
+	  }
+	| {
+			/**
+			 * @description Project that receives matching trigger requests.
+			 * @minLength 1
+			 * @type string
+			 */
+			projectId: string;
+			/**
+			 * @description Git branch used to select a preview deployment.
+			 * @minLength 1
+			 * @maxLength 250
+			 * @type string
+			 */
+			branch: string;
+			/**
+			 * @description Route path on the linked project that receives forwarded trigger requests.
+			 * @minLength 1
+			 * @maxLength 2048
+			 * @type string | undefined
+			 */
+			path?: string | undefined;
+	  }
+	| {
+			/**
+			 * @description Project that receives matching trigger requests.
+			 * @minLength 1
+			 * @type string
+			 */
+			projectId: string;
+			/**
+			 * @description Stable custom environment ID that belongs to the destination project.
+			 * @pattern ^env_
+			 * @type string
+			 */
+			customEnvironmentId: string;
+			/**
+			 * @description Route path on the linked project that receives forwarded trigger requests.
+			 * @minLength 1
+			 * @maxLength 2048
+			 * @type string | undefined
+			 */
+			path?: string | undefined;
+	  };
+
+/**
+ * @description Complete replacement set of trigger destinations.
+ * @type object
+ */
+export type ConnectReplaceTriggerDestinationsRequest = {
+	/**
+	 * @description Complete replacement set of trigger destinations. An empty array removes all destinations. Connector get and list responses expose the saved set as triggerDestinations.
+	 * @type array
+	 */
+	destinations: unknown[];
+};
+
+/**
+ * @description A connection between a connector and a Vercel project, including the environments where the connector is enabled.
+ * @type object
+ */
+export type ConnectProjectConnection = {
+	/**
+	 * @description Stable `scl_` connector ID, even when the request used a UID.
+	 * @type string
+	 */
+	connectorId: string;
+	/**
+	 * @description Vercel project connected to the connector.
+	 * @type object
+	 */
+	project: {
+		/**
+		 * @description Same Vercel project ID as the connection\'s top-level `projectId`.
+		 * @type string
+		 */
+		id: string;
+		/**
+		 * @description Current Vercel project name.
+		 * @type string
+		 */
+		name: string;
+		/**
+		 * @description Custom environments available on the project. This list can include environments where the connector is not enabled.
+		 * @type array | undefined
+		 */
+		customEnvironments?:
+			| {
+					/**
+					 * @description Stable custom environment ID.
+					 * @type string
+					 */
+					id: string;
+					/**
+					 * @description Current human-readable custom environment slug.
+					 * @type string
+					 */
+					slug: string;
+			  }[]
+			| undefined;
+	};
+	/**
+	 * @description Environments where the connector is enabled for the project.
+	 * @type array
+	 */
+	enabledEnvironments: string[];
+	/**
+	 * @description Time when the project connection was created, in epoch milliseconds.
+	 * @type number
+	 */
+	createdAt: number;
+	/**
+	 * @description Time when the project connection was last updated, in epoch milliseconds.
+	 * @type number
+	 */
+	updatedAt: number;
+};
+
+/**
+ * @description Page of projects connected to a connector.
+ * @type object
+ */
+export type ConnectConnectorProjectConnectionList = {
+	/**
+	 * @description Project connections in this page.
+	 * @type array
+	 */
+	projects: unknown[];
+	/**
+	 * @description Cursor for the next page.
+	 * @type unknown
+	 */
+	pagination: unknown;
+};
+
+/**
+ * @description Environments enabled for a connector project connection.
+ * @type object
+ */
+export type ConnectUpsertProjectConnectionRequest = {
+	/**
+	 * @description One or more built-in environment names or stable custom environment IDs that belong to the project. Duplicate values are accepted and removed.
+	 * @type array
+	 */
+	environments: string[];
+};
+
+/**
+ * @description Page of connectors connected to a project.
+ * @type object
+ */
+export type ConnectProjectConnectorConnectionList = {
+	/**
+	 * @description Connector connections in this page.
+	 * @type array
+	 */
+	connectors: unknown[];
+	/**
+	 * @description Cursor for the next page.
+	 * @type unknown
+	 */
+	pagination: unknown;
 };
 
 /**
@@ -2514,8 +4362,10 @@ export const userEventTypeEnum = {
 	"ai-gateway-byok-credential-created": "ai-gateway-byok-credential-created",
 	"ai-gateway-byok-credential-deleted": "ai-gateway-byok-credential-deleted",
 	"ai-gateway-byok-credential-updated": "ai-gateway-byok-credential-updated",
+	"ai-gateway-byok-model-mappings-updated": "ai-gateway-byok-model-mappings-updated",
 	"ai-gateway-credits-purchased": "ai-gateway-credits-purchased",
 	"ai-gateway-guardrails-updated": "ai-gateway-guardrails-updated",
+	"ai-gateway-hipaa-compliance-toggled": "ai-gateway-hipaa-compliance-toggled",
 	"ai-gateway-inference-regions-updated": "ai-gateway-inference-regions-updated",
 	"ai-gateway-model-allowlist-models-updated": "ai-gateway-model-allowlist-models-updated",
 	"ai-gateway-model-allowlist-toggled": "ai-gateway-model-allowlist-toggled",
@@ -2525,6 +4375,7 @@ export const userEventTypeEnum = {
 	"ai-gateway-private-provider-created": "ai-gateway-private-provider-created",
 	"ai-gateway-private-provider-deleted": "ai-gateway-private-provider-deleted",
 	"ai-gateway-private-provider-updated": "ai-gateway-private-provider-updated",
+	"ai-gateway-prompt-training-opt-out-toggled": "ai-gateway-prompt-training-opt-out-toggled",
 	"ai-gateway-provider-allowlist-providers-updated":
 		"ai-gateway-provider-allowlist-providers-updated",
 	"ai-gateway-provider-allowlist-toggled": "ai-gateway-provider-allowlist-toggled",
@@ -2539,8 +4390,10 @@ export const userEventTypeEnum = {
 	"ai-gateway-transcripts-retention-updated": "ai-gateway-transcripts-retention-updated",
 	"ai-gateway-virtual-model-config-archived": "ai-gateway-virtual-model-config-archived",
 	"ai-gateway-virtual-model-config-created": "ai-gateway-virtual-model-config-created",
+	"ai-gateway-virtual-model-config-deleted": "ai-gateway-virtual-model-config-deleted",
 	"ai-gateway-virtual-model-config-restored": "ai-gateway-virtual-model-config-restored",
 	"ai-gateway-virtual-model-config-updated": "ai-gateway-virtual-model-config-updated",
+	"ai-gateway-zero-data-retention-toggled": "ai-gateway-zero-data-retention-toggled",
 	"ai-omniagent": "ai-omniagent",
 	"alert-investigation-project-allowlist-updated": "alert-investigation-project-allowlist-updated",
 	"alert-rule-created": "alert-rule-created",
@@ -2731,6 +4584,7 @@ export const userEventTypeEnum = {
 	"flags-segment": "flags-segment",
 	"flags-settings": "flags-settings",
 	"flags-transferred": "flags-transferred",
+	"flat-rate-cdn-auto-upgrade-consent": "flat-rate-cdn-auto-upgrade-consent",
 	"git-integration-repo-push": "git-integration-repo-push",
 	git_account_integration_link_added: "git_account_integration_link_added",
 	"global-config-backup-restored": "global-config-backup-restored",
@@ -2817,6 +4671,7 @@ export const userEventTypeEnum = {
 	"organization-team-add": "organization-team-add",
 	"organization-team-create": "organization-team-create",
 	"organization-team-delete": "organization-team-delete",
+	"organization-team-sso-update": "organization-team-sso-update",
 	"owner-blocked": "owner-blocked",
 	"owner-soft-blocked": "owner-soft-blocked",
 	"owner-soft-unblocked": "owner-soft-unblocked",
@@ -2900,6 +4755,12 @@ export const userEventTypeEnum = {
 	"project-git-commit-comments-toggled": "project-git-commit-comments-toggled",
 	"project-git-commit-status-toggled": "project-git-commit-status-toggled",
 	"project-git-create-deployments-toggled": "project-git-create-deployments-toggled",
+	"project-git-credential-bound-created": "project-git-credential-bound-created",
+	"project-git-credential-bound-deleted": "project-git-credential-bound-deleted",
+	"project-git-credential-bound-updated": "project-git-credential-bound-updated",
+	"project-git-credential-grant-created": "project-git-credential-grant-created",
+	"project-git-credential-grant-deleted": "project-git-credential-grant-deleted",
+	"project-git-credential-grant-updated": "project-git-credential-grant-updated",
 	"project-git-fork-protection-updated": "project-git-fork-protection-updated",
 	"project-git-lfs-toggled": "project-git-lfs-toggled",
 	"project-git-pr-comments-toggled": "project-git-pr-comments-toggled",
@@ -2997,6 +4858,8 @@ export const userEventTypeEnum = {
 	"shared-env-variable-create": "shared-env-variable-create",
 	"shared-env-variable-delete": "shared-env-variable-delete",
 	"shared-env-variable-read": "shared-env-variable-read",
+	"shared-env-variable-repo-link": "shared-env-variable-repo-link",
+	"shared-env-variable-repo-unlink": "shared-env-variable-repo-unlink",
 	"shared-env-variable-update": "shared-env-variable-update",
 	"show-ip-addresses": "show-ip-addresses",
 	signup: "signup",
@@ -3027,6 +4890,7 @@ export const userEventTypeEnum = {
 	"storage-update-project-connection": "storage-update-project-connection",
 	"storage-upgrade-project-connection-to-oidc": "storage-upgrade-project-connection-to-oidc",
 	"storage-view-secret": "storage-view-secret",
+	"strict-connectors": "strict-connectors",
 	"strict-deployment-protection-settings": "strict-deployment-protection-settings",
 	"strict-password-protection-settings": "strict-password-protection-settings",
 	"strict-shareable-links": "strict-shareable-links",
@@ -3326,6 +5190,7 @@ export const userEventPayloadPermissionsEnum = {
 	"read-write:ai-gateway-rules": "read-write:ai-gateway-rules",
 	"read-write:ai-gateway-virtual-model-configs": "read-write:ai-gateway-virtual-model-configs",
 	"read-write:alerts": "read-write:alerts",
+	"read-write:automations": "read-write:automations",
 	"read-write:billing": "read-write:billing",
 	"read-write:blob": "read-write:blob",
 	"read-write:connect": "read-write:connect",
@@ -3356,7 +5221,9 @@ export const userEventPayloadPermissionsEnum = {
 	"read:ai-gateway-rules": "read:ai-gateway-rules",
 	"read:ai-gateway-virtual-model-configs": "read:ai-gateway-virtual-model-configs",
 	"read:alerts": "read:alerts",
+	"read:automations": "read:automations",
 	"read:billing": "read:billing",
+	"read:connect": "read:connect",
 	"read:deployment": "read:deployment",
 	"read:domain": "read:domain",
 	"read:event": "read:event",
@@ -3375,6 +5242,7 @@ export const userEventPayloadPermissionsEnum = {
 	"read:team": "read:team",
 	"read:vcr": "read:vcr",
 	"read:web-analytics": "read:web-analytics",
+	"read:webhooks": "read:webhooks",
 	"use:ai-gateway": "use:ai-gateway",
 } as const;
 
@@ -3400,6 +5268,7 @@ export const userEventPayloadNextPermissionsEnum = {
 	"read-write:ai-gateway-rules": "read-write:ai-gateway-rules",
 	"read-write:ai-gateway-virtual-model-configs": "read-write:ai-gateway-virtual-model-configs",
 	"read-write:alerts": "read-write:alerts",
+	"read-write:automations": "read-write:automations",
 	"read-write:billing": "read-write:billing",
 	"read-write:blob": "read-write:blob",
 	"read-write:connect": "read-write:connect",
@@ -3430,7 +5299,9 @@ export const userEventPayloadNextPermissionsEnum = {
 	"read:ai-gateway-rules": "read:ai-gateway-rules",
 	"read:ai-gateway-virtual-model-configs": "read:ai-gateway-virtual-model-configs",
 	"read:alerts": "read:alerts",
+	"read:automations": "read:automations",
 	"read:billing": "read:billing",
+	"read:connect": "read:connect",
 	"read:deployment": "read:deployment",
 	"read:domain": "read:domain",
 	"read:event": "read:event",
@@ -3450,6 +5321,7 @@ export const userEventPayloadNextPermissionsEnum = {
 	"read:user": "read:user",
 	"read:vcr": "read:vcr",
 	"read:web-analytics": "read:web-analytics",
+	"read:webhooks": "read:webhooks",
 	"use:ai-gateway": "use:ai-gateway",
 } as const;
 
@@ -3465,6 +5337,7 @@ export const userEventPayloadBeforePermissionsEnum = {
 	"read-write:ai-gateway-rules": "read-write:ai-gateway-rules",
 	"read-write:ai-gateway-virtual-model-configs": "read-write:ai-gateway-virtual-model-configs",
 	"read-write:alerts": "read-write:alerts",
+	"read-write:automations": "read-write:automations",
 	"read-write:billing": "read-write:billing",
 	"read-write:blob": "read-write:blob",
 	"read-write:connect": "read-write:connect",
@@ -3495,7 +5368,9 @@ export const userEventPayloadBeforePermissionsEnum = {
 	"read:ai-gateway-rules": "read:ai-gateway-rules",
 	"read:ai-gateway-virtual-model-configs": "read:ai-gateway-virtual-model-configs",
 	"read:alerts": "read:alerts",
+	"read:automations": "read:automations",
 	"read:billing": "read:billing",
+	"read:connect": "read:connect",
 	"read:deployment": "read:deployment",
 	"read:domain": "read:domain",
 	"read:event": "read:event",
@@ -3514,6 +5389,7 @@ export const userEventPayloadBeforePermissionsEnum = {
 	"read:team": "read:team",
 	"read:vcr": "read:vcr",
 	"read:web-analytics": "read:web-analytics",
+	"read:webhooks": "read:webhooks",
 	"use:ai-gateway": "use:ai-gateway",
 } as const;
 
@@ -3529,6 +5405,7 @@ export const userEventPayloadAfterPermissionsEnum = {
 	"read-write:ai-gateway-rules": "read-write:ai-gateway-rules",
 	"read-write:ai-gateway-virtual-model-configs": "read-write:ai-gateway-virtual-model-configs",
 	"read-write:alerts": "read-write:alerts",
+	"read-write:automations": "read-write:automations",
 	"read-write:billing": "read-write:billing",
 	"read-write:blob": "read-write:blob",
 	"read-write:connect": "read-write:connect",
@@ -3559,7 +5436,9 @@ export const userEventPayloadAfterPermissionsEnum = {
 	"read:ai-gateway-rules": "read:ai-gateway-rules",
 	"read:ai-gateway-virtual-model-configs": "read:ai-gateway-virtual-model-configs",
 	"read:alerts": "read:alerts",
+	"read:automations": "read:automations",
 	"read:billing": "read:billing",
+	"read:connect": "read:connect",
 	"read:deployment": "read:deployment",
 	"read:domain": "read:domain",
 	"read:event": "read:event",
@@ -3578,6 +5457,7 @@ export const userEventPayloadAfterPermissionsEnum = {
 	"read:team": "read:team",
 	"read:vcr": "read:vcr",
 	"read:web-analytics": "read:web-analytics",
+	"read:webhooks": "read:webhooks",
 	"use:ai-gateway": "use:ai-gateway",
 } as const;
 
@@ -3791,6 +5671,31 @@ export const actionEnum = {
 
 export type ActionEnumKey = (typeof actionEnum)[keyof typeof actionEnum];
 
+export const userEventPayloadSourceEnum = {
+	"account-update": "account-update",
+	bitbucket: "bitbucket",
+	dsync: "dsync",
+	feedback: "feedback",
+	github: "github",
+	gitlab: "gitlab",
+	import: "import",
+	link: "link",
+	mail: "mail",
+	"nsnb-auto-approve": "nsnb-auto-approve",
+	"nsnb-hobby-upgrade": "nsnb-hobby-upgrade",
+	"nsnb-invite": "nsnb-invite",
+	"nsnb-redeploy": "nsnb-redeploy",
+	"nsnb-redeploy-attribution-card": "nsnb-redeploy-attribution-card",
+	"nsnb-request-access": "nsnb-request-access",
+	"nsnb-viewer-upgrade": "nsnb-viewer-upgrade",
+	"organization-teams": "organization-teams",
+	saml: "saml",
+	teams: "teams",
+} as const;
+
+export type UserEventPayloadSourceEnumKey =
+	(typeof userEventPayloadSourceEnum)[keyof typeof userEventPayloadSourceEnum];
+
 export const userEventPayloadOutcomeEnum = {
 	"account-matched": "account-matched",
 	"linking-required": "linking-required",
@@ -3874,6 +5779,7 @@ export const userEventPayloadNewOwnerProjectCardWidgetPreferencesWidgetEnum = {
 	"observability-edge-requests": "observability-edge-requests",
 	"observability-error-rate": "observability-error-rate",
 	"observability-function-invocations": "observability-function-invocations",
+	shortcut: "shortcut",
 	"speed-insights-cls": "speed-insights-cls",
 	"speed-insights-lcp": "speed-insights-lcp",
 	"speed-insights-res": "speed-insights-res",
@@ -3932,7 +5838,6 @@ export const userEventPayloadNewOwnerSoftBlockReasonEnum = {
 	ENTERPRISE_UNPAID_INVOICE: "ENTERPRISE_UNPAID_INVOICE",
 	EXPOSURE_CAP_EXCEEDED: "EXPOSURE_CAP_EXCEEDED",
 	FAIR_USE_LIMITS_EXCEEDED: "FAIR_USE_LIMITS_EXCEEDED",
-	HOBBY_ALLOCATION_PAUSED: "HOBBY_ALLOCATION_PAUSED",
 	SUBSCRIPTION_CANCELED: "SUBSCRIPTION_CANCELED",
 	SUBSCRIPTION_EXPIRED: "SUBSCRIPTION_EXPIRED",
 	UNPAID_INVOICE: "UNPAID_INVOICE",
@@ -3985,51 +5890,6 @@ export const userEventPayloadNewOwnerSoftBlockBlockedDueToOverageTypeEnum = {
 
 export type UserEventPayloadNewOwnerSoftBlockBlockedDueToOverageTypeEnumKey =
 	(typeof userEventPayloadNewOwnerSoftBlockBlockedDueToOverageTypeEnum)[keyof typeof userEventPayloadNewOwnerSoftBlockBlockedDueToOverageTypeEnum];
-
-export const userEventPayloadNewOwnerSoftBlockHobbyAllocationPauseTriggersAllocationEnum = {
-	analyticsUsage: "analyticsUsage",
-	artifacts: "artifacts",
-	bandwidth: "bandwidth",
-	blobDataTransfer: "blobDataTransfer",
-	blobTotalAdvancedRequests: "blobTotalAdvancedRequests",
-	blobTotalAvgSizeInBytes: "blobTotalAvgSizeInBytes",
-	blobTotalGetResponseObjectSizeInBytes: "blobTotalGetResponseObjectSizeInBytes",
-	blobTotalSimpleRequests: "blobTotalSimpleRequests",
-	connectDataTransfer: "connectDataTransfer",
-	dataCacheRead: "dataCacheRead",
-	dataCacheWrite: "dataCacheWrite",
-	edgeConfigRead: "edgeConfigRead",
-	edgeConfigWrite: "edgeConfigWrite",
-	edgeFunctionExecutionUnits: "edgeFunctionExecutionUnits",
-	edgeMiddlewareInvocations: "edgeMiddlewareInvocations",
-	edgeRequest: "edgeRequest",
-	edgeRequestAdditionalCpuDuration: "edgeRequestAdditionalCpuDuration",
-	elasticConcurrencyBuildSlots: "elasticConcurrencyBuildSlots",
-	fastDataTransfer: "fastDataTransfer",
-	fastOriginTransfer: "fastOriginTransfer",
-	fluidCpuDuration: "fluidCpuDuration",
-	fluidDuration: "fluidDuration",
-	functionDuration: "functionDuration",
-	functionInvocation: "functionInvocation",
-	imageOptimizationCacheRead: "imageOptimizationCacheRead",
-	imageOptimizationCacheWrite: "imageOptimizationCacheWrite",
-	imageOptimizationTransformation: "imageOptimizationTransformation",
-	logDrainsVolume: "logDrainsVolume",
-	monitoringMetric: "monitoringMetric",
-	observabilityEvent: "observabilityEvent",
-	onDemandConcurrencyMinutes: "onDemandConcurrencyMinutes",
-	runtimeCacheRead: "runtimeCacheRead",
-	runtimeCacheWrite: "runtimeCacheWrite",
-	serverlessFunctionExecution: "serverlessFunctionExecution",
-	sourceImages: "sourceImages",
-	wafOwaspExcessBytes: "wafOwaspExcessBytes",
-	wafOwaspRequests: "wafOwaspRequests",
-	wafRateLimitRequest: "wafRateLimitRequest",
-	webAnalyticsEvent: "webAnalyticsEvent",
-} as const;
-
-export type UserEventPayloadNewOwnerSoftBlockHobbyAllocationPauseTriggersAllocationEnumKey =
-	(typeof userEventPayloadNewOwnerSoftBlockHobbyAllocationPauseTriggersAllocationEnum)[keyof typeof userEventPayloadNewOwnerSoftBlockHobbyAllocationPauseTriggersAllocationEnum];
 
 export const userEventPayloadNewOwnerTeamsRoleEnum = {
 	BILLING: "BILLING",
@@ -4515,6 +6375,22 @@ export const userEventPayloadBillingPlanEnum = {
 export type UserEventPayloadBillingPlanEnumKey =
 	(typeof userEventPayloadBillingPlanEnum)[keyof typeof userEventPayloadBillingPlanEnum];
 
+export const userEventPayloadPreviousModeEnum = {
+	organization: "organization",
+	team: "team",
+} as const;
+
+export type UserEventPayloadPreviousModeEnumKey =
+	(typeof userEventPayloadPreviousModeEnum)[keyof typeof userEventPayloadPreviousModeEnum];
+
+export const userEventPayloadModeEnum = {
+	organization: "organization",
+	team: "team",
+} as const;
+
+export type UserEventPayloadModeEnumKey =
+	(typeof userEventPayloadModeEnum)[keyof typeof userEventPayloadModeEnum];
+
 export const userEventPayloadPreviousEnforcementScopeEnum = {
 	all: "all",
 	preview: "preview",
@@ -4633,6 +6509,7 @@ export const userEventPayloadWidgetEnum = {
 	"observability-function-invocations": "observability-function-invocations",
 	online: "online",
 	res: "res",
+	shortcut: "shortcut",
 	"speed-insights-cls": "speed-insights-cls",
 	"speed-insights-lcp": "speed-insights-lcp",
 	"speed-insights-res": "speed-insights-res",
@@ -4682,6 +6559,7 @@ export const userEventPayloadPreviousGitProviderEnum = {
 	"github-custom-host": "github-custom-host",
 	"github-limited": "github-limited",
 	gitlab: "gitlab",
+	v0: "v0",
 	vercel: "vercel",
 } as const;
 
@@ -4695,6 +6573,7 @@ export const userEventPayloadNextGitProviderEnum = {
 	"github-custom-host": "github-custom-host",
 	"github-limited": "github-limited",
 	gitlab: "gitlab",
+	v0: "v0",
 	vercel: "vercel",
 } as const;
 
@@ -4708,6 +6587,7 @@ export const userEventPayloadGitProviderEnum = {
 	"github-custom-host": "github-custom-host",
 	"github-limited": "github-limited",
 	gitlab: "gitlab",
+	v0: "v0",
 	vercel: "vercel",
 } as const;
 
@@ -4957,6 +6837,15 @@ export const userEventPayloadBudgetBudgetItemPricingPlanEnum = {
 export type UserEventPayloadBudgetBudgetItemPricingPlanEnumKey =
 	(typeof userEventPayloadBudgetBudgetItemPricingPlanEnum)[keyof typeof userEventPayloadBudgetBudgetItemPricingPlanEnum];
 
+export const userEventPayloadBudgetBudgetItemScopeEnum = {
+	organization: "organization",
+	project: "project",
+	team: "team",
+} as const;
+
+export type UserEventPayloadBudgetBudgetItemScopeEnumKey =
+	(typeof userEventPayloadBudgetBudgetItemScopeEnum)[keyof typeof userEventPayloadBudgetBudgetItemScopeEnum];
+
 export const userEventPayloadBudgetPricingPlanEnum = {
 	flex: "flex",
 	legacy: "legacy",
@@ -4968,6 +6857,15 @@ export const userEventPayloadBudgetPricingPlanEnum = {
 export type UserEventPayloadBudgetPricingPlanEnumKey =
 	(typeof userEventPayloadBudgetPricingPlanEnum)[keyof typeof userEventPayloadBudgetPricingPlanEnum];
 
+export const userEventPayloadBudgetScopeEnum = {
+	organization: "organization",
+	project: "project",
+	team: "team",
+} as const;
+
+export type UserEventPayloadBudgetScopeEnumKey =
+	(typeof userEventPayloadBudgetScopeEnum)[keyof typeof userEventPayloadBudgetScopeEnum];
+
 export const userEventPayloadPrevBudgetPricingPlanEnum = {
 	flex: "flex",
 	legacy: "legacy",
@@ -4978,6 +6876,15 @@ export const userEventPayloadPrevBudgetPricingPlanEnum = {
 
 export type UserEventPayloadPrevBudgetPricingPlanEnumKey =
 	(typeof userEventPayloadPrevBudgetPricingPlanEnum)[keyof typeof userEventPayloadPrevBudgetPricingPlanEnum];
+
+export const userEventPayloadPrevBudgetScopeEnum = {
+	organization: "organization",
+	project: "project",
+	team: "team",
+} as const;
+
+export type UserEventPayloadPrevBudgetScopeEnumKey =
+	(typeof userEventPayloadPrevBudgetScopeEnum)[keyof typeof userEventPayloadPrevBudgetScopeEnum];
 
 export const userEventPayloadStoreTypeEnum = {
 	blob: "blob",
@@ -5058,6 +6965,7 @@ export const userEventPayloadReasonEnum = {
 	"long-build-duration": "long-build-duration",
 	"oom-failure": "oom-failure",
 	"plan-change": "plan-change",
+	"project-transfer": "project-transfer",
 	"short-build-duration": "short-build-duration",
 	"sustained-high-cpu": "sustained-high-cpu",
 } as const;
@@ -5113,31 +7021,6 @@ export const userEventPayloadNewPlanEnum = {
 
 export type UserEventPayloadNewPlanEnumKey =
 	(typeof userEventPayloadNewPlanEnum)[keyof typeof userEventPayloadNewPlanEnum];
-
-export const userEventPayloadSourceEnum = {
-	"account-update": "account-update",
-	bitbucket: "bitbucket",
-	dsync: "dsync",
-	feedback: "feedback",
-	github: "github",
-	gitlab: "gitlab",
-	import: "import",
-	link: "link",
-	mail: "mail",
-	"nsnb-auto-approve": "nsnb-auto-approve",
-	"nsnb-hobby-upgrade": "nsnb-hobby-upgrade",
-	"nsnb-invite": "nsnb-invite",
-	"nsnb-redeploy": "nsnb-redeploy",
-	"nsnb-redeploy-attribution-card": "nsnb-redeploy-attribution-card",
-	"nsnb-request-access": "nsnb-request-access",
-	"nsnb-viewer-upgrade": "nsnb-viewer-upgrade",
-	"organization-teams": "organization-teams",
-	saml: "saml",
-	teams: "teams",
-} as const;
-
-export type UserEventPayloadSourceEnumKey =
-	(typeof userEventPayloadSourceEnum)[keyof typeof userEventPayloadSourceEnum];
 
 export const userEventPayloadPreviousTeamRolesEnum = {
 	BILLING: "BILLING",
@@ -5543,6 +7426,17 @@ export type UserEvent = {
 	 * @type array | undefined
 	 */
 	viaIds?: string[] | undefined;
+	/**
+	 * @description The public ID of the token that the principal authenticated with, when the request behind this event carried one.
+	 * @type string | undefined
+	 */
+	tokenId?: string | undefined;
+	/**
+	 * @description The ID of the session that the principal\'s token belongs to, when it belongs to one.
+	 * @type string | undefined
+	 */
+	sessionId?: string | undefined;
+	requestId?: string | undefined;
 	payload?:
 		| (
 				| object
@@ -5574,6 +7468,11 @@ export type UserEvent = {
 						projectName?: string | undefined;
 						projectId?: string | undefined;
 						environment: string[];
+				  }
+				| {
+						projectId: string;
+						projectName: string;
+						policyId: string;
 				  }
 				| {
 						/**
@@ -5885,11 +7784,21 @@ export type UserEvent = {
 						};
 				  }
 				| {
-						amount: string;
-						purchaseIntentId: string;
+						credential: {
+							id: string;
+							name: string;
+							providerSlug: string;
+						};
+						added: string[];
+						removed: string[];
+						changed: string[];
 				  }
 				| {
 						enabled: false | true;
+				  }
+				| {
+						amount: string;
+						purchaseIntentId: string;
 				  }
 				| {
 						added: string[];
@@ -6499,6 +8408,7 @@ export type UserEvent = {
 						clientUid?: string | undefined;
 						clientName?: string | undefined;
 						projectId?: string | undefined;
+						projectName?: string | undefined;
 						installationId?: string | undefined;
 						subjectType?: UserEventPayloadSubjectTypeEnumKey | undefined;
 						fields?: string[] | undefined;
@@ -7894,6 +9804,14 @@ export type UserEvent = {
 						ipAddress?: string | undefined;
 				  }
 				| {
+						envId: string;
+						envKey: string;
+						provider: string;
+						organizationId: string;
+						repository: string;
+						target: UserEventPayloadTargetEnumKey[];
+				  }
+				| {
 						oldEnvVar?:
 							| {
 									/**
@@ -8199,11 +10117,15 @@ export type UserEvent = {
 				  }
 				| {
 						projectId: string;
+						projectName?: string | undefined;
 						previousOwnerId: string;
 						newOwnerId: string;
 				  }
 				| {
 						action: UserEventPayloadActionEnumKey;
+				  }
+				| {
+						source: UserEventPayloadSourceEnumKey;
 				  }
 				| {
 						provider: UserEventPayloadProviderEnumKey;
@@ -8456,6 +10378,11 @@ export type UserEvent = {
 								| {
 										projectId: string;
 										widget: UserEventPayloadNewOwnerProjectCardWidgetPreferencesWidgetEnumKey;
+										config?:
+											| {
+													url: string;
+											  }
+											| undefined;
 								  }[]
 								| undefined;
 							/**
@@ -8516,10 +10443,10 @@ export type UserEvent = {
 										customEnvironmentsPerProject?: number | undefined;
 										security?:
 											| {
+													rateLimit?: number | undefined;
 													customRules?: number | undefined;
 													ipBlocks?: number | undefined;
 													ipBypass?: number | undefined;
-													rateLimit?: number | undefined;
 											  }
 											| undefined;
 										bulkRedirectsFreeLimitOverride?: number | undefined;
@@ -8616,44 +10543,10 @@ export type UserEvent = {
 											| UserEventPayloadNewOwnerSoftBlockBlockedDueToOverageTypeEnumKey
 											| undefined;
 										/**
-										 * @description Present only when `reason` is `HOBBY_ALLOCATION_PAUSED`. Makes the pause self-describing for support without a separate lookup.
-										 * @type object | undefined
+										 * @description Since September 2026. Set only by `billing-usage-alerts` for usage plans with a `blockDurationMs`; its presence marks a pause that expires on its own.
+										 * @type number | undefined
 										 */
-										hobbyAllocationPause?:
-											| {
-													/**
-													 * @description Unix ms timestamp at which the pause is eligible to end. This is the single source of truth for when the pause ends. Never re-derive it by re-checking usage — usage keeps moving while a team is paused, and the pause duration is a fixed experiment parameter.
-													 * @type number
-													 */
-													pausedUntil: number;
-													/**
-													 * @description Unix ms timestamp of when the pause was applied.
-													 * @type number
-													 */
-													pausedAt: number;
-													/**
-													 * @description Allocations that were at or over 100% when the pause was applied.
-													 * @type array
-													 */
-													triggers: {
-														/**
-														 * @description Metered allocation whose included amount was fully consumed.
-														 * @type string
-														 */
-														allocation: UserEventPayloadNewOwnerSoftBlockHobbyAllocationPauseTriggersAllocationEnumKey;
-														/**
-														 * @description Usage recorded for that allocation when the pause was applied.
-														 * @type number
-														 */
-														usage: number;
-													}[];
-													/**
-													 * @description Experiment cohort the owner was assigned to when the pause fired. Free-form so cohort naming stays owned by the assignment path.
-													 * @type string
-													 */
-													cohort: string;
-											  }
-											| undefined;
+										unpauseAt?: number | undefined;
 								  } | null)
 								| undefined;
 							stagingPrefix: string;
@@ -8725,6 +10618,7 @@ export type UserEvent = {
 													currentThreshold: number;
 													warningAt?: (number | null) | undefined;
 													blockedAt?: (number | null) | undefined;
+													blockGracePeriodStartedAt?: (number | null) | undefined;
 											  }
 											| undefined;
 										artifacts?:
@@ -8732,6 +10626,7 @@ export type UserEvent = {
 													currentThreshold: number;
 													warningAt?: (number | null) | undefined;
 													blockedAt?: (number | null) | undefined;
+													blockGracePeriodStartedAt?: (number | null) | undefined;
 											  }
 											| undefined;
 										bandwidth?:
@@ -8739,6 +10634,7 @@ export type UserEvent = {
 													currentThreshold: number;
 													warningAt?: (number | null) | undefined;
 													blockedAt?: (number | null) | undefined;
+													blockGracePeriodStartedAt?: (number | null) | undefined;
 											  }
 											| undefined;
 										blobTotalAdvancedRequests?:
@@ -8746,6 +10642,7 @@ export type UserEvent = {
 													currentThreshold: number;
 													warningAt?: (number | null) | undefined;
 													blockedAt?: (number | null) | undefined;
+													blockGracePeriodStartedAt?: (number | null) | undefined;
 											  }
 											| undefined;
 										blobTotalAvgSizeInBytes?:
@@ -8753,6 +10650,7 @@ export type UserEvent = {
 													currentThreshold: number;
 													warningAt?: (number | null) | undefined;
 													blockedAt?: (number | null) | undefined;
+													blockGracePeriodStartedAt?: (number | null) | undefined;
 											  }
 											| undefined;
 										blobTotalGetResponseObjectSizeInBytes?:
@@ -8760,6 +10658,7 @@ export type UserEvent = {
 													currentThreshold: number;
 													warningAt?: (number | null) | undefined;
 													blockedAt?: (number | null) | undefined;
+													blockGracePeriodStartedAt?: (number | null) | undefined;
 											  }
 											| undefined;
 										blobTotalSimpleRequests?:
@@ -8767,6 +10666,7 @@ export type UserEvent = {
 													currentThreshold: number;
 													warningAt?: (number | null) | undefined;
 													blockedAt?: (number | null) | undefined;
+													blockGracePeriodStartedAt?: (number | null) | undefined;
 											  }
 											| undefined;
 										connectDataTransfer?:
@@ -8774,6 +10674,7 @@ export type UserEvent = {
 													currentThreshold: number;
 													warningAt?: (number | null) | undefined;
 													blockedAt?: (number | null) | undefined;
+													blockGracePeriodStartedAt?: (number | null) | undefined;
 											  }
 											| undefined;
 										dataCacheRead?:
@@ -8781,6 +10682,7 @@ export type UserEvent = {
 													currentThreshold: number;
 													warningAt?: (number | null) | undefined;
 													blockedAt?: (number | null) | undefined;
+													blockGracePeriodStartedAt?: (number | null) | undefined;
 											  }
 											| undefined;
 										dataCacheWrite?:
@@ -8788,6 +10690,7 @@ export type UserEvent = {
 													currentThreshold: number;
 													warningAt?: (number | null) | undefined;
 													blockedAt?: (number | null) | undefined;
+													blockGracePeriodStartedAt?: (number | null) | undefined;
 											  }
 											| undefined;
 										edgeConfigRead?:
@@ -8795,6 +10698,7 @@ export type UserEvent = {
 													currentThreshold: number;
 													warningAt?: (number | null) | undefined;
 													blockedAt?: (number | null) | undefined;
+													blockGracePeriodStartedAt?: (number | null) | undefined;
 											  }
 											| undefined;
 										edgeConfigWrite?:
@@ -8802,6 +10706,7 @@ export type UserEvent = {
 													currentThreshold: number;
 													warningAt?: (number | null) | undefined;
 													blockedAt?: (number | null) | undefined;
+													blockGracePeriodStartedAt?: (number | null) | undefined;
 											  }
 											| undefined;
 										edgeFunctionExecutionUnits?:
@@ -8809,6 +10714,7 @@ export type UserEvent = {
 													currentThreshold: number;
 													warningAt?: (number | null) | undefined;
 													blockedAt?: (number | null) | undefined;
+													blockGracePeriodStartedAt?: (number | null) | undefined;
 											  }
 											| undefined;
 										edgeMiddlewareInvocations?:
@@ -8816,6 +10722,7 @@ export type UserEvent = {
 													currentThreshold: number;
 													warningAt?: (number | null) | undefined;
 													blockedAt?: (number | null) | undefined;
+													blockGracePeriodStartedAt?: (number | null) | undefined;
 											  }
 											| undefined;
 										edgeRequestAdditionalCpuDuration?:
@@ -8823,6 +10730,7 @@ export type UserEvent = {
 													currentThreshold: number;
 													warningAt?: (number | null) | undefined;
 													blockedAt?: (number | null) | undefined;
+													blockGracePeriodStartedAt?: (number | null) | undefined;
 											  }
 											| undefined;
 										edgeRequest?:
@@ -8830,6 +10738,7 @@ export type UserEvent = {
 													currentThreshold: number;
 													warningAt?: (number | null) | undefined;
 													blockedAt?: (number | null) | undefined;
+													blockGracePeriodStartedAt?: (number | null) | undefined;
 											  }
 											| undefined;
 										elasticConcurrencyBuildSlots?:
@@ -8837,6 +10746,7 @@ export type UserEvent = {
 													currentThreshold: number;
 													warningAt?: (number | null) | undefined;
 													blockedAt?: (number | null) | undefined;
+													blockGracePeriodStartedAt?: (number | null) | undefined;
 											  }
 											| undefined;
 										fastDataTransfer?:
@@ -8844,6 +10754,7 @@ export type UserEvent = {
 													currentThreshold: number;
 													warningAt?: (number | null) | undefined;
 													blockedAt?: (number | null) | undefined;
+													blockGracePeriodStartedAt?: (number | null) | undefined;
 											  }
 											| undefined;
 										fastOriginTransfer?:
@@ -8851,6 +10762,7 @@ export type UserEvent = {
 													currentThreshold: number;
 													warningAt?: (number | null) | undefined;
 													blockedAt?: (number | null) | undefined;
+													blockGracePeriodStartedAt?: (number | null) | undefined;
 											  }
 											| undefined;
 										fluidCpuDuration?:
@@ -8858,6 +10770,7 @@ export type UserEvent = {
 													currentThreshold: number;
 													warningAt?: (number | null) | undefined;
 													blockedAt?: (number | null) | undefined;
+													blockGracePeriodStartedAt?: (number | null) | undefined;
 											  }
 											| undefined;
 										fluidDuration?:
@@ -8865,6 +10778,7 @@ export type UserEvent = {
 													currentThreshold: number;
 													warningAt?: (number | null) | undefined;
 													blockedAt?: (number | null) | undefined;
+													blockGracePeriodStartedAt?: (number | null) | undefined;
 											  }
 											| undefined;
 										functionDuration?:
@@ -8872,6 +10786,7 @@ export type UserEvent = {
 													currentThreshold: number;
 													warningAt?: (number | null) | undefined;
 													blockedAt?: (number | null) | undefined;
+													blockGracePeriodStartedAt?: (number | null) | undefined;
 											  }
 											| undefined;
 										functionInvocation?:
@@ -8879,6 +10794,7 @@ export type UserEvent = {
 													currentThreshold: number;
 													warningAt?: (number | null) | undefined;
 													blockedAt?: (number | null) | undefined;
+													blockGracePeriodStartedAt?: (number | null) | undefined;
 											  }
 											| undefined;
 										imageOptimizationCacheRead?:
@@ -8886,6 +10802,7 @@ export type UserEvent = {
 													currentThreshold: number;
 													warningAt?: (number | null) | undefined;
 													blockedAt?: (number | null) | undefined;
+													blockGracePeriodStartedAt?: (number | null) | undefined;
 											  }
 											| undefined;
 										imageOptimizationCacheWrite?:
@@ -8893,6 +10810,7 @@ export type UserEvent = {
 													currentThreshold: number;
 													warningAt?: (number | null) | undefined;
 													blockedAt?: (number | null) | undefined;
+													blockGracePeriodStartedAt?: (number | null) | undefined;
 											  }
 											| undefined;
 										imageOptimizationTransformation?:
@@ -8900,6 +10818,7 @@ export type UserEvent = {
 													currentThreshold: number;
 													warningAt?: (number | null) | undefined;
 													blockedAt?: (number | null) | undefined;
+													blockGracePeriodStartedAt?: (number | null) | undefined;
 											  }
 											| undefined;
 										logDrainsVolume?:
@@ -8907,6 +10826,7 @@ export type UserEvent = {
 													currentThreshold: number;
 													warningAt?: (number | null) | undefined;
 													blockedAt?: (number | null) | undefined;
+													blockGracePeriodStartedAt?: (number | null) | undefined;
 											  }
 											| undefined;
 										monitoringMetric?:
@@ -8914,6 +10834,7 @@ export type UserEvent = {
 													currentThreshold: number;
 													warningAt?: (number | null) | undefined;
 													blockedAt?: (number | null) | undefined;
+													blockGracePeriodStartedAt?: (number | null) | undefined;
 											  }
 											| undefined;
 										blobDataTransfer?:
@@ -8921,6 +10842,7 @@ export type UserEvent = {
 													currentThreshold: number;
 													warningAt?: (number | null) | undefined;
 													blockedAt?: (number | null) | undefined;
+													blockGracePeriodStartedAt?: (number | null) | undefined;
 											  }
 											| undefined;
 										observabilityEvent?:
@@ -8928,6 +10850,7 @@ export type UserEvent = {
 													currentThreshold: number;
 													warningAt?: (number | null) | undefined;
 													blockedAt?: (number | null) | undefined;
+													blockGracePeriodStartedAt?: (number | null) | undefined;
 											  }
 											| undefined;
 										onDemandConcurrencyMinutes?:
@@ -8935,6 +10858,7 @@ export type UserEvent = {
 													currentThreshold: number;
 													warningAt?: (number | null) | undefined;
 													blockedAt?: (number | null) | undefined;
+													blockGracePeriodStartedAt?: (number | null) | undefined;
 											  }
 											| undefined;
 										runtimeCacheRead?:
@@ -8942,6 +10866,7 @@ export type UserEvent = {
 													currentThreshold: number;
 													warningAt?: (number | null) | undefined;
 													blockedAt?: (number | null) | undefined;
+													blockGracePeriodStartedAt?: (number | null) | undefined;
 											  }
 											| undefined;
 										runtimeCacheWrite?:
@@ -8949,6 +10874,7 @@ export type UserEvent = {
 													currentThreshold: number;
 													warningAt?: (number | null) | undefined;
 													blockedAt?: (number | null) | undefined;
+													blockGracePeriodStartedAt?: (number | null) | undefined;
 											  }
 											| undefined;
 										serverlessFunctionExecution?:
@@ -8956,6 +10882,7 @@ export type UserEvent = {
 													currentThreshold: number;
 													warningAt?: (number | null) | undefined;
 													blockedAt?: (number | null) | undefined;
+													blockGracePeriodStartedAt?: (number | null) | undefined;
 											  }
 											| undefined;
 										sourceImages?:
@@ -8963,6 +10890,7 @@ export type UserEvent = {
 													currentThreshold: number;
 													warningAt?: (number | null) | undefined;
 													blockedAt?: (number | null) | undefined;
+													blockGracePeriodStartedAt?: (number | null) | undefined;
 											  }
 											| undefined;
 										wafOwaspExcessBytes?:
@@ -8970,6 +10898,7 @@ export type UserEvent = {
 													currentThreshold: number;
 													warningAt?: (number | null) | undefined;
 													blockedAt?: (number | null) | undefined;
+													blockGracePeriodStartedAt?: (number | null) | undefined;
 											  }
 											| undefined;
 										wafOwaspRequests?:
@@ -8977,6 +10906,7 @@ export type UserEvent = {
 													currentThreshold: number;
 													warningAt?: (number | null) | undefined;
 													blockedAt?: (number | null) | undefined;
+													blockGracePeriodStartedAt?: (number | null) | undefined;
 											  }
 											| undefined;
 										wafRateLimitRequest?:
@@ -8984,6 +10914,7 @@ export type UserEvent = {
 													currentThreshold: number;
 													warningAt?: (number | null) | undefined;
 													blockedAt?: (number | null) | undefined;
+													blockGracePeriodStartedAt?: (number | null) | undefined;
 											  }
 											| undefined;
 										webAnalyticsEvent?:
@@ -8991,6 +10922,7 @@ export type UserEvent = {
 													currentThreshold: number;
 													warningAt?: (number | null) | undefined;
 													blockedAt?: (number | null) | undefined;
+													blockGracePeriodStartedAt?: (number | null) | undefined;
 											  }
 											| undefined;
 								  }
@@ -9031,31 +10963,6 @@ export type UserEvent = {
 										 * @type number | undefined
 										 */
 										increasedOnDemandEmailAttemptedAt?: number | undefined;
-										/**
-										 * @description Tracks when the new-Hobby-policy notice was reported for this owner. Reported at most once per owner, ever.
-										 * @type number | undefined
-										 */
-										hobbyPolicyNoticeSlackSentAt?: number | undefined;
-										/**
-										 * @description Tracks the last time a `warningThresholdsV2` crossing was reported for this owner. Hobby has no billing period, so this re-arms on the same rolling window the service already uses for Hobby alerts.
-										 * @type number | undefined
-										 */
-										hobbyWarningV2SlackSentAt?: number | undefined;
-										/**
-										 * @description Tracks the last time the 100% `warningThresholdsV2` crossing was reported for this owner. This is separate so a recent lower warning does not suppress the full-allocation warning. It also starts the team-wide 24-hour grace period before a soft pause.
-										 * @type number | undefined
-										 */
-										hobbyWarningV2At100SlackSentAt?: number | undefined;
-										/**
-										 * @description Tracks the last time a `blockThresholdV2` breach was reported for this owner. Re-arms on the same rolling window as `hobbyWarningV2SlackSentAt`.
-										 * @type number | undefined
-										 */
-										hobbyPauseNoticeSlackSentAt?: number | undefined;
-										/**
-										 * @description Slack `ts` of the thread root holding this owner\'s new-Hobby-policy alerts. Every later alert for the owner is posted as a reply to it, so the channel carries one entry per owner rather than one per alert. Replaced if Slack reports the root as gone.
-										 * @type string | undefined
-										 */
-										hobbyPolicySlackThreadTs?: string | undefined;
 								  }
 								| undefined;
 							/**
@@ -9486,11 +11393,14 @@ export type UserEvent = {
 						integrationSlug: string;
 						integrationProductSlug: string;
 						configurationId: string;
-						error?: string | undefined;
+						errorCode?: string | undefined;
 						requestKind: "raw_commands";
 						readonly: false | true;
-						commands: string[];
-						failedIndex?: number | undefined;
+						commands: {
+							command: string;
+							errorCode?: string | undefined;
+						}[];
+						errorIndex?: number | undefined;
 				  }
 				| {
 						resourceId: string;
@@ -9498,7 +11408,7 @@ export type UserEvent = {
 						integrationSlug: string;
 						integrationProductSlug: string;
 						configurationId: string;
-						error?: string | undefined;
+						errorCode?: string | undefined;
 						requestKind: "list_keys";
 						pattern?: string | undefined;
 						type?: string | undefined;
@@ -9509,7 +11419,7 @@ export type UserEvent = {
 						integrationSlug: string;
 						integrationProductSlug: string;
 						configurationId: string;
-						error?: string | undefined;
+						errorCode?: string | undefined;
 						requestKind: "get_keys_metadata";
 						keys: string[];
 				  }
@@ -9519,7 +11429,7 @@ export type UserEvent = {
 						integrationSlug: string;
 						integrationProductSlug: string;
 						configurationId: string;
-						error?: string | undefined;
+						errorCode?: string | undefined;
 						requestKind: "get_key_data";
 						key: string;
 				  }
@@ -9904,6 +11814,13 @@ export type UserEvent = {
 						billingPlan: UserEventPayloadBillingPlanEnumKey;
 				  }
 				| {
+						organizationId: string;
+						teamId: string;
+						teamName: string;
+						previousMode: UserEventPayloadPreviousModeEnumKey;
+						mode: UserEventPayloadModeEnumKey;
+				  }
+				| {
 						ownerId: string;
 						source: string;
 						cause: string;
@@ -10186,6 +12103,7 @@ export type UserEvent = {
 						previousPreviewDeploymentSuffix?: (string | null) | undefined;
 				  }
 				| {
+						projectName?: string | undefined;
 						endpoint: {
 							id: string;
 							name: string;
@@ -10196,6 +12114,7 @@ export type UserEvent = {
 						};
 				  }
 				| {
+						projectName?: string | undefined;
 						privateLinkEndpoint: {
 							id: string;
 							name: string;
@@ -10203,6 +12122,7 @@ export type UserEvent = {
 						projectId: string;
 				  }
 				| {
+						projectName?: string | undefined;
 						prev: {
 							id: string;
 							name: string;
@@ -10221,6 +12141,7 @@ export type UserEvent = {
 						};
 				  }
 				| {
+						projectName?: string | undefined;
 						privateLinkEndpoint: {
 							id: string;
 							name: string;
@@ -10860,8 +12781,14 @@ export type UserEvent = {
 				| {
 						projectId: string;
 						projectName: string;
-						previous: object | null;
-						next: object | null;
+						previous: {
+							gitSources?: (string[] | null) | undefined;
+							deploymentSources?: (string[] | null) | undefined;
+						} | null;
+						next: {
+							gitSources?: (string[] | null) | undefined;
+							deploymentSources?: (string[] | null) | undefined;
+						} | null;
 				  }
 				| {
 						projectId: string;
@@ -11019,6 +12946,7 @@ export type UserEvent = {
 				| {
 						projectId: string;
 						projectName: string;
+						enableVercelCiSameRepository?: (false | true) | undefined;
 						addedProjects: {
 							id: string;
 							name: string;
@@ -11288,6 +13216,16 @@ export type UserEvent = {
 								 */
 								pricingPlan?: UserEventPayloadBudgetBudgetItemPricingPlanEnumKey | undefined;
 								/**
+								 * @description Which budget this is. Matches Copper SDK `BudgetScope`. Omitted on events published before team/org/project scopes existed (treat as team).
+								 * @type string | undefined
+								 */
+								scope?: UserEventPayloadBudgetBudgetItemScopeEnumKey | undefined;
+								/**
+								 * @description Project id when `scope` is `project`.
+								 * @type string | undefined
+								 */
+								scopeId?: string | undefined;
+								/**
 								 * @description Partition key
 								 * @type string
 								 */
@@ -11362,6 +13300,16 @@ export type UserEvent = {
 							 */
 							pricingPlan?: UserEventPayloadBudgetPricingPlanEnumKey | undefined;
 							/**
+							 * @description Which budget this is. Matches Copper SDK `BudgetScope`. Omitted on events published before team/org/project scopes existed (treat as team).
+							 * @type string | undefined
+							 */
+							scope?: UserEventPayloadBudgetScopeEnumKey | undefined;
+							/**
+							 * @description Project id when `scope` is `project`.
+							 * @type string | undefined
+							 */
+							scopeId?: string | undefined;
+							/**
 							 * @description Partition key
 							 * @type string
 							 */
@@ -11434,6 +13382,16 @@ export type UserEvent = {
 							 * @type string | undefined
 							 */
 							pricingPlan?: UserEventPayloadBudgetPricingPlanEnumKey | undefined;
+							/**
+							 * @description Which budget this is. Matches Copper SDK `BudgetScope`. Omitted on events published before team/org/project scopes existed (treat as team).
+							 * @type string | undefined
+							 */
+							scope?: UserEventPayloadBudgetScopeEnumKey | undefined;
+							/**
+							 * @description Project id when `scope` is `project`.
+							 * @type string | undefined
+							 */
+							scopeId?: string | undefined;
 							/**
 							 * @description Partition key
 							 * @type string
@@ -11509,6 +13467,16 @@ export type UserEvent = {
 							 */
 							pricingPlan?: UserEventPayloadBudgetPricingPlanEnumKey | undefined;
 							/**
+							 * @description Which budget this is. Matches Copper SDK `BudgetScope`. Omitted on events published before team/org/project scopes existed (treat as team).
+							 * @type string | undefined
+							 */
+							scope?: UserEventPayloadBudgetScopeEnumKey | undefined;
+							/**
+							 * @description Project id when `scope` is `project`.
+							 * @type string | undefined
+							 */
+							scopeId?: string | undefined;
+							/**
 							 * @description Partition key
 							 * @type string
 							 */
@@ -11580,6 +13548,16 @@ export type UserEvent = {
 									 * @type string | undefined
 									 */
 									pricingPlan?: UserEventPayloadPrevBudgetPricingPlanEnumKey | undefined;
+									/**
+									 * @description Which budget this is. Matches Copper SDK `BudgetScope`. Omitted on events published before team/org/project scopes existed (treat as team).
+									 * @type string | undefined
+									 */
+									scope?: UserEventPayloadPrevBudgetScopeEnumKey | undefined;
+									/**
+									 * @description Project id when `scope` is `project`.
+									 * @type string | undefined
+									 */
+									scopeId?: string | undefined;
 									/**
 									 * @description Partition key
 									 * @type string
@@ -11817,8 +13795,14 @@ export type UserEvent = {
 						timestamp?: number | undefined;
 				  }
 				| {
-						previous: object | null;
-						next: object | null;
+						previous: {
+							gitSources?: (string[] | null) | undefined;
+							deploymentSources?: (string[] | null) | undefined;
+						} | null;
+						next: {
+							gitSources?: (string[] | null) | undefined;
+							deploymentSources?: (string[] | null) | undefined;
+						} | null;
 				  }
 				| {
 						enabled: false | true;
@@ -12429,6 +14413,7 @@ export type UserEvent = {
 				| {
 						deploymentId: string;
 						projectId: string;
+						projectName?: string | undefined;
 						runId: string;
 				  }
 				| {
@@ -12762,6 +14747,11 @@ export type UserEvent = {
 						 * @description Present when `scope` is `\'project\'`.
 						 * @type string | undefined
 						 */
+						projectName?: string | undefined;
+						/**
+						 * @description Present when `scope` is `\'project\'`.
+						 * @type string | undefined
+						 */
 						projectScope?: UserEventPayloadProjectScopeEnumKey | undefined;
 						/**
 						 * @description Unix epoch milliseconds. Absent when the token never expires.
@@ -12918,8 +14908,10 @@ export const listEventTypeNameEnum = {
 	"ai-gateway-byok-credential-created": "ai-gateway-byok-credential-created",
 	"ai-gateway-byok-credential-deleted": "ai-gateway-byok-credential-deleted",
 	"ai-gateway-byok-credential-updated": "ai-gateway-byok-credential-updated",
+	"ai-gateway-byok-model-mappings-updated": "ai-gateway-byok-model-mappings-updated",
 	"ai-gateway-credits-purchased": "ai-gateway-credits-purchased",
 	"ai-gateway-guardrails-updated": "ai-gateway-guardrails-updated",
+	"ai-gateway-hipaa-compliance-toggled": "ai-gateway-hipaa-compliance-toggled",
 	"ai-gateway-inference-regions-updated": "ai-gateway-inference-regions-updated",
 	"ai-gateway-model-allowlist-models-updated": "ai-gateway-model-allowlist-models-updated",
 	"ai-gateway-model-allowlist-toggled": "ai-gateway-model-allowlist-toggled",
@@ -12929,6 +14921,7 @@ export const listEventTypeNameEnum = {
 	"ai-gateway-private-provider-created": "ai-gateway-private-provider-created",
 	"ai-gateway-private-provider-deleted": "ai-gateway-private-provider-deleted",
 	"ai-gateway-private-provider-updated": "ai-gateway-private-provider-updated",
+	"ai-gateway-prompt-training-opt-out-toggled": "ai-gateway-prompt-training-opt-out-toggled",
 	"ai-gateway-provider-allowlist-providers-updated":
 		"ai-gateway-provider-allowlist-providers-updated",
 	"ai-gateway-provider-allowlist-toggled": "ai-gateway-provider-allowlist-toggled",
@@ -12943,8 +14936,10 @@ export const listEventTypeNameEnum = {
 	"ai-gateway-transcripts-retention-updated": "ai-gateway-transcripts-retention-updated",
 	"ai-gateway-virtual-model-config-archived": "ai-gateway-virtual-model-config-archived",
 	"ai-gateway-virtual-model-config-created": "ai-gateway-virtual-model-config-created",
+	"ai-gateway-virtual-model-config-deleted": "ai-gateway-virtual-model-config-deleted",
 	"ai-gateway-virtual-model-config-restored": "ai-gateway-virtual-model-config-restored",
 	"ai-gateway-virtual-model-config-updated": "ai-gateway-virtual-model-config-updated",
+	"ai-gateway-zero-data-retention-toggled": "ai-gateway-zero-data-retention-toggled",
 	"ai-omniagent": "ai-omniagent",
 	"alert-investigation-project-allowlist-updated": "alert-investigation-project-allowlist-updated",
 	"alert-rule-created": "alert-rule-created",
@@ -13135,6 +15130,7 @@ export const listEventTypeNameEnum = {
 	"flags-segment": "flags-segment",
 	"flags-settings": "flags-settings",
 	"flags-transferred": "flags-transferred",
+	"flat-rate-cdn-auto-upgrade-consent": "flat-rate-cdn-auto-upgrade-consent",
 	"git-integration-repo-push": "git-integration-repo-push",
 	git_account_integration_link_added: "git_account_integration_link_added",
 	"global-config-backup-restored": "global-config-backup-restored",
@@ -13221,6 +15217,7 @@ export const listEventTypeNameEnum = {
 	"organization-team-add": "organization-team-add",
 	"organization-team-create": "organization-team-create",
 	"organization-team-delete": "organization-team-delete",
+	"organization-team-sso-update": "organization-team-sso-update",
 	"owner-blocked": "owner-blocked",
 	"owner-soft-blocked": "owner-soft-blocked",
 	"owner-soft-unblocked": "owner-soft-unblocked",
@@ -13304,6 +15301,12 @@ export const listEventTypeNameEnum = {
 	"project-git-commit-comments-toggled": "project-git-commit-comments-toggled",
 	"project-git-commit-status-toggled": "project-git-commit-status-toggled",
 	"project-git-create-deployments-toggled": "project-git-create-deployments-toggled",
+	"project-git-credential-bound-created": "project-git-credential-bound-created",
+	"project-git-credential-bound-deleted": "project-git-credential-bound-deleted",
+	"project-git-credential-bound-updated": "project-git-credential-bound-updated",
+	"project-git-credential-grant-created": "project-git-credential-grant-created",
+	"project-git-credential-grant-deleted": "project-git-credential-grant-deleted",
+	"project-git-credential-grant-updated": "project-git-credential-grant-updated",
 	"project-git-fork-protection-updated": "project-git-fork-protection-updated",
 	"project-git-lfs-toggled": "project-git-lfs-toggled",
 	"project-git-pr-comments-toggled": "project-git-pr-comments-toggled",
@@ -13401,6 +15404,8 @@ export const listEventTypeNameEnum = {
 	"shared-env-variable-create": "shared-env-variable-create",
 	"shared-env-variable-delete": "shared-env-variable-delete",
 	"shared-env-variable-read": "shared-env-variable-read",
+	"shared-env-variable-repo-link": "shared-env-variable-repo-link",
+	"shared-env-variable-repo-unlink": "shared-env-variable-repo-unlink",
 	"shared-env-variable-update": "shared-env-variable-update",
 	"show-ip-addresses": "show-ip-addresses",
 	signup: "signup",
@@ -13431,6 +15436,7 @@ export const listEventTypeNameEnum = {
 	"storage-update-project-connection": "storage-update-project-connection",
 	"storage-upgrade-project-connection-to-oidc": "storage-upgrade-project-connection-to-oidc",
 	"storage-view-secret": "storage-view-secret",
+	"strict-connectors": "strict-connectors",
 	"strict-deployment-protection-settings": "strict-deployment-protection-settings",
 	"strict-password-protection-settings": "strict-password-protection-settings",
 	"strict-shareable-links": "strict-shareable-links",
@@ -13625,8 +15631,10 @@ export const listEventTypeReplacedByEnum = {
 	"ai-gateway-byok-credential-created": "ai-gateway-byok-credential-created",
 	"ai-gateway-byok-credential-deleted": "ai-gateway-byok-credential-deleted",
 	"ai-gateway-byok-credential-updated": "ai-gateway-byok-credential-updated",
+	"ai-gateway-byok-model-mappings-updated": "ai-gateway-byok-model-mappings-updated",
 	"ai-gateway-credits-purchased": "ai-gateway-credits-purchased",
 	"ai-gateway-guardrails-updated": "ai-gateway-guardrails-updated",
+	"ai-gateway-hipaa-compliance-toggled": "ai-gateway-hipaa-compliance-toggled",
 	"ai-gateway-inference-regions-updated": "ai-gateway-inference-regions-updated",
 	"ai-gateway-model-allowlist-models-updated": "ai-gateway-model-allowlist-models-updated",
 	"ai-gateway-model-allowlist-toggled": "ai-gateway-model-allowlist-toggled",
@@ -13636,6 +15644,7 @@ export const listEventTypeReplacedByEnum = {
 	"ai-gateway-private-provider-created": "ai-gateway-private-provider-created",
 	"ai-gateway-private-provider-deleted": "ai-gateway-private-provider-deleted",
 	"ai-gateway-private-provider-updated": "ai-gateway-private-provider-updated",
+	"ai-gateway-prompt-training-opt-out-toggled": "ai-gateway-prompt-training-opt-out-toggled",
 	"ai-gateway-provider-allowlist-providers-updated":
 		"ai-gateway-provider-allowlist-providers-updated",
 	"ai-gateway-provider-allowlist-toggled": "ai-gateway-provider-allowlist-toggled",
@@ -13650,8 +15659,10 @@ export const listEventTypeReplacedByEnum = {
 	"ai-gateway-transcripts-retention-updated": "ai-gateway-transcripts-retention-updated",
 	"ai-gateway-virtual-model-config-archived": "ai-gateway-virtual-model-config-archived",
 	"ai-gateway-virtual-model-config-created": "ai-gateway-virtual-model-config-created",
+	"ai-gateway-virtual-model-config-deleted": "ai-gateway-virtual-model-config-deleted",
 	"ai-gateway-virtual-model-config-restored": "ai-gateway-virtual-model-config-restored",
 	"ai-gateway-virtual-model-config-updated": "ai-gateway-virtual-model-config-updated",
+	"ai-gateway-zero-data-retention-toggled": "ai-gateway-zero-data-retention-toggled",
 	"ai-omniagent": "ai-omniagent",
 	"alert-investigation-project-allowlist-updated": "alert-investigation-project-allowlist-updated",
 	"alert-rule-created": "alert-rule-created",
@@ -13842,6 +15853,7 @@ export const listEventTypeReplacedByEnum = {
 	"flags-segment": "flags-segment",
 	"flags-settings": "flags-settings",
 	"flags-transferred": "flags-transferred",
+	"flat-rate-cdn-auto-upgrade-consent": "flat-rate-cdn-auto-upgrade-consent",
 	"git-integration-repo-push": "git-integration-repo-push",
 	git_account_integration_link_added: "git_account_integration_link_added",
 	"global-config-backup-restored": "global-config-backup-restored",
@@ -13928,6 +15940,7 @@ export const listEventTypeReplacedByEnum = {
 	"organization-team-add": "organization-team-add",
 	"organization-team-create": "organization-team-create",
 	"organization-team-delete": "organization-team-delete",
+	"organization-team-sso-update": "organization-team-sso-update",
 	"owner-blocked": "owner-blocked",
 	"owner-soft-blocked": "owner-soft-blocked",
 	"owner-soft-unblocked": "owner-soft-unblocked",
@@ -14011,6 +16024,12 @@ export const listEventTypeReplacedByEnum = {
 	"project-git-commit-comments-toggled": "project-git-commit-comments-toggled",
 	"project-git-commit-status-toggled": "project-git-commit-status-toggled",
 	"project-git-create-deployments-toggled": "project-git-create-deployments-toggled",
+	"project-git-credential-bound-created": "project-git-credential-bound-created",
+	"project-git-credential-bound-deleted": "project-git-credential-bound-deleted",
+	"project-git-credential-bound-updated": "project-git-credential-bound-updated",
+	"project-git-credential-grant-created": "project-git-credential-grant-created",
+	"project-git-credential-grant-deleted": "project-git-credential-grant-deleted",
+	"project-git-credential-grant-updated": "project-git-credential-grant-updated",
 	"project-git-fork-protection-updated": "project-git-fork-protection-updated",
 	"project-git-lfs-toggled": "project-git-lfs-toggled",
 	"project-git-pr-comments-toggled": "project-git-pr-comments-toggled",
@@ -14108,6 +16127,8 @@ export const listEventTypeReplacedByEnum = {
 	"shared-env-variable-create": "shared-env-variable-create",
 	"shared-env-variable-delete": "shared-env-variable-delete",
 	"shared-env-variable-read": "shared-env-variable-read",
+	"shared-env-variable-repo-link": "shared-env-variable-repo-link",
+	"shared-env-variable-repo-unlink": "shared-env-variable-repo-unlink",
 	"shared-env-variable-update": "shared-env-variable-update",
 	"show-ip-addresses": "show-ip-addresses",
 	signup: "signup",
@@ -14138,6 +16159,7 @@ export const listEventTypeReplacedByEnum = {
 	"storage-update-project-connection": "storage-update-project-connection",
 	"storage-upgrade-project-connection-to-oidc": "storage-upgrade-project-connection-to-oidc",
 	"storage-view-secret": "storage-view-secret",
+	"strict-connectors": "strict-connectors",
 	"strict-deployment-protection-settings": "strict-deployment-protection-settings",
 	"strict-password-protection-settings": "strict-password-protection-settings",
 	"strict-shareable-links": "strict-shareable-links",
@@ -14345,6 +16367,13 @@ export type ListEventTypesResponse = {
 	}[];
 };
 
+export const flagVariantsValue = {
+	false: false,
+	true: true,
+} as const;
+
+export type FlagVariantsValueKey = (typeof flagVariantsValue)[keyof typeof flagVariantsValue];
+
 export const typeEnum = {
 	list: "list",
 	"list/inline": "list/inline",
@@ -14391,7 +16420,22 @@ export type FlagStateEnumKey = (typeof flagStateEnum)[keyof typeof flagStateEnum
 
 export type Flag = {
 	description?: string | undefined;
-	variants: object[];
+	variants: {
+		description?: string | undefined;
+		label?: string | undefined;
+		value:
+			| (
+					| string
+					| number
+					| {
+							[key: string]: unknown;
+					  }
+					| string[]
+					| FlagVariantsValueKey
+			  )
+			| null;
+		id: string;
+	}[];
 	id: string;
 	environments: {
 		[key: string]: {
@@ -15000,6 +17044,7 @@ export type NamedSandboxNetworkPolicyModeEnumKey =
 export const modeEnum = {
 	"read-only": "read-only",
 	"read-write": "read-write",
+	snapshot: "snapshot",
 } as const;
 
 export type ModeEnumKey = (typeof modeEnum)[keyof typeof modeEnum];
@@ -15130,6 +17175,11 @@ export type NamedSandbox = {
 				s3Key?: string | undefined;
 		  }
 		| undefined;
+	/**
+	 * @description The Connect network id for the target Secure Compute private network.
+	 * @type string | undefined
+	 */
+	networkId?: string | undefined;
 	/**
 	 * @description Cumulative egress bytes across all sandbox runs.
 	 * @example 4096
@@ -15456,6 +17506,12 @@ export type SandboxPublicRoute = {
  */
 export type Drive = {
 	/**
+	 * @description The unique drive ID.
+	 * @example drive_abc123
+	 * @type string
+	 */
+	id: string;
+	/**
 	 * @description The unique drive name within the project.
 	 * @example workspace
 	 * @type string
@@ -15469,7 +17525,7 @@ export type Drive = {
 	projectId: string;
 	/**
 	 * @description The maximum drive size in bytes.
-	 * @example 107374182400
+	 * @example 1099511627776
 	 * @type number
 	 */
 	maxSizeBytes: number;
@@ -16507,6 +18563,16 @@ export type Team = {
 		  }
 		| undefined;
 	/**
+	 * @description When enabled, creating and managing connectors requires Owner role or the ConnectorManager permission.
+	 * @type object | undefined
+	 */
+	strictConnectors?:
+		| {
+				enabled: false | true;
+				updatedAt: number;
+		  }
+		| undefined;
+	/**
 	 * @description NSNB configuration for the team.
 	 * @type object | undefined
 	 */
@@ -17113,7 +19179,6 @@ export const authUserSoftBlockReasonEnum = {
 	ENTERPRISE_UNPAID_INVOICE: "ENTERPRISE_UNPAID_INVOICE",
 	EXPOSURE_CAP_EXCEEDED: "EXPOSURE_CAP_EXCEEDED",
 	FAIR_USE_LIMITS_EXCEEDED: "FAIR_USE_LIMITS_EXCEEDED",
-	HOBBY_ALLOCATION_PAUSED: "HOBBY_ALLOCATION_PAUSED",
 	SUBSCRIPTION_CANCELED: "SUBSCRIPTION_CANCELED",
 	SUBSCRIPTION_EXPIRED: "SUBSCRIPTION_EXPIRED",
 	UNPAID_INVOICE: "UNPAID_INVOICE",
@@ -17166,51 +19231,6 @@ export const authUserSoftBlockBlockedDueToOverageTypeEnum = {
 
 export type AuthUserSoftBlockBlockedDueToOverageTypeEnumKey =
 	(typeof authUserSoftBlockBlockedDueToOverageTypeEnum)[keyof typeof authUserSoftBlockBlockedDueToOverageTypeEnum];
-
-export const authUserSoftBlockHobbyAllocationPauseTriggersAllocationEnum = {
-	analyticsUsage: "analyticsUsage",
-	artifacts: "artifacts",
-	bandwidth: "bandwidth",
-	blobDataTransfer: "blobDataTransfer",
-	blobTotalAdvancedRequests: "blobTotalAdvancedRequests",
-	blobTotalAvgSizeInBytes: "blobTotalAvgSizeInBytes",
-	blobTotalGetResponseObjectSizeInBytes: "blobTotalGetResponseObjectSizeInBytes",
-	blobTotalSimpleRequests: "blobTotalSimpleRequests",
-	connectDataTransfer: "connectDataTransfer",
-	dataCacheRead: "dataCacheRead",
-	dataCacheWrite: "dataCacheWrite",
-	edgeConfigRead: "edgeConfigRead",
-	edgeConfigWrite: "edgeConfigWrite",
-	edgeFunctionExecutionUnits: "edgeFunctionExecutionUnits",
-	edgeMiddlewareInvocations: "edgeMiddlewareInvocations",
-	edgeRequest: "edgeRequest",
-	edgeRequestAdditionalCpuDuration: "edgeRequestAdditionalCpuDuration",
-	elasticConcurrencyBuildSlots: "elasticConcurrencyBuildSlots",
-	fastDataTransfer: "fastDataTransfer",
-	fastOriginTransfer: "fastOriginTransfer",
-	fluidCpuDuration: "fluidCpuDuration",
-	fluidDuration: "fluidDuration",
-	functionDuration: "functionDuration",
-	functionInvocation: "functionInvocation",
-	imageOptimizationCacheRead: "imageOptimizationCacheRead",
-	imageOptimizationCacheWrite: "imageOptimizationCacheWrite",
-	imageOptimizationTransformation: "imageOptimizationTransformation",
-	logDrainsVolume: "logDrainsVolume",
-	monitoringMetric: "monitoringMetric",
-	observabilityEvent: "observabilityEvent",
-	onDemandConcurrencyMinutes: "onDemandConcurrencyMinutes",
-	runtimeCacheRead: "runtimeCacheRead",
-	runtimeCacheWrite: "runtimeCacheWrite",
-	serverlessFunctionExecution: "serverlessFunctionExecution",
-	sourceImages: "sourceImages",
-	wafOwaspExcessBytes: "wafOwaspExcessBytes",
-	wafOwaspRequests: "wafOwaspRequests",
-	wafRateLimitRequest: "wafRateLimitRequest",
-	webAnalyticsEvent: "webAnalyticsEvent",
-} as const;
-
-export type AuthUserSoftBlockHobbyAllocationPauseTriggersAllocationEnumKey =
-	(typeof authUserSoftBlockHobbyAllocationPauseTriggersAllocationEnum)[keyof typeof authUserSoftBlockHobbyAllocationPauseTriggersAllocationEnum];
 
 export const authUserResourceConfigBuildQueueConfigurationEnum = {
 	SKIP_NAMESPACE_QUEUE: "SKIP_NAMESPACE_QUEUE",
@@ -17286,44 +19306,10 @@ export type AuthUser = {
 		reason: AuthUserSoftBlockReasonEnumKey;
 		blockedDueToOverageType?: AuthUserSoftBlockBlockedDueToOverageTypeEnumKey | undefined;
 		/**
-		 * @description Present only when `reason` is `HOBBY_ALLOCATION_PAUSED`. Makes the pause self-describing for support without a separate lookup.
-		 * @type object | undefined
+		 * @description Since September 2026. Set only by `billing-usage-alerts` for usage plans with a `blockDurationMs`; its presence marks a pause that expires on its own.
+		 * @type number | undefined
 		 */
-		hobbyAllocationPause?:
-			| {
-					/**
-					 * @description Unix ms timestamp at which the pause is eligible to end. This is the single source of truth for when the pause ends. Never re-derive it by re-checking usage — usage keeps moving while a team is paused, and the pause duration is a fixed experiment parameter.
-					 * @type number
-					 */
-					pausedUntil: number;
-					/**
-					 * @description Unix ms timestamp of when the pause was applied.
-					 * @type number
-					 */
-					pausedAt: number;
-					/**
-					 * @description Allocations that were at or over 100% when the pause was applied.
-					 * @type array
-					 */
-					triggers: {
-						/**
-						 * @description Metered allocation whose included amount was fully consumed.
-						 * @type string
-						 */
-						allocation: AuthUserSoftBlockHobbyAllocationPauseTriggersAllocationEnumKey;
-						/**
-						 * @description Usage recorded for that allocation when the pause was applied.
-						 * @type number
-						 */
-						usage: number;
-					}[];
-					/**
-					 * @description Experiment cohort the owner was assigned to when the pause fired. Free-form so cohort naming stays owned by the assignment path.
-					 * @type string
-					 */
-					cohort: string;
-			  }
-			| undefined;
+		unpauseAt?: number | undefined;
 	} | null;
 	/**
 	 * @description An object containing billing infomation associated with the User account.
@@ -17486,6 +19472,11 @@ export type AuthUser = {
 					 * @description An object containing infomation related to the amount of platform resources may be allocated to the User account.
 					 * @type number | undefined
 					 */
+					rateLimit?: number | undefined;
+					/**
+					 * @description An object containing infomation related to the amount of platform resources may be allocated to the User account.
+					 * @type number | undefined
+					 */
 					customRules?: number | undefined;
 					/**
 					 * @description An object containing infomation related to the amount of platform resources may be allocated to the User account.
@@ -17497,11 +19488,6 @@ export type AuthUser = {
 					 * @type number | undefined
 					 */
 					ipBypass?: number | undefined;
-					/**
-					 * @description An object containing infomation related to the amount of platform resources may be allocated to the User account.
-					 * @type number | undefined
-					 */
-					rateLimit?: number | undefined;
 			  }
 			| undefined;
 		/**
@@ -19060,7 +21046,13 @@ export type CreateAiGatewayVirtualModelConfigResponse =
 
 export type GetAiGatewayVirtualModelConfigQuery = {
 	ownerId?: string | undefined;
-	virtualModelSlug: string;
+	virtualModelSlug?: string | undefined;
+	/**
+	 * @minLength 1
+	 * @type integer | undefined
+	 */
+	limit?: number | undefined;
+	cursor?: string | undefined;
 	/**
 	 * @description The Team identifier to perform the request on behalf of.
 	 * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
@@ -19092,7 +21084,7 @@ export type GetAiGatewayVirtualModelConfigStatus500 = unknown;
 export type GetAiGatewayVirtualModelConfigOptions = {
 	body?: never | undefined;
 	path?: never | undefined;
-	query: GetAiGatewayVirtualModelConfigQuery;
+	query?: GetAiGatewayVirtualModelConfigQuery | undefined;
 	headers?: never | undefined;
 };
 
@@ -19179,6 +21171,9 @@ export type UpdateAiGatewayVirtualModelConfigResponse =
 export type DeleteAiGatewayVirtualModelConfigQuery = {
 	ownerId?: string | undefined;
 	virtualModelSlug: string;
+	updatedBy?: string | undefined;
+	actingIp?: string | undefined;
+	actingUserAgent?: string | undefined;
 	/**
 	 * @description The Team identifier to perform the request on behalf of.
 	 * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
@@ -19296,6 +21291,197 @@ export type ListAiGatewayVirtualModelConfigsResponse =
 	| ListAiGatewayVirtualModelConfigsStatus403
 	| ListAiGatewayVirtualModelConfigsStatus410
 	| ListAiGatewayVirtualModelConfigsStatus500;
+
+export type GetAiGatewayVirtualModelConfigBySlugPath = {
+	vmcSlug: string;
+};
+
+export type GetAiGatewayVirtualModelConfigBySlugQuery = {
+	ownerId?: string | undefined;
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @example my-team-url-slug
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type GetAiGatewayVirtualModelConfigBySlugStatus200 = unknown;
+
+export type GetAiGatewayVirtualModelConfigBySlugStatus400 = unknown;
+
+export type GetAiGatewayVirtualModelConfigBySlugStatus401 = unknown;
+
+export type GetAiGatewayVirtualModelConfigBySlugStatus403 = unknown;
+
+export type GetAiGatewayVirtualModelConfigBySlugStatus404 = unknown;
+
+export type GetAiGatewayVirtualModelConfigBySlugStatus410 = unknown;
+
+export type GetAiGatewayVirtualModelConfigBySlugStatus500 = unknown;
+
+export type GetAiGatewayVirtualModelConfigBySlugOptions = {
+	body?: never | undefined;
+	path: GetAiGatewayVirtualModelConfigBySlugPath;
+	query?: GetAiGatewayVirtualModelConfigBySlugQuery | undefined;
+	headers?: never | undefined;
+};
+
+export type GetAiGatewayVirtualModelConfigBySlugResponses = {
+	"200": GetAiGatewayVirtualModelConfigBySlugStatus200;
+	"400": GetAiGatewayVirtualModelConfigBySlugStatus400;
+	"401": GetAiGatewayVirtualModelConfigBySlugStatus401;
+	"403": GetAiGatewayVirtualModelConfigBySlugStatus403;
+	"404": GetAiGatewayVirtualModelConfigBySlugStatus404;
+	"410": GetAiGatewayVirtualModelConfigBySlugStatus410;
+	"500": GetAiGatewayVirtualModelConfigBySlugStatus500;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetAiGatewayVirtualModelConfigBySlugResponse =
+	| GetAiGatewayVirtualModelConfigBySlugStatus200
+	| GetAiGatewayVirtualModelConfigBySlugStatus400
+	| GetAiGatewayVirtualModelConfigBySlugStatus401
+	| GetAiGatewayVirtualModelConfigBySlugStatus403
+	| GetAiGatewayVirtualModelConfigBySlugStatus404
+	| GetAiGatewayVirtualModelConfigBySlugStatus410
+	| GetAiGatewayVirtualModelConfigBySlugStatus500;
+
+export type UpdateAiGatewayVirtualModelConfigBySlugPath = {
+	vmcSlug: string;
+};
+
+export type UpdateAiGatewayVirtualModelConfigBySlugQuery = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @example my-team-url-slug
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type UpdateAiGatewayVirtualModelConfigBySlugStatus200 = unknown;
+
+export type UpdateAiGatewayVirtualModelConfigBySlugStatus400 = unknown;
+
+export type UpdateAiGatewayVirtualModelConfigBySlugStatus401 = unknown;
+
+export type UpdateAiGatewayVirtualModelConfigBySlugStatus403 = unknown;
+
+export type UpdateAiGatewayVirtualModelConfigBySlugStatus404 = unknown;
+
+export type UpdateAiGatewayVirtualModelConfigBySlugStatus410 = unknown;
+
+export type UpdateAiGatewayVirtualModelConfigBySlugStatus500 = unknown;
+
+export type UpdateAiGatewayVirtualModelConfigBySlugOptions = {
+	body?: never | undefined;
+	path: UpdateAiGatewayVirtualModelConfigBySlugPath;
+	query?: UpdateAiGatewayVirtualModelConfigBySlugQuery | undefined;
+	headers?: never | undefined;
+};
+
+export type UpdateAiGatewayVirtualModelConfigBySlugResponses = {
+	"200": UpdateAiGatewayVirtualModelConfigBySlugStatus200;
+	"400": UpdateAiGatewayVirtualModelConfigBySlugStatus400;
+	"401": UpdateAiGatewayVirtualModelConfigBySlugStatus401;
+	"403": UpdateAiGatewayVirtualModelConfigBySlugStatus403;
+	"404": UpdateAiGatewayVirtualModelConfigBySlugStatus404;
+	"410": UpdateAiGatewayVirtualModelConfigBySlugStatus410;
+	"500": UpdateAiGatewayVirtualModelConfigBySlugStatus500;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type UpdateAiGatewayVirtualModelConfigBySlugResponse =
+	| UpdateAiGatewayVirtualModelConfigBySlugStatus200
+	| UpdateAiGatewayVirtualModelConfigBySlugStatus400
+	| UpdateAiGatewayVirtualModelConfigBySlugStatus401
+	| UpdateAiGatewayVirtualModelConfigBySlugStatus403
+	| UpdateAiGatewayVirtualModelConfigBySlugStatus404
+	| UpdateAiGatewayVirtualModelConfigBySlugStatus410
+	| UpdateAiGatewayVirtualModelConfigBySlugStatus500;
+
+export type DeleteAiGatewayVirtualModelConfigBySlugPath = {
+	vmcSlug: string;
+};
+
+export type DeleteAiGatewayVirtualModelConfigBySlugQuery = {
+	ownerId?: string | undefined;
+	updatedBy?: string | undefined;
+	actingIp?: string | undefined;
+	actingUserAgent?: string | undefined;
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @example my-team-url-slug
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type DeleteAiGatewayVirtualModelConfigBySlugStatus204 = unknown;
+
+export type DeleteAiGatewayVirtualModelConfigBySlugStatus400 = unknown;
+
+export type DeleteAiGatewayVirtualModelConfigBySlugStatus401 = unknown;
+
+export type DeleteAiGatewayVirtualModelConfigBySlugStatus403 = unknown;
+
+export type DeleteAiGatewayVirtualModelConfigBySlugStatus404 = unknown;
+
+export type DeleteAiGatewayVirtualModelConfigBySlugStatus410 = unknown;
+
+export type DeleteAiGatewayVirtualModelConfigBySlugStatus500 = unknown;
+
+export type DeleteAiGatewayVirtualModelConfigBySlugOptions = {
+	body?: never | undefined;
+	path: DeleteAiGatewayVirtualModelConfigBySlugPath;
+	query?: DeleteAiGatewayVirtualModelConfigBySlugQuery | undefined;
+	headers?: never | undefined;
+};
+
+export type DeleteAiGatewayVirtualModelConfigBySlugResponses = {
+	"204": DeleteAiGatewayVirtualModelConfigBySlugStatus204;
+	"400": DeleteAiGatewayVirtualModelConfigBySlugStatus400;
+	"401": DeleteAiGatewayVirtualModelConfigBySlugStatus401;
+	"403": DeleteAiGatewayVirtualModelConfigBySlugStatus403;
+	"404": DeleteAiGatewayVirtualModelConfigBySlugStatus404;
+	"410": DeleteAiGatewayVirtualModelConfigBySlugStatus410;
+	"500": DeleteAiGatewayVirtualModelConfigBySlugStatus500;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type DeleteAiGatewayVirtualModelConfigBySlugResponse =
+	| DeleteAiGatewayVirtualModelConfigBySlugStatus204
+	| DeleteAiGatewayVirtualModelConfigBySlugStatus400
+	| DeleteAiGatewayVirtualModelConfigBySlugStatus401
+	| DeleteAiGatewayVirtualModelConfigBySlugStatus403
+	| DeleteAiGatewayVirtualModelConfigBySlugStatus404
+	| DeleteAiGatewayVirtualModelConfigBySlugStatus410
+	| DeleteAiGatewayVirtualModelConfigBySlugStatus500;
 
 export type CreateAiGatewayRuleQuery = {
 	/**
@@ -21904,6 +24090,579 @@ export type ReadNetworkResponse =
 	| ReadNetworkStatus403
 	| ReadNetworkStatus410;
 
+export type CreatePrivateLinkEndpointQuery = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @example my-team-url-slug
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type CreatePrivateLinkEndpointStatus201 = unknown;
+
+export type CreatePrivateLinkEndpointStatus400 = unknown;
+
+export type CreatePrivateLinkEndpointStatus401 = unknown;
+
+export type CreatePrivateLinkEndpointStatus403 = unknown;
+
+export type CreatePrivateLinkEndpointStatus404 = unknown;
+
+export type CreatePrivateLinkEndpointStatus409 = unknown;
+
+export type CreatePrivateLinkEndpointStatus410 = unknown;
+
+export type CreatePrivateLinkEndpointOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query?: CreatePrivateLinkEndpointQuery | undefined;
+	headers?: never | undefined;
+};
+
+export type CreatePrivateLinkEndpointResponses = {
+	"201": CreatePrivateLinkEndpointStatus201;
+	"400": CreatePrivateLinkEndpointStatus400;
+	"401": CreatePrivateLinkEndpointStatus401;
+	"403": CreatePrivateLinkEndpointStatus403;
+	"404": CreatePrivateLinkEndpointStatus404;
+	"409": CreatePrivateLinkEndpointStatus409;
+	"410": CreatePrivateLinkEndpointStatus410;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type CreatePrivateLinkEndpointResponse =
+	| CreatePrivateLinkEndpointStatus201
+	| CreatePrivateLinkEndpointStatus400
+	| CreatePrivateLinkEndpointStatus401
+	| CreatePrivateLinkEndpointStatus403
+	| CreatePrivateLinkEndpointStatus404
+	| CreatePrivateLinkEndpointStatus409
+	| CreatePrivateLinkEndpointStatus410;
+
+export type ListPrivateLinkEndpointsQuery = {
+	/**
+	 * @description The project ID to list PrivateLink endpoints for.
+	 * @example prj_a1b2c3d4e5f6g7h8
+	 * @type string
+	 */
+	projectId: string;
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @example my-team-url-slug
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type ListPrivateLinkEndpointsStatus200 = unknown;
+
+export type ListPrivateLinkEndpointsStatus400 = unknown;
+
+export type ListPrivateLinkEndpointsStatus401 = unknown;
+
+export type ListPrivateLinkEndpointsStatus403 = unknown;
+
+export type ListPrivateLinkEndpointsStatus404 = unknown;
+
+export type ListPrivateLinkEndpointsStatus410 = unknown;
+
+export type ListPrivateLinkEndpointsOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query: ListPrivateLinkEndpointsQuery;
+	headers?: never | undefined;
+};
+
+export type ListPrivateLinkEndpointsResponses = {
+	"200": ListPrivateLinkEndpointsStatus200;
+	"400": ListPrivateLinkEndpointsStatus400;
+	"401": ListPrivateLinkEndpointsStatus401;
+	"403": ListPrivateLinkEndpointsStatus403;
+	"404": ListPrivateLinkEndpointsStatus404;
+	"410": ListPrivateLinkEndpointsStatus410;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type ListPrivateLinkEndpointsResponse =
+	| ListPrivateLinkEndpointsStatus200
+	| ListPrivateLinkEndpointsStatus400
+	| ListPrivateLinkEndpointsStatus401
+	| ListPrivateLinkEndpointsStatus403
+	| ListPrivateLinkEndpointsStatus404
+	| ListPrivateLinkEndpointsStatus410;
+
+export type ReadPrivateLinkEndpointPath = {
+	/**
+	 * @description The unique identifier of the PrivateLink endpoint.
+	 * @example ple_a1b2c3d4e5f6g7h8
+	 * @type string
+	 */
+	endpointId: string;
+};
+
+export type ReadPrivateLinkEndpointQuery = {
+	/**
+	 * @description The project ID the PrivateLink endpoint belongs to.
+	 * @example prj_a1b2c3d4e5f6g7h8
+	 * @type string
+	 */
+	projectId: string;
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @example my-team-url-slug
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type ReadPrivateLinkEndpointStatus200 = unknown;
+
+export type ReadPrivateLinkEndpointStatus400 = unknown;
+
+export type ReadPrivateLinkEndpointStatus401 = unknown;
+
+export type ReadPrivateLinkEndpointStatus403 = unknown;
+
+export type ReadPrivateLinkEndpointStatus404 = unknown;
+
+export type ReadPrivateLinkEndpointStatus410 = unknown;
+
+export type ReadPrivateLinkEndpointOptions = {
+	body?: never | undefined;
+	path: ReadPrivateLinkEndpointPath;
+	query: ReadPrivateLinkEndpointQuery;
+	headers?: never | undefined;
+};
+
+export type ReadPrivateLinkEndpointResponses = {
+	"200": ReadPrivateLinkEndpointStatus200;
+	"400": ReadPrivateLinkEndpointStatus400;
+	"401": ReadPrivateLinkEndpointStatus401;
+	"403": ReadPrivateLinkEndpointStatus403;
+	"404": ReadPrivateLinkEndpointStatus404;
+	"410": ReadPrivateLinkEndpointStatus410;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type ReadPrivateLinkEndpointResponse =
+	| ReadPrivateLinkEndpointStatus200
+	| ReadPrivateLinkEndpointStatus400
+	| ReadPrivateLinkEndpointStatus401
+	| ReadPrivateLinkEndpointStatus403
+	| ReadPrivateLinkEndpointStatus404
+	| ReadPrivateLinkEndpointStatus410;
+
+export type DeletePrivateLinkEndpointPath = {
+	/**
+	 * @description The unique identifier of the PrivateLink endpoint.
+	 * @example ple_a1b2c3d4e5f6g7h8
+	 * @type string
+	 */
+	endpointId: string;
+};
+
+export type DeletePrivateLinkEndpointQuery = {
+	/**
+	 * @description The project ID the PrivateLink endpoint belongs to.
+	 * @example prj_a1b2c3d4e5f6g7h8
+	 * @type string
+	 */
+	projectId: string;
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @example my-team-url-slug
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type DeletePrivateLinkEndpointStatus204 = unknown;
+
+export type DeletePrivateLinkEndpointStatus400 = unknown;
+
+export type DeletePrivateLinkEndpointStatus401 = unknown;
+
+export type DeletePrivateLinkEndpointStatus403 = unknown;
+
+export type DeletePrivateLinkEndpointStatus404 = unknown;
+
+export type DeletePrivateLinkEndpointStatus409 = unknown;
+
+export type DeletePrivateLinkEndpointStatus410 = unknown;
+
+export type DeletePrivateLinkEndpointOptions = {
+	body?: never | undefined;
+	path: DeletePrivateLinkEndpointPath;
+	query: DeletePrivateLinkEndpointQuery;
+	headers?: never | undefined;
+};
+
+export type DeletePrivateLinkEndpointResponses = {
+	"204": DeletePrivateLinkEndpointStatus204;
+	"400": DeletePrivateLinkEndpointStatus400;
+	"401": DeletePrivateLinkEndpointStatus401;
+	"403": DeletePrivateLinkEndpointStatus403;
+	"404": DeletePrivateLinkEndpointStatus404;
+	"409": DeletePrivateLinkEndpointStatus409;
+	"410": DeletePrivateLinkEndpointStatus410;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type DeletePrivateLinkEndpointResponse =
+	| DeletePrivateLinkEndpointStatus204
+	| DeletePrivateLinkEndpointStatus400
+	| DeletePrivateLinkEndpointStatus401
+	| DeletePrivateLinkEndpointStatus403
+	| DeletePrivateLinkEndpointStatus404
+	| DeletePrivateLinkEndpointStatus409
+	| DeletePrivateLinkEndpointStatus410;
+
+export type UpdatePrivateLinkEndpointPath = {
+	/**
+	 * @description The unique identifier of the PrivateLink endpoint.
+	 * @example ple_a1b2c3d4e5f6g7h8
+	 * @type string
+	 */
+	endpointId: string;
+};
+
+export type UpdatePrivateLinkEndpointQuery = {
+	/**
+	 * @description The project ID the PrivateLink endpoint belongs to.
+	 * @example prj_a1b2c3d4e5f6g7h8
+	 * @type string
+	 */
+	projectId: string;
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @example my-team-url-slug
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type UpdatePrivateLinkEndpointStatus200 = unknown;
+
+export type UpdatePrivateLinkEndpointStatus400 = unknown;
+
+export type UpdatePrivateLinkEndpointStatus401 = unknown;
+
+export type UpdatePrivateLinkEndpointStatus403 = unknown;
+
+export type UpdatePrivateLinkEndpointStatus404 = unknown;
+
+export type UpdatePrivateLinkEndpointStatus409 = unknown;
+
+export type UpdatePrivateLinkEndpointStatus410 = unknown;
+
+export type UpdatePrivateLinkEndpointOptions = {
+	body?: never | undefined;
+	path: UpdatePrivateLinkEndpointPath;
+	query: UpdatePrivateLinkEndpointQuery;
+	headers?: never | undefined;
+};
+
+export type UpdatePrivateLinkEndpointResponses = {
+	"200": UpdatePrivateLinkEndpointStatus200;
+	"400": UpdatePrivateLinkEndpointStatus400;
+	"401": UpdatePrivateLinkEndpointStatus401;
+	"403": UpdatePrivateLinkEndpointStatus403;
+	"404": UpdatePrivateLinkEndpointStatus404;
+	"409": UpdatePrivateLinkEndpointStatus409;
+	"410": UpdatePrivateLinkEndpointStatus410;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type UpdatePrivateLinkEndpointResponse =
+	| UpdatePrivateLinkEndpointStatus200
+	| UpdatePrivateLinkEndpointStatus400
+	| UpdatePrivateLinkEndpointStatus401
+	| UpdatePrivateLinkEndpointStatus403
+	| UpdatePrivateLinkEndpointStatus404
+	| UpdatePrivateLinkEndpointStatus409
+	| UpdatePrivateLinkEndpointStatus410;
+
+export const listConnectorsSort = {
+	name: "name",
+	createdAt: "createdAt",
+	updatedAt: "updatedAt",
+} as const;
+
+export type ListConnectorsSortKey = (typeof listConnectorsSort)[keyof typeof listConnectorsSort];
+
+export type ListConnectorsQuery = {
+	/**
+	 * @description Maximum number of connectors to return. Defaults to 20.
+	 * @minLength 1
+	 * @maxLength 100
+	 * @type integer | undefined
+	 */
+	limit?: number | undefined;
+	/**
+	 * @description Cursor from `pagination.next` on the previous response.
+	 * @type string | undefined
+	 */
+	cursor?: string | undefined;
+	/**
+	 * @description Return only connectors connected to this project.
+	 * @type string | undefined
+	 */
+	projectId?: string | undefined;
+	/**
+	 * @description Search connector names, UIDs, and services.
+	 * @maxLength 100
+	 * @type string | undefined
+	 */
+	search?: string | undefined;
+	/**
+	 * @description Comma-separated connector types: `slack`, `discord`, `github`, `linear`, `linq`, `salesforce`, `sendblue`, `snowflake`, `snowflake-wif`, `microsoft-entra`, `api-key`, `photon`, `oauth`, or `custom`.
+	 * @type string | undefined
+	 */
+	type?: string | undefined;
+	/**
+	 * @description Comma-separated provider or service identifiers.
+	 * @type string | undefined
+	 */
+	service?: string | undefined;
+	/**
+	 * @description Sort by name in ascending order, or by creation or update time in descending order.
+	 * @type string | undefined
+	 */
+	sort?: ListConnectorsSortKey | undefined;
+	/**
+	 * @description The team ID that scopes the request. Do not send it with slug. If both are omitted, Vercel uses the team associated with the token or the authenticated user\'s default team. The request returns 401 if no team can be selected.
+	 * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The team slug that scopes the request. Do not send it with teamId. If both are omitted, Vercel uses the team associated with the token or the authenticated user\'s default team. The request returns 401 if no team can be selected.
+	 * @example my-team-url-slug
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type ListConnectorsStatus200 = unknown;
+
+export type ListConnectorsStatus400 = unknown;
+
+export type ListConnectorsStatus401 = unknown;
+
+export type ListConnectorsStatus403 = unknown;
+
+export type ListConnectorsStatus410 = unknown;
+
+export type ListConnectorsStatus422 = unknown;
+
+export type ListConnectorsOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query?: ListConnectorsQuery | undefined;
+	headers?: never | undefined;
+};
+
+export type ListConnectorsResponses = {
+	"200": ListConnectorsStatus200;
+	"400": ListConnectorsStatus400;
+	"401": ListConnectorsStatus401;
+	"403": ListConnectorsStatus403;
+	"410": ListConnectorsStatus410;
+	"422": ListConnectorsStatus422;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type ListConnectorsResponse =
+	| ListConnectorsStatus200
+	| ListConnectorsStatus400
+	| ListConnectorsStatus401
+	| ListConnectorsStatus403
+	| ListConnectorsStatus410
+	| ListConnectorsStatus422;
+
+export type GetConnectorPath = {
+	/**
+	 * @description Stable connector ID or URL-encoded team-scoped UID. Examples: `scl_abc123` or `slack%2Fmy-bot`.
+	 * @type string
+	 */
+	connector: string;
+};
+
+export type GetConnectorQuery = {
+	/**
+	 * @description The team ID that scopes the request. Do not send it with slug. If both are omitted, Vercel uses the team associated with the token or the authenticated user\'s default team. The request returns 401 if no team can be selected.
+	 * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The team slug that scopes the request. Do not send it with teamId. If both are omitted, Vercel uses the team associated with the token or the authenticated user\'s default team. The request returns 401 if no team can be selected.
+	 * @example my-team-url-slug
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type GetConnectorStatus200 = unknown;
+
+export type GetConnectorStatus400 = unknown;
+
+export type GetConnectorStatus401 = unknown;
+
+export type GetConnectorStatus403 = unknown;
+
+export type GetConnectorStatus404 = unknown;
+
+export type GetConnectorStatus410 = unknown;
+
+export type GetConnectorStatus422 = unknown;
+
+export type GetConnectorOptions = {
+	body?: never | undefined;
+	path: GetConnectorPath;
+	query?: GetConnectorQuery | undefined;
+	headers?: never | undefined;
+};
+
+export type GetConnectorResponses = {
+	"200": GetConnectorStatus200;
+	"400": GetConnectorStatus400;
+	"401": GetConnectorStatus401;
+	"403": GetConnectorStatus403;
+	"404": GetConnectorStatus404;
+	"410": GetConnectorStatus410;
+	"422": GetConnectorStatus422;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetConnectorResponse =
+	| GetConnectorStatus200
+	| GetConnectorStatus400
+	| GetConnectorStatus401
+	| GetConnectorStatus403
+	| GetConnectorStatus404
+	| GetConnectorStatus410
+	| GetConnectorStatus422;
+
+export type DeleteConnectorPath = {
+	/**
+	 * @description Stable connector ID or URL-encoded team-scoped UID. Examples: `scl_abc123` or `slack%2Fmy-bot`.
+	 * @type string
+	 */
+	connector: string;
+};
+
+export type DeleteConnectorQuery = {
+	/**
+	 * @description The team ID that scopes the request. Do not send it with slug. If both are omitted, Vercel uses the team associated with the token or the authenticated user\'s default team. The request returns 401 if no team can be selected.
+	 * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The team slug that scopes the request. Do not send it with teamId. If both are omitted, Vercel uses the team associated with the token or the authenticated user\'s default team. The request returns 401 if no team can be selected.
+	 * @example my-team-url-slug
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type DeleteConnectorStatus204 = unknown;
+
+export type DeleteConnectorStatus400 = unknown;
+
+export type DeleteConnectorStatus401 = unknown;
+
+export type DeleteConnectorStatus403 = unknown;
+
+export type DeleteConnectorStatus404 = unknown;
+
+export type DeleteConnectorStatus409 = unknown;
+
+export type DeleteConnectorStatus410 = unknown;
+
+export type DeleteConnectorStatus422 = unknown;
+
+export type DeleteConnectorStatus502 = unknown;
+
+export type DeleteConnectorOptions = {
+	body?: never | undefined;
+	path: DeleteConnectorPath;
+	query?: DeleteConnectorQuery | undefined;
+	headers?: never | undefined;
+};
+
+export type DeleteConnectorResponses = {
+	"204": DeleteConnectorStatus204;
+	"400": DeleteConnectorStatus400;
+	"401": DeleteConnectorStatus401;
+	"403": DeleteConnectorStatus403;
+	"404": DeleteConnectorStatus404;
+	"409": DeleteConnectorStatus409;
+	"410": DeleteConnectorStatus410;
+	"422": DeleteConnectorStatus422;
+	"502": DeleteConnectorStatus502;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type DeleteConnectorResponse =
+	| DeleteConnectorStatus204
+	| DeleteConnectorStatus400
+	| DeleteConnectorStatus401
+	| DeleteConnectorStatus403
+	| DeleteConnectorStatus404
+	| DeleteConnectorStatus409
+	| DeleteConnectorStatus410
+	| DeleteConnectorStatus422
+	| DeleteConnectorStatus502;
+
 export type CreateConnectorQuery = {
 	/**
 	 * @description The team ID that scopes the request. Do not send it with slug. If both are omitted, Vercel uses the team associated with the token or the authenticated user\'s default team. The request returns 401 if no team can be selected.
@@ -21973,6 +24732,499 @@ export type CreateConnectorResponse =
 	| CreateConnectorStatus422
 	| CreateConnectorStatus500
 	| CreateConnectorStatus502;
+
+export type UpdateConnectorPath = {
+	/**
+	 * @description Stable connector ID or URL-encoded team-scoped UID. Examples: `scl_abc123` or `slack%2Fmy-bot`.
+	 * @type string
+	 */
+	connector: string;
+};
+
+export type UpdateConnectorQuery = {
+	/**
+	 * @description The team ID that scopes the request. Do not send it with slug. If both are omitted, Vercel uses the team associated with the token or the authenticated user\'s default team. The request returns 401 if no team can be selected.
+	 * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The team slug that scopes the request. Do not send it with teamId. If both are omitted, Vercel uses the team associated with the token or the authenticated user\'s default team. The request returns 401 if no team can be selected.
+	 * @example my-team-url-slug
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type UpdateConnectorStatus200 = unknown;
+
+export type UpdateConnectorStatus400 = unknown;
+
+export type UpdateConnectorStatus401 = unknown;
+
+export type UpdateConnectorStatus403 = unknown;
+
+export type UpdateConnectorStatus404 = unknown;
+
+export type UpdateConnectorStatus409 = unknown;
+
+export type UpdateConnectorStatus410 = unknown;
+
+export type UpdateConnectorStatus422 = unknown;
+
+export type UpdateConnectorStatus502 = unknown;
+
+export type UpdateConnectorOptions = {
+	body?: never | undefined;
+	path: UpdateConnectorPath;
+	query?: UpdateConnectorQuery | undefined;
+	headers?: never | undefined;
+};
+
+export type UpdateConnectorResponses = {
+	"200": UpdateConnectorStatus200;
+	"400": UpdateConnectorStatus400;
+	"401": UpdateConnectorStatus401;
+	"403": UpdateConnectorStatus403;
+	"404": UpdateConnectorStatus404;
+	"409": UpdateConnectorStatus409;
+	"410": UpdateConnectorStatus410;
+	"422": UpdateConnectorStatus422;
+	"502": UpdateConnectorStatus502;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type UpdateConnectorResponse =
+	| UpdateConnectorStatus200
+	| UpdateConnectorStatus400
+	| UpdateConnectorStatus401
+	| UpdateConnectorStatus403
+	| UpdateConnectorStatus404
+	| UpdateConnectorStatus409
+	| UpdateConnectorStatus410
+	| UpdateConnectorStatus422
+	| UpdateConnectorStatus502;
+
+export type ReplaceConnectorTriggerDestinationsPath = {
+	/**
+	 * @description Stable connector ID or URL-encoded team-scoped UID. Examples: `scl_abc123` or `slack%2Fmy-bot`.
+	 * @type string
+	 */
+	connector: string;
+};
+
+export type ReplaceConnectorTriggerDestinationsQuery = {
+	/**
+	 * @description The team ID that scopes the request. Do not send it with slug. If both are omitted, Vercel uses the team associated with the token or the authenticated user\'s default team. The request returns 401 if no team can be selected.
+	 * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The team slug that scopes the request. Do not send it with teamId. If both are omitted, Vercel uses the team associated with the token or the authenticated user\'s default team. The request returns 401 if no team can be selected.
+	 * @example my-team-url-slug
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type ReplaceConnectorTriggerDestinationsStatus200 = unknown;
+
+export type ReplaceConnectorTriggerDestinationsStatus400 = unknown;
+
+export type ReplaceConnectorTriggerDestinationsStatus401 = unknown;
+
+export type ReplaceConnectorTriggerDestinationsStatus403 = unknown;
+
+export type ReplaceConnectorTriggerDestinationsStatus404 = unknown;
+
+export type ReplaceConnectorTriggerDestinationsStatus410 = unknown;
+
+export type ReplaceConnectorTriggerDestinationsStatus422 = unknown;
+
+export type ReplaceConnectorTriggerDestinationsOptions = {
+	body?: never | undefined;
+	path: ReplaceConnectorTriggerDestinationsPath;
+	query?: ReplaceConnectorTriggerDestinationsQuery | undefined;
+	headers?: never | undefined;
+};
+
+export type ReplaceConnectorTriggerDestinationsResponses = {
+	"200": ReplaceConnectorTriggerDestinationsStatus200;
+	"400": ReplaceConnectorTriggerDestinationsStatus400;
+	"401": ReplaceConnectorTriggerDestinationsStatus401;
+	"403": ReplaceConnectorTriggerDestinationsStatus403;
+	"404": ReplaceConnectorTriggerDestinationsStatus404;
+	"410": ReplaceConnectorTriggerDestinationsStatus410;
+	"422": ReplaceConnectorTriggerDestinationsStatus422;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type ReplaceConnectorTriggerDestinationsResponse =
+	| ReplaceConnectorTriggerDestinationsStatus200
+	| ReplaceConnectorTriggerDestinationsStatus400
+	| ReplaceConnectorTriggerDestinationsStatus401
+	| ReplaceConnectorTriggerDestinationsStatus403
+	| ReplaceConnectorTriggerDestinationsStatus404
+	| ReplaceConnectorTriggerDestinationsStatus410
+	| ReplaceConnectorTriggerDestinationsStatus422;
+
+export type ListConnectorProjectConnectionsPath = {
+	/**
+	 * @description Stable connector ID or URL-encoded team-scoped UID. Examples: `scl_abc123` or `slack%2Fmy-bot`.
+	 * @type string
+	 */
+	connector: string;
+};
+
+export type ListConnectorProjectConnectionsQuery = {
+	/**
+	 * @description Maximum number of project connections to return. Defaults to 50.
+	 * @minLength 1
+	 * @maxLength 100
+	 * @type integer | undefined
+	 */
+	limit?: number | undefined;
+	/**
+	 * @description Cursor from `pagination.next` on the previous response.
+	 * @type string | undefined
+	 */
+	cursor?: string | undefined;
+	/**
+	 * @description The team ID that scopes the request. Do not send it with slug. If both are omitted, Vercel uses the team associated with the token or the authenticated user\'s default team. The request returns 401 if no team can be selected.
+	 * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The team slug that scopes the request. Do not send it with teamId. If both are omitted, Vercel uses the team associated with the token or the authenticated user\'s default team. The request returns 401 if no team can be selected.
+	 * @example my-team-url-slug
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type ListConnectorProjectConnectionsStatus200 = unknown;
+
+export type ListConnectorProjectConnectionsStatus400 = unknown;
+
+export type ListConnectorProjectConnectionsStatus401 = unknown;
+
+export type ListConnectorProjectConnectionsStatus403 = unknown;
+
+export type ListConnectorProjectConnectionsStatus404 = unknown;
+
+export type ListConnectorProjectConnectionsStatus410 = unknown;
+
+export type ListConnectorProjectConnectionsStatus422 = unknown;
+
+export type ListConnectorProjectConnectionsOptions = {
+	body?: never | undefined;
+	path: ListConnectorProjectConnectionsPath;
+	query?: ListConnectorProjectConnectionsQuery | undefined;
+	headers?: never | undefined;
+};
+
+export type ListConnectorProjectConnectionsResponses = {
+	"200": ListConnectorProjectConnectionsStatus200;
+	"400": ListConnectorProjectConnectionsStatus400;
+	"401": ListConnectorProjectConnectionsStatus401;
+	"403": ListConnectorProjectConnectionsStatus403;
+	"404": ListConnectorProjectConnectionsStatus404;
+	"410": ListConnectorProjectConnectionsStatus410;
+	"422": ListConnectorProjectConnectionsStatus422;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type ListConnectorProjectConnectionsResponse =
+	| ListConnectorProjectConnectionsStatus200
+	| ListConnectorProjectConnectionsStatus400
+	| ListConnectorProjectConnectionsStatus401
+	| ListConnectorProjectConnectionsStatus403
+	| ListConnectorProjectConnectionsStatus404
+	| ListConnectorProjectConnectionsStatus410
+	| ListConnectorProjectConnectionsStatus422;
+
+export type GetConnectorProjectConnectionPath = {
+	/**
+	 * @description Stable connector ID or URL-encoded team-scoped UID. Examples: `scl_abc123` or `slack%2Fmy-bot`.
+	 * @type string
+	 */
+	connector: string;
+	/**
+	 * @description Vercel project ID.
+	 * @type string
+	 */
+	projectId: string;
+};
+
+export type GetConnectorProjectConnectionQuery = {
+	/**
+	 * @description The team ID that scopes the request. Do not send it with slug. If both are omitted, Vercel uses the team associated with the token or the authenticated user\'s default team. The request returns 401 if no team can be selected.
+	 * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The team slug that scopes the request. Do not send it with teamId. If both are omitted, Vercel uses the team associated with the token or the authenticated user\'s default team. The request returns 401 if no team can be selected.
+	 * @example my-team-url-slug
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type GetConnectorProjectConnectionStatus200 = unknown;
+
+export type GetConnectorProjectConnectionStatus400 = unknown;
+
+export type GetConnectorProjectConnectionStatus401 = unknown;
+
+export type GetConnectorProjectConnectionStatus403 = unknown;
+
+export type GetConnectorProjectConnectionStatus404 = unknown;
+
+export type GetConnectorProjectConnectionStatus410 = unknown;
+
+export type GetConnectorProjectConnectionOptions = {
+	body?: never | undefined;
+	path: GetConnectorProjectConnectionPath;
+	query?: GetConnectorProjectConnectionQuery | undefined;
+	headers?: never | undefined;
+};
+
+export type GetConnectorProjectConnectionResponses = {
+	"200": GetConnectorProjectConnectionStatus200;
+	"400": GetConnectorProjectConnectionStatus400;
+	"401": GetConnectorProjectConnectionStatus401;
+	"403": GetConnectorProjectConnectionStatus403;
+	"404": GetConnectorProjectConnectionStatus404;
+	"410": GetConnectorProjectConnectionStatus410;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetConnectorProjectConnectionResponse =
+	| GetConnectorProjectConnectionStatus200
+	| GetConnectorProjectConnectionStatus400
+	| GetConnectorProjectConnectionStatus401
+	| GetConnectorProjectConnectionStatus403
+	| GetConnectorProjectConnectionStatus404
+	| GetConnectorProjectConnectionStatus410;
+
+export type UpsertConnectorProjectConnectionPath = {
+	/**
+	 * @description Stable connector ID or URL-encoded team-scoped UID. Examples: `scl_abc123` or `slack%2Fmy-bot`.
+	 * @type string
+	 */
+	connector: string;
+	/**
+	 * @description Vercel project ID.
+	 * @type string
+	 */
+	projectId: string;
+};
+
+export type UpsertConnectorProjectConnectionQuery = {
+	/**
+	 * @description The team ID that scopes the request. Do not send it with slug. If both are omitted, Vercel uses the team associated with the token or the authenticated user\'s default team. The request returns 401 if no team can be selected.
+	 * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The team slug that scopes the request. Do not send it with teamId. If both are omitted, Vercel uses the team associated with the token or the authenticated user\'s default team. The request returns 401 if no team can be selected.
+	 * @example my-team-url-slug
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type UpsertConnectorProjectConnectionStatus200 = unknown;
+
+export type UpsertConnectorProjectConnectionStatus400 = unknown;
+
+export type UpsertConnectorProjectConnectionStatus401 = unknown;
+
+export type UpsertConnectorProjectConnectionStatus403 = unknown;
+
+export type UpsertConnectorProjectConnectionStatus404 = unknown;
+
+export type UpsertConnectorProjectConnectionStatus410 = unknown;
+
+export type UpsertConnectorProjectConnectionOptions = {
+	body?: never | undefined;
+	path: UpsertConnectorProjectConnectionPath;
+	query?: UpsertConnectorProjectConnectionQuery | undefined;
+	headers?: never | undefined;
+};
+
+export type UpsertConnectorProjectConnectionResponses = {
+	"200": UpsertConnectorProjectConnectionStatus200;
+	"400": UpsertConnectorProjectConnectionStatus400;
+	"401": UpsertConnectorProjectConnectionStatus401;
+	"403": UpsertConnectorProjectConnectionStatus403;
+	"404": UpsertConnectorProjectConnectionStatus404;
+	"410": UpsertConnectorProjectConnectionStatus410;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type UpsertConnectorProjectConnectionResponse =
+	| UpsertConnectorProjectConnectionStatus200
+	| UpsertConnectorProjectConnectionStatus400
+	| UpsertConnectorProjectConnectionStatus401
+	| UpsertConnectorProjectConnectionStatus403
+	| UpsertConnectorProjectConnectionStatus404
+	| UpsertConnectorProjectConnectionStatus410;
+
+export type DeleteConnectorProjectConnectionPath = {
+	/**
+	 * @description Stable connector ID or URL-encoded team-scoped UID. Examples: `scl_abc123` or `slack%2Fmy-bot`.
+	 * @type string
+	 */
+	connector: string;
+	/**
+	 * @description Vercel project ID.
+	 * @type string
+	 */
+	projectId: string;
+};
+
+export type DeleteConnectorProjectConnectionQuery = {
+	/**
+	 * @description The team ID that scopes the request. Do not send it with slug. If both are omitted, Vercel uses the team associated with the token or the authenticated user\'s default team. The request returns 401 if no team can be selected.
+	 * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The team slug that scopes the request. Do not send it with teamId. If both are omitted, Vercel uses the team associated with the token or the authenticated user\'s default team. The request returns 401 if no team can be selected.
+	 * @example my-team-url-slug
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type DeleteConnectorProjectConnectionStatus204 = unknown;
+
+export type DeleteConnectorProjectConnectionStatus400 = unknown;
+
+export type DeleteConnectorProjectConnectionStatus401 = unknown;
+
+export type DeleteConnectorProjectConnectionStatus403 = unknown;
+
+export type DeleteConnectorProjectConnectionStatus404 = unknown;
+
+export type DeleteConnectorProjectConnectionStatus410 = unknown;
+
+export type DeleteConnectorProjectConnectionOptions = {
+	body?: never | undefined;
+	path: DeleteConnectorProjectConnectionPath;
+	query?: DeleteConnectorProjectConnectionQuery | undefined;
+	headers?: never | undefined;
+};
+
+export type DeleteConnectorProjectConnectionResponses = {
+	"204": DeleteConnectorProjectConnectionStatus204;
+	"400": DeleteConnectorProjectConnectionStatus400;
+	"401": DeleteConnectorProjectConnectionStatus401;
+	"403": DeleteConnectorProjectConnectionStatus403;
+	"404": DeleteConnectorProjectConnectionStatus404;
+	"410": DeleteConnectorProjectConnectionStatus410;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type DeleteConnectorProjectConnectionResponse =
+	| DeleteConnectorProjectConnectionStatus204
+	| DeleteConnectorProjectConnectionStatus400
+	| DeleteConnectorProjectConnectionStatus401
+	| DeleteConnectorProjectConnectionStatus403
+	| DeleteConnectorProjectConnectionStatus404
+	| DeleteConnectorProjectConnectionStatus410;
+
+export type ListProjectConnectorConnectionsPath = {
+	/**
+	 * @description Vercel project ID.
+	 * @type string
+	 */
+	projectId: string;
+};
+
+export type ListProjectConnectorConnectionsQuery = {
+	/**
+	 * @description Maximum number of connector connections to return. Defaults to 50.
+	 * @minLength 1
+	 * @maxLength 100
+	 * @type integer | undefined
+	 */
+	limit?: number | undefined;
+	/**
+	 * @description Cursor from `pagination.next` on the previous response.
+	 * @type string | undefined
+	 */
+	cursor?: string | undefined;
+	/**
+	 * @description The team ID that scopes the request. Do not send it with slug. If both are omitted, Vercel uses the team associated with the token or the authenticated user\'s default team. The request returns 401 if no team can be selected.
+	 * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The team slug that scopes the request. Do not send it with teamId. If both are omitted, Vercel uses the team associated with the token or the authenticated user\'s default team. The request returns 401 if no team can be selected.
+	 * @example my-team-url-slug
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type ListProjectConnectorConnectionsStatus200 = unknown;
+
+export type ListProjectConnectorConnectionsStatus400 = unknown;
+
+export type ListProjectConnectorConnectionsStatus401 = unknown;
+
+export type ListProjectConnectorConnectionsStatus403 = unknown;
+
+export type ListProjectConnectorConnectionsStatus404 = unknown;
+
+export type ListProjectConnectorConnectionsStatus410 = unknown;
+
+export type ListProjectConnectorConnectionsOptions = {
+	body?: never | undefined;
+	path: ListProjectConnectorConnectionsPath;
+	query?: ListProjectConnectorConnectionsQuery | undefined;
+	headers?: never | undefined;
+};
+
+export type ListProjectConnectorConnectionsResponses = {
+	"200": ListProjectConnectorConnectionsStatus200;
+	"400": ListProjectConnectorConnectionsStatus400;
+	"401": ListProjectConnectorConnectionsStatus401;
+	"403": ListProjectConnectorConnectionsStatus403;
+	"404": ListProjectConnectorConnectionsStatus404;
+	"410": ListProjectConnectorConnectionsStatus410;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type ListProjectConnectorConnectionsResponse =
+	| ListProjectConnectorConnectionsStatus200
+	| ListProjectConnectorConnectionsStatus400
+	| ListProjectConnectorConnectionsStatus401
+	| ListProjectConnectorConnectionsStatus403
+	| ListProjectConnectorConnectionsStatus404
+	| ListProjectConnectorConnectionsStatus410;
 
 export type GetConnectorTokenPath = {
 	connector: string;
@@ -28752,6 +32004,7 @@ export const getBillingPlansSource = {
 	oauth: "oauth",
 	backoffice: "backoffice",
 	"import-recommended-integrations": "import-recommended-integrations",
+	organization: "organization",
 } as const;
 
 export type GetBillingPlansSourceKey =
@@ -29300,8 +32553,6 @@ export type ImportResourceStatus410 = unknown;
 
 export type ImportResourceStatus422 = unknown;
 
-export type ImportResourceStatus429 = unknown;
-
 export type ImportResourceOptions = {
 	body?: never | undefined;
 	path: ImportResourcePath;
@@ -29318,7 +32569,6 @@ export type ImportResourceResponses = {
 	"409": ImportResourceStatus409;
 	"410": ImportResourceStatus410;
 	"422": ImportResourceStatus422;
-	"429": ImportResourceStatus429;
 };
 
 /**
@@ -29332,8 +32582,7 @@ export type ImportResourceResponse =
 	| ImportResourceStatus404
 	| ImportResourceStatus409
 	| ImportResourceStatus410
-	| ImportResourceStatus422
-	| ImportResourceStatus429;
+	| ImportResourceStatus422;
 
 export type UpdateResourcePath = {
 	integrationConfigurationId: string;
@@ -31855,6 +35104,14 @@ export type CreateObservabilityQueryStatus408 = unknown;
 
 export type CreateObservabilityQueryStatus410 = unknown;
 
+export type CreateObservabilityQueryStatus413 = unknown;
+
+export type CreateObservabilityQueryStatus422 = unknown;
+
+export type CreateObservabilityQueryStatus500 = unknown;
+
+export type CreateObservabilityQueryStatus503 = unknown;
+
 export type CreateObservabilityQueryOptions = {
 	body?: never | undefined;
 	path?: never | undefined;
@@ -31870,6 +35127,10 @@ export type CreateObservabilityQueryResponses = {
 	"403": CreateObservabilityQueryStatus403;
 	"408": CreateObservabilityQueryStatus408;
 	"410": CreateObservabilityQueryStatus410;
+	"413": CreateObservabilityQueryStatus413;
+	"422": CreateObservabilityQueryStatus422;
+	"500": CreateObservabilityQueryStatus500;
+	"503": CreateObservabilityQueryStatus503;
 };
 
 /**
@@ -31882,7 +35143,11 @@ export type CreateObservabilityQueryResponse =
 	| CreateObservabilityQueryStatus402
 	| CreateObservabilityQueryStatus403
 	| CreateObservabilityQueryStatus408
-	| CreateObservabilityQueryStatus410;
+	| CreateObservabilityQueryStatus410
+	| CreateObservabilityQueryStatus413
+	| CreateObservabilityQueryStatus422
+	| CreateObservabilityQueryStatus500
+	| CreateObservabilityQueryStatus503;
 
 export type GetObservabilitySchemaStatus200 = unknown;
 
@@ -33177,6 +36442,8 @@ export type UpdateProjectStatus410 = unknown;
 
 export type UpdateProjectStatus428 = unknown;
 
+export type UpdateProjectStatus429 = unknown;
+
 export type UpdateProjectOptions = {
 	body?: never | undefined;
 	path: UpdateProjectPath;
@@ -33194,6 +36461,7 @@ export type UpdateProjectResponses = {
 	"409": UpdateProjectStatus409;
 	"410": UpdateProjectStatus410;
 	"428": UpdateProjectStatus428;
+	"429": UpdateProjectStatus429;
 };
 
 /**
@@ -33208,7 +36476,8 @@ export type UpdateProjectResponse =
 	| UpdateProjectStatus404
 	| UpdateProjectStatus409
 	| UpdateProjectStatus410
-	| UpdateProjectStatus428;
+	| UpdateProjectStatus428
+	| UpdateProjectStatus429;
 
 export type DeleteProjectPath = {
 	/**
@@ -35334,6 +38603,8 @@ export type CreateProjectTransferRequestStatus401 = unknown;
 
 export type CreateProjectTransferRequestStatus403 = unknown;
 
+export type CreateProjectTransferRequestStatus409 = unknown;
+
 export type CreateProjectTransferRequestStatus410 = unknown;
 
 export type CreateProjectTransferRequestOptions = {
@@ -35348,6 +38619,7 @@ export type CreateProjectTransferRequestResponses = {
 	"400": CreateProjectTransferRequestStatus400;
 	"401": CreateProjectTransferRequestStatus401;
 	"403": CreateProjectTransferRequestStatus403;
+	"409": CreateProjectTransferRequestStatus409;
 	"410": CreateProjectTransferRequestStatus410;
 };
 
@@ -35359,6 +38631,7 @@ export type CreateProjectTransferRequestResponse =
 	| CreateProjectTransferRequestStatus400
 	| CreateProjectTransferRequestStatus401
 	| CreateProjectTransferRequestStatus403
+	| CreateProjectTransferRequestStatus409
 	| CreateProjectTransferRequestStatus410;
 
 export type AcceptProjectTransferRequestPath = {
@@ -35957,32 +39230,34 @@ export type UnpauseProjectResponse =
 	| UnpauseProjectStatus410
 	| UnpauseProjectStatus500;
 
-export const listSandboxesSortBy = {
+export const listNamedSandboxesSortBy = {
 	createdAt: "createdAt",
 	name: "name",
 	statusUpdatedAt: "statusUpdatedAt",
 	currentSnapshotId: "currentSnapshotId",
 } as const;
 
-export type ListSandboxesSortByKey = (typeof listSandboxesSortBy)[keyof typeof listSandboxesSortBy];
+export type ListNamedSandboxesSortByKey =
+	(typeof listNamedSandboxesSortBy)[keyof typeof listNamedSandboxesSortBy];
 
-export const listSandboxesSortOrder = {
+export const listNamedSandboxesSortOrder = {
 	asc: "asc",
 	desc: "desc",
 } as const;
 
-export type ListSandboxesSortOrderKey =
-	(typeof listSandboxesSortOrder)[keyof typeof listSandboxesSortOrder];
+export type ListNamedSandboxesSortOrderKey =
+	(typeof listNamedSandboxesSortOrder)[keyof typeof listNamedSandboxesSortOrder];
 
-export const listSandboxesStatus = {
+export const listNamedSandboxesStatus = {
 	running: "running",
 	stopping: "stopping",
 	stopped: "stopped",
 } as const;
 
-export type ListSandboxesStatusKey = (typeof listSandboxesStatus)[keyof typeof listSandboxesStatus];
+export type ListNamedSandboxesStatusKey =
+	(typeof listNamedSandboxesStatus)[keyof typeof listNamedSandboxesStatus];
 
-export type ListSandboxesQuery = {
+export type ListNamedSandboxesQuery = {
 	/**
 	 * @description The unique identifier or name of the project to list named sandboxes for.
 	 * @example prj_abc123
@@ -36003,7 +39278,7 @@ export type ListSandboxesQuery = {
 	 * @default 'createdAt'
 	 * @type string | undefined
 	 */
-	sortBy?: ListSandboxesSortByKey | undefined;
+	sortBy?: ListNamedSandboxesSortByKey | undefined;
 	/**
 	 * @description Filter named sandboxes whose name starts with this prefix. Only valid when sortBy=name.
 	 * @type string | undefined
@@ -36019,12 +39294,12 @@ export type ListSandboxesQuery = {
 	 * @default 'desc'
 	 * @type string | undefined
 	 */
-	sortOrder?: ListSandboxesSortOrderKey | undefined;
+	sortOrder?: ListNamedSandboxesSortOrderKey | undefined;
 	/**
 	 * @description Filter named sandboxes by status. Only valid when sortBy is createdAt.
 	 * @type string | undefined
 	 */
-	status?: ListSandboxesStatusKey | undefined;
+	status?: ListNamedSandboxesStatusKey | undefined;
 	/**
 	 * @description Filter sandboxes by tag. Format: \\\"key:value\\\". Only one tag filter is supported at a time.
 	 */
@@ -36043,48 +39318,48 @@ export type ListSandboxesQuery = {
 	slug?: string | undefined;
 };
 
-export type ListSandboxesStatus200 = unknown;
+export type ListNamedSandboxesStatus200 = unknown;
 
-export type ListSandboxesStatus400 = unknown;
+export type ListNamedSandboxesStatus400 = unknown;
 
-export type ListSandboxesStatus401 = unknown;
+export type ListNamedSandboxesStatus401 = unknown;
 
-export type ListSandboxesStatus403 = unknown;
+export type ListNamedSandboxesStatus403 = unknown;
 
-export type ListSandboxesStatus404 = unknown;
+export type ListNamedSandboxesStatus404 = unknown;
 
-export type ListSandboxesStatus410 = unknown;
+export type ListNamedSandboxesStatus410 = unknown;
 
-export type ListSandboxesStatus429 = unknown;
+export type ListNamedSandboxesStatus429 = unknown;
 
-export type ListSandboxesOptions = {
+export type ListNamedSandboxesOptions = {
 	body?: never | undefined;
 	path?: never | undefined;
-	query?: ListSandboxesQuery | undefined;
+	query?: ListNamedSandboxesQuery | undefined;
 	headers?: never | undefined;
 };
 
-export type ListSandboxesResponses = {
-	"200": ListSandboxesStatus200;
-	"400": ListSandboxesStatus400;
-	"401": ListSandboxesStatus401;
-	"403": ListSandboxesStatus403;
-	"404": ListSandboxesStatus404;
-	"410": ListSandboxesStatus410;
-	"429": ListSandboxesStatus429;
+export type ListNamedSandboxesResponses = {
+	"200": ListNamedSandboxesStatus200;
+	"400": ListNamedSandboxesStatus400;
+	"401": ListNamedSandboxesStatus401;
+	"403": ListNamedSandboxesStatus403;
+	"404": ListNamedSandboxesStatus404;
+	"410": ListNamedSandboxesStatus410;
+	"429": ListNamedSandboxesStatus429;
 };
 
 /**
  * @description Union of all possible responses
  */
-export type ListSandboxesResponse =
-	| ListSandboxesStatus200
-	| ListSandboxesStatus400
-	| ListSandboxesStatus401
-	| ListSandboxesStatus403
-	| ListSandboxesStatus404
-	| ListSandboxesStatus410
-	| ListSandboxesStatus429;
+export type ListNamedSandboxesResponse =
+	| ListNamedSandboxesStatus200
+	| ListNamedSandboxesStatus400
+	| ListNamedSandboxesStatus401
+	| ListNamedSandboxesStatus403
+	| ListNamedSandboxesStatus404
+	| ListNamedSandboxesStatus410
+	| ListNamedSandboxesStatus429;
 
 export type CreateSandboxesV2Query = {
 	/**
@@ -38964,6 +42239,8 @@ export type GetBypassIpStatus400 = unknown;
 
 export type GetBypassIpStatus401 = unknown;
 
+export type GetBypassIpStatus402 = unknown;
+
 export type GetBypassIpStatus403 = unknown;
 
 export type GetBypassIpStatus404 = unknown;
@@ -38983,6 +42260,7 @@ export type GetBypassIpResponses = {
 	"200": GetBypassIpStatus200;
 	"400": GetBypassIpStatus400;
 	"401": GetBypassIpStatus401;
+	"402": GetBypassIpStatus402;
 	"403": GetBypassIpStatus403;
 	"404": GetBypassIpStatus404;
 	"410": GetBypassIpStatus410;
@@ -38996,6 +42274,7 @@ export type GetBypassIpResponse =
 	| GetBypassIpStatus200
 	| GetBypassIpStatus400
 	| GetBypassIpStatus401
+	| GetBypassIpStatus402
 	| GetBypassIpStatus403
 	| GetBypassIpStatus404
 	| GetBypassIpStatus410
@@ -39023,6 +42302,8 @@ export type AddBypassIpStatus400 = unknown;
 
 export type AddBypassIpStatus401 = unknown;
 
+export type AddBypassIpStatus402 = unknown;
+
 export type AddBypassIpStatus403 = unknown;
 
 export type AddBypassIpStatus404 = unknown;
@@ -39042,6 +42323,7 @@ export type AddBypassIpResponses = {
 	"200": AddBypassIpStatus200;
 	"400": AddBypassIpStatus400;
 	"401": AddBypassIpStatus401;
+	"402": AddBypassIpStatus402;
 	"403": AddBypassIpStatus403;
 	"404": AddBypassIpStatus404;
 	"410": AddBypassIpStatus410;
@@ -39055,6 +42337,7 @@ export type AddBypassIpResponse =
 	| AddBypassIpStatus200
 	| AddBypassIpStatus400
 	| AddBypassIpStatus401
+	| AddBypassIpStatus402
 	| AddBypassIpStatus403
 	| AddBypassIpStatus404
 	| AddBypassIpStatus410
@@ -39082,6 +42365,8 @@ export type RemoveBypassIpStatus400 = unknown;
 
 export type RemoveBypassIpStatus401 = unknown;
 
+export type RemoveBypassIpStatus402 = unknown;
+
 export type RemoveBypassIpStatus403 = unknown;
 
 export type RemoveBypassIpStatus404 = unknown;
@@ -39101,6 +42386,7 @@ export type RemoveBypassIpResponses = {
 	"200": RemoveBypassIpStatus200;
 	"400": RemoveBypassIpStatus400;
 	"401": RemoveBypassIpStatus401;
+	"402": RemoveBypassIpStatus402;
 	"403": RemoveBypassIpStatus403;
 	"404": RemoveBypassIpStatus404;
 	"410": RemoveBypassIpStatus410;
@@ -39114,6 +42400,7 @@ export type RemoveBypassIpResponse =
 	| RemoveBypassIpStatus200
 	| RemoveBypassIpStatus400
 	| RemoveBypassIpStatus401
+	| RemoveBypassIpStatus402
 	| RemoveBypassIpStatus403
 	| RemoveBypassIpStatus404
 	| RemoveBypassIpStatus410
@@ -39468,8 +42755,6 @@ export type CreateIntegrationStoreDirectStatus409 = unknown;
 
 export type CreateIntegrationStoreDirectStatus410 = unknown;
 
-export type CreateIntegrationStoreDirectStatus429 = unknown;
-
 export type CreateIntegrationStoreDirectStatus500 = unknown;
 
 export type CreateIntegrationStoreDirectOptions = {
@@ -39488,7 +42773,6 @@ export type CreateIntegrationStoreDirectResponses = {
 	"404": CreateIntegrationStoreDirectStatus404;
 	"409": CreateIntegrationStoreDirectStatus409;
 	"410": CreateIntegrationStoreDirectStatus410;
-	"429": CreateIntegrationStoreDirectStatus429;
 	"500": CreateIntegrationStoreDirectStatus500;
 };
 
@@ -39504,7 +42788,6 @@ export type CreateIntegrationStoreDirectResponse =
 	| CreateIntegrationStoreDirectStatus404
 	| CreateIntegrationStoreDirectStatus409
 	| CreateIntegrationStoreDirectStatus410
-	| CreateIntegrationStoreDirectStatus429
 	| CreateIntegrationStoreDirectStatus500;
 
 export type GetTeamMembersPath = {
@@ -40906,6 +44189,10 @@ export type CreateRepositoryResponse =
 	| CreateRepositoryStatus410;
 
 export type ListRepositoriesQuery = {
+	/**
+	 * @description Project ID or name (slug) within the authenticated team. IDs take precedence over names. Missing or empty values return HTTP 400.
+	 * @type string
+	 */
 	projectId: string;
 	/**
 	 * @minLength 1
@@ -40981,6 +44268,10 @@ export type GetRepositoryPath = {
 };
 
 export type GetRepositoryQuery = {
+	/**
+	 * @description Project ID or name (slug) within the authenticated team. IDs take precedence over names. Missing or empty values return HTTP 400.
+	 * @type string
+	 */
 	projectId: string;
 	/**
 	 * @description The Team identifier to perform the request on behalf of.
@@ -41044,6 +44335,10 @@ export type DeleteRepositoryPath = {
 };
 
 export type DeleteRepositoryQuery = {
+	/**
+	 * @description Project ID or name (slug) within the authenticated team. IDs take precedence over names. Missing or empty values return HTTP 400.
+	 * @type string
+	 */
 	projectId: string;
 	/**
 	 * @description The Team identifier to perform the request on behalf of.
@@ -41107,6 +44402,10 @@ export type ListRepositoryImagesPath = {
 };
 
 export type ListRepositoryImagesQuery = {
+	/**
+	 * @description Project ID or name (slug) within the authenticated team. IDs take precedence over names. Missing or empty values return HTTP 400.
+	 * @type string
+	 */
 	projectId: string;
 	/**
 	 * @minLength 1
@@ -41183,6 +44482,10 @@ export type AddRepositoryPermissionPath = {
 };
 
 export type AddRepositoryPermissionQuery = {
+	/**
+	 * @description Project ID or name (slug) within the authenticated team. IDs take precedence over names. Missing or empty values return HTTP 400.
+	 * @type string
+	 */
 	projectId: string;
 	/**
 	 * @description The Team identifier to perform the request on behalf of.
@@ -41246,6 +44549,10 @@ export type RemoveRepositoryPermissionPath = {
 };
 
 export type RemoveRepositoryPermissionQuery = {
+	/**
+	 * @description Project ID or name (slug) within the authenticated team. IDs take precedence over names. Missing or empty values return HTTP 400.
+	 * @type string
+	 */
 	projectId: string;
 	/**
 	 * @description The Team identifier to perform the request on behalf of.
@@ -41309,6 +44616,10 @@ export type ListRepositoryPermissionsPath = {
 };
 
 export type ListRepositoryPermissionsQuery = {
+	/**
+	 * @description Project ID or name (slug) within the authenticated team. IDs take precedence over names. Missing or empty values return HTTP 400.
+	 * @type string
+	 */
 	projectId: string;
 	/**
 	 * @minLength 1
@@ -41384,6 +44695,10 @@ export type ClearRepositoryPermissionsPath = {
 };
 
 export type ClearRepositoryPermissionsQuery = {
+	/**
+	 * @description Project ID or name (slug) within the authenticated team. IDs take precedence over names. Missing or empty values return HTTP 400.
+	 * @type string
+	 */
 	projectId: string;
 	/**
 	 * @description The Team identifier to perform the request on behalf of.
@@ -41463,6 +44778,10 @@ export type ListRepositoryTagsSortOrderKey =
 	(typeof listRepositoryTagsSortOrder)[keyof typeof listRepositoryTagsSortOrder];
 
 export type ListRepositoryTagsQuery = {
+	/**
+	 * @description Project ID or name (slug) within the authenticated team. IDs take precedence over names. Missing or empty values return HTTP 400.
+	 * @type string
+	 */
 	projectId: string;
 	/**
 	 * @minLength 1
@@ -41550,6 +44869,10 @@ export type GetRepositoryTagPath = {
 };
 
 export type GetRepositoryTagQuery = {
+	/**
+	 * @description Project ID or name (slug) within the authenticated team. IDs take precedence over names. Missing or empty values return HTTP 400.
+	 * @type string
+	 */
 	projectId: string;
 	/**
 	 * @description The Team identifier to perform the request on behalf of.
@@ -41619,6 +44942,10 @@ export type GetRepositoryImagePath = {
 };
 
 export type GetRepositoryImageQuery = {
+	/**
+	 * @description Project ID or name (slug) within the authenticated team. IDs take precedence over names. Missing or empty values return HTTP 400.
+	 * @type string
+	 */
 	projectId: string;
 	/**
 	 * @description The Team identifier to perform the request on behalf of.
@@ -41687,6 +45014,10 @@ export type DeleteRepositoryImagePath = {
 };
 
 export type DeleteRepositoryImageQuery = {
+	/**
+	 * @description Project ID or name (slug) within the authenticated team. IDs take precedence over names. Missing or empty values return HTTP 400.
+	 * @type string
+	 */
 	projectId: string;
 	/**
 	 * @description The Team identifier to perform the request on behalf of.
@@ -42778,7 +46109,11 @@ export type AggregatePageviewsStatus402 = unknown;
 
 export type AggregatePageviewsStatus403 = unknown;
 
+export type AggregatePageviewsStatus404 = unknown;
+
 export type AggregatePageviewsStatus410 = unknown;
+
+export type AggregatePageviewsStatus503 = unknown;
 
 export type AggregatePageviewsOptions = {
 	body?: never | undefined;
@@ -42793,7 +46128,9 @@ export type AggregatePageviewsResponses = {
 	"401": AggregatePageviewsStatus401;
 	"402": AggregatePageviewsStatus402;
 	"403": AggregatePageviewsStatus403;
+	"404": AggregatePageviewsStatus404;
 	"410": AggregatePageviewsStatus410;
+	"503": AggregatePageviewsStatus503;
 };
 
 /**
@@ -42805,7 +46142,9 @@ export type AggregatePageviewsResponse =
 	| AggregatePageviewsStatus401
 	| AggregatePageviewsStatus402
 	| AggregatePageviewsStatus403
-	| AggregatePageviewsStatus410;
+	| AggregatePageviewsStatus404
+	| AggregatePageviewsStatus410
+	| AggregatePageviewsStatus503;
 
 export type AggregateEventsQuery = {
 	/**
@@ -42869,7 +46208,11 @@ export type AggregateEventsStatus402 = unknown;
 
 export type AggregateEventsStatus403 = unknown;
 
+export type AggregateEventsStatus404 = unknown;
+
 export type AggregateEventsStatus410 = unknown;
+
+export type AggregateEventsStatus503 = unknown;
 
 export type AggregateEventsOptions = {
 	body?: never | undefined;
@@ -42884,7 +46227,9 @@ export type AggregateEventsResponses = {
 	"401": AggregateEventsStatus401;
 	"402": AggregateEventsStatus402;
 	"403": AggregateEventsStatus403;
+	"404": AggregateEventsStatus404;
 	"410": AggregateEventsStatus410;
+	"503": AggregateEventsStatus503;
 };
 
 /**
@@ -42896,7 +46241,9 @@ export type AggregateEventsResponse =
 	| AggregateEventsStatus401
 	| AggregateEventsStatus402
 	| AggregateEventsStatus403
-	| AggregateEventsStatus410;
+	| AggregateEventsStatus404
+	| AggregateEventsStatus410
+	| AggregateEventsStatus503;
 
 export type CountPageviewsQuery = {
 	/**
@@ -42945,7 +46292,11 @@ export type CountPageviewsStatus402 = unknown;
 
 export type CountPageviewsStatus403 = unknown;
 
+export type CountPageviewsStatus404 = unknown;
+
 export type CountPageviewsStatus410 = unknown;
+
+export type CountPageviewsStatus503 = unknown;
 
 export type CountPageviewsOptions = {
 	body?: never | undefined;
@@ -42960,7 +46311,9 @@ export type CountPageviewsResponses = {
 	"401": CountPageviewsStatus401;
 	"402": CountPageviewsStatus402;
 	"403": CountPageviewsStatus403;
+	"404": CountPageviewsStatus404;
 	"410": CountPageviewsStatus410;
+	"503": CountPageviewsStatus503;
 };
 
 /**
@@ -42972,7 +46325,9 @@ export type CountPageviewsResponse =
 	| CountPageviewsStatus401
 	| CountPageviewsStatus402
 	| CountPageviewsStatus403
-	| CountPageviewsStatus410;
+	| CountPageviewsStatus404
+	| CountPageviewsStatus410
+	| CountPageviewsStatus503;
 
 export type CountEventsQuery = {
 	/**
@@ -43021,7 +46376,11 @@ export type CountEventsStatus402 = unknown;
 
 export type CountEventsStatus403 = unknown;
 
+export type CountEventsStatus404 = unknown;
+
 export type CountEventsStatus410 = unknown;
+
+export type CountEventsStatus503 = unknown;
 
 export type CountEventsOptions = {
 	body?: never | undefined;
@@ -43036,7 +46395,9 @@ export type CountEventsResponses = {
 	"401": CountEventsStatus401;
 	"402": CountEventsStatus402;
 	"403": CountEventsStatus403;
+	"404": CountEventsStatus404;
 	"410": CountEventsStatus410;
+	"503": CountEventsStatus503;
 };
 
 /**
@@ -43048,7 +46409,9 @@ export type CountEventsResponse =
 	| CountEventsStatus401
 	| CountEventsStatus402
 	| CountEventsStatus403
-	| CountEventsStatus410;
+	| CountEventsStatus404
+	| CountEventsStatus410
+	| CountEventsStatus503;
 
 export type CreateWebhookQuery = {
 	/**

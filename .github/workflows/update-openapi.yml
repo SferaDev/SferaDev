@@ -12,9 +12,11 @@ jobs:
     concurrency:
       group: ${{ github.workflow }}-${{ matrix.package }}
       cancel-in-progress: true
-    continue-on-error: true
 
+    # Each package regenerates independently: `fail-fast: false` keeps one package's failure from
+    # cancelling the others, while still marking the run red so a broken generator gets noticed.
     strategy:
+      fail-fast: false
       matrix:
         package:
           - vercel-api-js
