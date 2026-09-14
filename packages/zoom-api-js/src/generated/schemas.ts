@@ -8431,9 +8431,16 @@ export const pastMeetingsStatus200Schema = z
 						.string()
 						.optional()
 						.describe(
-							"Meeting UUID. Unique meeting ID. Each meeting instance will generate its own Meeting UUID (i.e., after a meeting ends, a new UUID will be generated for the next instance of the meeting). [Double encode](https://marketplace.zoom.us/docs/api-reference/using-zoom-apis/#meeting-id-and-uuid) your UUID when using it for API calls if the UUID begins with a '/'or contains '//' in it.\n\n",
+							"Meeting UUID. Unique meeting ID. Each meeting instance will generate its own Meeting UUID. After a meeting ends, a new UUID will be generated for the next instance of that recurring meeting. [Double encode](https://marketplace.zoom.us/docs/api-reference/using-zoom-apis/#meeting-id-and-uuid) your UUID when using it for API calls if the UUID begins with a '/'or contains '//' in it.",
 						)
 						.meta({ examples: ["Vg8IdgluR5WDeWIkpJlElQ=="] }),
+					occurrence_id: z
+						.string()
+						.optional()
+						.describe(
+							"Occurrence ID. The unique identifier for an occurrence of a recurring meeting.",
+						)
+						.meta({ examples: ["1648194360000"] }),
 				}),
 			)
 			.optional()
@@ -18816,6 +18823,13 @@ export const pastWebinarsStatus200Schema = z
 						.optional()
 						.describe("Webinar UUID.")
 						.meta({ examples: ["Bznyg8KZTdCVbQxvS/oZ7w=="] }),
+					occurrence_id: z
+						.string()
+						.optional()
+						.describe(
+							"Occurrence ID. The unique identifier for an occurrence of a recurring webinar.",
+						)
+						.meta({ examples: ["1648194360000"] }),
 				}),
 			)
 			.optional()
