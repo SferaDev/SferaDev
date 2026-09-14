@@ -23,6 +23,9 @@ jobs:
       - name: Setup and install
         uses: ./.github/actions/setup
 
+      - name: Typecheck
+        run: pnpm tsc
+
       - name: Check linting
         run: pnpm check
 

@@ -23,6 +23,7 @@ import type {
 	AddBypassIpResponse,
 	AddBypassIpStatus400,
 	AddBypassIpStatus401,
+	AddBypassIpStatus402,
 	AddBypassIpStatus403,
 	AddBypassIpStatus404,
 	AddBypassIpStatus410,
@@ -58,13 +59,17 @@ import type {
 	AggregateEventsStatus401,
 	AggregateEventsStatus402,
 	AggregateEventsStatus403,
+	AggregateEventsStatus404,
 	AggregateEventsStatus410,
+	AggregateEventsStatus503,
 	AggregatePageviewsResponse,
 	AggregatePageviewsStatus400,
 	AggregatePageviewsStatus401,
 	AggregatePageviewsStatus402,
 	AggregatePageviewsStatus403,
+	AggregatePageviewsStatus404,
 	AggregatePageviewsStatus410,
+	AggregatePageviewsStatus503,
 	ApproveRollingReleaseStageResponse,
 	ApproveRollingReleaseStageStatus400,
 	ApproveRollingReleaseStageStatus401,
@@ -149,13 +154,17 @@ import type {
 	CountEventsStatus401,
 	CountEventsStatus402,
 	CountEventsStatus403,
+	CountEventsStatus404,
 	CountEventsStatus410,
+	CountEventsStatus503,
 	CountPageviewsResponse,
 	CountPageviewsStatus400,
 	CountPageviewsStatus401,
 	CountPageviewsStatus402,
 	CountPageviewsStatus403,
+	CountPageviewsStatus404,
 	CountPageviewsStatus410,
+	CountPageviewsStatus503,
 	CreateAccessGroupProjectResponse,
 	CreateAccessGroupProjectStatus400,
 	CreateAccessGroupProjectStatus401,
@@ -311,7 +320,6 @@ import type {
 	CreateIntegrationStoreDirectStatus404,
 	CreateIntegrationStoreDirectStatus409,
 	CreateIntegrationStoreDirectStatus410,
-	CreateIntegrationStoreDirectStatus429,
 	CreateIntegrationStoreDirectStatus500,
 	CreateKmsIssuerPolicyResponse,
 	CreateKmsIssuerPolicyStatus400,
@@ -357,6 +365,10 @@ import type {
 	CreateObservabilityQueryStatus403,
 	CreateObservabilityQueryStatus408,
 	CreateObservabilityQueryStatus410,
+	CreateObservabilityQueryStatus413,
+	CreateObservabilityQueryStatus422,
+	CreateObservabilityQueryStatus500,
+	CreateObservabilityQueryStatus503,
 	CreateOrTransferDomainResponse,
 	CreateOrTransferDomainStatus400,
 	CreateOrTransferDomainStatus401,
@@ -365,6 +377,13 @@ import type {
 	CreateOrTransferDomainStatus404,
 	CreateOrTransferDomainStatus409,
 	CreateOrTransferDomainStatus410,
+	CreatePrivateLinkEndpointResponse,
+	CreatePrivateLinkEndpointStatus400,
+	CreatePrivateLinkEndpointStatus401,
+	CreatePrivateLinkEndpointStatus403,
+	CreatePrivateLinkEndpointStatus404,
+	CreatePrivateLinkEndpointStatus409,
+	CreatePrivateLinkEndpointStatus410,
 	CreateProjectCheckResponse,
 	CreateProjectCheckStatus400,
 	CreateProjectCheckStatus401,
@@ -396,6 +415,7 @@ import type {
 	CreateProjectTransferRequestStatus400,
 	CreateProjectTransferRequestStatus401,
 	CreateProjectTransferRequestStatus403,
+	CreateProjectTransferRequestStatus409,
 	CreateProjectTransferRequestStatus410,
 	CreateRecordResponse,
 	CreateRecordStatus400,
@@ -587,6 +607,13 @@ import type {
 	DeleteAiGatewayRuleStatus404,
 	DeleteAiGatewayRuleStatus410,
 	DeleteAiGatewayRuleStatus500,
+	DeleteAiGatewayVirtualModelConfigBySlugResponse,
+	DeleteAiGatewayVirtualModelConfigBySlugStatus400,
+	DeleteAiGatewayVirtualModelConfigBySlugStatus401,
+	DeleteAiGatewayVirtualModelConfigBySlugStatus403,
+	DeleteAiGatewayVirtualModelConfigBySlugStatus404,
+	DeleteAiGatewayVirtualModelConfigBySlugStatus410,
+	DeleteAiGatewayVirtualModelConfigBySlugStatus500,
 	DeleteAiGatewayVirtualModelConfigResponse,
 	DeleteAiGatewayVirtualModelConfigStatus400,
 	DeleteAiGatewayVirtualModelConfigStatus401,
@@ -645,6 +672,21 @@ import type {
 	DeleteConfigurationStatus403,
 	DeleteConfigurationStatus404,
 	DeleteConfigurationStatus410,
+	DeleteConnectorProjectConnectionResponse,
+	DeleteConnectorProjectConnectionStatus400,
+	DeleteConnectorProjectConnectionStatus401,
+	DeleteConnectorProjectConnectionStatus403,
+	DeleteConnectorProjectConnectionStatus404,
+	DeleteConnectorProjectConnectionStatus410,
+	DeleteConnectorResponse,
+	DeleteConnectorStatus400,
+	DeleteConnectorStatus401,
+	DeleteConnectorStatus403,
+	DeleteConnectorStatus404,
+	DeleteConnectorStatus409,
+	DeleteConnectorStatus410,
+	DeleteConnectorStatus422,
+	DeleteConnectorStatus502,
 	DeleteDeploymentResponse,
 	DeleteDeploymentStatus400,
 	DeleteDeploymentStatus401,
@@ -755,6 +797,13 @@ import type {
 	DeleteNetworkStatus403,
 	DeleteNetworkStatus409,
 	DeleteNetworkStatus410,
+	DeletePrivateLinkEndpointResponse,
+	DeletePrivateLinkEndpointStatus400,
+	DeletePrivateLinkEndpointStatus401,
+	DeletePrivateLinkEndpointStatus403,
+	DeletePrivateLinkEndpointStatus404,
+	DeletePrivateLinkEndpointStatus409,
+	DeletePrivateLinkEndpointStatus410,
 	DeleteProjectCheckResponse,
 	DeleteProjectCheckStatus400,
 	DeleteProjectCheckStatus401,
@@ -944,6 +993,13 @@ import type {
 	GetActiveAttackStatusStatus403,
 	GetActiveAttackStatusStatus404,
 	GetActiveAttackStatusStatus410,
+	GetAiGatewayVirtualModelConfigBySlugResponse,
+	GetAiGatewayVirtualModelConfigBySlugStatus400,
+	GetAiGatewayVirtualModelConfigBySlugStatus401,
+	GetAiGatewayVirtualModelConfigBySlugStatus403,
+	GetAiGatewayVirtualModelConfigBySlugStatus404,
+	GetAiGatewayVirtualModelConfigBySlugStatus410,
+	GetAiGatewayVirtualModelConfigBySlugStatus500,
 	GetAiGatewayVirtualModelConfigResponse,
 	GetAiGatewayVirtualModelConfigStatus400,
 	GetAiGatewayVirtualModelConfigStatus401,
@@ -996,6 +1052,7 @@ import type {
 	GetBypassIpResponse,
 	GetBypassIpStatus400,
 	GetBypassIpStatus401,
+	GetBypassIpStatus402,
 	GetBypassIpStatus403,
 	GetBypassIpStatus404,
 	GetBypassIpStatus410,
@@ -1070,6 +1127,19 @@ import type {
 	GetConfigurationsStatus401,
 	GetConfigurationsStatus403,
 	GetConfigurationsStatus410,
+	GetConnectorProjectConnectionResponse,
+	GetConnectorProjectConnectionStatus400,
+	GetConnectorProjectConnectionStatus401,
+	GetConnectorProjectConnectionStatus403,
+	GetConnectorProjectConnectionStatus404,
+	GetConnectorProjectConnectionStatus410,
+	GetConnectorResponse,
+	GetConnectorStatus400,
+	GetConnectorStatus401,
+	GetConnectorStatus403,
+	GetConnectorStatus404,
+	GetConnectorStatus410,
+	GetConnectorStatus422,
 	GetConnectorTokenResponse,
 	GetConnectorTokenStatus400,
 	GetConnectorTokenStatus401,
@@ -1662,7 +1732,6 @@ import type {
 	ImportResourceStatus409,
 	ImportResourceStatus410,
 	ImportResourceStatus422,
-	ImportResourceStatus429,
 	InvalidateBySrcImagesResponse,
 	InvalidateBySrcImagesStatus400,
 	InvalidateBySrcImagesStatus401,
@@ -1760,6 +1829,19 @@ import type {
 	ListCheckRunsStatus403,
 	ListCheckRunsStatus410,
 	ListCheckRunsStatus500,
+	ListConnectorProjectConnectionsResponse,
+	ListConnectorProjectConnectionsStatus400,
+	ListConnectorProjectConnectionsStatus401,
+	ListConnectorProjectConnectionsStatus403,
+	ListConnectorProjectConnectionsStatus404,
+	ListConnectorProjectConnectionsStatus410,
+	ListConnectorProjectConnectionsStatus422,
+	ListConnectorsResponse,
+	ListConnectorsStatus400,
+	ListConnectorsStatus401,
+	ListConnectorsStatus403,
+	ListConnectorsStatus410,
+	ListConnectorsStatus422,
 	ListContractCommitmentsResponse,
 	ListContractCommitmentsStatus400,
 	ListContractCommitmentsStatus401,
@@ -1829,17 +1911,36 @@ import type {
 	ListKmsIssuersStatus401,
 	ListKmsIssuersStatus403,
 	ListKmsIssuersStatus410,
+	ListNamedSandboxesResponse,
+	ListNamedSandboxesStatus400,
+	ListNamedSandboxesStatus401,
+	ListNamedSandboxesStatus403,
+	ListNamedSandboxesStatus404,
+	ListNamedSandboxesStatus410,
+	ListNamedSandboxesStatus429,
 	ListNetworksResponse,
 	ListNetworksStatus400,
 	ListNetworksStatus401,
 	ListNetworksStatus403,
 	ListNetworksStatus410,
+	ListPrivateLinkEndpointsResponse,
+	ListPrivateLinkEndpointsStatus400,
+	ListPrivateLinkEndpointsStatus401,
+	ListPrivateLinkEndpointsStatus403,
+	ListPrivateLinkEndpointsStatus404,
+	ListPrivateLinkEndpointsStatus410,
 	ListProjectChecksResponse,
 	ListProjectChecksStatus400,
 	ListProjectChecksStatus401,
 	ListProjectChecksStatus403,
 	ListProjectChecksStatus410,
 	ListProjectChecksStatus500,
+	ListProjectConnectorConnectionsResponse,
+	ListProjectConnectorConnectionsStatus400,
+	ListProjectConnectorConnectionsStatus401,
+	ListProjectConnectorConnectionsStatus403,
+	ListProjectConnectorConnectionsStatus404,
+	ListProjectConnectorConnectionsStatus410,
 	ListPromoteAliasesResponse,
 	ListPromoteAliasesStatus400,
 	ListPromoteAliasesStatus401,
@@ -1870,13 +1971,6 @@ import type {
 	ListRepositoryTagsStatus403,
 	ListRepositoryTagsStatus404,
 	ListRepositoryTagsStatus410,
-	ListSandboxesResponse,
-	ListSandboxesStatus400,
-	ListSandboxesStatus401,
-	ListSandboxesStatus403,
-	ListSandboxesStatus404,
-	ListSandboxesStatus410,
-	ListSandboxesStatus429,
 	ListSessionCommandsResponse,
 	ListSessionCommandsStatus400,
 	ListSessionCommandsStatus401,
@@ -2005,6 +2099,12 @@ import type {
 	ReadNetworkStatus401,
 	ReadNetworkStatus403,
 	ReadNetworkStatus410,
+	ReadPrivateLinkEndpointResponse,
+	ReadPrivateLinkEndpointStatus400,
+	ReadPrivateLinkEndpointStatus401,
+	ReadPrivateLinkEndpointStatus403,
+	ReadPrivateLinkEndpointStatus404,
+	ReadPrivateLinkEndpointStatus410,
 	ReadSessionFileResponse,
 	ReadSessionFileStatus400,
 	ReadSessionFileStatus401,
@@ -2023,6 +2123,7 @@ import type {
 	RemoveBypassIpResponse,
 	RemoveBypassIpStatus400,
 	RemoveBypassIpStatus401,
+	RemoveBypassIpStatus402,
 	RemoveBypassIpStatus403,
 	RemoveBypassIpStatus404,
 	RemoveBypassIpStatus410,
@@ -2099,6 +2200,13 @@ import type {
 	ReplaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus404,
 	ReplaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus410,
 	ReplaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReferenceStatus413,
+	ReplaceConnectorTriggerDestinationsResponse,
+	ReplaceConnectorTriggerDestinationsStatus400,
+	ReplaceConnectorTriggerDestinationsStatus401,
+	ReplaceConnectorTriggerDestinationsStatus403,
+	ReplaceConnectorTriggerDestinationsStatus404,
+	ReplaceConnectorTriggerDestinationsStatus410,
+	ReplaceConnectorTriggerDestinationsStatus422,
 	ReplaceDomainsByDomainRecordsResponse,
 	ReplaceDomainsByDomainRecordsStatus400,
 	ReplaceDomainsByDomainRecordsStatus401,
@@ -2312,6 +2420,13 @@ import type {
 	UpdateAiGatewayRuleStatus404,
 	UpdateAiGatewayRuleStatus410,
 	UpdateAiGatewayRuleStatus500,
+	UpdateAiGatewayVirtualModelConfigBySlugResponse,
+	UpdateAiGatewayVirtualModelConfigBySlugStatus400,
+	UpdateAiGatewayVirtualModelConfigBySlugStatus401,
+	UpdateAiGatewayVirtualModelConfigBySlugStatus403,
+	UpdateAiGatewayVirtualModelConfigBySlugStatus404,
+	UpdateAiGatewayVirtualModelConfigBySlugStatus410,
+	UpdateAiGatewayVirtualModelConfigBySlugStatus500,
 	UpdateAiGatewayVirtualModelConfigResponse,
 	UpdateAiGatewayVirtualModelConfigStatus400,
 	UpdateAiGatewayVirtualModelConfigStatus401,
@@ -2340,6 +2455,15 @@ import type {
 	UpdateCheckStatus404,
 	UpdateCheckStatus410,
 	UpdateCheckStatus413,
+	UpdateConnectorResponse,
+	UpdateConnectorStatus400,
+	UpdateConnectorStatus401,
+	UpdateConnectorStatus403,
+	UpdateConnectorStatus404,
+	UpdateConnectorStatus409,
+	UpdateConnectorStatus410,
+	UpdateConnectorStatus422,
+	UpdateConnectorStatus502,
 	UpdateCustomEnvironmentResponse,
 	UpdateCustomEnvironmentStatus400,
 	UpdateCustomEnvironmentStatus401,
@@ -2476,6 +2600,13 @@ import type {
 	UpdateObservabilityConfigurationProjectStatus404,
 	UpdateObservabilityConfigurationProjectStatus410,
 	UpdateObservabilityConfigurationProjectStatus429,
+	UpdatePrivateLinkEndpointResponse,
+	UpdatePrivateLinkEndpointStatus400,
+	UpdatePrivateLinkEndpointStatus401,
+	UpdatePrivateLinkEndpointStatus403,
+	UpdatePrivateLinkEndpointStatus404,
+	UpdatePrivateLinkEndpointStatus409,
+	UpdatePrivateLinkEndpointStatus410,
 	UpdateProjectCheckResponse,
 	UpdateProjectCheckStatus400,
 	UpdateProjectCheckStatus401,
@@ -2505,6 +2636,7 @@ import type {
 	UpdateProjectStatus409,
 	UpdateProjectStatus410,
 	UpdateProjectStatus428,
+	UpdateProjectStatus429,
 	UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionResponse,
 	UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionStatus400,
 	UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionStatus401,
@@ -2634,6 +2766,12 @@ import type {
 	UploadProjectAvatarStatus410,
 	UploadProjectAvatarStatus413,
 	UploadProjectAvatarStatus415,
+	UpsertConnectorProjectConnectionResponse,
+	UpsertConnectorProjectConnectionStatus400,
+	UpsertConnectorProjectConnectionStatus401,
+	UpsertConnectorProjectConnectionStatus403,
+	UpsertConnectorProjectConnectionStatus404,
+	UpsertConnectorProjectConnectionStatus410,
 	VerifyProjectDomainResponse,
 	VerifyProjectDomainStatus400,
 	VerifyProjectDomainStatus401,
@@ -3212,7 +3350,14 @@ export async function getAiGatewayVirtualModelConfig(
 		queryParams,
 		config,
 	}: {
-		queryParams?: { ownerId?: string; virtualModelSlug?: string; teamId?: string; slug?: string };
+		queryParams?: {
+			ownerId?: string;
+			virtualModelSlug?: string;
+			limit?: number;
+			cursor?: string;
+			teamId?: string;
+			slug?: string;
+		};
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
 ) {
@@ -3230,7 +3375,14 @@ export async function getAiGatewayVirtualModelConfig(
 		>,
 		null,
 		Record<string, string>,
-		{ ownerId?: string; virtualModelSlug?: string; teamId?: string; slug?: string },
+		{
+			ownerId?: string;
+			virtualModelSlug?: string;
+			limit?: number;
+			cursor?: string;
+			teamId?: string;
+			slug?: string;
+		},
 		Record<string, string>
 	>({
 		method: "GET",
@@ -3294,7 +3446,15 @@ export async function deleteAiGatewayVirtualModelConfig(
 		queryParams,
 		config,
 	}: {
-		queryParams?: { ownerId?: string; virtualModelSlug?: string; teamId?: string; slug?: string };
+		queryParams?: {
+			ownerId?: string;
+			virtualModelSlug?: string;
+			updatedBy?: string;
+			actingIp?: string;
+			actingUserAgent?: string;
+			teamId?: string;
+			slug?: string;
+		};
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
 ) {
@@ -3312,7 +3472,15 @@ export async function deleteAiGatewayVirtualModelConfig(
 		>,
 		null,
 		Record<string, string>,
-		{ ownerId?: string; virtualModelSlug?: string; teamId?: string; slug?: string },
+		{
+			ownerId?: string;
+			virtualModelSlug?: string;
+			updatedBy?: string;
+			actingIp?: string;
+			actingUserAgent?: string;
+			teamId?: string;
+			slug?: string;
+		},
 		Record<string, string>
 	>({
 		method: "DELETE",
@@ -3363,6 +3531,158 @@ export async function listAiGatewayVirtualModelConfigs(
 	>({
 		method: "GET",
 		url: `/v1/ai-gateway/virtual-model-configs/list`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Get virtual model config
+ * @description Get a virtual model config by path slug
+ * @link /v1/ai-gateway/virtual-model-configs/{vmcSlug}
+ */
+export async function getAiGatewayVirtualModelConfigBySlug(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { vmcSlug: string };
+		queryParams?: { ownerId?: string; teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.vmcSlug) {
+		throw new Error(`Missing required path parameter: vmcSlug`);
+	}
+	const data = await request<
+		GetAiGatewayVirtualModelConfigBySlugResponse,
+		ErrorWrapper<
+			| GetAiGatewayVirtualModelConfigBySlugStatus400
+			| GetAiGatewayVirtualModelConfigBySlugStatus401
+			| GetAiGatewayVirtualModelConfigBySlugStatus403
+			| GetAiGatewayVirtualModelConfigBySlugStatus404
+			| GetAiGatewayVirtualModelConfigBySlugStatus410
+			| GetAiGatewayVirtualModelConfigBySlugStatus500
+		>,
+		null,
+		Record<string, string>,
+		{ ownerId?: string; teamId?: string; slug?: string },
+		{ vmcSlug: string }
+	>({
+		method: "GET",
+		url: `/v1/ai-gateway/virtual-model-configs/${pathParams.vmcSlug}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Update virtual model config
+ * @description Update a virtual model config by path slug
+ * @link /v1/ai-gateway/virtual-model-configs/{vmcSlug}
+ */
+export async function updateAiGatewayVirtualModelConfigBySlug(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { vmcSlug: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.vmcSlug) {
+		throw new Error(`Missing required path parameter: vmcSlug`);
+	}
+	const data = await request<
+		UpdateAiGatewayVirtualModelConfigBySlugResponse,
+		ErrorWrapper<
+			| UpdateAiGatewayVirtualModelConfigBySlugStatus400
+			| UpdateAiGatewayVirtualModelConfigBySlugStatus401
+			| UpdateAiGatewayVirtualModelConfigBySlugStatus403
+			| UpdateAiGatewayVirtualModelConfigBySlugStatus404
+			| UpdateAiGatewayVirtualModelConfigBySlugStatus410
+			| UpdateAiGatewayVirtualModelConfigBySlugStatus500
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
+		{ vmcSlug: string }
+	>({
+		method: "PATCH",
+		url: `/v1/ai-gateway/virtual-model-configs/${pathParams.vmcSlug}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Delete virtual model config
+ * @description Delete a virtual model config by path slug (soft delete)
+ * @link /v1/ai-gateway/virtual-model-configs/{vmcSlug}
+ */
+export async function deleteAiGatewayVirtualModelConfigBySlug(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { vmcSlug: string };
+		queryParams?: {
+			ownerId?: string;
+			updatedBy?: string;
+			actingIp?: string;
+			actingUserAgent?: string;
+			teamId?: string;
+			slug?: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.vmcSlug) {
+		throw new Error(`Missing required path parameter: vmcSlug`);
+	}
+	const data = await request<
+		DeleteAiGatewayVirtualModelConfigBySlugResponse,
+		ErrorWrapper<
+			| DeleteAiGatewayVirtualModelConfigBySlugStatus400
+			| DeleteAiGatewayVirtualModelConfigBySlugStatus401
+			| DeleteAiGatewayVirtualModelConfigBySlugStatus403
+			| DeleteAiGatewayVirtualModelConfigBySlugStatus404
+			| DeleteAiGatewayVirtualModelConfigBySlugStatus410
+			| DeleteAiGatewayVirtualModelConfigBySlugStatus500
+		>,
+		null,
+		Record<string, string>,
+		{
+			ownerId?: string;
+			updatedBy?: string;
+			actingIp?: string;
+			actingUserAgent?: string;
+			teamId?: string;
+			slug?: string;
+		},
+		{ vmcSlug: string }
+	>({
+		method: "DELETE",
+		url: `/v1/ai-gateway/virtual-model-configs/${pathParams.vmcSlug}`,
 		queryParams,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
@@ -5196,6 +5516,378 @@ export async function readNetwork(
 }
 
 /**
+ * @summary Create a PrivateLink endpoint
+ * @description Creates a PrivateLink endpoint for a project.
+ * @link /v1/networking/privatelink/endpoints
+ */
+export async function createPrivateLinkEndpoint(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	const data = await request<
+		CreatePrivateLinkEndpointResponse,
+		ErrorWrapper<
+			| CreatePrivateLinkEndpointStatus400
+			| CreatePrivateLinkEndpointStatus401
+			| CreatePrivateLinkEndpointStatus403
+			| CreatePrivateLinkEndpointStatus404
+			| CreatePrivateLinkEndpointStatus409
+			| CreatePrivateLinkEndpointStatus410
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
+		Record<string, string>
+	>({
+		method: "POST",
+		url: `/v1/networking/privatelink/endpoints`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary List PrivateLink endpoints
+ * @description Lists all PrivateLink endpoints for a project.
+ * @link /v1/networking/privatelink/endpoints
+ */
+export async function listPrivateLinkEndpoints(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { projectId?: string; teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	const data = await request<
+		ListPrivateLinkEndpointsResponse,
+		ErrorWrapper<
+			| ListPrivateLinkEndpointsStatus400
+			| ListPrivateLinkEndpointsStatus401
+			| ListPrivateLinkEndpointsStatus403
+			| ListPrivateLinkEndpointsStatus404
+			| ListPrivateLinkEndpointsStatus410
+		>,
+		null,
+		Record<string, string>,
+		{ projectId?: string; teamId?: string; slug?: string },
+		Record<string, string>
+	>({
+		method: "GET",
+		url: `/v1/networking/privatelink/endpoints`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Read a PrivateLink endpoint
+ * @description Reads a single PrivateLink endpoint.
+ * @link /v1/networking/privatelink/endpoints/{endpointId}
+ */
+export async function readPrivateLinkEndpoint(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { endpointId: string };
+		queryParams?: { projectId?: string; teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.endpointId) {
+		throw new Error(`Missing required path parameter: endpointId`);
+	}
+	const data = await request<
+		ReadPrivateLinkEndpointResponse,
+		ErrorWrapper<
+			| ReadPrivateLinkEndpointStatus400
+			| ReadPrivateLinkEndpointStatus401
+			| ReadPrivateLinkEndpointStatus403
+			| ReadPrivateLinkEndpointStatus404
+			| ReadPrivateLinkEndpointStatus410
+		>,
+		null,
+		Record<string, string>,
+		{ projectId?: string; teamId?: string; slug?: string },
+		{ endpointId: string }
+	>({
+		method: "GET",
+		url: `/v1/networking/privatelink/endpoints/${pathParams.endpointId}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Delete a PrivateLink endpoint
+ * @description Deletes a PrivateLink endpoint.
+ * @link /v1/networking/privatelink/endpoints/{endpointId}
+ */
+export async function deletePrivateLinkEndpoint(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { endpointId: string };
+		queryParams?: { projectId?: string; teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.endpointId) {
+		throw new Error(`Missing required path parameter: endpointId`);
+	}
+	const data = await request<
+		DeletePrivateLinkEndpointResponse,
+		ErrorWrapper<
+			| DeletePrivateLinkEndpointStatus400
+			| DeletePrivateLinkEndpointStatus401
+			| DeletePrivateLinkEndpointStatus403
+			| DeletePrivateLinkEndpointStatus404
+			| DeletePrivateLinkEndpointStatus409
+			| DeletePrivateLinkEndpointStatus410
+		>,
+		null,
+		Record<string, string>,
+		{ projectId?: string; teamId?: string; slug?: string },
+		{ endpointId: string }
+	>({
+		method: "DELETE",
+		url: `/v1/networking/privatelink/endpoints/${pathParams.endpointId}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Update a PrivateLink endpoint
+ * @description Updates a PrivateLink endpoint (name, privateDns).
+ * @link /v1/networking/privatelink/endpoints/{endpointId}
+ */
+export async function updatePrivateLinkEndpoint(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { endpointId: string };
+		queryParams?: { projectId?: string; teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.endpointId) {
+		throw new Error(`Missing required path parameter: endpointId`);
+	}
+	const data = await request<
+		UpdatePrivateLinkEndpointResponse,
+		ErrorWrapper<
+			| UpdatePrivateLinkEndpointStatus400
+			| UpdatePrivateLinkEndpointStatus401
+			| UpdatePrivateLinkEndpointStatus403
+			| UpdatePrivateLinkEndpointStatus404
+			| UpdatePrivateLinkEndpointStatus409
+			| UpdatePrivateLinkEndpointStatus410
+		>,
+		null,
+		Record<string, string>,
+		{ projectId?: string; teamId?: string; slug?: string },
+		{ endpointId: string }
+	>({
+		method: "PATCH",
+		url: `/v1/networking/privatelink/endpoints/${pathParams.endpointId}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary List connectors
+ * @description List connectors that belong to a team.
+ * @link /v2/connect/connectors
+ */
+export async function listConnectors(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: {
+			limit?: number;
+			cursor?: string;
+			projectId?: string;
+			search?: string;
+			type?: string;
+			service?: string;
+			sort?: "name" | "createdAt" | "updatedAt";
+			teamId?: string;
+			slug?: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	const data = await request<
+		ListConnectorsResponse,
+		ErrorWrapper<
+			| ListConnectorsStatus400
+			| ListConnectorsStatus401
+			| ListConnectorsStatus403
+			| ListConnectorsStatus410
+			| ListConnectorsStatus422
+		>,
+		null,
+		Record<string, string>,
+		{
+			limit?: number;
+			cursor?: string;
+			projectId?: string;
+			search?: string;
+			type?: string;
+			service?: string;
+			sort?: "name" | "createdAt" | "updatedAt";
+			teamId?: string;
+			slug?: string;
+		},
+		Record<string, string>
+	>({
+		method: "GET",
+		url: `/v2/connect/connectors`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Get a connector
+ * @description Get the connector by ID. Accepts a dashboard/team requester or a deployment's project OIDC token; project requesters may only read connectors linked to their project and environment.
+ * @link /v1/connect/connectors/{connector}
+ */
+export async function getConnector(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { connector: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.connector) {
+		throw new Error(`Missing required path parameter: connector`);
+	}
+	const data = await request<
+		GetConnectorResponse,
+		ErrorWrapper<
+			| GetConnectorStatus400
+			| GetConnectorStatus401
+			| GetConnectorStatus403
+			| GetConnectorStatus404
+			| GetConnectorStatus410
+			| GetConnectorStatus422
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
+		{ connector: string }
+	>({
+		method: "GET",
+		url: `/v1/connect/connectors/${pathParams.connector}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Delete a connector
+ * @description Delete a connector, its project connections, and its installation records.
+ * @link /v1/connect/connectors/{connector}
+ */
+export async function deleteConnector(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { connector: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.connector) {
+		throw new Error(`Missing required path parameter: connector`);
+	}
+	const data = await request<
+		DeleteConnectorResponse,
+		ErrorWrapper<
+			| DeleteConnectorStatus400
+			| DeleteConnectorStatus401
+			| DeleteConnectorStatus403
+			| DeleteConnectorStatus404
+			| DeleteConnectorStatus409
+			| DeleteConnectorStatus410
+			| DeleteConnectorStatus422
+			| DeleteConnectorStatus502
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
+		{ connector: string }
+	>({
+		method: "DELETE",
+		url: `/v1/connect/connectors/${pathParams.connector}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
  * @summary Create a connector
  * @description Create a connector and optionally link it to a project. Use `type` with complete provider data, or use `service` with `connectionMethod` so Connect can supply the type, endpoints, templates, and defaults.
  * @link /v1/connect/connectors
@@ -5231,6 +5923,338 @@ export async function createConnector(
 	>({
 		method: "POST",
 		url: `/v1/connect/connectors`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Update a connector
+ * @description Update a connector and return the connector with any service-side update signals that the caller must handle.
+ * @link /v2/connect/connectors/{connector}
+ */
+export async function updateConnector(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { connector: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.connector) {
+		throw new Error(`Missing required path parameter: connector`);
+	}
+	const data = await request<
+		UpdateConnectorResponse,
+		ErrorWrapper<
+			| UpdateConnectorStatus400
+			| UpdateConnectorStatus401
+			| UpdateConnectorStatus403
+			| UpdateConnectorStatus404
+			| UpdateConnectorStatus409
+			| UpdateConnectorStatus410
+			| UpdateConnectorStatus422
+			| UpdateConnectorStatus502
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
+		{ connector: string }
+	>({
+		method: "PATCH",
+		url: `/v2/connect/connectors/${pathParams.connector}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Update connector trigger destinations
+ * @description Replace the full set of destinations that receive trigger requests for a connector.
+ * @link /v1/connect/connectors/{connector}/trigger-destinations
+ */
+export async function replaceConnectorTriggerDestinations(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { connector: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.connector) {
+		throw new Error(`Missing required path parameter: connector`);
+	}
+	const data = await request<
+		ReplaceConnectorTriggerDestinationsResponse,
+		ErrorWrapper<
+			| ReplaceConnectorTriggerDestinationsStatus400
+			| ReplaceConnectorTriggerDestinationsStatus401
+			| ReplaceConnectorTriggerDestinationsStatus403
+			| ReplaceConnectorTriggerDestinationsStatus404
+			| ReplaceConnectorTriggerDestinationsStatus410
+			| ReplaceConnectorTriggerDestinationsStatus422
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
+		{ connector: string }
+	>({
+		method: "PATCH",
+		url: `/v1/connect/connectors/${pathParams.connector}/trigger-destinations`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary List projects for a connector
+ * @description List the projects connected to a connector and the environments where each connection is available.
+ * @link /v2/connect/connectors/{connector}/projects
+ */
+export async function listConnectorProjectConnections(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { connector: string };
+		queryParams?: { limit?: number; cursor?: string; teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.connector) {
+		throw new Error(`Missing required path parameter: connector`);
+	}
+	const data = await request<
+		ListConnectorProjectConnectionsResponse,
+		ErrorWrapper<
+			| ListConnectorProjectConnectionsStatus400
+			| ListConnectorProjectConnectionsStatus401
+			| ListConnectorProjectConnectionsStatus403
+			| ListConnectorProjectConnectionsStatus404
+			| ListConnectorProjectConnectionsStatus410
+			| ListConnectorProjectConnectionsStatus422
+		>,
+		null,
+		Record<string, string>,
+		{ limit?: number; cursor?: string; teamId?: string; slug?: string },
+		{ connector: string }
+	>({
+		method: "GET",
+		url: `/v2/connect/connectors/${pathParams.connector}/projects`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Get a connector project connection
+ * @description Get the configuration that connects a connector to a project.
+ * @link /v1/connect/connectors/{connector}/projects/{projectId}
+ */
+export async function getConnectorProjectConnection(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { connector: string; projectId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.connector) {
+		throw new Error(`Missing required path parameter: connector`);
+	}
+
+	if (!pathParams.projectId) {
+		throw new Error(`Missing required path parameter: projectId`);
+	}
+	const data = await request<
+		GetConnectorProjectConnectionResponse,
+		ErrorWrapper<
+			| GetConnectorProjectConnectionStatus400
+			| GetConnectorProjectConnectionStatus401
+			| GetConnectorProjectConnectionStatus403
+			| GetConnectorProjectConnectionStatus404
+			| GetConnectorProjectConnectionStatus410
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
+		{ connector: string; projectId: string }
+	>({
+		method: "GET",
+		url: `/v1/connect/connectors/${pathParams.connector}/projects/${pathParams.projectId}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Create or update a connector project connection
+ * @description Connect a connector to a project, or replace the environments on an existing project connection.
+ * @link /v1/connect/connectors/{connector}/projects/{projectId}
+ */
+export async function upsertConnectorProjectConnection(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { connector: string; projectId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.connector) {
+		throw new Error(`Missing required path parameter: connector`);
+	}
+
+	if (!pathParams.projectId) {
+		throw new Error(`Missing required path parameter: projectId`);
+	}
+	const data = await request<
+		UpsertConnectorProjectConnectionResponse,
+		ErrorWrapper<
+			| UpsertConnectorProjectConnectionStatus400
+			| UpsertConnectorProjectConnectionStatus401
+			| UpsertConnectorProjectConnectionStatus403
+			| UpsertConnectorProjectConnectionStatus404
+			| UpsertConnectorProjectConnectionStatus410
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
+		{ connector: string; projectId: string }
+	>({
+		method: "POST",
+		url: `/v1/connect/connectors/${pathParams.connector}/projects/${pathParams.projectId}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Disconnect a connector from a project
+ * @description Disconnect a connector from a project.
+ * @link /v1/connect/connectors/{connector}/projects/{projectId}
+ */
+export async function deleteConnectorProjectConnection(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { connector: string; projectId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.connector) {
+		throw new Error(`Missing required path parameter: connector`);
+	}
+
+	if (!pathParams.projectId) {
+		throw new Error(`Missing required path parameter: projectId`);
+	}
+	const data = await request<
+		DeleteConnectorProjectConnectionResponse,
+		ErrorWrapper<
+			| DeleteConnectorProjectConnectionStatus400
+			| DeleteConnectorProjectConnectionStatus401
+			| DeleteConnectorProjectConnectionStatus403
+			| DeleteConnectorProjectConnectionStatus404
+			| DeleteConnectorProjectConnectionStatus410
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
+		{ connector: string; projectId: string }
+	>({
+		method: "DELETE",
+		url: `/v1/connect/connectors/${pathParams.connector}/projects/${pathParams.projectId}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary List connectors for a project
+ * @description List the connectors connected to a project and the environments where each connection is available.
+ * @link /v2/connect/projects/{projectId}/connectors
+ */
+export async function listProjectConnectorConnections(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { projectId: string };
+		queryParams?: { limit?: number; cursor?: string; teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.projectId) {
+		throw new Error(`Missing required path parameter: projectId`);
+	}
+	const data = await request<
+		ListProjectConnectorConnectionsResponse,
+		ErrorWrapper<
+			| ListProjectConnectorConnectionsStatus400
+			| ListProjectConnectorConnectionsStatus401
+			| ListProjectConnectorConnectionsStatus403
+			| ListProjectConnectorConnectionsStatus404
+			| ListProjectConnectorConnectionsStatus410
+		>,
+		null,
+		Record<string, string>,
+		{ limit?: number; cursor?: string; teamId?: string; slug?: string },
+		{ projectId: string }
+	>({
+		method: "GET",
+		url: `/v2/connect/projects/${pathParams.projectId}/connectors`,
 		queryParams,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
@@ -10090,7 +11114,8 @@ export async function getBillingPlans(
 				| "cli"
 				| "oauth"
 				| "backoffice"
-				| "import-recommended-integrations";
+				| "import-recommended-integrations"
+				| "organization";
 			teamId?: string;
 			slug?: string;
 		};
@@ -10129,7 +11154,8 @@ export async function getBillingPlans(
 				| "cli"
 				| "oauth"
 				| "backoffice"
-				| "import-recommended-integrations";
+				| "import-recommended-integrations"
+				| "organization";
 			teamId?: string;
 			slug?: string;
 		},
@@ -10619,7 +11645,6 @@ export async function importResource(
 			| ImportResourceStatus409
 			| ImportResourceStatus410
 			| ImportResourceStatus422
-			| ImportResourceStatus429
 		>,
 		null,
 		Record<string, string>,
@@ -12623,6 +13648,10 @@ export async function createObservabilityQuery(
 			| CreateObservabilityQueryStatus403
 			| CreateObservabilityQueryStatus408
 			| CreateObservabilityQueryStatus410
+			| CreateObservabilityQueryStatus413
+			| CreateObservabilityQueryStatus422
+			| CreateObservabilityQueryStatus500
+			| CreateObservabilityQueryStatus503
 		>,
 		null,
 		Record<string, string>,
@@ -13559,6 +14588,7 @@ export async function updateProject(
 			| UpdateProjectStatus409
 			| UpdateProjectStatus410
 			| UpdateProjectStatus428
+			| UpdateProjectStatus429
 		>,
 		null,
 		Record<string, string>,
@@ -15008,6 +16038,7 @@ export async function createProjectTransferRequest(
 			| CreateProjectTransferRequestStatus400
 			| CreateProjectTransferRequestStatus401
 			| CreateProjectTransferRequestStatus403
+			| CreateProjectTransferRequestStatus409
 			| CreateProjectTransferRequestStatus410
 		>,
 		null,
@@ -15465,7 +16496,7 @@ export async function unpauseProject(
  * @description Retrieves a paginated list of named sandboxes belonging to a specific project. Results can be sorted by creation time or name, and optionally filtered by name prefix or status.
  * @link /v2/sandboxes
  */
-export async function listSandboxes(
+export async function listNamedSandboxes(
 	{
 		queryParams,
 		config,
@@ -15488,14 +16519,14 @@ export async function listSandboxes(
 	const { client: request = defaultClient, ...requestConfig } = config ?? {};
 
 	const data = await request<
-		ListSandboxesResponse,
+		ListNamedSandboxesResponse,
 		ErrorWrapper<
-			| ListSandboxesStatus400
-			| ListSandboxesStatus401
-			| ListSandboxesStatus403
-			| ListSandboxesStatus404
-			| ListSandboxesStatus410
-			| ListSandboxesStatus429
+			| ListNamedSandboxesStatus400
+			| ListNamedSandboxesStatus401
+			| ListNamedSandboxesStatus403
+			| ListNamedSandboxesStatus404
+			| ListNamedSandboxesStatus410
+			| ListNamedSandboxesStatus429
 		>,
 		null,
 		Record<string, string>,
@@ -17313,6 +18344,7 @@ export async function getBypassIp(
 		ErrorWrapper<
 			| GetBypassIpStatus400
 			| GetBypassIpStatus401
+			| GetBypassIpStatus402
 			| GetBypassIpStatus403
 			| GetBypassIpStatus404
 			| GetBypassIpStatus410
@@ -17363,6 +18395,7 @@ export async function addBypassIp(
 		ErrorWrapper<
 			| AddBypassIpStatus400
 			| AddBypassIpStatus401
+			| AddBypassIpStatus402
 			| AddBypassIpStatus403
 			| AddBypassIpStatus404
 			| AddBypassIpStatus410
@@ -17404,6 +18437,7 @@ export async function removeBypassIp(
 		ErrorWrapper<
 			| RemoveBypassIpStatus400
 			| RemoveBypassIpStatus401
+			| RemoveBypassIpStatus402
 			| RemoveBypassIpStatus403
 			| RemoveBypassIpStatus404
 			| RemoveBypassIpStatus410
@@ -17707,7 +18741,6 @@ export async function createIntegrationStoreDirect(
 			| CreateIntegrationStoreDirectStatus404
 			| CreateIntegrationStoreDirectStatus409
 			| CreateIntegrationStoreDirectStatus410
-			| CreateIntegrationStoreDirectStatus429
 			| CreateIntegrationStoreDirectStatus500
 		>,
 		null,
@@ -20113,7 +21146,9 @@ export async function aggregatePageviews(
 			| AggregatePageviewsStatus401
 			| AggregatePageviewsStatus402
 			| AggregatePageviewsStatus403
+			| AggregatePageviewsStatus404
 			| AggregatePageviewsStatus410
+			| AggregatePageviewsStatus503
 		>,
 		null,
 		Record<string, string>,
@@ -20171,7 +21206,9 @@ export async function aggregateEvents(
 			| AggregateEventsStatus401
 			| AggregateEventsStatus402
 			| AggregateEventsStatus403
+			| AggregateEventsStatus404
 			| AggregateEventsStatus410
+			| AggregateEventsStatus503
 		>,
 		null,
 		Record<string, string>,
@@ -20227,7 +21264,9 @@ export async function countPageviews(
 			| CountPageviewsStatus401
 			| CountPageviewsStatus402
 			| CountPageviewsStatus403
+			| CountPageviewsStatus404
 			| CountPageviewsStatus410
+			| CountPageviewsStatus503
 		>,
 		null,
 		Record<string, string>,
@@ -20281,7 +21320,9 @@ export async function countEvents(
 			| CountEventsStatus401
 			| CountEventsStatus402
 			| CountEventsStatus403
+			| CountEventsStatus404
 			| CountEventsStatus410
+			| CountEventsStatus503
 		>,
 		null,
 		Record<string, string>,
@@ -21206,6 +22247,9 @@ export const operationsByPath = {
 	"PATCH /v1/ai-gateway/virtual-model-configs": updateAiGatewayVirtualModelConfig,
 	"DELETE /v1/ai-gateway/virtual-model-configs": deleteAiGatewayVirtualModelConfig,
 	"GET /v1/ai-gateway/virtual-model-configs/list": listAiGatewayVirtualModelConfigs,
+	"GET /v1/ai-gateway/virtual-model-configs/{vmcSlug}": getAiGatewayVirtualModelConfigBySlug,
+	"PATCH /v1/ai-gateway/virtual-model-configs/{vmcSlug}": updateAiGatewayVirtualModelConfigBySlug,
+	"DELETE /v1/ai-gateway/virtual-model-configs/{vmcSlug}": deleteAiGatewayVirtualModelConfigBySlug,
 	"POST /v1/ai-gateway/rules": createAiGatewayRule,
 	"GET /v1/ai-gateway/rules": listAiGatewayRules,
 	"PATCH /v1/ai-gateway/rules": updateAiGatewayRule,
@@ -21246,7 +22290,24 @@ export const operationsByPath = {
 	"DELETE /v1/connect/networks/{networkId}": deleteNetwork,
 	"PATCH /v1/connect/networks/{networkId}": updateNetwork,
 	"GET /v1/connect/networks/{networkId}": readNetwork,
+	"POST /v1/networking/privatelink/endpoints": createPrivateLinkEndpoint,
+	"GET /v1/networking/privatelink/endpoints": listPrivateLinkEndpoints,
+	"GET /v1/networking/privatelink/endpoints/{endpointId}": readPrivateLinkEndpoint,
+	"DELETE /v1/networking/privatelink/endpoints/{endpointId}": deletePrivateLinkEndpoint,
+	"PATCH /v1/networking/privatelink/endpoints/{endpointId}": updatePrivateLinkEndpoint,
+	"GET /v2/connect/connectors": listConnectors,
+	"GET /v1/connect/connectors/{connector}": getConnector,
+	"DELETE /v1/connect/connectors/{connector}": deleteConnector,
 	"POST /v1/connect/connectors": createConnector,
+	"PATCH /v2/connect/connectors/{connector}": updateConnector,
+	"PATCH /v1/connect/connectors/{connector}/trigger-destinations":
+		replaceConnectorTriggerDestinations,
+	"GET /v2/connect/connectors/{connector}/projects": listConnectorProjectConnections,
+	"GET /v1/connect/connectors/{connector}/projects/{projectId}": getConnectorProjectConnection,
+	"POST /v1/connect/connectors/{connector}/projects/{projectId}": upsertConnectorProjectConnection,
+	"DELETE /v1/connect/connectors/{connector}/projects/{projectId}":
+		deleteConnectorProjectConnection,
+	"GET /v2/connect/projects/{projectId}/connectors": listProjectConnectorConnections,
 	"POST /v1/connect/token/{connector}": getConnectorToken,
 	"POST /v1/connect/authorize/{connector}": createConnectorAuthorizationRequest,
 	"GET /v3/deployments/{idOrUrl}/events": getDeploymentEvents,
@@ -21489,7 +22550,7 @@ export const operationsByPath = {
 	"GET /v1/projects/{projectId}/promote/aliases": listPromoteAliases,
 	"POST /v1/projects/{projectId}/pause": pauseProject,
 	"POST /v1/projects/{projectId}/unpause": unpauseProject,
-	"GET /v2/sandboxes": listSandboxes,
+	"GET /v2/sandboxes": listNamedSandboxes,
 	"POST /v2/sandboxes": createSandboxesV2,
 	"GET /v2/sandboxes/drives": listDrives,
 	"POST /v2/sandboxes/drives/{name}": getOrCreateDrive,
@@ -21644,6 +22705,9 @@ export const operationsByTag = {
 		updateAiGatewayVirtualModelConfig,
 		deleteAiGatewayVirtualModelConfig,
 		listAiGatewayVirtualModelConfigs,
+		getAiGatewayVirtualModelConfigBySlug,
+		updateAiGatewayVirtualModelConfigBySlug,
+		deleteAiGatewayVirtualModelConfigBySlug,
 	},
 	aiGateway: {
 		createAiGatewayRule,
@@ -21698,10 +22762,25 @@ export const operationsByTag = {
 		deleteNetwork,
 		updateNetwork,
 		readNetwork,
+		createPrivateLinkEndpoint,
+		listPrivateLinkEndpoints,
+		readPrivateLinkEndpoint,
+		deletePrivateLinkEndpoint,
+		updatePrivateLinkEndpoint,
 		updateStaticIps,
 	},
 	connect: {
+		listConnectors,
+		getConnector,
+		deleteConnector,
 		createConnector,
+		updateConnector,
+		replaceConnectorTriggerDestinations,
+		listConnectorProjectConnections,
+		getConnectorProjectConnection,
+		upsertConnectorProjectConnection,
+		deleteConnectorProjectConnection,
+		listProjectConnectorConnections,
 		getConnectorToken,
 		createConnectorAuthorizationRequest,
 	},
@@ -21976,7 +23055,7 @@ export const operationsByTag = {
 		completeRollingRelease,
 	},
 	sandboxes: {
-		listSandboxes,
+		listNamedSandboxes,
 		createSandboxesV2,
 		listDrives,
 		getOrCreateDrive,
@@ -22116,9 +23195,13 @@ export const tagDictionary = {
 	},
 	apiAiGateway: {
 		POST: ["createAiGatewayVirtualModelConfig"],
-		GET: ["getAiGatewayVirtualModelConfig", "listAiGatewayVirtualModelConfigs"],
-		PATCH: ["updateAiGatewayVirtualModelConfig"],
-		DELETE: ["deleteAiGatewayVirtualModelConfig"],
+		GET: [
+			"getAiGatewayVirtualModelConfig",
+			"listAiGatewayVirtualModelConfigs",
+			"getAiGatewayVirtualModelConfigBySlug",
+		],
+		PATCH: ["updateAiGatewayVirtualModelConfig", "updateAiGatewayVirtualModelConfigBySlug"],
+		DELETE: ["deleteAiGatewayVirtualModelConfig", "deleteAiGatewayVirtualModelConfigBySlug"],
 	},
 	aiGateway: {
 		POST: ["createAiGatewayRule"],
@@ -22161,13 +23244,27 @@ export const tagDictionary = {
 		PATCH: ["updateCheck"],
 	},
 	networking: {
-		GET: ["listNetworks", "readNetwork"],
-		POST: ["createNetwork"],
-		DELETE: ["deleteNetwork"],
-		PATCH: ["updateNetwork", "updateStaticIps"],
+		GET: ["listNetworks", "readNetwork", "listPrivateLinkEndpoints", "readPrivateLinkEndpoint"],
+		POST: ["createNetwork", "createPrivateLinkEndpoint"],
+		DELETE: ["deleteNetwork", "deletePrivateLinkEndpoint"],
+		PATCH: ["updateNetwork", "updatePrivateLinkEndpoint", "updateStaticIps"],
 	},
 	connect: {
-		POST: ["createConnector", "getConnectorToken", "createConnectorAuthorizationRequest"],
+		GET: [
+			"listConnectors",
+			"getConnector",
+			"listConnectorProjectConnections",
+			"getConnectorProjectConnection",
+			"listProjectConnectorConnections",
+		],
+		DELETE: ["deleteConnector", "deleteConnectorProjectConnection"],
+		POST: [
+			"createConnector",
+			"upsertConnectorProjectConnection",
+			"getConnectorToken",
+			"createConnectorAuthorizationRequest",
+		],
+		PATCH: ["updateConnector", "replaceConnectorTriggerDestinations"],
 	},
 	deployments: {
 		GET: [
@@ -22441,7 +23538,7 @@ export const tagDictionary = {
 	},
 	sandboxes: {
 		GET: [
-			"listSandboxes",
+			"listNamedSandboxes",
 			"listDrives",
 			"listSessionSnapshots",
 			"getSessionSnapshot",

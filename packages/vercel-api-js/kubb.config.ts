@@ -5,6 +5,7 @@ import {
 	cleanOperationIds,
 	fetchSpec,
 	fixArrayItems,
+	fixRegexPatterns,
 	fixUnionConstraints,
 	sanitizeEnumValues,
 	sortArrays,
@@ -37,6 +38,7 @@ export default defineConfig(async () => {
 	openAPIDocument = fixArrayItems(openAPIDocument);
 	openAPIDocument = fixUnionConstraints(openAPIDocument);
 	openAPIDocument = sanitizeEnumValues(openAPIDocument);
+	openAPIDocument = fixRegexPatterns(openAPIDocument);
 	openAPIDocument = camelCaseProperties(openAPIDocument);
 
 	return {

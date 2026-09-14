@@ -300,6 +300,73 @@ export function renameReservedWords(openAPIDocument: OpenAPIObject): OpenAPIObje
 	return openAPIDocument;
 }
 
+/** Keys whose values are instance data rather than schemas, so a `pattern` inside them is not a regex. */
+const NON_SCHEMA_KEYS = new Set(["example", "examples", "default", "enum", "const"]);
+
+/**
+ * JSON Schema `pattern` values are plain ECMA-262 sources, but kubb's plugin-zod treats a leading
+ * or trailing `/` (escaped or not) as regex literal delimiters and strips it before calling
+ * `new RegExp`. A valid pattern such as `^\\/` then loses its last two characters, becomes `^\`,
+ * and throws "\ at end of pattern", which fails the whole zod plugin for the package.
+ *
+ * An edge slash is rewritten as the equivalent `[/]` class so nothing is left for kubb to strip,
+ * and a pattern that still is not a valid JS regex is dropped with a warning: generating the rest
+ * of the client beats failing on one unenforceable constraint.
+ */
+export function fixRegexPatterns(openAPIDocument: OpenAPIObject): OpenAPIObject {
+	function visit(node: unknown, path: string): void {
+		if (Array.isArray(node)) {
+			for (const [index, item] of node.entries()) {
+				visit(item, `${path}/${index}`);
+			}
+			return;
+		}
+		if (node === null || typeof node !== "object") return;
+
+		const record = node as Record<string, unknown>;
+		for (const [key, value] of Object.entries(record)) {
+			if (key === "pattern" && typeof value === "string") {
+				const pattern = protectEdgeSlashes(value);
+				if (isValidRegex(pattern)) {
+					record[key] = pattern;
+				} else {
+					console.warn(`Dropping invalid regex pattern at ${path}: ${value}`);
+					delete record[key];
+				}
+				continue;
+			}
+			if (NON_SCHEMA_KEYS.has(key)) continue;
+			visit(value, `${path}/${key}`);
+		}
+	}
+
+	visit(openAPIDocument, "#");
+	return openAPIDocument;
+}
+
+function protectEdgeSlashes(pattern: string): string {
+	// A leading `/` and a leading `\/` both match one literal slash.
+	let result = pattern.replace(/^\\?\//, "[/]");
+
+	// A trailing slash is escaped only by an odd run of backslashes; an even run is literal backslashes.
+	const trailing = result.match(/(\\*)\/$/);
+	if (trailing) {
+		const literalBackslashes = trailing[1].length - (trailing[1].length % 2);
+		result = `${result.slice(0, -trailing[0].length)}${"\\".repeat(literalBackslashes)}[/]`;
+	}
+
+	return result;
+}
+
+function isValidRegex(pattern: string): boolean {
+	try {
+		new RegExp(pattern);
+		return true;
+	} catch {
+		return false;
+	}
+}
+
 export function camelCaseProperties(obj: any, isPathsObject = false): any {
 	if (Array.isArray(obj)) {
 		return obj.map((item) => camelCaseProperties(item, false));

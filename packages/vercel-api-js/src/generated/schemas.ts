@@ -238,6 +238,99 @@ export const networkSchema = z.object({
 	vpcId: z.string().optional().describe("The ID of the VPC which hosts the network."),
 });
 
+export const privateLinkEndpointSchema = z
+	.object({
+		endpointId: z
+			.string()
+			.describe("The unique identifier of the PrivateLink endpoint.")
+			.meta({ examples: ["ple_a1b2c3d4e5f6g7h8"] }),
+		name: z
+			.string()
+			.describe("The name of the PrivateLink endpoint, shown in the Vercel dashboard.")
+			.meta({ examples: ["payments-db"] }),
+		teamId: z
+			.string()
+			.describe("The identifier of the team that owns the PrivateLink endpoint.")
+			.meta({ examples: ["team_a1b2c3d4e5f6g7h8"] }),
+		projectId: z
+			.string()
+			.describe("The identifier of the project the PrivateLink endpoint belongs to.")
+			.meta({ examples: ["prj_a1b2c3d4e5f6g7h8"] }),
+		vercelRegion: z
+			.string()
+			.describe("The Vercel region the endpoint is provisioned in.")
+			.meta({ examples: ["iad1"] }),
+		awsServiceName: z
+			.string()
+			.describe("The AWS VPC endpoint service the endpoint connects to.")
+			.meta({ examples: ["com.amazonaws.vpce.us-east-1.vpce-svc-0123456789abcdef0"] }),
+		vpcEndpointId: z
+			.string()
+			.optional()
+			.describe(
+				"The identifier of the underlying AWS VPC endpoint. Absent until AWS has created the endpoint.",
+			)
+			.meta({ examples: ["vpce-0123456789abcdef0"] }),
+		awsDnsEntries: z
+			.array(z.string())
+			.optional()
+			.describe(
+				"The regional DNS names assigned to the endpoint by AWS. Use these to reach the service when private DNS is not enabled.",
+			)
+			.meta({
+				examples: [
+					[
+						"vpce-0123456789abcdef0-a1b2c3d4.vpce-svc-0123456789abcdef0.us-east-1.vpce.amazonaws.com",
+					],
+				],
+			}),
+		privateDnsNames: z
+			.array(z.string())
+			.optional()
+			.describe(
+				"The private DNS names of the endpoint service, populated when private DNS is enabled for the endpoint.",
+			)
+			.meta({ examples: [["payments.internal.example.com"]] }),
+		status: z
+			.enum([
+				"available",
+				"creating",
+				"deleting",
+				"failed",
+				"pending-acceptance",
+				"provisioning",
+				"rejected",
+			])
+			.describe(
+				"The current state of the endpoint. - `creating`: the endpoint is being created. - `pending-acceptance`: waiting for the endpoint service owner to accept the connection. Only occurs for services that require manual acceptance. - `provisioning`: the connection was accepted and AWS is finishing setup. - `available`: the endpoint is fully provisioned and ready to use. - `rejected`: the endpoint service owner rejected the connection. - `failed`: the endpoint could not be provisioned. - `deleting`: the endpoint is being deleted.",
+			)
+			.meta({ examples: ["available"] }),
+		statusMessage: z
+			.string()
+			.optional()
+			.describe(
+				"A human-readable explanation of why the endpoint could not be provisioned. Only set when `status` is `failed`, and absent for every other status including `rejected`, since AWS does not report a rejection reason.",
+			)
+			.meta({
+				examples: [
+					"Endpoint did not become available in time. Try deleting and recreating, or visit https://vercel.com/help if the issue persists.",
+				],
+			}),
+		createdAt: z
+			.number()
+			.describe("Timestamp in milliseconds since the UNIX epoch for when the endpoint was created.")
+			.meta({ examples: [1610963878358] }),
+		updatedAt: z
+			.number()
+			.describe(
+				"Timestamp in milliseconds since the UNIX epoch for when the endpoint was last updated.",
+			)
+			.meta({ examples: [1610963878358] }),
+	})
+	.describe(
+		"A PrivateLink endpoint, which connects a project to an AWS VPC endpoint service in a single region so that traffic reaches the service over AWS PrivateLink rather than the public internet.",
+	);
+
 export const connectTriggerConfigurationSchema = z
 	.object({
 		enabled: z
@@ -262,7 +355,7 @@ export const connectTriggerDestinationSchema = z
 		"Destinations that incoming triggers should be forwarded to. Limited to 3 entries. Set the initial destination with `triggerDestination` during creation. Replace the complete set with `PATCH /v1/connect/connectors/{connector}/trigger-destinations`.",
 	);
 
-export const connectConnectorCreateResultSchema = z
+export const connectConnectorSchema = z
 	.object({
 		id: z
 			.string()
@@ -283,7 +376,7 @@ export const connectConnectorCreateResultSchema = z
 				"Time when this connector started requiring reinstallation because an installation-affecting app-token grant changed.",
 			),
 		createdBy: z
-			.union([
+			.discriminatedUnion("type", [
 				z
 					.object({
 						type: z.enum(["user"]).describe("Principal kind."),
@@ -301,7 +394,7 @@ export const connectConnectorCreateResultSchema = z
 			.optional()
 			.describe("Principal that created the connector."),
 		updatedBy: z
-			.union([
+			.discriminatedUnion("type", [
 				z
 					.object({
 						type: z.enum(["user"]).describe("Principal kind."),
@@ -338,6 +431,7 @@ export const connectConnectorCreateResultSchema = z
 		type: z
 			.enum([
 				"api-key",
+				"aws-alpha",
 				"custom",
 				"discord",
 				"github",
@@ -410,6 +504,10 @@ export const connectConnectorCreateResultSchema = z
 				supportsRefinement: z
 					.union([z.literal(false), z.literal(true)])
 					.describe("Whether callers can narrow app-token grants per request."),
+				supportsResources: z
+					.union([z.literal(false), z.literal(true)])
+					.optional()
+					.describe("Whether callers can request resource-specific app tokens."),
 				requiresReinstallation: z
 					.union([z.literal(false), z.literal(true)])
 					.optional()
@@ -443,6 +541,262 @@ export const connectConnectorCreateResultSchema = z
 				supportsRefinement: z
 					.union([z.literal(false), z.literal(true)])
 					.describe("Whether callers can narrow user-token grants per request."),
+				supportsResources: z
+					.union([z.literal(false), z.literal(true)])
+					.optional()
+					.describe("Whether callers can request resource-specific user tokens."),
+				scopes: z
+					.array(z.string())
+					.optional()
+					.describe(
+						"Known allowed user-level scopes. For Slack this is the user scope set configured on the app; for OAuth it is the connector's enabled `userAuthorization.scopes` configuration.",
+					),
+				supportedAuthorizationDetails: z
+					.array(z.string())
+					.optional()
+					.describe("Supported OAuth authorization-detail type names."),
+				manualCredentialInput: z
+					.union([z.literal(false), z.literal(true)])
+					.optional()
+					.describe(
+						"User authorization is completed by the Connect consent screen submitting a credential instead of an OAuth redirect.",
+					),
+			})
+			.optional()
+			.describe("User-token capabilities and known grants for the connector."),
+		supportsInstallation: z
+			.union([z.literal(false), z.literal(true)])
+			.describe("Whether the connector supports an installation flow."),
+		supportsRevocation: z
+			.union([z.literal(false), z.literal(true)])
+			.describe("Whether Connect can revoke tokens for this connector."),
+		supportsTriggers: z
+			.union([z.literal(false), z.literal(true)])
+			.describe(
+				"Whether this connector type supports trigger webhooks. Derived from the type definition; indicates that `triggers` and `triggerDestinations` may be meaningful for this connector.",
+			),
+		supportsIcon: z
+			.union([z.literal(false), z.literal("maybe"), z.literal(true)])
+			.describe("Whether the connector icon can propagate to the provider."),
+		triggers: z.unknown().optional().describe("Incoming trigger configuration for the connector."),
+		events: z
+			.array(z.string())
+			.optional()
+			.describe(
+				"Known events this connector subscribes to (e.g. Slack bot events, GitHub webhook events). Names are type-specific and validated by the managed-create flow when forwarded to the third-party service.",
+			),
+		triggerDestinations: z
+			.array(z.unknown())
+			.optional()
+			.describe(
+				"Destinations that incoming triggers should be forwarded to. Limited to 3 entries. Set the initial destination with `triggerDestination` during creation. Replace the complete set with `PATCH /v1/connect/connectors/{connector}/trigger-destinations`.",
+			),
+	})
+	.describe("A connector that defines how Vercel accesses an external service.");
+
+export const connectPaginationSchema = z
+	.object({
+		next: z.string().nullable().describe("Opaque value to pass as `cursor` on the next request."),
+	})
+	.describe("Cursor for the next page.");
+
+export const connectConnectorListSchema = z
+	.object({
+		connectors: z.array(z.unknown()).describe("Connectors in this page."),
+		pagination: z.unknown().describe("Cursor for the next page."),
+	})
+	.describe("Page of connectors.");
+
+export const connectConnectorCreateResultSchema = z
+	.object({
+		id: z
+			.string()
+			.describe("Stable `scl_` connector ID. Use this value directly in `{connector}`."),
+		uid: z
+			.string()
+			.describe("Team-scoped UID. URL-encode this value before using it in `{connector}`."),
+		defaultInstallationId: z
+			.string()
+			.optional()
+			.describe("Installation used when a token request does not specify an installation."),
+		createdAt: z.number().describe("Creation time in epoch milliseconds."),
+		updatedAt: z.number().describe("Last update time in epoch milliseconds."),
+		reinstallAt: z
+			.number()
+			.optional()
+			.describe(
+				"Time when this connector started requiring reinstallation because an installation-affecting app-token grant changed.",
+			),
+		createdBy: z
+			.discriminatedUnion("type", [
+				z
+					.object({
+						type: z.enum(["user"]).describe("Principal kind."),
+						id: z.string().describe("Vercel user ID."),
+					})
+					.strict(),
+				z
+					.object({
+						type: z.enum(["project"]).describe("Principal kind."),
+						id: z.string().describe("Vercel project ID."),
+						environment: z.string().describe("Deployment environment of the project principal."),
+					})
+					.strict(),
+			])
+			.optional()
+			.describe("Principal that created the connector."),
+		updatedBy: z
+			.discriminatedUnion("type", [
+				z
+					.object({
+						type: z.enum(["user"]).describe("Principal kind."),
+						id: z.string().describe("Vercel user ID."),
+					})
+					.strict(),
+				z
+					.object({
+						type: z.enum(["project"]).describe("Principal kind."),
+						id: z.string().describe("Vercel project ID."),
+						environment: z.string().describe("Deployment environment of the project principal."),
+					})
+					.strict(),
+			])
+			.optional()
+			.describe("Principal that most recently updated the connector."),
+		creationMode: z
+			.enum(["managed", "manual"])
+			.optional()
+			.describe(
+				"How the connector row was originally created. New create paths stamp this explicitly; older rows may omit it.",
+			),
+		managed: z
+			.object({
+				sync: z
+					.union([z.literal(false), z.literal(true)])
+					.optional()
+					.describe("Whether Vercel synchronizes provider-side configuration."),
+			})
+			.optional()
+			.describe(
+				"Managed connector metadata exposed without leaking the manager connector or installation identifiers.",
+			),
+		type: z
+			.enum([
+				"api-key",
+				"aws-alpha",
+				"custom",
+				"discord",
+				"github",
+				"linear",
+				"linq",
+				"microsoft-entra",
+				"microsoft-teams",
+				"oauth",
+				"photon",
+				"salesforce",
+				"sendblue",
+				"slack",
+				"snowflake",
+				"snowflake-wif",
+			])
+			.describe("Connector implementation type."),
+		service: z
+			.string()
+			.describe(
+				"Best-effort identifier of the third-party service this connector represents, independent of `type`. Examples: `'slack'`, `'mcp.linear.app'`, and `'auth.example.com'`. Always present in API responses.",
+			),
+		connectionMethod: z
+			.string()
+			.optional()
+			.describe(
+				"The connection method this connector was created from, when the create request named one.",
+			),
+		target: z
+			.string()
+			.optional()
+			.describe("Which of the service's products/surfaces this connector points at."),
+		name: z.string().describe("Connector name within the owning team."),
+		displayName: z.string().describe("Human-readable connector name."),
+		clientUrl: z
+			.string()
+			.nullish()
+			.describe(
+				"Provider-side URL for viewing or managing the resource represented by the connector. The destination can be an app, account, phone line, or service instance, depending on the connector type.",
+			),
+		redirectUri: z
+			.string()
+			.optional()
+			.describe(
+				"Redirect URI registered with the third-party service for this connector, if any. Used by `startAuthorization`/`startInstallation` to replay the exact URI back to the provider's token endpoint. Absent on connectors created before this field was introduced; those callers fall back to the `https://connect.vercel.com/callback` default.",
+			),
+		typeName: z.string().describe("Human-readable name of the connector type."),
+		typeIcon: z.string().optional().describe("Icon identifier supplied by the connector type."),
+		website: z.string().optional().describe("Public website for the connected service."),
+		devsite: z.string().optional().describe("Developer website for the connected service."),
+		docsite: z.string().optional().describe("Developer documentation for the connected service."),
+		icon: z
+			.string()
+			.optional()
+			.describe(
+				"Connector branding icon. SHA-1 hash that resolves to the uploaded icon through the Vercel avatar service. Consumers render this with `https://vercel.com/api/www/avatar/{icon}`.",
+			),
+		backgroundColor: z
+			.string()
+			.optional()
+			.describe("Hex background color (e.g., `#000000`) for branding."),
+		accentColor: z.string().optional().describe("Hex accent color (e.g., `#000000`) for branding."),
+		supportedSubjectTypes: z
+			.array(z.string())
+			.describe("Token subject types supported by the connector."),
+		appTokens: z
+			.object({
+				crossInstallation: z
+					.union([z.literal(false), z.literal(true)])
+					.describe("Whether one app token can be used across installations."),
+				supportsRefinement: z
+					.union([z.literal(false), z.literal(true)])
+					.describe("Whether callers can narrow app-token grants per request."),
+				supportsResources: z
+					.union([z.literal(false), z.literal(true)])
+					.optional()
+					.describe("Whether callers can request resource-specific app tokens."),
+				requiresReinstallation: z
+					.union([z.literal(false), z.literal(true)])
+					.optional()
+					.describe(
+						"True when changing app token grants requires reinstalling the app, so tokens cannot be partitioned independently by requester environment.",
+					),
+				scopes: z
+					.array(z.string())
+					.optional()
+					.describe(
+						"Known allowed app-level scopes. For Slack this is the bot scope set configured on the app; for OAuth it is the connector's enabled `clientCredentials.scopes` configuration.",
+					),
+				supportedAuthorizationDetails: z
+					.array(z.string())
+					.optional()
+					.describe("Supported OAuth authorization-detail type names."),
+				permissionsUrl: z
+					.string()
+					.optional()
+					.describe(
+						"Link to the page on the service where this connector's app-level permissions are declared and granted, when the service has one and it differs from `clientUrl`.",
+					),
+			})
+			.optional()
+			.describe("App-token capabilities and known grants for the connector."),
+		userTokens: z
+			.object({
+				crossInstallation: z
+					.union([z.literal(false), z.literal(true)])
+					.describe("Whether one user token can be used across installations."),
+				supportsRefinement: z
+					.union([z.literal(false), z.literal(true)])
+					.describe("Whether callers can narrow user-token grants per request."),
+				supportsResources: z
+					.union([z.literal(false), z.literal(true)])
+					.optional()
+					.describe("Whether callers can request resource-specific user tokens."),
 				scopes: z
 					.array(z.string())
 					.optional()
@@ -813,6 +1167,13 @@ export const connectConnectorCreateDataSchema = z
 					.max(8)
 					.optional()
 					.describe("The HTTPS resources the API key authenticates against."),
+				instructions: z
+					.string()
+					.max(4000)
+					.optional()
+					.describe(
+						"Markdown instructions shown to each user on the authorization screen, explaining how to obtain the key they should paste.",
+					),
 			})
 			.strict(),
 		z
@@ -963,6 +1324,54 @@ export const connectConnectorCreateDataSchema = z
 					.array(z.string())
 					.optional()
 					.describe("OAuth scopes requested for Slack user tokens."),
+				slashCommands: z
+					.array(
+						z
+							.object({
+								command: z
+									.string()
+									.max(32)
+									.regex(/^\\[/]/)
+									.describe("Slash command including its leading slash."),
+								description: z
+									.string()
+									.max(2000)
+									.describe("Description shown for the slash command in Slack."),
+								usageHint: z
+									.string()
+									.max(1000)
+									.optional()
+									.describe("Optional usage hint shown for the slash command."),
+								shouldEscape: z
+									.boolean()
+									.optional()
+									.describe("Whether Slack should escape command arguments."),
+							})
+							.strict(),
+					)
+					.max(50)
+					.optional()
+					.describe("Slash commands configured for the managed Slack app."),
+				shortcuts: z
+					.array(
+						z
+							.object({
+								type: z.enum(["global", "message"]).describe("Where Slack exposes the shortcut."),
+								name: z.string().describe("Shortcut display name."),
+								callbackId: z
+									.string()
+									.max(255)
+									.describe("Identifier included in the shortcut callback."),
+								description: z
+									.string()
+									.max(150)
+									.describe("Description shown for the shortcut in Slack."),
+							})
+							.strict(),
+					)
+					.max(10)
+					.optional()
+					.describe("Global and message shortcuts configured for the Slack app."),
 				extras: z
 					.object({})
 					.catchall(z.unknown())
@@ -1174,6 +1583,801 @@ export const connectCreateConnectorRequestSchema = z
 	.describe(
 		"Create a connector with full provider configuration or with a known service connection method.",
 	);
+
+export const connectReconsentSchema = z
+	.object({
+		scope: z
+			.enum(["user"])
+			.describe(
+				"The affected authorization scope. user means each affected user must authorize again.",
+			),
+	})
+	.describe(
+		"Existing authorizations no longer cover the connector's configured scopes, so they must be re-authorized.",
+	);
+
+export const connectServiceSyncErrorSchema = z
+	.object({
+		message: z.string().describe("Human-readable provider synchronization error."),
+		fields: z
+			.array(z.string())
+			.optional()
+			.describe("Connector fields that caused the synchronization error."),
+		vendor: z
+			.object({})
+			.catchall(z.unknown())
+			.optional()
+			.describe("Provider-specific error details that are safe to expose."),
+	})
+	.describe("Provider synchronization errors, when synchronization is required.");
+
+export const connectServiceSyncSchema = z
+	.object({
+		status: z
+			.enum(["done", "required"])
+			.describe(
+				"done means the external service was updated. required means the Vercel update was saved, but provider-side configuration still needs attention.",
+			),
+		errors: z
+			.array(z.unknown())
+			.optional()
+			.describe("Provider synchronization errors. Present when serviceSync.status is required."),
+	})
+	.describe("Provider-side configuration synchronization result.");
+
+export const connectConnectorUpdateResultSchema = z
+	.object({
+		connector: z.unknown().describe("Updated connector."),
+		reinstallNeeded: z
+			.union([z.literal(false), z.literal(true)])
+			.optional()
+			.describe(
+				"When true, prompt a team owner or administrator to reinstall the connector before relying on the change.",
+			),
+		reconsentNeeded: z
+			.unknown()
+			.optional()
+			.describe("Present when affected users must authorize the connector's new permissions."),
+		serviceSync: z
+			.unknown()
+			.optional()
+			.describe("Result of synchronizing the change with the external service."),
+	})
+	.describe("Updated connector and any required provider follow-up actions.");
+
+export const connectConnectorUpdateDataSchema = z
+	.union([
+		z
+			.object({
+				serverUrl: z
+					.string()
+					.optional()
+					.describe("Authorization server base URL used for discovery."),
+				serverConfig: z
+					.object({
+						issuer: z.string().optional().describe("Authorization server issuer URL."),
+						authorizationEndpoint: z
+							.string()
+							.optional()
+							.describe("OAuth authorization endpoint URL."),
+						tokenEndpoint: z.string().optional().describe("OAuth token endpoint URL."),
+						userinfoEndpoint: z
+							.string()
+							.optional()
+							.describe("OpenID Connect UserInfo endpoint URL."),
+						jwksUri: z
+							.string()
+							.optional()
+							.describe("URL of the authorization server JSON Web Key Set."),
+						jwks: z
+							.object({
+								keys: z
+									.array(
+										z
+											.object({
+												kty: z.string().describe("JSON Web Key type."),
+												kid: z.string().optional().describe("JSON Web Key identifier."),
+												use: z
+													.enum(["sig", "enc"])
+													.optional()
+													.describe("Intended key use: signing or encryption."),
+												keyOps: z
+													.array(z.string())
+													.optional()
+													.describe("Operations permitted for this key."),
+												alg: z.string().optional().describe("Algorithm intended for this key."),
+											})
+											.catchall(z.unknown()),
+									)
+									.describe("JSON Web Keys published by the authorization server."),
+							})
+							.catchall(z.unknown())
+							.optional()
+							.describe("Inline authorization server JSON Web Key Set."),
+						revocationEndpoint: z
+							.string()
+							.optional()
+							.describe("OAuth token revocation endpoint URL."),
+						introspectionEndpoint: z
+							.string()
+							.optional()
+							.describe("OAuth token introspection endpoint URL."),
+						endSessionEndpoint: z
+							.string()
+							.optional()
+							.describe("OpenID Connect session termination endpoint URL."),
+						deviceAuthorizationEndpoint: z
+							.string()
+							.optional()
+							.describe("OAuth device authorization endpoint URL."),
+						registrationEndpoint: z
+							.string()
+							.optional()
+							.describe("OAuth dynamic client registration endpoint URL."),
+						responseTypesSupported: z
+							.array(z.string())
+							.optional()
+							.describe("OAuth response types supported by the server."),
+						tokenEndpointAuthMethodsSupported: z
+							.array(z.string())
+							.optional()
+							.describe("Token endpoint client authentication methods supported by the server."),
+						tokenEndpointAuthSigningAlgValuesSupported: z
+							.array(z.string())
+							.optional()
+							.describe("Signing algorithms supported for token endpoint authentication."),
+						scopesSupported: z
+							.array(z.string())
+							.optional()
+							.describe("OAuth scopes supported by the server."),
+						grantTypesSupported: z
+							.array(z.string())
+							.optional()
+							.describe("OAuth grant types supported by the server."),
+						responseModesSupported: z
+							.array(z.string())
+							.optional()
+							.describe("OAuth response modes supported by the server."),
+						subjectTypesSupported: z
+							.array(z.string())
+							.optional()
+							.describe("OpenID Connect subject identifier types supported by the server."),
+						idTokenSigningAlgValuesSupported: z
+							.array(z.string())
+							.optional()
+							.describe("Signing algorithms supported for ID tokens."),
+						idTokenEncryptionAlgValuesSupported: z
+							.array(z.string())
+							.optional()
+							.describe("Key management algorithms supported for encrypted ID tokens."),
+						idTokenEncryptionEncValuesSupported: z
+							.array(z.string())
+							.optional()
+							.describe("Content encryption algorithms supported for encrypted ID tokens."),
+						claimTypesSupported: z
+							.array(z.string())
+							.optional()
+							.describe("OpenID Connect claim value types supported by the server."),
+						claimsSupported: z
+							.array(z.string())
+							.optional()
+							.describe("Claims that the authorization server can return."),
+						codeChallengeMethodsSupported: z
+							.array(z.string())
+							.optional()
+							.describe("PKCE code challenge methods supported by the server."),
+						promptValuesSupported: z
+							.array(z.string())
+							.optional()
+							.describe("Authorization prompt values supported by the server."),
+						claimsParameterSupported: z
+							.boolean()
+							.optional()
+							.describe("Whether authorization requests can use the claims parameter."),
+						requestParameterSupported: z
+							.boolean()
+							.optional()
+							.describe("Whether authorization requests can use signed request objects."),
+						requestUriParameterSupported: z
+							.boolean()
+							.optional()
+							.describe("Whether authorization requests can use request_uri."),
+						requireRequestUriRegistration: z
+							.boolean()
+							.optional()
+							.describe("Whether request_uri values must be registered in advance."),
+						serviceDocumentation: z
+							.string()
+							.optional()
+							.describe("Authorization server documentation URL."),
+						opPolicyUri: z.string().optional().describe("Authorization server privacy policy URL."),
+						opTosUri: z.string().optional().describe("Authorization server terms of service URL."),
+						logoUri: z.string().optional().describe("Authorization server logo URL."),
+						clientIdMetadataDocumentSupported: z
+							.boolean()
+							.optional()
+							.describe("Whether the server supports OAuth client ID metadata documents."),
+						authorizationDetailsTypesSupported: z
+							.array(z.string())
+							.optional()
+							.describe("OAuth authorization-detail types supported by the server."),
+					})
+					.catchall(z.unknown())
+					.optional()
+					.default({})
+					.describe(
+						"Authorization server metadata. Values override discovered metadata. Empty known string fields remove their stored overrides.",
+					),
+				clientId: z.string().optional().describe("OAuth client ID."),
+				clientName: z.string().optional().describe("OAuth client name."),
+				clientSecret: z.string().optional().describe("OAuth client secret."),
+				tokenEndpointAuthMethod: z
+					.string()
+					.optional()
+					.describe(
+						"OAuth token endpoint authentication method. Common values are client_secret_post, client_secret_basic, none, and private_key_jwt. If omitted, Vercel selects a supported method from serverConfig and otherwise uses client_secret_post.",
+					),
+				responseType: z
+					.string()
+					.optional()
+					.describe(
+						"OAuth authorization response type. Defaults to code. Other provider-supported values are accepted. An empty string clears the configured type.",
+					),
+				pkceRequired: z.boolean().optional().describe("Whether user authorization must use PKCE."),
+				codeChallengeMethod: z
+					.string()
+					.optional()
+					.describe(
+						"PKCE code challenge method. Supported values are S256 and plain. Vercel prefers S256 when the provider supports it. An empty string clears the configured method.",
+					),
+				userAuthorization: z
+					.object({
+						enabled: z.boolean().describe("Whether this OAuth grant is enabled."),
+						scopes: z
+							.array(z.string())
+							.optional()
+							.describe('Default scopes to request when token params specify scopes: [\\"*\\"].'),
+					})
+					.strict()
+					.optional()
+					.describe("User authorization grant settings."),
+				refreshTokens: z
+					.object({
+						enabled: z.boolean().describe("Whether this OAuth grant is enabled."),
+					})
+					.strict()
+					.optional()
+					.describe("Refresh token settings."),
+				clientCredentials: z
+					.object({
+						enabled: z.boolean().describe("Whether this OAuth grant is enabled."),
+						scopes: z
+							.array(z.string())
+							.optional()
+							.describe('Default scopes to request when token params specify scopes: [\\"*\\"].'),
+					})
+					.strict()
+					.optional()
+					.describe("Client credentials grant settings."),
+				forwardedClaims: z
+					.object({
+						idToken: z
+							.array(z.string())
+							.optional()
+							.describe("ID token claim names that Connect can expose."),
+					})
+					.strict()
+					.optional()
+					.describe(
+						"Allow-list of extra claims to propagate, keyed by source (idToken). Only claims named here and present in that source are exposed.",
+					),
+				defaultAudience: z
+					.string()
+					.optional()
+					.describe(
+						"Default audience used when a token request omits one. An empty string clears the default.",
+					),
+				defaultTokenExpiresIn: z
+					.number()
+					.min(60)
+					.optional()
+					.describe(
+						"Default token lifetime in seconds to use when the token response omits expires_in.",
+					),
+				authorizationUrlParams: z
+					.object({})
+					.catchall(z.string())
+					.optional()
+					.describe("Extra query parameters added to authorization URLs."),
+				jwtBearer: z
+					.object({
+						enabled: z.boolean().optional().describe("Whether JWT bearer grants are enabled."),
+						scopes: z
+							.array(z.string())
+							.optional()
+							.describe('Default scopes to request when token params specify scopes: [\\"*\\"].'),
+						sub: z.string().optional().describe("Default JWT subject claim."),
+						iss: z.string().optional().describe("Default JWT issuer claim."),
+						aud: z.string().optional().describe("Default JWT audience claim."),
+						additionalClaims: z
+							.object({})
+							.catchall(z.unknown())
+							.optional()
+							.describe("Additional claims included in generated JWT assertions."),
+						ttl: z.number().gt(0).optional().describe("JWT lifetime in seconds."),
+						useClientCredentials: z
+							.boolean()
+							.optional()
+							.describe("Whether JWT bearer requests also use client credentials."),
+					})
+					.strict()
+					.optional()
+					.describe("JWT bearer grant settings."),
+				clientAssertion: z
+					.object({
+						type: z
+							.string()
+							.optional()
+							.describe(
+								"OAuth client assertion type. Defaults to urn:ietf:params:oauth:client-assertion-type:jwt-bearer. An empty string clears the configured type.",
+							),
+						ttl: z.number().gt(0).optional().describe("Client assertion lifetime in seconds."),
+						claims: z
+							.object({})
+							.catchall(z.unknown())
+							.optional()
+							.describe("Additional claims included in the client assertion."),
+					})
+					.strict()
+					.optional()
+					.describe("`private_key_jwt` client assertion settings."),
+			})
+			.strict(),
+		z
+			.object({
+				toDelete: z.array(z.string()).optional().describe("Stored API key value IDs to delete."),
+				toAdd: z
+					.array(
+						z
+							.object({
+								value: z.string().describe("API key value."),
+								scope: z
+									.string()
+									.optional()
+									.describe("Optional scope associated with the API key value."),
+								expiresAt: z
+									.int()
+									.gt(0)
+									.optional()
+									.describe("The timestamp when the API key value expires in milliseconds."),
+							})
+							.strict(),
+					)
+					.optional()
+					.describe("API key values to add."),
+				toUpdate: z
+					.array(
+						z
+							.object({
+								id: z.string().describe("Stored API key value ID."),
+								value: z
+									.union([z.string(), z.string()])
+									.optional()
+									.describe("Replacement API key value. Use null to keep the stored value."),
+								scope: z
+									.union([z.string(), z.string()])
+									.optional()
+									.describe("Replacement scope. Use null to remove the scope."),
+								expiresAt: z
+									.union([z.int().gt(0), z.string()])
+									.optional()
+									.describe("The timestamp when the API key value expires in milliseconds."),
+							})
+							.strict(),
+					)
+					.optional()
+					.describe("Existing API key values to update."),
+				instructions: z
+					.union([z.string().max(4000), z.string()])
+					.optional()
+					.describe(
+						"Markdown instructions shown to each user on the authorization screen, explaining how to obtain the key they should paste.",
+					),
+			})
+			.strict(),
+		z
+			.object({
+				appId: z.int().gt(0).optional().describe("GitHub App numeric ID."),
+				appSlug: z.string().optional().describe("GitHub App slug."),
+				appName: z.string().optional().describe("GitHub App display name."),
+				clientId: z.string().optional().describe("GitHub App OAuth client ID."),
+				owner: z
+					.object({
+						type: z
+							.enum(["user", "organization", "User", "Organization"])
+							.describe("GitHub App owner type."),
+						id: z.int().describe("GitHub App owner numeric ID."),
+						slug: z.string().describe("GitHub App owner login."),
+						name: z.string().optional().describe("GitHub App owner display name."),
+					})
+					.strict()
+					.optional()
+					.describe("GitHub App owner."),
+				clientSecret: z.string().optional().describe("GitHub App OAuth client secret."),
+				privateKeyPem: z.string().optional().describe("GitHub App private key in PEM format."),
+				webhookSecret: z.string().optional().describe("GitHub App webhook secret."),
+				extras: z
+					.object({})
+					.catchall(z.unknown())
+					.optional()
+					.describe("Additional provider metadata stored with the connector."),
+			})
+			.strict(),
+		z
+			.object({
+				appId: z.string().optional().describe("Linear application ID."),
+				appName: z.string().optional().describe("Linear application name."),
+				clientId: z.string().optional().describe("Linear OAuth client ID."),
+				clientSecret: z.string().optional().describe("Linear OAuth client secret."),
+				webhookSecret: z.string().optional().describe("Linear webhook verification secret."),
+				appScopes: z
+					.array(z.string())
+					.optional()
+					.describe("OAuth scopes requested for Linear application tokens."),
+				userScopes: z
+					.array(z.string())
+					.optional()
+					.describe("OAuth scopes requested for Linear user tokens."),
+				ownerOrganization: z
+					.object({
+						id: z.string().describe("Linear organization ID."),
+						slug: z.string().describe("Linear organization slug."),
+						name: z.string().describe("Linear organization name."),
+						logoUrl: z.string().nullish().describe("Linear organization logo URL."),
+					})
+					.strict()
+					.optional()
+					.describe("Linear organization that owns the OAuth application."),
+				application: z
+					.object({
+						id: z.string().describe("Linear OAuth application ID."),
+						clientId: z.string().describe("Linear OAuth client ID."),
+						name: z.string().describe("Linear OAuth application name."),
+						description: z.string().nullish().describe("Linear OAuth application description."),
+						developer: z.string().nullish().describe("Linear OAuth application developer name."),
+						developerUrl: z.string().nullish().describe("Linear OAuth application developer URL."),
+						imageUrl: z.string().nullish().describe("Linear OAuth application image URL."),
+						redirectUris: z
+							.array(z.string())
+							.optional()
+							.describe("Registered redirect URIs for the Linear OAuth application."),
+						distribution: z
+							.string()
+							.nullish()
+							.describe("Linear OAuth application distribution mode."),
+						webhookResourceTypes: z
+							.array(z.string())
+							.optional()
+							.describe("Linear resource types delivered to the webhook."),
+						webhookUrl: z.string().nullish().describe("Linear webhook URL."),
+						webhookEnabled: z
+							.boolean()
+							.optional()
+							.describe("Whether the Linear webhook is enabled."),
+						createdAt: z
+							.string()
+							.optional()
+							.describe("Linear OAuth application creation timestamp."),
+						updatedAt: z.string().optional().describe("Linear OAuth application update timestamp."),
+					})
+					.strict()
+					.optional()
+					.describe("Linear OAuth application metadata."),
+				extras: z
+					.object({})
+					.catchall(z.unknown())
+					.optional()
+					.describe("Additional provider metadata stored with the connector."),
+			})
+			.strict(),
+		z
+			.object({
+				consumerKey: z.string().optional().describe("Salesforce connected app consumer key."),
+				consumerSecret: z.string().optional().describe("Salesforce connected app consumer secret."),
+				loginHost: z
+					.string()
+					.optional()
+					.describe("Salesforce login host, such as login.salesforce.com."),
+			})
+			.strict(),
+		z
+			.object({
+				appId: z.string().optional().describe("Slack app ID."),
+				appName: z.string().optional().describe("Slack app display name."),
+				clientId: z.string().optional().describe("Slack app OAuth client ID."),
+				clientSecret: z.string().optional().describe("Slack app OAuth client secret."),
+				slackTeam: z
+					.object({
+						id: z.string().describe("Slack workspace ID."),
+						name: z.string().optional().describe("Slack workspace name."),
+						domain: z.string().optional().describe("Slack workspace domain."),
+					})
+					.strict()
+					.optional()
+					.describe("Slack workspace metadata."),
+				signingSecret: z.string().optional().describe("Slack request signing secret."),
+				verificationToken: z
+					.string()
+					.optional()
+					.describe("Legacy Slack webhook verification token."),
+				botScopes: z
+					.array(z.string())
+					.optional()
+					.describe("OAuth scopes requested for Slack bot tokens."),
+				userScopes: z
+					.array(z.string())
+					.optional()
+					.describe("OAuth scopes requested for Slack user tokens."),
+				slashCommands: z
+					.array(
+						z
+							.object({
+								command: z
+									.string()
+									.max(32)
+									.regex(/^\\[/]/)
+									.describe("Slash command including its leading slash."),
+								description: z
+									.string()
+									.max(2000)
+									.describe("Description shown for the slash command in Slack."),
+								usageHint: z
+									.string()
+									.max(1000)
+									.optional()
+									.describe("Optional usage hint shown for the slash command."),
+								shouldEscape: z
+									.boolean()
+									.optional()
+									.describe("Whether Slack should escape command arguments."),
+							})
+							.strict(),
+					)
+					.max(50)
+					.optional()
+					.describe("Slash commands configured for the managed Slack app."),
+				shortcuts: z
+					.array(
+						z
+							.object({
+								type: z.enum(["global", "message"]).describe("Where Slack exposes the shortcut."),
+								name: z.string().describe("Shortcut display name."),
+								callbackId: z
+									.string()
+									.max(255)
+									.describe("Identifier included in the shortcut callback."),
+								description: z
+									.string()
+									.max(150)
+									.describe("Description shown for the shortcut in Slack."),
+							})
+							.strict(),
+					)
+					.max(10)
+					.optional()
+					.describe("Global and message shortcuts configured for the Slack app."),
+				extras: z
+					.object({})
+					.catchall(z.unknown())
+					.optional()
+					.describe("Additional provider metadata stored with the connector."),
+			})
+			.strict(),
+		z
+			.object({
+				accountIdentifier: z.string().optional().describe("Snowflake account identifier."),
+				defaultSessionRole: z
+					.string()
+					.optional()
+					.describe("Default Snowflake role for created sessions."),
+			})
+			.strict(),
+		z
+			.object({
+				accountIdentifier: z.string().optional().describe("Snowflake account identifier."),
+			})
+			.strict(),
+		z
+			.object({
+				apiToken: z.string().optional().describe("Linq partner API token for the shared line."),
+				phoneNumbers: z.array(z.string().regex(/^\\+[1-9]\\d{1,14}$/)).optional(),
+			})
+			.strict(),
+		z
+			.object({
+				apiKeyId: z.string().optional().describe("Sendblue API key id (`sb-api-key-id`)."),
+				apiSecretKey: z
+					.string()
+					.optional()
+					.describe("Sendblue API secret key (`sb-api-secret-key`)."),
+				phoneNumbers: z
+					.array(z.string().regex(/^\\+[1-9]\\d{1,14}$/))
+					.optional()
+					.describe(
+						"E.164 Sendblue lines this connector sends and receives on. Used as the connector's display name, and the only lines its webhooks are registered for; an empty array clears them, which also removes the webhook subscription.",
+					),
+			})
+			.strict(),
+		z
+			.object({
+				projectSecret: z.string().optional().describe("Photon project secret."),
+				webhookSecret: z.string().optional().describe("Photon webhook verification secret."),
+				repairWebhook: z
+					.boolean()
+					.optional()
+					.describe("Whether Connect should recreate the Photon webhook."),
+			})
+			.strict(),
+		z.object({}).catchall(z.unknown()),
+	])
+	.describe("Provider configuration fields for the connector type.");
+
+export const connectUpdateConnectorRequestSchema = z
+	.object({
+		triggers: z
+			.boolean()
+			.optional()
+			.describe("Whether the triggers are enabled for this connector."),
+		events: z.array(z.string()).optional().describe("Default trigger events for this connector."),
+		data: z.unknown().optional().describe("Provider configuration fields to update."),
+		icon: z
+			.string()
+			.regex(/^[0-9a-fA-F]{40}$/)
+			.optional()
+			.describe(
+				"SHA-1 digest of a PNG or JPEG icon that is at least 640 by 640 pixels. This field does not accept a URL or image bytes.\n\nFirst compute the digest and upload the raw image with [POST /v2/files](https://vercel.com/docs/rest-api/deployments/upload-deployment-files). Send `Content-Length` and the same 40-character digest in `x-vercel-digest`. Then set `icon` to that digest.\n\n```js\nimport { createHash } from 'node:crypto';\nimport { readFile } from 'node:fs/promises';\n\nconst VERCEL_TOKEN = process.env.VERCEL_TOKEN;\nconst connectorId = 'scl_...';\nconst bytes = await readFile('icon.png');\nconst digest = createHash('sha1').update(bytes).digest('hex');\n\nawait fetch('https://api.vercel.com/v2/files', {\n  method: 'POST',\n  headers: {\n    Authorization: `Bearer ${VERCEL_TOKEN}`,\n    'Content-Type': 'application/octet-stream',\n    'Content-Length': String(bytes.length),\n    'x-vercel-digest': digest,\n  },\n  body: bytes,\n});\n\nawait fetch(`https://api.vercel.com/v2/connect/connectors/${connectorId}`, {\n  method: 'PATCH',\n  headers: {\n    Authorization: `Bearer ${VERCEL_TOKEN}`,\n    'Content-Type': 'application/json',\n  },\n  body: JSON.stringify({ icon: digest }),\n});\n```\n",
+			),
+		backgroundColor: z.string().optional(),
+		accentColor: z.string().optional(),
+		uid: z
+			.string()
+			.optional()
+			.describe(
+				"Full team-scoped UID, such as `slack/my-bot`. It cannot contain whitespace, `%`, `#`, control characters, or Vercel-owned namespaces. Changing it breaks callers that use the old UID. The stable connector ID does not change.",
+			),
+		name: z
+			.string()
+			.optional()
+			.describe(
+				"Display name for the connector. It is trimmed and cannot be empty or contain control characters.",
+			),
+	})
+	.strict()
+	.describe("Connector fields to update.");
+
+export const connectTriggerDestinationInputSchema = z
+	.union([
+		z
+			.object({
+				projectId: z.string().min(1).describe("Project that receives matching trigger requests."),
+				path: z
+					.string()
+					.min(1)
+					.max(2048)
+					.optional()
+					.describe("Route path on the linked project that receives forwarded trigger requests."),
+			})
+			.strict(),
+		z
+			.object({
+				projectId: z.string().min(1).describe("Project that receives matching trigger requests."),
+				branch: z
+					.string()
+					.min(1)
+					.max(250)
+					.describe("Git branch used to select a preview deployment."),
+				path: z
+					.string()
+					.min(1)
+					.max(2048)
+					.optional()
+					.describe("Route path on the linked project that receives forwarded trigger requests."),
+			})
+			.strict(),
+		z
+			.object({
+				projectId: z.string().min(1).describe("Project that receives matching trigger requests."),
+				customEnvironmentId: z
+					.string()
+					.regex(/^env_/)
+					.describe("Stable custom environment ID that belongs to the destination project."),
+				path: z
+					.string()
+					.min(1)
+					.max(2048)
+					.optional()
+					.describe("Route path on the linked project that receives forwarded trigger requests."),
+			})
+			.strict(),
+	])
+	.describe(
+		"A destination in the complete replacement set. Each destination targets the default deployment, a branch, or a custom environment.",
+	);
+
+export const connectReplaceTriggerDestinationsRequestSchema = z
+	.object({
+		destinations: z
+			.array(z.unknown())
+			.max(3)
+			.describe(
+				"Complete replacement set of trigger destinations. An empty array removes all destinations. Connector get and list responses expose the saved set as triggerDestinations.",
+			),
+	})
+	.strict()
+	.describe("Complete replacement set of trigger destinations.");
+
+export const connectProjectConnectionSchema = z
+	.object({
+		connectorId: z
+			.string()
+			.describe("Stable `scl_` connector ID, even when the request used a UID."),
+		project: z
+			.object({
+				id: z
+					.string()
+					.describe("Same Vercel project ID as the connection's top-level `projectId`."),
+				name: z.string().describe("Current Vercel project name."),
+				customEnvironments: z
+					.array(
+						z.object({
+							id: z.string().describe("Stable custom environment ID."),
+							slug: z.string().describe("Current human-readable custom environment slug."),
+						}),
+					)
+					.optional()
+					.describe(
+						"Custom environments available on the project. This list can include environments where the connector is not enabled.",
+					),
+			})
+			.describe("Vercel project connected to the connector."),
+		enabledEnvironments: z
+			.array(z.string())
+			.describe("Environments where the connector is enabled for the project."),
+		createdAt: z
+			.number()
+			.describe("Time when the project connection was created, in epoch milliseconds."),
+		updatedAt: z
+			.number()
+			.describe("Time when the project connection was last updated, in epoch milliseconds."),
+	})
+	.describe(
+		"A connection between a connector and a Vercel project, including the environments where the connector is enabled.",
+	);
+
+export const connectConnectorProjectConnectionListSchema = z
+	.object({
+		projects: z.array(z.unknown()).describe("Project connections in this page."),
+		pagination: z.unknown().describe("Cursor for the next page."),
+	})
+	.describe("Page of projects connected to a connector.");
+
+export const connectUpsertProjectConnectionRequestSchema = z
+	.object({
+		environments: z
+			.array(z.string().regex(/^env_/))
+			.min(1)
+			.describe(
+				"One or more built-in environment names or stable custom environment IDs that belong to the project. Duplicate values are accepted and removed.",
+			),
+	})
+	.describe("Environments enabled for a connector project connection.");
+
+export const connectProjectConnectorConnectionListSchema = z
+	.object({
+		connectors: z.array(z.unknown()).describe("Connector connections in this page."),
+		pagination: z.unknown().describe("Cursor for the next page."),
+	})
+	.describe("Page of connectors connected to a project.");
 
 export const connectErrorSchema = z
 	.object({
@@ -1528,7 +2732,7 @@ export const boughtTooRecentlySchema = z
 	.describe("The domain was bought too recently to determine verification status.");
 
 export const registrantFieldSchema = z
-	.union([
+	.discriminatedUnion("type", [
 		z
 			.object({
 				description: z.string(),
@@ -1762,8 +2966,10 @@ export const userEventSchema = z
 				"ai-gateway-byok-credential-created",
 				"ai-gateway-byok-credential-deleted",
 				"ai-gateway-byok-credential-updated",
+				"ai-gateway-byok-model-mappings-updated",
 				"ai-gateway-credits-purchased",
 				"ai-gateway-guardrails-updated",
+				"ai-gateway-hipaa-compliance-toggled",
 				"ai-gateway-inference-regions-updated",
 				"ai-gateway-model-allowlist-models-updated",
 				"ai-gateway-model-allowlist-toggled",
@@ -1773,6 +2979,7 @@ export const userEventSchema = z
 				"ai-gateway-private-provider-created",
 				"ai-gateway-private-provider-deleted",
 				"ai-gateway-private-provider-updated",
+				"ai-gateway-prompt-training-opt-out-toggled",
 				"ai-gateway-provider-allowlist-providers-updated",
 				"ai-gateway-provider-allowlist-toggled",
 				"ai-gateway-rule-created",
@@ -1786,8 +2993,10 @@ export const userEventSchema = z
 				"ai-gateway-transcripts-retention-updated",
 				"ai-gateway-virtual-model-config-archived",
 				"ai-gateway-virtual-model-config-created",
+				"ai-gateway-virtual-model-config-deleted",
 				"ai-gateway-virtual-model-config-restored",
 				"ai-gateway-virtual-model-config-updated",
+				"ai-gateway-zero-data-retention-toggled",
 				"ai-omniagent",
 				"alert-investigation-project-allowlist-updated",
 				"alert-rule-created",
@@ -1977,6 +3186,7 @@ export const userEventSchema = z
 				"flags-segment",
 				"flags-settings",
 				"flags-transferred",
+				"flat-rate-cdn-auto-upgrade-consent",
 				"git-integration-repo-push",
 				"git_account_integration_link_added",
 				"global-config-backup-restored",
@@ -2061,6 +3271,7 @@ export const userEventSchema = z
 				"organization-team-add",
 				"organization-team-create",
 				"organization-team-delete",
+				"organization-team-sso-update",
 				"owner-blocked",
 				"owner-soft-blocked",
 				"owner-soft-unblocked",
@@ -2140,6 +3351,12 @@ export const userEventSchema = z
 				"project-git-commit-comments-toggled",
 				"project-git-commit-status-toggled",
 				"project-git-create-deployments-toggled",
+				"project-git-credential-bound-created",
+				"project-git-credential-bound-deleted",
+				"project-git-credential-bound-updated",
+				"project-git-credential-grant-created",
+				"project-git-credential-grant-deleted",
+				"project-git-credential-grant-updated",
 				"project-git-fork-protection-updated",
 				"project-git-lfs-toggled",
 				"project-git-pr-comments-toggled",
@@ -2232,6 +3449,8 @@ export const userEventSchema = z
 				"shared-env-variable-create",
 				"shared-env-variable-delete",
 				"shared-env-variable-read",
+				"shared-env-variable-repo-link",
+				"shared-env-variable-repo-unlink",
 				"shared-env-variable-update",
 				"show-ip-addresses",
 				"signup",
@@ -2262,6 +3481,7 @@ export const userEventSchema = z
 				"storage-update-project-connection",
 				"storage-upgrade-project-connection-to-oidc",
 				"storage-view-secret",
+				"strict-connectors",
 				"strict-deployment-protection-settings",
 				"strict-password-protection-settings",
 				"strict-shareable-links",
@@ -2441,7 +3661,7 @@ export const userEventSchema = z
 			.optional()
 			.describe("Metadata for {@link userId}."),
 		principal: z
-			.union([
+			.discriminatedUnion("type", [
 				z
 					.object({
 						type: z.enum(["user"]).optional(),
@@ -2480,7 +3700,7 @@ export const userEventSchema = z
 			.optional(),
 		via: z
 			.array(
-				z.union([
+				z.discriminatedUnion("type", [
 					z
 						.object({
 							type: z.enum(["user"]).optional(),
@@ -2537,6 +3757,19 @@ export const userEventSchema = z
 			.describe(
 				'If the principal delegated its authority (for example, a user delegating to an app), then this array contains the ID of the current actor. For example, if `principalId` is "user123" and `viaIds` is `["app456"]`, we can say the event was triggered by - "app456 on behalf of user123", or - "user123 via app4556". Both are equivalent. Arbitrarily long chains of delegation can be represented. For example, if `principalId` is "user123" and `viaIds` is `["service1", "service2"]`, we can say the event was triggered by "user123 via service1 via service2".',
 			),
+		tokenId: z
+			.string()
+			.optional()
+			.describe(
+				"The public ID of the token that the principal authenticated with, when the request behind this event carried one.",
+			),
+		sessionId: z
+			.string()
+			.optional()
+			.describe(
+				"The ID of the session that the principal's token belongs to, when it belongs to one.",
+			),
+		requestId: z.string().optional(),
 		payload: z
 			.union([
 				z.object({}).strict(),
@@ -2575,6 +3808,13 @@ export const userEventSchema = z
 						projectName: z.string().optional(),
 						projectId: z.string().optional(),
 						environment: z.array(z.string()),
+					})
+					.strict(),
+				z
+					.object({
+						projectId: z.string(),
+						projectName: z.string(),
+						policyId: z.string(),
 					})
 					.strict(),
 				z
@@ -2869,13 +4109,25 @@ export const userEventSchema = z
 					.strict(),
 				z
 					.object({
-						amount: z.string(),
-						purchaseIntentId: z.string(),
+						credential: z.object({
+							id: z.string(),
+							name: z.string(),
+							providerSlug: z.string(),
+						}),
+						added: z.array(z.string()),
+						removed: z.array(z.string()),
+						changed: z.array(z.string()),
 					})
 					.strict(),
 				z
 					.object({
 						enabled: z.union([z.literal(false), z.literal(true)]),
+					})
+					.strict(),
+				z
+					.object({
+						amount: z.string(),
+						purchaseIntentId: z.string(),
 					})
 					.strict(),
 				z
@@ -3202,6 +4454,7 @@ export const userEventSchema = z
 									"read-write:ai-gateway-rules",
 									"read-write:ai-gateway-virtual-model-configs",
 									"read-write:alerts",
+									"read-write:automations",
 									"read-write:billing",
 									"read-write:blob",
 									"read-write:connect",
@@ -3232,7 +4485,9 @@ export const userEventSchema = z
 									"read:ai-gateway-rules",
 									"read:ai-gateway-virtual-model-configs",
 									"read:alerts",
+									"read:automations",
 									"read:billing",
+									"read:connect",
 									"read:deployment",
 									"read:domain",
 									"read:event",
@@ -3252,6 +4507,7 @@ export const userEventSchema = z
 									"read:user",
 									"read:vcr",
 									"read:web-analytics",
+									"read:webhooks",
 									"use:ai-gateway",
 								]),
 							)
@@ -3280,6 +4536,7 @@ export const userEventSchema = z
 									"read-write:ai-gateway-rules",
 									"read-write:ai-gateway-virtual-model-configs",
 									"read-write:alerts",
+									"read-write:automations",
 									"read-write:billing",
 									"read-write:blob",
 									"read-write:connect",
@@ -3310,7 +4567,9 @@ export const userEventSchema = z
 									"read:ai-gateway-rules",
 									"read:ai-gateway-virtual-model-configs",
 									"read:alerts",
+									"read:automations",
 									"read:billing",
+									"read:connect",
 									"read:deployment",
 									"read:domain",
 									"read:event",
@@ -3330,6 +4589,7 @@ export const userEventSchema = z
 									"read:user",
 									"read:vcr",
 									"read:web-analytics",
+									"read:webhooks",
 									"use:ai-gateway",
 								]),
 							)
@@ -3367,6 +4627,7 @@ export const userEventSchema = z
 											"read-write:ai-gateway-rules",
 											"read-write:ai-gateway-virtual-model-configs",
 											"read-write:alerts",
+											"read-write:automations",
 											"read-write:billing",
 											"read-write:blob",
 											"read-write:connect",
@@ -3397,7 +4658,9 @@ export const userEventSchema = z
 											"read:ai-gateway-rules",
 											"read:ai-gateway-virtual-model-configs",
 											"read:alerts",
+											"read:automations",
 											"read:billing",
+											"read:connect",
 											"read:deployment",
 											"read:domain",
 											"read:event",
@@ -3416,6 +4679,7 @@ export const userEventSchema = z
 											"read:team",
 											"read:vcr",
 											"read:web-analytics",
+											"read:webhooks",
 											"use:ai-gateway",
 										]),
 									)
@@ -3448,6 +4712,7 @@ export const userEventSchema = z
 											"read-write:ai-gateway-rules",
 											"read-write:ai-gateway-virtual-model-configs",
 											"read-write:alerts",
+											"read-write:automations",
 											"read-write:billing",
 											"read-write:blob",
 											"read-write:connect",
@@ -3478,7 +4743,9 @@ export const userEventSchema = z
 											"read:ai-gateway-rules",
 											"read:ai-gateway-virtual-model-configs",
 											"read:alerts",
+											"read:automations",
 											"read:billing",
+											"read:connect",
 											"read:deployment",
 											"read:domain",
 											"read:event",
@@ -3497,6 +4764,7 @@ export const userEventSchema = z
 											"read:team",
 											"read:vcr",
 											"read:web-analytics",
+											"read:webhooks",
 											"use:ai-gateway",
 										]),
 									)
@@ -3533,6 +4801,7 @@ export const userEventSchema = z
 									"read-write:ai-gateway-rules",
 									"read-write:ai-gateway-virtual-model-configs",
 									"read-write:alerts",
+									"read-write:automations",
 									"read-write:billing",
 									"read-write:blob",
 									"read-write:connect",
@@ -3563,7 +4832,9 @@ export const userEventSchema = z
 									"read:ai-gateway-rules",
 									"read:ai-gateway-virtual-model-configs",
 									"read:alerts",
+									"read:automations",
 									"read:billing",
+									"read:connect",
 									"read:deployment",
 									"read:domain",
 									"read:event",
@@ -3582,6 +4853,7 @@ export const userEventSchema = z
 									"read:team",
 									"read:vcr",
 									"read:web-analytics",
+									"read:webhooks",
 									"use:ai-gateway",
 								]),
 							)
@@ -3952,6 +5224,7 @@ export const userEventSchema = z
 						clientUid: z.string().optional(),
 						clientName: z.string().optional(),
 						projectId: z.string().optional(),
+						projectName: z.string().optional(),
 						installationId: z.string().optional(),
 						subjectType: z.enum(["app", "user"]).optional(),
 						fields: z.array(z.string()).optional(),
@@ -4066,7 +5339,7 @@ export const userEventSchema = z
 					.strict(),
 				z
 					.object({
-						job: z.union([
+						job: z.discriminatedUnion("type", [
 							z
 								.object({
 									type: z.enum(["bitbucket-push"]),
@@ -5505,6 +6778,16 @@ export const userEventSchema = z
 					.strict(),
 				z
 					.object({
+						envId: z.string(),
+						envKey: z.string(),
+						provider: z.string(),
+						organizationId: z.string(),
+						repository: z.string(),
+						target: z.array(z.enum(["development", "preview", "production"])),
+					})
+					.strict(),
+				z
+					.object({
 						oldEnvVar: z
 							.object({
 								created: z.iso
@@ -5804,6 +7087,7 @@ export const userEventSchema = z
 				z
 					.object({
 						projectId: z.string(),
+						projectName: z.string().optional(),
 						previousOwnerId: z.string(),
 						newOwnerId: z.string(),
 					})
@@ -5811,6 +7095,11 @@ export const userEventSchema = z
 				z
 					.object({
 						action: z.enum(["disable", "enable"]),
+					})
+					.strict(),
+				z
+					.object({
+						source: z.enum(["create", "enable", "upgrade"]),
 					})
 					.strict(),
 				z
@@ -6100,10 +7389,16 @@ export const userEventSchema = z
 												"observability-edge-requests",
 												"observability-error-rate",
 												"observability-function-invocations",
+												"shortcut",
 												"speed-insights-cls",
 												"speed-insights-lcp",
 												"speed-insights-res",
 											]),
+											config: z
+												.object({
+													url: z.string(),
+												})
+												.optional(),
 										}),
 									)
 									.optional(),
@@ -6166,10 +7461,10 @@ export const userEventSchema = z
 										customEnvironmentsPerProject: z.number().optional(),
 										security: z
 											.object({
+												rateLimit: z.number().optional(),
 												customRules: z.number().optional(),
 												ipBlocks: z.number().optional(),
 												ipBypass: z.number().optional(),
-												rateLimit: z.number().optional(),
 											})
 											.optional(),
 										bulkRedirectsFreeLimitOverride: z.number().optional(),
@@ -6273,7 +7568,6 @@ export const userEventSchema = z
 											"ENTERPRISE_UNPAID_INVOICE",
 											"EXPOSURE_CAP_EXCEEDED",
 											"FAIR_USE_LIMITS_EXCEEDED",
-											"HOBBY_ALLOCATION_PAUSED",
 											"SUBSCRIPTION_CANCELED",
 											"SUBSCRIPTION_EXPIRED",
 											"UNPAID_INVOICE",
@@ -6321,83 +7615,11 @@ export const userEventSchema = z
 												"webAnalyticsEvent",
 											])
 											.optional(),
-										hobbyAllocationPause: z
-											.object({
-												pausedUntil: z
-													.number()
-													.describe(
-														"Unix ms timestamp at which the pause is eligible to end. This is the single source of truth for when the pause ends. Never re-derive it by re-checking usage — usage keeps moving while a team is paused, and the pause duration is a fixed experiment parameter.",
-													),
-												pausedAt: z
-													.number()
-													.describe("Unix ms timestamp of when the pause was applied."),
-												triggers: z
-													.array(
-														z.object({
-															allocation: z
-																.enum([
-																	"analyticsUsage",
-																	"artifacts",
-																	"bandwidth",
-																	"blobDataTransfer",
-																	"blobTotalAdvancedRequests",
-																	"blobTotalAvgSizeInBytes",
-																	"blobTotalGetResponseObjectSizeInBytes",
-																	"blobTotalSimpleRequests",
-																	"connectDataTransfer",
-																	"dataCacheRead",
-																	"dataCacheWrite",
-																	"edgeConfigRead",
-																	"edgeConfigWrite",
-																	"edgeFunctionExecutionUnits",
-																	"edgeMiddlewareInvocations",
-																	"edgeRequest",
-																	"edgeRequestAdditionalCpuDuration",
-																	"elasticConcurrencyBuildSlots",
-																	"fastDataTransfer",
-																	"fastOriginTransfer",
-																	"fluidCpuDuration",
-																	"fluidDuration",
-																	"functionDuration",
-																	"functionInvocation",
-																	"imageOptimizationCacheRead",
-																	"imageOptimizationCacheWrite",
-																	"imageOptimizationTransformation",
-																	"logDrainsVolume",
-																	"monitoringMetric",
-																	"observabilityEvent",
-																	"onDemandConcurrencyMinutes",
-																	"runtimeCacheRead",
-																	"runtimeCacheWrite",
-																	"serverlessFunctionExecution",
-																	"sourceImages",
-																	"wafOwaspExcessBytes",
-																	"wafOwaspRequests",
-																	"wafRateLimitRequest",
-																	"webAnalyticsEvent",
-																])
-																.describe(
-																	"Metered allocation whose included amount was fully consumed.",
-																),
-															usage: z
-																.number()
-																.describe(
-																	"Usage recorded for that allocation when the pause was applied.",
-																),
-														}),
-													)
-													.describe(
-														"Allocations that were at or over 100% when the pause was applied.",
-													),
-												cohort: z
-													.string()
-													.describe(
-														"Experiment cohort the owner was assigned to when the pause fired. Free-form so cohort naming stays owned by the assignment path.",
-													),
-											})
+										unpauseAt: z
+											.number()
 											.optional()
 											.describe(
-												"Present only when `reason` is `HOBBY_ALLOCATION_PAUSED`. Makes the pause self-describing for support without a separate lookup.",
+												"Since September 2026. Set only by `billing-usage-alerts` for usage plans with a `blockDurationMs`; its presence marks a pause that expires on its own.",
 											),
 									})
 									.nullish(),
@@ -6535,6 +7757,7 @@ export const userEventSchema = z
 												currentThreshold: z.number(),
 												warningAt: z.number().nullish(),
 												blockedAt: z.number().nullish(),
+												blockGracePeriodStartedAt: z.number().nullish(),
 											})
 											.optional(),
 										artifacts: z
@@ -6542,6 +7765,7 @@ export const userEventSchema = z
 												currentThreshold: z.number(),
 												warningAt: z.number().nullish(),
 												blockedAt: z.number().nullish(),
+												blockGracePeriodStartedAt: z.number().nullish(),
 											})
 											.optional(),
 										bandwidth: z
@@ -6549,6 +7773,7 @@ export const userEventSchema = z
 												currentThreshold: z.number(),
 												warningAt: z.number().nullish(),
 												blockedAt: z.number().nullish(),
+												blockGracePeriodStartedAt: z.number().nullish(),
 											})
 											.optional(),
 										blobTotalAdvancedRequests: z
@@ -6556,6 +7781,7 @@ export const userEventSchema = z
 												currentThreshold: z.number(),
 												warningAt: z.number().nullish(),
 												blockedAt: z.number().nullish(),
+												blockGracePeriodStartedAt: z.number().nullish(),
 											})
 											.optional(),
 										blobTotalAvgSizeInBytes: z
@@ -6563,6 +7789,7 @@ export const userEventSchema = z
 												currentThreshold: z.number(),
 												warningAt: z.number().nullish(),
 												blockedAt: z.number().nullish(),
+												blockGracePeriodStartedAt: z.number().nullish(),
 											})
 											.optional(),
 										blobTotalGetResponseObjectSizeInBytes: z
@@ -6570,6 +7797,7 @@ export const userEventSchema = z
 												currentThreshold: z.number(),
 												warningAt: z.number().nullish(),
 												blockedAt: z.number().nullish(),
+												blockGracePeriodStartedAt: z.number().nullish(),
 											})
 											.optional(),
 										blobTotalSimpleRequests: z
@@ -6577,6 +7805,7 @@ export const userEventSchema = z
 												currentThreshold: z.number(),
 												warningAt: z.number().nullish(),
 												blockedAt: z.number().nullish(),
+												blockGracePeriodStartedAt: z.number().nullish(),
 											})
 											.optional(),
 										connectDataTransfer: z
@@ -6584,6 +7813,7 @@ export const userEventSchema = z
 												currentThreshold: z.number(),
 												warningAt: z.number().nullish(),
 												blockedAt: z.number().nullish(),
+												blockGracePeriodStartedAt: z.number().nullish(),
 											})
 											.optional(),
 										dataCacheRead: z
@@ -6591,6 +7821,7 @@ export const userEventSchema = z
 												currentThreshold: z.number(),
 												warningAt: z.number().nullish(),
 												blockedAt: z.number().nullish(),
+												blockGracePeriodStartedAt: z.number().nullish(),
 											})
 											.optional(),
 										dataCacheWrite: z
@@ -6598,6 +7829,7 @@ export const userEventSchema = z
 												currentThreshold: z.number(),
 												warningAt: z.number().nullish(),
 												blockedAt: z.number().nullish(),
+												blockGracePeriodStartedAt: z.number().nullish(),
 											})
 											.optional(),
 										edgeConfigRead: z
@@ -6605,6 +7837,7 @@ export const userEventSchema = z
 												currentThreshold: z.number(),
 												warningAt: z.number().nullish(),
 												blockedAt: z.number().nullish(),
+												blockGracePeriodStartedAt: z.number().nullish(),
 											})
 											.optional(),
 										edgeConfigWrite: z
@@ -6612,6 +7845,7 @@ export const userEventSchema = z
 												currentThreshold: z.number(),
 												warningAt: z.number().nullish(),
 												blockedAt: z.number().nullish(),
+												blockGracePeriodStartedAt: z.number().nullish(),
 											})
 											.optional(),
 										edgeFunctionExecutionUnits: z
@@ -6619,6 +7853,7 @@ export const userEventSchema = z
 												currentThreshold: z.number(),
 												warningAt: z.number().nullish(),
 												blockedAt: z.number().nullish(),
+												blockGracePeriodStartedAt: z.number().nullish(),
 											})
 											.optional(),
 										edgeMiddlewareInvocations: z
@@ -6626,6 +7861,7 @@ export const userEventSchema = z
 												currentThreshold: z.number(),
 												warningAt: z.number().nullish(),
 												blockedAt: z.number().nullish(),
+												blockGracePeriodStartedAt: z.number().nullish(),
 											})
 											.optional(),
 										edgeRequestAdditionalCpuDuration: z
@@ -6633,6 +7869,7 @@ export const userEventSchema = z
 												currentThreshold: z.number(),
 												warningAt: z.number().nullish(),
 												blockedAt: z.number().nullish(),
+												blockGracePeriodStartedAt: z.number().nullish(),
 											})
 											.optional(),
 										edgeRequest: z
@@ -6640,6 +7877,7 @@ export const userEventSchema = z
 												currentThreshold: z.number(),
 												warningAt: z.number().nullish(),
 												blockedAt: z.number().nullish(),
+												blockGracePeriodStartedAt: z.number().nullish(),
 											})
 											.optional(),
 										elasticConcurrencyBuildSlots: z
@@ -6647,6 +7885,7 @@ export const userEventSchema = z
 												currentThreshold: z.number(),
 												warningAt: z.number().nullish(),
 												blockedAt: z.number().nullish(),
+												blockGracePeriodStartedAt: z.number().nullish(),
 											})
 											.optional(),
 										fastDataTransfer: z
@@ -6654,6 +7893,7 @@ export const userEventSchema = z
 												currentThreshold: z.number(),
 												warningAt: z.number().nullish(),
 												blockedAt: z.number().nullish(),
+												blockGracePeriodStartedAt: z.number().nullish(),
 											})
 											.optional(),
 										fastOriginTransfer: z
@@ -6661,6 +7901,7 @@ export const userEventSchema = z
 												currentThreshold: z.number(),
 												warningAt: z.number().nullish(),
 												blockedAt: z.number().nullish(),
+												blockGracePeriodStartedAt: z.number().nullish(),
 											})
 											.optional(),
 										fluidCpuDuration: z
@@ -6668,6 +7909,7 @@ export const userEventSchema = z
 												currentThreshold: z.number(),
 												warningAt: z.number().nullish(),
 												blockedAt: z.number().nullish(),
+												blockGracePeriodStartedAt: z.number().nullish(),
 											})
 											.optional(),
 										fluidDuration: z
@@ -6675,6 +7917,7 @@ export const userEventSchema = z
 												currentThreshold: z.number(),
 												warningAt: z.number().nullish(),
 												blockedAt: z.number().nullish(),
+												blockGracePeriodStartedAt: z.number().nullish(),
 											})
 											.optional(),
 										functionDuration: z
@@ -6682,6 +7925,7 @@ export const userEventSchema = z
 												currentThreshold: z.number(),
 												warningAt: z.number().nullish(),
 												blockedAt: z.number().nullish(),
+												blockGracePeriodStartedAt: z.number().nullish(),
 											})
 											.optional(),
 										functionInvocation: z
@@ -6689,6 +7933,7 @@ export const userEventSchema = z
 												currentThreshold: z.number(),
 												warningAt: z.number().nullish(),
 												blockedAt: z.number().nullish(),
+												blockGracePeriodStartedAt: z.number().nullish(),
 											})
 											.optional(),
 										imageOptimizationCacheRead: z
@@ -6696,6 +7941,7 @@ export const userEventSchema = z
 												currentThreshold: z.number(),
 												warningAt: z.number().nullish(),
 												blockedAt: z.number().nullish(),
+												blockGracePeriodStartedAt: z.number().nullish(),
 											})
 											.optional(),
 										imageOptimizationCacheWrite: z
@@ -6703,6 +7949,7 @@ export const userEventSchema = z
 												currentThreshold: z.number(),
 												warningAt: z.number().nullish(),
 												blockedAt: z.number().nullish(),
+												blockGracePeriodStartedAt: z.number().nullish(),
 											})
 											.optional(),
 										imageOptimizationTransformation: z
@@ -6710,6 +7957,7 @@ export const userEventSchema = z
 												currentThreshold: z.number(),
 												warningAt: z.number().nullish(),
 												blockedAt: z.number().nullish(),
+												blockGracePeriodStartedAt: z.number().nullish(),
 											})
 											.optional(),
 										logDrainsVolume: z
@@ -6717,6 +7965,7 @@ export const userEventSchema = z
 												currentThreshold: z.number(),
 												warningAt: z.number().nullish(),
 												blockedAt: z.number().nullish(),
+												blockGracePeriodStartedAt: z.number().nullish(),
 											})
 											.optional(),
 										monitoringMetric: z
@@ -6724,6 +7973,7 @@ export const userEventSchema = z
 												currentThreshold: z.number(),
 												warningAt: z.number().nullish(),
 												blockedAt: z.number().nullish(),
+												blockGracePeriodStartedAt: z.number().nullish(),
 											})
 											.optional(),
 										blobDataTransfer: z
@@ -6731,6 +7981,7 @@ export const userEventSchema = z
 												currentThreshold: z.number(),
 												warningAt: z.number().nullish(),
 												blockedAt: z.number().nullish(),
+												blockGracePeriodStartedAt: z.number().nullish(),
 											})
 											.optional(),
 										observabilityEvent: z
@@ -6738,6 +7989,7 @@ export const userEventSchema = z
 												currentThreshold: z.number(),
 												warningAt: z.number().nullish(),
 												blockedAt: z.number().nullish(),
+												blockGracePeriodStartedAt: z.number().nullish(),
 											})
 											.optional(),
 										onDemandConcurrencyMinutes: z
@@ -6745,6 +7997,7 @@ export const userEventSchema = z
 												currentThreshold: z.number(),
 												warningAt: z.number().nullish(),
 												blockedAt: z.number().nullish(),
+												blockGracePeriodStartedAt: z.number().nullish(),
 											})
 											.optional(),
 										runtimeCacheRead: z
@@ -6752,6 +8005,7 @@ export const userEventSchema = z
 												currentThreshold: z.number(),
 												warningAt: z.number().nullish(),
 												blockedAt: z.number().nullish(),
+												blockGracePeriodStartedAt: z.number().nullish(),
 											})
 											.optional(),
 										runtimeCacheWrite: z
@@ -6759,6 +8013,7 @@ export const userEventSchema = z
 												currentThreshold: z.number(),
 												warningAt: z.number().nullish(),
 												blockedAt: z.number().nullish(),
+												blockGracePeriodStartedAt: z.number().nullish(),
 											})
 											.optional(),
 										serverlessFunctionExecution: z
@@ -6766,6 +8021,7 @@ export const userEventSchema = z
 												currentThreshold: z.number(),
 												warningAt: z.number().nullish(),
 												blockedAt: z.number().nullish(),
+												blockGracePeriodStartedAt: z.number().nullish(),
 											})
 											.optional(),
 										sourceImages: z
@@ -6773,6 +8029,7 @@ export const userEventSchema = z
 												currentThreshold: z.number(),
 												warningAt: z.number().nullish(),
 												blockedAt: z.number().nullish(),
+												blockGracePeriodStartedAt: z.number().nullish(),
 											})
 											.optional(),
 										wafOwaspExcessBytes: z
@@ -6780,6 +8037,7 @@ export const userEventSchema = z
 												currentThreshold: z.number(),
 												warningAt: z.number().nullish(),
 												blockedAt: z.number().nullish(),
+												blockGracePeriodStartedAt: z.number().nullish(),
 											})
 											.optional(),
 										wafOwaspRequests: z
@@ -6787,6 +8045,7 @@ export const userEventSchema = z
 												currentThreshold: z.number(),
 												warningAt: z.number().nullish(),
 												blockedAt: z.number().nullish(),
+												blockGracePeriodStartedAt: z.number().nullish(),
 											})
 											.optional(),
 										wafRateLimitRequest: z
@@ -6794,6 +8053,7 @@ export const userEventSchema = z
 												currentThreshold: z.number(),
 												warningAt: z.number().nullish(),
 												blockedAt: z.number().nullish(),
+												blockGracePeriodStartedAt: z.number().nullish(),
 											})
 											.optional(),
 										webAnalyticsEvent: z
@@ -6801,6 +8061,7 @@ export const userEventSchema = z
 												currentThreshold: z.number(),
 												warningAt: z.number().nullish(),
 												blockedAt: z.number().nullish(),
+												blockGracePeriodStartedAt: z.number().nullish(),
 											})
 											.optional(),
 									})
@@ -6834,36 +8095,6 @@ export const userEventSchema = z
 											.optional()
 											.describe(
 												"Tracks the last time we attempted to send an increased on-demand email. This check is to limit the number of attempts per day.",
-											),
-										hobbyPolicyNoticeSlackSentAt: z
-											.number()
-											.optional()
-											.describe(
-												"Tracks when the new-Hobby-policy notice was reported for this owner. Reported at most once per owner, ever.",
-											),
-										hobbyWarningV2SlackSentAt: z
-											.number()
-											.optional()
-											.describe(
-												"Tracks the last time a `warningThresholdsV2` crossing was reported for this owner. Hobby has no billing period, so this re-arms on the same rolling window the service already uses for Hobby alerts.",
-											),
-										hobbyWarningV2At100SlackSentAt: z
-											.number()
-											.optional()
-											.describe(
-												"Tracks the last time the 100% `warningThresholdsV2` crossing was reported for this owner. This is separate so a recent lower warning does not suppress the full-allocation warning. It also starts the team-wide 24-hour grace period before a soft pause.",
-											),
-										hobbyPauseNoticeSlackSentAt: z
-											.number()
-											.optional()
-											.describe(
-												"Tracks the last time a `blockThresholdV2` breach was reported for this owner. Re-arms on the same rolling window as `hobbyWarningV2SlackSentAt`.",
-											),
-										hobbyPolicySlackThreadTs: z
-											.string()
-											.optional()
-											.describe(
-												"Slack `ts` of the thread root holding this owner's new-Hobby-policy alerts. Every later alert for the owner is posted as a reply to it, so the channel carries one entry per owner rather than one per alert. Replaced if Slack reports the root as gone.",
 											),
 									})
 									.optional()
@@ -7425,11 +8656,16 @@ export const userEventSchema = z
 						integrationSlug: z.string(),
 						integrationProductSlug: z.string(),
 						configurationId: z.string(),
-						error: z.string().optional(),
+						errorCode: z.string().optional(),
 						requestKind: z.enum(["raw_commands"]),
 						readonly: z.union([z.literal(false), z.literal(true)]),
-						commands: z.array(z.string()),
-						failedIndex: z.number().optional(),
+						commands: z.array(
+							z.object({
+								command: z.string(),
+								errorCode: z.string().optional(),
+							}),
+						),
+						errorIndex: z.number().optional(),
 					})
 					.strict(),
 				z
@@ -7439,7 +8675,7 @@ export const userEventSchema = z
 						integrationSlug: z.string(),
 						integrationProductSlug: z.string(),
 						configurationId: z.string(),
-						error: z.string().optional(),
+						errorCode: z.string().optional(),
 						requestKind: z.enum(["list_keys"]),
 						pattern: z.string().optional(),
 						type: z.string().optional(),
@@ -7452,7 +8688,7 @@ export const userEventSchema = z
 						integrationSlug: z.string(),
 						integrationProductSlug: z.string(),
 						configurationId: z.string(),
-						error: z.string().optional(),
+						errorCode: z.string().optional(),
 						requestKind: z.enum(["get_keys_metadata"]),
 						keys: z.array(z.string()),
 					})
@@ -7464,7 +8700,7 @@ export const userEventSchema = z
 						integrationSlug: z.string(),
 						integrationProductSlug: z.string(),
 						configurationId: z.string(),
-						error: z.string().optional(),
+						errorCode: z.string().optional(),
 						requestKind: z.enum(["get_key_data"]),
 						key: z.string(),
 					})
@@ -8008,6 +9244,15 @@ export const userEventSchema = z
 					.strict(),
 				z
 					.object({
+						organizationId: z.string(),
+						teamId: z.string(),
+						teamName: z.string(),
+						previousMode: z.enum(["organization", "team"]),
+						mode: z.enum(["organization", "team"]),
+					})
+					.strict(),
+				z
+					.object({
 						ownerId: z.string(),
 						source: z.string(),
 						cause: z.string(),
@@ -8421,6 +9666,7 @@ export const userEventSchema = z
 					.strict(),
 				z
 					.object({
+						projectName: z.string().optional(),
 						endpoint: z.object({
 							id: z.string(),
 							name: z.string(),
@@ -8433,6 +9679,7 @@ export const userEventSchema = z
 					.strict(),
 				z
 					.object({
+						projectName: z.string().optional(),
 						privateLinkEndpoint: z.object({
 							id: z.string(),
 							name: z.string(),
@@ -8442,6 +9689,7 @@ export const userEventSchema = z
 					.strict(),
 				z
 					.object({
+						projectName: z.string().optional(),
 						prev: z.object({
 							id: z.string(),
 							name: z.string(),
@@ -8462,6 +9710,7 @@ export const userEventSchema = z
 					.strict(),
 				z
 					.object({
+						projectName: z.string().optional(),
 						privateLinkEndpoint: z.object({
 							id: z.string(),
 							name: z.string(),
@@ -8617,6 +9866,7 @@ export const userEventSchema = z
 								"observability-function-invocations",
 								"online",
 								"res",
+								"shortcut",
 								"speed-insights-cls",
 								"speed-insights-lcp",
 								"speed-insights-res",
@@ -8855,6 +10105,7 @@ export const userEventSchema = z
 									"github-custom-host",
 									"github-limited",
 									"gitlab",
+									"v0",
 									"vercel",
 								]),
 								gitRepoId: z.string(),
@@ -8869,6 +10120,7 @@ export const userEventSchema = z
 								"github-custom-host",
 								"github-limited",
 								"gitlab",
+								"v0",
 								"vercel",
 							]),
 							gitRepoId: z.string(),
@@ -8887,6 +10139,7 @@ export const userEventSchema = z
 							"github-custom-host",
 							"github-limited",
 							"gitlab",
+							"v0",
 							"vercel",
 						]),
 						gitRepoId: z.string(),
@@ -9301,8 +10554,18 @@ export const userEventSchema = z
 					.object({
 						projectId: z.string(),
 						projectName: z.string(),
-						previous: z.object({}).nullable(),
-						next: z.object({}).nullable(),
+						previous: z
+							.object({
+								gitSources: z.array(z.string()).nullish(),
+								deploymentSources: z.array(z.string()).nullish(),
+							})
+							.nullable(),
+						next: z
+							.object({
+								gitSources: z.array(z.string()).nullish(),
+								deploymentSources: z.array(z.string()).nullish(),
+							})
+							.nullable(),
 					})
 					.strict(),
 				z
@@ -9550,6 +10813,7 @@ export const userEventSchema = z
 					.object({
 						projectId: z.string(),
 						projectName: z.string(),
+						enableVercelCiSameRepository: z.union([z.literal(false), z.literal(true)]).optional(),
 						addedProjects: z.array(
 							z.object({
 								id: z.string(),
@@ -9858,6 +11122,13 @@ export const userEventSchema = z
 										.enum(["flex", "legacy", "platform", "plus", "unbundled"])
 										.optional()
 										.describe("The acive pricing plan the team is billed with"),
+									scope: z
+										.enum(["organization", "project", "team"])
+										.optional()
+										.describe(
+											"Which budget this is. Matches Copper SDK `BudgetScope`. Omitted on events published before team/org/project scopes existed (treat as team).",
+										),
+									scopeId: z.string().optional().describe("Project id when `scope` is `project`."),
 									teamId: z.string().describe("Partition key"),
 									id: z.string().describe("Sort key that needs to be unique per teamId"),
 								})
@@ -9902,6 +11173,13 @@ export const userEventSchema = z
 									.enum(["flex", "legacy", "platform", "plus", "unbundled"])
 									.optional()
 									.describe("The acive pricing plan the team is billed with"),
+								scope: z
+									.enum(["organization", "project", "team"])
+									.optional()
+									.describe(
+										"Which budget this is. Matches Copper SDK `BudgetScope`. Omitted on events published before team/org/project scopes existed (treat as team).",
+									),
+								scopeId: z.string().optional().describe("Project id when `scope` is `project`."),
 								teamId: z.string().describe("Partition key"),
 								id: z.string().describe("Sort key that needs to be unique per teamId"),
 							})
@@ -9943,6 +11221,13 @@ export const userEventSchema = z
 									.enum(["flex", "legacy", "platform", "plus", "unbundled"])
 									.optional()
 									.describe("The acive pricing plan the team is billed with"),
+								scope: z
+									.enum(["organization", "project", "team"])
+									.optional()
+									.describe(
+										"Which budget this is. Matches Copper SDK `BudgetScope`. Omitted on events published before team/org/project scopes existed (treat as team).",
+									),
+								scopeId: z.string().optional().describe("Project id when `scope` is `project`."),
 								teamId: z.string().describe("Partition key"),
 								id: z.string().describe("Sort key that needs to be unique per teamId"),
 							})
@@ -9985,6 +11270,13 @@ export const userEventSchema = z
 									.enum(["flex", "legacy", "platform", "plus", "unbundled"])
 									.optional()
 									.describe("The acive pricing plan the team is billed with"),
+								scope: z
+									.enum(["organization", "project", "team"])
+									.optional()
+									.describe(
+										"Which budget this is. Matches Copper SDK `BudgetScope`. Omitted on events published before team/org/project scopes existed (treat as team).",
+									),
+								scopeId: z.string().optional().describe("Project id when `scope` is `project`."),
 								teamId: z.string().describe("Partition key"),
 								id: z.string().describe("Sort key that needs to be unique per teamId"),
 							})
@@ -10022,6 +11314,13 @@ export const userEventSchema = z
 									.enum(["flex", "legacy", "platform", "plus", "unbundled"])
 									.optional()
 									.describe("The acive pricing plan the team is billed with"),
+								scope: z
+									.enum(["organization", "project", "team"])
+									.optional()
+									.describe(
+										"Which budget this is. Matches Copper SDK `BudgetScope`. Omitted on events published before team/org/project scopes existed (treat as team).",
+									),
+								scopeId: z.string().optional().describe("Project id when `scope` is `project`."),
 								teamId: z.string().describe("Partition key"),
 								id: z.string().describe("Sort key that needs to be unique per teamId"),
 							})
@@ -10244,6 +11543,7 @@ export const userEventSchema = z
 								"long-build-duration",
 								"oom-failure",
 								"plan-change",
+								"project-transfer",
 								"short-build-duration",
 								"sustained-high-cpu",
 							])
@@ -10289,8 +11589,18 @@ export const userEventSchema = z
 					.strict(),
 				z
 					.object({
-						previous: z.object({}).nullable(),
-						next: z.object({}).nullable(),
+						previous: z
+							.object({
+								gitSources: z.array(z.string()).nullish(),
+								deploymentSources: z.array(z.string()).nullish(),
+							})
+							.nullable(),
+						next: z
+							.object({
+								gitSources: z.array(z.string()).nullish(),
+								deploymentSources: z.array(z.string()).nullish(),
+							})
+							.nullable(),
 					})
 					.strict(),
 				z
@@ -11169,6 +12479,7 @@ export const userEventSchema = z
 					.object({
 						deploymentId: z.string(),
 						projectId: z.string(),
+						projectName: z.string().optional(),
 						runId: z.string(),
 					})
 					.strict(),
@@ -11483,6 +12794,7 @@ export const userEventSchema = z
 							.optional()
 							.describe("Present when `scope` is `'team'` or `'project'`."),
 						projectId: z.string().optional().describe("Present when `scope` is `'project'`."),
+						projectName: z.string().optional().describe("Present when `scope` is `'project'`."),
 						projectScope: z
 							.enum(["account", "project-only"])
 							.optional()
@@ -11661,8 +12973,10 @@ export const listEventTypeSchema = z
 				"ai-gateway-byok-credential-created",
 				"ai-gateway-byok-credential-deleted",
 				"ai-gateway-byok-credential-updated",
+				"ai-gateway-byok-model-mappings-updated",
 				"ai-gateway-credits-purchased",
 				"ai-gateway-guardrails-updated",
+				"ai-gateway-hipaa-compliance-toggled",
 				"ai-gateway-inference-regions-updated",
 				"ai-gateway-model-allowlist-models-updated",
 				"ai-gateway-model-allowlist-toggled",
@@ -11672,6 +12986,7 @@ export const listEventTypeSchema = z
 				"ai-gateway-private-provider-created",
 				"ai-gateway-private-provider-deleted",
 				"ai-gateway-private-provider-updated",
+				"ai-gateway-prompt-training-opt-out-toggled",
 				"ai-gateway-provider-allowlist-providers-updated",
 				"ai-gateway-provider-allowlist-toggled",
 				"ai-gateway-rule-created",
@@ -11685,8 +13000,10 @@ export const listEventTypeSchema = z
 				"ai-gateway-transcripts-retention-updated",
 				"ai-gateway-virtual-model-config-archived",
 				"ai-gateway-virtual-model-config-created",
+				"ai-gateway-virtual-model-config-deleted",
 				"ai-gateway-virtual-model-config-restored",
 				"ai-gateway-virtual-model-config-updated",
+				"ai-gateway-zero-data-retention-toggled",
 				"ai-omniagent",
 				"alert-investigation-project-allowlist-updated",
 				"alert-rule-created",
@@ -11876,6 +13193,7 @@ export const listEventTypeSchema = z
 				"flags-segment",
 				"flags-settings",
 				"flags-transferred",
+				"flat-rate-cdn-auto-upgrade-consent",
 				"git-integration-repo-push",
 				"git_account_integration_link_added",
 				"global-config-backup-restored",
@@ -11960,6 +13278,7 @@ export const listEventTypeSchema = z
 				"organization-team-add",
 				"organization-team-create",
 				"organization-team-delete",
+				"organization-team-sso-update",
 				"owner-blocked",
 				"owner-soft-blocked",
 				"owner-soft-unblocked",
@@ -12039,6 +13358,12 @@ export const listEventTypeSchema = z
 				"project-git-commit-comments-toggled",
 				"project-git-commit-status-toggled",
 				"project-git-create-deployments-toggled",
+				"project-git-credential-bound-created",
+				"project-git-credential-bound-deleted",
+				"project-git-credential-bound-updated",
+				"project-git-credential-grant-created",
+				"project-git-credential-grant-deleted",
+				"project-git-credential-grant-updated",
 				"project-git-fork-protection-updated",
 				"project-git-lfs-toggled",
 				"project-git-pr-comments-toggled",
@@ -12131,6 +13456,8 @@ export const listEventTypeSchema = z
 				"shared-env-variable-create",
 				"shared-env-variable-delete",
 				"shared-env-variable-read",
+				"shared-env-variable-repo-link",
+				"shared-env-variable-repo-unlink",
 				"shared-env-variable-update",
 				"show-ip-addresses",
 				"signup",
@@ -12161,6 +13488,7 @@ export const listEventTypeSchema = z
 				"storage-update-project-connection",
 				"storage-upgrade-project-connection-to-oidc",
 				"storage-view-secret",
+				"strict-connectors",
 				"strict-deployment-protection-settings",
 				"strict-password-protection-settings",
 				"strict-shareable-links",
@@ -12363,8 +13691,10 @@ export const listEventTypeSchema = z
 					"ai-gateway-byok-credential-created",
 					"ai-gateway-byok-credential-deleted",
 					"ai-gateway-byok-credential-updated",
+					"ai-gateway-byok-model-mappings-updated",
 					"ai-gateway-credits-purchased",
 					"ai-gateway-guardrails-updated",
+					"ai-gateway-hipaa-compliance-toggled",
 					"ai-gateway-inference-regions-updated",
 					"ai-gateway-model-allowlist-models-updated",
 					"ai-gateway-model-allowlist-toggled",
@@ -12374,6 +13704,7 @@ export const listEventTypeSchema = z
 					"ai-gateway-private-provider-created",
 					"ai-gateway-private-provider-deleted",
 					"ai-gateway-private-provider-updated",
+					"ai-gateway-prompt-training-opt-out-toggled",
 					"ai-gateway-provider-allowlist-providers-updated",
 					"ai-gateway-provider-allowlist-toggled",
 					"ai-gateway-rule-created",
@@ -12387,8 +13718,10 @@ export const listEventTypeSchema = z
 					"ai-gateway-transcripts-retention-updated",
 					"ai-gateway-virtual-model-config-archived",
 					"ai-gateway-virtual-model-config-created",
+					"ai-gateway-virtual-model-config-deleted",
 					"ai-gateway-virtual-model-config-restored",
 					"ai-gateway-virtual-model-config-updated",
+					"ai-gateway-zero-data-retention-toggled",
 					"ai-omniagent",
 					"alert-investigation-project-allowlist-updated",
 					"alert-rule-created",
@@ -12578,6 +13911,7 @@ export const listEventTypeSchema = z
 					"flags-segment",
 					"flags-settings",
 					"flags-transferred",
+					"flat-rate-cdn-auto-upgrade-consent",
 					"git-integration-repo-push",
 					"git_account_integration_link_added",
 					"global-config-backup-restored",
@@ -12662,6 +13996,7 @@ export const listEventTypeSchema = z
 					"organization-team-add",
 					"organization-team-create",
 					"organization-team-delete",
+					"organization-team-sso-update",
 					"owner-blocked",
 					"owner-soft-blocked",
 					"owner-soft-unblocked",
@@ -12741,6 +14076,12 @@ export const listEventTypeSchema = z
 					"project-git-commit-comments-toggled",
 					"project-git-commit-status-toggled",
 					"project-git-create-deployments-toggled",
+					"project-git-credential-bound-created",
+					"project-git-credential-bound-deleted",
+					"project-git-credential-bound-updated",
+					"project-git-credential-grant-created",
+					"project-git-credential-grant-deleted",
+					"project-git-credential-grant-updated",
 					"project-git-fork-protection-updated",
 					"project-git-lfs-toggled",
 					"project-git-pr-comments-toggled",
@@ -12833,6 +14174,8 @@ export const listEventTypeSchema = z
 					"shared-env-variable-create",
 					"shared-env-variable-delete",
 					"shared-env-variable-read",
+					"shared-env-variable-repo-link",
+					"shared-env-variable-repo-unlink",
 					"shared-env-variable-update",
 					"show-ip-addresses",
 					"signup",
@@ -12863,6 +14206,7 @@ export const listEventTypeSchema = z
 					"storage-update-project-connection",
 					"storage-upgrade-project-connection-to-oidc",
 					"storage-view-secret",
+					"strict-connectors",
 					"strict-deployment-protection-settings",
 					"strict-password-protection-settings",
 					"strict-shareable-links",
@@ -13035,7 +14379,22 @@ export const listEventTypesResponseSchema = z
 
 export const flagSchema = z.object({
 	description: z.string().optional(),
-	variants: z.array(z.object({})),
+	variants: z.array(
+		z.object({
+			description: z.string().optional(),
+			label: z.string().optional(),
+			value: z
+				.union([
+					z.string(),
+					z.number(),
+					z.object({}).catchall(z.unknown()),
+					z.array(z.string()),
+					z.union([z.literal(false), z.literal(true)]),
+				])
+				.nullable(),
+			id: z.string(),
+		}),
+	),
 	id: z.string(),
 	environments: z.object({}).catchall(
 		z.object({
@@ -13065,7 +14424,7 @@ export const flagSchema = z.object({
 				type: z.enum(["variant"]),
 				variantId: z.string(),
 			}),
-			fallthrough: z.union([
+			fallthrough: z.discriminatedUnion("type", [
 				z
 					.object({
 						type: z.enum(["variant"]),
@@ -13114,7 +14473,7 @@ export const flagSchema = z.object({
 			rules: z.array(
 				z.object({
 					id: z.string(),
-					outcome: z.union([
+					outcome: z.discriminatedUnion("type", [
 						z
 							.object({
 								type: z.enum(["variant"]),
@@ -13203,7 +14562,7 @@ export const flagSchema = z.object({
 									ignoreCase: z.union([z.literal(false), z.literal(true)]).optional(),
 								})
 								.optional(),
-							lhs: z.union([
+							lhs: z.discriminatedUnion("type", [
 								z
 									.object({
 										type: z.enum(["segment"]),
@@ -13296,7 +14655,7 @@ export const segmentSchema = z.object({
 			.array(
 				z.object({
 					id: z.string(),
-					outcome: z.union([
+					outcome: z.discriminatedUnion("type", [
 						z
 							.object({
 								type: z.enum(["all"]),
@@ -13358,7 +14717,7 @@ export const segmentSchema = z.object({
 									ignoreCase: z.union([z.literal(false), z.literal(true)]).optional(),
 								})
 								.optional(),
-							lhs: z.union([
+							lhs: z.discriminatedUnion("type", [
 								z
 									.object({
 										type: z.enum(["segment"]),
@@ -13692,6 +15051,10 @@ export const namedSandboxSchema = z
 			})
 			.optional()
 			.describe("Network policy configuration."),
+		networkId: z
+			.string()
+			.optional()
+			.describe("The Connect network id for the target Secure Compute private network."),
 		totalEgressBytes: z
 			.number()
 			.optional()
@@ -13728,7 +15091,7 @@ export const namedSandboxSchema = z
 			.catchall(
 				z.object({
 					drive: z.string(),
-					mode: z.enum(["read-only", "read-write"]).optional(),
+					mode: z.enum(["read-only", "read-write", "snapshot"]).optional(),
 				}),
 			)
 			.optional()
@@ -13933,6 +15296,10 @@ export const sandboxPublicRouteSchema = z
 
 export const driveSchema = z
 	.object({
+		id: z
+			.string()
+			.describe("The unique drive ID.")
+			.meta({ examples: ["drive_abc123"] }),
 		name: z
 			.string()
 			.describe("The unique drive name within the project.")
@@ -13944,7 +15311,7 @@ export const driveSchema = z
 		maxSizeBytes: z
 			.number()
 			.describe("The maximum drive size in bytes.")
-			.meta({ examples: [107374182400] }),
+			.meta({ examples: [1099511627776] }),
 		region: z
 			.string()
 			.describe("The region where the drive is stored.")
@@ -14591,6 +15958,15 @@ export const teamSchema = z
 			.describe(
 				"When enabled, adding, changing, or removing project password protection requires Owner role.",
 			),
+		strictConnectors: z
+			.object({
+				enabled: z.union([z.literal(false), z.literal(true)]),
+				updatedAt: z.number(),
+			})
+			.optional()
+			.describe(
+				"When enabled, creating and managing connectors requires Owner role or the ConnectorManager permission.",
+			),
 		nsnbConfig: z
 			.object({
 				preference: z.enum(["auto-approval", "block", "manual-approval"]),
@@ -14622,7 +15998,7 @@ export const teamSchema = z
 							),
 							enabled: z.union([z.literal(false), z.literal(true)]),
 							environments: z.array(
-								z.union([
+								z.discriminatedUnion("type", [
 									z
 										.object({
 											type: z.enum(["system"]),
@@ -14648,7 +16024,7 @@ export const teamSchema = z
 							),
 							enabled: z.union([z.literal(false), z.literal(true)]),
 							environments: z.array(
-								z.union([
+								z.discriminatedUnion("type", [
 									z
 										.object({
 											type: z.enum(["system"]),
@@ -15103,7 +16479,7 @@ export const authTokenSchema = z
 			.meta({ examples: ["github"] }),
 		scopes: z
 			.array(
-				z.union([
+				z.discriminatedUnion("type", [
 					z
 						.object({
 							type: z.enum(["user"]),
@@ -15217,7 +16593,6 @@ export const authUserSchema = z
 					"ENTERPRISE_UNPAID_INVOICE",
 					"EXPOSURE_CAP_EXCEEDED",
 					"FAIR_USE_LIMITS_EXCEEDED",
-					"HOBBY_ALLOCATION_PAUSED",
 					"SUBSCRIPTION_CANCELED",
 					"SUBSCRIPTION_EXPIRED",
 					"UNPAID_INVOICE",
@@ -15265,75 +16640,11 @@ export const authUserSchema = z
 						"webAnalyticsEvent",
 					])
 					.optional(),
-				hobbyAllocationPause: z
-					.object({
-						pausedUntil: z
-							.number()
-							.describe(
-								"Unix ms timestamp at which the pause is eligible to end. This is the single source of truth for when the pause ends. Never re-derive it by re-checking usage — usage keeps moving while a team is paused, and the pause duration is a fixed experiment parameter.",
-							),
-						pausedAt: z.number().describe("Unix ms timestamp of when the pause was applied."),
-						triggers: z
-							.array(
-								z.object({
-									allocation: z
-										.enum([
-											"analyticsUsage",
-											"artifacts",
-											"bandwidth",
-											"blobDataTransfer",
-											"blobTotalAdvancedRequests",
-											"blobTotalAvgSizeInBytes",
-											"blobTotalGetResponseObjectSizeInBytes",
-											"blobTotalSimpleRequests",
-											"connectDataTransfer",
-											"dataCacheRead",
-											"dataCacheWrite",
-											"edgeConfigRead",
-											"edgeConfigWrite",
-											"edgeFunctionExecutionUnits",
-											"edgeMiddlewareInvocations",
-											"edgeRequest",
-											"edgeRequestAdditionalCpuDuration",
-											"elasticConcurrencyBuildSlots",
-											"fastDataTransfer",
-											"fastOriginTransfer",
-											"fluidCpuDuration",
-											"fluidDuration",
-											"functionDuration",
-											"functionInvocation",
-											"imageOptimizationCacheRead",
-											"imageOptimizationCacheWrite",
-											"imageOptimizationTransformation",
-											"logDrainsVolume",
-											"monitoringMetric",
-											"observabilityEvent",
-											"onDemandConcurrencyMinutes",
-											"runtimeCacheRead",
-											"runtimeCacheWrite",
-											"serverlessFunctionExecution",
-											"sourceImages",
-											"wafOwaspExcessBytes",
-											"wafOwaspRequests",
-											"wafRateLimitRequest",
-											"webAnalyticsEvent",
-										])
-										.describe("Metered allocation whose included amount was fully consumed."),
-									usage: z
-										.number()
-										.describe("Usage recorded for that allocation when the pause was applied."),
-								}),
-							)
-							.describe("Allocations that were at or over 100% when the pause was applied."),
-						cohort: z
-							.string()
-							.describe(
-								"Experiment cohort the owner was assigned to when the pause fired. Free-form so cohort naming stays owned by the assignment path.",
-							),
-					})
+				unpauseAt: z
+					.number()
 					.optional()
 					.describe(
-						"Present only when `reason` is `HOBBY_ALLOCATION_PAUSED`. Makes the pause self-describing for support without a separate lookup.",
+						"Since September 2026. Set only by `billing-usage-alerts` for usage plans with a `blockDurationMs`; its presence marks a pause that expires on its own.",
 					),
 			})
 			.nullable()
@@ -15512,6 +16823,12 @@ export const authUserSchema = z
 					),
 				security: z
 					.object({
+						rateLimit: z
+							.number()
+							.optional()
+							.describe(
+								"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
+							),
 						customRules: z
 							.number()
 							.optional()
@@ -15525,12 +16842,6 @@ export const authUserSchema = z
 								"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
 							),
 						ipBypass: z
-							.number()
-							.optional()
-							.describe(
-								"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
-							),
-						rateLimit: z
 							.number()
 							.optional()
 							.describe(
@@ -16724,7 +18035,11 @@ export const createAiGatewayVirtualModelConfigErrorSchema = z.union([
 
 export const getAiGatewayVirtualModelConfigQueryOwnerIdSchema = z.string().optional();
 
-export const getAiGatewayVirtualModelConfigQueryVirtualModelSlugSchema = z.string();
+export const getAiGatewayVirtualModelConfigQueryVirtualModelSlugSchema = z.string().optional();
+
+export const getAiGatewayVirtualModelConfigQueryLimitSchema = z.int().min(1).optional();
+
+export const getAiGatewayVirtualModelConfigQueryCursorSchema = z.string().optional();
 
 export const getAiGatewayVirtualModelConfigQueryTeamIdSchema = z
 	.string()
@@ -16806,6 +18121,12 @@ export const deleteAiGatewayVirtualModelConfigQueryOwnerIdSchema = z.string().op
 
 export const deleteAiGatewayVirtualModelConfigQueryVirtualModelSlugSchema = z.string();
 
+export const deleteAiGatewayVirtualModelConfigQueryUpdatedBySchema = z.string().optional();
+
+export const deleteAiGatewayVirtualModelConfigQueryActingIpSchema = z.string().optional();
+
+export const deleteAiGatewayVirtualModelConfigQueryActingUserAgentSchema = z.string().optional();
+
 export const deleteAiGatewayVirtualModelConfigQueryTeamIdSchema = z
 	.string()
 	.optional()
@@ -16883,6 +18204,138 @@ export const listAiGatewayVirtualModelConfigsErrorSchema = z.union([
 	listAiGatewayVirtualModelConfigsStatus403Schema,
 	listAiGatewayVirtualModelConfigsStatus410Schema,
 	listAiGatewayVirtualModelConfigsStatus500Schema,
+]);
+
+export const getAiGatewayVirtualModelConfigBySlugQueryOwnerIdSchema = z.string().optional();
+
+export const getAiGatewayVirtualModelConfigBySlugPathVmcSlugSchema = z.string();
+
+export const getAiGatewayVirtualModelConfigBySlugQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe("The Team identifier to perform the request on behalf of.")
+	.meta({ examples: ["team_1a2b3c4d5e6f7g8h9i0j1k2l"] });
+
+export const getAiGatewayVirtualModelConfigBySlugQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.")
+	.meta({ examples: ["my-team-url-slug"] });
+
+export const getAiGatewayVirtualModelConfigBySlugStatus200Schema = z.unknown();
+
+export const getAiGatewayVirtualModelConfigBySlugStatus400Schema = z.unknown();
+
+export const getAiGatewayVirtualModelConfigBySlugStatus401Schema = z.unknown();
+
+export const getAiGatewayVirtualModelConfigBySlugStatus403Schema = z.unknown();
+
+export const getAiGatewayVirtualModelConfigBySlugStatus404Schema = z.unknown();
+
+export const getAiGatewayVirtualModelConfigBySlugStatus410Schema = z.unknown();
+
+export const getAiGatewayVirtualModelConfigBySlugStatus500Schema = z.unknown();
+
+export const getAiGatewayVirtualModelConfigBySlugResponseSchema =
+	getAiGatewayVirtualModelConfigBySlugStatus200Schema;
+
+export const getAiGatewayVirtualModelConfigBySlugErrorSchema = z.union([
+	getAiGatewayVirtualModelConfigBySlugStatus400Schema,
+	getAiGatewayVirtualModelConfigBySlugStatus401Schema,
+	getAiGatewayVirtualModelConfigBySlugStatus403Schema,
+	getAiGatewayVirtualModelConfigBySlugStatus404Schema,
+	getAiGatewayVirtualModelConfigBySlugStatus410Schema,
+	getAiGatewayVirtualModelConfigBySlugStatus500Schema,
+]);
+
+export const updateAiGatewayVirtualModelConfigBySlugPathVmcSlugSchema = z.string();
+
+export const updateAiGatewayVirtualModelConfigBySlugQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe("The Team identifier to perform the request on behalf of.")
+	.meta({ examples: ["team_1a2b3c4d5e6f7g8h9i0j1k2l"] });
+
+export const updateAiGatewayVirtualModelConfigBySlugQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.")
+	.meta({ examples: ["my-team-url-slug"] });
+
+export const updateAiGatewayVirtualModelConfigBySlugStatus200Schema = z.unknown();
+
+export const updateAiGatewayVirtualModelConfigBySlugStatus400Schema = z.unknown();
+
+export const updateAiGatewayVirtualModelConfigBySlugStatus401Schema = z.unknown();
+
+export const updateAiGatewayVirtualModelConfigBySlugStatus403Schema = z.unknown();
+
+export const updateAiGatewayVirtualModelConfigBySlugStatus404Schema = z.unknown();
+
+export const updateAiGatewayVirtualModelConfigBySlugStatus410Schema = z.unknown();
+
+export const updateAiGatewayVirtualModelConfigBySlugStatus500Schema = z.unknown();
+
+export const updateAiGatewayVirtualModelConfigBySlugResponseSchema =
+	updateAiGatewayVirtualModelConfigBySlugStatus200Schema;
+
+export const updateAiGatewayVirtualModelConfigBySlugErrorSchema = z.union([
+	updateAiGatewayVirtualModelConfigBySlugStatus400Schema,
+	updateAiGatewayVirtualModelConfigBySlugStatus401Schema,
+	updateAiGatewayVirtualModelConfigBySlugStatus403Schema,
+	updateAiGatewayVirtualModelConfigBySlugStatus404Schema,
+	updateAiGatewayVirtualModelConfigBySlugStatus410Schema,
+	updateAiGatewayVirtualModelConfigBySlugStatus500Schema,
+]);
+
+export const deleteAiGatewayVirtualModelConfigBySlugQueryOwnerIdSchema = z.string().optional();
+
+export const deleteAiGatewayVirtualModelConfigBySlugPathVmcSlugSchema = z.string();
+
+export const deleteAiGatewayVirtualModelConfigBySlugQueryUpdatedBySchema = z.string().optional();
+
+export const deleteAiGatewayVirtualModelConfigBySlugQueryActingIpSchema = z.string().optional();
+
+export const deleteAiGatewayVirtualModelConfigBySlugQueryActingUserAgentSchema = z
+	.string()
+	.optional();
+
+export const deleteAiGatewayVirtualModelConfigBySlugQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe("The Team identifier to perform the request on behalf of.")
+	.meta({ examples: ["team_1a2b3c4d5e6f7g8h9i0j1k2l"] });
+
+export const deleteAiGatewayVirtualModelConfigBySlugQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.")
+	.meta({ examples: ["my-team-url-slug"] });
+
+export const deleteAiGatewayVirtualModelConfigBySlugStatus204Schema = z.unknown();
+
+export const deleteAiGatewayVirtualModelConfigBySlugStatus400Schema = z.unknown();
+
+export const deleteAiGatewayVirtualModelConfigBySlugStatus401Schema = z.unknown();
+
+export const deleteAiGatewayVirtualModelConfigBySlugStatus403Schema = z.unknown();
+
+export const deleteAiGatewayVirtualModelConfigBySlugStatus404Schema = z.unknown();
+
+export const deleteAiGatewayVirtualModelConfigBySlugStatus410Schema = z.unknown();
+
+export const deleteAiGatewayVirtualModelConfigBySlugStatus500Schema = z.unknown();
+
+export const deleteAiGatewayVirtualModelConfigBySlugResponseSchema =
+	deleteAiGatewayVirtualModelConfigBySlugStatus204Schema;
+
+export const deleteAiGatewayVirtualModelConfigBySlugErrorSchema = z.union([
+	deleteAiGatewayVirtualModelConfigBySlugStatus400Schema,
+	deleteAiGatewayVirtualModelConfigBySlugStatus401Schema,
+	deleteAiGatewayVirtualModelConfigBySlugStatus403Schema,
+	deleteAiGatewayVirtualModelConfigBySlugStatus404Schema,
+	deleteAiGatewayVirtualModelConfigBySlugStatus410Schema,
+	deleteAiGatewayVirtualModelConfigBySlugStatus500Schema,
 ]);
 
 export const createAiGatewayRuleQueryTeamIdSchema = z
@@ -18560,6 +20013,398 @@ export const readNetworkErrorSchema = z.union([
 	readNetworkStatus410Schema,
 ]);
 
+export const createPrivateLinkEndpointQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe("The Team identifier to perform the request on behalf of.")
+	.meta({ examples: ["team_1a2b3c4d5e6f7g8h9i0j1k2l"] });
+
+export const createPrivateLinkEndpointQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.")
+	.meta({ examples: ["my-team-url-slug"] });
+
+export const createPrivateLinkEndpointStatus201Schema = z.unknown();
+
+export const createPrivateLinkEndpointStatus400Schema = z.unknown();
+
+export const createPrivateLinkEndpointStatus401Schema = z.unknown();
+
+export const createPrivateLinkEndpointStatus403Schema = z.unknown();
+
+export const createPrivateLinkEndpointStatus404Schema = z.unknown();
+
+export const createPrivateLinkEndpointStatus409Schema = z.unknown();
+
+export const createPrivateLinkEndpointStatus410Schema = z.unknown();
+
+export const createPrivateLinkEndpointResponseSchema = createPrivateLinkEndpointStatus201Schema;
+
+export const createPrivateLinkEndpointErrorSchema = z.union([
+	createPrivateLinkEndpointStatus400Schema,
+	createPrivateLinkEndpointStatus401Schema,
+	createPrivateLinkEndpointStatus403Schema,
+	createPrivateLinkEndpointStatus404Schema,
+	createPrivateLinkEndpointStatus409Schema,
+	createPrivateLinkEndpointStatus410Schema,
+]);
+
+export const listPrivateLinkEndpointsQueryProjectIdSchema = z
+	.string()
+	.describe("The project ID to list PrivateLink endpoints for.")
+	.meta({ examples: ["prj_a1b2c3d4e5f6g7h8"] });
+
+export const listPrivateLinkEndpointsQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe("The Team identifier to perform the request on behalf of.")
+	.meta({ examples: ["team_1a2b3c4d5e6f7g8h9i0j1k2l"] });
+
+export const listPrivateLinkEndpointsQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.")
+	.meta({ examples: ["my-team-url-slug"] });
+
+export const listPrivateLinkEndpointsStatus200Schema = z.unknown();
+
+export const listPrivateLinkEndpointsStatus400Schema = z.unknown();
+
+export const listPrivateLinkEndpointsStatus401Schema = z.unknown();
+
+export const listPrivateLinkEndpointsStatus403Schema = z.unknown();
+
+export const listPrivateLinkEndpointsStatus404Schema = z.unknown();
+
+export const listPrivateLinkEndpointsStatus410Schema = z.unknown();
+
+export const listPrivateLinkEndpointsResponseSchema = listPrivateLinkEndpointsStatus200Schema;
+
+export const listPrivateLinkEndpointsErrorSchema = z.union([
+	listPrivateLinkEndpointsStatus400Schema,
+	listPrivateLinkEndpointsStatus401Schema,
+	listPrivateLinkEndpointsStatus403Schema,
+	listPrivateLinkEndpointsStatus404Schema,
+	listPrivateLinkEndpointsStatus410Schema,
+]);
+
+export const readPrivateLinkEndpointQueryProjectIdSchema = z
+	.string()
+	.describe("The project ID the PrivateLink endpoint belongs to.")
+	.meta({ examples: ["prj_a1b2c3d4e5f6g7h8"] });
+
+export const readPrivateLinkEndpointPathEndpointIdSchema = z
+	.string()
+	.describe("The unique identifier of the PrivateLink endpoint.")
+	.meta({ examples: ["ple_a1b2c3d4e5f6g7h8"] });
+
+export const readPrivateLinkEndpointQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe("The Team identifier to perform the request on behalf of.")
+	.meta({ examples: ["team_1a2b3c4d5e6f7g8h9i0j1k2l"] });
+
+export const readPrivateLinkEndpointQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.")
+	.meta({ examples: ["my-team-url-slug"] });
+
+export const readPrivateLinkEndpointStatus200Schema = z.unknown();
+
+export const readPrivateLinkEndpointStatus400Schema = z.unknown();
+
+export const readPrivateLinkEndpointStatus401Schema = z.unknown();
+
+export const readPrivateLinkEndpointStatus403Schema = z.unknown();
+
+export const readPrivateLinkEndpointStatus404Schema = z.unknown();
+
+export const readPrivateLinkEndpointStatus410Schema = z.unknown();
+
+export const readPrivateLinkEndpointResponseSchema = readPrivateLinkEndpointStatus200Schema;
+
+export const readPrivateLinkEndpointErrorSchema = z.union([
+	readPrivateLinkEndpointStatus400Schema,
+	readPrivateLinkEndpointStatus401Schema,
+	readPrivateLinkEndpointStatus403Schema,
+	readPrivateLinkEndpointStatus404Schema,
+	readPrivateLinkEndpointStatus410Schema,
+]);
+
+export const deletePrivateLinkEndpointQueryProjectIdSchema = z
+	.string()
+	.describe("The project ID the PrivateLink endpoint belongs to.")
+	.meta({ examples: ["prj_a1b2c3d4e5f6g7h8"] });
+
+export const deletePrivateLinkEndpointPathEndpointIdSchema = z
+	.string()
+	.describe("The unique identifier of the PrivateLink endpoint.")
+	.meta({ examples: ["ple_a1b2c3d4e5f6g7h8"] });
+
+export const deletePrivateLinkEndpointQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe("The Team identifier to perform the request on behalf of.")
+	.meta({ examples: ["team_1a2b3c4d5e6f7g8h9i0j1k2l"] });
+
+export const deletePrivateLinkEndpointQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.")
+	.meta({ examples: ["my-team-url-slug"] });
+
+export const deletePrivateLinkEndpointStatus204Schema = z.unknown();
+
+export const deletePrivateLinkEndpointStatus400Schema = z.unknown();
+
+export const deletePrivateLinkEndpointStatus401Schema = z.unknown();
+
+export const deletePrivateLinkEndpointStatus403Schema = z.unknown();
+
+export const deletePrivateLinkEndpointStatus404Schema = z.unknown();
+
+export const deletePrivateLinkEndpointStatus409Schema = z.unknown();
+
+export const deletePrivateLinkEndpointStatus410Schema = z.unknown();
+
+export const deletePrivateLinkEndpointResponseSchema = deletePrivateLinkEndpointStatus204Schema;
+
+export const deletePrivateLinkEndpointErrorSchema = z.union([
+	deletePrivateLinkEndpointStatus400Schema,
+	deletePrivateLinkEndpointStatus401Schema,
+	deletePrivateLinkEndpointStatus403Schema,
+	deletePrivateLinkEndpointStatus404Schema,
+	deletePrivateLinkEndpointStatus409Schema,
+	deletePrivateLinkEndpointStatus410Schema,
+]);
+
+export const updatePrivateLinkEndpointQueryProjectIdSchema = z
+	.string()
+	.describe("The project ID the PrivateLink endpoint belongs to.")
+	.meta({ examples: ["prj_a1b2c3d4e5f6g7h8"] });
+
+export const updatePrivateLinkEndpointPathEndpointIdSchema = z
+	.string()
+	.describe("The unique identifier of the PrivateLink endpoint.")
+	.meta({ examples: ["ple_a1b2c3d4e5f6g7h8"] });
+
+export const updatePrivateLinkEndpointQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe("The Team identifier to perform the request on behalf of.")
+	.meta({ examples: ["team_1a2b3c4d5e6f7g8h9i0j1k2l"] });
+
+export const updatePrivateLinkEndpointQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.")
+	.meta({ examples: ["my-team-url-slug"] });
+
+export const updatePrivateLinkEndpointStatus200Schema = z.unknown();
+
+export const updatePrivateLinkEndpointStatus400Schema = z.unknown();
+
+export const updatePrivateLinkEndpointStatus401Schema = z.unknown();
+
+export const updatePrivateLinkEndpointStatus403Schema = z.unknown();
+
+export const updatePrivateLinkEndpointStatus404Schema = z.unknown();
+
+export const updatePrivateLinkEndpointStatus409Schema = z.unknown();
+
+export const updatePrivateLinkEndpointStatus410Schema = z.unknown();
+
+export const updatePrivateLinkEndpointResponseSchema = updatePrivateLinkEndpointStatus200Schema;
+
+export const updatePrivateLinkEndpointErrorSchema = z.union([
+	updatePrivateLinkEndpointStatus400Schema,
+	updatePrivateLinkEndpointStatus401Schema,
+	updatePrivateLinkEndpointStatus403Schema,
+	updatePrivateLinkEndpointStatus404Schema,
+	updatePrivateLinkEndpointStatus409Schema,
+	updatePrivateLinkEndpointStatus410Schema,
+]);
+
+export const listConnectorsQueryLimitSchema = z
+	.int()
+	.min(1)
+	.max(100)
+	.optional()
+	.describe("Maximum number of connectors to return. Defaults to 20.");
+
+export const listConnectorsQueryCursorSchema = z
+	.string()
+	.optional()
+	.describe("Cursor from `pagination.next` on the previous response.");
+
+export const listConnectorsQueryProjectIdSchema = z
+	.string()
+	.optional()
+	.describe("Return only connectors connected to this project.");
+
+export const listConnectorsQuerySearchSchema = z
+	.string()
+	.max(100)
+	.optional()
+	.describe("Search connector names, UIDs, and services.");
+
+export const listConnectorsQueryTypeSchema = z
+	.string()
+	.optional()
+	.describe(
+		"Comma-separated connector types: `slack`, `discord`, `github`, `linear`, `linq`, `salesforce`, `sendblue`, `snowflake`, `snowflake-wif`, `microsoft-entra`, `api-key`, `photon`, `oauth`, or `custom`.",
+	);
+
+export const listConnectorsQueryServiceSchema = z
+	.string()
+	.optional()
+	.describe("Comma-separated provider or service identifiers.");
+
+export const listConnectorsQuerySortSchema = z
+	.enum(["name", "createdAt", "updatedAt"])
+	.optional()
+	.describe("Sort by name in ascending order, or by creation or update time in descending order.");
+
+export const listConnectorsQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe(
+		"The team ID that scopes the request. Do not send it with slug. If both are omitted, Vercel uses the team associated with the token or the authenticated user's default team. The request returns 401 if no team can be selected.",
+	)
+	.meta({ examples: ["team_1a2b3c4d5e6f7g8h9i0j1k2l"] });
+
+export const listConnectorsQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe(
+		"The team slug that scopes the request. Do not send it with teamId. If both are omitted, Vercel uses the team associated with the token or the authenticated user's default team. The request returns 401 if no team can be selected.",
+	)
+	.meta({ examples: ["my-team-url-slug"] });
+
+export const listConnectorsStatus200Schema = z.unknown();
+
+export const listConnectorsStatus400Schema = z.unknown();
+
+export const listConnectorsStatus401Schema = z.unknown();
+
+export const listConnectorsStatus403Schema = z.unknown();
+
+export const listConnectorsStatus410Schema = z.unknown();
+
+export const listConnectorsStatus422Schema = z.unknown();
+
+export const listConnectorsResponseSchema = listConnectorsStatus200Schema;
+
+export const listConnectorsErrorSchema = z.union([
+	listConnectorsStatus400Schema,
+	listConnectorsStatus401Schema,
+	listConnectorsStatus403Schema,
+	listConnectorsStatus410Schema,
+	listConnectorsStatus422Schema,
+]);
+
+export const getConnectorPathConnectorSchema = z
+	.string()
+	.describe(
+		"Stable connector ID or URL-encoded team-scoped UID. Examples: `scl_abc123` or `slack%2Fmy-bot`.",
+	);
+
+export const getConnectorQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe(
+		"The team ID that scopes the request. Do not send it with slug. If both are omitted, Vercel uses the team associated with the token or the authenticated user's default team. The request returns 401 if no team can be selected.",
+	)
+	.meta({ examples: ["team_1a2b3c4d5e6f7g8h9i0j1k2l"] });
+
+export const getConnectorQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe(
+		"The team slug that scopes the request. Do not send it with teamId. If both are omitted, Vercel uses the team associated with the token or the authenticated user's default team. The request returns 401 if no team can be selected.",
+	)
+	.meta({ examples: ["my-team-url-slug"] });
+
+export const getConnectorStatus200Schema = z.unknown();
+
+export const getConnectorStatus400Schema = z.unknown();
+
+export const getConnectorStatus401Schema = z.unknown();
+
+export const getConnectorStatus403Schema = z.unknown();
+
+export const getConnectorStatus404Schema = z.unknown();
+
+export const getConnectorStatus410Schema = z.unknown();
+
+export const getConnectorStatus422Schema = z.unknown();
+
+export const getConnectorResponseSchema = getConnectorStatus200Schema;
+
+export const getConnectorErrorSchema = z.union([
+	getConnectorStatus400Schema,
+	getConnectorStatus401Schema,
+	getConnectorStatus403Schema,
+	getConnectorStatus404Schema,
+	getConnectorStatus410Schema,
+	getConnectorStatus422Schema,
+]);
+
+export const deleteConnectorPathConnectorSchema = z
+	.string()
+	.describe(
+		"Stable connector ID or URL-encoded team-scoped UID. Examples: `scl_abc123` or `slack%2Fmy-bot`.",
+	);
+
+export const deleteConnectorQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe(
+		"The team ID that scopes the request. Do not send it with slug. If both are omitted, Vercel uses the team associated with the token or the authenticated user's default team. The request returns 401 if no team can be selected.",
+	)
+	.meta({ examples: ["team_1a2b3c4d5e6f7g8h9i0j1k2l"] });
+
+export const deleteConnectorQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe(
+		"The team slug that scopes the request. Do not send it with teamId. If both are omitted, Vercel uses the team associated with the token or the authenticated user's default team. The request returns 401 if no team can be selected.",
+	)
+	.meta({ examples: ["my-team-url-slug"] });
+
+export const deleteConnectorStatus204Schema = z.unknown();
+
+export const deleteConnectorStatus400Schema = z.unknown();
+
+export const deleteConnectorStatus401Schema = z.unknown();
+
+export const deleteConnectorStatus403Schema = z.unknown();
+
+export const deleteConnectorStatus404Schema = z.unknown();
+
+export const deleteConnectorStatus409Schema = z.unknown();
+
+export const deleteConnectorStatus410Schema = z.unknown();
+
+export const deleteConnectorStatus422Schema = z.unknown();
+
+export const deleteConnectorStatus502Schema = z.unknown();
+
+export const deleteConnectorResponseSchema = deleteConnectorStatus204Schema;
+
+export const deleteConnectorErrorSchema = z.union([
+	deleteConnectorStatus400Schema,
+	deleteConnectorStatus401Schema,
+	deleteConnectorStatus403Schema,
+	deleteConnectorStatus404Schema,
+	deleteConnectorStatus409Schema,
+	deleteConnectorStatus410Schema,
+	deleteConnectorStatus422Schema,
+	deleteConnectorStatus502Schema,
+]);
+
 export const createConnectorQueryTeamIdSchema = z
 	.string()
 	.optional()
@@ -18608,6 +20453,369 @@ export const createConnectorErrorSchema = z.union([
 	createConnectorStatus422Schema,
 	createConnectorStatus500Schema,
 	createConnectorStatus502Schema,
+]);
+
+export const updateConnectorPathConnectorSchema = z
+	.string()
+	.describe(
+		"Stable connector ID or URL-encoded team-scoped UID. Examples: `scl_abc123` or `slack%2Fmy-bot`.",
+	);
+
+export const updateConnectorQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe(
+		"The team ID that scopes the request. Do not send it with slug. If both are omitted, Vercel uses the team associated with the token or the authenticated user's default team. The request returns 401 if no team can be selected.",
+	)
+	.meta({ examples: ["team_1a2b3c4d5e6f7g8h9i0j1k2l"] });
+
+export const updateConnectorQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe(
+		"The team slug that scopes the request. Do not send it with teamId. If both are omitted, Vercel uses the team associated with the token or the authenticated user's default team. The request returns 401 if no team can be selected.",
+	)
+	.meta({ examples: ["my-team-url-slug"] });
+
+export const updateConnectorStatus200Schema = z.unknown();
+
+export const updateConnectorStatus400Schema = z.unknown();
+
+export const updateConnectorStatus401Schema = z.unknown();
+
+export const updateConnectorStatus403Schema = z.unknown();
+
+export const updateConnectorStatus404Schema = z.unknown();
+
+export const updateConnectorStatus409Schema = z.unknown();
+
+export const updateConnectorStatus410Schema = z.unknown();
+
+export const updateConnectorStatus422Schema = z.unknown();
+
+export const updateConnectorStatus502Schema = z.unknown();
+
+export const updateConnectorResponseSchema = updateConnectorStatus200Schema;
+
+export const updateConnectorErrorSchema = z.union([
+	updateConnectorStatus400Schema,
+	updateConnectorStatus401Schema,
+	updateConnectorStatus403Schema,
+	updateConnectorStatus404Schema,
+	updateConnectorStatus409Schema,
+	updateConnectorStatus410Schema,
+	updateConnectorStatus422Schema,
+	updateConnectorStatus502Schema,
+]);
+
+export const replaceConnectorTriggerDestinationsPathConnectorSchema = z
+	.string()
+	.describe(
+		"Stable connector ID or URL-encoded team-scoped UID. Examples: `scl_abc123` or `slack%2Fmy-bot`.",
+	);
+
+export const replaceConnectorTriggerDestinationsQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe(
+		"The team ID that scopes the request. Do not send it with slug. If both are omitted, Vercel uses the team associated with the token or the authenticated user's default team. The request returns 401 if no team can be selected.",
+	)
+	.meta({ examples: ["team_1a2b3c4d5e6f7g8h9i0j1k2l"] });
+
+export const replaceConnectorTriggerDestinationsQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe(
+		"The team slug that scopes the request. Do not send it with teamId. If both are omitted, Vercel uses the team associated with the token or the authenticated user's default team. The request returns 401 if no team can be selected.",
+	)
+	.meta({ examples: ["my-team-url-slug"] });
+
+export const replaceConnectorTriggerDestinationsStatus200Schema = z.unknown();
+
+export const replaceConnectorTriggerDestinationsStatus400Schema = z.unknown();
+
+export const replaceConnectorTriggerDestinationsStatus401Schema = z.unknown();
+
+export const replaceConnectorTriggerDestinationsStatus403Schema = z.unknown();
+
+export const replaceConnectorTriggerDestinationsStatus404Schema = z.unknown();
+
+export const replaceConnectorTriggerDestinationsStatus410Schema = z.unknown();
+
+export const replaceConnectorTriggerDestinationsStatus422Schema = z.unknown();
+
+export const replaceConnectorTriggerDestinationsResponseSchema =
+	replaceConnectorTriggerDestinationsStatus200Schema;
+
+export const replaceConnectorTriggerDestinationsErrorSchema = z.union([
+	replaceConnectorTriggerDestinationsStatus400Schema,
+	replaceConnectorTriggerDestinationsStatus401Schema,
+	replaceConnectorTriggerDestinationsStatus403Schema,
+	replaceConnectorTriggerDestinationsStatus404Schema,
+	replaceConnectorTriggerDestinationsStatus410Schema,
+	replaceConnectorTriggerDestinationsStatus422Schema,
+]);
+
+export const listConnectorProjectConnectionsPathConnectorSchema = z
+	.string()
+	.describe(
+		"Stable connector ID or URL-encoded team-scoped UID. Examples: `scl_abc123` or `slack%2Fmy-bot`.",
+	);
+
+export const listConnectorProjectConnectionsQueryLimitSchema = z
+	.int()
+	.min(1)
+	.max(100)
+	.optional()
+	.describe("Maximum number of project connections to return. Defaults to 50.");
+
+export const listConnectorProjectConnectionsQueryCursorSchema = z
+	.string()
+	.optional()
+	.describe("Cursor from `pagination.next` on the previous response.");
+
+export const listConnectorProjectConnectionsQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe(
+		"The team ID that scopes the request. Do not send it with slug. If both are omitted, Vercel uses the team associated with the token or the authenticated user's default team. The request returns 401 if no team can be selected.",
+	)
+	.meta({ examples: ["team_1a2b3c4d5e6f7g8h9i0j1k2l"] });
+
+export const listConnectorProjectConnectionsQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe(
+		"The team slug that scopes the request. Do not send it with teamId. If both are omitted, Vercel uses the team associated with the token or the authenticated user's default team. The request returns 401 if no team can be selected.",
+	)
+	.meta({ examples: ["my-team-url-slug"] });
+
+export const listConnectorProjectConnectionsStatus200Schema = z.unknown();
+
+export const listConnectorProjectConnectionsStatus400Schema = z.unknown();
+
+export const listConnectorProjectConnectionsStatus401Schema = z.unknown();
+
+export const listConnectorProjectConnectionsStatus403Schema = z.unknown();
+
+export const listConnectorProjectConnectionsStatus404Schema = z.unknown();
+
+export const listConnectorProjectConnectionsStatus410Schema = z.unknown();
+
+export const listConnectorProjectConnectionsStatus422Schema = z.unknown();
+
+export const listConnectorProjectConnectionsResponseSchema =
+	listConnectorProjectConnectionsStatus200Schema;
+
+export const listConnectorProjectConnectionsErrorSchema = z.union([
+	listConnectorProjectConnectionsStatus400Schema,
+	listConnectorProjectConnectionsStatus401Schema,
+	listConnectorProjectConnectionsStatus403Schema,
+	listConnectorProjectConnectionsStatus404Schema,
+	listConnectorProjectConnectionsStatus410Schema,
+	listConnectorProjectConnectionsStatus422Schema,
+]);
+
+export const getConnectorProjectConnectionPathConnectorSchema = z
+	.string()
+	.describe(
+		"Stable connector ID or URL-encoded team-scoped UID. Examples: `scl_abc123` or `slack%2Fmy-bot`.",
+	);
+
+export const getConnectorProjectConnectionPathProjectIdSchema = z
+	.string()
+	.describe("Vercel project ID.");
+
+export const getConnectorProjectConnectionQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe(
+		"The team ID that scopes the request. Do not send it with slug. If both are omitted, Vercel uses the team associated with the token or the authenticated user's default team. The request returns 401 if no team can be selected.",
+	)
+	.meta({ examples: ["team_1a2b3c4d5e6f7g8h9i0j1k2l"] });
+
+export const getConnectorProjectConnectionQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe(
+		"The team slug that scopes the request. Do not send it with teamId. If both are omitted, Vercel uses the team associated with the token or the authenticated user's default team. The request returns 401 if no team can be selected.",
+	)
+	.meta({ examples: ["my-team-url-slug"] });
+
+export const getConnectorProjectConnectionStatus200Schema = z.unknown();
+
+export const getConnectorProjectConnectionStatus400Schema = z.unknown();
+
+export const getConnectorProjectConnectionStatus401Schema = z.unknown();
+
+export const getConnectorProjectConnectionStatus403Schema = z.unknown();
+
+export const getConnectorProjectConnectionStatus404Schema = z.unknown();
+
+export const getConnectorProjectConnectionStatus410Schema = z.unknown();
+
+export const getConnectorProjectConnectionResponseSchema =
+	getConnectorProjectConnectionStatus200Schema;
+
+export const getConnectorProjectConnectionErrorSchema = z.union([
+	getConnectorProjectConnectionStatus400Schema,
+	getConnectorProjectConnectionStatus401Schema,
+	getConnectorProjectConnectionStatus403Schema,
+	getConnectorProjectConnectionStatus404Schema,
+	getConnectorProjectConnectionStatus410Schema,
+]);
+
+export const upsertConnectorProjectConnectionPathConnectorSchema = z
+	.string()
+	.describe(
+		"Stable connector ID or URL-encoded team-scoped UID. Examples: `scl_abc123` or `slack%2Fmy-bot`.",
+	);
+
+export const upsertConnectorProjectConnectionPathProjectIdSchema = z
+	.string()
+	.describe("Vercel project ID.");
+
+export const upsertConnectorProjectConnectionQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe(
+		"The team ID that scopes the request. Do not send it with slug. If both are omitted, Vercel uses the team associated with the token or the authenticated user's default team. The request returns 401 if no team can be selected.",
+	)
+	.meta({ examples: ["team_1a2b3c4d5e6f7g8h9i0j1k2l"] });
+
+export const upsertConnectorProjectConnectionQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe(
+		"The team slug that scopes the request. Do not send it with teamId. If both are omitted, Vercel uses the team associated with the token or the authenticated user's default team. The request returns 401 if no team can be selected.",
+	)
+	.meta({ examples: ["my-team-url-slug"] });
+
+export const upsertConnectorProjectConnectionStatus200Schema = z.unknown();
+
+export const upsertConnectorProjectConnectionStatus400Schema = z.unknown();
+
+export const upsertConnectorProjectConnectionStatus401Schema = z.unknown();
+
+export const upsertConnectorProjectConnectionStatus403Schema = z.unknown();
+
+export const upsertConnectorProjectConnectionStatus404Schema = z.unknown();
+
+export const upsertConnectorProjectConnectionStatus410Schema = z.unknown();
+
+export const upsertConnectorProjectConnectionResponseSchema =
+	upsertConnectorProjectConnectionStatus200Schema;
+
+export const upsertConnectorProjectConnectionErrorSchema = z.union([
+	upsertConnectorProjectConnectionStatus400Schema,
+	upsertConnectorProjectConnectionStatus401Schema,
+	upsertConnectorProjectConnectionStatus403Schema,
+	upsertConnectorProjectConnectionStatus404Schema,
+	upsertConnectorProjectConnectionStatus410Schema,
+]);
+
+export const deleteConnectorProjectConnectionPathConnectorSchema = z
+	.string()
+	.describe(
+		"Stable connector ID or URL-encoded team-scoped UID. Examples: `scl_abc123` or `slack%2Fmy-bot`.",
+	);
+
+export const deleteConnectorProjectConnectionPathProjectIdSchema = z
+	.string()
+	.describe("Vercel project ID.");
+
+export const deleteConnectorProjectConnectionQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe(
+		"The team ID that scopes the request. Do not send it with slug. If both are omitted, Vercel uses the team associated with the token or the authenticated user's default team. The request returns 401 if no team can be selected.",
+	)
+	.meta({ examples: ["team_1a2b3c4d5e6f7g8h9i0j1k2l"] });
+
+export const deleteConnectorProjectConnectionQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe(
+		"The team slug that scopes the request. Do not send it with teamId. If both are omitted, Vercel uses the team associated with the token or the authenticated user's default team. The request returns 401 if no team can be selected.",
+	)
+	.meta({ examples: ["my-team-url-slug"] });
+
+export const deleteConnectorProjectConnectionStatus204Schema = z.unknown();
+
+export const deleteConnectorProjectConnectionStatus400Schema = z.unknown();
+
+export const deleteConnectorProjectConnectionStatus401Schema = z.unknown();
+
+export const deleteConnectorProjectConnectionStatus403Schema = z.unknown();
+
+export const deleteConnectorProjectConnectionStatus404Schema = z.unknown();
+
+export const deleteConnectorProjectConnectionStatus410Schema = z.unknown();
+
+export const deleteConnectorProjectConnectionResponseSchema =
+	deleteConnectorProjectConnectionStatus204Schema;
+
+export const deleteConnectorProjectConnectionErrorSchema = z.union([
+	deleteConnectorProjectConnectionStatus400Schema,
+	deleteConnectorProjectConnectionStatus401Schema,
+	deleteConnectorProjectConnectionStatus403Schema,
+	deleteConnectorProjectConnectionStatus404Schema,
+	deleteConnectorProjectConnectionStatus410Schema,
+]);
+
+export const listProjectConnectorConnectionsPathProjectIdSchema = z
+	.string()
+	.describe("Vercel project ID.");
+
+export const listProjectConnectorConnectionsQueryLimitSchema = z
+	.int()
+	.min(1)
+	.max(100)
+	.optional()
+	.describe("Maximum number of connector connections to return. Defaults to 50.");
+
+export const listProjectConnectorConnectionsQueryCursorSchema = z
+	.string()
+	.optional()
+	.describe("Cursor from `pagination.next` on the previous response.");
+
+export const listProjectConnectorConnectionsQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe(
+		"The team ID that scopes the request. Do not send it with slug. If both are omitted, Vercel uses the team associated with the token or the authenticated user's default team. The request returns 401 if no team can be selected.",
+	)
+	.meta({ examples: ["team_1a2b3c4d5e6f7g8h9i0j1k2l"] });
+
+export const listProjectConnectorConnectionsQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe(
+		"The team slug that scopes the request. Do not send it with teamId. If both are omitted, Vercel uses the team associated with the token or the authenticated user's default team. The request returns 401 if no team can be selected.",
+	)
+	.meta({ examples: ["my-team-url-slug"] });
+
+export const listProjectConnectorConnectionsStatus200Schema = z.unknown();
+
+export const listProjectConnectorConnectionsStatus400Schema = z.unknown();
+
+export const listProjectConnectorConnectionsStatus401Schema = z.unknown();
+
+export const listProjectConnectorConnectionsStatus403Schema = z.unknown();
+
+export const listProjectConnectorConnectionsStatus404Schema = z.unknown();
+
+export const listProjectConnectorConnectionsStatus410Schema = z.unknown();
+
+export const listProjectConnectorConnectionsResponseSchema =
+	listProjectConnectorConnectionsStatus200Schema;
+
+export const listProjectConnectorConnectionsErrorSchema = z.union([
+	listProjectConnectorConnectionsStatus400Schema,
+	listProjectConnectorConnectionsStatus401Schema,
+	listProjectConnectorConnectionsStatus403Schema,
+	listProjectConnectorConnectionsStatus404Schema,
+	listProjectConnectorConnectionsStatus410Schema,
 ]);
 
 export const getConnectorTokenPathConnectorSchema = z.string();
@@ -22939,6 +25147,7 @@ export const getBillingPlansQuerySourceSchema = z
 		"oauth",
 		"backoffice",
 		"import-recommended-integrations",
+		"organization",
 	])
 	.optional();
 
@@ -23269,8 +25478,6 @@ export const importResourceStatus410Schema = z.unknown();
 
 export const importResourceStatus422Schema = z.unknown();
 
-export const importResourceStatus429Schema = z.unknown();
-
 export const importResourceResponseSchema = importResourceStatus200Schema;
 
 export const importResourceErrorSchema = z.union([
@@ -23281,7 +25488,6 @@ export const importResourceErrorSchema = z.union([
 	importResourceStatus409Schema,
 	importResourceStatus410Schema,
 	importResourceStatus422Schema,
-	importResourceStatus429Schema,
 ]);
 
 export const updateResourcePathIntegrationConfigurationIdSchema = z.string();
@@ -24837,6 +27043,14 @@ export const createObservabilityQueryStatus408Schema = z.unknown();
 
 export const createObservabilityQueryStatus410Schema = z.unknown();
 
+export const createObservabilityQueryStatus413Schema = z.unknown();
+
+export const createObservabilityQueryStatus422Schema = z.unknown();
+
+export const createObservabilityQueryStatus500Schema = z.unknown();
+
+export const createObservabilityQueryStatus503Schema = z.unknown();
+
 export const createObservabilityQueryResponseSchema = createObservabilityQueryStatus200Schema;
 
 export const createObservabilityQueryErrorSchema = z.union([
@@ -24846,6 +27060,10 @@ export const createObservabilityQueryErrorSchema = z.union([
 	createObservabilityQueryStatus403Schema,
 	createObservabilityQueryStatus408Schema,
 	createObservabilityQueryStatus410Schema,
+	createObservabilityQueryStatus413Schema,
+	createObservabilityQueryStatus422Schema,
+	createObservabilityQueryStatus500Schema,
+	createObservabilityQueryStatus503Schema,
 ]);
 
 export const getObservabilitySchemaStatus200Schema = z.unknown();
@@ -25710,6 +27928,8 @@ export const updateProjectStatus410Schema = z.unknown();
 
 export const updateProjectStatus428Schema = z.unknown();
 
+export const updateProjectStatus429Schema = z.unknown();
+
 export const updateProjectResponseSchema = updateProjectStatus200Schema;
 
 export const updateProjectErrorSchema = z.union([
@@ -25721,6 +27941,7 @@ export const updateProjectErrorSchema = z.union([
 	updateProjectStatus409Schema,
 	updateProjectStatus410Schema,
 	updateProjectStatus428Schema,
+	updateProjectStatus429Schema,
 ]);
 
 export const deleteProjectPathIdOrNameSchema = z
@@ -27069,6 +29290,8 @@ export const createProjectTransferRequestStatus401Schema = z.unknown();
 
 export const createProjectTransferRequestStatus403Schema = z.unknown();
 
+export const createProjectTransferRequestStatus409Schema = z.unknown();
+
 export const createProjectTransferRequestStatus410Schema = z.unknown();
 
 export const createProjectTransferRequestResponseSchema =
@@ -27078,6 +29301,7 @@ export const createProjectTransferRequestErrorSchema = z.union([
 	createProjectTransferRequestStatus400Schema,
 	createProjectTransferRequestStatus401Schema,
 	createProjectTransferRequestStatus403Schema,
+	createProjectTransferRequestStatus409Schema,
 	createProjectTransferRequestStatus410Schema,
 ]);
 
@@ -27477,13 +29701,13 @@ export const unpauseProjectErrorSchema = z.union([
 	unpauseProjectStatus500Schema,
 ]);
 
-export const listSandboxesQueryProjectSchema = z
+export const listNamedSandboxesQueryProjectSchema = z
 	.string()
 	.optional()
 	.describe("The unique identifier or name of the project to list named sandboxes for.")
 	.meta({ examples: ["prj_abc123"] });
 
-export const listSandboxesQueryLimitSchema = z
+export const listNamedSandboxesQueryLimitSchema = z
 	.number()
 	.min(1)
 	.max(50)
@@ -27492,77 +29716,77 @@ export const listSandboxesQueryLimitSchema = z
 	.describe("Maximum number of named sandboxes to return in the response. Used for pagination.")
 	.meta({ examples: [20] });
 
-export const listSandboxesQuerySortBySchema = z
+export const listNamedSandboxesQuerySortBySchema = z
 	.enum(["createdAt", "name", "statusUpdatedAt", "currentSnapshotId"])
 	.optional()
 	.default("createdAt")
 	.describe("Field to sort by.");
 
-export const listSandboxesQueryNamePrefixSchema = z
+export const listNamedSandboxesQueryNamePrefixSchema = z
 	.string()
 	.optional()
 	.describe(
 		"Filter named sandboxes whose name starts with this prefix. Only valid when sortBy=name.",
 	);
 
-export const listSandboxesQueryCursorSchema = z
+export const listNamedSandboxesQueryCursorSchema = z
 	.string()
 	.optional()
 	.describe("Opaque pagination cursor from a previous response.");
 
-export const listSandboxesQuerySortOrderSchema = z
+export const listNamedSandboxesQuerySortOrderSchema = z
 	.enum(["asc", "desc"])
 	.optional()
 	.default("desc")
 	.describe("Sort direction. Defaults to desc.");
 
-export const listSandboxesQueryStatusSchema = z
+export const listNamedSandboxesQueryStatusSchema = z
 	.enum(["running", "stopping", "stopped"])
 	.optional()
 	.describe("Filter named sandboxes by status. Only valid when sortBy is createdAt.");
 
-export const listSandboxesQueryTagsSchema = z
+export const listNamedSandboxesQueryTagsSchema = z
 	.union([z.string(), z.array(z.string())])
 	.optional()
 	.describe(
 		'Filter sandboxes by tag. Format: \\"key:value\\". Only one tag filter is supported at a time.',
 	);
 
-export const listSandboxesQueryTeamIdSchema = z
+export const listNamedSandboxesQueryTeamIdSchema = z
 	.string()
 	.optional()
 	.describe("The Team identifier to perform the request on behalf of.")
 	.meta({ examples: ["team_1a2b3c4d5e6f7g8h9i0j1k2l"] });
 
-export const listSandboxesQuerySlugSchema = z
+export const listNamedSandboxesQuerySlugSchema = z
 	.string()
 	.optional()
 	.describe("The Team slug to perform the request on behalf of.")
 	.meta({ examples: ["my-team-url-slug"] });
 
-export const listSandboxesStatus200Schema = z.unknown();
+export const listNamedSandboxesStatus200Schema = z.unknown();
 
-export const listSandboxesStatus400Schema = z.unknown();
+export const listNamedSandboxesStatus400Schema = z.unknown();
 
-export const listSandboxesStatus401Schema = z.unknown();
+export const listNamedSandboxesStatus401Schema = z.unknown();
 
-export const listSandboxesStatus403Schema = z.unknown();
+export const listNamedSandboxesStatus403Schema = z.unknown();
 
-export const listSandboxesStatus404Schema = z.unknown();
+export const listNamedSandboxesStatus404Schema = z.unknown();
 
-export const listSandboxesStatus410Schema = z.unknown();
+export const listNamedSandboxesStatus410Schema = z.unknown();
 
-export const listSandboxesStatus429Schema = z.unknown();
+export const listNamedSandboxesStatus429Schema = z.unknown();
 
-export const listSandboxesResponseSchema = listSandboxesStatus200Schema;
+export const listNamedSandboxesResponseSchema = listNamedSandboxesStatus200Schema;
 
-export const listSandboxesErrorSchema = z.union([
-	listSandboxesStatus400Schema,
-	listSandboxesStatus401Schema,
-	listSandboxesStatus403Schema,
-	listSandboxesStatus404Schema,
-	listSandboxesStatus410Schema,
-	listSandboxesStatus429Schema,
+export const listNamedSandboxesErrorSchema = z.union([
+	listNamedSandboxesStatus400Schema,
+	listNamedSandboxesStatus401Schema,
+	listNamedSandboxesStatus403Schema,
+	listNamedSandboxesStatus404Schema,
+	listNamedSandboxesStatus410Schema,
+	listNamedSandboxesStatus429Schema,
 ]);
 
 export const createSandboxesV2QueryTeamIdSchema = z
@@ -29504,6 +31728,8 @@ export const getBypassIpStatus400Schema = z.unknown();
 
 export const getBypassIpStatus401Schema = z.unknown();
 
+export const getBypassIpStatus402Schema = z.unknown();
+
 export const getBypassIpStatus403Schema = z.unknown();
 
 export const getBypassIpStatus404Schema = z.unknown();
@@ -29517,6 +31743,7 @@ export const getBypassIpResponseSchema = getBypassIpStatus200Schema;
 export const getBypassIpErrorSchema = z.union([
 	getBypassIpStatus400Schema,
 	getBypassIpStatus401Schema,
+	getBypassIpStatus402Schema,
 	getBypassIpStatus403Schema,
 	getBypassIpStatus404Schema,
 	getBypassIpStatus410Schema,
@@ -29543,6 +31770,8 @@ export const addBypassIpStatus400Schema = z.unknown();
 
 export const addBypassIpStatus401Schema = z.unknown();
 
+export const addBypassIpStatus402Schema = z.unknown();
+
 export const addBypassIpStatus403Schema = z.unknown();
 
 export const addBypassIpStatus404Schema = z.unknown();
@@ -29556,6 +31785,7 @@ export const addBypassIpResponseSchema = addBypassIpStatus200Schema;
 export const addBypassIpErrorSchema = z.union([
 	addBypassIpStatus400Schema,
 	addBypassIpStatus401Schema,
+	addBypassIpStatus402Schema,
 	addBypassIpStatus403Schema,
 	addBypassIpStatus404Schema,
 	addBypassIpStatus410Schema,
@@ -29582,6 +31812,8 @@ export const removeBypassIpStatus400Schema = z.unknown();
 
 export const removeBypassIpStatus401Schema = z.unknown();
 
+export const removeBypassIpStatus402Schema = z.unknown();
+
 export const removeBypassIpStatus403Schema = z.unknown();
 
 export const removeBypassIpStatus404Schema = z.unknown();
@@ -29595,6 +31827,7 @@ export const removeBypassIpResponseSchema = removeBypassIpStatus200Schema;
 export const removeBypassIpErrorSchema = z.union([
 	removeBypassIpStatus400Schema,
 	removeBypassIpStatus401Schema,
+	removeBypassIpStatus402Schema,
 	removeBypassIpStatus403Schema,
 	removeBypassIpStatus404Schema,
 	removeBypassIpStatus410Schema,
@@ -29829,8 +32062,6 @@ export const createIntegrationStoreDirectStatus409Schema = z.unknown();
 
 export const createIntegrationStoreDirectStatus410Schema = z.unknown();
 
-export const createIntegrationStoreDirectStatus429Schema = z.unknown();
-
 export const createIntegrationStoreDirectStatus500Schema = z.unknown();
 
 export const createIntegrationStoreDirectResponseSchema =
@@ -29844,7 +32075,6 @@ export const createIntegrationStoreDirectErrorSchema = z.union([
 	createIntegrationStoreDirectStatus404Schema,
 	createIntegrationStoreDirectStatus409Schema,
 	createIntegrationStoreDirectStatus410Schema,
-	createIntegrationStoreDirectStatus429Schema,
 	createIntegrationStoreDirectStatus500Schema,
 ]);
 
@@ -30712,7 +32942,11 @@ export const createRepositoryErrorSchema = z.union([
 	createRepositoryStatus410Schema,
 ]);
 
-export const listRepositoriesQueryProjectIdSchema = z.string();
+export const listRepositoriesQueryProjectIdSchema = z
+	.string()
+	.describe(
+		"Project ID or name (slug) within the authenticated team. IDs take precedence over names. Missing or empty values return HTTP 400.",
+	);
 
 export const listRepositoriesQueryLimitSchema = z.int().min(1).max(1000).optional();
 
@@ -30756,7 +32990,11 @@ export const listRepositoriesErrorSchema = z.union([
 	listRepositoriesStatus410Schema,
 ]);
 
-export const getRepositoryQueryProjectIdSchema = z.string();
+export const getRepositoryQueryProjectIdSchema = z
+	.string()
+	.describe(
+		"Project ID or name (slug) within the authenticated team. IDs take precedence over names. Missing or empty values return HTTP 400.",
+	);
 
 export const getRepositoryPathIdOrNameSchema = z.string().max(255);
 
@@ -30794,7 +33032,11 @@ export const getRepositoryErrorSchema = z.union([
 	getRepositoryStatus410Schema,
 ]);
 
-export const deleteRepositoryQueryProjectIdSchema = z.string();
+export const deleteRepositoryQueryProjectIdSchema = z
+	.string()
+	.describe(
+		"Project ID or name (slug) within the authenticated team. IDs take precedence over names. Missing or empty values return HTTP 400.",
+	);
 
 export const deleteRepositoryPathIdOrNameSchema = z.string().max(255);
 
@@ -30832,7 +33074,11 @@ export const deleteRepositoryErrorSchema = z.union([
 	deleteRepositoryStatus410Schema,
 ]);
 
-export const listRepositoryImagesQueryProjectIdSchema = z.string();
+export const listRepositoryImagesQueryProjectIdSchema = z
+	.string()
+	.describe(
+		"Project ID or name (slug) within the authenticated team. IDs take precedence over names. Missing or empty values return HTTP 400.",
+	);
 
 export const listRepositoryImagesPathIdOrNameSchema = z.string().max(255);
 
@@ -30880,7 +33126,11 @@ export const listRepositoryImagesErrorSchema = z.union([
 	listRepositoryImagesStatus410Schema,
 ]);
 
-export const addRepositoryPermissionQueryProjectIdSchema = z.string();
+export const addRepositoryPermissionQueryProjectIdSchema = z
+	.string()
+	.describe(
+		"Project ID or name (slug) within the authenticated team. IDs take precedence over names. Missing or empty values return HTTP 400.",
+	);
 
 export const addRepositoryPermissionPathIdOrNameSchema = z.string().max(255);
 
@@ -30918,7 +33168,11 @@ export const addRepositoryPermissionErrorSchema = z.union([
 	addRepositoryPermissionStatus410Schema,
 ]);
 
-export const removeRepositoryPermissionQueryProjectIdSchema = z.string();
+export const removeRepositoryPermissionQueryProjectIdSchema = z
+	.string()
+	.describe(
+		"Project ID or name (slug) within the authenticated team. IDs take precedence over names. Missing or empty values return HTTP 400.",
+	);
 
 export const removeRepositoryPermissionPathIdOrNameSchema = z.string().max(255);
 
@@ -30956,7 +33210,11 @@ export const removeRepositoryPermissionErrorSchema = z.union([
 	removeRepositoryPermissionStatus410Schema,
 ]);
 
-export const listRepositoryPermissionsQueryProjectIdSchema = z.string();
+export const listRepositoryPermissionsQueryProjectIdSchema = z
+	.string()
+	.describe(
+		"Project ID or name (slug) within the authenticated team. IDs take precedence over names. Missing or empty values return HTTP 400.",
+	);
 
 export const listRepositoryPermissionsPathIdOrNameSchema = z.string().max(255);
 
@@ -31002,7 +33260,11 @@ export const listRepositoryPermissionsErrorSchema = z.union([
 	listRepositoryPermissionsStatus410Schema,
 ]);
 
-export const clearRepositoryPermissionsQueryProjectIdSchema = z.string();
+export const clearRepositoryPermissionsQueryProjectIdSchema = z
+	.string()
+	.describe(
+		"Project ID or name (slug) within the authenticated team. IDs take precedence over names. Missing or empty values return HTTP 400.",
+	);
 
 export const clearRepositoryPermissionsPathIdOrNameSchema = z.string().max(255);
 
@@ -31040,7 +33302,11 @@ export const clearRepositoryPermissionsErrorSchema = z.union([
 	clearRepositoryPermissionsStatus410Schema,
 ]);
 
-export const listRepositoryTagsQueryProjectIdSchema = z.string();
+export const listRepositoryTagsQueryProjectIdSchema = z
+	.string()
+	.describe(
+		"Project ID or name (slug) within the authenticated team. IDs take precedence over names. Missing or empty values return HTTP 400.",
+	);
 
 export const listRepositoryTagsPathIdOrNameSchema = z.string().max(255);
 
@@ -31094,7 +33360,11 @@ export const listRepositoryTagsErrorSchema = z.union([
 	listRepositoryTagsStatus410Schema,
 ]);
 
-export const getRepositoryTagQueryProjectIdSchema = z.string();
+export const getRepositoryTagQueryProjectIdSchema = z
+	.string()
+	.describe(
+		"Project ID or name (slug) within the authenticated team. IDs take precedence over names. Missing or empty values return HTTP 400.",
+	);
 
 export const getRepositoryTagPathIdOrNameSchema = z.string().max(255);
 
@@ -31134,7 +33404,11 @@ export const getRepositoryTagErrorSchema = z.union([
 	getRepositoryTagStatus410Schema,
 ]);
 
-export const getRepositoryImageQueryProjectIdSchema = z.string();
+export const getRepositoryImageQueryProjectIdSchema = z
+	.string()
+	.describe(
+		"Project ID or name (slug) within the authenticated team. IDs take precedence over names. Missing or empty values return HTTP 400.",
+	);
 
 export const getRepositoryImagePathIdOrNameSchema = z.string().max(255);
 
@@ -31177,7 +33451,11 @@ export const getRepositoryImageErrorSchema = z.union([
 	getRepositoryImageStatus410Schema,
 ]);
 
-export const deleteRepositoryImageQueryProjectIdSchema = z.string();
+export const deleteRepositoryImageQueryProjectIdSchema = z
+	.string()
+	.describe(
+		"Project ID or name (slug) within the authenticated team. IDs take precedence over names. Missing or empty values return HTTP 400.",
+	);
 
 export const deleteRepositoryImagePathIdOrNameSchema = z.string().max(255);
 
@@ -32035,7 +34313,11 @@ export const aggregatePageviewsStatus402Schema = z.unknown();
 
 export const aggregatePageviewsStatus403Schema = z.unknown();
 
+export const aggregatePageviewsStatus404Schema = z.unknown();
+
 export const aggregatePageviewsStatus410Schema = z.unknown();
+
+export const aggregatePageviewsStatus503Schema = z.unknown();
 
 export const aggregatePageviewsResponseSchema = aggregatePageviewsStatus200Schema;
 
@@ -32044,7 +34326,9 @@ export const aggregatePageviewsErrorSchema = z.union([
 	aggregatePageviewsStatus401Schema,
 	aggregatePageviewsStatus402Schema,
 	aggregatePageviewsStatus403Schema,
+	aggregatePageviewsStatus404Schema,
 	aggregatePageviewsStatus410Schema,
+	aggregatePageviewsStatus503Schema,
 ]);
 
 export const aggregateEventsQueryProjectIdSchema = z
@@ -32119,7 +34403,11 @@ export const aggregateEventsStatus402Schema = z.unknown();
 
 export const aggregateEventsStatus403Schema = z.unknown();
 
+export const aggregateEventsStatus404Schema = z.unknown();
+
 export const aggregateEventsStatus410Schema = z.unknown();
+
+export const aggregateEventsStatus503Schema = z.unknown();
 
 export const aggregateEventsResponseSchema = aggregateEventsStatus200Schema;
 
@@ -32128,7 +34416,9 @@ export const aggregateEventsErrorSchema = z.union([
 	aggregateEventsStatus401Schema,
 	aggregateEventsStatus402Schema,
 	aggregateEventsStatus403Schema,
+	aggregateEventsStatus404Schema,
 	aggregateEventsStatus410Schema,
+	aggregateEventsStatus503Schema,
 ]);
 
 export const countPageviewsQueryProjectIdSchema = z
@@ -32182,7 +34472,11 @@ export const countPageviewsStatus402Schema = z.unknown();
 
 export const countPageviewsStatus403Schema = z.unknown();
 
+export const countPageviewsStatus404Schema = z.unknown();
+
 export const countPageviewsStatus410Schema = z.unknown();
+
+export const countPageviewsStatus503Schema = z.unknown();
 
 export const countPageviewsResponseSchema = countPageviewsStatus200Schema;
 
@@ -32191,7 +34485,9 @@ export const countPageviewsErrorSchema = z.union([
 	countPageviewsStatus401Schema,
 	countPageviewsStatus402Schema,
 	countPageviewsStatus403Schema,
+	countPageviewsStatus404Schema,
 	countPageviewsStatus410Schema,
+	countPageviewsStatus503Schema,
 ]);
 
 export const countEventsQueryProjectIdSchema = z
@@ -32245,7 +34541,11 @@ export const countEventsStatus402Schema = z.unknown();
 
 export const countEventsStatus403Schema = z.unknown();
 
+export const countEventsStatus404Schema = z.unknown();
+
 export const countEventsStatus410Schema = z.unknown();
+
+export const countEventsStatus503Schema = z.unknown();
 
 export const countEventsResponseSchema = countEventsStatus200Schema;
 
@@ -32254,7 +34554,9 @@ export const countEventsErrorSchema = z.union([
 	countEventsStatus401Schema,
 	countEventsStatus402Schema,
 	countEventsStatus403Schema,
+	countEventsStatus404Schema,
 	countEventsStatus410Schema,
+	countEventsStatus503Schema,
 ]);
 
 export const createWebhookQueryTeamIdSchema = z
