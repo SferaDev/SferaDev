@@ -3436,7 +3436,7 @@ export const upgradeZpasAppBodySchema = z
 			.string()
 			.describe("The ZDM group ID.")
 			.meta({ examples: ["ff49588c-92c4-4406-99e6-1942d8a61a7b"] }),
-		data: z.union([
+		data: z.discriminatedUnion("upgrade_type", [
 			z
 				.object({
 					firmware_versions: z
