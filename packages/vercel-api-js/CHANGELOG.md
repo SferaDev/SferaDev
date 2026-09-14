@@ -1,5 +1,11 @@
 # vercel-api-js
 
+## 1.15.1
+
+### Patch Changes
+
+- e7c66cd: Regenerate from the latest Vercel OpenAPI spec, which had stopped generating because a `pattern` ending in a slash broke the zod plugin.
+
 ## 1.15.0
 
 ### Minor Changes
