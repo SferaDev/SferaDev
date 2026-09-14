@@ -4831,6 +4831,9 @@ export const userEventTypeEnum = {
 	"project-web-analytics-enabled": "project-web-analytics-enabled",
 	"protected-git-scope-added": "protected-git-scope-added",
 	"protected-git-scope-removed": "protected-git-scope-removed",
+	"repository-ci-env-variable-create": "repository-ci-env-variable-create",
+	"repository-ci-env-variable-delete": "repository-ci-env-variable-delete",
+	"repository-ci-env-variable-update": "repository-ci-env-variable-update",
 	"runtime-cache-purge-all": "runtime-cache-purge-all",
 	"saml-connection-created": "saml-connection-created",
 	"saml-connection-deleted": "saml-connection-deleted",
@@ -5586,6 +5589,14 @@ export const userEventPayloadToAccountTypeEnum = {
 
 export type UserEventPayloadToAccountTypeEnumKey =
 	(typeof userEventPayloadToAccountTypeEnum)[keyof typeof userEventPayloadToAccountTypeEnum];
+
+export const userEventPayloadVisibilityEnum = {
+	config: "config",
+	secret: "secret",
+} as const;
+
+export type UserEventPayloadVisibilityEnumKey =
+	(typeof userEventPayloadVisibilityEnum)[keyof typeof userEventPayloadVisibilityEnum];
 
 export const userEventPayloadTypeEnum = {
 	blob: "blob",
@@ -9688,6 +9699,14 @@ export type UserEvent = {
 						ipAddress?: string | undefined;
 						deploymentId: string;
 						deploymentUrl: string;
+				  }
+				| {
+						provider: string;
+						organizationId: string;
+						repository: string;
+						key: string;
+						visibility: UserEventPayloadVisibilityEnumKey;
+						changedFields?: string[] | undefined;
 				  }
 				| {
 						/**
@@ -15377,6 +15396,9 @@ export const listEventTypeNameEnum = {
 	"project-web-analytics-enabled": "project-web-analytics-enabled",
 	"protected-git-scope-added": "protected-git-scope-added",
 	"protected-git-scope-removed": "protected-git-scope-removed",
+	"repository-ci-env-variable-create": "repository-ci-env-variable-create",
+	"repository-ci-env-variable-delete": "repository-ci-env-variable-delete",
+	"repository-ci-env-variable-update": "repository-ci-env-variable-update",
 	"runtime-cache-purge-all": "runtime-cache-purge-all",
 	"saml-connection-created": "saml-connection-created",
 	"saml-connection-deleted": "saml-connection-deleted",
@@ -16100,6 +16122,9 @@ export const listEventTypeReplacedByEnum = {
 	"project-web-analytics-enabled": "project-web-analytics-enabled",
 	"protected-git-scope-added": "protected-git-scope-added",
 	"protected-git-scope-removed": "protected-git-scope-removed",
+	"repository-ci-env-variable-create": "repository-ci-env-variable-create",
+	"repository-ci-env-variable-delete": "repository-ci-env-variable-delete",
+	"repository-ci-env-variable-update": "repository-ci-env-variable-update",
 	"runtime-cache-purge-all": "runtime-cache-purge-all",
 	"saml-connection-created": "saml-connection-created",
 	"saml-connection-deleted": "saml-connection-deleted",

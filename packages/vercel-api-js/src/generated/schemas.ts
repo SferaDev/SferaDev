@@ -3422,6 +3422,9 @@ export const userEventSchema = z
 				"project-web-analytics-enabled",
 				"protected-git-scope-added",
 				"protected-git-scope-removed",
+				"repository-ci-env-variable-create",
+				"repository-ci-env-variable-delete",
+				"repository-ci-env-variable-update",
 				"runtime-cache-purge-all",
 				"saml-connection-created",
 				"saml-connection-deleted",
@@ -6676,6 +6679,16 @@ export const userEventSchema = z
 						ipAddress: z.string().optional(),
 						deploymentId: z.string(),
 						deploymentUrl: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						provider: z.string(),
+						organizationId: z.string(),
+						repository: z.string(),
+						key: z.string(),
+						visibility: z.enum(["config", "secret"]),
+						changedFields: z.array(z.string()).optional(),
 					})
 					.strict(),
 				z
@@ -13429,6 +13442,9 @@ export const listEventTypeSchema = z
 				"project-web-analytics-enabled",
 				"protected-git-scope-added",
 				"protected-git-scope-removed",
+				"repository-ci-env-variable-create",
+				"repository-ci-env-variable-delete",
+				"repository-ci-env-variable-update",
 				"runtime-cache-purge-all",
 				"saml-connection-created",
 				"saml-connection-deleted",
@@ -14147,6 +14163,9 @@ export const listEventTypeSchema = z
 					"project-web-analytics-enabled",
 					"protected-git-scope-added",
 					"protected-git-scope-removed",
+					"repository-ci-env-variable-create",
+					"repository-ci-env-variable-delete",
+					"repository-ci-env-variable-update",
 					"runtime-cache-purge-all",
 					"saml-connection-created",
 					"saml-connection-deleted",
