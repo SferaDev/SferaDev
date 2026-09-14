@@ -1,5 +1,16 @@
 # vercel-api-js
 
+## 1.16.0
+
+### Minor Changes
+
+- cdfe001: Added support for new user event types: repository-ci-env-variable-create, repository-ci-env-variable-delete, and repository-ci-env-variable-update.
+
+### Patch Changes
+
+- cdfe001: Added userEventPayloadVisibilityEnum and corresponding TypeScript types for CI env variable event payloads.
+- cdfe001: Added user event payload structure for repository CI environment variable changes, including fields for provider, organizationId, repository, key, visibility, and changedFields.
+
 ## 1.15.1
 
 ### Patch Changes
