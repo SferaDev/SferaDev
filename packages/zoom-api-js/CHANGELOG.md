@@ -1,5 +1,11 @@
 # zoom-api-js
 
+## 1.1.2
+
+### Patch Changes
+
+- 1b3d442: Updated 'data' property in upgradeZpasAppBodySchema to use discriminatedUnion on 'upgrade_type' instead of union.
+
 ## 1.1.1
 
 ### Patch Changes
