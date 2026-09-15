@@ -4667,6 +4667,7 @@ export const userEventTypeEnum = {
 	"organization-delete": "organization-delete",
 	"organization-dsync-group-delete": "organization-dsync-group-delete",
 	"organization-dsync-group-upsert": "organization-dsync-group-upsert",
+	"organization-emu-updated": "organization-emu-updated",
 	"organization-slug-update": "organization-slug-update",
 	"organization-team-add": "organization-team-add",
 	"organization-team-create": "organization-team-create",
@@ -6377,6 +6378,19 @@ export const userEventPayloadNextDefaultEnum = {
 
 export type UserEventPayloadNextDefaultEnumKey =
 	(typeof userEventPayloadNextDefaultEnum)[keyof typeof userEventPayloadNextDefaultEnum];
+
+export const userEventPayloadTriggerEnum = {
+	directory_sync_updated: "directory_sync_updated",
+	domain_deleted: "domain_deleted",
+	domain_verified: "domain_verified",
+	saml_updated: "saml_updated",
+	team_attached: "team_attached",
+	team_participation_updated: "team_participation_updated",
+	toggle: "toggle",
+} as const;
+
+export type UserEventPayloadTriggerEnumKey =
+	(typeof userEventPayloadTriggerEnum)[keyof typeof userEventPayloadTriggerEnum];
 
 export const userEventPayloadBillingPlanEnum = {
 	enterprise: "enterprise",
@@ -11825,6 +11839,14 @@ export type UserEvent = {
 				  }
 				| {
 						organizationId: string;
+						previousEnabled: false | true;
+						enabled: false | true;
+						enforcedTeamIds: string[];
+						unenforcedTeamIds: string[];
+						trigger: UserEventPayloadTriggerEnumKey;
+				  }
+				| {
+						organizationId: string;
 						slug: string;
 				  }
 				| {
@@ -15232,6 +15254,7 @@ export const listEventTypeNameEnum = {
 	"organization-delete": "organization-delete",
 	"organization-dsync-group-delete": "organization-dsync-group-delete",
 	"organization-dsync-group-upsert": "organization-dsync-group-upsert",
+	"organization-emu-updated": "organization-emu-updated",
 	"organization-slug-update": "organization-slug-update",
 	"organization-team-add": "organization-team-add",
 	"organization-team-create": "organization-team-create",
@@ -15958,6 +15981,7 @@ export const listEventTypeReplacedByEnum = {
 	"organization-delete": "organization-delete",
 	"organization-dsync-group-delete": "organization-dsync-group-delete",
 	"organization-dsync-group-upsert": "organization-dsync-group-upsert",
+	"organization-emu-updated": "organization-emu-updated",
 	"organization-slug-update": "organization-slug-update",
 	"organization-team-add": "organization-team-add",
 	"organization-team-create": "organization-team-create",
