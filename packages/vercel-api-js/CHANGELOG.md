@@ -1,5 +1,12 @@
 # vercel-api-js
 
+## 1.16.1
+
+### Patch Changes
+
+- 032ab00: Add support for new user event type 'organization-emu-updated' in userEventSchema and related type enums.
+- 032ab00: Add new user event payload structure for 'organization-emu-updated' with enabled states, enforced and unenforced team IDs, and trigger reasons.
+
 ## 1.16.0
 
 ### Minor Changes
