@@ -9,34 +9,89 @@ export const aiGatewayProviderOptionBagSchema = z
 
 export const aiGatewayVirtualModelConfigSchema = z
 	.object({
-		ownerId: z.string().describe("Team (owner) that owns this VMC."),
-		virtualModelSlug: z
-			.string()
-			.describe("Client-facing alias used as the model slug in Gateway calls."),
-		displayName: z.string().optional().describe("Human-readable name for UI."),
-		description: z.string().optional().describe("Optional description for UI."),
-		deleted: z
+		allowFallbackFromFast: z
 			.union([z.literal(false), z.literal(true)])
-			.describe("Whether this VMC is soft-deleted."),
-		status: z.string().describe("UI lifecycle status: draft, active, or archived."),
-		visibility: z
-			.string()
 			.optional()
-			.describe("Visibility in listings: public, internal, or stealth."),
-		updatedBy: z.string().optional().describe("User id that last updated this VMC."),
-		kind: z.string().describe("VMC kind: alias, relay, or router."),
+			.describe("Allow fallback from fast to standard providers on failure."),
 		baseUrl: z
 			.string()
 			.optional()
 			.describe("For kind=relay: URL the gateway forwards requests to as a transparent proxy."),
+		byokCredentialIds: z
+			.array(z.string())
+			.optional()
+			.describe("BYOK credential IDs allowed for this VMC."),
+		caching: z.enum(["auto"]).optional().describe("Use caching if available."),
+		createdAt: z.number().describe("Creation timestamp (epoch ms)."),
+		deleted: z
+			.union([z.literal(false), z.literal(true)])
+			.describe("Whether this VMC is soft-deleted."),
+		description: z.string().optional().describe("Optional description for UI."),
+		disallowPromptTraining: z
+			.union([z.literal(false), z.literal(true)])
+			.optional()
+			.describe("Only use providers that will not train on your prompts."),
+		displayName: z.string().optional().describe("Human-readable name for UI."),
+		has: z
+			.array(z.enum(["implicit-caching", "vision"]))
+			.optional()
+			.describe("Limit providers to those with these features."),
+		hipaaCompliant: z
+			.union([z.literal(false), z.literal(true)])
+			.optional()
+			.describe("Only use HIPAA-compliant providers."),
+		inferenceRegion: z
+			.object({
+				geoRegion: z.string().optional().describe('Geo zone (e.g. "us", "eu").'),
+				providerRegion: z.string().optional().describe("Provider-specific region identifier."),
+				providers: z
+					.object({})
+					.catchall(
+						z.object({
+							geoRegion: z.string().optional().describe('Geo zone (e.g. "us", "eu").'),
+							providerRegion: z
+								.string()
+								.optional()
+								.describe("Provider-specific region identifier."),
+							scope: z
+								.enum(["global", "specific", "zone"])
+								.optional()
+								.describe(
+									"Pin scope: `specific` (one provider region), `zone` (geo zone), or `global`.",
+								),
+						}),
+					)
+					.optional()
+					.describe("Per-provider region overrides keyed by provider slug."),
+				scope: z
+					.enum(["global", "specific", "zone"])
+					.optional()
+					.describe("Pin scope: `specific` (one provider region), `zone` (geo zone), or `global`."),
+			})
+			.optional()
+			.describe("Region pinned on the VMC for system-credential routing (alias/router only)."),
 		instanceId: z
 			.string()
 			.optional()
 			.describe("The concrete model-provider instance this VMC resolves to."),
-		providerOrder: z
+		kind: z.string().describe("VMC kind: alias, relay, or router."),
+		models: z
 			.array(z.string())
 			.optional()
-			.describe("Ordered list of providers to try as fallbacks on failure."),
+			.describe(
+				"For kind=router: ordered candidates, model slugs or router references. Otherwise: fallback models.",
+			),
+		modelSlug: z
+			.string()
+			.optional()
+			.describe(
+				'Canonical model slug this VMC maps to (e.g. "creator/model"). Not used by kind=router.',
+			),
+		observabilityTags: z
+			.array(z.string())
+			.optional()
+			.describe("Observability tags attached to requests through this VMC."),
+		ownerId: z.string().describe("Team (owner) that owns this VMC."),
 		providerOnly: z
 			.array(z.string())
 			.optional()
@@ -46,77 +101,10 @@ export const aiGatewayVirtualModelConfigSchema = z
 			.catchall(z.unknown())
 			.optional()
 			.describe("Arbitrary per-provider AI SDK options, keyed by gateway provider slug."),
-		inferenceRegion: z
-			.object({
-				providers: z
-					.object({})
-					.catchall(
-						z.object({
-							scope: z
-								.enum(["global", "specific", "zone"])
-								.optional()
-								.describe(
-									"Pin scope: `specific` (one provider region), `zone` (geo zone), or `global`.",
-								),
-							geoRegion: z.string().optional().describe('Geo zone (e.g. "us", "eu").'),
-							providerRegion: z
-								.string()
-								.optional()
-								.describe("Provider-specific region identifier."),
-						}),
-					)
-					.optional()
-					.describe("Per-provider region overrides keyed by provider slug."),
-				scope: z
-					.enum(["global", "specific", "zone"])
-					.optional()
-					.describe("Pin scope: `specific` (one provider region), `zone` (geo zone), or `global`."),
-				geoRegion: z.string().optional().describe('Geo zone (e.g. "us", "eu").'),
-				providerRegion: z.string().optional().describe("Provider-specific region identifier."),
-			})
-			.optional()
-			.describe("Region pinned on the VMC for system-credential routing (alias/router only)."),
-		modelSlug: z
-			.string()
-			.optional()
-			.describe(
-				'Canonical model slug this VMC maps to (e.g. "creator/model"). Not used by kind=router.',
-			),
-		models: z
+		providerOrder: z
 			.array(z.string())
 			.optional()
-			.describe(
-				"For kind=router: ordered candidates, model slugs or router references. Otherwise: fallback models.",
-			),
-		selector: z
-			.enum(["cost", "priority", "tps", "ttft"])
-			.optional()
-			.describe("For kind=router: how to order candidates."),
-		requires: z
-			.array(z.string())
-			.optional()
-			.describe("For kind=router: capability tags a candidate must have."),
-		byokCredentialIds: z
-			.array(z.string())
-			.optional()
-			.describe("BYOK credential IDs allowed for this VMC."),
-		observabilityTags: z
-			.array(z.string())
-			.optional()
-			.describe("Observability tags attached to requests through this VMC."),
-		sort: z
-			.enum(["cost", "latency", "price", "throughput", "tps", "ttft"])
-			.optional()
-			.describe("Rank eligible providers by an attribute."),
-		has: z
-			.array(z.enum(["implicit-caching", "vision"]))
-			.optional()
-			.describe("Limit providers to those with these features."),
-		caching: z.enum(["auto"]).optional().describe("Use caching if available."),
-		serviceTier: z
-			.enum(["fast", "flex", "priority"])
-			.optional()
-			.describe("Service tier for providers that support it."),
+			.describe("Ordered list of providers to try as fallbacks on failure."),
 		providerTimeouts: z
 			.object({
 				byok: z.object({}).catchall(z.number()).optional(),
@@ -125,61 +113,73 @@ export const aiGatewayVirtualModelConfigSchema = z
 			.describe(
 				"Per-request provider timeouts in ms, keyed by provider slug for BYOK credentials.",
 			),
+		requires: z
+			.array(z.string())
+			.optional()
+			.describe("For kind=router: capability tags a candidate must have."),
+		selector: z
+			.enum(["cost", "priority", "tps", "ttft"])
+			.optional()
+			.describe("For kind=router: how to order candidates."),
+		serviceTier: z
+			.enum(["fast", "flex", "priority"])
+			.optional()
+			.describe("Service tier for providers that support it."),
+		sort: z
+			.enum(["cost", "latency", "price", "throughput", "tps", "ttft"])
+			.optional()
+			.describe("Rank eligible providers by an attribute."),
+		speed: z.enum(["fast"]).optional().describe("Only use fastest providers with short timeouts."),
+		status: z.string().describe("UI lifecycle status: draft, active, or archived."),
+		updatedAt: z.number().describe("Last update timestamp (epoch ms)."),
+		updatedBy: z.string().optional().describe("User id that last updated this VMC."),
+		virtualModelSlug: z
+			.string()
+			.describe("Client-facing alias used as the model slug in Gateway calls."),
+		visibility: z
+			.string()
+			.optional()
+			.describe("Visibility in listings: public, internal, or stealth."),
 		zeroDataRetention: z
 			.union([z.literal(false), z.literal(true)])
 			.optional()
 			.describe("Only use providers with zero data retention."),
-		hipaaCompliant: z
-			.union([z.literal(false), z.literal(true)])
-			.optional()
-			.describe("Only use HIPAA-compliant providers."),
-		disallowPromptTraining: z
-			.union([z.literal(false), z.literal(true)])
-			.optional()
-			.describe("Only use providers that will not train on your prompts."),
-		speed: z.enum(["fast"]).optional().describe("Only use fastest providers with short timeouts."),
-		allowFallbackFromFast: z
-			.union([z.literal(false), z.literal(true)])
-			.optional()
-			.describe("Allow fallback from fast to standard providers on failure."),
-		createdAt: z.number().describe("Creation timestamp (epoch ms)."),
-		updatedAt: z.number().describe("Last update timestamp (epoch ms)."),
 	})
 	.describe(
 		"Public response shape for virtual model configs. Used so OpenAPI generation can avoid ElectroDB's recursive EntityItem types.",
 	);
 
 export const aiGatewayVirtualModelConfigListSchema = z.object({
-	virtualModelConfigs: z.array(z.unknown()).describe("The page of VMCs."),
 	cursor: z
 		.string()
 		.nullable()
 		.describe("Cursor for the next page, or null when no more pages remain."),
+	virtualModelConfigs: z.array(z.unknown()).describe("The page of VMCs."),
 });
 
 export const aiGatewayRuleSchema = z
 	.object({
-		ownerId: z.string(),
-		ruleId: z.string(),
-		type: z.enum(["deny", "rewrite"]),
+		action: z
+			.object({
+				reason: z.string().optional(),
+				rewriteModel: z.string().optional(),
+			})
+			.optional(),
+		createdAt: z.number(),
+		createdBy: z.string().optional(),
+		deleted: z.union([z.literal(false), z.literal(true)]).optional(),
+		description: z.string().optional(),
+		enabled: z.union([z.literal(false), z.literal(true)]),
 		match: z
 			.object({
 				model: z.string().optional(),
 			})
 			.optional(),
-		action: z
-			.object({
-				rewriteModel: z.string().optional(),
-				reason: z.string().optional(),
-			})
-			.optional(),
-		enabled: z.union([z.literal(false), z.literal(true)]),
-		deleted: z.union([z.literal(false), z.literal(true)]).optional(),
-		description: z.string().optional(),
-		createdBy: z.string().optional(),
-		updatedBy: z.string().optional(),
-		createdAt: z.number(),
+		ownerId: z.string(),
+		ruleId: z.string(),
+		type: z.enum(["deny", "rewrite"]),
 		updatedAt: z.number(),
+		updatedBy: z.string().optional(),
 	})
 	.describe(
 		"Public response shape for AI Gateway routing rules. Used so OpenAPI generation can avoid ElectroDB's recursive EntityItem types.",
@@ -240,37 +240,6 @@ export const networkSchema = z.object({
 
 export const privateLinkEndpointSchema = z
 	.object({
-		endpointId: z
-			.string()
-			.describe("The unique identifier of the PrivateLink endpoint.")
-			.meta({ examples: ["ple_a1b2c3d4e5f6g7h8"] }),
-		name: z
-			.string()
-			.describe("The name of the PrivateLink endpoint, shown in the Vercel dashboard.")
-			.meta({ examples: ["payments-db"] }),
-		teamId: z
-			.string()
-			.describe("The identifier of the team that owns the PrivateLink endpoint.")
-			.meta({ examples: ["team_a1b2c3d4e5f6g7h8"] }),
-		projectId: z
-			.string()
-			.describe("The identifier of the project the PrivateLink endpoint belongs to.")
-			.meta({ examples: ["prj_a1b2c3d4e5f6g7h8"] }),
-		vercelRegion: z
-			.string()
-			.describe("The Vercel region the endpoint is provisioned in.")
-			.meta({ examples: ["iad1"] }),
-		awsServiceName: z
-			.string()
-			.describe("The AWS VPC endpoint service the endpoint connects to.")
-			.meta({ examples: ["com.amazonaws.vpce.us-east-1.vpce-svc-0123456789abcdef0"] }),
-		vpcEndpointId: z
-			.string()
-			.optional()
-			.describe(
-				"The identifier of the underlying AWS VPC endpoint. Absent until AWS has created the endpoint.",
-			)
-			.meta({ examples: ["vpce-0123456789abcdef0"] }),
 		awsDnsEntries: z
 			.array(z.string())
 			.optional()
@@ -284,6 +253,22 @@ export const privateLinkEndpointSchema = z
 					],
 				],
 			}),
+		awsServiceName: z
+			.string()
+			.describe("The AWS VPC endpoint service the endpoint connects to.")
+			.meta({ examples: ["com.amazonaws.vpce.us-east-1.vpce-svc-0123456789abcdef0"] }),
+		createdAt: z
+			.number()
+			.describe("Timestamp in milliseconds since the UNIX epoch for when the endpoint was created.")
+			.meta({ examples: [1610963878358] }),
+		endpointId: z
+			.string()
+			.describe("The unique identifier of the PrivateLink endpoint.")
+			.meta({ examples: ["ple_a1b2c3d4e5f6g7h8"] }),
+		name: z
+			.string()
+			.describe("The name of the PrivateLink endpoint, shown in the Vercel dashboard.")
+			.meta({ examples: ["payments-db"] }),
 		privateDnsNames: z
 			.array(z.string())
 			.optional()
@@ -291,6 +276,10 @@ export const privateLinkEndpointSchema = z
 				"The private DNS names of the endpoint service, populated when private DNS is enabled for the endpoint.",
 			)
 			.meta({ examples: [["payments.internal.example.com"]] }),
+		projectId: z
+			.string()
+			.describe("The identifier of the project the PrivateLink endpoint belongs to.")
+			.meta({ examples: ["prj_a1b2c3d4e5f6g7h8"] }),
 		status: z
 			.enum([
 				"available",
@@ -316,19 +305,46 @@ export const privateLinkEndpointSchema = z
 					"Endpoint did not become available in time. Try deleting and recreating, or visit https://vercel.com/help if the issue persists.",
 				],
 			}),
-		createdAt: z
-			.number()
-			.describe("Timestamp in milliseconds since the UNIX epoch for when the endpoint was created.")
-			.meta({ examples: [1610963878358] }),
+		teamId: z
+			.string()
+			.describe("The identifier of the team that owns the PrivateLink endpoint.")
+			.meta({ examples: ["team_a1b2c3d4e5f6g7h8"] }),
 		updatedAt: z
 			.number()
 			.describe(
 				"Timestamp in milliseconds since the UNIX epoch for when the endpoint was last updated.",
 			)
 			.meta({ examples: [1610963878358] }),
+		vercelRegion: z
+			.string()
+			.describe("The Vercel region the endpoint is provisioned in.")
+			.meta({ examples: ["iad1"] }),
+		vpcEndpointId: z
+			.string()
+			.optional()
+			.describe(
+				"The identifier of the underlying AWS VPC endpoint. Absent until AWS has created the endpoint.",
+			)
+			.meta({ examples: ["vpce-0123456789abcdef0"] }),
 	})
 	.describe(
 		"A PrivateLink endpoint, which connects a project to an AWS VPC endpoint service in a single region so that traffic reaches the service over AWS PrivateLink rather than the public internet.",
+	);
+
+export const connectTriggerDestinationSchema = z
+	.object({
+		branch: z.string().optional().describe("Git branch used to select a preview deployment."),
+		customEnvironmentId: z
+			.string()
+			.optional()
+			.describe(
+				"Stable custom-environment ID to route this destination to. Mutually exclusive with `branch`; omitted destinations keep the legacy production behavior.",
+			),
+		path: z.string().optional().describe("Route path that receives the forwarded trigger request."),
+		projectId: z.string().describe("Vercel project that receives matching trigger requests."),
+	})
+	.describe(
+		"Destinations that incoming triggers should be forwarded to. Limited to 3 entries. Set the initial destination with `triggerDestination` during creation. Replace the complete set with `PATCH /v1/connect/connectors/{connector}/trigger-destinations`.",
 	);
 
 export const connectTriggerConfigurationSchema = z
@@ -339,89 +355,114 @@ export const connectTriggerConfigurationSchema = z
 	})
 	.describe("Incoming trigger configuration. Only present when enabled.");
 
-export const connectTriggerDestinationSchema = z
-	.object({
-		projectId: z.string().describe("Vercel project that receives matching trigger requests."),
-		customEnvironmentId: z
-			.string()
-			.optional()
-			.describe(
-				"Stable custom-environment ID to route this destination to. Mutually exclusive with `branch`; omitted destinations keep the legacy production behavior.",
-			),
-		branch: z.string().optional().describe("Git branch used to select a preview deployment."),
-		path: z.string().optional().describe("Route path that receives the forwarded trigger request."),
-	})
-	.describe(
-		"Destinations that incoming triggers should be forwarded to. Limited to 3 entries. Set the initial destination with `triggerDestination` during creation. Replace the complete set with `PATCH /v1/connect/connectors/{connector}/trigger-destinations`.",
-	);
-
 export const connectConnectorSchema = z
 	.object({
-		id: z
-			.string()
-			.describe("Stable `scl_` connector ID. Use this value directly in `{connector}`."),
-		uid: z
-			.string()
-			.describe("Team-scoped UID. URL-encode this value before using it in `{connector}`."),
-		defaultInstallationId: z
+		accentColor: z.string().optional().describe("Hex accent color (e.g., `#000000`) for branding."),
+		appTokens: z
+			.object({
+				crossInstallation: z
+					.union([z.literal(false), z.literal(true)])
+					.describe("Whether one app token can be used across installations."),
+				permissionsUrl: z
+					.string()
+					.optional()
+					.describe(
+						"Link to the page on the service where this connector's app-level permissions are declared and granted, when the service has one and it differs from `clientUrl`.",
+					),
+				requiresReinstallation: z
+					.union([z.literal(false), z.literal(true)])
+					.optional()
+					.describe(
+						"True when changing app token grants requires reinstalling the app, so tokens cannot be partitioned independently by requester environment.",
+					),
+				scopes: z
+					.array(z.string())
+					.optional()
+					.describe(
+						"Known allowed app-level scopes. For Slack this is the bot scope set configured on the app; for OAuth it is the connector's enabled `clientCredentials.scopes` configuration.",
+					),
+				supportedAuthorizationDetails: z
+					.array(z.string())
+					.optional()
+					.describe("Supported OAuth authorization-detail type names."),
+				supportsRefinement: z
+					.union([z.literal(false), z.literal(true)])
+					.describe("Whether callers can narrow app-token grants per request."),
+				supportsResources: z
+					.union([z.literal(false), z.literal(true)])
+					.optional()
+					.describe("Whether callers can request resource-specific app tokens."),
+			})
+			.optional()
+			.describe("App-token capabilities and known grants for the connector."),
+		backgroundColor: z
 			.string()
 			.optional()
-			.describe("Installation used when a token request does not specify an installation."),
+			.describe("Hex background color (e.g., `#000000`) for branding."),
+		clientUrl: z
+			.string()
+			.nullish()
+			.describe(
+				"Provider-side URL for viewing or managing the resource represented by the connector. The destination can be an app, account, phone line, or service instance, depending on the connector type.",
+			),
+		connectionMethod: z
+			.string()
+			.optional()
+			.describe(
+				"The connection method this connector was created from, when the create request named one.",
+			),
 		createdAt: z.number().describe("Creation time in epoch milliseconds."),
-		updatedAt: z.number().describe("Last update time in epoch milliseconds."),
-		reinstallAt: z
-			.number()
-			.optional()
-			.describe(
-				"Time when this connector started requiring reinstallation because an installation-affecting app-token grant changed.",
-			),
-		knownStale: z
-			.union([z.literal(false), z.literal(true)])
-			.optional()
-			.describe(
-				"Whether the connector is known to have been edited since the app package it publishes to the provider was last built, so that package no longer matches it. Absent when it was not computed, or when the connector type publishes no such package. Derived on every read rather than marked at edit time, so reverting an edit clears it. Only reported by connector types that publish a package a user has to re-publish by hand — Microsoft Teams today.",
-			),
 		createdBy: z
 			.discriminatedUnion("type", [
 				z
 					.object({
-						type: z.enum(["user"]).describe("Principal kind."),
 						id: z.string().describe("Vercel user ID."),
+						type: z.enum(["user"]).describe("Principal kind."),
 					})
 					.strict(),
 				z
 					.object({
-						type: z.enum(["project"]).describe("Principal kind."),
-						id: z.string().describe("Vercel project ID."),
 						environment: z.string().describe("Deployment environment of the project principal."),
+						id: z.string().describe("Vercel project ID."),
+						type: z.enum(["project"]).describe("Principal kind."),
 					})
 					.strict(),
 			])
 			.optional()
 			.describe("Principal that created the connector."),
-		updatedBy: z
-			.discriminatedUnion("type", [
-				z
-					.object({
-						type: z.enum(["user"]).describe("Principal kind."),
-						id: z.string().describe("Vercel user ID."),
-					})
-					.strict(),
-				z
-					.object({
-						type: z.enum(["project"]).describe("Principal kind."),
-						id: z.string().describe("Vercel project ID."),
-						environment: z.string().describe("Deployment environment of the project principal."),
-					})
-					.strict(),
-			])
-			.optional()
-			.describe("Principal that most recently updated the connector."),
 		creationMode: z
 			.enum(["managed", "manual"])
 			.optional()
 			.describe(
 				"How the connector row was originally created. New create paths stamp this explicitly; older rows may omit it.",
+			),
+		defaultInstallationId: z
+			.string()
+			.optional()
+			.describe("Installation used when a token request does not specify an installation."),
+		devsite: z.string().optional().describe("Developer website for the connected service."),
+		displayName: z.string().describe("Human-readable connector name."),
+		docsite: z.string().optional().describe("Developer documentation for the connected service."),
+		events: z
+			.array(z.string())
+			.optional()
+			.describe(
+				"Known events this connector subscribes to (e.g. Slack bot events, GitHub webhook events). Names are type-specific and validated by the managed-create flow when forwarded to the third-party service.",
+			),
+		icon: z
+			.string()
+			.optional()
+			.describe(
+				"Connector branding icon. SHA-1 hash that resolves to the uploaded icon through the Vercel avatar service. Consumers render this with `https://vercel.com/api/www/avatar/{icon}`.",
+			),
+		id: z
+			.string()
+			.describe("Stable `scl_` connector ID. Use this value directly in `{connector}`."),
+		knownStale: z
+			.union([z.literal(false), z.literal(true)])
+			.optional()
+			.describe(
+				"Whether the connector is known to have been edited since the app package it publishes to the provider was last built, so that package no longer matches it. Absent when it was not computed, or when the connector type publishes no such package. Derived on every read rather than marked at edit time, so reverting an edit clears it. Only reported by connector types that publish a package a user has to re-publish by hand — Microsoft Teams today.",
 			),
 		managed: z
 			.object({
@@ -434,6 +475,52 @@ export const connectConnectorSchema = z
 			.describe(
 				"Managed connector metadata exposed without leaking the manager connector or installation identifiers.",
 			),
+		name: z.string().describe("Connector name within the owning team."),
+		redirectUri: z
+			.string()
+			.optional()
+			.describe(
+				"Redirect URI registered with the third-party service for this connector, if any. Used by `startAuthorization`/`startInstallation` to replay the exact URI back to the provider's token endpoint. Absent on connectors created before this field was introduced; those callers fall back to the `https://connect.vercel.com/callback` default.",
+			),
+		reinstallAt: z
+			.number()
+			.optional()
+			.describe(
+				"Time when this connector started requiring reinstallation because an installation-affecting app-token grant changed.",
+			),
+		service: z
+			.string()
+			.describe(
+				"Best-effort identifier of the third-party service this connector represents, independent of `type`. Examples: `'slack'`, `'mcp.linear.app'`, and `'auth.example.com'`. Always present in API responses.",
+			),
+		supportedSubjectTypes: z
+			.array(z.string())
+			.describe("Token subject types supported by the connector."),
+		supportsIcon: z
+			.union([z.literal(false), z.literal("maybe"), z.literal(true)])
+			.describe("Whether the connector icon can propagate to the provider."),
+		supportsInstallation: z
+			.union([z.literal(false), z.literal(true)])
+			.describe("Whether the connector supports an installation flow."),
+		supportsRevocation: z
+			.union([z.literal(false), z.literal(true)])
+			.describe("Whether Connect can revoke tokens for this connector."),
+		supportsTriggers: z
+			.union([z.literal(false), z.literal(true)])
+			.describe(
+				"Whether this connector type supports trigger webhooks. Derived from the type definition; indicates that `triggers` and `triggerDestinations` may be meaningful for this connector.",
+			),
+		target: z
+			.string()
+			.optional()
+			.describe("Which of the service's products/surfaces this connector points at."),
+		triggerDestinations: z
+			.array(z.unknown())
+			.optional()
+			.describe(
+				"Destinations that incoming triggers should be forwarded to. Limited to 3 entries. Set the initial destination with `triggerDestination` during creation. Replace the complete set with `PATCH /v1/connect/connectors/{connector}/trigger-destinations`.",
+			),
+		triggers: z.unknown().optional().describe("Incoming trigger configuration for the connector."),
 		type: z
 			.enum([
 				"api-key",
@@ -454,103 +541,41 @@ export const connectConnectorSchema = z
 				"snowflake-wif",
 			])
 			.describe("Connector implementation type."),
-		service: z
-			.string()
-			.describe(
-				"Best-effort identifier of the third-party service this connector represents, independent of `type`. Examples: `'slack'`, `'mcp.linear.app'`, and `'auth.example.com'`. Always present in API responses.",
-			),
-		connectionMethod: z
-			.string()
-			.optional()
-			.describe(
-				"The connection method this connector was created from, when the create request named one.",
-			),
-		target: z
-			.string()
-			.optional()
-			.describe("Which of the service's products/surfaces this connector points at."),
-		name: z.string().describe("Connector name within the owning team."),
-		displayName: z.string().describe("Human-readable connector name."),
-		clientUrl: z
-			.string()
-			.nullish()
-			.describe(
-				"Provider-side URL for viewing or managing the resource represented by the connector. The destination can be an app, account, phone line, or service instance, depending on the connector type.",
-			),
-		redirectUri: z
-			.string()
-			.optional()
-			.describe(
-				"Redirect URI registered with the third-party service for this connector, if any. Used by `startAuthorization`/`startInstallation` to replay the exact URI back to the provider's token endpoint. Absent on connectors created before this field was introduced; those callers fall back to the `https://connect.vercel.com/callback` default.",
-			),
-		typeName: z.string().describe("Human-readable name of the connector type."),
 		typeIcon: z.string().optional().describe("Icon identifier supplied by the connector type."),
-		website: z.string().optional().describe("Public website for the connected service."),
-		devsite: z.string().optional().describe("Developer website for the connected service."),
-		docsite: z.string().optional().describe("Developer documentation for the connected service."),
-		icon: z
+		typeName: z.string().describe("Human-readable name of the connector type."),
+		uid: z
 			.string()
+			.describe("Team-scoped UID. URL-encode this value before using it in `{connector}`."),
+		updatedAt: z.number().describe("Last update time in epoch milliseconds."),
+		updatedBy: z
+			.discriminatedUnion("type", [
+				z
+					.object({
+						id: z.string().describe("Vercel user ID."),
+						type: z.enum(["user"]).describe("Principal kind."),
+					})
+					.strict(),
+				z
+					.object({
+						environment: z.string().describe("Deployment environment of the project principal."),
+						id: z.string().describe("Vercel project ID."),
+						type: z.enum(["project"]).describe("Principal kind."),
+					})
+					.strict(),
+			])
 			.optional()
-			.describe(
-				"Connector branding icon. SHA-1 hash that resolves to the uploaded icon through the Vercel avatar service. Consumers render this with `https://vercel.com/api/www/avatar/{icon}`.",
-			),
-		backgroundColor: z
-			.string()
-			.optional()
-			.describe("Hex background color (e.g., `#000000`) for branding."),
-		accentColor: z.string().optional().describe("Hex accent color (e.g., `#000000`) for branding."),
-		supportedSubjectTypes: z
-			.array(z.string())
-			.describe("Token subject types supported by the connector."),
-		appTokens: z
-			.object({
-				crossInstallation: z
-					.union([z.literal(false), z.literal(true)])
-					.describe("Whether one app token can be used across installations."),
-				supportsRefinement: z
-					.union([z.literal(false), z.literal(true)])
-					.describe("Whether callers can narrow app-token grants per request."),
-				supportsResources: z
-					.union([z.literal(false), z.literal(true)])
-					.optional()
-					.describe("Whether callers can request resource-specific app tokens."),
-				requiresReinstallation: z
-					.union([z.literal(false), z.literal(true)])
-					.optional()
-					.describe(
-						"True when changing app token grants requires reinstalling the app, so tokens cannot be partitioned independently by requester environment.",
-					),
-				scopes: z
-					.array(z.string())
-					.optional()
-					.describe(
-						"Known allowed app-level scopes. For Slack this is the bot scope set configured on the app; for OAuth it is the connector's enabled `clientCredentials.scopes` configuration.",
-					),
-				supportedAuthorizationDetails: z
-					.array(z.string())
-					.optional()
-					.describe("Supported OAuth authorization-detail type names."),
-				permissionsUrl: z
-					.string()
-					.optional()
-					.describe(
-						"Link to the page on the service where this connector's app-level permissions are declared and granted, when the service has one and it differs from `clientUrl`.",
-					),
-			})
-			.optional()
-			.describe("App-token capabilities and known grants for the connector."),
+			.describe("Principal that most recently updated the connector."),
 		userTokens: z
 			.object({
 				crossInstallation: z
 					.union([z.literal(false), z.literal(true)])
 					.describe("Whether one user token can be used across installations."),
-				supportsRefinement: z
-					.union([z.literal(false), z.literal(true)])
-					.describe("Whether callers can narrow user-token grants per request."),
-				supportsResources: z
+				manualCredentialInput: z
 					.union([z.literal(false), z.literal(true)])
 					.optional()
-					.describe("Whether callers can request resource-specific user tokens."),
+					.describe(
+						"User authorization is completed by the Connect consent screen submitting a credential instead of an OAuth redirect.",
+					),
 				scopes: z
 					.array(z.string())
 					.optional()
@@ -561,42 +586,17 @@ export const connectConnectorSchema = z
 					.array(z.string())
 					.optional()
 					.describe("Supported OAuth authorization-detail type names."),
-				manualCredentialInput: z
+				supportsRefinement: z
+					.union([z.literal(false), z.literal(true)])
+					.describe("Whether callers can narrow user-token grants per request."),
+				supportsResources: z
 					.union([z.literal(false), z.literal(true)])
 					.optional()
-					.describe(
-						"User authorization is completed by the Connect consent screen submitting a credential instead of an OAuth redirect.",
-					),
+					.describe("Whether callers can request resource-specific user tokens."),
 			})
 			.optional()
 			.describe("User-token capabilities and known grants for the connector."),
-		supportsInstallation: z
-			.union([z.literal(false), z.literal(true)])
-			.describe("Whether the connector supports an installation flow."),
-		supportsRevocation: z
-			.union([z.literal(false), z.literal(true)])
-			.describe("Whether Connect can revoke tokens for this connector."),
-		supportsTriggers: z
-			.union([z.literal(false), z.literal(true)])
-			.describe(
-				"Whether this connector type supports trigger webhooks. Derived from the type definition; indicates that `triggers` and `triggerDestinations` may be meaningful for this connector.",
-			),
-		supportsIcon: z
-			.union([z.literal(false), z.literal("maybe"), z.literal(true)])
-			.describe("Whether the connector icon can propagate to the provider."),
-		triggers: z.unknown().optional().describe("Incoming trigger configuration for the connector."),
-		events: z
-			.array(z.string())
-			.optional()
-			.describe(
-				"Known events this connector subscribes to (e.g. Slack bot events, GitHub webhook events). Names are type-specific and validated by the managed-create flow when forwarded to the third-party service.",
-			),
-		triggerDestinations: z
-			.array(z.unknown())
-			.optional()
-			.describe(
-				"Destinations that incoming triggers should be forwarded to. Limited to 3 entries. Set the initial destination with `triggerDestination` during creation. Replace the complete set with `PATCH /v1/connect/connectors/{connector}/trigger-destinations`.",
-			),
+		website: z.string().optional().describe("Public website for the connected service."),
 	})
 	.describe("A connector that defines how Vercel accesses an external service.");
 
@@ -615,71 +615,112 @@ export const connectConnectorListSchema = z
 
 export const connectConnectorCreateResultSchema = z
 	.object({
-		id: z
-			.string()
-			.describe("Stable `scl_` connector ID. Use this value directly in `{connector}`."),
-		uid: z
-			.string()
-			.describe("Team-scoped UID. URL-encode this value before using it in `{connector}`."),
-		defaultInstallationId: z
+		accentColor: z.string().optional().describe("Hex accent color (e.g., `#000000`) for branding."),
+		appTokens: z
+			.object({
+				crossInstallation: z
+					.union([z.literal(false), z.literal(true)])
+					.describe("Whether one app token can be used across installations."),
+				permissionsUrl: z
+					.string()
+					.optional()
+					.describe(
+						"Link to the page on the service where this connector's app-level permissions are declared and granted, when the service has one and it differs from `clientUrl`.",
+					),
+				requiresReinstallation: z
+					.union([z.literal(false), z.literal(true)])
+					.optional()
+					.describe(
+						"True when changing app token grants requires reinstalling the app, so tokens cannot be partitioned independently by requester environment.",
+					),
+				scopes: z
+					.array(z.string())
+					.optional()
+					.describe(
+						"Known allowed app-level scopes. For Slack this is the bot scope set configured on the app; for OAuth it is the connector's enabled `clientCredentials.scopes` configuration.",
+					),
+				supportedAuthorizationDetails: z
+					.array(z.string())
+					.optional()
+					.describe("Supported OAuth authorization-detail type names."),
+				supportsRefinement: z
+					.union([z.literal(false), z.literal(true)])
+					.describe("Whether callers can narrow app-token grants per request."),
+				supportsResources: z
+					.union([z.literal(false), z.literal(true)])
+					.optional()
+					.describe("Whether callers can request resource-specific app tokens."),
+			})
+			.optional()
+			.describe("App-token capabilities and known grants for the connector."),
+		backgroundColor: z
 			.string()
 			.optional()
-			.describe("Installation used when a token request does not specify an installation."),
+			.describe("Hex background color (e.g., `#000000`) for branding."),
+		clientUrl: z
+			.string()
+			.nullish()
+			.describe(
+				"Provider-side URL for viewing or managing the resource represented by the connector. The destination can be an app, account, phone line, or service instance, depending on the connector type.",
+			),
+		connectionMethod: z
+			.string()
+			.optional()
+			.describe(
+				"The connection method this connector was created from, when the create request named one.",
+			),
 		createdAt: z.number().describe("Creation time in epoch milliseconds."),
-		updatedAt: z.number().describe("Last update time in epoch milliseconds."),
-		reinstallAt: z
-			.number()
-			.optional()
-			.describe(
-				"Time when this connector started requiring reinstallation because an installation-affecting app-token grant changed.",
-			),
-		knownStale: z
-			.union([z.literal(false), z.literal(true)])
-			.optional()
-			.describe(
-				"Whether the connector is known to have been edited since the app package it publishes to the provider was last built, so that package no longer matches it. Absent when it was not computed, or when the connector type publishes no such package. Derived on every read rather than marked at edit time, so reverting an edit clears it. Only reported by connector types that publish a package a user has to re-publish by hand — Microsoft Teams today.",
-			),
 		createdBy: z
 			.discriminatedUnion("type", [
 				z
 					.object({
-						type: z.enum(["user"]).describe("Principal kind."),
 						id: z.string().describe("Vercel user ID."),
+						type: z.enum(["user"]).describe("Principal kind."),
 					})
 					.strict(),
 				z
 					.object({
-						type: z.enum(["project"]).describe("Principal kind."),
-						id: z.string().describe("Vercel project ID."),
 						environment: z.string().describe("Deployment environment of the project principal."),
+						id: z.string().describe("Vercel project ID."),
+						type: z.enum(["project"]).describe("Principal kind."),
 					})
 					.strict(),
 			])
 			.optional()
 			.describe("Principal that created the connector."),
-		updatedBy: z
-			.discriminatedUnion("type", [
-				z
-					.object({
-						type: z.enum(["user"]).describe("Principal kind."),
-						id: z.string().describe("Vercel user ID."),
-					})
-					.strict(),
-				z
-					.object({
-						type: z.enum(["project"]).describe("Principal kind."),
-						id: z.string().describe("Vercel project ID."),
-						environment: z.string().describe("Deployment environment of the project principal."),
-					})
-					.strict(),
-			])
-			.optional()
-			.describe("Principal that most recently updated the connector."),
 		creationMode: z
 			.enum(["managed", "manual"])
 			.optional()
 			.describe(
 				"How the connector row was originally created. New create paths stamp this explicitly; older rows may omit it.",
+			),
+		defaultInstallationId: z
+			.string()
+			.optional()
+			.describe("Installation used when a token request does not specify an installation."),
+		devsite: z.string().optional().describe("Developer website for the connected service."),
+		displayName: z.string().describe("Human-readable connector name."),
+		docsite: z.string().optional().describe("Developer documentation for the connected service."),
+		events: z
+			.array(z.string())
+			.optional()
+			.describe(
+				"Known events this connector subscribes to (e.g. Slack bot events, GitHub webhook events). Names are type-specific and validated by the managed-create flow when forwarded to the third-party service.",
+			),
+		icon: z
+			.string()
+			.optional()
+			.describe(
+				"Connector branding icon. SHA-1 hash that resolves to the uploaded icon through the Vercel avatar service. Consumers render this with `https://vercel.com/api/www/avatar/{icon}`.",
+			),
+		id: z
+			.string()
+			.describe("Stable `scl_` connector ID. Use this value directly in `{connector}`."),
+		knownStale: z
+			.union([z.literal(false), z.literal(true)])
+			.optional()
+			.describe(
+				"Whether the connector is known to have been edited since the app package it publishes to the provider was last built, so that package no longer matches it. Absent when it was not computed, or when the connector type publishes no such package. Derived on every read rather than marked at edit time, so reverting an edit clears it. Only reported by connector types that publish a package a user has to re-publish by hand — Microsoft Teams today.",
 			),
 		managed: z
 			.object({
@@ -692,6 +733,52 @@ export const connectConnectorCreateResultSchema = z
 			.describe(
 				"Managed connector metadata exposed without leaking the manager connector or installation identifiers.",
 			),
+		name: z.string().describe("Connector name within the owning team."),
+		redirectUri: z
+			.string()
+			.optional()
+			.describe(
+				"Redirect URI registered with the third-party service for this connector, if any. Used by `startAuthorization`/`startInstallation` to replay the exact URI back to the provider's token endpoint. Absent on connectors created before this field was introduced; those callers fall back to the `https://connect.vercel.com/callback` default.",
+			),
+		reinstallAt: z
+			.number()
+			.optional()
+			.describe(
+				"Time when this connector started requiring reinstallation because an installation-affecting app-token grant changed.",
+			),
+		service: z
+			.string()
+			.describe(
+				"Best-effort identifier of the third-party service this connector represents, independent of `type`. Examples: `'slack'`, `'mcp.linear.app'`, and `'auth.example.com'`. Always present in API responses.",
+			),
+		supportedSubjectTypes: z
+			.array(z.string())
+			.describe("Token subject types supported by the connector."),
+		supportsIcon: z
+			.union([z.literal(false), z.literal("maybe"), z.literal(true)])
+			.describe("Whether the connector icon can propagate to the provider."),
+		supportsInstallation: z
+			.union([z.literal(false), z.literal(true)])
+			.describe("Whether the connector supports an installation flow."),
+		supportsRevocation: z
+			.union([z.literal(false), z.literal(true)])
+			.describe("Whether Connect can revoke tokens for this connector."),
+		supportsTriggers: z
+			.union([z.literal(false), z.literal(true)])
+			.describe(
+				"Whether this connector type supports trigger webhooks. Derived from the type definition; indicates that `triggers` and `triggerDestinations` may be meaningful for this connector.",
+			),
+		target: z
+			.string()
+			.optional()
+			.describe("Which of the service's products/surfaces this connector points at."),
+		triggerDestinations: z
+			.array(z.unknown())
+			.optional()
+			.describe(
+				"Destinations that incoming triggers should be forwarded to. Limited to 3 entries. Set the initial destination with `triggerDestination` during creation. Replace the complete set with `PATCH /v1/connect/connectors/{connector}/trigger-destinations`.",
+			),
+		triggers: z.unknown().optional().describe("Incoming trigger configuration for the connector."),
 		type: z
 			.enum([
 				"api-key",
@@ -712,103 +799,41 @@ export const connectConnectorCreateResultSchema = z
 				"snowflake-wif",
 			])
 			.describe("Connector implementation type."),
-		service: z
-			.string()
-			.describe(
-				"Best-effort identifier of the third-party service this connector represents, independent of `type`. Examples: `'slack'`, `'mcp.linear.app'`, and `'auth.example.com'`. Always present in API responses.",
-			),
-		connectionMethod: z
-			.string()
-			.optional()
-			.describe(
-				"The connection method this connector was created from, when the create request named one.",
-			),
-		target: z
-			.string()
-			.optional()
-			.describe("Which of the service's products/surfaces this connector points at."),
-		name: z.string().describe("Connector name within the owning team."),
-		displayName: z.string().describe("Human-readable connector name."),
-		clientUrl: z
-			.string()
-			.nullish()
-			.describe(
-				"Provider-side URL for viewing or managing the resource represented by the connector. The destination can be an app, account, phone line, or service instance, depending on the connector type.",
-			),
-		redirectUri: z
-			.string()
-			.optional()
-			.describe(
-				"Redirect URI registered with the third-party service for this connector, if any. Used by `startAuthorization`/`startInstallation` to replay the exact URI back to the provider's token endpoint. Absent on connectors created before this field was introduced; those callers fall back to the `https://connect.vercel.com/callback` default.",
-			),
-		typeName: z.string().describe("Human-readable name of the connector type."),
 		typeIcon: z.string().optional().describe("Icon identifier supplied by the connector type."),
-		website: z.string().optional().describe("Public website for the connected service."),
-		devsite: z.string().optional().describe("Developer website for the connected service."),
-		docsite: z.string().optional().describe("Developer documentation for the connected service."),
-		icon: z
+		typeName: z.string().describe("Human-readable name of the connector type."),
+		uid: z
 			.string()
+			.describe("Team-scoped UID. URL-encode this value before using it in `{connector}`."),
+		updatedAt: z.number().describe("Last update time in epoch milliseconds."),
+		updatedBy: z
+			.discriminatedUnion("type", [
+				z
+					.object({
+						id: z.string().describe("Vercel user ID."),
+						type: z.enum(["user"]).describe("Principal kind."),
+					})
+					.strict(),
+				z
+					.object({
+						environment: z.string().describe("Deployment environment of the project principal."),
+						id: z.string().describe("Vercel project ID."),
+						type: z.enum(["project"]).describe("Principal kind."),
+					})
+					.strict(),
+			])
 			.optional()
-			.describe(
-				"Connector branding icon. SHA-1 hash that resolves to the uploaded icon through the Vercel avatar service. Consumers render this with `https://vercel.com/api/www/avatar/{icon}`.",
-			),
-		backgroundColor: z
-			.string()
-			.optional()
-			.describe("Hex background color (e.g., `#000000`) for branding."),
-		accentColor: z.string().optional().describe("Hex accent color (e.g., `#000000`) for branding."),
-		supportedSubjectTypes: z
-			.array(z.string())
-			.describe("Token subject types supported by the connector."),
-		appTokens: z
-			.object({
-				crossInstallation: z
-					.union([z.literal(false), z.literal(true)])
-					.describe("Whether one app token can be used across installations."),
-				supportsRefinement: z
-					.union([z.literal(false), z.literal(true)])
-					.describe("Whether callers can narrow app-token grants per request."),
-				supportsResources: z
-					.union([z.literal(false), z.literal(true)])
-					.optional()
-					.describe("Whether callers can request resource-specific app tokens."),
-				requiresReinstallation: z
-					.union([z.literal(false), z.literal(true)])
-					.optional()
-					.describe(
-						"True when changing app token grants requires reinstalling the app, so tokens cannot be partitioned independently by requester environment.",
-					),
-				scopes: z
-					.array(z.string())
-					.optional()
-					.describe(
-						"Known allowed app-level scopes. For Slack this is the bot scope set configured on the app; for OAuth it is the connector's enabled `clientCredentials.scopes` configuration.",
-					),
-				supportedAuthorizationDetails: z
-					.array(z.string())
-					.optional()
-					.describe("Supported OAuth authorization-detail type names."),
-				permissionsUrl: z
-					.string()
-					.optional()
-					.describe(
-						"Link to the page on the service where this connector's app-level permissions are declared and granted, when the service has one and it differs from `clientUrl`.",
-					),
-			})
-			.optional()
-			.describe("App-token capabilities and known grants for the connector."),
+			.describe("Principal that most recently updated the connector."),
 		userTokens: z
 			.object({
 				crossInstallation: z
 					.union([z.literal(false), z.literal(true)])
 					.describe("Whether one user token can be used across installations."),
-				supportsRefinement: z
-					.union([z.literal(false), z.literal(true)])
-					.describe("Whether callers can narrow user-token grants per request."),
-				supportsResources: z
+				manualCredentialInput: z
 					.union([z.literal(false), z.literal(true)])
 					.optional()
-					.describe("Whether callers can request resource-specific user tokens."),
+					.describe(
+						"User authorization is completed by the Connect consent screen submitting a credential instead of an OAuth redirect.",
+					),
 				scopes: z
 					.array(z.string())
 					.optional()
@@ -819,42 +844,17 @@ export const connectConnectorCreateResultSchema = z
 					.array(z.string())
 					.optional()
 					.describe("Supported OAuth authorization-detail type names."),
-				manualCredentialInput: z
+				supportsRefinement: z
+					.union([z.literal(false), z.literal(true)])
+					.describe("Whether callers can narrow user-token grants per request."),
+				supportsResources: z
 					.union([z.literal(false), z.literal(true)])
 					.optional()
-					.describe(
-						"User authorization is completed by the Connect consent screen submitting a credential instead of an OAuth redirect.",
-					),
+					.describe("Whether callers can request resource-specific user tokens."),
 			})
 			.optional()
 			.describe("User-token capabilities and known grants for the connector."),
-		supportsInstallation: z
-			.union([z.literal(false), z.literal(true)])
-			.describe("Whether the connector supports an installation flow."),
-		supportsRevocation: z
-			.union([z.literal(false), z.literal(true)])
-			.describe("Whether Connect can revoke tokens for this connector."),
-		supportsTriggers: z
-			.union([z.literal(false), z.literal(true)])
-			.describe(
-				"Whether this connector type supports trigger webhooks. Derived from the type definition; indicates that `triggers` and `triggerDestinations` may be meaningful for this connector.",
-			),
-		supportsIcon: z
-			.union([z.literal(false), z.literal("maybe"), z.literal(true)])
-			.describe("Whether the connector icon can propagate to the provider."),
-		triggers: z.unknown().optional().describe("Incoming trigger configuration for the connector."),
-		events: z
-			.array(z.string())
-			.optional()
-			.describe(
-				"Known events this connector subscribes to (e.g. Slack bot events, GitHub webhook events). Names are type-specific and validated by the managed-create flow when forwarded to the third-party service.",
-			),
-		triggerDestinations: z
-			.array(z.unknown())
-			.optional()
-			.describe(
-				"Destinations that incoming triggers should be forwarded to. Limited to 3 entries. Set the initial destination with `triggerDestination` during creation. Replace the complete set with `PATCH /v1/connect/connectors/{connector}/trigger-destinations`.",
-			),
+		website: z.string().optional().describe("Public website for the connected service."),
 	})
 	.describe("Connector created by the request.");
 
@@ -1610,11 +1610,11 @@ export const connectReconsentSchema = z
 
 export const connectServiceSyncErrorSchema = z
 	.object({
-		message: z.string().describe("Human-readable provider synchronization error."),
 		fields: z
 			.array(z.string())
 			.optional()
 			.describe("Connector fields that caused the synchronization error."),
+		message: z.string().describe("Human-readable provider synchronization error."),
 		vendor: z
 			.object({})
 			.catchall(z.unknown())
@@ -1625,31 +1625,31 @@ export const connectServiceSyncErrorSchema = z
 
 export const connectServiceSyncSchema = z
 	.object({
+		errors: z
+			.array(z.unknown())
+			.optional()
+			.describe("Provider synchronization errors. Present when serviceSync.status is required."),
 		status: z
 			.enum(["done", "required"])
 			.describe(
 				"done means the external service was updated. required means the Vercel update was saved, but provider-side configuration still needs attention.",
 			),
-		errors: z
-			.array(z.unknown())
-			.optional()
-			.describe("Provider synchronization errors. Present when serviceSync.status is required."),
 	})
 	.describe("Provider-side configuration synchronization result.");
 
 export const connectConnectorUpdateResultSchema = z
 	.object({
 		connector: z.unknown().describe("Updated connector."),
+		reconsentNeeded: z
+			.unknown()
+			.optional()
+			.describe("Present when affected users must authorize the connector's new permissions."),
 		reinstallNeeded: z
 			.union([z.literal(false), z.literal(true)])
 			.optional()
 			.describe(
 				"When true, prompt a team owner or administrator to reinstall the connector before relying on the change.",
 			),
-		reconsentNeeded: z
-			.unknown()
-			.optional()
-			.describe("Present when affected users must authorize the connector's new permissions."),
 		serviceSync: z
 			.unknown()
 			.optional()
@@ -2333,12 +2333,14 @@ export const connectProjectConnectionSchema = z
 		connectorId: z
 			.string()
 			.describe("Stable `scl_` connector ID, even when the request used a UID."),
+		createdAt: z
+			.number()
+			.describe("Time when the project connection was created, in epoch milliseconds."),
+		enabledEnvironments: z
+			.array(z.string())
+			.describe("Environments where the connector is enabled for the project."),
 		project: z
 			.object({
-				id: z
-					.string()
-					.describe("Same Vercel project ID as the connection's top-level `projectId`."),
-				name: z.string().describe("Current Vercel project name."),
 				customEnvironments: z
 					.array(
 						z.object({
@@ -2350,14 +2352,12 @@ export const connectProjectConnectionSchema = z
 					.describe(
 						"Custom environments available on the project. This list can include environments where the connector is not enabled.",
 					),
+				id: z
+					.string()
+					.describe("Same Vercel project ID as the connection's top-level `projectId`."),
+				name: z.string().describe("Current Vercel project name."),
 			})
 			.describe("Vercel project connected to the connector."),
-		enabledEnvironments: z
-			.array(z.string())
-			.describe("Environments where the connector is enabled for the project."),
-		createdAt: z
-			.number()
-			.describe("Time when the project connection was created, in epoch milliseconds."),
 		updatedAt: z
 			.number()
 			.describe("Time when the project connection was last updated, in epoch milliseconds."),
@@ -2368,8 +2368,8 @@ export const connectProjectConnectionSchema = z
 
 export const connectConnectorProjectConnectionListSchema = z
 	.object({
-		projects: z.array(z.unknown()).describe("Project connections in this page."),
 		pagination: z.unknown().describe("Cursor for the next page."),
+		projects: z.array(z.unknown()).describe("Project connections in this page."),
 	})
 	.describe("Page of projects connected to a connector.");
 
@@ -2868,28 +2868,28 @@ export const globalConfigItemValueSchema = z
 
 export const globalConfigItemSchema = z
 	.object({
-		key: z.string(),
-		value: z.unknown(),
+		createdAt: z.number(),
 		description: z.string().optional(),
 		edgeConfigId: z.string(),
-		createdAt: z.number(),
+		key: z.string(),
 		updatedAt: z.number(),
+		value: z.unknown(),
 	})
 	.describe("The Global Config.");
 
 export const globalConfigTokenSchema = z
 	.object({
+		createdAt: z.number(),
+		edgeConfigId: z.string(),
+		id: z
+			.string()
+			.describe("This is not the token itself, but rather an id to identify the token by"),
+		label: z.string(),
 		partialToken: z
 			.string()
 			.describe(
 				"A partially-masked representation of the token, safe to display in UIs. The format is the first 3 characters of the token followed by a fixed 8-character `*` mask (e.g. `550e8400-e29b-41d4-a716-446655440000` → `550********`). The mask length is intentionally fixed (not proportional to the original token length) to avoid leaking the token length. Prefer this field for display/reference in UIs and logs. The full, plaintext token is only disclosed once at creation time via `POST /v1/edge-config/:edgeConfigId/token`; use `id` to reference a token in subsequent calls (e.g. when deleting).",
 			),
-		label: z.string(),
-		id: z
-			.string()
-			.describe("This is not the token itself, but rather an id to identify the token by"),
-		edgeConfigId: z.string(),
-		createdAt: z.number(),
 		token: z
 			.string()
 			.optional()
@@ -2901,17 +2901,54 @@ export const globalConfigTokenSchema = z
 
 export const userEventSchema = z
 	.object({
-		id: z
-			.string()
-			.describe("The unique identifier of the Event.")
-			.meta({ examples: ["uev_bfmMjiMnXfnPbT97dGdpJbCN"] }),
-		text: z
-			.string()
-			.describe("The human-readable text of the Event.")
-			.meta({ examples: ["You logged in via GitHub"] }),
+		categories: z
+			.array(
+				z.enum([
+					"account",
+					"ai",
+					"ai-gateway",
+					"billing",
+					"connect",
+					"deployment",
+					"domain",
+					"edge",
+					"env-variable",
+					"feature-flags",
+					"firewall",
+					"integration",
+					"microfrontends",
+					"network",
+					"observability",
+					"other",
+					"project",
+					"security",
+					"storage",
+					"team",
+					"v0",
+					"vercel-app",
+					"workflow",
+				]),
+			)
+			.optional()
+			.describe(
+				'The categories that group this event with related event types. An event can belong to multiple categories (e.g. a firewall event is both Firewall and Security). The first entry is the "primary" category. Use the `/events/types` endpoint to discover the full list of categories.',
+			)
+			.meta({ examples: [["deployment"]] }),
+		createdAt: z
+			.number()
+			.describe("Timestamp (in milliseconds) of when the event was generated.")
+			.meta({ examples: [1632859321020] }),
 		entities: z
 			.array(
 				z.object({
+					end: z
+						.number()
+						.describe("The index of where the entity ends within the `text` (non-inclusive).")
+						.meta({ examples: [3] }),
+					start: z
+						.number()
+						.describe("The index of where the entity begins within the `text` (inclusive).")
+						.meta({ examples: [0] }),
 					type: z
 						.enum([
 							"app",
@@ -2940,18 +2977,9267 @@ export const userEventSchema = z
 						])
 						.describe("The type of entity.")
 						.meta({ examples: ["author"] }),
-					start: z
-						.number()
-						.describe("The index of where the entity begins within the `text` (inclusive).")
-						.meta({ examples: [0] }),
-					end: z
-						.number()
-						.describe("The index of where the entity ends within the `text` (non-inclusive).")
-						.meta({ examples: [3] }),
 				}),
 			)
 			.describe(
 				'A list of "entities" within the event `text`. Useful for enhancing the displayed text with additional styling and links.',
+			),
+		id: z
+			.string()
+			.describe("The unique identifier of the Event.")
+			.meta({ examples: ["uev_bfmMjiMnXfnPbT97dGdpJbCN"] }),
+		payload: z
+			.union([
+				z.object({}).strict(),
+				z
+					.object({
+						action: z.enum(["archived", "created", "deleted", "unarchived", "updated"]),
+						id: z.string(),
+						projectId: z.string(),
+						projectName: z.string().optional(),
+						slug: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						action: z.enum(["created", "deleted", "transitioned", "updated"]),
+						id: z.string(),
+						name: z.string(),
+						projectId: z.string(),
+						projectName: z.string().optional(),
+						slug: z.string(),
+						state: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						action: z.enum(["added", "deleted", "rotated"]),
+						environment: z.string(),
+						label: z.string().optional(),
+						projectId: z.string().optional(),
+						projectName: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						action: z.enum(["read"]),
+						environment: z.array(z.string()),
+						projectId: z.string().optional(),
+						projectName: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						policyId: z.string(),
+						projectId: z.string(),
+						projectName: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						provider: z
+							.enum(["chatgpt", "stripe"])
+							.optional()
+							.describe('Present on new events only. Equivalent to "stripe" when absent.'),
+						providerAccount: z
+							.string()
+							.optional()
+							.describe("Present on new events only. Equivalent to `stripeAccount` when absent."),
+						stripeAccount: z
+							.string()
+							.optional()
+							.describe('Present when `provider` is "stripe". Equivalent to `providerAccount`.'),
+						stripeOrganisation: z
+							.string()
+							.optional()
+							.describe('Present when `provider` is "stripe".'),
+						accountRequestId: z.string(),
+						teamId: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						provider: z
+							.enum(["chatgpt", "stripe"])
+							.optional()
+							.describe('Present on new events only. Equivalent to "stripe" when absent.'),
+						providerAccount: z
+							.string()
+							.optional()
+							.describe("Present on new events only. Equivalent to `stripeAccount` when absent."),
+						stripeAccount: z
+							.string()
+							.optional()
+							.describe('Present when `provider` is "stripe". Equivalent to `providerAccount`.'),
+						stripeOrganisation: z
+							.string()
+							.optional()
+							.describe('Present when `provider` is "stripe".'),
+						teamId: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						provider: z
+							.enum(["chatgpt", "stripe"])
+							.optional()
+							.describe('Present on new events only. Equivalent to "stripe" when absent.'),
+						providerAccount: z
+							.string()
+							.optional()
+							.describe("Present on new events only. Equivalent to `stripeAccount` when absent."),
+						stripeAccount: z
+							.string()
+							.optional()
+							.describe('Present when `provider` is "stripe". Equivalent to `providerAccount`.'),
+						stripeOrganisation: z
+							.string()
+							.optional()
+							.describe('Present when `provider` is "stripe".'),
+						teamId: z.string(),
+						teamSlug: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						provider: z
+							.enum(["chatgpt", "stripe"])
+							.optional()
+							.describe('Present on new events only. Equivalent to "stripe" when absent.'),
+						providerAccount: z
+							.string()
+							.optional()
+							.describe("Present on new events only. Equivalent to `stripeAccount` when absent."),
+						stripeAccount: z
+							.string()
+							.optional()
+							.describe('Present when `provider` is "stripe". Equivalent to `providerAccount`.'),
+						stripeOrganisation: z
+							.string()
+							.optional()
+							.describe('Present when `provider` is "stripe".'),
+						blockCode: z.string(),
+						reason: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						provider: z
+							.enum(["chatgpt", "stripe"])
+							.optional()
+							.describe('Present on new events only. Equivalent to "stripe" when absent.'),
+						providerAccount: z
+							.string()
+							.optional()
+							.describe("Present on new events only. Equivalent to `stripeAccount` when absent."),
+						stripeAccount: z
+							.string()
+							.optional()
+							.describe('Present when `provider` is "stripe". Equivalent to `providerAccount`.'),
+						projectName: z.string(),
+						resourceId: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						provider: z
+							.enum(["chatgpt", "stripe"])
+							.optional()
+							.describe('Present on new events only. Equivalent to "stripe" when absent.'),
+						providerAccount: z
+							.string()
+							.optional()
+							.describe("Present on new events only. Equivalent to `stripeAccount` when absent."),
+						stripeAccount: z
+							.string()
+							.optional()
+							.describe('Present when `provider` is "stripe". Equivalent to `providerAccount`.'),
+						stripeOrganisation: z
+							.string()
+							.optional()
+							.describe('Present when `provider` is "stripe".'),
+						teamId: z.string(),
+						actorId: z.string().describe("Okta user id."),
+						actorName: z.string().optional(),
+						actorType: z.enum(["admin"]),
+					})
+					.strict(),
+				z
+					.object({
+						provider: z
+							.enum(["chatgpt", "stripe"])
+							.optional()
+							.describe('Present on new events only. Equivalent to "stripe" when absent.'),
+						providerAccount: z
+							.string()
+							.optional()
+							.describe("Present on new events only. Equivalent to `stripeAccount` when absent."),
+						stripeAccount: z
+							.string()
+							.optional()
+							.describe('Present when `provider` is "stripe". Equivalent to `providerAccount`.'),
+						stripeOrganisation: z
+							.string()
+							.optional()
+							.describe('Present when `provider` is "stripe".'),
+						fromPlan: z.enum(["hobby", "pro"]),
+						resourceId: z.string(),
+						teamId: z.string(),
+						toPlan: z.enum(["hobby", "pro"]),
+					})
+					.strict(),
+				z
+					.object({
+						apiKey: z.object({
+							id: z.string(),
+							name: z.string(),
+						}),
+						budget: z
+							.object({
+								alertThresholds: z.array(z.number()).optional(),
+								limitAmount: z.number().describe("Spend cap, in dollars."),
+								refreshPeriod: z.enum(["daily", "monthly", "none", "weekly"]),
+							})
+							.nullish()
+							.describe(
+								"Spend budget on an AI Gateway API key, as surfaced in activity messages. Defined locally (rather than imported from `@api/pubsub-types`) because `@api/pubsub-types` already depends on `@api/events`; importing it here would create a circular dependency. Must stay structurally aligned with `APIKeyBudget` in `@api/pubsub-types/event-payloads/api-keys`.",
+							),
+						bypassAll: z
+							.union([z.literal(false), z.literal(true)])
+							.optional()
+							.describe(
+								"True when the key was created to bypass all of the team's restrictions (the ZDR-only model restriction and the provider/model allowlist).",
+							),
+						zdrExemption: z
+							.union([z.literal(false), z.literal(true)])
+							.optional()
+							.describe("True when the key was created with a ZDR exemption."),
+					})
+					.strict(),
+				z
+					.object({
+						apiKey: z.object({
+							id: z.string(),
+							name: z.string(),
+						}),
+					})
+					.strict(),
+				z
+					.object({
+						apiKey: z.object({
+							id: z.string(),
+							name: z.string(),
+						}),
+						budget: z
+							.object({
+								alertThresholds: z.array(z.number()).optional(),
+								limitAmount: z.number().describe("Spend cap, in dollars."),
+								refreshPeriod: z.enum(["daily", "monthly", "none", "weekly"]),
+							})
+							.nullish()
+							.describe(
+								"Spend budget on an AI Gateway API key, as surfaced in activity messages. Defined locally (rather than imported from `@api/pubsub-types`) because `@api/pubsub-types` already depends on `@api/events`; importing it here would create a circular dependency. Must stay structurally aligned with `APIKeyBudget` in `@api/pubsub-types/event-payloads/api-keys`.",
+							),
+						change: z.enum(["disable", "enable", "remove", "set"]),
+					})
+					.strict(),
+				z
+					.object({
+						change: z.enum([
+							"disable",
+							"disable-commitment",
+							"enable",
+							"enable-commitment",
+							"update",
+						]),
+						commitment: z
+							.object({
+								deferredInvoiceTargetBalance: z.string(),
+								maximumMonthlySpend: z.string().nullable(),
+							})
+							.optional(),
+						previous: z
+							.object({
+								maximumMonthlySpend: z.string().nullable(),
+								minimumBalance: z.string(),
+								targetBalance: z.string(),
+							})
+							.optional(),
+						settings: z
+							.object({
+								maximumMonthlySpend: z.string().nullable(),
+								minimumBalance: z.string(),
+								targetBalance: z.string(),
+							})
+							.optional(),
+					})
+					.strict(),
+				z
+					.object({
+						budget: z
+							.object({
+								alertThresholds: z.array(z.number()).optional(),
+								limitAmount: z.number().describe("Spend cap, in dollars."),
+								refreshPeriod: z.enum(["daily", "monthly", "none", "weekly"]),
+							})
+							.nullish()
+							.describe(
+								"Spend budget on an AI Gateway API key, as surfaced in activity messages. Defined locally (rather than imported from `@api/pubsub-types`) because `@api/pubsub-types` already depends on `@api/events`; importing it here would create a circular dependency. Must stay structurally aligned with `APIKeyBudget` in `@api/pubsub-types/event-payloads/api-keys`.",
+							),
+						change: z.enum(["disable", "enable", "remove", "set"]),
+						scopeType: z.enum(["api-key", "project", "team", "user"]),
+					})
+					.strict(),
+				z
+					.object({
+						budget: z
+							.object({
+								alertThresholds: z.array(z.number()).optional(),
+								limitAmount: z.number().describe("Spend cap, in dollars."),
+								refreshPeriod: z.enum(["daily", "monthly", "none", "weekly"]),
+							})
+							.nullish()
+							.describe(
+								"Spend budget on an AI Gateway API key, as surfaced in activity messages. Defined locally (rather than imported from `@api/pubsub-types`) because `@api/pubsub-types` already depends on `@api/events`; importing it here would create a circular dependency. Must stay structurally aligned with `APIKeyBudget` in `@api/pubsub-types/event-payloads/api-keys`.",
+							),
+						change: z.enum(["disable", "enable", "remove", "set"]),
+						projectId: z
+							.string()
+							.optional()
+							.describe("Associates the event with a project for filtering; not rendered."),
+						projectName: z.string().optional(),
+						scopeType: z.enum(["project", "team", "user"]),
+						userId: z
+							.string()
+							.optional()
+							.describe("Associates the event with a member for filtering; not rendered."),
+						userName: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						credential: z.object({
+							id: z.string(),
+							name: z.string(),
+							providerSlug: z.string(),
+						}),
+					})
+					.strict(),
+				z
+					.object({
+						added: z.array(z.string()),
+						changed: z.array(z.string()),
+						credential: z.object({
+							id: z.string(),
+							name: z.string(),
+							providerSlug: z.string(),
+						}),
+						removed: z.array(z.string()),
+					})
+					.strict(),
+				z
+					.object({
+						enabled: z.union([z.literal(false), z.literal(true)]),
+					})
+					.strict(),
+				z
+					.object({
+						amount: z.string(),
+						purchaseIntentId: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						added: z.array(z.string()),
+						removed: z.array(z.string()),
+					})
+					.strict(),
+				z
+					.object({
+						privateModel: z.object({
+							providerSlug: z.string(),
+							slug: z.string(),
+						}),
+					})
+					.strict(),
+				z
+					.object({
+						privateModel: z.object({
+							slug: z.string(),
+						}),
+					})
+					.strict(),
+				z
+					.object({
+						privateProvider: z.object({
+							slug: z.string(),
+						}),
+					})
+					.strict(),
+				z
+					.object({
+						moderationPolicyCount: z.number(),
+						piiRedaction: z.object({
+							from: z.union([z.literal(false), z.literal(true)]),
+							to: z.union([z.literal(false), z.literal(true)]),
+						}),
+						policiesAdded: z.array(z.string()),
+						policiesModified: z.array(z.string()),
+						policiesRemoved: z.array(z.string()),
+					})
+					.strict(),
+				z
+					.object({
+						regions: z.array(z.string()),
+					})
+					.strict(),
+				z
+					.object({
+						retention: z.object({
+							ceilingDays: z.number().optional(),
+							ceilingMode: z.enum(["days", "until-requested"]),
+							defaultDays: z.number().optional(),
+							defaultMode: z.enum(["days", "until-requested"]),
+						}),
+					})
+					.strict(),
+				z
+					.object({
+						rule: z.object({
+							id: z.string(),
+							model: z.string().optional(),
+							rewriteModel: z.string().optional(),
+							type: z.string(),
+						}),
+					})
+					.strict(),
+				z
+					.object({
+						rule: z.object({
+							id: z.string(),
+							model: z.string().optional(),
+							type: z.string(),
+						}),
+					})
+					.strict(),
+				z
+					.object({
+						enabled: z.union([z.literal(false), z.literal(true)]).optional(),
+						rule: z.object({
+							id: z.string(),
+							model: z.string().optional(),
+							type: z.string(),
+						}),
+					})
+					.strict(),
+				z
+					.object({
+						virtualModelConfig: z.object({
+							displayName: z.string().optional(),
+							id: z.string(),
+							modelSlug: z.string().optional(),
+						}),
+					})
+					.strict(),
+				z
+					.object({
+						accessGroup: z.object({
+							id: z.string(),
+							name: z.string(),
+						}),
+						entitlements: z.array(z.string()).optional(),
+						teamPermissions: z.array(z.string()).optional(),
+						teamRoles: z.array(z.string()).optional(),
+					})
+					.strict(),
+				z
+					.object({
+						accessGroup: z.object({
+							id: z.string(),
+							name: z.string(),
+						}),
+						author: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						accessGroup: z.object({
+							id: z.string(),
+							name: z.string(),
+						}),
+						nextRole: z
+							.enum(["ADMIN", "PROJECT_DEVELOPER", "PROJECT_GUEST", "PROJECT_VIEWER"])
+							.nullish(),
+						previousRole: z
+							.enum(["ADMIN", "PROJECT_DEVELOPER", "PROJECT_GUEST", "PROJECT_VIEWER"])
+							.optional(),
+						project: z.object({
+							id: z.string(),
+							name: z.string().optional(),
+						}),
+					})
+					.strict(),
+				z
+					.object({
+						accessGroup: z.object({
+							id: z.string(),
+							name: z.string(),
+						}),
+						entitlementsAdded: z.array(z.string()).optional(),
+						entitlementsRemoved: z.array(z.string()).optional(),
+						name: z.string().optional(),
+						previousName: z.string().optional(),
+						previousTeamPermissions: z.array(z.string()).optional(),
+						previousTeamRoles: z.array(z.string()).optional(),
+						teamPermissions: z.array(z.string()).optional(),
+						teamRoles: z.array(z.string()).optional(),
+					})
+					.strict(),
+				z
+					.object({
+						accessGroup: z.object({
+							id: z.string(),
+							name: z.string().optional(),
+						}),
+						directoryType: z.string().optional(),
+						user: z.object({
+							id: z.string(),
+							username: z.string().optional(),
+						}),
+					})
+					.strict(),
+				z
+					.object({
+						currency: z.string().optional(),
+						price: z.number().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						alias: z.string().optional(),
+						aliasId: z.string().optional(),
+						aliasUpdatedAt: z.number().optional(),
+						deployment: z
+							.object({
+								allowListedReadyStateReasonInternal: z
+									.enum([
+										"EARLY_IGNORE_STEP",
+										"IGNORE_STEP",
+										"NAMESPACE_PRUNED",
+										"UNAFFECTED_PROJECT",
+										"UNVERIFIED_COMMIT",
+									])
+									.optional()
+									.describe(
+										"A narrowed subset of the deployment's `readyStateReasonInternal` — only values in the public allowlist are permitted here. Callers should run their raw reason through `toAllowListedReadyStateReasonInternal` from `@api/events` before assigning. This keeps abuse / moderation / admin reasons out of the public activity log.",
+									),
+								id: z.string(),
+								meta: z.object({}).catchall(z.string()),
+								name: z.string(),
+								readyState: z.string().optional(),
+								url: z.string(),
+							})
+							.nullish(),
+						deploymentId: z.string().nullish(),
+						deploymentUrl: z.string().optional(),
+						oldDeploymentId: z.string().nullish(),
+						redirect: z.string().optional(),
+						redirectStatusCode: z.number().nullish(),
+						ruleCount: z.number().optional(),
+						system: z.union([z.literal(false), z.literal(true)]).optional(),
+						target: z.string().nullish(),
+					})
+					.strict(),
+				z
+					.object({
+						aliasCount: z.number(),
+						deployment: z
+							.object({
+								allowListedReadyStateReasonInternal: z
+									.enum([
+										"EARLY_IGNORE_STEP",
+										"IGNORE_STEP",
+										"NAMESPACE_PRUNED",
+										"UNAFFECTED_PROJECT",
+										"UNVERIFIED_COMMIT",
+									])
+									.optional()
+									.describe(
+										"A narrowed subset of the deployment's `readyStateReasonInternal` — only values in the public allowlist are permitted here. Callers should run their raw reason through `toAllowListedReadyStateReasonInternal` from `@api/events` before assigning. This keeps abuse / moderation / admin reasons out of the public activity log.",
+									),
+								id: z.string(),
+								meta: z.object({}).catchall(z.string()),
+								name: z.string(),
+								readyState: z.string().optional(),
+								url: z.string(),
+							})
+							.nullish(),
+						projectId: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						alias: z.string(),
+						name: z.string().optional(),
+						newTeam: z
+							.object({
+								name: z.string(),
+							})
+							.optional(),
+						oldTeam: z
+							.object({
+								name: z.string(),
+							})
+							.optional(),
+					})
+					.strict(),
+				z
+					.object({
+						alias: z.string(),
+						aliasId: z.string(),
+						deploymentId: z.string().nullable(),
+						name: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						alias: z.string().optional(),
+						email: z.string().optional(),
+						username: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						alias: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						alias: z.string().optional(),
+						email: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						alias: z.string().optional(),
+						aliasId: z.string().optional(),
+						projectId: z.string().optional(),
+						projectName: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						action: z.enum(["created", "removed"]),
+						alias: z.string(),
+						projectId: z.string().optional(),
+						projectName: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						alias: z.string(),
+						deploymentUrl: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						alias: z.string().optional(),
+						userId: z.string().optional(),
+						username: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						alias: z.string().optional(),
+						aliasId: z.string().optional(),
+						userId: z.string().optional(),
+						username: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						appId: z.string().optional(),
+						appName: z.string(),
+						permissions: z
+							.array(
+								z.enum([
+									"manage:speed-insights",
+									"manage:web-analytics",
+									"read-write:ai-gateway-api-key",
+									"read-write:ai-gateway-guardrails",
+									"read-write:ai-gateway-private-models",
+									"read-write:ai-gateway-rules",
+									"read-write:ai-gateway-virtual-model-configs",
+									"read-write:alerts",
+									"read-write:automations",
+									"read-write:billing",
+									"read-write:blob",
+									"read-write:connect",
+									"read-write:deployment",
+									"read-write:domain",
+									"read-write:domain-registrar",
+									"read-write:drains",
+									"read-write:edge-cache",
+									"read-write:edge-config",
+									"read-write:firewall",
+									"read-write:integration-configuration",
+									"read-write:integration-resource",
+									"read-write:kms",
+									"read-write:project",
+									"read-write:project-env-vars",
+									"read-write:project-env-vars-non-production",
+									"read-write:project-env-vars-production",
+									"read-write:project-flags-non-production",
+									"read-write:project-flags-production",
+									"read-write:project-protection-bypass",
+									"read-write:remote-cache",
+									"read-write:sandbox",
+									"read-write:team-members",
+									"read-write:vcr",
+									"read:access-group",
+									"read:ai-gateway-guardrails",
+									"read:ai-gateway-private-models",
+									"read:ai-gateway-rules",
+									"read:ai-gateway-virtual-model-configs",
+									"read:alerts",
+									"read:automations",
+									"read:billing",
+									"read:connect",
+									"read:deployment",
+									"read:domain",
+									"read:event",
+									"read:firewall",
+									"read:integration-configuration",
+									"read:integration-resource",
+									"read:kms",
+									"read:monitoring",
+									"read:project",
+									"read:project-env-vars-non-production",
+									"read:project-env-vars-production",
+									"read:project-flags",
+									"read:remote-cache",
+									"read:sandbox",
+									"read:speed-insights",
+									"read:team",
+									"read:user",
+									"read:vcr",
+									"read:web-analytics",
+									"read:webhooks",
+									"use:ai-gateway",
+								]),
+							)
+							.optional(),
+						scopes: z.array(z.enum(["email", "offline_access", "openid", "profile"])),
+					})
+					.strict(),
+				z
+					.object({
+						appId: z.string().optional(),
+						appName: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						appId: z.string().optional(),
+						appName: z.string(),
+						nextPermissions: z
+							.array(
+								z.enum([
+									"manage:speed-insights",
+									"manage:web-analytics",
+									"read-write:ai-gateway-api-key",
+									"read-write:ai-gateway-guardrails",
+									"read-write:ai-gateway-private-models",
+									"read-write:ai-gateway-rules",
+									"read-write:ai-gateway-virtual-model-configs",
+									"read-write:alerts",
+									"read-write:automations",
+									"read-write:billing",
+									"read-write:blob",
+									"read-write:connect",
+									"read-write:deployment",
+									"read-write:domain",
+									"read-write:domain-registrar",
+									"read-write:drains",
+									"read-write:edge-cache",
+									"read-write:edge-config",
+									"read-write:firewall",
+									"read-write:integration-configuration",
+									"read-write:integration-resource",
+									"read-write:kms",
+									"read-write:project",
+									"read-write:project-env-vars",
+									"read-write:project-env-vars-non-production",
+									"read-write:project-env-vars-production",
+									"read-write:project-flags-non-production",
+									"read-write:project-flags-production",
+									"read-write:project-protection-bypass",
+									"read-write:remote-cache",
+									"read-write:sandbox",
+									"read-write:team-members",
+									"read-write:vcr",
+									"read:access-group",
+									"read:ai-gateway-guardrails",
+									"read:ai-gateway-private-models",
+									"read:ai-gateway-rules",
+									"read:ai-gateway-virtual-model-configs",
+									"read:alerts",
+									"read:automations",
+									"read:billing",
+									"read:connect",
+									"read:deployment",
+									"read:domain",
+									"read:event",
+									"read:firewall",
+									"read:integration-configuration",
+									"read:integration-resource",
+									"read:kms",
+									"read:monitoring",
+									"read:project",
+									"read:project-env-vars-non-production",
+									"read:project-env-vars-production",
+									"read:project-flags",
+									"read:remote-cache",
+									"read:sandbox",
+									"read:speed-insights",
+									"read:team",
+									"read:user",
+									"read:vcr",
+									"read:web-analytics",
+									"read:webhooks",
+									"use:ai-gateway",
+								]),
+							)
+							.optional(),
+						nextScopes: z.array(z.enum(["email", "offline_access", "openid", "profile"])),
+					})
+					.strict(),
+				z
+					.object({
+						after: z
+							.object({
+								permissions: z
+									.array(
+										z.enum([
+											"manage:speed-insights",
+											"manage:web-analytics",
+											"read-write:ai-gateway-api-key",
+											"read-write:ai-gateway-guardrails",
+											"read-write:ai-gateway-private-models",
+											"read-write:ai-gateway-rules",
+											"read-write:ai-gateway-virtual-model-configs",
+											"read-write:alerts",
+											"read-write:automations",
+											"read-write:billing",
+											"read-write:blob",
+											"read-write:connect",
+											"read-write:deployment",
+											"read-write:domain",
+											"read-write:domain-registrar",
+											"read-write:drains",
+											"read-write:edge-cache",
+											"read-write:edge-config",
+											"read-write:firewall",
+											"read-write:integration-configuration",
+											"read-write:integration-resource",
+											"read-write:kms",
+											"read-write:project",
+											"read-write:project-env-vars",
+											"read-write:project-env-vars-non-production",
+											"read-write:project-env-vars-production",
+											"read-write:project-flags-non-production",
+											"read-write:project-flags-production",
+											"read-write:project-protection-bypass",
+											"read-write:remote-cache",
+											"read-write:sandbox",
+											"read-write:team-members",
+											"read-write:vcr",
+											"read:access-group",
+											"read:ai-gateway-guardrails",
+											"read:ai-gateway-private-models",
+											"read:ai-gateway-rules",
+											"read:ai-gateway-virtual-model-configs",
+											"read:alerts",
+											"read:automations",
+											"read:billing",
+											"read:connect",
+											"read:deployment",
+											"read:domain",
+											"read:event",
+											"read:firewall",
+											"read:integration-configuration",
+											"read:integration-resource",
+											"read:kms",
+											"read:monitoring",
+											"read:project",
+											"read:project-env-vars-non-production",
+											"read:project-env-vars-production",
+											"read:project-flags",
+											"read:remote-cache",
+											"read:sandbox",
+											"read:speed-insights",
+											"read:team",
+											"read:vcr",
+											"read:web-analytics",
+											"read:webhooks",
+											"use:ai-gateway",
+										]),
+									)
+									.optional(),
+								resources: z
+									.object({
+										projectIds: z
+											.object({
+												items: z.object({
+													type: z.enum(["string"]),
+												}),
+												required: z.literal(true),
+												type: z.enum(["list"]),
+											})
+											.describe("Specific project IDs or all projects on the team (`['*']`)."),
+									})
+									.optional(),
+							})
+							.optional(),
+						appId: z.string().optional(),
+						appName: z.string(),
+						before: z
+							.object({
+								permissions: z
+									.array(
+										z.enum([
+											"manage:speed-insights",
+											"manage:web-analytics",
+											"read-write:ai-gateway-api-key",
+											"read-write:ai-gateway-guardrails",
+											"read-write:ai-gateway-private-models",
+											"read-write:ai-gateway-rules",
+											"read-write:ai-gateway-virtual-model-configs",
+											"read-write:alerts",
+											"read-write:automations",
+											"read-write:billing",
+											"read-write:blob",
+											"read-write:connect",
+											"read-write:deployment",
+											"read-write:domain",
+											"read-write:domain-registrar",
+											"read-write:drains",
+											"read-write:edge-cache",
+											"read-write:edge-config",
+											"read-write:firewall",
+											"read-write:integration-configuration",
+											"read-write:integration-resource",
+											"read-write:kms",
+											"read-write:project",
+											"read-write:project-env-vars",
+											"read-write:project-env-vars-non-production",
+											"read-write:project-env-vars-production",
+											"read-write:project-flags-non-production",
+											"read-write:project-flags-production",
+											"read-write:project-protection-bypass",
+											"read-write:remote-cache",
+											"read-write:sandbox",
+											"read-write:team-members",
+											"read-write:vcr",
+											"read:access-group",
+											"read:ai-gateway-guardrails",
+											"read:ai-gateway-private-models",
+											"read:ai-gateway-rules",
+											"read:ai-gateway-virtual-model-configs",
+											"read:alerts",
+											"read:automations",
+											"read:billing",
+											"read:connect",
+											"read:deployment",
+											"read:domain",
+											"read:event",
+											"read:firewall",
+											"read:integration-configuration",
+											"read:integration-resource",
+											"read:kms",
+											"read:monitoring",
+											"read:project",
+											"read:project-env-vars-non-production",
+											"read:project-env-vars-production",
+											"read:project-flags",
+											"read:remote-cache",
+											"read:sandbox",
+											"read:speed-insights",
+											"read:team",
+											"read:vcr",
+											"read:web-analytics",
+											"read:webhooks",
+											"use:ai-gateway",
+										]),
+									)
+									.optional(),
+								resources: z
+									.object({
+										projectIds: z
+											.object({
+												items: z.object({
+													type: z.enum(["string"]),
+												}),
+												required: z.literal(true),
+												type: z.enum(["list"]),
+											})
+											.describe("Specific project IDs or all projects on the team (`['*']`)."),
+									})
+									.optional(),
+							})
+							.optional(),
+						installationId: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						appId: z.string().optional(),
+						appName: z.string(),
+						permissions: z
+							.array(
+								z.enum([
+									"manage:speed-insights",
+									"manage:web-analytics",
+									"read-write:ai-gateway-api-key",
+									"read-write:ai-gateway-guardrails",
+									"read-write:ai-gateway-private-models",
+									"read-write:ai-gateway-rules",
+									"read-write:ai-gateway-virtual-model-configs",
+									"read-write:alerts",
+									"read-write:automations",
+									"read-write:billing",
+									"read-write:blob",
+									"read-write:connect",
+									"read-write:deployment",
+									"read-write:domain",
+									"read-write:domain-registrar",
+									"read-write:drains",
+									"read-write:edge-cache",
+									"read-write:edge-config",
+									"read-write:firewall",
+									"read-write:integration-configuration",
+									"read-write:integration-resource",
+									"read-write:kms",
+									"read-write:project",
+									"read-write:project-env-vars",
+									"read-write:project-env-vars-non-production",
+									"read-write:project-env-vars-production",
+									"read-write:project-flags-non-production",
+									"read-write:project-flags-production",
+									"read-write:project-protection-bypass",
+									"read-write:remote-cache",
+									"read-write:sandbox",
+									"read-write:team-members",
+									"read-write:vcr",
+									"read:access-group",
+									"read:ai-gateway-guardrails",
+									"read:ai-gateway-private-models",
+									"read:ai-gateway-rules",
+									"read:ai-gateway-virtual-model-configs",
+									"read:alerts",
+									"read:automations",
+									"read:billing",
+									"read:connect",
+									"read:deployment",
+									"read:domain",
+									"read:event",
+									"read:firewall",
+									"read:integration-configuration",
+									"read:integration-resource",
+									"read:kms",
+									"read:monitoring",
+									"read:project",
+									"read:project-env-vars-non-production",
+									"read:project-env-vars-production",
+									"read:project-flags",
+									"read:remote-cache",
+									"read:sandbox",
+									"read:speed-insights",
+									"read:team",
+									"read:vcr",
+									"read:web-analytics",
+									"read:webhooks",
+									"use:ai-gateway",
+								]),
+							)
+							.optional(),
+						resources: z
+							.object({
+								projectIds: z
+									.object({
+										items: z.object({
+											type: z.enum(["string"]),
+										}),
+										required: z.literal(true),
+										type: z.enum(["list"]),
+									})
+									.describe("Specific project IDs or all projects on the team (`['*']`)."),
+							})
+							.optional(),
+					})
+					.strict(),
+				z
+					.object({
+						appId: z.string().optional(),
+						appName: z.string(),
+						secretLastFourChars: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						app: z
+							.object({
+								id: z.string().describe("The App's ID."),
+								name: z
+									.string()
+									.describe(
+										"The App's name at the moment this even was published (it may have changed since then).",
+									),
+							})
+							.optional()
+							.describe("Note that not all historical events have this field."),
+						appId: z
+							.string()
+							.optional()
+							.describe("The App's ID. Note that not all historical events have this field."),
+						appName: z
+							.string()
+							.describe(
+								"The App's name at the moment this even was published (it may have changed since then).",
+							),
+						issuedBefore: z
+							.number()
+							.optional()
+							.describe(
+								"UNIX timestamp in seconds. Tokens issued before this timestamp will be revoked. Note that not all historical events have this field.",
+							),
+					})
+					.strict(),
+				z
+					.object({
+						attackModeActiveUntil: z.number().nullish(),
+						attackModeEnabled: z.union([z.literal(false), z.literal(true)]),
+						prevAttackModeActiveUntil: z.number().nullish(),
+						prevAttackModeEnabled: z.union([z.literal(false), z.literal(true)]).optional(),
+						projectId: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						autoExposeSystemEnvs: z.union([z.literal(false), z.literal(true)]),
+						projectId: z.string().optional(),
+						projectName: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						avatar: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						amount: z.number(),
+						invoiceId: z.string(),
+						lineItemCount: z.number(),
+						refundReason: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						amount: z.number(),
+						invoiceId: z.string(),
+						newInvoiceId: z.string(),
+						settlementMethod: z.enum([
+							"credited-paid",
+							"credited-payment-pending",
+							"refunded-paid",
+							"refunded-payment-pending",
+						]),
+					})
+					.strict(),
+				z
+					.object({
+						brand: z.string().optional(),
+						last4: z.string().optional(),
+						paymentMethodId: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						changedFields: z.array(
+							z.enum(["address", "email", "language", "name", "purchaseOrder", "tax"]),
+						),
+					})
+					.strict(),
+				z
+					.object({
+						subscriptionId: z.string().optional(),
+						planSlug: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						subscriptionId: z.string().optional(),
+						action: z.enum(["cancel_plan"]),
+						data: z.object({
+							planSlug: z.enum(["v0_business", "v0_teams"]),
+							reason: z.enum(["non-payment"]).optional(),
+						}),
+					})
+					.strict(),
+				z
+					.object({
+						subscriptionId: z.string().optional(),
+						action: z.enum(["resume_plan"]),
+						data: z.object({
+							planSlug: z.enum(["v0_business", "v0_teams"]),
+						}),
+					})
+					.strict(),
+				z
+					.object({
+						subscriptionId: z.string().optional(),
+						action: z.enum(["mutate"]),
+						data: z.object({}).catchall(z.unknown()),
+					})
+					.strict(),
+				z
+					.object({
+						subscriptionId: z.string().optional(),
+						productAliases: z.array(z.string()),
+					})
+					.strict(),
+				z
+					.object({
+						bulkRedirectsLimit: z.number(),
+						prevBulkRedirectsLimit: z.number(),
+						project: z.object({
+							id: z.string(),
+							name: z.string(),
+						}),
+					})
+					.strict(),
+				z
+					.object({
+						project: z.object({
+							id: z.string(),
+							name: z.string(),
+						}),
+						versionId: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						cn: z.string().optional(),
+						cns: z.array(z.string()).optional(),
+						custom: z.union([z.literal(false), z.literal(true)]),
+						id: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						cns: z.array(z.string()),
+						custom: z.union([z.literal(false), z.literal(true)]),
+						id: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						cn: z.string().optional(),
+						cns: z.array(z.string()).optional(),
+						id: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						id: z.string(),
+						newTeam: z
+							.object({
+								name: z.string(),
+							})
+							.optional(),
+						oldTeam: z
+							.object({
+								name: z.string(),
+							})
+							.optional(),
+					})
+					.strict(),
+				z
+					.object({
+						dst: z.string(),
+						src: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						cn: z.string().optional(),
+						cns: z.array(z.string()).optional(),
+						id: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						cn: z.string().optional(),
+						cns: z.array(z.string()).optional(),
+					})
+					.strict(),
+				z
+					.object({
+						gitOwnerName: z.string(),
+						gitRepositoryName: z.string(),
+						next: z.object({
+							autoAddReviewers: z.union([z.literal(false), z.literal(true)]),
+							enabled: z.union([z.literal(false), z.literal(true)]),
+						}),
+						previous: z.object({
+							autoAddReviewers: z.union([z.literal(false), z.literal(true)]),
+							enabled: z.union([z.literal(false), z.literal(true)]),
+						}),
+					})
+					.strict(),
+				z
+					.object({
+						documentId: z.string(),
+						fingerprint: z.string(),
+						slug: z.string(),
+						title: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						count: z.number(),
+						documents: z.array(
+							z.object({
+								documentId: z.string(),
+								fingerprint: z.string(),
+								slug: z.string(),
+								title: z.string(),
+							}),
+						),
+					})
+					.strict(),
+				z
+					.object({
+						configuration: z.object({
+							id: z.string(),
+							name: z.string(),
+						}),
+					})
+					.strict(),
+				z
+					.object({
+						buildsEnabled: z.union([z.literal(false), z.literal(true)]).optional(),
+						configuration: z.object({
+							id: z.string(),
+							name: z.string().optional(),
+						}),
+						project: z.object({
+							id: z.string(),
+							name: z.string().optional(),
+						}),
+						team: z.object({
+							id: z.string(),
+							name: z.string(),
+						}),
+					})
+					.strict(),
+				z
+					.object({
+						buildsEnabled: z.union([z.literal(false), z.literal(true)]).optional(),
+						configuration: z.object({
+							id: z.string(),
+							name: z.string().optional(),
+						}),
+						passive: z.union([z.literal(false), z.literal(true)]).optional(),
+						project: z.object({
+							id: z.string(),
+							name: z.string().optional(),
+						}),
+						team: z.object({
+							id: z.string(),
+							name: z.string(),
+						}),
+					})
+					.strict(),
+				z
+					.object({
+						configuration: z.object({
+							id: z.string(),
+							name: z.string().optional(),
+						}),
+						project: z.object({
+							id: z.string(),
+							name: z.string().optional(),
+						}),
+						team: z.object({
+							id: z.string(),
+							name: z.string(),
+						}),
+					})
+					.strict(),
+				z
+					.object({
+						configuration: z.object({
+							id: z.string(),
+							name: z.string().optional(),
+						}),
+						newName: z.string(),
+						team: z.object({
+							id: z.string(),
+							name: z.string(),
+						}),
+					})
+					.strict(),
+				z
+					.object({
+						githubLogin: z.string(),
+						host: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						githubLogin: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						githubLogin: z.string(),
+						host: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						gitlabEmail: z.string(),
+						gitlabLogin: z.string(),
+						gitlabName: z.string().optional(),
+						zeitAccount: z.string().optional(),
+						zeitAccountType: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						gitlabLogin: z.string(),
+						gitlabUserId: z.number(),
+					})
+					.strict(),
+				z
+					.object({
+						bitbucketEmail: z.string(),
+						bitbucketLogin: z.string(),
+						bitbucketName: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						bitbucketAccountId: z.string(),
+						bitbucketLogin: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						acceptedTokenCount: z.number().optional(),
+						clientId: z.string().optional(),
+						clientName: z.string().optional(),
+						clientUid: z.string().optional(),
+						environments: z.array(z.string()).optional(),
+						fields: z.array(z.string()).optional(),
+						importedTokenCount: z.number().optional(),
+						installationId: z.string().optional(),
+						projectId: z.string().optional(),
+						projectName: z.string().optional(),
+						subjectType: z.enum(["app", "user"]).optional(),
+						tokenCount: z.number().optional(),
+						tokensDeleted: z.number().optional(),
+						triggerDestinationCount: z.number().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						prevPurchasedAmount: z.number(),
+						project: z.object({
+							id: z.string(),
+							name: z.string(),
+						}),
+						purchasedAmount: z.number(),
+					})
+					.strict(),
+				z
+					.object({
+						metricName: z.string(),
+					})
+					.catchall(z.unknown()),
+				z
+					.object({
+						reason: z.string().optional(),
+						suffix: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						status: z.string(),
+						suffix: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						suffix: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						hookName: z.string(),
+						projectId: z.string(),
+						projectName: z.string(),
+						ref: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						job: z.object({
+							deployHook: z.object({
+								createdAt: z.number(),
+								id: z.string(),
+								name: z.string(),
+								ref: z.string(),
+							}),
+							state: z.string(),
+						}),
+						project: z.object({
+							name: z.string(),
+						}),
+					})
+					.strict(),
+				z
+					.object({
+						checkId: z.string(),
+						checkName: z.string(),
+						projectId: z.string(),
+						projectName: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						alias: z.array(z.string()).optional(),
+						deployment: z
+							.object({
+								allowListedReadyStateReasonInternal: z
+									.enum([
+										"EARLY_IGNORE_STEP",
+										"IGNORE_STEP",
+										"NAMESPACE_PRUNED",
+										"UNAFFECTED_PROJECT",
+										"UNVERIFIED_COMMIT",
+									])
+									.optional()
+									.describe(
+										"A narrowed subset of the deployment's `readyStateReasonInternal` — only values in the public allowlist are permitted here. Callers should run their raw reason through `toAllowListedReadyStateReasonInternal` from `@api/events` before assigning. This keeps abuse / moderation / admin reasons out of the public activity log.",
+									),
+								id: z.string(),
+								meta: z.object({}).catchall(z.string()),
+								name: z.string(),
+								readyState: z.string().optional(),
+								url: z.string(),
+							})
+							.nullish(),
+						deploymentId: z.string().optional(),
+						forced: z.union([z.literal(false), z.literal(true)]).optional(),
+						gitCredentialSource: z.enum(["external-token"]).optional(),
+						name: z.string().optional(),
+						plan: z.string().optional(),
+						project: z.string().optional(),
+						projectId: z.string().optional(),
+						regions: z.array(z.string()).optional(),
+						target: z.string().nullish(),
+						type: z.string().optional(),
+						url: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						job: z.discriminatedUnion("type", [
+							z
+								.object({
+									authorized: z.union([z.literal(false), z.literal(true)]).optional(),
+									authorizedBy: z.string().optional(),
+									commitVerification: z
+										.enum(["unknown", "unverified", "verified"])
+										.optional()
+										.describe(
+											"Since 6 Nov 2025 The verification status of the commit. - 'verified' if the commit is verified - 'unverified' if the commit is not verified - 'unknown' if the commit verification status is unknown or not supported",
+										),
+									connectedProjectCount: z
+										.number()
+										.optional()
+										.describe(
+											"Since April 2023 Cached count of how many projects are connected to the repo. Saves a few Cosmos queries down the road in the main flow.",
+										),
+									createdAt: z.number().optional(),
+									customEnvId: z.string().nullish(),
+									deployHook: z
+										.object({
+											createdAt: z.number(),
+											id: z.string(),
+											name: z.string(),
+											ref: z.string(),
+										})
+										.optional(),
+									deploymentId: z.string().optional(),
+									eventful: z.union([z.literal(false), z.literal(true)]).optional(),
+									forceNew: z.union([z.literal(false), z.literal(true)]).optional(),
+									gitComments: z
+										.object({
+											onCommit: z.union([z.literal(false), z.literal(true)]),
+											onPullRequest: z.union([z.literal(false), z.literal(true)]),
+										})
+										.optional()
+										.describe(
+											"Since June 2023 Determines if comments should be posted to the git host. Replaces `github.silent` in the vercel.json.",
+										),
+									gitHashtagVercel: z
+										.array(z.string())
+										.optional()
+										.describe(
+											"Since February 2022 All the hashtag-vercel tags found in the commit message triggering the deploy. For example, #VERCEL_DO_SOMETHING",
+										),
+									headInfo: z.object({
+										owner: z.string(),
+										ref: z.string(),
+										repoUuid: z.string(),
+										sha: z.string(),
+										slug: z.string(),
+									}),
+									isManualGitDeploy: z
+										.union([z.literal(false), z.literal(true)])
+										.optional()
+										.describe(
+											"Since 28 Feb 2024 If set to true, identifies that the git job was created for a manual git deployment",
+										),
+									jobPairs: z
+										.array(
+											z
+												.array(z.union([z.string(), z.string()]))
+												.min(2)
+												.max(2),
+										)
+										.optional()
+										.describe(
+											"Since December 2022 Pairs of projects and owner ids to build for this build request.",
+										),
+									jobProjectIds: z
+										.array(z.string())
+										.optional()
+										.describe(
+											"Since December 2022 All project ids associated to this job. Think monorepo. This job will be for one of these project.",
+										),
+									linkedProjectId: z.string().optional(),
+									name: z.string(),
+									nsnbSideEffect: z
+										.object({
+											action: z.enum(["auto-approved-member", "auto-approved-pending-invite"]),
+											gitUserLogin: z.string(),
+										})
+										.optional()
+										.describe(
+											"Since March 2026 Records a successful NSNB auto-add result so later GitHub PR comments can deterministically explain why this SHA was allowed to deploy.",
+										),
+									owner: z.string(),
+									prId: z.number().optional(),
+									prIdOrZero: z
+										.number()
+										.optional()
+										.describe(
+											"Since April 2023 If set then it is a cached result of asking the remote for the PR ID the commit that triggered this Job. Or zero if it was not a PR. This prevents a few git round trips by the git updater.",
+										),
+									projectId: z.string().optional(),
+									provider: z.enum(["bitbucket"]),
+									ref: z.string(),
+									repoPushedAt: z.number().nullish(),
+									repoUuid: z.string(),
+									sha: z.string(),
+									silent: z.union([z.literal(false), z.literal(true)]).optional(),
+									skippedJobPairs: z
+										.array(
+											z
+												.array(z.union([z.string(), z.string()]))
+												.min(2)
+												.max(2),
+										)
+										.optional()
+										.describe(
+											"Since June 2024 Pairs of projects and owner ids to immediately finish (without building) because we want to create them in a skipped state.",
+										),
+									slug: z.string(),
+									target: z.string().nullish(),
+									type: z.enum(["bitbucket-push"]),
+									url: z.string().optional(),
+									withCache: z.union([z.literal(false), z.literal(true)]).optional(),
+									workspaceUuid: z.string(),
+								})
+								.strict(),
+							z
+								.object({
+									createdAt: z.number().optional(),
+									customEnvId: z.string().nullish(),
+									eventful: z.union([z.literal(false), z.literal(true)]).optional(),
+									gitComments: z
+										.object({
+											onCommit: z.union([z.literal(false), z.literal(true)]),
+											onPullRequest: z.union([z.literal(false), z.literal(true)]),
+										})
+										.optional(),
+									headInfo: z.object({
+										owner: z.string(),
+										ref: z.string(),
+										repoUuid: z.string(),
+										sha: z.string(),
+										slug: z.string(),
+									}),
+									linkedProjectId: z.string().optional(),
+									name: z.string(),
+									owner: z.string(),
+									prId: z.number(),
+									projectId: z.string().optional(),
+									provider: z.enum(["bitbucket"]),
+									ref: z.string(),
+									repoUuid: z.string(),
+									sha: z.string(),
+									slug: z.string(),
+									type: z.enum(["bitbucket-now-comment"]),
+									workspaceUuid: z.string(),
+								})
+								.strict(),
+							z
+								.object({
+									authorized: z.union([z.literal(false), z.literal(true)]).optional(),
+									authorizedBy: z.string().optional(),
+									beforeSha: z.string().optional(),
+									committerGitUserId: z
+										.number()
+										.optional()
+										.describe(
+											"Remote account id of the committer details (github id etc, not vercel). Note that the committer name/email are user input verbatim and not verified. Github does appear to resolve the given email to the username so we can trust that. If the username matches that of the sender, which is verified info, then we can use the account id and account type. See api-incoming, where we determine and set this property Note that even with that, the account may still have been spoofed.",
+										),
+									committerGitUserType: z
+										.string()
+										.optional()
+										.describe(
+											"Remote account type of the committer details (github type etc, not vercel). Note that the committer name/email are user input verbatim and not verified. Github does appear to resolve the given email to the username so we can trust that. If the username matches that of the sender, which is verified info, then we can use the account id and account type. See api-incoming, where we determine and set this property Note that even with that, the account may still have been spoofed.",
+										),
+									commitVerification: z
+										.enum(["unknown", "unverified", "verified"])
+										.optional()
+										.describe(
+											"Since 6 Nov 2025 The verification status of the commit. - 'verified' if the commit is verified - 'unverified' if the commit is not verified - 'unknown' if the commit verification status is unknown or not supported",
+										),
+									connectedProjectCount: z
+										.number()
+										.optional()
+										.describe(
+											"Since April 2023 Cached count of how many projects are connected to the repo. Saves a few Cosmos queries down the road in the main flow.",
+										),
+									createdAt: z.number().optional(),
+									customEnvId: z.string().nullish(),
+									customHost: z.string().optional(),
+									defaultBranch: z.string().optional(),
+									deployHook: z
+										.object({
+											createdAt: z.number(),
+											id: z.string(),
+											name: z.string(),
+											ref: z.string(),
+										})
+										.optional(),
+									deploymentId: z.string().optional(),
+									eventful: z.union([z.literal(false), z.literal(true)]).optional(),
+									forceNew: z.union([z.literal(false), z.literal(true)]).optional(),
+									gitComments: z
+										.object({
+											onCommit: z.union([z.literal(false), z.literal(true)]),
+											onPullRequest: z.union([z.literal(false), z.literal(true)]),
+										})
+										.optional()
+										.describe(
+											"Since June 2023 Determines if comments should be posted to the git host. Replaces `github.silent` in the vercel.json.",
+										),
+									gitHashtagVercel: z
+										.array(z.string())
+										.optional()
+										.describe(
+											"Since February 2022 All the hashtag-vercel tags found in the commit message triggering the deploy. For example, #VERCEL_DO_SOMETHING",
+										),
+									githubDeploymentId: z.string().optional(),
+									headInfo: z
+										.object({
+											org: z.string(),
+											ref: z.string(),
+											repo: z.string(),
+											repoId: z.number(),
+											sha: z.string(),
+										})
+										.describe("Information about the head commit/branch for a GitHub repository"),
+									installationId: z.number(),
+									isManualGitDeploy: z
+										.union([z.literal(false), z.literal(true)])
+										.optional()
+										.describe(
+											"Since 28 Feb 2024 If set to true, identifies that the git job was created for a manual git deployment",
+										),
+									isPrivate: z.union([z.literal(false), z.literal(true)]),
+									jobPairs: z
+										.array(
+											z
+												.array(z.union([z.string(), z.string()]))
+												.min(2)
+												.max(2),
+										)
+										.optional()
+										.describe(
+											"Since December 2022 Pairs of projects and owner ids to build for this build request.",
+										),
+									jobProjectIds: z
+										.array(z.string())
+										.optional()
+										.describe(
+											"Since December 2022 All project ids associated to this job. Think monorepo. This job will be for one of these project.",
+										),
+									linkedProjectId: z.string().optional(),
+									nsnbSideEffect: z
+										.object({
+											action: z.enum(["auto-approved-member", "auto-approved-pending-invite"]),
+											gitUserLogin: z.string(),
+										})
+										.optional()
+										.describe(
+											"Since March 2026 Records a successful NSNB auto-add result so later GitHub PR comments can deterministically explain why this SHA was allowed to deploy.",
+										),
+									org: z.string(),
+									prId: z.number(),
+									prIdOrZero: z
+										.number()
+										.optional()
+										.describe(
+											"Since April 2023 If set then it is a cached result of asking the remote for the PR ID the commit that triggered this Job. Or zero if it was not a PR. This prevents a few git round trips by the git updater.",
+										),
+									projectId: z.string().optional(),
+									provider: z.enum(["github", "github-custom-host", "github-limited"]),
+									repo: z.string(),
+									repoId: z.number(),
+									skippedJobPairs: z
+										.array(
+											z
+												.array(z.union([z.string(), z.string()]))
+												.min(2)
+												.max(2),
+										)
+										.optional()
+										.describe(
+											"Since June 2024 Pairs of projects and owner ids to immediately finish (without building) because we want to create them in a skipped state.",
+										),
+									target: z.string().nullish(),
+									type: z.enum(["pr"]),
+									url: z.string().optional(),
+									withCache: z.union([z.literal(false), z.literal(true)]).optional(),
+								})
+								.strict(),
+							z
+								.object({
+									authorized: z.union([z.literal(false), z.literal(true)]).optional(),
+									authorizedBy: z.string().optional(),
+									beforeSha: z.string().optional(),
+									commitInfo: z
+										.object({
+											earliestSha: z.string().optional(),
+											total: z.number(),
+										})
+										.optional(),
+									committerGitUserId: z
+										.number()
+										.optional()
+										.describe(
+											"Remote account id of the committer details (github id etc, not vercel). Note that the committer name/email are user input verbatim and not verified. Github does appear to resolve the given email to the username so we can trust that. If the username matches that of the sender, which is verified info, then we can use the account id and account type. See api-incoming, where we determine and set this property Note that even with that, the account may still have been spoofed.",
+										),
+									committerGitUserType: z
+										.string()
+										.optional()
+										.describe(
+											"Remote account type of the committer details (github type etc, not vercel). Note that the committer name/email are user input verbatim and not verified. Github does appear to resolve the given email to the username so we can trust that. If the username matches that of the sender, which is verified info, then we can use the account id and account type. See api-incoming, where we determine and set this property Note that even with that, the account may still have been spoofed.",
+										),
+									commitVerification: z
+										.enum(["unknown", "unverified", "verified"])
+										.optional()
+										.describe(
+											"Since 6 Nov 2025 The verification status of the commit. - 'verified' if the commit is verified - 'unverified' if the commit is not verified - 'unknown' if the commit verification status is unknown or not supported",
+										),
+									connectedProjectCount: z
+										.number()
+										.optional()
+										.describe(
+											"Since April 2023 Cached count of how many projects are connected to the repo. Saves a few Cosmos queries down the road in the main flow.",
+										),
+									createdAt: z.number().optional(),
+									customEnvId: z.string().nullish(),
+									customHost: z.string().optional(),
+									defaultBranch: z.string().optional(),
+									deployHook: z
+										.object({
+											createdAt: z.number(),
+											id: z.string(),
+											name: z.string(),
+											ref: z.string(),
+										})
+										.optional(),
+									deploymentId: z.string().optional(),
+									eventful: z.union([z.literal(false), z.literal(true)]).optional(),
+									forced: z.union([z.literal(false), z.literal(true)]).optional(),
+									forceNew: z.union([z.literal(false), z.literal(true)]).optional(),
+									gitComments: z
+										.object({
+											onCommit: z.union([z.literal(false), z.literal(true)]),
+											onPullRequest: z.union([z.literal(false), z.literal(true)]),
+										})
+										.optional()
+										.describe(
+											"Since June 2023 Determines if comments should be posted to the git host. Replaces `github.silent` in the vercel.json.",
+										),
+									gitHashtagVercel: z
+										.array(z.string())
+										.optional()
+										.describe(
+											"Since February 2022 All the hashtag-vercel tags found in the commit message triggering the deploy. For example, #VERCEL_DO_SOMETHING",
+										),
+									githubDeploymentId: z.string().optional(),
+									headInfo: z
+										.object({
+											org: z.string(),
+											ref: z.string(),
+											repo: z.string(),
+											repoId: z.number(),
+											sha: z.string(),
+										})
+										.describe("Information about the head commit/branch for a GitHub repository"),
+									installationId: z.number(),
+									isManualGitDeploy: z
+										.union([z.literal(false), z.literal(true)])
+										.optional()
+										.describe(
+											"Since 28 Feb 2024 If set to true, identifies that the git job was created for a manual git deployment",
+										),
+									isPrivate: z.union([z.literal(false), z.literal(true)]),
+									jobPairs: z
+										.array(
+											z
+												.array(z.union([z.string(), z.string()]))
+												.min(2)
+												.max(2),
+										)
+										.optional()
+										.describe(
+											"Since December 2022 Pairs of projects and owner ids to build for this build request.",
+										),
+									jobProjectIds: z
+										.array(z.string())
+										.optional()
+										.describe(
+											"Since December 2022 All project ids associated to this job. Think monorepo. This job will be for one of these project.",
+										),
+									linkedProjectId: z.string().optional(),
+									nsnbSideEffect: z
+										.object({
+											action: z.enum(["auto-approved-member", "auto-approved-pending-invite"]),
+											gitUserLogin: z.string(),
+										})
+										.optional()
+										.describe(
+											"Since March 2026 Records a successful NSNB auto-add result so later GitHub PR comments can deterministically explain why this SHA was allowed to deploy.",
+										),
+									org: z.string(),
+									prId: z.number().nullable(),
+									prIdOrZero: z
+										.number()
+										.optional()
+										.describe(
+											"Since April 2023 If set then it is a cached result of asking the remote for the PR ID the commit that triggered this Job. Or zero if it was not a PR. This prevents a few git round trips by the git updater.",
+										),
+									projectId: z.string().optional(),
+									provider: z.enum(["github", "github-custom-host", "github-limited"]),
+									repo: z.string(),
+									repoId: z.number(),
+									repoPushedAt: z.number().nullable(),
+									skippedJobPairs: z
+										.array(
+											z
+												.array(z.union([z.string(), z.string()]))
+												.min(2)
+												.max(2),
+										)
+										.optional()
+										.describe(
+											"Since June 2024 Pairs of projects and owner ids to immediately finish (without building) because we want to create them in a skipped state.",
+										),
+									target: z.string().nullish(),
+									type: z.enum(["push"]),
+									url: z.string().optional(),
+									withCache: z.union([z.literal(false), z.literal(true)]).optional(),
+								})
+								.strict(),
+							z
+								.object({
+									beforeSha: z.string().optional(),
+									createdAt: z.number().optional(),
+									customEnvId: z.unknown().nullish(),
+									customHost: z.string().optional(),
+									eventful: z.union([z.literal(false), z.literal(true)]).optional(),
+									gitComments: z
+										.object({
+											onCommit: z.union([z.literal(false), z.literal(true)]),
+											onPullRequest: z.union([z.literal(false), z.literal(true)]),
+										})
+										.optional(),
+									headInfo: z
+										.object({
+											org: z.string(),
+											ref: z.string(),
+											repo: z.string(),
+											repoId: z.number(),
+											sha: z.string(),
+										})
+										.describe("Information about the head commit/branch for a GitHub repository"),
+									installationId: z.number(),
+									isPrivate: z.union([z.literal(false), z.literal(true)]),
+									linkedProjectId: z.string().optional(),
+									org: z.string(),
+									prId: z.number(),
+									projectId: z.unknown().nullable(),
+									provider: z.enum(["github", "github-custom-host", "github-limited"]),
+									repo: z.string(),
+									repoId: z.number(),
+									type: z.enum(["now-comment"]),
+								})
+								.strict(),
+							z
+								.object({
+									authorized: z.union([z.literal(false), z.literal(true)]).optional(),
+									authorizedBy: z.string().optional(),
+									commit: z
+										.object({
+											authorAvatar: z.string().nullish(),
+											authorEmail: z.string().nullish(),
+											authorId: z.number().nullish(),
+											authorLogin: z.string().nullish(),
+											authorName: z.string().nullish(),
+											id: z.string(),
+										})
+										.optional(),
+									commitVerification: z
+										.enum(["unknown", "unverified", "verified"])
+										.optional()
+										.describe(
+											"Since 6 Nov 2025 The verification status of the commit. - 'verified' if the commit is verified - 'unverified' if the commit is not verified - 'unknown' if the commit verification status is unknown or not supported",
+										),
+									connectedProjectCount: z
+										.number()
+										.optional()
+										.describe(
+											"Since April 2023 Cached count of how many projects are connected to the repo. Saves a few Cosmos queries down the road in the main flow.",
+										),
+									createdAt: z.number().optional(),
+									customEnvId: z.string().nullish(),
+									deployHook: z
+										.object({
+											createdAt: z.number(),
+											id: z.string(),
+											name: z.string(),
+											ref: z.string(),
+										})
+										.optional(),
+									deploymentId: z.string().optional(),
+									eventful: z.union([z.literal(false), z.literal(true)]).optional(),
+									forceNew: z.union([z.literal(false), z.literal(true)]).optional(),
+									gitComments: z
+										.object({
+											onCommit: z.union([z.literal(false), z.literal(true)]),
+											onPullRequest: z.union([z.literal(false), z.literal(true)]),
+										})
+										.optional()
+										.describe(
+											"Since June 2023 Determines if comments should be posted to the git host. Replaces `github.silent` in the vercel.json.",
+										),
+									gitHashtagVercel: z
+										.array(z.string())
+										.optional()
+										.describe(
+											"Since February 2022 All the hashtag-vercel tags found in the commit message triggering the deploy. For example, #VERCEL_DO_SOMETHING",
+										),
+									headInfo: z
+										.object({
+											project: z.object({
+												defaultBranch: z.string().nullish(),
+												id: z.string(),
+												name: z.string().nullish(),
+												namespace: z.string().nullish(),
+												path: z.string().nullish(),
+												url: z.string().nullish(),
+											}),
+											ref: z.string(),
+											sha: z.string(),
+										})
+										.describe("GitLab"),
+									isManualGitDeploy: z
+										.union([z.literal(false), z.literal(true)])
+										.optional()
+										.describe(
+											"Since 28 Feb 2024 If set to true, identifies that the git job was created for a manual git deployment",
+										),
+									jobPairs: z
+										.array(
+											z
+												.array(z.union([z.string(), z.string()]))
+												.min(2)
+												.max(2),
+										)
+										.optional()
+										.describe(
+											"Since December 2022 Pairs of projects and owner ids to build for this build request.",
+										),
+									jobProjectIds: z
+										.array(z.string())
+										.optional()
+										.describe(
+											"Since December 2022 All project ids associated to this job. Think monorepo. This job will be for one of these project.",
+										),
+									linkedProjectId: z.string().optional(),
+									nsnbSideEffect: z
+										.object({
+											action: z.enum(["auto-approved-member", "auto-approved-pending-invite"]),
+											gitUserLogin: z.string(),
+										})
+										.optional()
+										.describe(
+											"Since March 2026 Records a successful NSNB auto-add result so later GitHub PR comments can deterministically explain why this SHA was allowed to deploy.",
+										),
+									prId: z.number().optional(),
+									prIdOrZero: z
+										.number()
+										.optional()
+										.describe(
+											"Since April 2023 If set then it is a cached result of asking the remote for the PR ID the commit that triggered this Job. Or zero if it was not a PR. This prevents a few git round trips by the git updater.",
+										),
+									project: z.object({
+										defaultBranch: z.string().nullish(),
+										id: z.string(),
+										name: z.string().nullish(),
+										namespace: z.string().nullish(),
+										path: z.string().nullish(),
+										url: z.string().nullish(),
+									}),
+									projectId: z.string().optional(),
+									provider: z.enum(["gitlab"]),
+									ref: z.string(),
+									repoPushedAt: z.number().nullish(),
+									sha: z.string(),
+									silent: z.union([z.literal(false), z.literal(true)]).optional(),
+									skippedJobPairs: z
+										.array(
+											z
+												.array(z.union([z.string(), z.string()]))
+												.min(2)
+												.max(2),
+										)
+										.optional()
+										.describe(
+											"Since June 2024 Pairs of projects and owner ids to immediately finish (without building) because we want to create them in a skipped state.",
+										),
+									target: z.string().nullish(),
+									type: z.enum(["gitlab-push"]),
+									url: z.string().optional(),
+									withCache: z.union([z.literal(false), z.literal(true)]).optional(),
+								})
+								.strict(),
+							z
+								.object({
+									createdAt: z.number().optional(),
+									customEnvId: z.string().nullish(),
+									eventful: z.union([z.literal(false), z.literal(true)]).optional(),
+									gitComments: z
+										.object({
+											onCommit: z.union([z.literal(false), z.literal(true)]),
+											onPullRequest: z.union([z.literal(false), z.literal(true)]),
+										})
+										.optional(),
+									headInfo: z
+										.object({
+											project: z.object({
+												defaultBranch: z.string().nullish(),
+												id: z.string(),
+												name: z.string().nullish(),
+												namespace: z.string().nullish(),
+												path: z.string().nullish(),
+												url: z.string().nullish(),
+											}),
+											ref: z.string(),
+											sha: z.string(),
+										})
+										.describe("GitLab"),
+									linkedProjectId: z.string().optional(),
+									prId: z.number(),
+									project: z.object({
+										defaultBranch: z.string().nullish(),
+										id: z.string(),
+										name: z.string().nullish(),
+										namespace: z.string().nullish(),
+										path: z.string().nullish(),
+										url: z.string().nullish(),
+									}),
+									projectId: z.string().optional(),
+									provider: z.enum(["gitlab"]),
+									ref: z.string(),
+									sha: z.string(),
+									type: z.enum(["gitlab-now-comment"]),
+								})
+								.strict(),
+							z
+								.object({
+									authorized: z.union([z.literal(false), z.literal(true)]).optional(),
+									authorizedBy: z.string().optional(),
+									commitVerification: z
+										.enum(["unknown", "unverified", "verified"])
+										.optional()
+										.describe(
+											"Since 6 Nov 2025 The verification status of the commit. - 'verified' if the commit is verified - 'unverified' if the commit is not verified - 'unknown' if the commit verification status is unknown or not supported",
+										),
+									connectedProjectCount: z
+										.number()
+										.optional()
+										.describe(
+											"Since April 2023 Cached count of how many projects are connected to the repo. Saves a few Cosmos queries down the road in the main flow.",
+										),
+									customEnvId: z.string().nullish(),
+									deployHook: z
+										.object({
+											createdAt: z.number(),
+											id: z.string(),
+											name: z.string(),
+											ref: z.string(),
+										})
+										.optional(),
+									deploymentId: z.string().optional(),
+									gitComments: z
+										.object({
+											onCommit: z.union([z.literal(false), z.literal(true)]),
+											onPullRequest: z.union([z.literal(false), z.literal(true)]),
+										})
+										.optional()
+										.describe(
+											"Since June 2023 Determines if comments should be posted to the git host. Replaces `github.silent` in the vercel.json.",
+										),
+									gitHashtagVercel: z
+										.array(z.string())
+										.optional()
+										.describe(
+											"Since February 2022 All the hashtag-vercel tags found in the commit message triggering the deploy. For example, #VERCEL_DO_SOMETHING",
+										),
+									headInfo: z
+										.object({
+											org: z.string(),
+											ref: z.string(),
+											repo: z.string(),
+											sha: z.string(),
+										})
+										.describe("Vercel"),
+									isManualGitDeploy: z
+										.union([z.literal(false), z.literal(true)])
+										.optional()
+										.describe(
+											"Since 28 Feb 2024 If set to true, identifies that the git job was created for a manual git deployment",
+										),
+									jobPairs: z
+										.array(
+											z
+												.array(z.union([z.string(), z.string()]))
+												.min(2)
+												.max(2),
+										)
+										.optional()
+										.describe(
+											"Since December 2022 Pairs of projects and owner ids to build for this build request.",
+										),
+									jobProjectIds: z
+										.array(z.string())
+										.optional()
+										.describe(
+											"Since December 2022 All project ids associated to this job. Think monorepo. This job will be for one of these project.",
+										),
+									linkedProjectId: z.string().optional(),
+									nsnbSideEffect: z
+										.object({
+											action: z.enum(["auto-approved-member", "auto-approved-pending-invite"]),
+											gitUserLogin: z.string(),
+										})
+										.optional()
+										.describe(
+											"Since March 2026 Records a successful NSNB auto-add result so later GitHub PR comments can deterministically explain why this SHA was allowed to deploy.",
+										),
+									org: z.string(),
+									prId: z.number().nullish(),
+									prIdOrZero: z
+										.number()
+										.optional()
+										.describe(
+											"Since April 2023 If set then it is a cached result of asking the remote for the PR ID the commit that triggered this Job. Or zero if it was not a PR. This prevents a few git round trips by the git updater.",
+										),
+									projectId: z.string().optional(),
+									provider: z.enum(["vercel"]),
+									ref: z.string(),
+									repo: z.string(),
+									repoPushedAt: z.number().nullish(),
+									sha: z.string(),
+									skippedJobPairs: z
+										.array(
+											z
+												.array(z.union([z.string(), z.string()]))
+												.min(2)
+												.max(2),
+										)
+										.optional()
+										.describe(
+											"Since June 2024 Pairs of projects and owner ids to immediately finish (without building) because we want to create them in a skipped state.",
+										),
+									target: z.string().nullish(),
+									type: z.enum(["vercel-push"]),
+									url: z.string().optional(),
+								})
+								.strict(),
+							z
+								.object({
+									authorized: z.union([z.literal(false), z.literal(true)]).optional(),
+									authorizedBy: z.string().optional(),
+									beforeSha: z.string().optional(),
+									commitVerification: z
+										.enum(["unknown", "unverified", "verified"])
+										.optional()
+										.describe(
+											"Since 6 Nov 2025 The verification status of the commit. - 'verified' if the commit is verified - 'unverified' if the commit is not verified - 'unknown' if the commit verification status is unknown or not supported",
+										),
+									connectedProjectCount: z
+										.number()
+										.optional()
+										.describe(
+											"Since April 2023 Cached count of how many projects are connected to the repo. Saves a few Cosmos queries down the road in the main flow.",
+										),
+									createdAt: z.number().optional(),
+									customEnvId: z.string().nullish(),
+									defaultBranch: z.string().optional(),
+									deployHook: z
+										.object({
+											createdAt: z.number(),
+											id: z.string(),
+											name: z.string(),
+											ref: z.string(),
+										})
+										.optional(),
+									deploymentId: z.string().optional(),
+									eventful: z.union([z.literal(false), z.literal(true)]).optional(),
+									forced: z.union([z.literal(false), z.literal(true)]).optional(),
+									forceNew: z.union([z.literal(false), z.literal(true)]).optional(),
+									gitComments: z
+										.object({
+											onCommit: z.union([z.literal(false), z.literal(true)]),
+											onPullRequest: z.union([z.literal(false), z.literal(true)]),
+										})
+										.optional()
+										.describe(
+											"Since June 2023 Determines if comments should be posted to the git host. Replaces `github.silent` in the vercel.json.",
+										),
+									gitHashtagVercel: z
+										.array(z.string())
+										.optional()
+										.describe(
+											"Since February 2022 All the hashtag-vercel tags found in the commit message triggering the deploy. For example, #VERCEL_DO_SOMETHING",
+										),
+									headInfo: z
+										.object({
+											owner: z.string().describe("Owner (namespace) slug, e.g. `acme`."),
+											ownerId: z.string().describe("Origin namespace id (`ns_…`)."),
+											ref: z.string(),
+											repo: z.string().describe("Repository name, e.g. `api`."),
+											repoId: z.string().describe("Origin repository id."),
+											sha: z.string(),
+										})
+										.describe("Cursor Origin"),
+									installationId: z
+										.string()
+										.describe("Origin installation id (`i_…`) used to resolve the credential."),
+									isManualGitDeploy: z
+										.union([z.literal(false), z.literal(true)])
+										.optional()
+										.describe(
+											"Since 28 Feb 2024 If set to true, identifies that the git job was created for a manual git deployment",
+										),
+									jobPairs: z
+										.array(
+											z
+												.array(z.union([z.string(), z.string()]))
+												.min(2)
+												.max(2),
+										)
+										.optional()
+										.describe(
+											"Since December 2022 Pairs of projects and owner ids to build for this build request.",
+										),
+									jobProjectIds: z
+										.array(z.string())
+										.optional()
+										.describe(
+											"Since December 2022 All project ids associated to this job. Think monorepo. This job will be for one of these project.",
+										),
+									linkedProjectId: z.string().optional(),
+									nsnbSideEffect: z
+										.object({
+											action: z.enum(["auto-approved-member", "auto-approved-pending-invite"]),
+											gitUserLogin: z.string(),
+										})
+										.optional()
+										.describe(
+											"Since March 2026 Records a successful NSNB auto-add result so later GitHub PR comments can deterministically explain why this SHA was allowed to deploy.",
+										),
+									owner: z.string(),
+									prId: z.number().nullish(),
+									prIdOrZero: z
+										.number()
+										.optional()
+										.describe(
+											"Since April 2023 If set then it is a cached result of asking the remote for the PR ID the commit that triggered this Job. Or zero if it was not a PR. This prevents a few git round trips by the git updater.",
+										),
+									projectId: z.string().optional(),
+									provider: z.enum(["cursor-origin"]),
+									ref: z.string(),
+									repo: z.string(),
+									repoId: z.string(),
+									repoPushedAt: z.number().nullish(),
+									sha: z.string(),
+									skippedJobPairs: z
+										.array(
+											z
+												.array(z.union([z.string(), z.string()]))
+												.min(2)
+												.max(2),
+										)
+										.optional()
+										.describe(
+											"Since June 2024 Pairs of projects and owner ids to immediately finish (without building) because we want to create them in a skipped state.",
+										),
+									target: z.string().nullish(),
+									type: z.enum(["cursor-origin-push"]),
+									url: z.string().optional(),
+								})
+								.strict(),
+							z
+								.object({
+									createdAt: z.number().optional(),
+									customEnvId: z.unknown().nullish(),
+									eventful: z.union([z.literal(false), z.literal(true)]).optional(),
+									gitComments: z
+										.object({
+											onCommit: z.union([z.literal(false), z.literal(true)]),
+											onPullRequest: z.union([z.literal(false), z.literal(true)]),
+										})
+										.optional(),
+									headInfo: z
+										.object({
+											owner: z.string().describe("Owner (namespace) slug, e.g. `acme`."),
+											ownerId: z.string().describe("Origin namespace id (`ns_…`)."),
+											ref: z.string(),
+											repo: z.string().describe("Repository name, e.g. `api`."),
+											repoId: z.string().describe("Origin repository id."),
+											sha: z.string(),
+										})
+										.describe("Cursor Origin"),
+									installationId: z
+										.string()
+										.describe("Origin installation id (`i_…`) used to resolve the credential."),
+									linkedProjectId: z.string().optional(),
+									owner: z.string(),
+									prId: z.number(),
+									projectId: z.unknown().nullable(),
+									provider: z.enum(["cursor-origin"]),
+									repo: z.string(),
+									repoId: z.string(),
+									type: z.enum(["cursor-origin-now-comment"]),
+								})
+								.strict(),
+						]),
+					})
+					.strict(),
+				z
+					.object({
+						newTeam: z
+							.object({
+								name: z.string(),
+							})
+							.optional(),
+						oldTeam: z
+							.object({
+								name: z.string(),
+							})
+							.optional(),
+						url: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						gitCommitterName: z.string(),
+						gitUserPlatform: z.string(),
+						projectId: z.string().optional(),
+						projectName: z.string(),
+						reason: z.enum(["ip_allow_list"]).optional(),
+						sha: z.string(),
+						source: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						deployment: z.object({
+							id: z.string(),
+							meta: z.object({}).catchall(z.string()),
+							name: z.string(),
+							url: z.string(),
+						}),
+						deploymentId: z.string(),
+						url: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						deploymentId: z
+							.string()
+							.optional()
+							.describe(
+								"The blocked deployment's id (e.g. `dpl_…`). When present, the message links it to the deployment details (inspector) page. Optional so events emitted before this field was added still render.",
+							),
+						projectId: z.string().optional(),
+						projectName: z.string(),
+						ruleName: z
+							.enum(["deploymentSources", "gitSources"])
+							.describe("Which rule blocked the deploy."),
+						ruleProvenance: z
+							.enum(["default", "project", "team"])
+							.describe("Team-level or project-level rule."),
+						source: z
+							.string()
+							.describe("Classified deploy source, e.g. 'cli', 'git', 'integration'."),
+					})
+					.strict(),
+				z
+					.object({
+						deploymentId: z.string(),
+						deploymentName: z.string().nullable(),
+						deploymentUrl: z.string().nullable(),
+						projectId: z.string(),
+						projectName: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						configurationId: z.string(),
+						integrationId: z.string(),
+						integrationName: z.string(),
+						integrationSlug: z.string(),
+						ownerId: z.string(),
+						projectIds: z.array(z.string()).optional(),
+					})
+					.strict(),
+				z
+					.object({
+						domain: z.string(),
+						id: z.string(),
+						mxPriority: z.number().optional(),
+						name: z.string(),
+						type: z.string(),
+						value: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						action: z.enum(["add", "delete", "update"]),
+						domain: z.string(),
+						id: z.string(),
+						initiator: z.enum(["system", "user"]),
+						mxPriority: z.number().optional(),
+						name: z.string(),
+						previousValue: z.string().optional(),
+						source: z.string().optional(),
+						type: z.string(),
+						value: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						domain: z.string(),
+						id: z.string(),
+						name: z.string(),
+						type: z.string(),
+						value: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						name: z.string(),
+						zone: z.union([z.literal(false), z.literal(true)]).optional(),
+					})
+					.strict(),
+				z
+					.object({
+						currency: z.string().optional(),
+						name: z.string(),
+						price: z.number(),
+					})
+					.strict(),
+				z
+					.object({
+						cdnEnabled: z.union([z.literal(false), z.literal(true)]),
+						name: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						name: z.string(),
+						newTeam: z
+							.object({
+								name: z.string(),
+							})
+							.optional(),
+						oldTeam: z
+							.object({
+								name: z.string(),
+							})
+							.optional(),
+					})
+					.strict(),
+				z
+					.object({
+						name: z.string(),
+						ownerName: z.string(),
+						teamId: z.string(),
+						userId: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						domainId: z.string(),
+						name: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						id: z.string(),
+						name: z.string(),
+						nameservers: z.array(z.string()),
+						previousServiceType: z.string(),
+						serviceType: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						customNameservers: z.array(z.string()).nullable(),
+						domain: z.string(),
+						prevCustomNameservers: z.array(z.string()).nullable(),
+					})
+					.strict(),
+				z
+					.object({
+						domain: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						domain: z.string(),
+						echMode: z.enum(["auto", "disabled", "enabled"]),
+						previousEchMode: z.enum(["auto", "disabled", "enabled"]),
+					})
+					.strict(),
+				z
+					.object({
+						domain: z.string(),
+						zone: z.union([z.literal(false), z.literal(true)]),
+					})
+					.strict(),
+				z
+					.object({
+						domain: z.string(),
+						initiator: z.enum(["system", "user"]),
+						previousZone: z.union([z.literal(false), z.literal(true)]).optional(),
+						source: z.string().optional(),
+						zone: z.union([z.literal(false), z.literal(true)]),
+					})
+					.strict(),
+				z
+					.object({
+						fromId: z.string().nullable(),
+						fromName: z.string().nullable(),
+						name: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						destinationId: z.string().nullable(),
+						destinationName: z.string().nullable(),
+						name: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						destinationId: z.string(),
+						destinationName: z.string(),
+						name: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						domain: z.string(),
+						renew: z.union([z.literal(false), z.literal(true)]).optional(),
+					})
+					.strict(),
+				z
+					.object({
+						currency: z.string().optional(),
+						name: z.string(),
+						price: z.number().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						name: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						drainName: z.string().nullable(),
+						drainUrl: z.string().nullable(),
+						integrationName: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						drainUrl: z.string().nullable(),
+						integrationName: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						projectId: z.string(),
+						projectName: z.string(),
+						srcImages: z.array(z.string()),
+					})
+					.strict(),
+				z
+					.object({
+						projectId: z.string(),
+						projectName: z.string(),
+						tags: z.array(z.string()),
+						target: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						path: z.string(),
+						projectId: z.string(),
+						projectName: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						projectId: z.string(),
+						projectName: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						edgeConfigDigest: z.string(),
+						edgeConfigId: z.string(),
+						edgeConfigSlug: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						edgeConfigDigest: z.string(),
+						edgeConfigId: z.string(),
+						edgeConfigSlug: z.string(),
+						edgeConfigBackupVersionId: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						edgeConfigId: z.string(),
+						edgeConfigSchema: z.object({}).optional(),
+						edgeConfigSlug: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						edgeConfigDigest: z.string().optional(),
+						edgeConfigId: z.string(),
+						edgeConfigSlug: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						edgeConfig: z.object({
+							id: z.string(),
+							slug: z.string(),
+						}),
+						fromAccount: z.object({
+							id: z.string(),
+							slug: z.string().optional(),
+							type: z.enum(["team", "user"]),
+							username: z.string().optional(),
+						}),
+						toAccount: z.object({
+							id: z.string(),
+							slug: z.string().optional(),
+							type: z.enum(["team", "user"]),
+							username: z.string().optional(),
+						}),
+					})
+					.strict(),
+				z
+					.object({
+						edgeConfigId: z.string(),
+						edgeConfigSlug: z.string(),
+						edgeConfigTokenId: z.string(),
+						label: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						edgeConfigId: z.string(),
+						edgeConfigSlug: z.string(),
+						edgeConfigTokenIds: z.array(z.string()).describe("ids of deleted tokens"),
+					})
+					.strict(),
+				z
+					.object({
+						email: z.string(),
+						name: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						previousRule: z.object({
+							email: z.string(),
+						}),
+						team: z.object({
+							id: z.string(),
+							name: z.string().optional(),
+						}),
+					})
+					.strict(),
+				z
+					.object({
+						nextRule: z
+							.object({
+								email: z.string(),
+							})
+							.optional(),
+						previousRule: z
+							.object({
+								email: z.string(),
+							})
+							.optional(),
+						team: z.object({
+							id: z.string(),
+							name: z.string().optional(),
+						}),
+					})
+					.strict(),
+				z
+					.object({
+						deletedUid: z.string().optional(),
+						deletedUser: z
+							.object({
+								email: z.string(),
+								username: z.string(),
+							})
+							.optional(),
+						emailDomain: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						customEnvironmentSlugs: z.array(z.string()).optional(),
+						edgeConfigId: z.string().nullish(),
+						edgeConfigTokenId: z.string().nullish(),
+						gitBranch: z.string().optional(),
+						id: z.string().optional(),
+						ipAddress: z.string().optional(),
+						key: z.string().optional(),
+						projectId: z.string().optional(),
+						projectName: z.string().optional(),
+						source: z.string().optional(),
+						target: z.union([z.string(), z.array(z.string())]).optional(),
+					})
+					.strict(),
+				z
+					.object({
+						customEnvironmentSlugs: z.array(z.string()).optional(),
+						edgeConfigId: z.string().nullish(),
+						edgeConfigTokenId: z.string().nullish(),
+						gitBranch: z.string().optional(),
+						id: z.string().optional(),
+						ipAddress: z.string().optional(),
+						key: z.string().optional(),
+						projectId: z.string().optional(),
+						projectName: z.string().optional(),
+						source: z.string().optional(),
+						target: z.union([z.string(), z.array(z.string())]).optional(),
+						deploymentId: z.string(),
+						deploymentUrl: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						changedFields: z.array(z.string()).optional(),
+						key: z.string(),
+						organizationId: z.string(),
+						provider: z.string(),
+						repository: z.string(),
+						visibility: z.enum(["config", "secret"]),
+					})
+					.strict(),
+				z
+					.object({
+						applyToAllCustomEnvironments: z
+							.union([z.literal(false), z.literal(true)])
+							.optional()
+							.describe("whether or not this env varible applies to custom environments"),
+						comment: z
+							.string()
+							.optional()
+							.describe("A user provided comment that describes what this Shared Env Var is for."),
+						created: z.iso
+							.datetime()
+							.optional()
+							.describe("The date when the Shared Env Var was created.")
+							.meta({ examples: ["2021-02-10T13:11:49.180Z"] }),
+						createdAt: z
+							.number()
+							.optional()
+							.describe("Timestamp for when the Shared Env Var was created.")
+							.meta({ examples: [1609492210000] }),
+						createdBy: z
+							.string()
+							.nullish()
+							.describe("The unique identifier of the user who created the Shared Env Var.")
+							.meta({ examples: ["2qDDuGFTWXBLDNnqZfWPDp1A"] }),
+						customEnvironmentIds: z
+							.array(z.string())
+							.optional()
+							.describe("The custom environment IDs that this Shared Env Var is scoped to."),
+						decrypted: z
+							.union([z.literal(false), z.literal(true)])
+							.optional()
+							.describe("whether or not this env variable is decrypted"),
+						deletedAt: z
+							.number()
+							.optional()
+							.describe("Timestamp for when the Shared Env Var was (soft) deleted.")
+							.meta({ examples: [1609492210000] }),
+						deletedBy: z
+							.string()
+							.nullish()
+							.describe("The unique identifier of the user who deleted the Shared Env Var.")
+							.meta({ examples: ["2qDDuGFTWXBLDNnqZfWPDp1A"] }),
+						id: z
+							.string()
+							.optional()
+							.describe("The unique identifier of the Shared Env Var.")
+							.meta({ examples: ["env_XCG7t7AIHuO2SBA8667zNUiM"] }),
+						key: z
+							.string()
+							.optional()
+							.describe("The name of the Shared Env Var.")
+							.meta({ examples: ["my-api-key"] }),
+						lastEditedByDisplayName: z
+							.string()
+							.optional()
+							.describe("The last editor full name or username."),
+						ownerId: z
+							.string()
+							.nullish()
+							.describe(
+								"The unique identifier of the owner (team) the Shared Env Var was created for.",
+							)
+							.meta({ examples: ["team_LLHUOMOoDlqOp8wPE4kFo9pE"] }),
+						projectId: z
+							.array(z.string())
+							.optional()
+							.describe(
+								"The unique identifiers of the projects which the Shared Env Var is linked to.",
+							)
+							.meta({
+								examples: [["prj_2WjyKQmM8ZnGcJsPWMrHRHrE", "prj_2WjyKQmM8ZnGcJsPWMrasEFg"]],
+							}),
+						target: z
+							.array(z.enum(["development", "preview", "production"]))
+							.optional()
+							.describe("environments this env variable targets")
+							.meta({ examples: ["production"] }),
+						type: z
+							.enum(["encrypted", "plain", "sensitive", "system"])
+							.optional()
+							.describe("The type of this cosmos doc instance, if blank, assume secret.")
+							.meta({ examples: ["encrypted"] }),
+						updatedAt: z
+							.number()
+							.optional()
+							.describe("Timestamp for when the Shared Env Var was last updated.")
+							.meta({ examples: [1609492210000] }),
+						updatedBy: z
+							.string()
+							.nullish()
+							.describe("The unique identifier of the user who last updated the Shared Env Var.")
+							.meta({ examples: ["2qDDuGFTWXBLDNnqZfWPDp1A"] }),
+						value: z.string().optional().describe("The value of the Shared Env Var."),
+						ipAddress: z.string().optional(),
+						projectNames: z.array(z.string()).optional(),
+					})
+					.strict(),
+				z
+					.object({
+						envId: z.string(),
+						envKey: z.string(),
+						organizationId: z.string(),
+						provider: z.string(),
+						repository: z.string(),
+						target: z.array(z.enum(["development", "preview", "production"])),
+					})
+					.strict(),
+				z
+					.object({
+						newEnvVar: z
+							.object({
+								applyToAllCustomEnvironments: z
+									.union([z.literal(false), z.literal(true)])
+									.optional()
+									.describe("whether or not this env varible applies to custom environments"),
+								comment: z
+									.string()
+									.optional()
+									.describe(
+										"A user provided comment that describes what this Shared Env Var is for.",
+									),
+								created: z.iso
+									.datetime()
+									.optional()
+									.describe("The date when the Shared Env Var was created.")
+									.meta({ examples: ["2021-02-10T13:11:49.180Z"] }),
+								createdAt: z
+									.number()
+									.optional()
+									.describe("Timestamp for when the Shared Env Var was created.")
+									.meta({ examples: [1609492210000] }),
+								createdBy: z
+									.string()
+									.nullish()
+									.describe("The unique identifier of the user who created the Shared Env Var.")
+									.meta({ examples: ["2qDDuGFTWXBLDNnqZfWPDp1A"] }),
+								customEnvironmentIds: z
+									.array(z.string())
+									.optional()
+									.describe("The custom environment IDs that this Shared Env Var is scoped to."),
+								decrypted: z
+									.union([z.literal(false), z.literal(true)])
+									.optional()
+									.describe("whether or not this env variable is decrypted"),
+								deletedAt: z
+									.number()
+									.optional()
+									.describe("Timestamp for when the Shared Env Var was (soft) deleted.")
+									.meta({ examples: [1609492210000] }),
+								deletedBy: z
+									.string()
+									.nullish()
+									.describe("The unique identifier of the user who deleted the Shared Env Var.")
+									.meta({ examples: ["2qDDuGFTWXBLDNnqZfWPDp1A"] }),
+								id: z
+									.string()
+									.optional()
+									.describe("The unique identifier of the Shared Env Var.")
+									.meta({ examples: ["env_XCG7t7AIHuO2SBA8667zNUiM"] }),
+								key: z
+									.string()
+									.optional()
+									.describe("The name of the Shared Env Var.")
+									.meta({ examples: ["my-api-key"] }),
+								lastEditedByDisplayName: z
+									.string()
+									.optional()
+									.describe("The last editor full name or username."),
+								ownerId: z
+									.string()
+									.nullish()
+									.describe(
+										"The unique identifier of the owner (team) the Shared Env Var was created for.",
+									)
+									.meta({ examples: ["team_LLHUOMOoDlqOp8wPE4kFo9pE"] }),
+								projectId: z
+									.array(z.string())
+									.optional()
+									.describe(
+										"The unique identifiers of the projects which the Shared Env Var is linked to.",
+									)
+									.meta({
+										examples: [["prj_2WjyKQmM8ZnGcJsPWMrHRHrE", "prj_2WjyKQmM8ZnGcJsPWMrasEFg"]],
+									}),
+								target: z
+									.array(z.enum(["development", "preview", "production"]))
+									.optional()
+									.describe("environments this env variable targets")
+									.meta({ examples: ["production"] }),
+								type: z
+									.enum(["encrypted", "plain", "sensitive", "system"])
+									.optional()
+									.describe("The type of this cosmos doc instance, if blank, assume secret.")
+									.meta({ examples: ["encrypted"] }),
+								updatedAt: z
+									.number()
+									.optional()
+									.describe("Timestamp for when the Shared Env Var was last updated.")
+									.meta({ examples: [1609492210000] }),
+								updatedBy: z
+									.string()
+									.nullish()
+									.describe(
+										"The unique identifier of the user who last updated the Shared Env Var.",
+									)
+									.meta({ examples: ["2qDDuGFTWXBLDNnqZfWPDp1A"] }),
+								value: z.string().optional().describe("The value of the Shared Env Var."),
+							})
+							.optional(),
+						oldEnvVar: z
+							.object({
+								applyToAllCustomEnvironments: z
+									.union([z.literal(false), z.literal(true)])
+									.optional()
+									.describe("whether or not this env varible applies to custom environments"),
+								comment: z
+									.string()
+									.optional()
+									.describe(
+										"A user provided comment that describes what this Shared Env Var is for.",
+									),
+								created: z.iso
+									.datetime()
+									.optional()
+									.describe("The date when the Shared Env Var was created.")
+									.meta({ examples: ["2021-02-10T13:11:49.180Z"] }),
+								createdAt: z
+									.number()
+									.optional()
+									.describe("Timestamp for when the Shared Env Var was created.")
+									.meta({ examples: [1609492210000] }),
+								createdBy: z
+									.string()
+									.nullish()
+									.describe("The unique identifier of the user who created the Shared Env Var.")
+									.meta({ examples: ["2qDDuGFTWXBLDNnqZfWPDp1A"] }),
+								customEnvironmentIds: z
+									.array(z.string())
+									.optional()
+									.describe("The custom environment IDs that this Shared Env Var is scoped to."),
+								decrypted: z
+									.union([z.literal(false), z.literal(true)])
+									.optional()
+									.describe("whether or not this env variable is decrypted"),
+								deletedAt: z
+									.number()
+									.optional()
+									.describe("Timestamp for when the Shared Env Var was (soft) deleted.")
+									.meta({ examples: [1609492210000] }),
+								deletedBy: z
+									.string()
+									.nullish()
+									.describe("The unique identifier of the user who deleted the Shared Env Var.")
+									.meta({ examples: ["2qDDuGFTWXBLDNnqZfWPDp1A"] }),
+								id: z
+									.string()
+									.optional()
+									.describe("The unique identifier of the Shared Env Var.")
+									.meta({ examples: ["env_XCG7t7AIHuO2SBA8667zNUiM"] }),
+								key: z
+									.string()
+									.optional()
+									.describe("The name of the Shared Env Var.")
+									.meta({ examples: ["my-api-key"] }),
+								lastEditedByDisplayName: z
+									.string()
+									.optional()
+									.describe("The last editor full name or username."),
+								ownerId: z
+									.string()
+									.nullish()
+									.describe(
+										"The unique identifier of the owner (team) the Shared Env Var was created for.",
+									)
+									.meta({ examples: ["team_LLHUOMOoDlqOp8wPE4kFo9pE"] }),
+								projectId: z
+									.array(z.string())
+									.optional()
+									.describe(
+										"The unique identifiers of the projects which the Shared Env Var is linked to.",
+									)
+									.meta({
+										examples: [["prj_2WjyKQmM8ZnGcJsPWMrHRHrE", "prj_2WjyKQmM8ZnGcJsPWMrasEFg"]],
+									}),
+								target: z
+									.array(z.enum(["development", "preview", "production"]))
+									.optional()
+									.describe("environments this env variable targets")
+									.meta({ examples: ["production"] }),
+								type: z
+									.enum(["encrypted", "plain", "sensitive", "system"])
+									.optional()
+									.describe("The type of this cosmos doc instance, if blank, assume secret.")
+									.meta({ examples: ["encrypted"] }),
+								updatedAt: z
+									.number()
+									.optional()
+									.describe("Timestamp for when the Shared Env Var was last updated.")
+									.meta({ examples: [1609492210000] }),
+								updatedBy: z
+									.string()
+									.nullish()
+									.describe(
+										"The unique identifier of the user who last updated the Shared Env Var.",
+									)
+									.meta({ examples: ["2qDDuGFTWXBLDNnqZfWPDp1A"] }),
+								value: z.string().optional().describe("The value of the Shared Env Var."),
+							})
+							.optional(),
+						updateDiff: z
+							.object({
+								changedValue: z.union([z.literal(false), z.literal(true)]),
+								id: z.string(),
+								key: z.string().optional(),
+								newCustomEnvironmentIds: z.array(z.string()).optional(),
+								newKey: z.string().optional(),
+								newProjects: z
+									.array(
+										z.object({
+											projectId: z.string(),
+											projectName: z.string().optional(),
+										}),
+									)
+									.optional(),
+								newTarget: z.array(z.enum(["development", "preview", "production"])).optional(),
+								newType: z.string().optional(),
+								oldCustomEnvironmentIds: z.array(z.string()).optional(),
+								oldProjects: z
+									.array(
+										z.object({
+											projectId: z.string(),
+											projectName: z.string().optional(),
+										}),
+									)
+									.optional(),
+								oldTarget: z.array(z.enum(["development", "preview", "production"])).optional(),
+								oldType: z.string().optional(),
+							})
+							.optional(),
+					})
+					.strict(),
+				z
+					.object({
+						expiresAt: z.number().nullish(),
+						projectId: z.string(),
+						scope: z.string(),
+						source: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						projectId: z.string(),
+						scope: z.string(),
+						source: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						configVersion: z.union([z.string(), z.number()]),
+						projectId: z.string(),
+						projectName: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						configVersion: z.union([z.string(), z.number()]),
+					})
+					.strict(),
+				z
+					.object({
+						configChangeCount: z.number().optional(),
+						configChanges: z.array(z.object({})).optional(),
+						configVersion: z.union([z.string(), z.number()]),
+					})
+					.strict(),
+				z
+					.object({
+						configChangeCount: z.number(),
+						configChanges: z.array(z.object({})),
+						configVersion: z.number(),
+						projectId: z.string(),
+						projectName: z.string().optional(),
+						restore: z.union([z.literal(false), z.literal(true)]),
+					})
+					.strict(),
+				z
+					.object({
+						projectId: z.string(),
+						ruleGroups: z.object({}).catchall(
+							z.object({
+								action: z.enum(["challenge", "deny", "log"]).optional(),
+								active: z.union([z.literal(false), z.literal(true)]),
+							}),
+						),
+						rulesetName: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						action: z.enum(["challenge", "deny", "log"]).optional(),
+						active: z.union([z.literal(false), z.literal(true)]),
+						projectId: z.string(),
+						rulesetName: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						newOwnerId: z.string(),
+						previousOwnerId: z.string(),
+						projectId: z.string(),
+						projectName: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						action: z.enum(["disable", "enable"]),
+					})
+					.strict(),
+				z
+					.object({
+						source: z.enum(["create", "enable", "upgrade"]),
+					})
+					.strict(),
+				z
+					.object({
+						actorAccountId: z.string().nullable().describe("Stable account id on `provider`."),
+						actorLogin: z
+							.string()
+							.nullable()
+							.describe("Display name only. Logins are mutable; join on `actorAccountId`."),
+						destinationBranch: z
+							.string()
+							.nullable()
+							.describe("Branch actually pushed to, or the requested one if blocked."),
+						destinationRepo: z
+							.string()
+							.describe('"owner/name", or the raw request value if blocked before it resolved.'),
+						failureCode: z
+							.string()
+							.optional()
+							.describe("Sanitized code, never a raw error message."),
+						failureStage: z
+							.enum(["authorization", "push", "unexpected", "unknown", "validation"])
+							.optional()
+							.describe("Mirrors `PushFailureStage` in `@api/git-push-repo`."),
+						installationId: z
+							.string()
+							.nullable()
+							.describe("Set only when an App installation token was minted (GitHub only)."),
+						outcome: z.enum(["failure", "success"]),
+						provider: z.enum(["bitbucket", "cursor-origin", "github", "gitlab"]),
+						resultCommitSha: z.string().nullable(),
+						sourceCommitSha: z.string().nullable(),
+						sourceRepo: z
+							.string()
+							.nullable()
+							.describe(
+								'Source repository, "owner/name". Null when the pushed content was generated in-request (push-files-to-repo) rather than copied from a repository.',
+							),
+						usedAppToken: z.union([z.literal(false), z.literal(true)]),
+					})
+					.strict(),
+				z
+					.object({
+						fromDeploymentId: z.string(),
+						projectId: z.string(),
+						projectName: z.string(),
+						reason: z.string().optional(),
+						toDeploymentId: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						configurationId: z.string(),
+						integrationId: z.string(),
+						integrationName: z.string(),
+						integrationSlug: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						configurationId: z.string(),
+						integrationId: z.string(),
+						integrationName: z.string().optional(),
+						integrationSlug: z.string(),
+						newOwner: z
+							.object({
+								abuse: z
+									.object({
+										blockHistory: z
+											.array(
+												z.object({
+													action: z.enum(["blocked", "hard-blocked", "soft-blocked", "unblocked"]),
+													actor: z.string().optional(),
+													caseId: z.string().optional(),
+													comment: z.string().optional(),
+													createdAt: z.number(),
+													ineligibleForAppeal: z
+														.union([z.literal(false), z.literal(true)])
+														.optional(),
+													reason: z.string(),
+													statusCode: z.number().optional(),
+												}),
+											)
+											.optional()
+											.describe("Since June 2023"),
+										gitAuthHistory: z
+											.array(z.string())
+											.optional()
+											.describe(
+												"Since March 2022. Helps abuse checks by tracking git auths. Format: `<platform>:<detail>:<value>`",
+											),
+										gitLineageBlocks: z
+											.number()
+											.optional()
+											.describe(
+												"Since September 2023. How often did this owner trigger an actual git lineage deploy block?",
+											),
+										gitLineageBlocksDry: z
+											.number()
+											.optional()
+											.describe(
+												"Since September 2023. How often did this owner trigger a git lineage deploy block dry run?",
+											),
+										history: z
+											.array(
+												z.object({
+													at: z.number(),
+													by: z.string(),
+													byId: z.string(),
+													reason: z.string(),
+													scanner: z.string(),
+												}),
+											)
+											.optional()
+											.describe("(scanner history). Since November 2021. First element is newest."),
+										scanner: z
+											.string()
+											.optional()
+											.describe(
+												"Since November 2021. Guides the abuse scanner in build container.",
+											),
+										scheduledBlock: z
+											.object({
+												caseId: z
+													.string()
+													.optional()
+													.describe(
+														"Absent from the automated evaluation path, which has no case.",
+													),
+												createdAt: z
+													.number()
+													.describe("Unix ms timestamp of when the marker was written."),
+												executeAt: z
+													.number()
+													.describe("Unix ms timestamp of the scheduled EventBridge execution."),
+												reason: z
+													.string()
+													.describe("Violation reason (string value of the `Violation` enum)."),
+												scheduleName: z
+													.string()
+													.optional()
+													.describe(
+														"EventBridge schedule name, persisted so the pending event can be cancelled.",
+													),
+												source: z
+													.string()
+													.describe(
+														"What triggered the scheduled block (string value of `TeamBlockSource`).",
+													),
+											})
+											.optional()
+											.describe(
+												'Since June 2026. A hard block that is scheduled (the delay varies by source; see `executeAt`) but not yet executed. Powers admin visibility, scheduler dedup, and cancellation. Cleared on execution or when the team is unblocked/reviewed before `executeAt`; the executor treats its absence as "block cancelled".',
+											),
+										scheduledUnblockAt: z
+											.string()
+											.optional()
+											.describe(
+												'Since December 2025. UTC timestamp string of when an auto-unblock is scheduled. Format: "Wed, 03 Dec 2025 20:32:13 GMT"',
+											),
+										updatedAt: z.number().describe("Since November 2021"),
+										creationIp: z.string().optional(),
+										creationUserAgent: z.string().optional(),
+										removedPhoneNumbers: z.string().optional(),
+									})
+									.optional(),
+								acceptanceState: z.string().optional(),
+								acceptedAt: z.number().optional(),
+								activeDashboardViews: z
+									.array(
+										z.object({
+											favoritesViewPreference: z.enum(["closed", "open"]).nullish(),
+											recentsViewPreference: z.enum(["closed", "open"]).nullish(),
+											scopeId: z.string(),
+											viewPreference: z.enum(["cards", "list"]).nullish(),
+										}),
+									)
+									.optional(),
+								avatar: z.string().optional(),
+								billing: z.object({
+									plan: z.enum(["enterprise", "hobby", "pro"]),
+								}),
+								blocked: z.number().nullable(),
+								blockReason: z.string().optional(),
+								created: z.number().optional(),
+								createdAt: z.number(),
+								credentials: z
+									.array(
+										z.union([
+											z
+												.object({
+													id: z.string(),
+													type: z.enum([
+														"apple",
+														"bitbucket",
+														"chatgpt",
+														"github-oauth",
+														"github-oauth-limited",
+														"gitlab",
+														"google",
+														"vercel",
+													]),
+												})
+												.strict(),
+											z
+												.object({
+													host: z.string(),
+													id: z.string(),
+													type: z.enum(["github-oauth-custom-host"]),
+												})
+												.strict(),
+										]),
+									)
+									.optional(),
+								customerId: z.string().nullish(),
+								dataCache: z
+									.object({
+										excessBillingEnabled: z.union([z.literal(false), z.literal(true)]).optional(),
+									})
+									.optional(),
+								defaultTeamId: z.string().optional(),
+								deletedAt: z.number().nullish(),
+								deploymentSecret: z.string(),
+								dismissedTeams: z.array(z.string()).optional(),
+								dismissedToasts: z
+									.array(
+										z.object({
+											dismissals: z.array(
+												z.object({
+													createdAt: z.number(),
+													scopeId: z.string(),
+												}),
+											),
+											name: z.string(),
+										}),
+									)
+									.optional(),
+								email: z.string(),
+								emailDomains: z.array(z.string()).optional(),
+								emailNotifications: z
+									.object({
+										rules: z
+											.object({})
+											.catchall(
+												z.object({
+													email: z.string(),
+												}),
+											)
+											.optional(),
+									})
+									.optional(),
+								enablePreviewFeedback: z
+									.enum(["default", "default-force", "off", "off-force", "on", "on-force"])
+									.optional()
+									.describe("Whether the Vercel Toolbar is enabled for preview deployments."),
+								favoriteProjectsAndSpaces: z
+									.array(
+										z.object({
+											projectId: z.string(),
+											teamId: z.string(),
+										}),
+									)
+									.optional(),
+								featureBlocks: z
+									.object({
+										blob: z
+											.union([
+												z
+													.object({
+														blockedFrom: z.number().optional(),
+														blockedUntil: z.number().optional(),
+														blockReason: z.enum(["limits_exceeded"]),
+														updatedAt: z.number(),
+														overageReason: z.enum([
+															"analyticsUsage",
+															"artifacts",
+															"bandwidth",
+															"blobDataTransfer",
+															"blobTotalAdvancedRequests",
+															"blobTotalAvgSizeInBytes",
+															"blobTotalGetResponseObjectSizeInBytes",
+															"blobTotalSimpleRequests",
+															"connectDataTransfer",
+															"dataCacheRead",
+															"dataCacheWrite",
+															"edgeConfigRead",
+															"edgeConfigWrite",
+															"edgeFunctionExecutionUnits",
+															"edgeMiddlewareInvocations",
+															"edgeRequest",
+															"edgeRequestAdditionalCpuDuration",
+															"elasticConcurrencyBuildSlots",
+															"fastDataTransfer",
+															"fastOriginTransfer",
+															"fluidCpuDuration",
+															"fluidDuration",
+															"functionDuration",
+															"functionInvocation",
+															"imageOptimizationCacheRead",
+															"imageOptimizationCacheWrite",
+															"imageOptimizationTransformation",
+															"logDrainsVolume",
+															"monitoringMetric",
+															"observabilityEvent",
+															"onDemandConcurrencyMinutes",
+															"runtimeCacheRead",
+															"runtimeCacheWrite",
+															"serverlessFunctionExecution",
+															"sourceImages",
+															"wafOwaspExcessBytes",
+															"wafOwaspRequests",
+															"wafRateLimitRequest",
+															"webAnalyticsEvent",
+														]),
+													})
+													.strict(),
+												z
+													.object({
+														blockedFrom: z.number().optional(),
+														blockedUntil: z.number().optional(),
+														blockReason: z.enum(["admin_override", "hard_blocked"]),
+														updatedAt: z.number(),
+													})
+													.strict(),
+											])
+											.optional(),
+										connexForwardTriggers: z
+											.object({
+												blockedFrom: z.number().optional(),
+												blockedUntil: z.number().optional(),
+												blockReason: z.enum(["admin_override", "hard_blocked", "limits_exceeded"]),
+												updatedAt: z.number(),
+											})
+											.optional(),
+										connexTokenRequests: z
+											.object({
+												blockedFrom: z.number().optional(),
+												blockedUntil: z.number().optional(),
+												blockReason: z.enum(["admin_override", "hard_blocked", "limits_exceeded"]),
+												updatedAt: z.number(),
+											})
+											.optional(),
+										dataCache: z
+											.object({
+												blockedFrom: z.number().optional(),
+												blockedUntil: z.number().optional(),
+												blockReason: z.enum(["admin_override", "hard_blocked", "limits_exceeded"]),
+												updatedAt: z.number(),
+											})
+											.optional(),
+										imageOptimizationTransformation: z
+											.object({
+												blockedFrom: z.number().optional(),
+												blockedUntil: z.number().optional(),
+												blockReason: z.enum(["admin_override", "hard_blocked", "limits_exceeded"]),
+												updatedAt: z.number(),
+											})
+											.optional(),
+										kmsOperations: z
+											.object({
+												blockedFrom: z.number().optional(),
+												blockedUntil: z.number().optional(),
+												blockReason: z.enum(["admin_override", "hard_blocked", "limits_exceeded"]),
+												updatedAt: z.number(),
+											})
+											.optional(),
+										microfrontendsRequest: z
+											.object({
+												blockedFrom: z.number().optional(),
+												blockedUntil: z.number().optional(),
+												blockReason: z.enum(["admin_override", "hard_blocked", "limits_exceeded"]),
+												updatedAt: z.number(),
+											})
+											.optional(),
+										monitoring: z
+											.object({
+												blockedFrom: z.number().optional(),
+												blockedUntil: z.number().optional(),
+												blockReason: z.enum(["admin_override", "hard_blocked", "limits_exceeded"]),
+												updatedAt: z.number(),
+												blockType: z.enum(["hard", "soft"]),
+											})
+											.optional()
+											.describe(
+												"A soft block indicates a temporary pause in data collection (ex limit exceeded for the current cycle) A hard block indicates a stoppage in data collection that requires manual intervention (ex upgrading a pro trial)",
+											),
+										observabilityPlus: z
+											.object({
+												blockedFrom: z.number().optional(),
+												blockedUntil: z.number().optional(),
+												blockReason: z.enum(["admin_override", "hard_blocked", "limits_exceeded"]),
+												updatedAt: z.number(),
+												blockType: z.enum(["hard", "soft"]),
+											})
+											.optional(),
+										postgres: z
+											.union([
+												z
+													.object({
+														blockedFrom: z.number().optional(),
+														blockedUntil: z.number().optional(),
+														blockReason: z.enum(["limits_exceeded"]),
+														updatedAt: z.number(),
+														overageReason: z.enum([
+															"analyticsUsage",
+															"artifacts",
+															"bandwidth",
+															"blobDataTransfer",
+															"blobTotalAdvancedRequests",
+															"blobTotalAvgSizeInBytes",
+															"blobTotalGetResponseObjectSizeInBytes",
+															"blobTotalSimpleRequests",
+															"connectDataTransfer",
+															"dataCacheRead",
+															"dataCacheWrite",
+															"edgeConfigRead",
+															"edgeConfigWrite",
+															"edgeFunctionExecutionUnits",
+															"edgeMiddlewareInvocations",
+															"edgeRequest",
+															"edgeRequestAdditionalCpuDuration",
+															"elasticConcurrencyBuildSlots",
+															"fastDataTransfer",
+															"fastOriginTransfer",
+															"fluidCpuDuration",
+															"fluidDuration",
+															"functionDuration",
+															"functionInvocation",
+															"imageOptimizationCacheRead",
+															"imageOptimizationCacheWrite",
+															"imageOptimizationTransformation",
+															"logDrainsVolume",
+															"monitoringMetric",
+															"observabilityEvent",
+															"onDemandConcurrencyMinutes",
+															"runtimeCacheRead",
+															"runtimeCacheWrite",
+															"serverlessFunctionExecution",
+															"sourceImages",
+															"wafOwaspExcessBytes",
+															"wafOwaspRequests",
+															"wafRateLimitRequest",
+															"webAnalyticsEvent",
+														]),
+													})
+													.strict(),
+												z
+													.object({
+														blockedFrom: z.number().optional(),
+														blockedUntil: z.number().optional(),
+														blockReason: z.enum(["admin_override", "hard_blocked"]),
+														updatedAt: z.number(),
+													})
+													.strict(),
+											])
+											.optional(),
+										redis: z
+											.union([
+												z
+													.object({
+														blockedFrom: z.number().optional(),
+														blockedUntil: z.number().optional(),
+														blockReason: z.enum(["limits_exceeded"]),
+														updatedAt: z.number(),
+														overageReason: z.enum([
+															"analyticsUsage",
+															"artifacts",
+															"bandwidth",
+															"blobDataTransfer",
+															"blobTotalAdvancedRequests",
+															"blobTotalAvgSizeInBytes",
+															"blobTotalGetResponseObjectSizeInBytes",
+															"blobTotalSimpleRequests",
+															"connectDataTransfer",
+															"dataCacheRead",
+															"dataCacheWrite",
+															"edgeConfigRead",
+															"edgeConfigWrite",
+															"edgeFunctionExecutionUnits",
+															"edgeMiddlewareInvocations",
+															"edgeRequest",
+															"edgeRequestAdditionalCpuDuration",
+															"elasticConcurrencyBuildSlots",
+															"fastDataTransfer",
+															"fastOriginTransfer",
+															"fluidCpuDuration",
+															"fluidDuration",
+															"functionDuration",
+															"functionInvocation",
+															"imageOptimizationCacheRead",
+															"imageOptimizationCacheWrite",
+															"imageOptimizationTransformation",
+															"logDrainsVolume",
+															"monitoringMetric",
+															"observabilityEvent",
+															"onDemandConcurrencyMinutes",
+															"runtimeCacheRead",
+															"runtimeCacheWrite",
+															"serverlessFunctionExecution",
+															"sourceImages",
+															"wafOwaspExcessBytes",
+															"wafOwaspRequests",
+															"wafRateLimitRequest",
+															"webAnalyticsEvent",
+														]),
+													})
+													.strict(),
+												z
+													.object({
+														blockedFrom: z.number().optional(),
+														blockedUntil: z.number().optional(),
+														blockReason: z.enum(["admin_override", "hard_blocked"]),
+														updatedAt: z.number(),
+													})
+													.strict(),
+											])
+											.optional(),
+										sandboxStorage: z
+											.object({
+												blockedFrom: z.number().optional(),
+												blockedUntil: z.number().optional(),
+												blockReason: z.enum(["admin_override", "hard_blocked", "limits_exceeded"]),
+												updatedAt: z.number(),
+											})
+											.optional(),
+										sourceImages: z
+											.object({
+												blockedFrom: z.number().optional(),
+												blockedUntil: z.number().optional(),
+												blockReason: z.enum(["admin_override", "hard_blocked", "limits_exceeded"]),
+												updatedAt: z.number(),
+											})
+											.optional(),
+										speedInsightsFree: z
+											.object({
+												blockedFrom: z.number().optional(),
+												blockedUntil: z.number().optional(),
+												blockReason: z.enum(["admin_override", "hard_blocked", "limits_exceeded"]),
+												updatedAt: z.number(),
+											})
+											.optional()
+											.describe(
+												"Pauses Speed Insights free data-point ingestion when the team-wide free allocation is exhausted. The block lasts at least 14 days and is extended while rolling usage stays above half of the allocation.",
+											),
+										tracing: z
+											.object({
+												blockedFrom: z.number().optional(),
+												blockedUntil: z.number().optional(),
+												blockReason: z.enum(["admin_override", "hard_blocked", "limits_exceeded"]),
+												updatedAt: z.number(),
+											})
+											.optional(),
+										vcr: z
+											.object({
+												blockedFrom: z.number().optional(),
+												blockedUntil: z.number().optional(),
+												blockReason: z.enum(["admin_override", "hard_blocked", "limits_exceeded"]),
+												updatedAt: z.number(),
+											})
+											.optional(),
+										webAnalytics: z
+											.object({
+												blockedFrom: z.number().optional(),
+												blockedUntil: z.number().optional(),
+												blockReason: z.enum(["admin_override", "hard_blocked", "limits_exceeded"]),
+												updatedAt: z.number(),
+												graceEmailSentAt: z.number().optional(),
+											})
+											.optional(),
+										workflowEvents: z
+											.object({
+												blockedFrom: z.number().optional(),
+												blockedUntil: z.number().optional(),
+												blockReason: z.enum(["admin_override", "hard_blocked", "limits_exceeded"]),
+												updatedAt: z.number(),
+											})
+											.optional(),
+										workflowStorageWrite: z
+											.object({
+												blockedFrom: z.number().optional(),
+												blockedUntil: z.number().optional(),
+												blockReason: z.enum(["admin_override", "hard_blocked", "limits_exceeded"]),
+												updatedAt: z.number(),
+											})
+											.optional(),
+									})
+									.optional()
+									.describe(
+										"Information about which features are blocked for a user. Blocks can be either soft (the user can still access the feature, but with a warning, e.g. prompting an upgrade) or hard (the user cannot access the feature at all).",
+									),
+								id: z.string(),
+								importFlowGitNamespace: z.union([z.string(), z.number()]).nullish(),
+								importFlowGitNamespaceId: z.union([z.string(), z.number()]).nullish(),
+								importFlowGitProvider: z
+									.enum([
+										"bitbucket",
+										"cursor-origin",
+										"github",
+										"github-custom-host",
+										"github-limited",
+										"gitlab",
+										"vercel",
+									])
+									.nullish(),
+								isDomainReseller: z.union([z.literal(false), z.literal(true)]).optional(),
+								isEnterpriseManaged: z
+									.union([z.literal(false), z.literal(true)])
+									.optional()
+									.describe(
+										"Indicates that the underlying user entity is a managed user for the enterprise it's associated with The intention is that this field is only set to true for users that are provisioned by the enterprise which means that the domain associated with the user's email is the same domain associated with the team Allowing us to query information about the user's team at login time through the domain verification service",
+									),
+								isMFAEnforced: z
+									.union([z.literal(false), z.literal(true)])
+									.optional()
+									.describe(
+										"Whether MFA is enforced for this user. Set to true when the user has a",
+									),
+								isZeitPub: z.union([z.literal(false), z.literal(true)]).optional(),
+								maxActiveSlots: z.number().optional(),
+								maxTrials: z
+									.number()
+									.optional()
+									.describe(
+										"Introduced 2022-04-19 Number of maximum trials to allocate to a user. When undefined, defaults to MAX_TRIALS in utils/api-teams/user-has-trial-available.ts. This is set to trialTeamIds + 1 by services/api-backoffice/src/handlers/add-additional-trial.ts.",
+									),
+								mfaConfiguration: z
+									.object({
+										enabled: z.union([z.literal(false), z.literal(true)]),
+										enabledAt: z.number().optional(),
+										history: z
+											.array(
+												z.object({
+													action: z
+														.enum(["disabled", "enabled"])
+														.describe("The action that occurred"),
+													actorId: z
+														.string()
+														.describe(
+															"ID of the actor who made the change - For user actions: the user's own ID - For admin actions: the admin's user ID",
+														),
+													actorType: z.enum(["admin", "user"]).describe("Type of actor"),
+													method: z
+														.enum([
+															"admin_removal",
+															"passkey",
+															"self_serve_recovery",
+															"totp",
+															"unknown",
+															"user_disabled",
+														])
+														.describe(
+															"Method used for the state change - 'totp': User set up TOTP authenticator - 'passkey': User registered a passkey - 'user_disabled': User disabled their own MFA - 'admin_removal': Admin removed MFA via backoffice - 'self_serve_recovery': User disabled their own MFA through the self-serve MFA disable recovery flow (a \"Locked Out User\" with only a passkey) - 'unknown': Method unknown (for pre-tracking events)",
+														),
+													reason: z
+														.string()
+														.optional()
+														.describe(
+															'Optional: Additional context or reason e.g., "Account recovery request - ticket #12345"',
+														),
+													timestamp: z
+														.number()
+														.nullable()
+														.describe(
+															"Unix timestamp (milliseconds) when the change occurred. May be null for events that occurred before history tracking was implemented.",
+														),
+												}),
+											)
+											.optional()
+											.describe(
+												"History of MFA state changes (enabled/disabled events). Most recent events first.",
+											),
+										recoveryCodes: z.array(z.string()),
+										totp: z
+											.object({
+												createdAt: z.number(),
+												secret: z.string(),
+											})
+											.optional(),
+									})
+									.optional()
+									.describe(
+										"MFA configuration. When enabled, the user will be required to provide a second factor of authentication when logging in.",
+									),
+								name: z.string().optional(),
+								northstarMigration: z
+									.object({
+										endTime: z.number().describe("The migration end time timestamp for this user."),
+										integrationClients: z
+											.number()
+											.describe("The number of integration clients migrated for this user."),
+										integrationConfigurations: z
+											.number()
+											.describe("The number of integration configurations migrated for this user."),
+										projects: z.number().describe("The number of projects migrated for this user."),
+										startTime: z
+											.number()
+											.describe("The migration start time timestamp for this user."),
+										stores: z.number().describe("The number of stores migrated for this user."),
+										teamId: z.string().describe("The ID of the team we created for this user."),
+									})
+									.optional()
+									.describe(
+										"An archive of information about the Northstar migration, derived from the old (deprecated) property, `northstarMigrationEvents`.",
+									),
+								opportunityId: z
+									.string()
+									.optional()
+									.describe(
+										"The salesforce opportunity ID that this user is linked to. This is used to automatically associate a team of the user's choosing with the opportunity.",
+									),
+								orbCustomerId: z.string().nullish(),
+								overageMetadata: z
+									.object({
+										dailyOverageSummaryEmailSentAt: z
+											.number()
+											.optional()
+											.describe("Tracks the last time we sent a daily summary email."),
+										firstTimeOnDemandNotificationSentAt: z
+											.number()
+											.optional()
+											.describe("Tracks if the first time on-demand overage email has been sent."),
+										increasedOnDemandEmailAttemptedAt: z
+											.number()
+											.optional()
+											.describe(
+												"Tracks the last time we attempted to send an increased on-demand email. This check is to limit the number of attempts per day.",
+											),
+										increasedOnDemandEmailSentAt: z
+											.number()
+											.optional()
+											.describe("Tracks the last time we sent a increased on-demand email."),
+										overageSummaryExpiresAt: z
+											.number()
+											.optional()
+											.describe(
+												"Tracks when the overage summary email will stop auto-sending. We currently lock the user into email for a month after the last on-demand usage.",
+											),
+										weeklyOverageSummaryEmailSentAt: z
+											.number()
+											.optional()
+											.describe("Tracks the last time we sent a weekly summary email."),
+									})
+									.optional()
+									.describe("Contains the timestamps for usage summary emails."),
+								overageUsageAlerts: z
+									.object({
+										analyticsUsage: z
+											.object({
+												blockedAt: z.number().nullish(),
+												blockGracePeriodStartedAt: z.number().nullish(),
+												currentThreshold: z.number(),
+												warningAt: z.number().nullish(),
+											})
+											.optional(),
+										artifacts: z
+											.object({
+												blockedAt: z.number().nullish(),
+												blockGracePeriodStartedAt: z.number().nullish(),
+												currentThreshold: z.number(),
+												warningAt: z.number().nullish(),
+											})
+											.optional(),
+										bandwidth: z
+											.object({
+												blockedAt: z.number().nullish(),
+												blockGracePeriodStartedAt: z.number().nullish(),
+												currentThreshold: z.number(),
+												warningAt: z.number().nullish(),
+											})
+											.optional(),
+										blobDataTransfer: z
+											.object({
+												blockedAt: z.number().nullish(),
+												blockGracePeriodStartedAt: z.number().nullish(),
+												currentThreshold: z.number(),
+												warningAt: z.number().nullish(),
+											})
+											.optional(),
+										blobTotalAdvancedRequests: z
+											.object({
+												blockedAt: z.number().nullish(),
+												blockGracePeriodStartedAt: z.number().nullish(),
+												currentThreshold: z.number(),
+												warningAt: z.number().nullish(),
+											})
+											.optional(),
+										blobTotalAvgSizeInBytes: z
+											.object({
+												blockedAt: z.number().nullish(),
+												blockGracePeriodStartedAt: z.number().nullish(),
+												currentThreshold: z.number(),
+												warningAt: z.number().nullish(),
+											})
+											.optional(),
+										blobTotalGetResponseObjectSizeInBytes: z
+											.object({
+												blockedAt: z.number().nullish(),
+												blockGracePeriodStartedAt: z.number().nullish(),
+												currentThreshold: z.number(),
+												warningAt: z.number().nullish(),
+											})
+											.optional(),
+										blobTotalSimpleRequests: z
+											.object({
+												blockedAt: z.number().nullish(),
+												blockGracePeriodStartedAt: z.number().nullish(),
+												currentThreshold: z.number(),
+												warningAt: z.number().nullish(),
+											})
+											.optional(),
+										connectDataTransfer: z
+											.object({
+												blockedAt: z.number().nullish(),
+												blockGracePeriodStartedAt: z.number().nullish(),
+												currentThreshold: z.number(),
+												warningAt: z.number().nullish(),
+											})
+											.optional(),
+										dataCacheRead: z
+											.object({
+												blockedAt: z.number().nullish(),
+												blockGracePeriodStartedAt: z.number().nullish(),
+												currentThreshold: z.number(),
+												warningAt: z.number().nullish(),
+											})
+											.optional(),
+										dataCacheWrite: z
+											.object({
+												blockedAt: z.number().nullish(),
+												blockGracePeriodStartedAt: z.number().nullish(),
+												currentThreshold: z.number(),
+												warningAt: z.number().nullish(),
+											})
+											.optional(),
+										edgeConfigRead: z
+											.object({
+												blockedAt: z.number().nullish(),
+												blockGracePeriodStartedAt: z.number().nullish(),
+												currentThreshold: z.number(),
+												warningAt: z.number().nullish(),
+											})
+											.optional(),
+										edgeConfigWrite: z
+											.object({
+												blockedAt: z.number().nullish(),
+												blockGracePeriodStartedAt: z.number().nullish(),
+												currentThreshold: z.number(),
+												warningAt: z.number().nullish(),
+											})
+											.optional(),
+										edgeFunctionExecutionUnits: z
+											.object({
+												blockedAt: z.number().nullish(),
+												blockGracePeriodStartedAt: z.number().nullish(),
+												currentThreshold: z.number(),
+												warningAt: z.number().nullish(),
+											})
+											.optional(),
+										edgeMiddlewareInvocations: z
+											.object({
+												blockedAt: z.number().nullish(),
+												blockGracePeriodStartedAt: z.number().nullish(),
+												currentThreshold: z.number(),
+												warningAt: z.number().nullish(),
+											})
+											.optional(),
+										edgeRequest: z
+											.object({
+												blockedAt: z.number().nullish(),
+												blockGracePeriodStartedAt: z.number().nullish(),
+												currentThreshold: z.number(),
+												warningAt: z.number().nullish(),
+											})
+											.optional(),
+										edgeRequestAdditionalCpuDuration: z
+											.object({
+												blockedAt: z.number().nullish(),
+												blockGracePeriodStartedAt: z.number().nullish(),
+												currentThreshold: z.number(),
+												warningAt: z.number().nullish(),
+											})
+											.optional(),
+										elasticConcurrencyBuildSlots: z
+											.object({
+												blockedAt: z.number().nullish(),
+												blockGracePeriodStartedAt: z.number().nullish(),
+												currentThreshold: z.number(),
+												warningAt: z.number().nullish(),
+											})
+											.optional(),
+										fastDataTransfer: z
+											.object({
+												blockedAt: z.number().nullish(),
+												blockGracePeriodStartedAt: z.number().nullish(),
+												currentThreshold: z.number(),
+												warningAt: z.number().nullish(),
+											})
+											.optional(),
+										fastOriginTransfer: z
+											.object({
+												blockedAt: z.number().nullish(),
+												blockGracePeriodStartedAt: z.number().nullish(),
+												currentThreshold: z.number(),
+												warningAt: z.number().nullish(),
+											})
+											.optional(),
+										fluidCpuDuration: z
+											.object({
+												blockedAt: z.number().nullish(),
+												blockGracePeriodStartedAt: z.number().nullish(),
+												currentThreshold: z.number(),
+												warningAt: z.number().nullish(),
+											})
+											.optional(),
+										fluidDuration: z
+											.object({
+												blockedAt: z.number().nullish(),
+												blockGracePeriodStartedAt: z.number().nullish(),
+												currentThreshold: z.number(),
+												warningAt: z.number().nullish(),
+											})
+											.optional(),
+										functionDuration: z
+											.object({
+												blockedAt: z.number().nullish(),
+												blockGracePeriodStartedAt: z.number().nullish(),
+												currentThreshold: z.number(),
+												warningAt: z.number().nullish(),
+											})
+											.optional(),
+										functionInvocation: z
+											.object({
+												blockedAt: z.number().nullish(),
+												blockGracePeriodStartedAt: z.number().nullish(),
+												currentThreshold: z.number(),
+												warningAt: z.number().nullish(),
+											})
+											.optional(),
+										imageOptimizationCacheRead: z
+											.object({
+												blockedAt: z.number().nullish(),
+												blockGracePeriodStartedAt: z.number().nullish(),
+												currentThreshold: z.number(),
+												warningAt: z.number().nullish(),
+											})
+											.optional(),
+										imageOptimizationCacheWrite: z
+											.object({
+												blockedAt: z.number().nullish(),
+												blockGracePeriodStartedAt: z.number().nullish(),
+												currentThreshold: z.number(),
+												warningAt: z.number().nullish(),
+											})
+											.optional(),
+										imageOptimizationTransformation: z
+											.object({
+												blockedAt: z.number().nullish(),
+												blockGracePeriodStartedAt: z.number().nullish(),
+												currentThreshold: z.number(),
+												warningAt: z.number().nullish(),
+											})
+											.optional(),
+										logDrainsVolume: z
+											.object({
+												blockedAt: z.number().nullish(),
+												blockGracePeriodStartedAt: z.number().nullish(),
+												currentThreshold: z.number(),
+												warningAt: z.number().nullish(),
+											})
+											.optional(),
+										monitoringMetric: z
+											.object({
+												blockedAt: z.number().nullish(),
+												blockGracePeriodStartedAt: z.number().nullish(),
+												currentThreshold: z.number(),
+												warningAt: z.number().nullish(),
+											})
+											.optional(),
+										observabilityEvent: z
+											.object({
+												blockedAt: z.number().nullish(),
+												blockGracePeriodStartedAt: z.number().nullish(),
+												currentThreshold: z.number(),
+												warningAt: z.number().nullish(),
+											})
+											.optional(),
+										onDemandConcurrencyMinutes: z
+											.object({
+												blockedAt: z.number().nullish(),
+												blockGracePeriodStartedAt: z.number().nullish(),
+												currentThreshold: z.number(),
+												warningAt: z.number().nullish(),
+											})
+											.optional(),
+										runtimeCacheRead: z
+											.object({
+												blockedAt: z.number().nullish(),
+												blockGracePeriodStartedAt: z.number().nullish(),
+												currentThreshold: z.number(),
+												warningAt: z.number().nullish(),
+											})
+											.optional(),
+										runtimeCacheWrite: z
+											.object({
+												blockedAt: z.number().nullish(),
+												blockGracePeriodStartedAt: z.number().nullish(),
+												currentThreshold: z.number(),
+												warningAt: z.number().nullish(),
+											})
+											.optional(),
+										serverlessFunctionExecution: z
+											.object({
+												blockedAt: z.number().nullish(),
+												blockGracePeriodStartedAt: z.number().nullish(),
+												currentThreshold: z.number(),
+												warningAt: z.number().nullish(),
+											})
+											.optional(),
+										sourceImages: z
+											.object({
+												blockedAt: z.number().nullish(),
+												blockGracePeriodStartedAt: z.number().nullish(),
+												currentThreshold: z.number(),
+												warningAt: z.number().nullish(),
+											})
+											.optional(),
+										wafOwaspExcessBytes: z
+											.object({
+												blockedAt: z.number().nullish(),
+												blockGracePeriodStartedAt: z.number().nullish(),
+												currentThreshold: z.number(),
+												warningAt: z.number().nullish(),
+											})
+											.optional(),
+										wafOwaspRequests: z
+											.object({
+												blockedAt: z.number().nullish(),
+												blockGracePeriodStartedAt: z.number().nullish(),
+												currentThreshold: z.number(),
+												warningAt: z.number().nullish(),
+											})
+											.optional(),
+										wafRateLimitRequest: z
+											.object({
+												blockedAt: z.number().nullish(),
+												blockGracePeriodStartedAt: z.number().nullish(),
+												currentThreshold: z.number(),
+												warningAt: z.number().nullish(),
+											})
+											.optional(),
+										webAnalyticsEvent: z
+											.object({
+												blockedAt: z.number().nullish(),
+												blockGracePeriodStartedAt: z.number().nullish(),
+												currentThreshold: z.number(),
+												warningAt: z.number().nullish(),
+											})
+											.optional(),
+									})
+									.optional(),
+								phoneNumber: z.string().optional(),
+								platformVersion: z.number().nullable(),
+								preferredScopesAndGitNamespaces: z
+									.array(
+										z.object({
+											gitNamespaceId: z.union([z.string(), z.number()]).nullable(),
+											scopeId: z.string(),
+										}),
+									)
+									.optional(),
+								preventAutoBlocking: z
+									.union([z.number(), z.union([z.literal(false), z.literal(true)])])
+									.optional(),
+								projectCardWidgetPreferences: z
+									.array(
+										z.object({
+											config: z
+												.object({
+													url: z.string(),
+												})
+												.optional(),
+											projectId: z.string(),
+											widget: z.enum([
+												"analytics-online",
+												"analytics-page-views",
+												"analytics-visitors",
+												"firewall-allowed",
+												"firewall-denied",
+												"observability-alert",
+												"observability-edge-requests",
+												"observability-error-rate",
+												"observability-function-invocations",
+												"shortcut",
+												"speed-insights-cls",
+												"speed-insights-lcp",
+												"speed-insights-res",
+											]),
+										}),
+									)
+									.optional(),
+								projectDomainsLimit: z
+									.number()
+									.optional()
+									.describe(
+										"Overrides our DEFAULT project domains limit per account or per project.",
+									),
+								remoteCaching: z
+									.object({
+										enabled: z.union([z.literal(false), z.literal(true)]).optional(),
+									})
+									.optional()
+									.describe("Represents configuration for remote caching"),
+								removedAliasesAt: z.number().optional(),
+								removedBillingSubscriptionAt: z.number().optional(),
+								removedConfigurationsAt: z.number().optional(),
+								removedDeploymentsAt: z.number().optional(),
+								removedDomiansAt: z.number().optional(),
+								removedEdgeConfigsAt: z.number().optional(),
+								removedEventsAt: z.number().optional(),
+								removedProjectsAt: z.number().optional(),
+								removedSecretsAt: z.number().optional(),
+								removedSharedEnvVarsAt: z.number().optional(),
+								resourceConfig: z
+									.object({
+										awsAccountIds: z.array(z.string()).optional(),
+										awsAccountType: z.string().optional(),
+										blobStores: z.number().optional(),
+										buildEntitlements: z
+											.object({
+												enhancedBuilds: z.union([z.literal(false), z.literal(true)]).optional(),
+											})
+											.optional(),
+										buildQueue: z
+											.object({
+												configuration: z
+													.enum(["SKIP_NAMESPACE_QUEUE", "WAIT_FOR_NAMESPACE_QUEUE"])
+													.optional(),
+											})
+											.optional(),
+										bulkRedirectsFreeLimitOverride: z.number().optional(),
+										cfZoneName: z.string().optional(),
+										concurrentBuilds: z.number().optional(),
+										cronJobsPerProject: z.number().optional(),
+										customEnvironmentsPerProject: z.number().optional(),
+										edgeConfigs: z.number().optional(),
+										edgeConfigSize: z.number().optional(),
+										edgeFunctionExecutionTimeoutMs: z.number().optional(),
+										edgeFunctionMaxSizeBytes: z.number().optional(),
+										elasticConcurrencyEnabled: z
+											.union([z.literal(false), z.literal(true)])
+											.optional(),
+										flagsExplorerOverridesThreshold: z.number().optional(),
+										flagsExplorerUnlimitedOverrides: z
+											.union([z.literal(false), z.literal(true)])
+											.optional(),
+										imageOptimizationType: z.string().optional(),
+										integrationStores: z.number().optional(),
+										kvDatabases: z.number().optional(),
+										microfrontendGroupsPerTeam: z.number().optional(),
+										microfrontendProjectsPerGroup: z.number().optional(),
+										nodeType: z.string().optional(),
+										postgresDatabases: z.number().optional(),
+										security: z
+											.object({
+												customRules: z.number().optional(),
+												ipBlocks: z.number().optional(),
+												ipBypass: z.number().optional(),
+												rateLimit: z.number().optional(),
+											})
+											.optional(),
+										serverlessFunctionMaxDuration: z.number().optional(),
+										serverlessFunctionMaxMemorySize: z.number().optional(),
+										buildMachine: z
+											.object({
+												default: z
+													.enum(["basic", "elastic", "enhanced", "standard", "turbo"])
+													.optional()
+													.describe(
+														'Default build machine type for new deployments. This must be used in combination with the buildEntitlements field. It is respected over Vercel\'s notion of the default build machine, and was originally implemented to allow Teams to "downgrade". - Hobby customers cannot set this, because they only have access to one machine type - Pro customers get Turbo machines by default, so this field is effectively for downgrading - ENT customers cannot set this (yet), because their default is based on their contract. https://linear.app/vercel/project/self-serve-build-machines-for-enterprise-customers-0cbc357e26d2/overview',
+													),
+											})
+											.optional()
+											.describe(
+												"Build machine configuration recorded on a team or user `resourceConfig`. This is deliberately separate from the build machine config recorded on a deployment (`DeploymentBuildMachine` in `@api/deployments-types`). A team/user only expresses its default machine for new deployments; the per-build fields (`purchaseType`, `defaultPurchaseType`, `machineSelectionType`, `cores`, `memory`) are recorded on the deployment record when a build actually runs and never belong on a team/user document.",
+											),
+									})
+									.optional(),
+								resourceLimits: z
+									.object({})
+									.catchall(
+										z.union([
+											z
+												.object({
+													duration: z.number(),
+													max: z.number(),
+												})
+												.strict(),
+											z
+												.object({
+													maxRate: z.number().optional(),
+													minRate: z.number().optional(),
+													stepPerMinute: z.number().optional(),
+												})
+												.strict(),
+										]),
+									)
+									.optional()
+									.describe(
+										"User | Team resource limits. Each entry overrides either a token-bucket rate limit or a ramp admission limit, never both.",
+									),
+								secondaryEmails: z
+									.array(
+										z.object({
+											email: z.string(),
+											verified: z.union([z.literal(false), z.literal(true)]),
+										}),
+									)
+									.optional(),
+								sfdcId: z.string().optional(),
+								siftRoute: z
+									.object({
+										name: z.enum(["string"]),
+									})
+									.optional(),
+								siftScore: z.number().optional(),
+								siftScores: z
+									.object({})
+									.catchall(
+										z.object({
+											reasons: z.array(
+												z.object({
+													name: z.string(),
+													value: z.string(),
+												}),
+											),
+											score: z.number(),
+										}),
+									)
+									.optional(),
+								softBlock: z
+									.object({
+										blockedAt: z.number(),
+										blockedDueToOverageType: z
+											.enum([
+												"analyticsUsage",
+												"artifacts",
+												"bandwidth",
+												"blobDataTransfer",
+												"blobTotalAdvancedRequests",
+												"blobTotalAvgSizeInBytes",
+												"blobTotalGetResponseObjectSizeInBytes",
+												"blobTotalSimpleRequests",
+												"connectDataTransfer",
+												"dataCacheRead",
+												"dataCacheWrite",
+												"edgeConfigRead",
+												"edgeConfigWrite",
+												"edgeFunctionExecutionUnits",
+												"edgeMiddlewareInvocations",
+												"edgeRequest",
+												"edgeRequestAdditionalCpuDuration",
+												"elasticConcurrencyBuildSlots",
+												"fastDataTransfer",
+												"fastOriginTransfer",
+												"fluidCpuDuration",
+												"fluidDuration",
+												"functionDuration",
+												"functionInvocation",
+												"imageOptimizationCacheRead",
+												"imageOptimizationCacheWrite",
+												"imageOptimizationTransformation",
+												"logDrainsVolume",
+												"monitoringMetric",
+												"observabilityEvent",
+												"onDemandConcurrencyMinutes",
+												"runtimeCacheRead",
+												"runtimeCacheWrite",
+												"serverlessFunctionExecution",
+												"sourceImages",
+												"wafOwaspExcessBytes",
+												"wafOwaspRequests",
+												"wafRateLimitRequest",
+												"webAnalyticsEvent",
+											])
+											.optional(),
+										reason: z.enum([
+											"BLOCKED_FOR_PLATFORM_ABUSE",
+											"DOMAIN_OWNER_DELETION_REQUEST",
+											"ENTERPRISE_TRIAL_ENDED",
+											"ENTERPRISE_UNPAID_INVOICE",
+											"EXPOSURE_CAP_EXCEEDED",
+											"FAIR_USE_LIMITS_EXCEEDED",
+											"SUBSCRIPTION_CANCELED",
+											"SUBSCRIPTION_EXPIRED",
+											"UNPAID_INVOICE",
+										]),
+										unpauseAt: z
+											.number()
+											.optional()
+											.describe(
+												"Since September 2026. Set only by `billing-usage-alerts` for usage plans with a `blockDurationMs`; its presence marks a pause that expires on its own.",
+											),
+									})
+									.nullish(),
+								speedInsightsFreeUsageAlert: z
+									.object({
+										currentThreshold: z
+											.number()
+											.describe(
+												"Highest allocation percentage threshold notified (e.g. 75 or 100).",
+											),
+										notifiedAt: z
+											.number()
+											.describe("When the notification for `currentThreshold` was sent."),
+									})
+									.optional()
+									.describe(
+										"Tracks notifications sent for the team-wide Speed Insights free allocation. The allocation is measured over a rolling window (not a billing period), so deduplication is time-based rather than reset at period start.",
+									),
+								stagingPrefix: z.string(),
+								sysToken: z.string(),
+								teams: z
+									.array(
+										z.object({
+											accessRequestedAt: z.number().optional(),
+											confirmed: z.literal(true),
+											confirmedAt: z.number(),
+											created: z.number(),
+											createdAt: z.number(),
+											joinedFrom: z
+												.object({
+													commitId: z.string().optional(),
+													dsyncConnectedAt: z.number().optional(),
+													dsyncUserId: z.string().optional(),
+													gitUserId: z.union([z.string(), z.number()]).optional(),
+													gitUserLogin: z.string().optional(),
+													idpUserId: z.string().optional(),
+													origin: z.enum([
+														"account-update",
+														"bitbucket",
+														"dsync",
+														"feedback",
+														"github",
+														"gitlab",
+														"import",
+														"link",
+														"mail",
+														"nsnb-auto-approve",
+														"nsnb-hobby-upgrade",
+														"nsnb-invite",
+														"nsnb-redeploy",
+														"nsnb-redeploy-attribution-card",
+														"nsnb-request-access",
+														"nsnb-viewer-upgrade",
+														"organization-teams",
+														"saml",
+														"teams",
+													]),
+													repoId: z.string().optional(),
+													repoPath: z.string().optional(),
+													ssoConnectedAt: z.number().optional(),
+													ssoUserId: z.string().optional(),
+												})
+												.optional(),
+											role: z.enum([
+												"BILLING",
+												"CONTRIBUTOR",
+												"DEVELOPER",
+												"MEMBER",
+												"OWNER",
+												"SECURITY",
+												"VIEWER",
+												"VIEWER_FOR_PLUS",
+											]),
+											teamId: z.string(),
+											teamPermissions: z
+												.array(
+													z.enum([
+														"AiGatewayApiKeyOwnedBySelf",
+														"AiGatewayBudgetManager",
+														"AiGatewayCredits",
+														"AiGatewaySettings",
+														"AiGatewayTranscriptsManager",
+														"AiGatewayTranscriptsViewer",
+														"ConnectorManager",
+														"CreateProject",
+														"EnvVariableManager",
+														"EnvironmentManager",
+														"FullProductionDeployment",
+														"IntegrationManager",
+														"OrgAdmin",
+														"OrgViewer",
+														"UsageViewer",
+														"V0Builder",
+														"V0Chatter",
+														"V0Viewer",
+														"WorkflowDecryptor",
+													]),
+												)
+												.optional(),
+											teamRoles: z
+												.array(
+													z.enum([
+														"BILLING",
+														"CONTRIBUTOR",
+														"DEVELOPER",
+														"MEMBER",
+														"OWNER",
+														"SECURITY",
+														"VIEWER",
+														"VIEWER_FOR_PLUS",
+													]),
+												)
+												.optional(),
+										}),
+									)
+									.optional()
+									.describe(
+										"A helper that allows to describe a relationship attribute. It receives the shape of a relationship plus the foreignKey name to make it mandatory in the resulting type.",
+									),
+								testAccountExpiresAt: z.number().optional(),
+								trialTeamId: z
+									.string()
+									.optional()
+									.describe(
+										"Deprecated on 2022-04-12 in favor of trialTeamIds and using utils/api-teams/user-has-trial-available.ts.",
+									),
+								trialTeamIds: z
+									.array(z.string())
+									.optional()
+									.describe(
+										"Introduced 2022-04-12 An array of teamIds (for trial teams created after 2022-04-01), created by the user in question. Used in determining whether the team has a trial available in utils/api-teams/user-has-trial-available.ts.",
+									),
+								type: z.enum(["user"]),
+								updatedAt: z.number(),
+								usageAlerts: z
+									.object({
+										blockingAt: z.number().nullish(),
+										warningAt: z.number().nullish(),
+									})
+									.nullish()
+									.describe("Contains the timestamps when a user was notified about their usage"),
+								username: z.string(),
+								version: z.enum(["northstar"]),
+							})
+							.nullable(),
+						userId: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						configurationId: z.string(),
+						confirmedScopes: z.array(z.string()),
+						integrationId: z.string(),
+						integrationName: z.string(),
+						integrationSlug: z.string(),
+						ownerId: z.string(),
+						projectIds: z.array(z.string()).optional(),
+					})
+					.strict(),
+				z
+					.object({
+						integration: z.object({
+							configurationId: z.string(),
+							id: z.string(),
+							name: z.string(),
+							slug: z.string(),
+						}),
+						destinationTeamId: z.string(),
+						destinationTeamName: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						integration: z.object({
+							configurationId: z.string(),
+							id: z.string(),
+							name: z.string(),
+							slug: z.string(),
+						}),
+						originTeamId: z.string(),
+						originTeamName: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						configurations: z.array(
+							z.object({
+								configurationId: z.string(),
+								integrationId: z.string(),
+								integrationName: z.string().optional(),
+								integrationSlug: z.string(),
+							}),
+						),
+						ownerId: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						billingPlanId: z.string(),
+						billingPlanName: z.string().optional(),
+						configurationId: z.string(),
+						integrationId: z.string(),
+						integrationName: z.string(),
+						integrationSlug: z.string(),
+						ownerId: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						configurationId: z.string(),
+						integrationId: z.string(),
+						integrationName: z.string(),
+						integrationSlug: z.string(),
+						ownerId: z.string(),
+						projectIds: z.union([z.array(z.string()), z.enum(["all"])]).optional(),
+					})
+					.strict(),
+				z
+					.object({
+						configurationId: z.string(),
+						databaseName: z.string(),
+						errorCode: z.string().nullable(),
+						failedQueryIndex: z.number().nullable(),
+						integrationId: z.string(),
+						integrationProductSlug: z.string(),
+						integrationSlug: z.string(),
+						queries: z.array(
+							z.object({
+								command: z.string().nullable(),
+								primaryKey: z
+									.array(
+										z.object({
+											column: z.string(),
+											value: z.string().nullable(),
+										}),
+									)
+									.optional(),
+								rowCount: z.number().optional(),
+								tables: z.array(z.string()).optional(),
+							}),
+						),
+						queryCount: z.number(),
+						queryType: z.enum(["data-edit", "data-view", "schema", "user"]),
+						readonly: z.union([z.literal(false), z.literal(true)]),
+						resourceId: z.string(),
+						rolledBack: z.union([z.literal(false), z.literal(true)]),
+					})
+					.strict(),
+				z
+					.object({
+						configurationId: z.string(),
+						errorCode: z.string().optional(),
+						integrationId: z.string(),
+						integrationProductSlug: z.string(),
+						integrationSlug: z.string(),
+						resourceId: z.string(),
+						commands: z.array(
+							z.object({
+								command: z.string(),
+								errorCode: z.string().optional(),
+							}),
+						),
+						errorIndex: z.number().optional(),
+						readonly: z.union([z.literal(false), z.literal(true)]),
+						requestKind: z.enum(["raw_commands"]),
+					})
+					.strict(),
+				z
+					.object({
+						configurationId: z.string(),
+						errorCode: z.string().optional(),
+						integrationId: z.string(),
+						integrationProductSlug: z.string(),
+						integrationSlug: z.string(),
+						resourceId: z.string(),
+						pattern: z.string().optional(),
+						requestKind: z.enum(["list_keys"]),
+						type: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						configurationId: z.string(),
+						errorCode: z.string().optional(),
+						integrationId: z.string(),
+						integrationProductSlug: z.string(),
+						integrationSlug: z.string(),
+						resourceId: z.string(),
+						keys: z.array(z.string()),
+						requestKind: z.enum(["get_keys_metadata"]),
+					})
+					.strict(),
+				z
+					.object({
+						configurationId: z.string(),
+						errorCode: z.string().optional(),
+						integrationId: z.string(),
+						integrationProductSlug: z.string(),
+						integrationSlug: z.string(),
+						resourceId: z.string(),
+						key: z.string(),
+						requestKind: z.enum(["get_key_data"]),
+					})
+					.strict(),
+				z
+					.object({
+						integrationId: z.string(),
+						integrationName: z.string(),
+						integrationSlug: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						algorithm: z.string(),
+						issuerId: z.string(),
+						issuerName: z.string(),
+						managedBy: z.string().optional(),
+						origin: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						issuerId: z.string(),
+						issuerName: z.string(),
+						managedBy: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						issuerId: z.string(),
+						issuerName: z.string(),
+						keyId: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						clientId: z.string().optional(),
+						environments: z.array(z.string()).optional(),
+						issuerId: z.string(),
+						issuerName: z.string(),
+						kind: z.string(),
+						projectId: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						issuerId: z.string(),
+						issuerName: z.string(),
+						kind: z.string(),
+						policyKey: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						integrationName: z.string().optional(),
+						logDrainUrl: z.string().nullable(),
+					})
+					.strict(),
+				z
+					.object({
+						integrationName: z.string().optional(),
+						logDrainUrl: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						login: z.string(),
+						provider: z.enum([
+							"apple",
+							"bitbucket",
+							"chatgpt",
+							"github",
+							"github-custom-host",
+							"github-limited",
+							"gitlab",
+							"google",
+							"saml",
+						]),
+					})
+					.strict(),
+				z
+					.object({
+						provider: z.enum([
+							"apple",
+							"bitbucket",
+							"chatgpt",
+							"github",
+							"github-custom-host",
+							"github-limited",
+							"gitlab",
+							"google",
+							"saml",
+						]),
+					})
+					.strict(),
+				z
+					.object({
+						env: z.string().optional(),
+						factors: z
+							.union([
+								z
+									.array(
+										z
+											.object({
+												legacy: z.union([z.literal(false), z.literal(true)]).optional(),
+												origin: z.enum([
+													"apple",
+													"bitbucket",
+													"chatgpt",
+													"email",
+													"emu-recovery",
+													"github",
+													"gitlab",
+													"google",
+													"invite",
+													"magic-link",
+													"otp",
+													"otp-link",
+													"saml",
+													"webauthn",
+												]),
+												ssoType: z.string().optional(),
+												teamId: z.string().optional(),
+												username: z.string().optional(),
+											})
+											.strict(),
+									)
+									.min(1)
+									.max(1),
+								z
+									.array(
+										z.union([
+											z
+												.object({
+													legacy: z.union([z.literal(false), z.literal(true)]).optional(),
+													origin: z.enum([
+														"apple",
+														"bitbucket",
+														"chatgpt",
+														"email",
+														"emu-recovery",
+														"github",
+														"gitlab",
+														"google",
+														"invite",
+														"magic-link",
+														"otp",
+														"otp-link",
+														"saml",
+														"webauthn",
+													]),
+													ssoType: z.string().optional(),
+													teamId: z.string().optional(),
+													username: z.string().optional(),
+												})
+												.strict(),
+											z
+												.object({
+													origin: z.enum(["recovery-code", "totp", "webauthn"]),
+												})
+												.strict(),
+										]),
+									)
+									.min(2)
+									.max(2),
+							])
+							.optional(),
+						geolocation: z
+							.object({
+								city: z
+									.object({
+										names: z.object({
+											en: z.string(),
+										}),
+									})
+									.optional(),
+								country: z.object({
+									names: z.object({
+										en: z.string(),
+									}),
+								}),
+								mostSpecificSubdivision: z
+									.object({
+										names: z.object({
+											en: z.string(),
+										}),
+									})
+									.optional(),
+								regionName: z.string().optional(),
+							})
+							.nullish(),
+						loginSessionId: z
+							.string()
+							.optional()
+							.describe("Browser login correlation ID. This is not an authentication credential."),
+						os: z.string().optional(),
+						ssoType: z.string().optional(),
+						userAgent: z.string().optional(),
+						username: z.string().optional(),
+						viaApple: z.union([z.literal(false), z.literal(true)]).optional(),
+						viaBitbucket: z.union([z.literal(false), z.literal(true)]).optional(),
+						viaGithub: z.union([z.literal(false), z.literal(true)]).optional(),
+						viaGitlab: z.union([z.literal(false), z.literal(true)]).optional(),
+						viaGoogle: z.union([z.literal(false), z.literal(true)]).optional(),
+						viaOTP: z.union([z.literal(false), z.literal(true)]).optional(),
+						viaPasskey: z.union([z.literal(false), z.literal(true)]).optional(),
+						viaSamlSso: z.union([z.literal(false), z.literal(true)]).optional(),
+					})
+					.strict(),
+				z
+					.object({
+						projectId: z.string(),
+						projectName: z.string(),
+						toDeploymentId: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						periods: z.array(
+							z.object({
+								endDate: z.string(),
+								percent: z.string(),
+								periodNumber: z.number(),
+								startDate: z.string(),
+							}),
+						),
+					})
+					.strict(),
+				z
+					.object({
+						allowedIntegrationCount: z.number().optional(),
+						allowedIntegrationIds: z.array(z.string()).optional(),
+						enabled: z.union([z.literal(false), z.literal(true)]),
+					})
+					.strict(),
+				z
+					.object({
+						id: z.string(),
+						name: z.string(),
+						slug: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						enablePolyrepoBranchRouting: z.union([z.literal(false), z.literal(true)]).optional(),
+						fallbackEnvironment: z.string().optional(),
+						id: z.string(),
+						name: z.string().optional(),
+						prev: z.object({
+							enablePolyrepoBranchRouting: z.union([z.literal(false), z.literal(true)]).optional(),
+							fallbackEnvironment: z.string(),
+							name: z.string(),
+							slug: z.string(),
+						}),
+						slug: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						group: z.object({
+							id: z.string(),
+							name: z.string(),
+							slug: z.string(),
+						}),
+						project: z.object({
+							id: z.string(),
+							name: z.string(),
+						}),
+					})
+					.strict(),
+				z
+					.object({
+						group: z.object({
+							id: z.string(),
+							name: z.string(),
+							slug: z.string(),
+						}),
+						prev: z.object({
+							project: z.object({
+								microfrontends: z
+									.union([
+										z
+											.object({
+												defaultRoute: z
+													.string()
+													.optional()
+													.describe(
+														"A path that is used to take screenshots and as the default path in preview links when a domain for this microfrontend is shown in the UI. Includes the leading slash, e.g. `/docs`",
+													),
+												enabled: z
+													.literal(true)
+													.describe("Whether microfrontends are enabled for this project."),
+												freeProjectForLegacyLimits: z
+													.union([z.literal(false), z.literal(true)])
+													.optional()
+													.describe(
+														"Whether the project was part of the legacy limits for hobby and pro-trial before billing was added. This field is only set when the team is upgraded to a paid plan and we are backfilling the subscription status. We cap the subscription to 2 projects and set this field for the 3rd project. When this field is set, the project is not charged for and we do not call any billing APIs for this project.",
+													),
+												groupIds: z
+													.array(z.string())
+													.min(1)
+													.describe(
+														"The group IDs of microfrontends that this project belongs to. Each microfrontend project must belong to a microfrontends group that is the set of microfrontends that are used together.",
+													),
+												isDefaultApp: z.literal(true),
+												updatedAt: z
+													.number()
+													.describe(
+														"Timestamp when the microfrontends settings were last updated.",
+													),
+											})
+											.strict(),
+										z
+											.object({
+												defaultRoute: z
+													.string()
+													.optional()
+													.describe(
+														"A path that is used to take screenshots and as the default path in preview links when a domain for this microfrontend is shown in the UI. Includes the leading slash, e.g. `/docs`",
+													),
+												doNotRouteWithMicrofrontendsRouting: z
+													.union([z.literal(false), z.literal(true)])
+													.optional()
+													.describe(
+														"Whether to add microfrontends routing to aliases. This means domains in this project will route as a microfrontend.",
+													),
+												enabled: z
+													.literal(true)
+													.describe("Whether microfrontends are enabled for this project."),
+												freeProjectForLegacyLimits: z
+													.union([z.literal(false), z.literal(true)])
+													.optional()
+													.describe(
+														"Whether the project was part of the legacy limits for hobby and pro-trial before billing was added. This field is only set when the team is upgraded to a paid plan and we are backfilling the subscription status. We cap the subscription to 2 projects and set this field for the 3rd project. When this field is set, the project is not charged for and we do not call any billing APIs for this project.",
+													),
+												groupIds: z
+													.array(z.string())
+													.min(1)
+													.describe(
+														"The group IDs of microfrontends that this project belongs to. Each microfrontend project must belong to a microfrontends group that is the set of microfrontends that are used together.",
+													),
+												isDefaultApp: z.literal(false).optional(),
+												routeObservabilityToThisProject: z
+													.union([z.literal(false), z.literal(true)])
+													.optional()
+													.describe(
+														"Whether observability data should be routed to this microfrontend project or a root project.",
+													),
+												updatedAt: z
+													.number()
+													.describe(
+														"Timestamp when the microfrontends settings were last updated.",
+													),
+											})
+											.strict(),
+										z
+											.object({
+												enabled: z.literal(false),
+												freeProjectForLegacyLimits: z
+													.union([z.literal(false), z.literal(true)])
+													.optional(),
+												groupIds: z
+													.array(z.union([z.string(), z.string()]))
+													.min(2)
+													.max(2),
+												updatedAt: z.number(),
+											})
+											.strict(),
+									])
+									.optional(),
+							}),
+						}),
+						project: z.object({
+							id: z.string(),
+							microfrontends: z
+								.union([
+									z
+										.object({
+											defaultRoute: z
+												.string()
+												.optional()
+												.describe(
+													"A path that is used to take screenshots and as the default path in preview links when a domain for this microfrontend is shown in the UI. Includes the leading slash, e.g. `/docs`",
+												),
+											enabled: z
+												.literal(true)
+												.describe("Whether microfrontends are enabled for this project."),
+											freeProjectForLegacyLimits: z
+												.union([z.literal(false), z.literal(true)])
+												.optional()
+												.describe(
+													"Whether the project was part of the legacy limits for hobby and pro-trial before billing was added. This field is only set when the team is upgraded to a paid plan and we are backfilling the subscription status. We cap the subscription to 2 projects and set this field for the 3rd project. When this field is set, the project is not charged for and we do not call any billing APIs for this project.",
+												),
+											groupIds: z
+												.array(z.string())
+												.min(1)
+												.describe(
+													"The group IDs of microfrontends that this project belongs to. Each microfrontend project must belong to a microfrontends group that is the set of microfrontends that are used together.",
+												),
+											isDefaultApp: z.literal(true),
+											updatedAt: z
+												.number()
+												.describe("Timestamp when the microfrontends settings were last updated."),
+										})
+										.strict(),
+									z
+										.object({
+											defaultRoute: z
+												.string()
+												.optional()
+												.describe(
+													"A path that is used to take screenshots and as the default path in preview links when a domain for this microfrontend is shown in the UI. Includes the leading slash, e.g. `/docs`",
+												),
+											doNotRouteWithMicrofrontendsRouting: z
+												.union([z.literal(false), z.literal(true)])
+												.optional()
+												.describe(
+													"Whether to add microfrontends routing to aliases. This means domains in this project will route as a microfrontend.",
+												),
+											enabled: z
+												.literal(true)
+												.describe("Whether microfrontends are enabled for this project."),
+											freeProjectForLegacyLimits: z
+												.union([z.literal(false), z.literal(true)])
+												.optional()
+												.describe(
+													"Whether the project was part of the legacy limits for hobby and pro-trial before billing was added. This field is only set when the team is upgraded to a paid plan and we are backfilling the subscription status. We cap the subscription to 2 projects and set this field for the 3rd project. When this field is set, the project is not charged for and we do not call any billing APIs for this project.",
+												),
+											groupIds: z
+												.array(z.string())
+												.min(1)
+												.describe(
+													"The group IDs of microfrontends that this project belongs to. Each microfrontend project must belong to a microfrontends group that is the set of microfrontends that are used together.",
+												),
+											isDefaultApp: z.literal(false).optional(),
+											routeObservabilityToThisProject: z
+												.union([z.literal(false), z.literal(true)])
+												.optional()
+												.describe(
+													"Whether observability data should be routed to this microfrontend project or a root project.",
+												),
+											updatedAt: z
+												.number()
+												.describe("Timestamp when the microfrontends settings were last updated."),
+										})
+										.strict(),
+									z
+										.object({
+											enabled: z.literal(false),
+											freeProjectForLegacyLimits: z
+												.union([z.literal(false), z.literal(true)])
+												.optional(),
+											groupIds: z
+												.array(z.union([z.string(), z.string()]))
+												.min(2)
+												.max(2),
+											updatedAt: z.number(),
+										})
+										.strict(),
+								])
+								.optional(),
+							name: z.string(),
+						}),
+					})
+					.strict(),
+				z
+					.object({
+						alertId: z.string(),
+						alertName: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						projectId: z.string().optional(),
+						projectName: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						name: z.string(),
+						organizationId: z.string(),
+						rootTeamId: z.string(),
+						slug: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						directoryGroupId: z.string(),
+						directoryId: z.string(),
+						groupName: z.string(),
+						next: z.object({
+							default: z
+								.enum([
+									"BILLING",
+									"CONTRIBUTOR",
+									"DEVELOPER",
+									"MEMBER",
+									"OWNER",
+									"SECURITY",
+									"VIEWER",
+									"VIEWER_FOR_PLUS",
+								])
+								.optional(),
+							roles: z
+								.object({})
+								.catchall(
+									z.enum([
+										"BILLING",
+										"CONTRIBUTOR",
+										"DEVELOPER",
+										"MEMBER",
+										"OWNER",
+										"SECURITY",
+										"VIEWER",
+										"VIEWER_FOR_PLUS",
+									]),
+								),
+						}),
+						organizationId: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						directoryGroupId: z.string(),
+						directoryId: z.string(),
+						organizationId: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						enabled: z.union([z.literal(false), z.literal(true)]),
+						enforcedTeamIds: z.array(z.string()),
+						organizationId: z.string(),
+						previousEnabled: z.union([z.literal(false), z.literal(true)]),
+						trigger: z.enum([
+							"directory_sync_updated",
+							"domain_deleted",
+							"domain_verified",
+							"saml_updated",
+							"team_attached",
+							"team_participation_updated",
+							"toggle",
+						]),
+						unenforcedTeamIds: z.array(z.string()),
+					})
+					.strict(),
+				z
+					.object({
+						organizationId: z.string(),
+						slug: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						billingPlan: z.enum(["enterprise", "platform"]),
+						organizationId: z.string(),
+						teamId: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						mode: z.enum(["organization", "team"]),
+						organizationId: z.string(),
+						previousMode: z.enum(["organization", "team"]),
+						teamId: z.string(),
+						teamName: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						blockReason: z.string().optional(),
+						cause: z.string(),
+						ownerId: z.string(),
+						siftRoute: z
+							.object({
+								name: z.string(),
+							})
+							.optional(),
+						source: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						cause: z.string(),
+						ownerId: z.string(),
+						reason: z.string().nullish(),
+						source: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						blockReason: z.string().optional(),
+						cause: z.string(),
+						ownerId: z.string(),
+						source: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						cause: z.string(),
+						ownerId: z.string(),
+						source: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						next: z.object({
+							allowUnsafeScriptSrcKeywords: z.union([z.literal(false), z.literal(true)]),
+							computedConnectSrc: z.string().optional(),
+							computedConnectSrcPreview: z.string().optional(),
+							computedScriptSrc: z.string().optional(),
+							computedScriptSrcPreview: z.string().optional(),
+							connectSrcNotificationsEnabled: z
+								.union([z.literal(false), z.literal(true)])
+								.optional(),
+							enabled: z.union([z.literal(false), z.literal(true)]),
+							enforcementScope: z.enum(["all", "preview"]).optional(),
+							enforcePercentage: z.number(),
+							mode: z.string(),
+							newResourceBlockingPolicy: z.enum(["allow", "block"]),
+							omitScriptNonce: z.union([z.literal(false), z.literal(true)]).optional(),
+						}),
+						previous: z
+							.object({
+								allowUnsafeScriptSrcKeywords: z.union([z.literal(false), z.literal(true)]),
+								computedConnectSrc: z.string().optional(),
+								computedConnectSrcPreview: z.string().optional(),
+								computedScriptSrc: z.string().optional(),
+								computedScriptSrcPreview: z.string().optional(),
+								connectSrcNotificationsEnabled: z
+									.union([z.literal(false), z.literal(true)])
+									.optional(),
+								enabled: z.union([z.literal(false), z.literal(true)]),
+								enforcementScope: z.enum(["all", "preview"]).optional(),
+								enforcePercentage: z.number(),
+								mode: z.string(),
+								newResourceBlockingPolicy: z.enum(["allow", "block"]),
+								omitScriptNonce: z.union([z.literal(false), z.literal(true)]).optional(),
+							})
+							.nullable(),
+						projectId: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						headerName: z.string(),
+						justification: z.string(),
+						previousStatus: z.string(),
+						projectId: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						headerName: z.string(),
+						justification: z.string().nullable(),
+						previousStatus: z.string(),
+						projectId: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						connectSrcCount: z.number(),
+						connectSrcNormalizationRulesCleared: z
+							.union([z.literal(false), z.literal(true)])
+							.optional(),
+						connectSrcOriginCount: z.number(),
+						connectSrcUserNormalizationRuleCount: z.number().optional(),
+						deletedCount: z.number(),
+						headerCount: z.number(),
+						projectId: z.string(),
+						projectName: z.string(),
+						scriptCount: z.number(),
+					})
+					.strict(),
+				z
+					.object({
+						approvalScope: z.enum(["all", "preview"]).optional(),
+						justification: z.string(),
+						kind: z.enum(["connectSrc", "script"]).optional(),
+						previousStatus: z.string(),
+						projectId: z.string(),
+						url: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						projectId: z.string(),
+						resourceUrl: z.string(),
+						type: z.enum(["script"]),
+					})
+					.strict(),
+				z
+					.object({
+						headerName: z.string(),
+						projectId: z.string(),
+						type: z.enum(["header"]),
+					})
+					.strict(),
+				z
+					.object({
+						projectId: z.string(),
+						resourceUrl: z.string(),
+						type: z.enum(["connectSrc"]),
+					})
+					.strict(),
+				z
+					.object({
+						headerName: z.string().optional(),
+						justification: z.string().nullable(),
+						kind: z.enum(["connectSrc", "script"]).optional(),
+						previousStatus: z.string(),
+						projectId: z.string(),
+						url: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						justification: z.string(),
+						pattern: z.string(),
+						projectId: z.string(),
+						projectName: z.string(),
+					})
+					.catchall(z.unknown()),
+				z
+					.object({
+						newName: z.string(),
+						oldName: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						connectorId: z.string(),
+						connectorService: z.string(),
+						connectorType: z.string(),
+						emailVerified: z.union([z.literal(false), z.literal(true)]).optional(),
+						environment: z.string(),
+						externalIssuer: z.string(),
+						externalSubject: z.string(),
+						host: z.string(),
+						installationId: z.string().optional(),
+						projectId: z.string(),
+						sessionId: z.string(),
+						tenantId: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						next: z.object({
+							passport: z
+								.object({
+									connectorId: z.string(),
+									deploymentType: z.enum([
+										"all",
+										"all_except_custom_domains",
+										"preview",
+										"prod_deployment_urls_and_all_previews",
+									]),
+								})
+								.nullish(),
+						}),
+						previous: z.object({
+							passport: z
+								.object({
+									connectorId: z.string(),
+									deploymentType: z.enum([
+										"all",
+										"all_except_custom_domains",
+										"preview",
+										"prod_deployment_urls_and_all_previews",
+									]),
+								})
+								.nullish(),
+						}),
+						projectId: z.string(),
+						projectName: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						next: z.object({
+							passport: z
+								.object({
+									connectorId: z.string(),
+									deploymentType: z.enum([
+										"all",
+										"all_except_custom_domains",
+										"preview",
+										"prod_deployment_urls_and_all_previews",
+									]),
+								})
+								.nullish(),
+						}),
+						previous: z.object({
+							passport: z
+								.object({
+									connectorId: z.string(),
+									deploymentType: z.enum([
+										"all",
+										"all_except_custom_domains",
+										"preview",
+										"prod_deployment_urls_and_all_previews",
+									]),
+								})
+								.nullish(),
+						}),
+					})
+					.strict(),
+				z
+					.object({
+						automated: z
+							.union([z.literal(false), z.literal(true)])
+							.optional()
+							.describe(
+								"Whether the plan change was system-initiated rather than human-initiated.",
+							),
+						isDowngrade: z.union([z.literal(false), z.literal(true)]).optional(),
+						isReactivate: z.union([z.literal(false), z.literal(true)]).optional(),
+						isTrialUpgrade: z.union([z.literal(false), z.literal(true)]).optional(),
+						plan: z.string(),
+						prevPlan: z.string().optional(),
+						priorPlan: z.string().optional(),
+						reason: z
+							.string()
+							.optional()
+							.describe(
+								"Why the plan changed. For downgrades, this is a {@link DowngradeReason} from `@api/pubsub-types` (e.g. `user_downgrade`, `trial_expired`).",
+							),
+						removedMemberCount: z.number().optional(),
+						removedUsers: z
+							.object({})
+							.catchall(
+								z.object({
+									confirmed: z.union([z.literal(false), z.literal(true)]),
+									confirmedAt: z.number().optional(),
+									joinedFrom: z
+										.object({
+											commitId: z.string().optional(),
+											dsyncConnectedAt: z.number().optional(),
+											dsyncUserId: z.string().optional(),
+											gitUserId: z.union([z.string(), z.number()]).optional(),
+											gitUserLogin: z.string().optional(),
+											idpUserId: z.string().optional(),
+											origin: z.enum([
+												"account-update",
+												"bitbucket",
+												"dsync",
+												"feedback",
+												"github",
+												"gitlab",
+												"import",
+												"link",
+												"mail",
+												"nsnb-auto-approve",
+												"nsnb-hobby-upgrade",
+												"nsnb-invite",
+												"nsnb-redeploy",
+												"nsnb-redeploy-attribution-card",
+												"nsnb-request-access",
+												"nsnb-viewer-upgrade",
+												"organization-teams",
+												"saml",
+												"teams",
+											]),
+											repoId: z.string().optional(),
+											repoPath: z.string().optional(),
+											ssoConnectedAt: z.number().optional(),
+											ssoUserId: z.string().optional(),
+										})
+										.optional(),
+									role: z.enum([
+										"BILLING",
+										"CONTRIBUTOR",
+										"DEVELOPER",
+										"MEMBER",
+										"OWNER",
+										"SECURITY",
+										"VIEWER",
+										"VIEWER_FOR_PLUS",
+									]),
+								}),
+							)
+							.optional(),
+						timestamp: z.number().optional(),
+						userAgent: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						automated: z
+							.union([z.literal(false), z.literal(true)])
+							.optional()
+							.describe(
+								"Whether the plan change was system-initiated rather than human-initiated.",
+							),
+						isDowngrade: z.union([z.literal(false), z.literal(true)]).optional(),
+						isReactivate: z.union([z.literal(false), z.literal(true)]).optional(),
+						isTrialUpgrade: z.union([z.literal(false), z.literal(true)]).optional(),
+						plan: z.string(),
+						prevPlan: z.string().optional(),
+						priorPlan: z.string().optional(),
+						reason: z
+							.string()
+							.optional()
+							.describe(
+								"Why the plan changed. For downgrades, this is a {@link DowngradeReason} from `@api/pubsub-types` (e.g. `user_downgrade`, `trial_expired`).",
+							),
+						removedMemberCount: z.number().optional(),
+						removedUsers: z
+							.object({})
+							.catchall(
+								z.object({
+									confirmed: z.union([z.literal(false), z.literal(true)]),
+									confirmedAt: z.number().optional(),
+									joinedFrom: z
+										.object({
+											commitId: z.string().optional(),
+											dsyncConnectedAt: z.number().optional(),
+											dsyncUserId: z.string().optional(),
+											gitUserId: z.union([z.string(), z.number()]).optional(),
+											gitUserLogin: z.string().optional(),
+											idpUserId: z.string().optional(),
+											origin: z.enum([
+												"account-update",
+												"bitbucket",
+												"dsync",
+												"feedback",
+												"github",
+												"gitlab",
+												"import",
+												"link",
+												"mail",
+												"nsnb-auto-approve",
+												"nsnb-hobby-upgrade",
+												"nsnb-invite",
+												"nsnb-redeploy",
+												"nsnb-redeploy-attribution-card",
+												"nsnb-request-access",
+												"nsnb-viewer-upgrade",
+												"organization-teams",
+												"saml",
+												"teams",
+											]),
+											repoId: z.string().optional(),
+											repoPath: z.string().optional(),
+											ssoConnectedAt: z.number().optional(),
+											ssoUserId: z.string().optional(),
+										})
+										.optional(),
+									role: z.enum([
+										"BILLING",
+										"CONTRIBUTOR",
+										"DEVELOPER",
+										"MEMBER",
+										"OWNER",
+										"SECURITY",
+										"VIEWER",
+										"VIEWER_FOR_PLUS",
+									]),
+								}),
+							)
+							.optional(),
+						timestamp: z.number().optional(),
+						userAgent: z.string().optional(),
+						actorId: z.string().describe("Okta user id."),
+						actorName: z.string().optional(),
+						actorType: z.enum(["admin"]),
+					})
+					.strict(),
+				z
+					.object({
+						currency: z.string().optional(),
+						enabled: z.union([z.literal(false), z.literal(true)]).optional(),
+						price: z.number().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						previewDeploymentSuffix: z.string().nullish(),
+						previousPreviewDeploymentSuffix: z.string().nullish(),
+					})
+					.strict(),
+				z
+					.object({
+						endpoint: z.object({
+							awsServiceName: z.string(),
+							id: z.string(),
+							name: z.string(),
+							privateDnsNames: z.array(z.string()).optional(),
+							projectId: z.string(),
+							vercelRegion: z.string(),
+						}),
+						projectName: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						privateLinkEndpoint: z.object({
+							id: z.string(),
+							name: z.string(),
+						}),
+						projectId: z.string(),
+						projectName: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						current: z.object({
+							awsServiceName: z.string(),
+							id: z.string(),
+							name: z.string(),
+							privateDnsNames: z.array(z.string()).optional(),
+							projectId: z.string(),
+							vercelRegion: z.string(),
+						}),
+						prev: z.object({
+							awsServiceName: z.string(),
+							id: z.string(),
+							name: z.string(),
+							privateDnsNames: z.array(z.string()).optional(),
+							projectId: z.string(),
+							vercelRegion: z.string(),
+						}),
+						projectName: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						previousEndpoint: z.object({
+							environmentIds: z.array(z.string()).optional(),
+							name: z.string(),
+							privateDnsNames: z.array(z.string()).optional(),
+						}),
+						privateLinkEndpoint: z.object({
+							id: z.string(),
+							environmentIds: z.array(z.string()).optional(),
+							name: z.string(),
+							privateDnsNames: z.array(z.string()).optional(),
+						}),
+						projectId: z.string(),
+						projectName: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						branch: z.string(),
+						projectId: z.string().optional(),
+						projectName: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						directoryListing: z.union([z.literal(false), z.literal(true)]),
+						projectId: z.string(),
+						projectName: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						prevProjectAnalytics: z
+							.object({
+								canceledAt: z.number().nullish(),
+								disabledAt: z.number(),
+								enabledAt: z.number(),
+								id: z.string(),
+								paidAt: z.number().optional(),
+								sampleRatePercent: z.number().nullish(),
+								spendLimitInDollars: z.number().nullish(),
+							})
+							.nullable(),
+						projectAnalytics: z
+							.object({
+								canceledAt: z.number().nullish(),
+								disabledAt: z.number(),
+								enabledAt: z.number(),
+								id: z.string(),
+								paidAt: z.number().optional(),
+								sampleRatePercent: z.number().nullish(),
+								spendLimitInDollars: z.number().nullish(),
+							})
+							.nullable(),
+						projectId: z.string(),
+						projectName: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						prevProjectAnalytics: z.object({}).catchall(z.unknown()).nullish(),
+						projectAnalytics: z.object({}).catchall(z.unknown()).optional(),
+						projectId: z.string(),
+						projectName: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						action: z.enum(["disabled", "enabled", "regenerated", "updated"]),
+						isEnvVar: z.union([z.literal(false), z.literal(true)]).optional(),
+						note: z.string().optional(),
+						projectId: z.string(),
+						projectName: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						avatar: z.string().nullish(),
+						projectId: z.string(),
+						projectName: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						enableAffectedProjectsDeployments: z.union([z.literal(false), z.literal(true)]),
+						projectId: z.string(),
+						projectName: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						enableExternalRewriteCaching: z.union([z.literal(false), z.literal(true)]),
+						projectId: z.string(),
+						projectName: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						next: z.object({}),
+						previous: z.object({}),
+						projectId: z.string(),
+						projectName: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						productionDeploymentsFastLane: z.union([z.literal(false), z.literal(true)]),
+						projectId: z.string(),
+						projectName: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						projectId: z.string(),
+						projectName: z.string(),
+						sourceFilesOutsideRootDirectory: z.union([z.literal(false), z.literal(true)]),
+					})
+					.strict(),
+				z
+					.object({
+						deploymentId: z
+							.string()
+							.optional()
+							.describe("Deployment whose outcome caused a system-initiated elastic resize."),
+						isSystemInitiated: z.union([z.literal(false), z.literal(true)]).optional(),
+						nextBuildMachineSelection: z.string(),
+						nextBuildMachineType: z.string(),
+						previousBuildMachineSelection: z.string(),
+						previousBuildMachineType: z.string().optional(),
+						projectId: z.string().optional(),
+						projectName: z.string(),
+						reason: z
+							.string()
+							.optional()
+							.describe(
+								"For system-initiated (elastic) changes, why the build machine was upgraded/downgraded. Stored as the raw reason code (see `ElasticChangeReason` in `@api/build-machines-types`) and rendered as a human-readable clause in the activity/audit log.",
+							),
+					})
+					.strict(),
+				z
+					.object({
+						projectId: z.string(),
+						projectName: z.string(),
+						widget: z
+							.enum([
+								"alert",
+								"analytics-online",
+								"analytics-page-views",
+								"analytics-visitors",
+								"firewall-allowed",
+								"firewall-denied",
+								"observability-alert",
+								"observability-edge-requests",
+								"observability-error-rate",
+								"observability-function-invocations",
+								"online",
+								"res",
+								"shortcut",
+								"speed-insights-cls",
+								"speed-insights-lcp",
+								"speed-insights-res",
+							])
+							.nullable(),
+					})
+					.strict(),
+				z
+					.object({
+						certId: z.string().optional(),
+						origin: z.string().optional(),
+						projectId: z.string().optional(),
+						projectName: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						projectId: z.string().optional(),
+						projectName: z.string().optional(),
+						target: z.array(z.string()).optional(),
+						updated: z.union([z.literal(false), z.literal(true)]).optional(),
+					})
+					.strict(),
+				z
+					.object({
+						project: z.object({
+							id: z.string(),
+							name: z.string().optional(),
+							newConnectConfigurations: z
+								.array(
+									z.object({
+										aws: z
+											.object({
+												securityGroupId: z.string().optional(),
+												subnetIds: z.array(z.string()),
+											})
+											.optional(),
+										buildsEnabled: z.union([z.literal(false), z.literal(true)]),
+										connectConfigurationId: z.string(),
+										createdAt: z.number(),
+										dc: z.string().optional(),
+										envId: z.string(),
+										passive: z.union([z.literal(false), z.literal(true)]),
+										updatedAt: z.number(),
+									}),
+								)
+								.nullable(),
+							oldConnectConfigurations: z
+								.array(
+									z.object({
+										aws: z
+											.object({
+												securityGroupId: z.string().optional(),
+												subnetIds: z.array(z.string()),
+											})
+											.optional(),
+										buildsEnabled: z.union([z.literal(false), z.literal(true)]),
+										connectConfigurationId: z.string(),
+										createdAt: z.number(),
+										dc: z.string().optional(),
+										envId: z.string(),
+										passive: z.union([z.literal(false), z.literal(true)]),
+										updatedAt: z.number(),
+									}),
+								)
+								.nullable(),
+						}),
+						team: z.object({
+							id: z.string(),
+							name: z.string(),
+						}),
+					})
+					.strict(),
+				z
+					.object({
+						projectId: z.string(),
+						projectName: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						action: z.enum(["disabled", "enabled"]),
+						projectId: z.string(),
+						projectName: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						name: z.string(),
+						ownerId: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						buildQueueConfiguration: z
+							.enum(["SKIP_NAMESPACE_QUEUE", "WAIT_FOR_NAMESPACE_QUEUE"])
+							.optional(),
+						elasticConcurrencyEnabled: z.union([z.literal(false), z.literal(true)]),
+						oldBuildQueueConfiguration: z
+							.enum(["SKIP_NAMESPACE_QUEUE", "WAIT_FOR_NAMESPACE_QUEUE"])
+							.optional(),
+						oldElasticConcurrencyEnabled: z.union([z.literal(false), z.literal(true)]),
+						projectId: z.string(),
+						projectName: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						autoAssignCustomDomains: z.union([z.literal(false), z.literal(true)]),
+						projectId: z.string(),
+						projectName: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						previewDeploymentsEnabled: z.union([z.literal(false), z.literal(true)]),
+						projectId: z.string(),
+						projectName: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						customEnvironmentId: z.string(),
+						customEnvironmentSlug: z.string(),
+						next: z.object({
+							branchMatcher: z
+								.object({
+									pattern: z.string().describe("The pattern to match against branch names"),
+									type: z
+										.enum(["endsWith", "equals", "startsWith"])
+										.describe("The type of matching to perform"),
+								})
+								.optional(),
+						}),
+						previous: z.object({
+							branchMatcher: z
+								.object({
+									pattern: z.string().describe("The pattern to match against branch names"),
+									type: z
+										.enum(["endsWith", "equals", "startsWith"])
+										.describe("The type of matching to perform"),
+								})
+								.optional(),
+						}),
+						projectId: z.string(),
+						projectName: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						customEnvironmentId: z.string(),
+						customEnvironmentSlug: z.string(),
+						projectId: z.string(),
+						projectName: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						enableFunctionsBeta: z.union([z.literal(false), z.literal(true)]),
+						projectId: z.string(),
+						projectName: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						next: z.object({
+							functionDefaultTimeout: z.number(),
+						}),
+						previous: z.object({
+							functionDefaultTimeout: z.number().nullable(),
+						}),
+						projectId: z.string(),
+						projectName: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						next: z.object({
+							functionDefaultMemoryType: z.string(),
+						}),
+						previous: z.object({
+							functionDefaultMemoryType: z.string().nullable(),
+						}),
+						projectId: z.string(),
+						projectName: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						next: z.object({
+							functionDefaultRegions: z.array(z.string()),
+						}),
+						previous: z.object({
+							functionDefaultRegions: z.array(z.string()).nullable(),
+						}),
+						projectId: z.string(),
+						projectName: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						next: z.object({
+							functionZeroConfigFailover: z.union([z.literal(false), z.literal(true)]),
+						}),
+						previous: z.object({
+							functionZeroConfigFailover: z.union([z.literal(false), z.literal(true)]).nullable(),
+						}),
+						projectId: z.string(),
+						projectName: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						previewDeploymentSuffix: z.string().nullable(),
+						projectId: z.string(),
+						projectName: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						newProjectName: z.string(),
+						projectId: z.string(),
+						projectName: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						next: z.object({
+							gitProvider: z.enum([
+								"bitbucket",
+								"cursor-origin",
+								"github",
+								"github-custom-host",
+								"github-limited",
+								"gitlab",
+								"v0",
+								"vercel",
+							]),
+							gitRepoId: z.string(),
+							gitRepositoryName: z.string(),
+						}),
+						previous: z
+							.object({
+								gitProvider: z.enum([
+									"bitbucket",
+									"cursor-origin",
+									"github",
+									"github-custom-host",
+									"github-limited",
+									"gitlab",
+									"v0",
+									"vercel",
+								]),
+								gitRepoId: z.string(),
+								gitRepositoryName: z.string(),
+							})
+							.optional(),
+						projectId: z.string(),
+						projectName: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						gitProvider: z.enum([
+							"bitbucket",
+							"cursor-origin",
+							"github",
+							"github-custom-host",
+							"github-limited",
+							"gitlab",
+							"v0",
+							"vercel",
+						]),
+						gitRepoId: z.string(),
+						gitRepositoryName: z.string(),
+						projectId: z.string(),
+						projectName: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						onPullRequest: z.union([z.literal(false), z.literal(true)]),
+						projectId: z.string(),
+						projectName: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						onCommit: z.union([z.literal(false), z.literal(true)]),
+						projectId: z.string(),
+						projectName: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						disableRepositoryDispatchEvents: z.union([z.literal(false), z.literal(true)]),
+						projectId: z.string(),
+						projectName: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						createDeployments: z.enum(["disabled", "enabled"]),
+						projectId: z.string(),
+						projectName: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						projectId: z.string(),
+						projectName: z.string(),
+						requireVerifiedCommits: z.union([z.literal(false), z.literal(true)]).nullable(),
+					})
+					.strict(),
+				z
+					.object({
+						requireVerifiedCommits: z.union([z.literal(false), z.literal(true)]),
+					})
+					.strict(),
+				z
+					.object({
+						disableRepositoryDispatchEvents: z.union([z.literal(false), z.literal(true)]),
+					})
+					.strict(),
+				z
+					.object({
+						gitCommitStatus: z.union([z.literal(false), z.literal(true)]),
+						projectId: z.string(),
+						projectName: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						gitLFS: z.union([z.literal(false), z.literal(true)]),
+						projectId: z.string(),
+						projectName: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						consolidatedGitCommitStatus: z
+							.object({
+								enabled: z.union([z.literal(false), z.literal(true)]),
+								propagateFailures: z.union([z.literal(false), z.literal(true)]),
+							})
+							.nullable(),
+						projectId: z.string(),
+						projectName: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						next: z.object({
+							commandForIgnoringBuildStep: z.string().optional(),
+						}),
+						previous: z.object({
+							commandForIgnoringBuildStep: z.string().optional(),
+						}),
+						projectId: z.string(),
+						projectName: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						configuredBy: z.string().optional(),
+						domain: z.string(),
+						gitBranch: z.string().nullable(),
+						projectId: z.string(),
+						projectName: z.string(),
+						redirect: z.string().nullable(),
+						redirectStatusCode: z.number().nullable(),
+						target: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						domain: z.string(),
+						projectId: z.string(),
+						projectName: z.string(),
+						redirect: z.string().nullish(),
+						redirectStatusCode: z.number().nullish(),
+						target: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						domain: z.string(),
+						newProjectId: z.string(),
+						newProjectName: z.string(),
+						oldProjectId: z.string(),
+						oldProjectName: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						domain: z.string(),
+						projectId: z.string(),
+						projectName: z.string(),
+						redirect: z.string().nullish(),
+						redirectStatusCode: z.number().nullish(),
+					})
+					.strict(),
+				z
+					.object({
+						directoryType: z.string().optional(),
+						projects: z.array(
+							z.object({
+								membershipCreatedAt: z.number(),
+								projectId: z.string(),
+								role: z.enum(["ADMIN", "PROJECT_DEVELOPER", "PROJECT_GUEST", "PROJECT_VIEWER"]),
+							}),
+						),
+						teamMembership: z
+							.object({
+								uid: z.string(),
+								username: z.string().optional(),
+							})
+							.optional(),
+					})
+					.strict(),
+				z
+					.object({
+						configuredBy: z.string().nullish(),
+						domain: z.string(),
+						prevConfiguredBy: z.string().nullish(),
+						projectId: z.string(),
+						projectName: z.string(),
+						target: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						project: z.object({
+							id: z.string().optional(),
+							name: z.string(),
+						}),
+						projectMembership: z
+							.object({
+								createdAt: z.number(),
+								role: z.enum(["ADMIN", "PROJECT_DEVELOPER", "PROJECT_GUEST", "PROJECT_VIEWER"]),
+								uid: z.string(),
+								username: z.string().optional(),
+							})
+							.nullable(),
+					})
+					.strict(),
+				z
+					.object({
+						project: z.object({
+							id: z.string().optional(),
+							invitedUserId: z.string().optional(),
+							invitedUserName: z.string(),
+							name: z.string(),
+							role: z.enum(["ADMIN", "PROJECT_DEVELOPER", "PROJECT_GUEST", "PROJECT_VIEWER"]),
+						}),
+					})
+					.strict(),
+				z
+					.object({
+						project: z.object({
+							id: z.string().optional(),
+							name: z.string(),
+						}),
+						removedMembership: z.object({
+							createdAt: z.number(),
+							role: z.enum(["ADMIN", "PROJECT_DEVELOPER", "PROJECT_GUEST", "PROJECT_VIEWER"]),
+							uid: z.string(),
+							username: z.string().optional(),
+						}),
+					})
+					.strict(),
+				z
+					.object({
+						project: z.object({
+							id: z.string(),
+							name: z.string(),
+						}),
+						projectMembership: z.object({
+							createdAt: z.number().optional(),
+							role: z
+								.enum(["ADMIN", "PROJECT_DEVELOPER", "PROJECT_GUEST", "PROJECT_VIEWER"])
+								.optional(),
+							uid: z.string().optional(),
+							previousRole: z
+								.enum(["ADMIN", "PROJECT_DEVELOPER", "PROJECT_GUEST", "PROJECT_VIEWER"])
+								.optional(),
+							username: z.string().optional(),
+						}),
+					})
+					.strict(),
+				z
+					.object({
+						newProjectId: z.string().optional(),
+						newProjectName: z.string(),
+						originAccountName: z.string(),
+						previousProjectId: z.string().optional(),
+						previousProjectName: z.string(),
+						transferId: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						destinationAccountName: z.string().nullable(),
+						previousProjectId: z.string().optional(),
+						projectName: z.string(),
+						transferId: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						destinationAccountId: z.string(),
+						destinationAccountName: z.string(),
+						originAccountName: z.string(),
+						projectId: z.string(),
+						projectName: z.string(),
+						transferId: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						destinationAccountName: z.string(),
+						newProjectId: z.string().optional(),
+						newProjectName: z.string(),
+						previousProjectId: z.string().optional(),
+						previousProjectName: z.string(),
+						transferId: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						projectId: z.string(),
+						projectName: z.string(),
+						source: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						oldOptionsAllowlist: z
+							.object({
+								paths: z.array(
+									z.object({
+										value: z.string(),
+									}),
+								),
+							})
+							.nullish(),
+						optionsAllowlist: z
+							.object({
+								paths: z.array(
+									z.object({
+										value: z.string(),
+									}),
+								),
+							})
+							.nullish(),
+						projectId: z.string(),
+						projectName: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						oldPasswordProtection: z
+							.union([
+								z
+									.object({
+										deploymentType: z.enum([
+											"all",
+											"all_except_custom_domains",
+											"preview",
+											"prod_deployment_urls_and_all_previews",
+										]),
+									})
+									.strict(),
+								z.enum([
+									"all",
+									"all_except_custom_domains",
+									"preview",
+									"prod_deployment_urls_and_all_previews",
+								]),
+							])
+							.nullable(),
+						passwordChanged: z.union([z.literal(false), z.literal(true)]).optional(),
+						passwordProtection: z
+							.union([
+								z
+									.object({
+										deploymentType: z.enum([
+											"all",
+											"all_except_custom_domains",
+											"preview",
+											"prod_deployment_urls_and_all_previews",
+										]),
+									})
+									.strict(),
+								z.enum([
+									"all",
+									"all_except_custom_domains",
+									"preview",
+									"prod_deployment_urls_and_all_previews",
+								]),
+							])
+							.nullable(),
+						projectId: z.string().optional(),
+						projectName: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						projectId: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						expiresAt: z.number(),
+						projectId: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						projectId: z.string(),
+						projectName: z
+							.string()
+							.optional()
+							.describe(
+								"Display name for Activity links. Optional for events stored before it was published.",
+							),
+						reasonCode: z.enum(["BACKOFFICE", "BUDGET_REACHED", "PUBLIC_API"]).optional(),
+					})
+					.strict(),
+				z
+					.object({
+						consent: z.enum(["granted", "refused"]),
+						projectId: z.string().optional(),
+						projectName: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						deploymentId: z.string(),
+						projectAccountId: z.string(),
+						projectId: z.string(),
+						projectName: z.string(),
+						rollbackDescription: z
+							.object({
+								createdAt: z.number().describe("Timestamp of when the rollback was requested."),
+								description: z
+									.string()
+									.describe(
+										"User-supplied explanation of why they rolled back the project. Limited to 250 characters.",
+									),
+								userId: z.string().describe("The user who rolled back the project."),
+								username: z
+									.string()
+									.describe("The username of the user who rolled back the project."),
+							})
+							.optional()
+							.describe(
+								"Description of why a project was rolled back, and by whom. Note that lastAliasRequest contains the from/to details of the rollback.",
+							),
+					})
+					.strict(),
+				z
+					.object({
+						projectId: z.string(),
+						projectName: z.string(),
+						targetDeploymentId: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						projectId: z.string(),
+						projectName: z.string(),
+						targetDeploymentId: z.string().optional(),
+						newTargetPercentage: z.number().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						projectId: z.string(),
+						projectName: z.string(),
+						targetDeploymentId: z.string().optional(),
+						action: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						next: z
+							.object({
+								deploymentSources: z.array(z.string()).nullish(),
+								gitSources: z.array(z.string()).nullish(),
+							})
+							.nullable(),
+						previous: z
+							.object({
+								deploymentSources: z.array(z.string()).nullish(),
+								gitSources: z.array(z.string()).nullish(),
+							})
+							.nullable(),
+						projectId: z.string(),
+						projectName: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						failoverRegions: z.array(z.string()).optional(),
+						projectId: z.string(),
+						projectName: z.string(),
+						region: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						next: z.object({
+							issuerMode: z.enum(["global", "team"]),
+						}),
+						previous: z.object({
+							issuerMode: z.enum(["global", "team"]).optional(),
+						}),
+						projectId: z.string(),
+						projectName: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						customerSupportCodeVisibility: z.union([z.literal(false), z.literal(true)]),
+						projectId: z.string(),
+						projectName: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						gitForkProtection: z.union([z.literal(false), z.literal(true)]),
+						projectId: z.string(),
+						projectName: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						projectId: z.string(),
+						projectName: z.string(),
+						protectedSourcemaps: z.union([z.literal(false), z.literal(true)]),
+					})
+					.strict(),
+				z
+					.object({
+						inheritDeploymentProtection: z.union([z.literal(false), z.literal(true)]),
+						projectId: z.string(),
+						projectName: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						projectId: z.string(),
+						projectName: z.string(),
+						publicSource: z.union([z.literal(false), z.literal(true)]),
+					})
+					.strict(),
+				z
+					.object({
+						next: z.object({
+							expiration: z.string().optional(),
+							expirationCanceled: z.string().optional(),
+							expirationErrored: z.string().optional(),
+							expirationProduction: z.string().optional(),
+						}),
+						previous: z.object({
+							expiration: z.string().optional(),
+							expirationCanceled: z.string().optional(),
+							expirationErrored: z.string().optional(),
+							expirationProduction: z.string().optional(),
+						}),
+						projectId: z.string().optional(),
+						projectName: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						next: z.object({
+							skewProtectionBoundaryAt: z.number(),
+						}),
+						previous: z.object({
+							skewProtectionBoundaryAt: z.number().optional(),
+						}),
+						projectId: z.string(),
+						projectName: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						next: z.object({
+							skewProtectionMaxAge: z.number(),
+						}),
+						previous: z.object({
+							skewProtectionMaxAge: z.number().optional(),
+						}),
+						projectId: z.string(),
+						projectName: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						next: z.object({
+							skewProtectionAllowedDomains: z.array(z.string()),
+						}),
+						previous: z.object({
+							skewProtectionAllowedDomains: z.array(z.string()).optional(),
+						}),
+						projectId: z.string(),
+						projectName: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						oldSsoProtection: z
+							.union([
+								z
+									.object({
+										april2026SecurityIncidentMigrationAppliedFrom: z
+											.enum([
+												"all",
+												"all_except_custom_domains",
+												"preview",
+												"prod_deployment_urls_and_all_previews",
+											])
+											.nullish(),
+										cve55182MigrationAppliedFrom: z
+											.enum([
+												"all",
+												"all_except_custom_domains",
+												"preview",
+												"prod_deployment_urls_and_all_previews",
+											])
+											.nullish(),
+										deploymentType: z.enum([
+											"all",
+											"all_except_custom_domains",
+											"preview",
+											"prod_deployment_urls_and_all_previews",
+										]),
+									})
+									.strict(),
+								z.enum([
+									"all",
+									"all_except_custom_domains",
+									"preview",
+									"prod_deployment_urls_and_all_previews",
+								]),
+							])
+							.nullable(),
+						projectId: z.string().optional(),
+						projectName: z.string().optional(),
+						ssoProtection: z
+							.union([
+								z
+									.object({
+										april2026SecurityIncidentMigrationAppliedFrom: z
+											.enum([
+												"all",
+												"all_except_custom_domains",
+												"preview",
+												"prod_deployment_urls_and_all_previews",
+											])
+											.nullish(),
+										cve55182MigrationAppliedFrom: z
+											.enum([
+												"all",
+												"all_except_custom_domains",
+												"preview",
+												"prod_deployment_urls_and_all_previews",
+											])
+											.nullish(),
+										deploymentType: z.enum([
+											"all",
+											"all_except_custom_domains",
+											"preview",
+											"prod_deployment_urls_and_all_previews",
+										]),
+									})
+									.strict(),
+								z.enum([
+									"all",
+									"all_except_custom_domains",
+									"preview",
+									"prod_deployment_urls_and_all_previews",
+								]),
+							])
+							.nullable(),
+					})
+					.strict(),
+				z
+					.object({
+						next: z.object({
+							project: z.object({
+								id: z.string().optional(),
+								staticIps: z.object({
+									buildRegion: z.string().optional(),
+									builds: z.union([z.literal(false), z.literal(true)]).optional(),
+									enabled: z.union([z.literal(false), z.literal(true)]),
+									regions: z.array(z.string()).optional(),
+								}),
+							}),
+						}),
+						previous: z.object({
+							project: z.object({
+								id: z.string().optional(),
+								staticIps: z.object({
+									buildRegion: z.string().optional(),
+									builds: z.union([z.literal(false), z.literal(true)]).optional(),
+									enabled: z.union([z.literal(false), z.literal(true)]),
+									regions: z.array(z.string()).optional(),
+								}),
+							}),
+						}),
+						projectId: z.string(),
+						projectName: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						addedAddresses: z.array(z.string()).nullish(),
+						oldTrustedIps: z
+							.enum([
+								"all",
+								"all_except_custom_domains",
+								"preview",
+								"prod_deployment_urls_and_all_previews",
+								"production",
+							])
+							.nullish(),
+						projectId: z.string(),
+						projectName: z.string(),
+						removedAddresses: z.array(z.string()).nullish(),
+						trustedIps: z
+							.enum([
+								"all",
+								"all_except_custom_domains",
+								"preview",
+								"prod_deployment_urls_and_all_previews",
+								"production",
+							])
+							.nullish(),
+					})
+					.strict(),
+				z
+					.object({
+						addedProjects: z.array(
+							z.object({
+								id: z.string(),
+								name: z.string(),
+							}),
+						),
+						addedProviders: z.array(z.string()),
+						enableVercelCiSameRepository: z.union([z.literal(false), z.literal(true)]).optional(),
+						projectId: z.string(),
+						projectName: z.string(),
+						removedProjects: z.array(
+							z.object({
+								id: z.string(),
+								name: z.string(),
+							}),
+						),
+						removedProviders: z.array(z.string()),
+					})
+					.strict(),
+				z
+					.object({
+						projectId: z.string(),
+						projectName: z
+							.string()
+							.optional()
+							.describe(
+								"Display name for Activity links. Optional for events stored before it was published.",
+							),
+						reasonCode: z.enum(["BACKOFFICE", "PUBLIC_API"]).optional(),
+					})
+					.strict(),
+				z
+					.object({
+						prevProjectWebAnalytics: z
+							.object({
+								canceledAt: z.number().optional(),
+								disabledAt: z.number().optional(),
+								enabledAt: z.number().optional(),
+								hasData: z.literal(true).optional(),
+								id: z.string(),
+							})
+							.nullish(),
+						projectId: z.string(),
+						projectName: z.string(),
+						projectWebAnalytics: z
+							.object({
+								canceledAt: z.number().optional(),
+								disabledAt: z.number().optional(),
+								enabledAt: z.number().optional(),
+								hasData: z.literal(true).optional(),
+								id: z.string(),
+							})
+							.optional(),
+					})
+					.strict(),
+				z
+					.object({
+						gitProvider: z.string(),
+						gitProviderGroupDescriptor: z.string(),
+						gitScope: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						connectionId: z.string(),
+						connectionType: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						alias: z.string(),
+						projectId: z.string().optional(),
+						sandboxId: z.string().optional(),
+						sandboxName: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						driveName: z.string(),
+						projectId: z.string(),
+						projectName: z.string(),
+						region: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						projectId: z.string(),
+						projectName: z.string(),
+						snapshotId: z.string(),
+						targetRegions: z.array(z.string()),
+					})
+					.strict(),
+				z
+					.object({
+						instances: z.number(),
+						url: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						email: z.string(),
+						verified: z.union([z.literal(false), z.literal(true)]),
+					})
+					.strict(),
+				z
+					.object({
+						email: z.string(),
+						verified: z.union([z.literal(false), z.literal(true)]),
+						actorId: z.string().describe("Okta user id."),
+						actorName: z.string().optional(),
+						actorType: z.enum(["admin"]),
+					})
+					.strict(),
+				z
+					.object({
+						email: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						name: z.union([
+							z.string(),
+							z
+								.object({
+									name: z.string(),
+								})
+								.strict(),
+						]),
+						uid: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						newName: z.string(),
+						oldName: z.string(),
+						uid: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						enabled: z.union([z.literal(false), z.literal(true)]),
+						firstEnabledAt: z.number().optional(),
+						projectId: z.string().optional(),
+						projectName: z.string().optional(),
+						updatedAt: z.number(),
+					})
+					.strict(),
+				z
+					.object({
+						bio: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						max: z.number(),
+						min: z.number(),
+						scalingRules: z.object({}).catchall(
+							z.object({
+								max: z.number(),
+								min: z.number(),
+							}),
+						),
+						url: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						env: z.string().optional(),
+						factors: z
+							.array(
+								z
+									.object({
+										legacy: z.union([z.literal(false), z.literal(true)]).optional(),
+										origin: z.enum([
+											"apple",
+											"bitbucket",
+											"chatgpt",
+											"email",
+											"github",
+											"gitlab",
+											"google",
+											"otp",
+											"saml",
+										]),
+										ssoType: z.string().optional(),
+										teamId: z.string().optional(),
+										username: z.string().optional(),
+									})
+									.strict(),
+							)
+							.min(1)
+							.max(1)
+							.optional(),
+						geolocation: z
+							.object({
+								city: z
+									.object({
+										names: z.object({
+											en: z.string(),
+										}),
+									})
+									.optional(),
+								country: z.object({
+									names: z.object({
+										en: z.string(),
+									}),
+								}),
+								mostSpecificSubdivision: z
+									.object({
+										names: z.object({
+											en: z.string(),
+										}),
+									})
+									.optional(),
+								regionName: z.string().optional(),
+							})
+							.nullish(),
+						os: z.string().optional(),
+						ssoType: z.string().optional(),
+						userAgent: z.string().optional(),
+						username: z.string().optional(),
+						viaApple: z.union([z.literal(false), z.literal(true)]).optional(),
+						viaBitbucket: z.union([z.literal(false), z.literal(true)]).optional(),
+						viaGithub: z.union([z.literal(false), z.literal(true)]).optional(),
+						viaGitlab: z.union([z.literal(false), z.literal(true)]).optional(),
+						viaGoogle: z.union([z.literal(false), z.literal(true)]).optional(),
+						viaOTP: z.union([z.literal(false), z.literal(true)]).optional(),
+						viaPasskey: z.union([z.literal(false), z.literal(true)]).optional(),
+						viaSamlSso: z.union([z.literal(false), z.literal(true)]).optional(),
+					})
+					.strict(),
+				z
+					.object({
+						bitbucketEmail: z.string(),
+						bitbucketLogin: z.string(),
+						bitbucketName: z.string(),
+						email: z.string(),
+						zeitAccount: z.string(),
+						zeitAccountType: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						email: z.string(),
+						githubLogin: z.string(),
+						zeitAccount: z.string(),
+						zeitAccountType: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						email: z.string(),
+						gitlabEmail: z.string(),
+						gitlabLogin: z.string(),
+						gitlabName: z.string(),
+						zeitAccount: z.string(),
+						zeitAccountType: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						analyticsId: z.string().optional(),
+						previous: z.object({
+							sampleRatePercent: z.number().nullable(),
+							spendLimitInDollars: z.number().nullable(),
+						}),
+						projectId: z.string().optional(),
+						projectName: z.string().optional(),
+						sampleRatePercent: z.number().nullable(),
+						spendLimitInDollars: z.number().nullable(),
+					})
+					.strict(),
+				z
+					.object({
+						budget: z.object({
+							budgetItem: z
+								.object({
+									createdAt: z.number().describe("Date time when budget is created"),
+									fixedBudget: z.number().describe("Budget amount (USD / dollars)"),
+									id: z.string().describe("Sort key that needs to be unique per teamId"),
+									isActive: z
+										.union([z.literal(false), z.literal(true)])
+										.describe("Is the budget currently active for a customer"),
+									notifiedAt: z
+										.array(z.number())
+										.describe("Array of 50, 75, 100 to keep track of notifications sent out"),
+									pauseProjects: z
+										.union([z.literal(false), z.literal(true)])
+										.optional()
+										.describe("Should all projects be paused if budget is exceeded"),
+									previousSpend: z
+										.array(z.number())
+										.describe("Array of the last 3 months of spend data"),
+									pricingPlan: z
+										.enum(["flex", "legacy", "platform", "plus", "unbundled"])
+										.optional()
+										.describe("The acive pricing plan the team is billed with"),
+									scope: z
+										.enum(["organization", "project", "team"])
+										.optional()
+										.describe(
+											"Which budget this is. Matches Copper SDK `BudgetScope`. Omitted on events published before team/org/project scopes existed (treat as team).",
+										),
+									scopeId: z.string().optional().describe("Project id when `scope` is `project`."),
+									teamId: z.string().describe("Partition key"),
+									type: z.enum(["fixed"]).describe("The budget type"),
+									updatedAt: z
+										.number()
+										.optional()
+										.describe("Date time when budget is updated last"),
+									webhookId: z
+										.string()
+										.optional()
+										.describe(
+											"Webhook id that corresponds to a webhook in Cosmos webhook collection",
+										),
+									webhookNotified: z
+										.union([z.literal(false), z.literal(true)])
+										.optional()
+										.describe("Keep track if the webhook has been called for the month"),
+								})
+								.describe(
+									"Represents a budget for tracking and notifying teams on their spending.",
+								),
+						}),
+					})
+					.strict(),
+				z
+					.object({
+						budget: z
+							.object({
+								createdAt: z.number().describe("Date time when budget is created"),
+								fixedBudget: z.number().describe("Budget amount (USD / dollars)"),
+								id: z.string().describe("Sort key that needs to be unique per teamId"),
+								isActive: z
+									.union([z.literal(false), z.literal(true)])
+									.describe("Is the budget currently active for a customer"),
+								notifiedAt: z
+									.array(z.number())
+									.describe("Array of 50, 75, 100 to keep track of notifications sent out"),
+								pauseProjects: z
+									.union([z.literal(false), z.literal(true)])
+									.optional()
+									.describe("Should all projects be paused if budget is exceeded"),
+								previousSpend: z
+									.array(z.number())
+									.describe("Array of the last 3 months of spend data"),
+								pricingPlan: z
+									.enum(["flex", "legacy", "platform", "plus", "unbundled"])
+									.optional()
+									.describe("The acive pricing plan the team is billed with"),
+								scope: z
+									.enum(["organization", "project", "team"])
+									.optional()
+									.describe(
+										"Which budget this is. Matches Copper SDK `BudgetScope`. Omitted on events published before team/org/project scopes existed (treat as team).",
+									),
+								scopeId: z.string().optional().describe("Project id when `scope` is `project`."),
+								teamId: z.string().describe("Partition key"),
+								type: z.enum(["fixed"]).describe("The budget type"),
+								updatedAt: z.number().optional().describe("Date time when budget is updated last"),
+								webhookId: z
+									.string()
+									.optional()
+									.describe(
+										"Webhook id that corresponds to a webhook in Cosmos webhook collection",
+									),
+								webhookNotified: z
+									.union([z.literal(false), z.literal(true)])
+									.optional()
+									.describe("Keep track if the webhook has been called for the month"),
+							})
+							.describe("Represents a budget for tracking and notifying teams on their spending."),
+					})
+					.strict(),
+				z
+					.object({
+						budget: z
+							.object({
+								createdAt: z.number().describe("Date time when budget is created"),
+								fixedBudget: z.number().describe("Budget amount (USD / dollars)"),
+								id: z.string().describe("Sort key that needs to be unique per teamId"),
+								isActive: z
+									.union([z.literal(false), z.literal(true)])
+									.describe("Is the budget currently active for a customer"),
+								notifiedAt: z
+									.array(z.number())
+									.describe("Array of 50, 75, 100 to keep track of notifications sent out"),
+								pauseProjects: z
+									.union([z.literal(false), z.literal(true)])
+									.optional()
+									.describe("Should all projects be paused if budget is exceeded"),
+								previousSpend: z
+									.array(z.number())
+									.describe("Array of the last 3 months of spend data"),
+								pricingPlan: z
+									.enum(["flex", "legacy", "platform", "plus", "unbundled"])
+									.optional()
+									.describe("The acive pricing plan the team is billed with"),
+								scope: z
+									.enum(["organization", "project", "team"])
+									.optional()
+									.describe(
+										"Which budget this is. Matches Copper SDK `BudgetScope`. Omitted on events published before team/org/project scopes existed (treat as team).",
+									),
+								scopeId: z.string().optional().describe("Project id when `scope` is `project`."),
+								teamId: z.string().describe("Partition key"),
+								type: z.enum(["fixed"]).describe("The budget type"),
+								updatedAt: z.number().optional().describe("Date time when budget is updated last"),
+								webhookId: z
+									.string()
+									.optional()
+									.describe(
+										"Webhook id that corresponds to a webhook in Cosmos webhook collection",
+									),
+								webhookNotified: z
+									.union([z.literal(false), z.literal(true)])
+									.optional()
+									.describe("Keep track if the webhook has been called for the month"),
+							})
+							.describe("Represents a budget for tracking and notifying teams on their spending."),
+						webhookUrl: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						budget: z
+							.object({
+								createdAt: z.number().describe("Date time when budget is created"),
+								fixedBudget: z.number().describe("Budget amount (USD / dollars)"),
+								id: z.string().describe("Sort key that needs to be unique per teamId"),
+								isActive: z
+									.union([z.literal(false), z.literal(true)])
+									.describe("Is the budget currently active for a customer"),
+								notifiedAt: z
+									.array(z.number())
+									.describe("Array of 50, 75, 100 to keep track of notifications sent out"),
+								pauseProjects: z
+									.union([z.literal(false), z.literal(true)])
+									.optional()
+									.describe("Should all projects be paused if budget is exceeded"),
+								previousSpend: z
+									.array(z.number())
+									.describe("Array of the last 3 months of spend data"),
+								pricingPlan: z
+									.enum(["flex", "legacy", "platform", "plus", "unbundled"])
+									.optional()
+									.describe("The acive pricing plan the team is billed with"),
+								scope: z
+									.enum(["organization", "project", "team"])
+									.optional()
+									.describe(
+										"Which budget this is. Matches Copper SDK `BudgetScope`. Omitted on events published before team/org/project scopes existed (treat as team).",
+									),
+								scopeId: z.string().optional().describe("Project id when `scope` is `project`."),
+								teamId: z.string().describe("Partition key"),
+								type: z.enum(["fixed"]).describe("The budget type"),
+								updatedAt: z.number().optional().describe("Date time when budget is updated last"),
+								webhookId: z
+									.string()
+									.optional()
+									.describe(
+										"Webhook id that corresponds to a webhook in Cosmos webhook collection",
+									),
+								webhookNotified: z
+									.union([z.literal(false), z.literal(true)])
+									.optional()
+									.describe("Keep track if the webhook has been called for the month"),
+							})
+							.describe("Represents a budget for tracking and notifying teams on their spending."),
+						prevBudget: z
+							.object({
+								createdAt: z.number().describe("Date time when budget is created"),
+								fixedBudget: z.number().describe("Budget amount (USD / dollars)"),
+								id: z.string().describe("Sort key that needs to be unique per teamId"),
+								isActive: z
+									.union([z.literal(false), z.literal(true)])
+									.describe("Is the budget currently active for a customer"),
+								notifiedAt: z
+									.array(z.number())
+									.describe("Array of 50, 75, 100 to keep track of notifications sent out"),
+								pauseProjects: z
+									.union([z.literal(false), z.literal(true)])
+									.optional()
+									.describe("Should all projects be paused if budget is exceeded"),
+								previousSpend: z
+									.array(z.number())
+									.describe("Array of the last 3 months of spend data"),
+								pricingPlan: z
+									.enum(["flex", "legacy", "platform", "plus", "unbundled"])
+									.optional()
+									.describe("The acive pricing plan the team is billed with"),
+								scope: z
+									.enum(["organization", "project", "team"])
+									.optional()
+									.describe(
+										"Which budget this is. Matches Copper SDK `BudgetScope`. Omitted on events published before team/org/project scopes existed (treat as team).",
+									),
+								scopeId: z.string().optional().describe("Project id when `scope` is `project`."),
+								teamId: z.string().describe("Partition key"),
+								type: z.enum(["fixed"]).describe("The budget type"),
+								updatedAt: z.number().optional().describe("Date time when budget is updated last"),
+								webhookId: z
+									.string()
+									.optional()
+									.describe(
+										"Webhook id that corresponds to a webhook in Cosmos webhook collection",
+									),
+								webhookNotified: z
+									.union([z.literal(false), z.literal(true)])
+									.optional()
+									.describe("Keep track if the webhook has been called for the month"),
+							})
+							.optional()
+							.describe("Represents a budget for tracking and notifying teams on their spending."),
+						prevWebhookUrl: z.string().optional(),
+						webhookUrl: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						webhookUrl: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						storeType: z.enum(["postgres", "redis"]),
+					})
+					.strict(),
+				z
+					.object({
+						store: z.object({
+							id: z.string(),
+							name: z.string().optional(),
+							type: z.enum(["blob", "edge-config", "integration", "postgres", "redis"]),
+						}),
+						transferRequestCode: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						store: z.object({
+							id: z.string(),
+							name: z.string().optional(),
+							type: z.enum(["blob", "edge-config", "integration", "postgres", "redis"]),
+						}),
+						transferRequestCode: z.string(),
+						destinationTeamId: z.string(),
+						destinationTeamName: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						store: z.object({
+							id: z.string(),
+							name: z.string().optional(),
+							type: z.enum(["blob", "edge-config", "integration", "postgres", "redis"]),
+						}),
+						transferRequestCode: z.string(),
+						originTeamId: z.string(),
+						originTeamName: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						access: z.enum(["private", "public"]).optional(),
+						computeUnitsMax: z.number().optional(),
+						computeUnitsMin: z.number().optional(),
+						id: z.string(),
+						name: z.string().optional(),
+						suspendTimeoutSeconds: z.number().optional(),
+						type: z.enum(["blob", "edge-config", "integration", "postgres", "redis"]),
+					})
+					.strict(),
+				z
+					.object({
+						ownerId: z.string().optional(),
+						store: z.object({
+							id: z.string(),
+							name: z.string(),
+						}),
+					})
+					.strict(),
+				z
+					.object({
+						access: z.enum(["private", "public"]).optional(),
+						computeUnitsMax: z.number().optional(),
+						computeUnitsMin: z.number().optional(),
+						id: z.string(),
+						name: z.string().optional(),
+						suspendTimeoutSeconds: z.number().optional(),
+						type: z.enum(["blob", "edge-config", "integration", "postgres", "redis"]),
+						locked: z.union([z.literal(false), z.literal(true)]),
+					})
+					.strict(),
+				z
+					.object({
+						actorId: z.string().optional(),
+						actorType: z.enum(["admin", "user"]).optional(),
+						caseNumber: z.string().optional(),
+						client: z.string().optional(),
+						reason: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						slug: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						next: z
+							.object({
+								enabled: z
+									.union([z.literal(false), z.literal(true)])
+									.describe("Whether automatic code reviews are enabled"),
+								includeDrafts: z
+									.union([z.literal(false), z.literal(true)])
+									.describe("Whether to include draft pull requests in automatic reviews"),
+								scope: z
+									.enum(["all", "private", "public", "selected_repos"])
+									.describe("Which repository visibilities get automatic reviews"),
+								selectedRepos: z
+									.array(z.string())
+									.nullish()
+									.describe(
+										"GitHub repos to scope automatic reviews to. Format: \"owner/repo\" (lowercase). Only used when scope='selected_repos'.",
+									),
+							})
+							.describe("Automatic code review settings"),
+						previous: z
+							.object({
+								enabled: z
+									.union([z.literal(false), z.literal(true)])
+									.describe("Whether automatic code reviews are enabled"),
+								includeDrafts: z
+									.union([z.literal(false), z.literal(true)])
+									.describe("Whether to include draft pull requests in automatic reviews"),
+								scope: z
+									.enum(["all", "private", "public", "selected_repos"])
+									.describe("Which repository visibilities get automatic reviews"),
+								selectedRepos: z
+									.array(z.string())
+									.nullish()
+									.describe(
+										"GitHub repos to scope automatic reviews to. Format: \"owner/repo\" (lowercase). Only used when scope='selected_repos'.",
+									),
+							})
+							.optional()
+							.describe("Automatic code review settings"),
+					})
+					.strict(),
+				z
+					.object({
+						amount: z.string(),
+						currency: z.string(),
+						expiresAt: z.string(),
+						trialCreditsIssuedAt: z.number(),
+					})
+					.strict(),
+				z
+					.object({
+						eventId: z.string(),
+						occurredAt: z.number(),
+						sessionId: z.string(),
+						sessionKind: z
+							.string()
+							.describe("Currently emitted session kinds: chat, investigation."),
+						surface: z
+							.string()
+							.describe(
+								"Currently emitted surfaces: dashboard, internal, slack, automation, github.",
+							),
+					})
+					.strict(),
+				z
+					.object({
+						eventId: z.string(),
+						occurredAt: z.number(),
+						sessionId: z.string(),
+						sessionKind: z
+							.string()
+							.describe("Currently emitted session kinds: chat, investigation."),
+						surface: z
+							.string()
+							.describe(
+								"Currently emitted surfaces: dashboard, internal, slack, automation, github.",
+							),
+						elevatedScopeCount: z.number(),
+						elevatedScopes: z
+							.array(z.string())
+							.describe("Requested Vercel scopes that are not included in the baseline token."),
+						githubScopeCount: z.number(),
+						githubScopes: z
+							.array(z.string())
+							.describe(
+								"External GitHub scopes requested by the plan; these are not Vercel token scopes.",
+							),
+						mergedScopeCount: z.number(),
+						mergedScopes: z
+							.array(z.string())
+							.describe("Baseline plus elevated Vercel scopes used when minting scoped tokens."),
+						planId: z.string(),
+						requestedScopeCount: z.number(),
+						requestedScopes: z
+							.array(z.string())
+							.describe("Scopes requested by the model-authored plan."),
+					})
+					.strict(),
+				z
+					.object({
+						next: z.enum(["auto-approval", "block", "manual-approval"]).nullable(),
+						previous: z.enum(["auto-approval", "block", "manual-approval"]).nullable(),
+						teamSlug: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						isSystemInitiated: z.union([z.literal(false), z.literal(true)]).optional(),
+						next: z.enum(["basic", "elastic", "enhanced", "standard", "turbo"]).optional(),
+						previous: z.enum(["basic", "elastic", "enhanced", "standard", "turbo"]).optional(),
+						reason: z
+							.enum([
+								"basic-floor",
+								"build-timeout-failure",
+								"enospc-failure",
+								"enterprise-floor",
+								"high-peak-disk",
+								"high-peak-memory",
+								"long-build-duration",
+								"oom-failure",
+								"plan-change",
+								"project-transfer",
+								"short-build-duration",
+								"sustained-high-cpu",
+							])
+							.optional(),
+					})
+					.strict(),
+				z
+					.object({
+						by: z.string(),
+						byUid: z.string().optional(),
+						reasons: z
+							.array(
+								z.object({
+									description: z.string(),
+									slug: z.string(),
+								}),
+							)
+							.optional(),
+						removedMemberCount: z.number().optional(),
+						removedUsers: z
+							.object({})
+							.catchall(
+								z.object({
+									confirmed: z.union([z.literal(false), z.literal(true)]),
+									confirmedAt: z.number().optional(),
+									role: z.enum([
+										"BILLING",
+										"CONTRIBUTOR",
+										"DEVELOPER",
+										"MEMBER",
+										"OWNER",
+										"SECURITY",
+										"VIEWER",
+										"VIEWER_FOR_PLUS",
+									]),
+								}),
+							)
+							.optional(),
+						slug: z.string(),
+						teamId: z.string(),
+						timestamp: z.number().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						next: z
+							.object({
+								deploymentSources: z.array(z.string()).nullish(),
+								gitSources: z.array(z.string()).nullish(),
+							})
+							.nullable(),
+						previous: z
+							.object({
+								deploymentSources: z.array(z.string()).nullish(),
+								gitSources: z.array(z.string()).nullish(),
+							})
+							.nullable(),
+					})
+					.strict(),
+				z
+					.object({
+						domain: z.string().optional(),
+						enabled: z.union([z.literal(false), z.literal(true)]),
+					})
+					.strict(),
+				z
+					.object({
+						enabled: z.union([z.literal(false), z.literal(true)]).nullable(),
+						environment: z.enum(["preview", "production"]),
+						projectId: z.string(),
+						projectName: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						enabled: z.enum(["default", "default-force", "off", "off-force", "on", "on-force"]),
+						environment: z.enum(["preview", "production"]),
+					})
+					.strict(),
+				z
+					.object({
+						emailDomain: z.string().nullish(),
+					})
+					.strict(),
+				z
+					.object({
+						deletedCount: z.number(),
+						inviteIds: z.array(z.string()),
+					})
+					.strict(),
+				z
+					.object({
+						directoryType: z.string().optional(),
+						entitlements: z.array(z.string()).optional(),
+						invitationRole: z.string().optional(),
+						invitedEmail: z.string().optional(),
+						invitedUid: z.string().optional(),
+						invitedUser: z
+							.object({
+								email: z.string(),
+								username: z.string(),
+							})
+							.optional(),
+						origin: z.string().optional(),
+						ssoType: z.string().optional(),
+						teamSlug: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						bitbucketUsername: z.string().nullish(),
+						githubUsername: z.string().nullish(),
+						gitlabUsername: z.string().nullish(),
+						gitUsername: z.string().optional(),
+						teamId: z.string().optional(),
+						teamName: z.string(),
+						updatedUid: z.string().optional(),
+						username: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						bitbucketUsername: z.string().nullish(),
+						githubUsername: z.string().nullish(),
+						gitlabUsername: z.string().nullish(),
+						gitUsername: z.string().nullish(),
+						teamName: z.string(),
+						username: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						automated: z
+							.union([z.literal(false), z.literal(true)])
+							.optional()
+							.describe("Whether the removal was system-initiated rather than human-initiated."),
+						bitbucketUsername: z.string().nullish(),
+						deletedUid: z.string().optional(),
+						deletedUser: z
+							.object({
+								email: z.string(),
+								username: z.string(),
+							})
+							.optional(),
+						directoryType: z.string().optional(),
+						githubUsername: z.string().nullish(),
+						gitlabUsername: z.string().nullish(),
+						newPlan: z.enum(["enterprise", "hobby", "pro"]).optional(),
+						previousPlan: z.enum(["enterprise", "hobby", "pro"]).optional(),
+						reason: z
+							.string()
+							.optional()
+							.describe(
+								"Why the member was removed. When removed due to a plan downgrade, this is a {@link DowngradeReason} from `@api/pubsub-types` (e.g. `trial_expired`, `user_downgrade`).",
+							),
+						role: z
+							.enum([
+								"BILLING",
+								"CONTRIBUTOR",
+								"DEVELOPER",
+								"MEMBER",
+								"OWNER",
+								"SECURITY",
+								"VIEWER",
+								"VIEWER_FOR_PLUS",
+							])
+							.optional(),
+					})
+					.strict(),
+				z
+					.object({
+						entitlement: z.string(),
+						user: z.object({
+							id: z.string(),
+							username: z.string(),
+						}),
+					})
+					.strict(),
+				z
+					.object({
+						entitlement: z.string(),
+						previousCanceledAt: z.string().optional(),
+						user: z.object({
+							id: z.string(),
+							username: z.string(),
+						}),
+					})
+					.strict(),
+				z
+					.object({
+						entitlements: z.array(z.string()).optional(),
+						invitedBy: z
+							.object({
+								email: z.string(),
+								name: z.string().optional(),
+								userId: z.string().optional(),
+							})
+							.optional(),
+						origin: z.string().optional(),
+						role: z.string().optional(),
+						teamPermissions: z.array(z.string()).optional(),
+						teamRoles: z.array(z.string()).optional(),
+						teamSlug: z.string().optional(),
+						uid: z.string().optional(),
+						updatedUid: z.string().optional(),
+						updatedUser: z
+							.object({
+								email: z.string(),
+								username: z.string(),
+							})
+							.optional(),
+					})
+					.strict(),
+				z
+					.object({
+						bitbucketUsername: z.string().optional(),
+						githubUsername: z.string().optional(),
+						gitlabUsername: z.string().optional(),
+						gitUsername: z.string().optional(),
+						requestedTeamName: z.string(),
+						requestedTeamSlug: z.string().optional(),
+						requestedUserName: z.string().optional(),
+						source: z
+							.enum([
+								"account-update",
+								"bitbucket",
+								"dsync",
+								"feedback",
+								"github",
+								"gitlab",
+								"import",
+								"link",
+								"mail",
+								"nsnb-auto-approve",
+								"nsnb-hobby-upgrade",
+								"nsnb-invite",
+								"nsnb-redeploy",
+								"nsnb-redeploy-attribution-card",
+								"nsnb-request-access",
+								"nsnb-viewer-upgrade",
+								"organization-teams",
+								"saml",
+								"teams",
+							])
+							.optional(),
+					})
+					.strict(),
+				z
+					.object({
+						directoryType: z.string().optional(),
+						origin: z.string().optional(),
+						previousRole: z.string(),
+						previousTeamPermissions: z
+							.array(
+								z.enum([
+									"AiGatewayApiKeyOwnedBySelf",
+									"AiGatewayBudgetManager",
+									"AiGatewayCredits",
+									"AiGatewaySettings",
+									"AiGatewayTranscriptsManager",
+									"AiGatewayTranscriptsViewer",
+									"ConnectorManager",
+									"CreateProject",
+									"EnvVariableManager",
+									"EnvironmentManager",
+									"FullProductionDeployment",
+									"IntegrationManager",
+									"OrgAdmin",
+									"OrgViewer",
+									"UsageViewer",
+									"V0Builder",
+									"V0Chatter",
+									"V0Viewer",
+									"WorkflowDecryptor",
+								]),
+							)
+							.optional(),
+						previousTeamRoles: z
+							.array(
+								z.enum([
+									"BILLING",
+									"CONTRIBUTOR",
+									"DEVELOPER",
+									"MEMBER",
+									"OWNER",
+									"SECURITY",
+									"VIEWER",
+									"VIEWER_FOR_PLUS",
+								]),
+							)
+							.optional(),
+						role: z.string().optional(),
+						ssoType: z.string().optional(),
+						teamPermissions: z
+							.array(
+								z.enum([
+									"AiGatewayApiKeyOwnedBySelf",
+									"AiGatewayBudgetManager",
+									"AiGatewayCredits",
+									"AiGatewaySettings",
+									"AiGatewayTranscriptsManager",
+									"AiGatewayTranscriptsViewer",
+									"ConnectorManager",
+									"CreateProject",
+									"EnvVariableManager",
+									"EnvironmentManager",
+									"FullProductionDeployment",
+									"IntegrationManager",
+									"OrgAdmin",
+									"OrgViewer",
+									"UsageViewer",
+									"V0Builder",
+									"V0Chatter",
+									"V0Viewer",
+									"WorkflowDecryptor",
+								]),
+							)
+							.optional(),
+						teamRoles: z
+							.array(
+								z.enum([
+									"BILLING",
+									"CONTRIBUTOR",
+									"DEVELOPER",
+									"MEMBER",
+									"OWNER",
+									"SECURITY",
+									"VIEWER",
+									"VIEWER_FOR_PLUS",
+								]),
+							)
+							.optional(),
+						teamSlug: z.string().optional(),
+						updatedUid: z.string().optional(),
+						updatedUser: z
+							.object({
+								email: z.string(),
+								username: z.string(),
+							})
+							.optional(),
+					})
+					.strict(),
+				z
+					.object({
+						authorized: z.union([z.literal(false), z.literal(true)]),
+						email: z.string().optional(),
+						reason: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						enforced: z.union([z.literal(false), z.literal(true)]),
+					})
+					.strict(),
+				z
+					.object({
+						expiresAt: z.string(),
+						maxUses: z.number(),
+						name: z.string().optional(),
+						publicId: z.string(),
+						role: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						name: z.string().optional(),
+						publicId: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						nextConcurrentBuilds: z.number(),
+						previousConcurrentBuilds: z.number(),
+					})
+					.strict(),
+				z
+					.object({
+						plan: z.enum(["enterprise", "hobby", "pro"]),
+						trial: z
+							.object({
+								end: z.number(),
+								start: z.number(),
+							})
+							.nullish(),
+					})
+					.strict(),
+				z
+					.object({
+						convertedFromTrial: z.union([z.literal(false), z.literal(true)]),
+						invoiceId: z.string(),
+						plan: z.enum(["enterprise", "hobby", "pro"]),
+					})
+					.strict(),
+				z
+					.object({
+						inviteCode: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						name: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						name: z.string().optional(),
+						actorId: z.string().describe("Okta user id."),
+						actorName: z.string().optional(),
+						actorType: z.enum(["admin"]),
+					})
+					.strict(),
+				z
+					.object({
+						decision: z.enum(["keep_on", "turn_off"]),
+						version: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						consent: z.enum(["granted", "refused"]),
+					})
+					.strict(),
+				z
+					.object({
+						remoteCaching: z
+							.object({
+								enabled: z.union([z.literal(false), z.literal(true)]).optional(),
+							})
+							.optional()
+							.describe("Represents configuration for remote caching"),
+					})
+					.strict(),
+				z
+					.object({
+						deletedCount: z.number(),
+					})
+					.strict(),
+				z
+					.object({
+						enabled: z.enum(["default", "off", "on"]),
+					})
+					.strict(),
+				z
+					.object({
+						enabled: z.union([z.literal(false), z.literal(true)]),
+						scope: z.enum(["dashboard", "log-drains"]),
+					})
+					.strict(),
+				z
+					.object({
+						next: z
+							.object({})
+							.catchall(
+								z.union([
+									z
+										.object({
+											accessGroupId: z.string(),
+										})
+										.strict(),
+									z.enum([
+										"BILLING",
+										"CONTRIBUTOR",
+										"DEVELOPER",
+										"MEMBER",
+										"OWNER",
+										"SECURITY",
+										"VIEWER",
+										"VIEWER_FOR_PLUS",
+									]),
+								]),
+							)
+							.optional(),
+						previous: z
+							.object({})
+							.catchall(
+								z.union([
+									z
+										.object({
+											accessGroupId: z.string(),
+										})
+										.strict(),
+									z.enum([
+										"BILLING",
+										"CONTRIBUTOR",
+										"DEVELOPER",
+										"MEMBER",
+										"OWNER",
+										"SECURITY",
+										"VIEWER",
+										"VIEWER_FOR_PLUS",
+									]),
+								]),
+							)
+							.optional(),
+					})
+					.strict(),
+				z
+					.object({
+						domain: z.string(),
+						ips: z.array(z.string()),
+					})
+					.strict(),
+				z
+					.object({
+						tokenTypes: z.array(z.string()),
+					})
+					.strict(),
+				z
+					.object({
+						exportId: z.string(),
+						format: z.string(),
+						from: z.number(),
+						to: z.number(),
+					})
+					.strict(),
+				z
+					.object({
+						fileId: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						slug: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						slug: z.string().optional(),
+						actorId: z.string().describe("Okta user id."),
+						actorName: z.string().optional(),
+						actorType: z.enum(["admin"]),
+					})
+					.strict(),
+				z
+					.object({
+						projectId: z.string(),
+						projectName: z.string(),
+						sampling: z
+							.array(
+								z.object({
+									env: z.enum(["preview", "production"]).optional(),
+									rate: z.number(),
+									requestPath: z.string().optional(),
+									type: z.enum(["head_sampling"]),
+								}),
+							)
+							.optional(),
+					})
+					.strict(),
+				z
+					.object({
+						reason: z.enum(["limits-exceeded"]),
+					})
+					.strict(),
+				z
+					.object({
+						teamName: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						actorId: z.string().optional(),
+						actorName: z
+							.string()
+							.optional()
+							.describe("Human-readable admin who performed the removal."),
+						actorType: z.enum(["admin", "user"]).optional(),
+						reason: z.string().optional(),
+						recoveryCodes: z.number(),
+						totp: z.union([z.literal(false), z.literal(true)]),
+					})
+					.strict(),
+				z
+					.object({
+						deletedAt: z.number().nullish(),
+						username: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						deletedAt: z.number().nullish(),
+						username: z.string(),
+						actorId: z.string().describe("Okta user id."),
+						actorName: z.string().optional(),
+						actorType: z.enum(["admin"]),
+					})
+					.strict(),
+				z
+					.object({
+						username: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						teamName: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						teamId: z.string(),
+						teamName: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						actorId: z.string(),
+						actorType: z.enum(["admin"]),
+						reason: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						actorId: z.string(),
+						actorType: z.enum(["admin"]),
+					})
+					.strict(),
+				z
+					.object({
+						actorId: z.string(),
+						actorType: z.enum(["admin"]),
+						enabled: z.union([z.literal(false), z.literal(true)]),
+					})
+					.strict(),
+				z
+					.object({
+						actorId: z.string(),
+						actorType: z.enum(["admin"]),
+						autoBlockPrevented: z.union([z.literal(false), z.literal(true)]),
+						preventUntil: z.number().optional(),
+						reason: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						flowId: z.string().optional(),
+						loginSessionId: z.string().optional(),
+						method: z.enum(["email-otp", "recovery-code", "totp", "webauthn"]),
+						reason: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						allowedMethods: z.array(z.enum(["recovery-code", "totp", "webauthn"])),
+						firstFactor: z.string(),
+						flowId: z.string(),
+						loginSessionId: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						action: z.enum([
+							"add-passkey",
+							"add-totp",
+							"admin-remove",
+							"disable",
+							"enable",
+							"regenerate-recovery-codes",
+							"remove-passkey",
+						]),
+						reason: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						method: z.enum(["passkey", "self_serve_recovery", "totp", "user_disabled"]).optional(),
+						next: z.object({
+							enabled: z.union([z.literal(false), z.literal(true)]),
+							totpVerified: z.union([z.literal(false), z.literal(true)]),
+						}),
+						previous: z.object({
+							enabled: z.union([z.literal(false), z.literal(true)]),
+							totpVerified: z.union([z.literal(false), z.literal(true)]),
+						}),
+					})
+					.strict(),
+				z
+					.object({
+						context: z
+							.enum(["login", "sudo"])
+							.optional()
+							.describe("Absent on events predating the field; those were all logins."),
+						remaining: z.number(),
+					})
+					.strict(),
+				z
+					.object({
+						mfaEnabled: z.union([z.literal(false), z.literal(true)]),
+					})
+					.strict(),
+				z
+					.object({
+						mfa: z.object({
+							enabled: z.union([z.literal(false), z.literal(true)]),
+							totpVerified: z.union([z.literal(false), z.literal(true)]),
+						}),
+					})
+					.strict(),
+				z
+					.object({
+						enabled: z.union([z.literal(false), z.literal(true)]),
+						totpVerified: z.union([z.literal(false), z.literal(true)]),
+					})
+					.strict(),
+				z
+					.object({
+						next: z.object({
+							enabled: z.union([z.literal(false), z.literal(true)]),
+							totpVerified: z.union([z.literal(false), z.literal(true)]),
+						}),
+						previous: z.object({
+							enabled: z.union([z.literal(false), z.literal(true)]),
+							totpVerified: z.union([z.literal(false), z.literal(true)]),
+						}),
+					})
+					.strict(),
+				z
+					.object({
+						decision: z.object({
+							authoritative: z.union([z.literal(false), z.literal(true)]),
+							basis: z.enum(["gmail", "none", "workspace-mx"]),
+							emailDomain: z.string(),
+							emailVerified: z.union([z.literal(false), z.literal(true)]),
+							hostedDomainMatch: z.union([z.literal(false), z.literal(true)]),
+							mxOutcome: z.enum(["google", "lookup-error", "non-google", "not-checked"]),
+						}),
+						outcome: z.enum(["account-matched", "linking-required"]),
+						provider: z.enum(["google"]),
+						providerSubjectId: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						email: z.string(),
+						prevEmail: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						email: z.string(),
+						prevEmail: z.string(),
+						actorId: z.string().describe("Okta user id."),
+						actorName: z.string().optional(),
+						actorType: z.enum(["admin"]),
+					})
+					.strict(),
+				z
+					.object({
+						username: z.string(),
+						actorId: z.string().describe("Okta user id."),
+						actorName: z.string().optional(),
+						actorType: z.enum(["admin"]),
+					})
+					.strict(),
+				z
+					.object({
+						projectId: z.string(),
+						projectName: z.string(),
+						repositoryName: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						digest: z.string(),
+						projectId: z.string(),
+						projectName: z.string(),
+						reference: z.string(),
+						repositoryName: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						projectId: z.string(),
+						projectName: z.string(),
+						reference: z.string(),
+						repositoryName: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						projectId: z.string(),
+						projectName: z.string(),
+						repositoryName: z.string(),
+						sharedWithTeamId: z.string(),
+						sharedWithTeamSlug: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						projectId: z.string(),
+						projectName: z.string(),
+						repositoryName: z.string(),
+						sharedWithTeamId: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						projectId: z.string(),
+						projectName: z.string(),
+						public: z.union([z.literal(false), z.literal(true)]),
+						repositoryName: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						projectId: z.string(),
+						projectName: z.string(),
+						removedTeamIds: z.array(z.string()),
+						repositoryName: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						ruleName: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						nextProjectCount: z.number().nullable(),
+						previousProjectCount: z.number().nullable(),
+					})
+					.strict(),
+				z
+					.object({
+						customAlertTitle: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						protectedProjectCount: z.number(),
+						protectionEnabled: z.union([z.literal(false), z.literal(true)]),
+						vulnerabilities: z.array(z.string()),
+					})
+					.strict(),
+				z
+					.object({
+						configuration: z.object({
+							id: z.string(),
+							name: z.string().optional(),
+						}),
+						peering: z.object({
+							accountId: z.string(),
+							id: z.string(),
+							region: z.string(),
+							vpcId: z.string(),
+						}),
+						team: z.object({
+							id: z.string(),
+							name: z.string(),
+						}),
+					})
+					.strict(),
+				z
+					.object({
+						configuration: z.object({
+							id: z.string(),
+							name: z.string().optional(),
+						}),
+						peering: z.object({
+							id: z.string(),
+							name: z.string().optional(),
+						}),
+						team: z.object({
+							id: z.string(),
+							name: z.string(),
+						}),
+					})
+					.strict(),
+				z
+					.object({
+						configuration: z.object({
+							id: z.string(),
+							name: z.string().optional(),
+						}),
+						newName: z.string().optional(),
+						peering: z.object({
+							id: z.string(),
+							name: z.string().optional(),
+						}),
+						team: z.object({
+							id: z.string(),
+							name: z.string(),
+						}),
+					})
+					.strict(),
+				z
+					.object({
+						tier: z.enum(["plus", "pro"]),
+					})
+					.strict(),
+				z
+					.object({
+						id: z.string(),
+						url: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						chatId: z.string(),
+						chatTitle: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						chatId: z.string(),
+						events: z.array(
+							z.object({
+								cacheCreationInputTokens: z.number(),
+								cacheReadInputTokens: z.number(),
+								eventId: z.string(),
+								inputTokens: z.number(),
+								modelId: z.string(),
+								outputTokens: z.number(),
+								timestamp: z.string(),
+								totalTokens: z.number(),
+							}),
+						),
+						inputTokens: z.number(),
+						messageId: z.string(),
+						model: z.string(),
+						outputTokens: z.number(),
+						timestamp: z.number(),
+						useCase: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						chatId: z.string(),
+						chatTitle: z.string().optional(),
+						messageId: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						deploymentId: z.string(),
+						projectId: z.string(),
+						projectName: z.string().optional(),
+						runId: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						app: z
+							.object({
+								clientAuthenticationUsed: z.object({
+									method: z.enum([
+										"client_secret_basic",
+										"client_secret_jwt",
+										"client_secret_post",
+										"none",
+										"oidc_token",
+										"private_key_jwt",
+									]),
+									secretId: z.string().optional(),
+								}),
+								clientId: z.string(),
+								name: z
+									.string()
+									.describe(
+										"the app's name at the time the event was published (it could have changed since then)",
+									),
+							})
+							.optional()
+							.describe(
+								"optional since entries prior to 2025-10-13 do not contain app information",
+							),
+						appName: z
+							.string()
+							.describe(
+								"the app's name at the time the event was published (it could have changed since then)",
+							),
+						atTTL: z.number().describe("access_token TTL"),
+						authMethod: z.enum([
+							"app",
+							"apple",
+							"bitbucket",
+							"chatgpt",
+							"email",
+							"emu",
+							"github",
+							"github-webhook",
+							"gitlab",
+							"google",
+							"invite",
+							"manual",
+							"otp",
+							"passkey",
+							"saml",
+							"sms",
+							"token-exchange-oidc",
+						]),
+						geolocation: z
+							.object({
+								city: z
+									.object({
+										names: z.object({
+											en: z.string(),
+										}),
+									})
+									.optional(),
+								country: z.object({
+									names: z.object({
+										en: z.string(),
+									}),
+								}),
+								mostSpecificSubdivision: z
+									.object({
+										names: z.object({
+											en: z.string(),
+										}),
+									})
+									.optional(),
+								regionName: z.string().optional(),
+							})
+							.nullish()
+							.describe("optional since entries prior to 2026-04-23 do not contain this field"),
+						grantType: z.enum([
+							"authorization_code",
+							"urn:ietf:params:oauth:grant-type:device_code",
+							"urn:ietf:params:oauth:grant-type:token-exchange",
+						]),
+						includesRefreshToken: z
+							.union([z.literal(false), z.literal(true)])
+							.optional()
+							.describe("optional since entries prior to 2025-10-13 do not contain this field"),
+						ip: z
+							.string()
+							.nullish()
+							.describe("optional since entries prior to 2026-04-23 do not contain this field"),
+						issuerUrl: z
+							.string()
+							.optional()
+							.describe(
+								"OIDC issuer (`iss`) of the token that authenticated the request. Present for OIDC-authenticated flows: the token-exchange grant, or `client_credentials` with the `oidc_token` client-authentication method.",
+							),
+						oidcSubject: z
+							.string()
+							.optional()
+							.describe(
+								"`sub` claim of the OIDC token. Present for OIDC-authenticated flows (see {@link issuerUrl}).",
+							),
+						policyId: z
+							.string()
+							.optional()
+							.describe(
+								"ID of the OIDC-exchange policy that authorized a token-exchange grant. Absent for the `client_credentials` + `oidc_token` flow, which matches an app `oidcProviders` entry rather than a policy.",
+							),
+						publicId: z
+							.string()
+							.optional()
+							.describe("optional since entries prior to 2025-10-13 do not contain this field"),
+						refreshTokenPrefix: z
+							.enum(["vcr_"])
+							.optional()
+							.describe("optional; only present when a refresh token was issued (offline_access)."),
+						refreshTokenPublicId: z
+							.string()
+							.optional()
+							.describe("optional; only present when a refresh token was issued (offline_access)."),
+						refreshTokenSuffix: z
+							.string()
+							.optional()
+							.describe("optional; only present when a refresh token was issued (offline_access)."),
+						rtTTL: z.number().optional().describe("refresh_token TTL"),
+						scope: z.string(),
+						sessionId: z
+							.string()
+							.optional()
+							.describe("optional since entries prior to 2025-10-13 do not contain this field"),
+						tokenPrefix: z
+							.enum(["vca_"])
+							.optional()
+							.describe("optional since entries prior to 2026-04-23 do not contain this field"),
+						tokenSuffix: z
+							.string()
+							.optional()
+							.describe("optional since entries prior to 2026-04-23 do not contain this field"),
+						userAgent: z
+							.string()
+							.optional()
+							.describe("optional since entries prior to 2026-04-23 do not contain this field"),
+					})
+					.strict(),
+				z
+					.object({
+						policy: z
+							.object({
+								claims: z
+									.array(
+										z.object({
+											name: z.string(),
+											values: z.array(
+												z.object({
+													value: z.string(),
+													wildcards: z.union([z.literal(false), z.literal(true)]),
+												}),
+											),
+										}),
+									)
+									.describe("Claim matchers an OIDC token must satisfy to use the policy."),
+								clientId: z.string(),
+								createdAt: z.number().describe("Creation time (epoch ms)."),
+								issuerUrl: z.string(),
+								name: z
+									.string()
+									.nullable()
+									.describe("Human-readable policy name, or `null` when unnamed."),
+								permissions: z
+									.array(z.string())
+									.describe("Permission boundary (`['*']` = the app's full declared permissions)."),
+								policyId: z.string(),
+								resources: z
+									.object({
+										projectIds: z.array(z.string()),
+									})
+									.nullable()
+									.describe("Resource boundary, or `null` when the policy has none."),
+								teamId: z.string(),
+								updatedAt: z.number().describe("Last-update time (epoch ms)."),
+							})
+							.describe(
+								"A full point-in-time snapshot of an OIDC exchange policy, captured on every lifecycle event so the audit trail records exactly what the policy looked like. Mirrors the management endpoints' public response shape.",
+							),
+						appName: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						after: z
+							.object({
+								claims: z
+									.array(
+										z.object({
+											name: z.string(),
+											values: z.array(
+												z.object({
+													value: z.string(),
+													wildcards: z.union([z.literal(false), z.literal(true)]),
+												}),
+											),
+										}),
+									)
+									.describe("Claim matchers an OIDC token must satisfy to use the policy."),
+								clientId: z.string(),
+								createdAt: z.number().describe("Creation time (epoch ms)."),
+								issuerUrl: z.string(),
+								name: z
+									.string()
+									.nullable()
+									.describe("Human-readable policy name, or `null` when unnamed."),
+								permissions: z
+									.array(z.string())
+									.describe("Permission boundary (`['*']` = the app's full declared permissions)."),
+								policyId: z.string(),
+								resources: z
+									.object({
+										projectIds: z.array(z.string()),
+									})
+									.nullable()
+									.describe("Resource boundary, or `null` when the policy has none."),
+								teamId: z.string(),
+								updatedAt: z.number().describe("Last-update time (epoch ms)."),
+							})
+							.describe(
+								"A full point-in-time snapshot of an OIDC exchange policy, captured on every lifecycle event so the audit trail records exactly what the policy looked like. Mirrors the management endpoints' public response shape.",
+							),
+						before: z
+							.object({
+								claims: z
+									.array(
+										z.object({
+											name: z.string(),
+											values: z.array(
+												z.object({
+													value: z.string(),
+													wildcards: z.union([z.literal(false), z.literal(true)]),
+												}),
+											),
+										}),
+									)
+									.describe("Claim matchers an OIDC token must satisfy to use the policy."),
+								clientId: z.string(),
+								createdAt: z.number().describe("Creation time (epoch ms)."),
+								issuerUrl: z.string(),
+								name: z
+									.string()
+									.nullable()
+									.describe("Human-readable policy name, or `null` when unnamed."),
+								permissions: z
+									.array(z.string())
+									.describe("Permission boundary (`['*']` = the app's full declared permissions)."),
+								policyId: z.string(),
+								resources: z
+									.object({
+										projectIds: z.array(z.string()),
+									})
+									.nullable()
+									.describe("Resource boundary, or `null` when the policy has none."),
+								teamId: z.string(),
+								updatedAt: z.number().describe("Last-update time (epoch ms)."),
+							})
+							.describe(
+								"A full point-in-time snapshot of an OIDC exchange policy, captured on every lifecycle event so the audit trail records exactly what the policy looked like. Mirrors the management endpoints' public response shape.",
+							),
+						appName: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						expiresAt: z
+							.number()
+							.optional()
+							.describe("Unix epoch milliseconds. Absent when the token never expires."),
+						geolocation: z
+							.object({
+								city: z
+									.object({
+										names: z.object({
+											en: z.string(),
+										}),
+									})
+									.optional(),
+								country: z.object({
+									names: z.object({
+										en: z.string(),
+									}),
+								}),
+								mostSpecificSubdivision: z
+									.object({
+										names: z.object({
+											en: z.string(),
+										}),
+									})
+									.optional(),
+								regionName: z.string().optional(),
+							})
+							.nullish(),
+						hasAuthorizationDetails: z
+							.union([z.literal(false), z.literal(true)])
+							.optional()
+							.describe("Whether the token was issued with RFC 9396 authorization details."),
+						ip: z.string().nullish(),
+						origin: z
+							.enum([
+								"app",
+								"apple",
+								"bitbucket",
+								"chatgpt",
+								"email",
+								"emu",
+								"github",
+								"github-webhook",
+								"gitlab",
+								"google",
+								"invite",
+								"manual",
+								"otp",
+								"passkey",
+								"saml",
+								"sms",
+								"token-exchange-oidc",
+							])
+							.describe("How the token was issued. Always `'manual'` for explicit PAT creation."),
+						projectId: z.string().optional().describe("Present when `scope` is `'project'`."),
+						projectName: z.string().optional().describe("Present when `scope` is `'project'`."),
+						projectScope: z
+							.enum(["account", "project-only"])
+							.optional()
+							.describe("Present when `scope` is `'project'`."),
+						reqId: z.string().optional(),
+						reqUrl: z.string().optional(),
+						scope: z
+							.enum(["project", "team", "user"])
+							.describe(
+								"Scope of the token: - `'user'`: full-account token (not tied to any team). - `'team'`: scoped to a single team. - `'project'`: scoped to a single project within a team.",
+							),
+						teamId: z
+							.string()
+							.optional()
+							.describe("Present when `scope` is `'team'` or `'project'`."),
+						teamSlug: z
+							.string()
+							.optional()
+							.describe("Present when `scope` is `'team'` or `'project'`."),
+						tokenId: z.string().describe("The token's public ID."),
+						tokenName: z.string().describe("User-supplied name of the token."),
+						tokenPrefix: z
+							.enum(["vcp_"])
+							.optional()
+							.describe("The token prefix used when showing a safe checksum-style fingerprint."),
+						tokenSuffix: z.string().optional().describe("The token checksum suffix."),
+						userAgent: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						actorTokenId: z.string().describe("The token's public ID."),
+						expired: z.union([z.literal(false), z.literal(true)]).optional(),
+						geolocation: z
+							.object({
+								city: z
+									.object({
+										names: z.object({
+											en: z.string(),
+										}),
+									})
+									.optional(),
+								country: z.object({
+									names: z.object({
+										en: z.string(),
+									}),
+								}),
+								mostSpecificSubdivision: z
+									.object({
+										names: z.object({
+											en: z.string(),
+										}),
+									})
+									.optional(),
+								regionName: z.string().optional(),
+							})
+							.nullish(),
+						ip: z.string().nullish(),
+						leaked: z.union([z.literal(false), z.literal(true)]).optional(),
+						origin: z
+							.enum([
+								"app",
+								"apple",
+								"bitbucket",
+								"chatgpt",
+								"email",
+								"emu",
+								"github",
+								"github-webhook",
+								"gitlab",
+								"google",
+								"invite",
+								"manual",
+								"otp",
+								"passkey",
+								"saml",
+								"sms",
+								"token-exchange-oidc",
+							])
+							.optional(),
+						reqId: z.string().optional(),
+						reqUrl: z.string().optional(),
+						revoked: z.union([z.literal(false), z.literal(true)]).optional(),
+						teamId: z.string().optional(),
+						tokenId: z.string(),
+						tokenName: z.string(),
+						tokenType: z.string(),
+						userAgent: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						actorTokenId: z.string().describe("The token's public ID."),
+						deletedCount: z.number(),
+						geolocation: z
+							.object({
+								city: z
+									.object({
+										names: z.object({
+											en: z.string(),
+										}),
+									})
+									.optional(),
+								country: z.object({
+									names: z.object({
+										en: z.string(),
+									}),
+								}),
+								mostSpecificSubdivision: z
+									.object({
+										names: z.object({
+											en: z.string(),
+										}),
+									})
+									.optional(),
+								regionName: z.string().optional(),
+							})
+							.nullish(),
+						ip: z.string().nullish(),
+						reqId: z.string().optional(),
+						reqUrl: z.string().optional(),
+						userAgent: z.string().optional(),
+					})
+					.strict(),
+			])
+			.optional(),
+		principal: z
+			.discriminatedUnion("type", [
+				z
+					.object({
+						avatar: z.string(),
+						email: z.string(),
+						slug: z.string().optional(),
+						type: z.enum(["user"]).optional(),
+						uid: z.string(),
+						username: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						clientId: z.string().describe("The OAuth 2.0 client ID, which may be a CIMD URL."),
+						id: z
+							.string()
+							.optional()
+							.describe("The backing Vercel App ID. When absent, defaults to `clientId`."),
+						name: z.string(),
+						type: z.enum(["app"]),
+					})
+					.strict(),
+				z
+					.object({
+						email: z.string().optional(),
+						id: z.string(),
+						name: z.string(),
+						type: z.enum(["external"]),
+					})
+					.strict(),
+				z
+					.object({
+						type: z.enum(["system"]),
+					})
+					.strict(),
+			])
+			.optional(),
+		principalId: z
+			.string()
+			.describe(
+				"The ID of the principal who generated the event. The principal is typically a user, but it could also be an app, an integration, etc. The principal may have delegated its authority to an acting party, and so {@link viaIds} should be checked as well.",
+			),
+		requestId: z.string().optional(),
+		sessionId: z
+			.string()
+			.optional()
+			.describe(
+				"The ID of the session that the principal's token belongs to, when it belongs to one.",
+			),
+		text: z
+			.string()
+			.describe("The human-readable text of the Event.")
+			.meta({ examples: ["You logged in via GitHub"] }),
+		tokenId: z
+			.string()
+			.optional()
+			.describe(
+				"The public ID of the token that the principal authenticated with, when the request behind this event carried one.",
 			),
 		type: z
 			.enum([
@@ -3638,6 +12924,75 @@ export const userEventSchema = z
 			.optional()
 			.describe("The type of the event.")
 			.meta({ examples: ["login"] }),
+		user: z
+			.object({
+				avatar: z.string(),
+				email: z.string(),
+				slug: z.string().optional(),
+				uid: z.string(),
+				username: z.string(),
+			})
+			.optional()
+			.describe("Metadata for {@link userId}."),
+		userId: z
+			.string()
+			.optional()
+			.describe(
+				"When the principal who generated the event is a user, this is their ID; otherwise, it is empty.",
+			)
+			.meta({ examples: ["zTuNVUXEAvvnNN3IaqinkyMw"] }),
+		via: z
+			.array(
+				z.discriminatedUnion("type", [
+					z
+						.object({
+							avatar: z.string(),
+							email: z.string(),
+							slug: z.string().optional(),
+							type: z.enum(["user"]).optional(),
+							uid: z.string(),
+							username: z.string(),
+						})
+						.strict(),
+					z
+						.object({
+							clientId: z.string().describe("The OAuth 2.0 client ID, which may be a CIMD URL."),
+							id: z
+								.string()
+								.optional()
+								.describe("The backing Vercel App ID. When absent, defaults to `clientId`."),
+							name: z.string(),
+							type: z.enum(["app"]),
+						})
+						.strict(),
+					z
+						.object({
+							email: z.string().optional(),
+							id: z.string(),
+							name: z.string(),
+							type: z.enum(["external"]),
+						})
+						.strict(),
+					z
+						.object({
+							type: z.enum(["system"]),
+						})
+						.strict(),
+				]),
+			)
+			.optional()
+			.describe("Metadata for {@link viaIds}."),
+		viaIds: z
+			.array(z.string())
+			.optional()
+			.describe(
+				'If the principal delegated its authority (for example, a user delegating to an app), then this array contains the ID of the current actor. For example, if `principalId` is "user123" and `viaIds` is `["app456"]`, we can say the event was triggered by - "app456 on behalf of user123", or - "user123 via app4556". Both are equivalent. Arbitrarily long chains of delegation can be represented. For example, if `principalId` is "user123" and `viaIds` is `["service1", "service2"]`, we can say the event was triggered by "user123 via service1 via service2".',
+			),
+	})
+	.describe("Array of events generated by the User.");
+
+export const listEventTypeSchema = z
+	.object({
 		categories: z
 			.array(
 				z.enum([
@@ -3666,9333 +13021,15 @@ export const userEventSchema = z
 					"workflow",
 				]),
 			)
-			.optional()
-			.describe(
-				'The categories that group this event with related event types. An event can belong to multiple categories (e.g. a firewall event is both Firewall and Security). The first entry is the "primary" category. Use the `/events/types` endpoint to discover the full list of categories.',
-			)
+			.describe("Categories that group this event type with related event types.")
 			.meta({ examples: [["deployment"]] }),
-		createdAt: z
-			.number()
-			.describe("Timestamp (in milliseconds) of when the event was generated.")
-			.meta({ examples: [1632859321020] }),
-		user: z
-			.object({
-				slug: z.string().optional(),
-				avatar: z.string(),
-				email: z.string(),
-				username: z.string(),
-				uid: z.string(),
-			})
+		deprecated: z
+			.union([z.literal(false), z.literal(true)])
 			.optional()
-			.describe("Metadata for {@link userId}."),
-		principal: z
-			.discriminatedUnion("type", [
-				z
-					.object({
-						type: z.enum(["user"]).optional(),
-						avatar: z.string(),
-						email: z.string(),
-						slug: z.string().optional(),
-						uid: z.string(),
-						username: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						type: z.enum(["app"]),
-						id: z
-							.string()
-							.optional()
-							.describe("The backing Vercel App ID. When absent, defaults to `clientId`."),
-						clientId: z.string().describe("The OAuth 2.0 client ID, which may be a CIMD URL."),
-						name: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						type: z.enum(["external"]),
-						id: z.string(),
-						name: z.string(),
-						email: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						type: z.enum(["system"]),
-					})
-					.strict(),
-			])
-			.optional(),
-		via: z
-			.array(
-				z.discriminatedUnion("type", [
-					z
-						.object({
-							type: z.enum(["user"]).optional(),
-							avatar: z.string(),
-							email: z.string(),
-							slug: z.string().optional(),
-							uid: z.string(),
-							username: z.string(),
-						})
-						.strict(),
-					z
-						.object({
-							type: z.enum(["app"]),
-							id: z
-								.string()
-								.optional()
-								.describe("The backing Vercel App ID. When absent, defaults to `clientId`."),
-							clientId: z.string().describe("The OAuth 2.0 client ID, which may be a CIMD URL."),
-							name: z.string(),
-						})
-						.strict(),
-					z
-						.object({
-							type: z.enum(["external"]),
-							id: z.string(),
-							name: z.string(),
-							email: z.string().optional(),
-						})
-						.strict(),
-					z
-						.object({
-							type: z.enum(["system"]),
-						})
-						.strict(),
-				]),
-			)
-			.optional()
-			.describe("Metadata for {@link viaIds}."),
-		userId: z
+			.describe("Present only when this event type is deprecated."),
+		description: z
 			.string()
-			.optional()
-			.describe(
-				"When the principal who generated the event is a user, this is their ID; otherwise, it is empty.",
-			)
-			.meta({ examples: ["zTuNVUXEAvvnNN3IaqinkyMw"] }),
-		principalId: z
-			.string()
-			.describe(
-				"The ID of the principal who generated the event. The principal is typically a user, but it could also be an app, an integration, etc. The principal may have delegated its authority to an acting party, and so {@link viaIds} should be checked as well.",
-			),
-		viaIds: z
-			.array(z.string())
-			.optional()
-			.describe(
-				'If the principal delegated its authority (for example, a user delegating to an app), then this array contains the ID of the current actor. For example, if `principalId` is "user123" and `viaIds` is `["app456"]`, we can say the event was triggered by - "app456 on behalf of user123", or - "user123 via app4556". Both are equivalent. Arbitrarily long chains of delegation can be represented. For example, if `principalId` is "user123" and `viaIds` is `["service1", "service2"]`, we can say the event was triggered by "user123 via service1 via service2".',
-			),
-		tokenId: z
-			.string()
-			.optional()
-			.describe(
-				"The public ID of the token that the principal authenticated with, when the request behind this event carried one.",
-			),
-		sessionId: z
-			.string()
-			.optional()
-			.describe(
-				"The ID of the session that the principal's token belongs to, when it belongs to one.",
-			),
-		requestId: z.string().optional(),
-		payload: z
-			.union([
-				z.object({}).strict(),
-				z
-					.object({
-						action: z.enum(["archived", "created", "deleted", "unarchived", "updated"]),
-						id: z.string(),
-						slug: z.string(),
-						projectId: z.string(),
-						projectName: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						action: z.enum(["created", "deleted", "transitioned", "updated"]),
-						id: z.string(),
-						name: z.string(),
-						slug: z.string(),
-						state: z.string(),
-						projectId: z.string(),
-						projectName: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						action: z.enum(["added", "deleted", "rotated"]),
-						label: z.string().optional(),
-						projectName: z.string().optional(),
-						projectId: z.string().optional(),
-						environment: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						action: z.enum(["read"]),
-						projectName: z.string().optional(),
-						projectId: z.string().optional(),
-						environment: z.array(z.string()),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z.string(),
-						policyId: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						provider: z
-							.enum(["chatgpt", "stripe"])
-							.optional()
-							.describe('Present on new events only. Equivalent to "stripe" when absent.'),
-						providerAccount: z
-							.string()
-							.optional()
-							.describe("Present on new events only. Equivalent to `stripeAccount` when absent."),
-						stripeAccount: z
-							.string()
-							.optional()
-							.describe('Present when `provider` is "stripe". Equivalent to `providerAccount`.'),
-						stripeOrganisation: z
-							.string()
-							.optional()
-							.describe('Present when `provider` is "stripe".'),
-						teamId: z.string(),
-						accountRequestId: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						provider: z
-							.enum(["chatgpt", "stripe"])
-							.optional()
-							.describe('Present on new events only. Equivalent to "stripe" when absent.'),
-						providerAccount: z
-							.string()
-							.optional()
-							.describe("Present on new events only. Equivalent to `stripeAccount` when absent."),
-						stripeAccount: z
-							.string()
-							.optional()
-							.describe('Present when `provider` is "stripe". Equivalent to `providerAccount`.'),
-						stripeOrganisation: z
-							.string()
-							.optional()
-							.describe('Present when `provider` is "stripe".'),
-						teamId: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						provider: z
-							.enum(["chatgpt", "stripe"])
-							.optional()
-							.describe('Present on new events only. Equivalent to "stripe" when absent.'),
-						providerAccount: z
-							.string()
-							.optional()
-							.describe("Present on new events only. Equivalent to `stripeAccount` when absent."),
-						stripeAccount: z
-							.string()
-							.optional()
-							.describe('Present when `provider` is "stripe". Equivalent to `providerAccount`.'),
-						stripeOrganisation: z
-							.string()
-							.optional()
-							.describe('Present when `provider` is "stripe".'),
-						teamId: z.string(),
-						teamSlug: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						provider: z
-							.enum(["chatgpt", "stripe"])
-							.optional()
-							.describe('Present on new events only. Equivalent to "stripe" when absent.'),
-						providerAccount: z
-							.string()
-							.optional()
-							.describe("Present on new events only. Equivalent to `stripeAccount` when absent."),
-						stripeAccount: z
-							.string()
-							.optional()
-							.describe('Present when `provider` is "stripe". Equivalent to `providerAccount`.'),
-						stripeOrganisation: z
-							.string()
-							.optional()
-							.describe('Present when `provider` is "stripe".'),
-						reason: z.string(),
-						blockCode: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						provider: z
-							.enum(["chatgpt", "stripe"])
-							.optional()
-							.describe('Present on new events only. Equivalent to "stripe" when absent.'),
-						providerAccount: z
-							.string()
-							.optional()
-							.describe("Present on new events only. Equivalent to `stripeAccount` when absent."),
-						stripeAccount: z
-							.string()
-							.optional()
-							.describe('Present when `provider` is "stripe". Equivalent to `providerAccount`.'),
-						resourceId: z.string(),
-						projectName: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						provider: z
-							.enum(["chatgpt", "stripe"])
-							.optional()
-							.describe('Present on new events only. Equivalent to "stripe" when absent.'),
-						providerAccount: z
-							.string()
-							.optional()
-							.describe("Present on new events only. Equivalent to `stripeAccount` when absent."),
-						stripeAccount: z
-							.string()
-							.optional()
-							.describe('Present when `provider` is "stripe". Equivalent to `providerAccount`.'),
-						stripeOrganisation: z
-							.string()
-							.optional()
-							.describe('Present when `provider` is "stripe".'),
-						teamId: z.string(),
-						actorId: z.string().describe("Okta user id."),
-						actorType: z.enum(["admin"]),
-						actorName: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						provider: z
-							.enum(["chatgpt", "stripe"])
-							.optional()
-							.describe('Present on new events only. Equivalent to "stripe" when absent.'),
-						providerAccount: z
-							.string()
-							.optional()
-							.describe("Present on new events only. Equivalent to `stripeAccount` when absent."),
-						stripeAccount: z
-							.string()
-							.optional()
-							.describe('Present when `provider` is "stripe". Equivalent to `providerAccount`.'),
-						stripeOrganisation: z
-							.string()
-							.optional()
-							.describe('Present when `provider` is "stripe".'),
-						teamId: z.string(),
-						resourceId: z.string(),
-						fromPlan: z.enum(["hobby", "pro"]),
-						toPlan: z.enum(["hobby", "pro"]),
-					})
-					.strict(),
-				z
-					.object({
-						apiKey: z.object({
-							id: z.string(),
-							name: z.string(),
-						}),
-						budget: z
-							.object({
-								limitAmount: z.number().describe("Spend cap, in dollars."),
-								refreshPeriod: z.enum(["daily", "monthly", "none", "weekly"]),
-								alertThresholds: z.array(z.number()).optional(),
-							})
-							.nullish()
-							.describe(
-								"Spend budget on an AI Gateway API key, as surfaced in activity messages. Defined locally (rather than imported from `@api/pubsub-types`) because `@api/pubsub-types` already depends on `@api/events`; importing it here would create a circular dependency. Must stay structurally aligned with `APIKeyBudget` in `@api/pubsub-types/event-payloads/api-keys`.",
-							),
-						zdrExemption: z
-							.union([z.literal(false), z.literal(true)])
-							.optional()
-							.describe("True when the key was created with a ZDR exemption."),
-						bypassAll: z
-							.union([z.literal(false), z.literal(true)])
-							.optional()
-							.describe(
-								"True when the key was created to bypass all of the team's restrictions (the ZDR-only model restriction and the provider/model allowlist).",
-							),
-					})
-					.strict(),
-				z
-					.object({
-						apiKey: z.object({
-							id: z.string(),
-							name: z.string(),
-						}),
-					})
-					.strict(),
-				z
-					.object({
-						apiKey: z.object({
-							id: z.string(),
-							name: z.string(),
-						}),
-						budget: z
-							.object({
-								limitAmount: z.number().describe("Spend cap, in dollars."),
-								refreshPeriod: z.enum(["daily", "monthly", "none", "weekly"]),
-								alertThresholds: z.array(z.number()).optional(),
-							})
-							.nullish()
-							.describe(
-								"Spend budget on an AI Gateway API key, as surfaced in activity messages. Defined locally (rather than imported from `@api/pubsub-types`) because `@api/pubsub-types` already depends on `@api/events`; importing it here would create a circular dependency. Must stay structurally aligned with `APIKeyBudget` in `@api/pubsub-types/event-payloads/api-keys`.",
-							),
-						change: z.enum(["disable", "enable", "remove", "set"]),
-					})
-					.strict(),
-				z
-					.object({
-						change: z.enum([
-							"disable",
-							"disable-commitment",
-							"enable",
-							"enable-commitment",
-							"update",
-						]),
-						settings: z
-							.object({
-								minimumBalance: z.string(),
-								targetBalance: z.string(),
-								maximumMonthlySpend: z.string().nullable(),
-							})
-							.optional(),
-						previous: z
-							.object({
-								minimumBalance: z.string(),
-								targetBalance: z.string(),
-								maximumMonthlySpend: z.string().nullable(),
-							})
-							.optional(),
-						commitment: z
-							.object({
-								maximumMonthlySpend: z.string().nullable(),
-								deferredInvoiceTargetBalance: z.string(),
-							})
-							.optional(),
-					})
-					.strict(),
-				z
-					.object({
-						scopeType: z.enum(["api-key", "project", "team", "user"]),
-						budget: z
-							.object({
-								limitAmount: z.number().describe("Spend cap, in dollars."),
-								refreshPeriod: z.enum(["daily", "monthly", "none", "weekly"]),
-								alertThresholds: z.array(z.number()).optional(),
-							})
-							.nullish()
-							.describe(
-								"Spend budget on an AI Gateway API key, as surfaced in activity messages. Defined locally (rather than imported from `@api/pubsub-types`) because `@api/pubsub-types` already depends on `@api/events`; importing it here would create a circular dependency. Must stay structurally aligned with `APIKeyBudget` in `@api/pubsub-types/event-payloads/api-keys`.",
-							),
-						change: z.enum(["disable", "enable", "remove", "set"]),
-					})
-					.strict(),
-				z
-					.object({
-						scopeType: z.enum(["project", "team", "user"]),
-						projectId: z
-							.string()
-							.optional()
-							.describe("Associates the event with a project for filtering; not rendered."),
-						projectName: z.string().optional(),
-						userId: z
-							.string()
-							.optional()
-							.describe("Associates the event with a member for filtering; not rendered."),
-						userName: z.string().optional(),
-						budget: z
-							.object({
-								limitAmount: z.number().describe("Spend cap, in dollars."),
-								refreshPeriod: z.enum(["daily", "monthly", "none", "weekly"]),
-								alertThresholds: z.array(z.number()).optional(),
-							})
-							.nullish()
-							.describe(
-								"Spend budget on an AI Gateway API key, as surfaced in activity messages. Defined locally (rather than imported from `@api/pubsub-types`) because `@api/pubsub-types` already depends on `@api/events`; importing it here would create a circular dependency. Must stay structurally aligned with `APIKeyBudget` in `@api/pubsub-types/event-payloads/api-keys`.",
-							),
-						change: z.enum(["disable", "enable", "remove", "set"]),
-					})
-					.strict(),
-				z
-					.object({
-						credential: z.object({
-							id: z.string(),
-							name: z.string(),
-							providerSlug: z.string(),
-						}),
-					})
-					.strict(),
-				z
-					.object({
-						credential: z.object({
-							id: z.string(),
-							name: z.string(),
-							providerSlug: z.string(),
-						}),
-						added: z.array(z.string()),
-						removed: z.array(z.string()),
-						changed: z.array(z.string()),
-					})
-					.strict(),
-				z
-					.object({
-						enabled: z.union([z.literal(false), z.literal(true)]),
-					})
-					.strict(),
-				z
-					.object({
-						amount: z.string(),
-						purchaseIntentId: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						added: z.array(z.string()),
-						removed: z.array(z.string()),
-					})
-					.strict(),
-				z
-					.object({
-						privateModel: z.object({
-							slug: z.string(),
-							providerSlug: z.string(),
-						}),
-					})
-					.strict(),
-				z
-					.object({
-						privateModel: z.object({
-							slug: z.string(),
-						}),
-					})
-					.strict(),
-				z
-					.object({
-						privateProvider: z.object({
-							slug: z.string(),
-						}),
-					})
-					.strict(),
-				z
-					.object({
-						piiRedaction: z.object({
-							from: z.union([z.literal(false), z.literal(true)]),
-							to: z.union([z.literal(false), z.literal(true)]),
-						}),
-						moderationPolicyCount: z.number(),
-						policiesAdded: z.array(z.string()),
-						policiesRemoved: z.array(z.string()),
-						policiesModified: z.array(z.string()),
-					})
-					.strict(),
-				z
-					.object({
-						regions: z.array(z.string()),
-					})
-					.strict(),
-				z
-					.object({
-						retention: z.object({
-							defaultMode: z.enum(["days", "until-requested"]),
-							defaultDays: z.number().optional(),
-							ceilingMode: z.enum(["days", "until-requested"]),
-							ceilingDays: z.number().optional(),
-						}),
-					})
-					.strict(),
-				z
-					.object({
-						rule: z.object({
-							id: z.string(),
-							type: z.string(),
-							model: z.string().optional(),
-							rewriteModel: z.string().optional(),
-						}),
-					})
-					.strict(),
-				z
-					.object({
-						rule: z.object({
-							id: z.string(),
-							type: z.string(),
-							model: z.string().optional(),
-						}),
-					})
-					.strict(),
-				z
-					.object({
-						rule: z.object({
-							id: z.string(),
-							type: z.string(),
-							model: z.string().optional(),
-						}),
-						enabled: z.union([z.literal(false), z.literal(true)]).optional(),
-					})
-					.strict(),
-				z
-					.object({
-						virtualModelConfig: z.object({
-							id: z.string(),
-							displayName: z.string().optional(),
-							modelSlug: z.string().optional(),
-						}),
-					})
-					.strict(),
-				z
-					.object({
-						accessGroup: z.object({
-							id: z.string(),
-							name: z.string(),
-						}),
-						teamRoles: z.array(z.string()).optional(),
-						teamPermissions: z.array(z.string()).optional(),
-						entitlements: z.array(z.string()).optional(),
-					})
-					.strict(),
-				z
-					.object({
-						author: z.string(),
-						accessGroup: z.object({
-							id: z.string(),
-							name: z.string(),
-						}),
-					})
-					.strict(),
-				z
-					.object({
-						accessGroup: z.object({
-							id: z.string(),
-							name: z.string(),
-						}),
-						project: z.object({
-							id: z.string(),
-							name: z.string().optional(),
-						}),
-						nextRole: z
-							.enum(["ADMIN", "PROJECT_DEVELOPER", "PROJECT_GUEST", "PROJECT_VIEWER"])
-							.nullish(),
-						previousRole: z
-							.enum(["ADMIN", "PROJECT_DEVELOPER", "PROJECT_GUEST", "PROJECT_VIEWER"])
-							.optional(),
-					})
-					.strict(),
-				z
-					.object({
-						accessGroup: z.object({
-							id: z.string(),
-							name: z.string(),
-						}),
-						name: z.string().optional(),
-						previousName: z.string().optional(),
-						teamRoles: z.array(z.string()).optional(),
-						previousTeamRoles: z.array(z.string()).optional(),
-						teamPermissions: z.array(z.string()).optional(),
-						previousTeamPermissions: z.array(z.string()).optional(),
-						entitlementsAdded: z.array(z.string()).optional(),
-						entitlementsRemoved: z.array(z.string()).optional(),
-					})
-					.strict(),
-				z
-					.object({
-						accessGroup: z.object({
-							id: z.string(),
-							name: z.string().optional(),
-						}),
-						user: z.object({
-							id: z.string(),
-							username: z.string().optional(),
-						}),
-						directoryType: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						price: z.number().optional(),
-						currency: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						alias: z.string().optional(),
-						deployment: z
-							.object({
-								id: z.string(),
-								name: z.string(),
-								url: z.string(),
-								meta: z.object({}).catchall(z.string()),
-								readyState: z.string().optional(),
-								allowListedReadyStateReasonInternal: z
-									.enum([
-										"EARLY_IGNORE_STEP",
-										"IGNORE_STEP",
-										"NAMESPACE_PRUNED",
-										"UNAFFECTED_PROJECT",
-										"UNVERIFIED_COMMIT",
-									])
-									.optional()
-									.describe(
-										"A narrowed subset of the deployment's `readyStateReasonInternal` — only values in the public allowlist are permitted here. Callers should run their raw reason through `toAllowListedReadyStateReasonInternal` from `@api/events` before assigning. This keeps abuse / moderation / admin reasons out of the public activity log.",
-									),
-							})
-							.nullish(),
-						ruleCount: z.number().optional(),
-						deploymentUrl: z.string().optional(),
-						aliasId: z.string().optional(),
-						deploymentId: z.string().nullish(),
-						oldDeploymentId: z.string().nullish(),
-						redirect: z.string().optional(),
-						redirectStatusCode: z.number().nullish(),
-						target: z.string().nullish(),
-						system: z.union([z.literal(false), z.literal(true)]).optional(),
-						aliasUpdatedAt: z.number().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						aliasCount: z.number(),
-						deployment: z
-							.object({
-								id: z.string(),
-								name: z.string(),
-								url: z.string(),
-								meta: z.object({}).catchall(z.string()),
-								readyState: z.string().optional(),
-								allowListedReadyStateReasonInternal: z
-									.enum([
-										"EARLY_IGNORE_STEP",
-										"IGNORE_STEP",
-										"NAMESPACE_PRUNED",
-										"UNAFFECTED_PROJECT",
-										"UNVERIFIED_COMMIT",
-									])
-									.optional()
-									.describe(
-										"A narrowed subset of the deployment's `readyStateReasonInternal` — only values in the public allowlist are permitted here. Callers should run their raw reason through `toAllowListedReadyStateReasonInternal` from `@api/events` before assigning. This keeps abuse / moderation / admin reasons out of the public activity log.",
-									),
-							})
-							.nullish(),
-					})
-					.strict(),
-				z
-					.object({
-						name: z.string().optional(),
-						alias: z.string(),
-						oldTeam: z
-							.object({
-								name: z.string(),
-							})
-							.optional(),
-						newTeam: z
-							.object({
-								name: z.string(),
-							})
-							.optional(),
-					})
-					.strict(),
-				z
-					.object({
-						name: z.string().optional(),
-						alias: z.string(),
-						aliasId: z.string(),
-						deploymentId: z.string().nullable(),
-					})
-					.strict(),
-				z
-					.object({
-						alias: z.string().optional(),
-						email: z.string().optional(),
-						username: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						alias: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						alias: z.string().optional(),
-						email: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						aliasId: z.string().optional(),
-						alias: z.string().optional(),
-						projectId: z.string().optional(),
-						projectName: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string().optional(),
-						projectName: z.string(),
-						alias: z.string(),
-						action: z.enum(["created", "removed"]),
-					})
-					.strict(),
-				z
-					.object({
-						alias: z.string(),
-						deploymentUrl: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						alias: z.string().optional(),
-						userId: z.string().optional(),
-						username: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						alias: z.string().optional(),
-						aliasId: z.string().optional(),
-						userId: z.string().optional(),
-						username: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						appName: z.string(),
-						appId: z.string().optional(),
-						scopes: z.array(z.enum(["email", "offline_access", "openid", "profile"])),
-						permissions: z
-							.array(
-								z.enum([
-									"manage:speed-insights",
-									"manage:web-analytics",
-									"read-write:ai-gateway-api-key",
-									"read-write:ai-gateway-guardrails",
-									"read-write:ai-gateway-private-models",
-									"read-write:ai-gateway-rules",
-									"read-write:ai-gateway-virtual-model-configs",
-									"read-write:alerts",
-									"read-write:automations",
-									"read-write:billing",
-									"read-write:blob",
-									"read-write:connect",
-									"read-write:deployment",
-									"read-write:domain",
-									"read-write:domain-registrar",
-									"read-write:drains",
-									"read-write:edge-cache",
-									"read-write:edge-config",
-									"read-write:firewall",
-									"read-write:integration-configuration",
-									"read-write:integration-resource",
-									"read-write:kms",
-									"read-write:project",
-									"read-write:project-env-vars",
-									"read-write:project-env-vars-non-production",
-									"read-write:project-env-vars-production",
-									"read-write:project-flags-non-production",
-									"read-write:project-flags-production",
-									"read-write:project-protection-bypass",
-									"read-write:remote-cache",
-									"read-write:sandbox",
-									"read-write:team-members",
-									"read-write:vcr",
-									"read:access-group",
-									"read:ai-gateway-guardrails",
-									"read:ai-gateway-private-models",
-									"read:ai-gateway-rules",
-									"read:ai-gateway-virtual-model-configs",
-									"read:alerts",
-									"read:automations",
-									"read:billing",
-									"read:connect",
-									"read:deployment",
-									"read:domain",
-									"read:event",
-									"read:firewall",
-									"read:integration-configuration",
-									"read:integration-resource",
-									"read:kms",
-									"read:monitoring",
-									"read:project",
-									"read:project-env-vars-non-production",
-									"read:project-env-vars-production",
-									"read:project-flags",
-									"read:remote-cache",
-									"read:sandbox",
-									"read:speed-insights",
-									"read:team",
-									"read:user",
-									"read:vcr",
-									"read:web-analytics",
-									"read:webhooks",
-									"use:ai-gateway",
-								]),
-							)
-							.optional(),
-					})
-					.strict(),
-				z
-					.object({
-						appName: z.string(),
-						appId: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						appName: z.string(),
-						appId: z.string().optional(),
-						nextScopes: z.array(z.enum(["email", "offline_access", "openid", "profile"])),
-						nextPermissions: z
-							.array(
-								z.enum([
-									"manage:speed-insights",
-									"manage:web-analytics",
-									"read-write:ai-gateway-api-key",
-									"read-write:ai-gateway-guardrails",
-									"read-write:ai-gateway-private-models",
-									"read-write:ai-gateway-rules",
-									"read-write:ai-gateway-virtual-model-configs",
-									"read-write:alerts",
-									"read-write:automations",
-									"read-write:billing",
-									"read-write:blob",
-									"read-write:connect",
-									"read-write:deployment",
-									"read-write:domain",
-									"read-write:domain-registrar",
-									"read-write:drains",
-									"read-write:edge-cache",
-									"read-write:edge-config",
-									"read-write:firewall",
-									"read-write:integration-configuration",
-									"read-write:integration-resource",
-									"read-write:kms",
-									"read-write:project",
-									"read-write:project-env-vars",
-									"read-write:project-env-vars-non-production",
-									"read-write:project-env-vars-production",
-									"read-write:project-flags-non-production",
-									"read-write:project-flags-production",
-									"read-write:project-protection-bypass",
-									"read-write:remote-cache",
-									"read-write:sandbox",
-									"read-write:team-members",
-									"read-write:vcr",
-									"read:access-group",
-									"read:ai-gateway-guardrails",
-									"read:ai-gateway-private-models",
-									"read:ai-gateway-rules",
-									"read:ai-gateway-virtual-model-configs",
-									"read:alerts",
-									"read:automations",
-									"read:billing",
-									"read:connect",
-									"read:deployment",
-									"read:domain",
-									"read:event",
-									"read:firewall",
-									"read:integration-configuration",
-									"read:integration-resource",
-									"read:kms",
-									"read:monitoring",
-									"read:project",
-									"read:project-env-vars-non-production",
-									"read:project-env-vars-production",
-									"read:project-flags",
-									"read:remote-cache",
-									"read:sandbox",
-									"read:speed-insights",
-									"read:team",
-									"read:user",
-									"read:vcr",
-									"read:web-analytics",
-									"read:webhooks",
-									"use:ai-gateway",
-								]),
-							)
-							.optional(),
-					})
-					.strict(),
-				z
-					.object({
-						appName: z.string(),
-						appId: z.string().optional(),
-						installationId: z.string().optional(),
-						before: z
-							.object({
-								resources: z
-									.object({
-										projectIds: z
-											.object({
-												type: z.enum(["list"]),
-												required: z.literal(true),
-												items: z.object({
-													type: z.enum(["string"]),
-												}),
-											})
-											.describe("Specific project IDs or all projects on the team (`['*']`)."),
-									})
-									.optional(),
-								permissions: z
-									.array(
-										z.enum([
-											"manage:speed-insights",
-											"manage:web-analytics",
-											"read-write:ai-gateway-api-key",
-											"read-write:ai-gateway-guardrails",
-											"read-write:ai-gateway-private-models",
-											"read-write:ai-gateway-rules",
-											"read-write:ai-gateway-virtual-model-configs",
-											"read-write:alerts",
-											"read-write:automations",
-											"read-write:billing",
-											"read-write:blob",
-											"read-write:connect",
-											"read-write:deployment",
-											"read-write:domain",
-											"read-write:domain-registrar",
-											"read-write:drains",
-											"read-write:edge-cache",
-											"read-write:edge-config",
-											"read-write:firewall",
-											"read-write:integration-configuration",
-											"read-write:integration-resource",
-											"read-write:kms",
-											"read-write:project",
-											"read-write:project-env-vars",
-											"read-write:project-env-vars-non-production",
-											"read-write:project-env-vars-production",
-											"read-write:project-flags-non-production",
-											"read-write:project-flags-production",
-											"read-write:project-protection-bypass",
-											"read-write:remote-cache",
-											"read-write:sandbox",
-											"read-write:team-members",
-											"read-write:vcr",
-											"read:access-group",
-											"read:ai-gateway-guardrails",
-											"read:ai-gateway-private-models",
-											"read:ai-gateway-rules",
-											"read:ai-gateway-virtual-model-configs",
-											"read:alerts",
-											"read:automations",
-											"read:billing",
-											"read:connect",
-											"read:deployment",
-											"read:domain",
-											"read:event",
-											"read:firewall",
-											"read:integration-configuration",
-											"read:integration-resource",
-											"read:kms",
-											"read:monitoring",
-											"read:project",
-											"read:project-env-vars-non-production",
-											"read:project-env-vars-production",
-											"read:project-flags",
-											"read:remote-cache",
-											"read:sandbox",
-											"read:speed-insights",
-											"read:team",
-											"read:vcr",
-											"read:web-analytics",
-											"read:webhooks",
-											"use:ai-gateway",
-										]),
-									)
-									.optional(),
-							})
-							.optional(),
-						after: z
-							.object({
-								resources: z
-									.object({
-										projectIds: z
-											.object({
-												type: z.enum(["list"]),
-												required: z.literal(true),
-												items: z.object({
-													type: z.enum(["string"]),
-												}),
-											})
-											.describe("Specific project IDs or all projects on the team (`['*']`)."),
-									})
-									.optional(),
-								permissions: z
-									.array(
-										z.enum([
-											"manage:speed-insights",
-											"manage:web-analytics",
-											"read-write:ai-gateway-api-key",
-											"read-write:ai-gateway-guardrails",
-											"read-write:ai-gateway-private-models",
-											"read-write:ai-gateway-rules",
-											"read-write:ai-gateway-virtual-model-configs",
-											"read-write:alerts",
-											"read-write:automations",
-											"read-write:billing",
-											"read-write:blob",
-											"read-write:connect",
-											"read-write:deployment",
-											"read-write:domain",
-											"read-write:domain-registrar",
-											"read-write:drains",
-											"read-write:edge-cache",
-											"read-write:edge-config",
-											"read-write:firewall",
-											"read-write:integration-configuration",
-											"read-write:integration-resource",
-											"read-write:kms",
-											"read-write:project",
-											"read-write:project-env-vars",
-											"read-write:project-env-vars-non-production",
-											"read-write:project-env-vars-production",
-											"read-write:project-flags-non-production",
-											"read-write:project-flags-production",
-											"read-write:project-protection-bypass",
-											"read-write:remote-cache",
-											"read-write:sandbox",
-											"read-write:team-members",
-											"read-write:vcr",
-											"read:access-group",
-											"read:ai-gateway-guardrails",
-											"read:ai-gateway-private-models",
-											"read:ai-gateway-rules",
-											"read:ai-gateway-virtual-model-configs",
-											"read:alerts",
-											"read:automations",
-											"read:billing",
-											"read:connect",
-											"read:deployment",
-											"read:domain",
-											"read:event",
-											"read:firewall",
-											"read:integration-configuration",
-											"read:integration-resource",
-											"read:kms",
-											"read:monitoring",
-											"read:project",
-											"read:project-env-vars-non-production",
-											"read:project-env-vars-production",
-											"read:project-flags",
-											"read:remote-cache",
-											"read:sandbox",
-											"read:speed-insights",
-											"read:team",
-											"read:vcr",
-											"read:web-analytics",
-											"read:webhooks",
-											"use:ai-gateway",
-										]),
-									)
-									.optional(),
-							})
-							.optional(),
-					})
-					.strict(),
-				z
-					.object({
-						appName: z.string(),
-						appId: z.string().optional(),
-						resources: z
-							.object({
-								projectIds: z
-									.object({
-										type: z.enum(["list"]),
-										required: z.literal(true),
-										items: z.object({
-											type: z.enum(["string"]),
-										}),
-									})
-									.describe("Specific project IDs or all projects on the team (`['*']`)."),
-							})
-							.optional(),
-						permissions: z
-							.array(
-								z.enum([
-									"manage:speed-insights",
-									"manage:web-analytics",
-									"read-write:ai-gateway-api-key",
-									"read-write:ai-gateway-guardrails",
-									"read-write:ai-gateway-private-models",
-									"read-write:ai-gateway-rules",
-									"read-write:ai-gateway-virtual-model-configs",
-									"read-write:alerts",
-									"read-write:automations",
-									"read-write:billing",
-									"read-write:blob",
-									"read-write:connect",
-									"read-write:deployment",
-									"read-write:domain",
-									"read-write:domain-registrar",
-									"read-write:drains",
-									"read-write:edge-cache",
-									"read-write:edge-config",
-									"read-write:firewall",
-									"read-write:integration-configuration",
-									"read-write:integration-resource",
-									"read-write:kms",
-									"read-write:project",
-									"read-write:project-env-vars",
-									"read-write:project-env-vars-non-production",
-									"read-write:project-env-vars-production",
-									"read-write:project-flags-non-production",
-									"read-write:project-flags-production",
-									"read-write:project-protection-bypass",
-									"read-write:remote-cache",
-									"read-write:sandbox",
-									"read-write:team-members",
-									"read-write:vcr",
-									"read:access-group",
-									"read:ai-gateway-guardrails",
-									"read:ai-gateway-private-models",
-									"read:ai-gateway-rules",
-									"read:ai-gateway-virtual-model-configs",
-									"read:alerts",
-									"read:automations",
-									"read:billing",
-									"read:connect",
-									"read:deployment",
-									"read:domain",
-									"read:event",
-									"read:firewall",
-									"read:integration-configuration",
-									"read:integration-resource",
-									"read:kms",
-									"read:monitoring",
-									"read:project",
-									"read:project-env-vars-non-production",
-									"read:project-env-vars-production",
-									"read:project-flags",
-									"read:remote-cache",
-									"read:sandbox",
-									"read:speed-insights",
-									"read:team",
-									"read:vcr",
-									"read:web-analytics",
-									"read:webhooks",
-									"use:ai-gateway",
-								]),
-							)
-							.optional(),
-					})
-					.strict(),
-				z
-					.object({
-						appName: z.string(),
-						appId: z.string().optional(),
-						secretLastFourChars: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						appName: z
-							.string()
-							.describe(
-								"The App's name at the moment this even was published (it may have changed since then).",
-							),
-						appId: z
-							.string()
-							.optional()
-							.describe("The App's ID. Note that not all historical events have this field."),
-						app: z
-							.object({
-								id: z.string().describe("The App's ID."),
-								name: z
-									.string()
-									.describe(
-										"The App's name at the moment this even was published (it may have changed since then).",
-									),
-							})
-							.optional()
-							.describe("Note that not all historical events have this field."),
-						issuedBefore: z
-							.number()
-							.optional()
-							.describe(
-								"UNIX timestamp in seconds. Tokens issued before this timestamp will be revoked. Note that not all historical events have this field.",
-							),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						prevAttackModeEnabled: z.union([z.literal(false), z.literal(true)]).optional(),
-						prevAttackModeActiveUntil: z.number().nullish(),
-						attackModeEnabled: z.union([z.literal(false), z.literal(true)]),
-						attackModeActiveUntil: z.number().nullish(),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string().optional(),
-						projectName: z.string(),
-						autoExposeSystemEnvs: z.union([z.literal(false), z.literal(true)]),
-					})
-					.strict(),
-				z
-					.object({
-						avatar: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						invoiceId: z.string(),
-						amount: z.number(),
-						refundReason: z.string(),
-						lineItemCount: z.number(),
-					})
-					.strict(),
-				z
-					.object({
-						invoiceId: z.string(),
-						newInvoiceId: z.string(),
-						settlementMethod: z.enum([
-							"credited-paid",
-							"credited-payment-pending",
-							"refunded-paid",
-							"refunded-payment-pending",
-						]),
-						amount: z.number(),
-					})
-					.strict(),
-				z
-					.object({
-						paymentMethodId: z.string(),
-						brand: z.string().optional(),
-						last4: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						changedFields: z.array(
-							z.enum(["address", "email", "language", "name", "purchaseOrder", "tax"]),
-						),
-					})
-					.strict(),
-				z
-					.object({
-						subscriptionId: z.string().optional(),
-						planSlug: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						subscriptionId: z.string().optional(),
-						action: z.enum(["cancel_plan"]),
-						data: z.object({
-							planSlug: z.enum(["v0_business", "v0_teams"]),
-							reason: z.enum(["non-payment"]).optional(),
-						}),
-					})
-					.strict(),
-				z
-					.object({
-						subscriptionId: z.string().optional(),
-						action: z.enum(["resume_plan"]),
-						data: z.object({
-							planSlug: z.enum(["v0_business", "v0_teams"]),
-						}),
-					})
-					.strict(),
-				z
-					.object({
-						subscriptionId: z.string().optional(),
-						action: z.enum(["mutate"]),
-						data: z.object({}).catchall(z.unknown()),
-					})
-					.strict(),
-				z
-					.object({
-						subscriptionId: z.string().optional(),
-						productAliases: z.array(z.string()),
-					})
-					.strict(),
-				z
-					.object({
-						project: z.object({
-							id: z.string(),
-							name: z.string(),
-						}),
-						bulkRedirectsLimit: z.number(),
-						prevBulkRedirectsLimit: z.number(),
-					})
-					.strict(),
-				z
-					.object({
-						project: z.object({
-							id: z.string(),
-							name: z.string(),
-						}),
-						versionId: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						cn: z.string().optional(),
-						cns: z.array(z.string()).optional(),
-						custom: z.union([z.literal(false), z.literal(true)]),
-						id: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						id: z.string(),
-						cns: z.array(z.string()),
-						custom: z.union([z.literal(false), z.literal(true)]),
-					})
-					.strict(),
-				z
-					.object({
-						cn: z.string().optional(),
-						cns: z.array(z.string()).optional(),
-						id: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						id: z.string(),
-						oldTeam: z
-							.object({
-								name: z.string(),
-							})
-							.optional(),
-						newTeam: z
-							.object({
-								name: z.string(),
-							})
-							.optional(),
-					})
-					.strict(),
-				z
-					.object({
-						src: z.string(),
-						dst: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						id: z.string(),
-						cn: z.string().optional(),
-						cns: z.array(z.string()).optional(),
-					})
-					.strict(),
-				z
-					.object({
-						cn: z.string().optional(),
-						cns: z.array(z.string()).optional(),
-					})
-					.strict(),
-				z
-					.object({
-						gitOwnerName: z.string(),
-						gitRepositoryName: z.string(),
-						previous: z.object({
-							enabled: z.union([z.literal(false), z.literal(true)]),
-							autoAddReviewers: z.union([z.literal(false), z.literal(true)]),
-						}),
-						next: z.object({
-							enabled: z.union([z.literal(false), z.literal(true)]),
-							autoAddReviewers: z.union([z.literal(false), z.literal(true)]),
-						}),
-					})
-					.strict(),
-				z
-					.object({
-						slug: z.string(),
-						documentId: z.string(),
-						title: z.string(),
-						fingerprint: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						count: z.number(),
-						documents: z.array(
-							z.object({
-								slug: z.string(),
-								documentId: z.string(),
-								title: z.string(),
-								fingerprint: z.string(),
-							}),
-						),
-					})
-					.strict(),
-				z
-					.object({
-						configuration: z.object({
-							id: z.string(),
-							name: z.string(),
-						}),
-					})
-					.strict(),
-				z
-					.object({
-						team: z.object({
-							name: z.string(),
-							id: z.string(),
-						}),
-						configuration: z.object({
-							id: z.string(),
-							name: z.string().optional(),
-						}),
-						project: z.object({
-							id: z.string(),
-							name: z.string().optional(),
-						}),
-						buildsEnabled: z.union([z.literal(false), z.literal(true)]).optional(),
-					})
-					.strict(),
-				z
-					.object({
-						team: z.object({
-							name: z.string(),
-							id: z.string(),
-						}),
-						configuration: z.object({
-							id: z.string(),
-							name: z.string().optional(),
-						}),
-						project: z.object({
-							id: z.string(),
-							name: z.string().optional(),
-						}),
-						buildsEnabled: z.union([z.literal(false), z.literal(true)]).optional(),
-						passive: z.union([z.literal(false), z.literal(true)]).optional(),
-					})
-					.strict(),
-				z
-					.object({
-						team: z.object({
-							name: z.string(),
-							id: z.string(),
-						}),
-						configuration: z.object({
-							id: z.string(),
-							name: z.string().optional(),
-						}),
-						project: z.object({
-							id: z.string(),
-							name: z.string().optional(),
-						}),
-					})
-					.strict(),
-				z
-					.object({
-						team: z.object({
-							name: z.string(),
-							id: z.string(),
-						}),
-						configuration: z.object({
-							id: z.string(),
-							name: z.string().optional(),
-						}),
-						newName: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						githubLogin: z.string(),
-						host: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						githubLogin: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						githubLogin: z.string(),
-						host: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						gitlabLogin: z.string(),
-						gitlabEmail: z.string(),
-						gitlabName: z.string().optional(),
-						zeitAccount: z.string().optional(),
-						zeitAccountType: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						gitlabLogin: z.string(),
-						gitlabUserId: z.number(),
-					})
-					.strict(),
-				z
-					.object({
-						bitbucketEmail: z.string(),
-						bitbucketLogin: z.string(),
-						bitbucketName: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						bitbucketLogin: z.string(),
-						bitbucketAccountId: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						clientId: z.string().optional(),
-						clientUid: z.string().optional(),
-						clientName: z.string().optional(),
-						projectId: z.string().optional(),
-						projectName: z.string().optional(),
-						installationId: z.string().optional(),
-						subjectType: z.enum(["app", "user"]).optional(),
-						fields: z.array(z.string()).optional(),
-						environments: z.array(z.string()).optional(),
-						triggerDestinationCount: z.number().optional(),
-						tokenCount: z.number().optional(),
-						acceptedTokenCount: z.number().optional(),
-						importedTokenCount: z.number().optional(),
-						tokensDeleted: z.number().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						project: z.object({
-							id: z.string(),
-							name: z.string(),
-						}),
-						purchasedAmount: z.number(),
-						prevPurchasedAmount: z.number(),
-					})
-					.strict(),
-				z
-					.object({
-						metricName: z.string(),
-					})
-					.catchall(z.unknown()),
-				z
-					.object({
-						reason: z.string().optional(),
-						suffix: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						status: z.string(),
-						suffix: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						suffix: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z.string(),
-						hookName: z.string(),
-						ref: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						project: z.object({
-							name: z.string(),
-						}),
-						job: z.object({
-							deployHook: z.object({
-								createdAt: z.number(),
-								id: z.string(),
-								name: z.string(),
-								ref: z.string(),
-							}),
-							state: z.string(),
-						}),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z.string(),
-						checkId: z.string(),
-						checkName: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						name: z.string().optional(),
-						alias: z.array(z.string()).optional(),
-						target: z.string().nullish(),
-						deployment: z
-							.object({
-								id: z.string(),
-								name: z.string(),
-								url: z.string(),
-								meta: z.object({}).catchall(z.string()),
-								readyState: z.string().optional(),
-								allowListedReadyStateReasonInternal: z
-									.enum([
-										"EARLY_IGNORE_STEP",
-										"IGNORE_STEP",
-										"NAMESPACE_PRUNED",
-										"UNAFFECTED_PROJECT",
-										"UNVERIFIED_COMMIT",
-									])
-									.optional()
-									.describe(
-										"A narrowed subset of the deployment's `readyStateReasonInternal` — only values in the public allowlist are permitted here. Callers should run their raw reason through `toAllowListedReadyStateReasonInternal` from `@api/events` before assigning. This keeps abuse / moderation / admin reasons out of the public activity log.",
-									),
-							})
-							.nullish(),
-						url: z.string(),
-						forced: z.union([z.literal(false), z.literal(true)]).optional(),
-						gitCredentialSource: z.enum(["external-token"]).optional(),
-						deploymentId: z.string().optional(),
-						plan: z.string().optional(),
-						project: z.string().optional(),
-						projectId: z.string().optional(),
-						regions: z.array(z.string()).optional(),
-						type: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						job: z.discriminatedUnion("type", [
-							z
-								.object({
-									type: z.enum(["bitbucket-push"]),
-									authorized: z.union([z.literal(false), z.literal(true)]).optional(),
-									authorizedBy: z.string().optional(),
-									jobProjectIds: z
-										.array(z.string())
-										.optional()
-										.describe(
-											"Since December 2022 All project ids associated to this job. Think monorepo. This job will be for one of these project.",
-										),
-									jobPairs: z
-										.array(
-											z
-												.array(z.union([z.string(), z.string()]))
-												.min(2)
-												.max(2),
-										)
-										.optional()
-										.describe(
-											"Since December 2022 Pairs of projects and owner ids to build for this build request.",
-										),
-									skippedJobPairs: z
-										.array(
-											z
-												.array(z.union([z.string(), z.string()]))
-												.min(2)
-												.max(2),
-										)
-										.optional()
-										.describe(
-											"Since June 2024 Pairs of projects and owner ids to immediately finish (without building) because we want to create them in a skipped state.",
-										),
-									gitHashtagVercel: z
-										.array(z.string())
-										.optional()
-										.describe(
-											"Since February 2022 All the hashtag-vercel tags found in the commit message triggering the deploy. For example, #VERCEL_DO_SOMETHING",
-										),
-									connectedProjectCount: z
-										.number()
-										.optional()
-										.describe(
-											"Since April 2023 Cached count of how many projects are connected to the repo. Saves a few Cosmos queries down the road in the main flow.",
-										),
-									prIdOrZero: z
-										.number()
-										.optional()
-										.describe(
-											"Since April 2023 If set then it is a cached result of asking the remote for the PR ID the commit that triggered this Job. Or zero if it was not a PR. This prevents a few git round trips by the git updater.",
-										),
-									gitComments: z
-										.object({
-											onPullRequest: z.union([z.literal(false), z.literal(true)]),
-											onCommit: z.union([z.literal(false), z.literal(true)]),
-										})
-										.optional()
-										.describe(
-											"Since June 2023 Determines if comments should be posted to the git host. Replaces `github.silent` in the vercel.json.",
-										),
-									isManualGitDeploy: z
-										.union([z.literal(false), z.literal(true)])
-										.optional()
-										.describe(
-											"Since 28 Feb 2024 If set to true, identifies that the git job was created for a manual git deployment",
-										),
-									commitVerification: z
-										.enum(["unknown", "unverified", "verified"])
-										.optional()
-										.describe(
-											"Since 6 Nov 2025 The verification status of the commit. - 'verified' if the commit is verified - 'unverified' if the commit is not verified - 'unknown' if the commit verification status is unknown or not supported",
-										),
-									nsnbSideEffect: z
-										.object({
-											action: z.enum(["auto-approved-member", "auto-approved-pending-invite"]),
-											gitUserLogin: z.string(),
-										})
-										.optional()
-										.describe(
-											"Since March 2026 Records a successful NSNB auto-add result so later GitHub PR comments can deterministically explain why this SHA was allowed to deploy.",
-										),
-									createdAt: z.number().optional(),
-									deploymentId: z.string().optional(),
-									deployHook: z
-										.object({
-											createdAt: z.number(),
-											id: z.string(),
-											name: z.string(),
-											ref: z.string(),
-										})
-										.optional(),
-									eventful: z.union([z.literal(false), z.literal(true)]).optional(),
-									forceNew: z.union([z.literal(false), z.literal(true)]).optional(),
-									headInfo: z.object({
-										owner: z.string(),
-										ref: z.string(),
-										repoUuid: z.string(),
-										sha: z.string(),
-										slug: z.string(),
-									}),
-									linkedProjectId: z.string().optional(),
-									name: z.string(),
-									owner: z.string(),
-									prId: z.number().optional(),
-									projectId: z.string().optional(),
-									customEnvId: z.string().nullish(),
-									ref: z.string(),
-									repoPushedAt: z.number().nullish(),
-									repoUuid: z.string(),
-									sha: z.string(),
-									silent: z.union([z.literal(false), z.literal(true)]).optional(),
-									slug: z.string(),
-									target: z.string().nullish(),
-									url: z.string().optional(),
-									withCache: z.union([z.literal(false), z.literal(true)]).optional(),
-									workspaceUuid: z.string(),
-									provider: z.enum(["bitbucket"]),
-								})
-								.strict(),
-							z
-								.object({
-									createdAt: z.number().optional(),
-									eventful: z.union([z.literal(false), z.literal(true)]).optional(),
-									headInfo: z.object({
-										owner: z.string(),
-										ref: z.string(),
-										repoUuid: z.string(),
-										sha: z.string(),
-										slug: z.string(),
-									}),
-									linkedProjectId: z.string().optional(),
-									name: z.string(),
-									owner: z.string(),
-									prId: z.number(),
-									projectId: z.string().optional(),
-									customEnvId: z.string().nullish(),
-									ref: z.string(),
-									repoUuid: z.string(),
-									sha: z.string(),
-									slug: z.string(),
-									type: z.enum(["bitbucket-now-comment"]),
-									workspaceUuid: z.string(),
-									gitComments: z
-										.object({
-											onPullRequest: z.union([z.literal(false), z.literal(true)]),
-											onCommit: z.union([z.literal(false), z.literal(true)]),
-										})
-										.optional(),
-									provider: z.enum(["bitbucket"]),
-								})
-								.strict(),
-							z
-								.object({
-									prId: z.number(),
-									type: z.enum(["pr"]),
-									authorized: z.union([z.literal(false), z.literal(true)]).optional(),
-									authorizedBy: z.string().optional(),
-									jobProjectIds: z
-										.array(z.string())
-										.optional()
-										.describe(
-											"Since December 2022 All project ids associated to this job. Think monorepo. This job will be for one of these project.",
-										),
-									jobPairs: z
-										.array(
-											z
-												.array(z.union([z.string(), z.string()]))
-												.min(2)
-												.max(2),
-										)
-										.optional()
-										.describe(
-											"Since December 2022 Pairs of projects and owner ids to build for this build request.",
-										),
-									skippedJobPairs: z
-										.array(
-											z
-												.array(z.union([z.string(), z.string()]))
-												.min(2)
-												.max(2),
-										)
-										.optional()
-										.describe(
-											"Since June 2024 Pairs of projects and owner ids to immediately finish (without building) because we want to create them in a skipped state.",
-										),
-									gitHashtagVercel: z
-										.array(z.string())
-										.optional()
-										.describe(
-											"Since February 2022 All the hashtag-vercel tags found in the commit message triggering the deploy. For example, #VERCEL_DO_SOMETHING",
-										),
-									connectedProjectCount: z
-										.number()
-										.optional()
-										.describe(
-											"Since April 2023 Cached count of how many projects are connected to the repo. Saves a few Cosmos queries down the road in the main flow.",
-										),
-									prIdOrZero: z
-										.number()
-										.optional()
-										.describe(
-											"Since April 2023 If set then it is a cached result of asking the remote for the PR ID the commit that triggered this Job. Or zero if it was not a PR. This prevents a few git round trips by the git updater.",
-										),
-									gitComments: z
-										.object({
-											onPullRequest: z.union([z.literal(false), z.literal(true)]),
-											onCommit: z.union([z.literal(false), z.literal(true)]),
-										})
-										.optional()
-										.describe(
-											"Since June 2023 Determines if comments should be posted to the git host. Replaces `github.silent` in the vercel.json.",
-										),
-									isManualGitDeploy: z
-										.union([z.literal(false), z.literal(true)])
-										.optional()
-										.describe(
-											"Since 28 Feb 2024 If set to true, identifies that the git job was created for a manual git deployment",
-										),
-									commitVerification: z
-										.enum(["unknown", "unverified", "verified"])
-										.optional()
-										.describe(
-											"Since 6 Nov 2025 The verification status of the commit. - 'verified' if the commit is verified - 'unverified' if the commit is not verified - 'unknown' if the commit verification status is unknown or not supported",
-										),
-									nsnbSideEffect: z
-										.object({
-											action: z.enum(["auto-approved-member", "auto-approved-pending-invite"]),
-											gitUserLogin: z.string(),
-										})
-										.optional()
-										.describe(
-											"Since March 2026 Records a successful NSNB auto-add result so later GitHub PR comments can deterministically explain why this SHA was allowed to deploy.",
-										),
-									committerGitUserId: z
-										.number()
-										.optional()
-										.describe(
-											"Remote account id of the committer details (github id etc, not vercel). Note that the committer name/email are user input verbatim and not verified. Github does appear to resolve the given email to the username so we can trust that. If the username matches that of the sender, which is verified info, then we can use the account id and account type. See api-incoming, where we determine and set this property Note that even with that, the account may still have been spoofed.",
-										),
-									committerGitUserType: z
-										.string()
-										.optional()
-										.describe(
-											"Remote account type of the committer details (github type etc, not vercel). Note that the committer name/email are user input verbatim and not verified. Github does appear to resolve the given email to the username so we can trust that. If the username matches that of the sender, which is verified info, then we can use the account id and account type. See api-incoming, where we determine and set this property Note that even with that, the account may still have been spoofed.",
-										),
-									createdAt: z.number().optional(),
-									forceNew: z.union([z.literal(false), z.literal(true)]).optional(),
-									deploymentId: z.string().optional(),
-									deployHook: z
-										.object({
-											createdAt: z.number(),
-											id: z.string(),
-											name: z.string(),
-											ref: z.string(),
-										})
-										.optional(),
-									beforeSha: z.string().optional(),
-									defaultBranch: z.string().optional(),
-									eventful: z.union([z.literal(false), z.literal(true)]).optional(),
-									githubDeploymentId: z.string().optional(),
-									headInfo: z
-										.object({
-											org: z.string(),
-											ref: z.string(),
-											repo: z.string(),
-											repoId: z.number(),
-											sha: z.string(),
-										})
-										.describe("Information about the head commit/branch for a GitHub repository"),
-									installationId: z.number(),
-									isPrivate: z.union([z.literal(false), z.literal(true)]),
-									linkedProjectId: z.string().optional(),
-									org: z.string(),
-									projectId: z.string().optional(),
-									customEnvId: z.string().nullish(),
-									repo: z.string(),
-									repoId: z.number(),
-									target: z.string().nullish(),
-									url: z.string().optional(),
-									withCache: z.union([z.literal(false), z.literal(true)]).optional(),
-									provider: z.enum(["github", "github-custom-host", "github-limited"]),
-									customHost: z.string().optional(),
-								})
-								.strict(),
-							z
-								.object({
-									repoPushedAt: z.number().nullable(),
-									commitInfo: z
-										.object({
-											total: z.number(),
-											earliestSha: z.string().optional(),
-										})
-										.optional(),
-									forced: z.union([z.literal(false), z.literal(true)]).optional(),
-									type: z.enum(["push"]),
-									authorized: z.union([z.literal(false), z.literal(true)]).optional(),
-									authorizedBy: z.string().optional(),
-									jobProjectIds: z
-										.array(z.string())
-										.optional()
-										.describe(
-											"Since December 2022 All project ids associated to this job. Think monorepo. This job will be for one of these project.",
-										),
-									jobPairs: z
-										.array(
-											z
-												.array(z.union([z.string(), z.string()]))
-												.min(2)
-												.max(2),
-										)
-										.optional()
-										.describe(
-											"Since December 2022 Pairs of projects and owner ids to build for this build request.",
-										),
-									skippedJobPairs: z
-										.array(
-											z
-												.array(z.union([z.string(), z.string()]))
-												.min(2)
-												.max(2),
-										)
-										.optional()
-										.describe(
-											"Since June 2024 Pairs of projects and owner ids to immediately finish (without building) because we want to create them in a skipped state.",
-										),
-									gitHashtagVercel: z
-										.array(z.string())
-										.optional()
-										.describe(
-											"Since February 2022 All the hashtag-vercel tags found in the commit message triggering the deploy. For example, #VERCEL_DO_SOMETHING",
-										),
-									connectedProjectCount: z
-										.number()
-										.optional()
-										.describe(
-											"Since April 2023 Cached count of how many projects are connected to the repo. Saves a few Cosmos queries down the road in the main flow.",
-										),
-									prIdOrZero: z
-										.number()
-										.optional()
-										.describe(
-											"Since April 2023 If set then it is a cached result of asking the remote for the PR ID the commit that triggered this Job. Or zero if it was not a PR. This prevents a few git round trips by the git updater.",
-										),
-									gitComments: z
-										.object({
-											onPullRequest: z.union([z.literal(false), z.literal(true)]),
-											onCommit: z.union([z.literal(false), z.literal(true)]),
-										})
-										.optional()
-										.describe(
-											"Since June 2023 Determines if comments should be posted to the git host. Replaces `github.silent` in the vercel.json.",
-										),
-									isManualGitDeploy: z
-										.union([z.literal(false), z.literal(true)])
-										.optional()
-										.describe(
-											"Since 28 Feb 2024 If set to true, identifies that the git job was created for a manual git deployment",
-										),
-									commitVerification: z
-										.enum(["unknown", "unverified", "verified"])
-										.optional()
-										.describe(
-											"Since 6 Nov 2025 The verification status of the commit. - 'verified' if the commit is verified - 'unverified' if the commit is not verified - 'unknown' if the commit verification status is unknown or not supported",
-										),
-									nsnbSideEffect: z
-										.object({
-											action: z.enum(["auto-approved-member", "auto-approved-pending-invite"]),
-											gitUserLogin: z.string(),
-										})
-										.optional()
-										.describe(
-											"Since March 2026 Records a successful NSNB auto-add result so later GitHub PR comments can deterministically explain why this SHA was allowed to deploy.",
-										),
-									committerGitUserId: z
-										.number()
-										.optional()
-										.describe(
-											"Remote account id of the committer details (github id etc, not vercel). Note that the committer name/email are user input verbatim and not verified. Github does appear to resolve the given email to the username so we can trust that. If the username matches that of the sender, which is verified info, then we can use the account id and account type. See api-incoming, where we determine and set this property Note that even with that, the account may still have been spoofed.",
-										),
-									committerGitUserType: z
-										.string()
-										.optional()
-										.describe(
-											"Remote account type of the committer details (github type etc, not vercel). Note that the committer name/email are user input verbatim and not verified. Github does appear to resolve the given email to the username so we can trust that. If the username matches that of the sender, which is verified info, then we can use the account id and account type. See api-incoming, where we determine and set this property Note that even with that, the account may still have been spoofed.",
-										),
-									createdAt: z.number().optional(),
-									forceNew: z.union([z.literal(false), z.literal(true)]).optional(),
-									deploymentId: z.string().optional(),
-									deployHook: z
-										.object({
-											createdAt: z.number(),
-											id: z.string(),
-											name: z.string(),
-											ref: z.string(),
-										})
-										.optional(),
-									beforeSha: z.string().optional(),
-									defaultBranch: z.string().optional(),
-									eventful: z.union([z.literal(false), z.literal(true)]).optional(),
-									githubDeploymentId: z.string().optional(),
-									headInfo: z
-										.object({
-											org: z.string(),
-											ref: z.string(),
-											repo: z.string(),
-											repoId: z.number(),
-											sha: z.string(),
-										})
-										.describe("Information about the head commit/branch for a GitHub repository"),
-									installationId: z.number(),
-									isPrivate: z.union([z.literal(false), z.literal(true)]),
-									linkedProjectId: z.string().optional(),
-									org: z.string(),
-									prId: z.number().nullable(),
-									projectId: z.string().optional(),
-									customEnvId: z.string().nullish(),
-									repo: z.string(),
-									repoId: z.number(),
-									target: z.string().nullish(),
-									url: z.string().optional(),
-									withCache: z.union([z.literal(false), z.literal(true)]).optional(),
-									provider: z.enum(["github", "github-custom-host", "github-limited"]),
-									customHost: z.string().optional(),
-								})
-								.strict(),
-							z
-								.object({
-									createdAt: z.number().optional(),
-									eventful: z.union([z.literal(false), z.literal(true)]).optional(),
-									headInfo: z
-										.object({
-											org: z.string(),
-											ref: z.string(),
-											repo: z.string(),
-											repoId: z.number(),
-											sha: z.string(),
-										})
-										.describe("Information about the head commit/branch for a GitHub repository"),
-									beforeSha: z.string().optional(),
-									installationId: z.number(),
-									isPrivate: z.union([z.literal(false), z.literal(true)]),
-									linkedProjectId: z.string().optional(),
-									org: z.string(),
-									prId: z.number(),
-									projectId: z.unknown().nullable(),
-									customEnvId: z.unknown().nullish(),
-									repo: z.string(),
-									repoId: z.number(),
-									type: z.enum(["now-comment"]),
-									gitComments: z
-										.object({
-											onPullRequest: z.union([z.literal(false), z.literal(true)]),
-											onCommit: z.union([z.literal(false), z.literal(true)]),
-										})
-										.optional(),
-									provider: z.enum(["github", "github-custom-host", "github-limited"]),
-									customHost: z.string().optional(),
-								})
-								.strict(),
-							z
-								.object({
-									type: z.enum(["gitlab-push"]),
-									authorized: z.union([z.literal(false), z.literal(true)]).optional(),
-									authorizedBy: z.string().optional(),
-									jobProjectIds: z
-										.array(z.string())
-										.optional()
-										.describe(
-											"Since December 2022 All project ids associated to this job. Think monorepo. This job will be for one of these project.",
-										),
-									jobPairs: z
-										.array(
-											z
-												.array(z.union([z.string(), z.string()]))
-												.min(2)
-												.max(2),
-										)
-										.optional()
-										.describe(
-											"Since December 2022 Pairs of projects and owner ids to build for this build request.",
-										),
-									skippedJobPairs: z
-										.array(
-											z
-												.array(z.union([z.string(), z.string()]))
-												.min(2)
-												.max(2),
-										)
-										.optional()
-										.describe(
-											"Since June 2024 Pairs of projects and owner ids to immediately finish (without building) because we want to create them in a skipped state.",
-										),
-									gitHashtagVercel: z
-										.array(z.string())
-										.optional()
-										.describe(
-											"Since February 2022 All the hashtag-vercel tags found in the commit message triggering the deploy. For example, #VERCEL_DO_SOMETHING",
-										),
-									connectedProjectCount: z
-										.number()
-										.optional()
-										.describe(
-											"Since April 2023 Cached count of how many projects are connected to the repo. Saves a few Cosmos queries down the road in the main flow.",
-										),
-									prIdOrZero: z
-										.number()
-										.optional()
-										.describe(
-											"Since April 2023 If set then it is a cached result of asking the remote for the PR ID the commit that triggered this Job. Or zero if it was not a PR. This prevents a few git round trips by the git updater.",
-										),
-									gitComments: z
-										.object({
-											onPullRequest: z.union([z.literal(false), z.literal(true)]),
-											onCommit: z.union([z.literal(false), z.literal(true)]),
-										})
-										.optional()
-										.describe(
-											"Since June 2023 Determines if comments should be posted to the git host. Replaces `github.silent` in the vercel.json.",
-										),
-									isManualGitDeploy: z
-										.union([z.literal(false), z.literal(true)])
-										.optional()
-										.describe(
-											"Since 28 Feb 2024 If set to true, identifies that the git job was created for a manual git deployment",
-										),
-									commitVerification: z
-										.enum(["unknown", "unverified", "verified"])
-										.optional()
-										.describe(
-											"Since 6 Nov 2025 The verification status of the commit. - 'verified' if the commit is verified - 'unverified' if the commit is not verified - 'unknown' if the commit verification status is unknown or not supported",
-										),
-									nsnbSideEffect: z
-										.object({
-											action: z.enum(["auto-approved-member", "auto-approved-pending-invite"]),
-											gitUserLogin: z.string(),
-										})
-										.optional()
-										.describe(
-											"Since March 2026 Records a successful NSNB auto-add result so later GitHub PR comments can deterministically explain why this SHA was allowed to deploy.",
-										),
-									commit: z
-										.object({
-											id: z.string(),
-											authorAvatar: z.string().nullish(),
-											authorEmail: z.string().nullish(),
-											authorId: z.number().nullish(),
-											authorLogin: z.string().nullish(),
-											authorName: z.string().nullish(),
-										})
-										.optional(),
-									createdAt: z.number().optional(),
-									deployHook: z
-										.object({
-											createdAt: z.number(),
-											id: z.string(),
-											name: z.string(),
-											ref: z.string(),
-										})
-										.optional(),
-									deploymentId: z.string().optional(),
-									eventful: z.union([z.literal(false), z.literal(true)]).optional(),
-									forceNew: z.union([z.literal(false), z.literal(true)]).optional(),
-									headInfo: z
-										.object({
-											project: z.object({
-												defaultBranch: z.string().nullish(),
-												id: z.string(),
-												name: z.string().nullish(),
-												namespace: z.string().nullish(),
-												path: z.string().nullish(),
-												url: z.string().nullish(),
-											}),
-											ref: z.string(),
-											sha: z.string(),
-										})
-										.describe("GitLab"),
-									linkedProjectId: z.string().optional(),
-									prId: z.number().optional(),
-									project: z.object({
-										defaultBranch: z.string().nullish(),
-										id: z.string(),
-										name: z.string().nullish(),
-										namespace: z.string().nullish(),
-										path: z.string().nullish(),
-										url: z.string().nullish(),
-									}),
-									projectId: z.string().optional(),
-									customEnvId: z.string().nullish(),
-									ref: z.string(),
-									repoPushedAt: z.number().nullish(),
-									sha: z.string(),
-									silent: z.union([z.literal(false), z.literal(true)]).optional(),
-									target: z.string().nullish(),
-									url: z.string().optional(),
-									withCache: z.union([z.literal(false), z.literal(true)]).optional(),
-									provider: z.enum(["gitlab"]),
-								})
-								.strict(),
-							z
-								.object({
-									createdAt: z.number().optional(),
-									eventful: z.union([z.literal(false), z.literal(true)]).optional(),
-									headInfo: z
-										.object({
-											project: z.object({
-												defaultBranch: z.string().nullish(),
-												id: z.string(),
-												name: z.string().nullish(),
-												namespace: z.string().nullish(),
-												path: z.string().nullish(),
-												url: z.string().nullish(),
-											}),
-											ref: z.string(),
-											sha: z.string(),
-										})
-										.describe("GitLab"),
-									linkedProjectId: z.string().optional(),
-									prId: z.number(),
-									project: z.object({
-										defaultBranch: z.string().nullish(),
-										id: z.string(),
-										name: z.string().nullish(),
-										namespace: z.string().nullish(),
-										path: z.string().nullish(),
-										url: z.string().nullish(),
-									}),
-									projectId: z.string().optional(),
-									customEnvId: z.string().nullish(),
-									ref: z.string(),
-									sha: z.string(),
-									type: z.enum(["gitlab-now-comment"]),
-									gitComments: z
-										.object({
-											onPullRequest: z.union([z.literal(false), z.literal(true)]),
-											onCommit: z.union([z.literal(false), z.literal(true)]),
-										})
-										.optional(),
-									provider: z.enum(["gitlab"]),
-								})
-								.strict(),
-							z
-								.object({
-									type: z.enum(["vercel-push"]),
-									ref: z.string(),
-									repo: z.string(),
-									sha: z.string(),
-									repoPushedAt: z.number().nullish(),
-									deployHook: z
-										.object({
-											createdAt: z.number(),
-											id: z.string(),
-											name: z.string(),
-											ref: z.string(),
-										})
-										.optional(),
-									url: z.string().optional(),
-									target: z.string().nullish(),
-									deploymentId: z.string().optional(),
-									linkedProjectId: z.string().optional(),
-									projectId: z.string().optional(),
-									authorized: z.union([z.literal(false), z.literal(true)]).optional(),
-									authorizedBy: z.string().optional(),
-									jobProjectIds: z
-										.array(z.string())
-										.optional()
-										.describe(
-											"Since December 2022 All project ids associated to this job. Think monorepo. This job will be for one of these project.",
-										),
-									jobPairs: z
-										.array(
-											z
-												.array(z.union([z.string(), z.string()]))
-												.min(2)
-												.max(2),
-										)
-										.optional()
-										.describe(
-											"Since December 2022 Pairs of projects and owner ids to build for this build request.",
-										),
-									skippedJobPairs: z
-										.array(
-											z
-												.array(z.union([z.string(), z.string()]))
-												.min(2)
-												.max(2),
-										)
-										.optional()
-										.describe(
-											"Since June 2024 Pairs of projects and owner ids to immediately finish (without building) because we want to create them in a skipped state.",
-										),
-									gitHashtagVercel: z
-										.array(z.string())
-										.optional()
-										.describe(
-											"Since February 2022 All the hashtag-vercel tags found in the commit message triggering the deploy. For example, #VERCEL_DO_SOMETHING",
-										),
-									connectedProjectCount: z
-										.number()
-										.optional()
-										.describe(
-											"Since April 2023 Cached count of how many projects are connected to the repo. Saves a few Cosmos queries down the road in the main flow.",
-										),
-									prIdOrZero: z
-										.number()
-										.optional()
-										.describe(
-											"Since April 2023 If set then it is a cached result of asking the remote for the PR ID the commit that triggered this Job. Or zero if it was not a PR. This prevents a few git round trips by the git updater.",
-										),
-									gitComments: z
-										.object({
-											onPullRequest: z.union([z.literal(false), z.literal(true)]),
-											onCommit: z.union([z.literal(false), z.literal(true)]),
-										})
-										.optional()
-										.describe(
-											"Since June 2023 Determines if comments should be posted to the git host. Replaces `github.silent` in the vercel.json.",
-										),
-									isManualGitDeploy: z
-										.union([z.literal(false), z.literal(true)])
-										.optional()
-										.describe(
-											"Since 28 Feb 2024 If set to true, identifies that the git job was created for a manual git deployment",
-										),
-									commitVerification: z
-										.enum(["unknown", "unverified", "verified"])
-										.optional()
-										.describe(
-											"Since 6 Nov 2025 The verification status of the commit. - 'verified' if the commit is verified - 'unverified' if the commit is not verified - 'unknown' if the commit verification status is unknown or not supported",
-										),
-									nsnbSideEffect: z
-										.object({
-											action: z.enum(["auto-approved-member", "auto-approved-pending-invite"]),
-											gitUserLogin: z.string(),
-										})
-										.optional()
-										.describe(
-											"Since March 2026 Records a successful NSNB auto-add result so later GitHub PR comments can deterministically explain why this SHA was allowed to deploy.",
-										),
-									headInfo: z
-										.object({
-											org: z.string(),
-											ref: z.string(),
-											repo: z.string(),
-											sha: z.string(),
-										})
-										.describe("Vercel"),
-									org: z.string(),
-									provider: z.enum(["vercel"]),
-									customEnvId: z.string().nullish(),
-									prId: z.number().nullish(),
-								})
-								.strict(),
-							z
-								.object({
-									type: z.enum(["cursor-origin-push"]),
-									ref: z.string(),
-									sha: z.string(),
-									beforeSha: z.string().optional(),
-									defaultBranch: z.string().optional(),
-									forced: z.union([z.literal(false), z.literal(true)]).optional(),
-									repoPushedAt: z.number().nullish(),
-									deployHook: z
-										.object({
-											createdAt: z.number(),
-											id: z.string(),
-											name: z.string(),
-											ref: z.string(),
-										})
-										.optional(),
-									url: z.string().optional(),
-									target: z.string().nullish(),
-									deploymentId: z.string().optional(),
-									linkedProjectId: z.string().optional(),
-									projectId: z.string().optional(),
-									createdAt: z.number().optional(),
-									eventful: z.union([z.literal(false), z.literal(true)]).optional(),
-									forceNew: z.union([z.literal(false), z.literal(true)]).optional(),
-									authorized: z.union([z.literal(false), z.literal(true)]).optional(),
-									authorizedBy: z.string().optional(),
-									jobProjectIds: z
-										.array(z.string())
-										.optional()
-										.describe(
-											"Since December 2022 All project ids associated to this job. Think monorepo. This job will be for one of these project.",
-										),
-									jobPairs: z
-										.array(
-											z
-												.array(z.union([z.string(), z.string()]))
-												.min(2)
-												.max(2),
-										)
-										.optional()
-										.describe(
-											"Since December 2022 Pairs of projects and owner ids to build for this build request.",
-										),
-									skippedJobPairs: z
-										.array(
-											z
-												.array(z.union([z.string(), z.string()]))
-												.min(2)
-												.max(2),
-										)
-										.optional()
-										.describe(
-											"Since June 2024 Pairs of projects and owner ids to immediately finish (without building) because we want to create them in a skipped state.",
-										),
-									gitHashtagVercel: z
-										.array(z.string())
-										.optional()
-										.describe(
-											"Since February 2022 All the hashtag-vercel tags found in the commit message triggering the deploy. For example, #VERCEL_DO_SOMETHING",
-										),
-									connectedProjectCount: z
-										.number()
-										.optional()
-										.describe(
-											"Since April 2023 Cached count of how many projects are connected to the repo. Saves a few Cosmos queries down the road in the main flow.",
-										),
-									prIdOrZero: z
-										.number()
-										.optional()
-										.describe(
-											"Since April 2023 If set then it is a cached result of asking the remote for the PR ID the commit that triggered this Job. Or zero if it was not a PR. This prevents a few git round trips by the git updater.",
-										),
-									gitComments: z
-										.object({
-											onPullRequest: z.union([z.literal(false), z.literal(true)]),
-											onCommit: z.union([z.literal(false), z.literal(true)]),
-										})
-										.optional()
-										.describe(
-											"Since June 2023 Determines if comments should be posted to the git host. Replaces `github.silent` in the vercel.json.",
-										),
-									isManualGitDeploy: z
-										.union([z.literal(false), z.literal(true)])
-										.optional()
-										.describe(
-											"Since 28 Feb 2024 If set to true, identifies that the git job was created for a manual git deployment",
-										),
-									commitVerification: z
-										.enum(["unknown", "unverified", "verified"])
-										.optional()
-										.describe(
-											"Since 6 Nov 2025 The verification status of the commit. - 'verified' if the commit is verified - 'unverified' if the commit is not verified - 'unknown' if the commit verification status is unknown or not supported",
-										),
-									nsnbSideEffect: z
-										.object({
-											action: z.enum(["auto-approved-member", "auto-approved-pending-invite"]),
-											gitUserLogin: z.string(),
-										})
-										.optional()
-										.describe(
-											"Since March 2026 Records a successful NSNB auto-add result so later GitHub PR comments can deterministically explain why this SHA was allowed to deploy.",
-										),
-									headInfo: z
-										.object({
-											owner: z.string().describe("Owner (namespace) slug, e.g. `acme`."),
-											ownerId: z.string().describe("Origin namespace id (`ns_…`)."),
-											ref: z.string(),
-											repo: z.string().describe("Repository name, e.g. `api`."),
-											repoId: z.string().describe("Origin repository id."),
-											sha: z.string(),
-										})
-										.describe("Cursor Origin"),
-									installationId: z
-										.string()
-										.describe("Origin installation id (`i_…`) used to resolve the credential."),
-									owner: z.string(),
-									repo: z.string(),
-									repoId: z.string(),
-									provider: z.enum(["cursor-origin"]),
-									customEnvId: z.string().nullish(),
-									prId: z.number().nullish(),
-								})
-								.strict(),
-							z
-								.object({
-									createdAt: z.number().optional(),
-									eventful: z.union([z.literal(false), z.literal(true)]).optional(),
-									headInfo: z
-										.object({
-											owner: z.string().describe("Owner (namespace) slug, e.g. `acme`."),
-											ownerId: z.string().describe("Origin namespace id (`ns_…`)."),
-											ref: z.string(),
-											repo: z.string().describe("Repository name, e.g. `api`."),
-											repoId: z.string().describe("Origin repository id."),
-											sha: z.string(),
-										})
-										.describe("Cursor Origin"),
-									installationId: z
-										.string()
-										.describe("Origin installation id (`i_…`) used to resolve the credential."),
-									linkedProjectId: z.string().optional(),
-									owner: z.string(),
-									prId: z.number(),
-									projectId: z.unknown().nullable(),
-									customEnvId: z.unknown().nullish(),
-									repo: z.string(),
-									repoId: z.string(),
-									type: z.enum(["cursor-origin-now-comment"]),
-									gitComments: z
-										.object({
-											onPullRequest: z.union([z.literal(false), z.literal(true)]),
-											onCommit: z.union([z.literal(false), z.literal(true)]),
-										})
-										.optional(),
-									provider: z.enum(["cursor-origin"]),
-								})
-								.strict(),
-						]),
-					})
-					.strict(),
-				z
-					.object({
-						url: z.string(),
-						oldTeam: z
-							.object({
-								name: z.string(),
-							})
-							.optional(),
-						newTeam: z
-							.object({
-								name: z.string(),
-							})
-							.optional(),
-					})
-					.strict(),
-				z
-					.object({
-						sha: z.string(),
-						gitUserPlatform: z.string(),
-						projectId: z.string().optional(),
-						projectName: z.string(),
-						gitCommitterName: z.string(),
-						source: z.string(),
-						reason: z.enum(["ip_allow_list"]).optional(),
-					})
-					.strict(),
-				z
-					.object({
-						deployment: z.object({
-							name: z.string(),
-							id: z.string(),
-							meta: z.object({}).catchall(z.string()),
-							url: z.string(),
-						}),
-						deploymentId: z.string(),
-						url: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string().optional(),
-						projectName: z.string(),
-						deploymentId: z
-							.string()
-							.optional()
-							.describe(
-								"The blocked deployment's id (e.g. `dpl_…`). When present, the message links it to the deployment details (inspector) page. Optional so events emitted before this field was added still render.",
-							),
-						source: z
-							.string()
-							.describe("Classified deploy source, e.g. 'cli', 'git', 'integration'."),
-						ruleName: z
-							.enum(["deploymentSources", "gitSources"])
-							.describe("Which rule blocked the deploy."),
-						ruleProvenance: z
-							.enum(["default", "project", "team"])
-							.describe("Team-level or project-level rule."),
-					})
-					.strict(),
-				z
-					.object({
-						deploymentId: z.string(),
-						deploymentUrl: z.string().nullable(),
-						deploymentName: z.string().nullable(),
-						projectId: z.string(),
-						projectName: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						integrationId: z.string(),
-						configurationId: z.string(),
-						integrationSlug: z.string(),
-						integrationName: z.string(),
-						ownerId: z.string(),
-						projectIds: z.array(z.string()).optional(),
-					})
-					.strict(),
-				z
-					.object({
-						id: z.string(),
-						value: z.string(),
-						name: z.string(),
-						domain: z.string(),
-						type: z.string(),
-						mxPriority: z.number().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						action: z.enum(["add", "delete", "update"]),
-						initiator: z.enum(["system", "user"]),
-						id: z.string(),
-						domain: z.string(),
-						name: z.string(),
-						type: z.string(),
-						value: z.string(),
-						mxPriority: z.number().optional(),
-						previousValue: z.string().optional(),
-						source: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						id: z.string(),
-						value: z.string(),
-						name: z.string(),
-						domain: z.string(),
-						type: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						name: z.string(),
-						zone: z.union([z.literal(false), z.literal(true)]).optional(),
-					})
-					.strict(),
-				z
-					.object({
-						name: z.string(),
-						price: z.number(),
-						currency: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						name: z.string(),
-						cdnEnabled: z.union([z.literal(false), z.literal(true)]),
-					})
-					.strict(),
-				z
-					.object({
-						name: z.string(),
-						oldTeam: z
-							.object({
-								name: z.string(),
-							})
-							.optional(),
-						newTeam: z
-							.object({
-								name: z.string(),
-							})
-							.optional(),
-					})
-					.strict(),
-				z
-					.object({
-						name: z.string(),
-						userId: z.string(),
-						teamId: z.string(),
-						ownerName: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						domainId: z.string(),
-						name: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						previousServiceType: z.string(),
-						serviceType: z.string(),
-						id: z.string(),
-						name: z.string(),
-						nameservers: z.array(z.string()),
-					})
-					.strict(),
-				z
-					.object({
-						domain: z.string(),
-						customNameservers: z.array(z.string()).nullable(),
-						prevCustomNameservers: z.array(z.string()).nullable(),
-					})
-					.strict(),
-				z
-					.object({
-						domain: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						domain: z.string(),
-						echMode: z.enum(["auto", "disabled", "enabled"]),
-						previousEchMode: z.enum(["auto", "disabled", "enabled"]),
-					})
-					.strict(),
-				z
-					.object({
-						domain: z.string(),
-						zone: z.union([z.literal(false), z.literal(true)]),
-					})
-					.strict(),
-				z
-					.object({
-						domain: z.string(),
-						zone: z.union([z.literal(false), z.literal(true)]),
-						initiator: z.enum(["system", "user"]),
-						source: z.string().optional(),
-						previousZone: z.union([z.literal(false), z.literal(true)]).optional(),
-					})
-					.strict(),
-				z
-					.object({
-						name: z.string(),
-						fromId: z.string().nullable(),
-						fromName: z.string().nullable(),
-					})
-					.strict(),
-				z
-					.object({
-						name: z.string(),
-						destinationId: z.string().nullable(),
-						destinationName: z.string().nullable(),
-					})
-					.strict(),
-				z
-					.object({
-						name: z.string(),
-						destinationId: z.string(),
-						destinationName: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						renew: z.union([z.literal(false), z.literal(true)]).optional(),
-						domain: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						name: z.string(),
-						price: z.number().optional(),
-						currency: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						name: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						drainUrl: z.string().nullable(),
-						drainName: z.string().nullable(),
-						integrationName: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						drainUrl: z.string().nullable(),
-						integrationName: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z.string(),
-						srcImages: z.array(z.string()),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z.string(),
-						tags: z.array(z.string()),
-						target: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z.string(),
-						path: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						edgeConfigId: z.string(),
-						edgeConfigSlug: z.string(),
-						edgeConfigDigest: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						edgeConfigId: z.string(),
-						edgeConfigSlug: z.string(),
-						edgeConfigDigest: z.string(),
-						edgeConfigBackupVersionId: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						edgeConfigId: z.string(),
-						edgeConfigSlug: z.string(),
-						edgeConfigSchema: z.object({}).optional(),
-					})
-					.strict(),
-				z
-					.object({
-						edgeConfigId: z.string(),
-						edgeConfigSlug: z.string(),
-						edgeConfigDigest: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						edgeConfig: z.object({
-							id: z.string(),
-							slug: z.string(),
-						}),
-						fromAccount: z.object({
-							id: z.string(),
-							type: z.enum(["team", "user"]),
-							slug: z.string().optional(),
-							username: z.string().optional(),
-						}),
-						toAccount: z.object({
-							id: z.string(),
-							type: z.enum(["team", "user"]),
-							slug: z.string().optional(),
-							username: z.string().optional(),
-						}),
-					})
-					.strict(),
-				z
-					.object({
-						edgeConfigId: z.string(),
-						edgeConfigSlug: z.string(),
-						edgeConfigTokenId: z.string(),
-						label: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						edgeConfigId: z.string(),
-						edgeConfigSlug: z.string(),
-						edgeConfigTokenIds: z.array(z.string()).describe("ids of deleted tokens"),
-					})
-					.strict(),
-				z
-					.object({
-						email: z.string(),
-						name: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						team: z.object({
-							id: z.string(),
-							name: z.string().optional(),
-						}),
-						previousRule: z.object({
-							email: z.string(),
-						}),
-					})
-					.strict(),
-				z
-					.object({
-						team: z.object({
-							id: z.string(),
-							name: z.string().optional(),
-						}),
-						previousRule: z
-							.object({
-								email: z.string(),
-							})
-							.optional(),
-						nextRule: z
-							.object({
-								email: z.string(),
-							})
-							.optional(),
-					})
-					.strict(),
-				z
-					.object({
-						deletedUser: z
-							.object({
-								username: z.string(),
-								email: z.string(),
-							})
-							.optional(),
-						deletedUid: z.string().optional(),
-						emailDomain: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						key: z.string().optional(),
-						projectId: z.string().optional(),
-						projectName: z.string().optional(),
-						target: z.union([z.string(), z.array(z.string())]).optional(),
-						customEnvironmentSlugs: z.array(z.string()).optional(),
-						id: z.string().optional(),
-						gitBranch: z.string().optional(),
-						edgeConfigId: z.string().nullish(),
-						edgeConfigTokenId: z.string().nullish(),
-						source: z.string().optional(),
-						ipAddress: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						key: z.string().optional(),
-						projectId: z.string().optional(),
-						projectName: z.string().optional(),
-						target: z.union([z.string(), z.array(z.string())]).optional(),
-						customEnvironmentSlugs: z.array(z.string()).optional(),
-						id: z.string().optional(),
-						gitBranch: z.string().optional(),
-						edgeConfigId: z.string().nullish(),
-						edgeConfigTokenId: z.string().nullish(),
-						source: z.string().optional(),
-						ipAddress: z.string().optional(),
-						deploymentId: z.string(),
-						deploymentUrl: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						provider: z.string(),
-						organizationId: z.string(),
-						repository: z.string(),
-						key: z.string(),
-						visibility: z.enum(["config", "secret"]),
-						changedFields: z.array(z.string()).optional(),
-					})
-					.strict(),
-				z
-					.object({
-						created: z.iso
-							.datetime()
-							.optional()
-							.describe("The date when the Shared Env Var was created.")
-							.meta({ examples: ["2021-02-10T13:11:49.180Z"] }),
-						key: z
-							.string()
-							.optional()
-							.describe("The name of the Shared Env Var.")
-							.meta({ examples: ["my-api-key"] }),
-						ownerId: z
-							.string()
-							.nullish()
-							.describe(
-								"The unique identifier of the owner (team) the Shared Env Var was created for.",
-							)
-							.meta({ examples: ["team_LLHUOMOoDlqOp8wPE4kFo9pE"] }),
-						id: z
-							.string()
-							.optional()
-							.describe("The unique identifier of the Shared Env Var.")
-							.meta({ examples: ["env_XCG7t7AIHuO2SBA8667zNUiM"] }),
-						createdBy: z
-							.string()
-							.nullish()
-							.describe("The unique identifier of the user who created the Shared Env Var.")
-							.meta({ examples: ["2qDDuGFTWXBLDNnqZfWPDp1A"] }),
-						deletedBy: z
-							.string()
-							.nullish()
-							.describe("The unique identifier of the user who deleted the Shared Env Var.")
-							.meta({ examples: ["2qDDuGFTWXBLDNnqZfWPDp1A"] }),
-						updatedBy: z
-							.string()
-							.nullish()
-							.describe("The unique identifier of the user who last updated the Shared Env Var.")
-							.meta({ examples: ["2qDDuGFTWXBLDNnqZfWPDp1A"] }),
-						createdAt: z
-							.number()
-							.optional()
-							.describe("Timestamp for when the Shared Env Var was created.")
-							.meta({ examples: [1609492210000] }),
-						deletedAt: z
-							.number()
-							.optional()
-							.describe("Timestamp for when the Shared Env Var was (soft) deleted.")
-							.meta({ examples: [1609492210000] }),
-						updatedAt: z
-							.number()
-							.optional()
-							.describe("Timestamp for when the Shared Env Var was last updated.")
-							.meta({ examples: [1609492210000] }),
-						value: z.string().optional().describe("The value of the Shared Env Var."),
-						projectId: z
-							.array(z.string())
-							.optional()
-							.describe(
-								"The unique identifiers of the projects which the Shared Env Var is linked to.",
-							)
-							.meta({
-								examples: [["prj_2WjyKQmM8ZnGcJsPWMrHRHrE", "prj_2WjyKQmM8ZnGcJsPWMrasEFg"]],
-							}),
-						type: z
-							.enum(["encrypted", "plain", "sensitive", "system"])
-							.optional()
-							.describe("The type of this cosmos doc instance, if blank, assume secret.")
-							.meta({ examples: ["encrypted"] }),
-						target: z
-							.array(z.enum(["development", "preview", "production"]))
-							.optional()
-							.describe("environments this env variable targets")
-							.meta({ examples: ["production"] }),
-						applyToAllCustomEnvironments: z
-							.union([z.literal(false), z.literal(true)])
-							.optional()
-							.describe("whether or not this env varible applies to custom environments"),
-						customEnvironmentIds: z
-							.array(z.string())
-							.optional()
-							.describe("The custom environment IDs that this Shared Env Var is scoped to."),
-						decrypted: z
-							.union([z.literal(false), z.literal(true)])
-							.optional()
-							.describe("whether or not this env variable is decrypted"),
-						comment: z
-							.string()
-							.optional()
-							.describe("A user provided comment that describes what this Shared Env Var is for."),
-						lastEditedByDisplayName: z
-							.string()
-							.optional()
-							.describe("The last editor full name or username."),
-						projectNames: z.array(z.string()).optional(),
-						ipAddress: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						envId: z.string(),
-						envKey: z.string(),
-						provider: z.string(),
-						organizationId: z.string(),
-						repository: z.string(),
-						target: z.array(z.enum(["development", "preview", "production"])),
-					})
-					.strict(),
-				z
-					.object({
-						oldEnvVar: z
-							.object({
-								created: z.iso
-									.datetime()
-									.optional()
-									.describe("The date when the Shared Env Var was created.")
-									.meta({ examples: ["2021-02-10T13:11:49.180Z"] }),
-								key: z
-									.string()
-									.optional()
-									.describe("The name of the Shared Env Var.")
-									.meta({ examples: ["my-api-key"] }),
-								ownerId: z
-									.string()
-									.nullish()
-									.describe(
-										"The unique identifier of the owner (team) the Shared Env Var was created for.",
-									)
-									.meta({ examples: ["team_LLHUOMOoDlqOp8wPE4kFo9pE"] }),
-								id: z
-									.string()
-									.optional()
-									.describe("The unique identifier of the Shared Env Var.")
-									.meta({ examples: ["env_XCG7t7AIHuO2SBA8667zNUiM"] }),
-								createdBy: z
-									.string()
-									.nullish()
-									.describe("The unique identifier of the user who created the Shared Env Var.")
-									.meta({ examples: ["2qDDuGFTWXBLDNnqZfWPDp1A"] }),
-								deletedBy: z
-									.string()
-									.nullish()
-									.describe("The unique identifier of the user who deleted the Shared Env Var.")
-									.meta({ examples: ["2qDDuGFTWXBLDNnqZfWPDp1A"] }),
-								updatedBy: z
-									.string()
-									.nullish()
-									.describe(
-										"The unique identifier of the user who last updated the Shared Env Var.",
-									)
-									.meta({ examples: ["2qDDuGFTWXBLDNnqZfWPDp1A"] }),
-								createdAt: z
-									.number()
-									.optional()
-									.describe("Timestamp for when the Shared Env Var was created.")
-									.meta({ examples: [1609492210000] }),
-								deletedAt: z
-									.number()
-									.optional()
-									.describe("Timestamp for when the Shared Env Var was (soft) deleted.")
-									.meta({ examples: [1609492210000] }),
-								updatedAt: z
-									.number()
-									.optional()
-									.describe("Timestamp for when the Shared Env Var was last updated.")
-									.meta({ examples: [1609492210000] }),
-								value: z.string().optional().describe("The value of the Shared Env Var."),
-								projectId: z
-									.array(z.string())
-									.optional()
-									.describe(
-										"The unique identifiers of the projects which the Shared Env Var is linked to.",
-									)
-									.meta({
-										examples: [["prj_2WjyKQmM8ZnGcJsPWMrHRHrE", "prj_2WjyKQmM8ZnGcJsPWMrasEFg"]],
-									}),
-								type: z
-									.enum(["encrypted", "plain", "sensitive", "system"])
-									.optional()
-									.describe("The type of this cosmos doc instance, if blank, assume secret.")
-									.meta({ examples: ["encrypted"] }),
-								target: z
-									.array(z.enum(["development", "preview", "production"]))
-									.optional()
-									.describe("environments this env variable targets")
-									.meta({ examples: ["production"] }),
-								applyToAllCustomEnvironments: z
-									.union([z.literal(false), z.literal(true)])
-									.optional()
-									.describe("whether or not this env varible applies to custom environments"),
-								customEnvironmentIds: z
-									.array(z.string())
-									.optional()
-									.describe("The custom environment IDs that this Shared Env Var is scoped to."),
-								decrypted: z
-									.union([z.literal(false), z.literal(true)])
-									.optional()
-									.describe("whether or not this env variable is decrypted"),
-								comment: z
-									.string()
-									.optional()
-									.describe(
-										"A user provided comment that describes what this Shared Env Var is for.",
-									),
-								lastEditedByDisplayName: z
-									.string()
-									.optional()
-									.describe("The last editor full name or username."),
-							})
-							.optional(),
-						newEnvVar: z
-							.object({
-								created: z.iso
-									.datetime()
-									.optional()
-									.describe("The date when the Shared Env Var was created.")
-									.meta({ examples: ["2021-02-10T13:11:49.180Z"] }),
-								key: z
-									.string()
-									.optional()
-									.describe("The name of the Shared Env Var.")
-									.meta({ examples: ["my-api-key"] }),
-								ownerId: z
-									.string()
-									.nullish()
-									.describe(
-										"The unique identifier of the owner (team) the Shared Env Var was created for.",
-									)
-									.meta({ examples: ["team_LLHUOMOoDlqOp8wPE4kFo9pE"] }),
-								id: z
-									.string()
-									.optional()
-									.describe("The unique identifier of the Shared Env Var.")
-									.meta({ examples: ["env_XCG7t7AIHuO2SBA8667zNUiM"] }),
-								createdBy: z
-									.string()
-									.nullish()
-									.describe("The unique identifier of the user who created the Shared Env Var.")
-									.meta({ examples: ["2qDDuGFTWXBLDNnqZfWPDp1A"] }),
-								deletedBy: z
-									.string()
-									.nullish()
-									.describe("The unique identifier of the user who deleted the Shared Env Var.")
-									.meta({ examples: ["2qDDuGFTWXBLDNnqZfWPDp1A"] }),
-								updatedBy: z
-									.string()
-									.nullish()
-									.describe(
-										"The unique identifier of the user who last updated the Shared Env Var.",
-									)
-									.meta({ examples: ["2qDDuGFTWXBLDNnqZfWPDp1A"] }),
-								createdAt: z
-									.number()
-									.optional()
-									.describe("Timestamp for when the Shared Env Var was created.")
-									.meta({ examples: [1609492210000] }),
-								deletedAt: z
-									.number()
-									.optional()
-									.describe("Timestamp for when the Shared Env Var was (soft) deleted.")
-									.meta({ examples: [1609492210000] }),
-								updatedAt: z
-									.number()
-									.optional()
-									.describe("Timestamp for when the Shared Env Var was last updated.")
-									.meta({ examples: [1609492210000] }),
-								value: z.string().optional().describe("The value of the Shared Env Var."),
-								projectId: z
-									.array(z.string())
-									.optional()
-									.describe(
-										"The unique identifiers of the projects which the Shared Env Var is linked to.",
-									)
-									.meta({
-										examples: [["prj_2WjyKQmM8ZnGcJsPWMrHRHrE", "prj_2WjyKQmM8ZnGcJsPWMrasEFg"]],
-									}),
-								type: z
-									.enum(["encrypted", "plain", "sensitive", "system"])
-									.optional()
-									.describe("The type of this cosmos doc instance, if blank, assume secret.")
-									.meta({ examples: ["encrypted"] }),
-								target: z
-									.array(z.enum(["development", "preview", "production"]))
-									.optional()
-									.describe("environments this env variable targets")
-									.meta({ examples: ["production"] }),
-								applyToAllCustomEnvironments: z
-									.union([z.literal(false), z.literal(true)])
-									.optional()
-									.describe("whether or not this env varible applies to custom environments"),
-								customEnvironmentIds: z
-									.array(z.string())
-									.optional()
-									.describe("The custom environment IDs that this Shared Env Var is scoped to."),
-								decrypted: z
-									.union([z.literal(false), z.literal(true)])
-									.optional()
-									.describe("whether or not this env variable is decrypted"),
-								comment: z
-									.string()
-									.optional()
-									.describe(
-										"A user provided comment that describes what this Shared Env Var is for.",
-									),
-								lastEditedByDisplayName: z
-									.string()
-									.optional()
-									.describe("The last editor full name or username."),
-							})
-							.optional(),
-						updateDiff: z
-							.object({
-								id: z.string(),
-								key: z.string().optional(),
-								newKey: z.string().optional(),
-								oldTarget: z.array(z.enum(["development", "preview", "production"])).optional(),
-								newTarget: z.array(z.enum(["development", "preview", "production"])).optional(),
-								oldType: z.string().optional(),
-								newType: z.string().optional(),
-								oldProjects: z
-									.array(
-										z.object({
-											projectName: z.string().optional(),
-											projectId: z.string(),
-										}),
-									)
-									.optional(),
-								newProjects: z
-									.array(
-										z.object({
-											projectName: z.string().optional(),
-											projectId: z.string(),
-										}),
-									)
-									.optional(),
-								oldCustomEnvironmentIds: z.array(z.string()).optional(),
-								newCustomEnvironmentIds: z.array(z.string()).optional(),
-								changedValue: z.union([z.literal(false), z.literal(true)]),
-							})
-							.optional(),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						scope: z.string(),
-						source: z.string(),
-						expiresAt: z.number().nullish(),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						scope: z.string(),
-						source: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z.string(),
-						configVersion: z.union([z.string(), z.number()]),
-					})
-					.strict(),
-				z
-					.object({
-						configVersion: z.union([z.string(), z.number()]),
-					})
-					.strict(),
-				z
-					.object({
-						configVersion: z.union([z.string(), z.number()]),
-						configChangeCount: z.number().optional(),
-						configChanges: z.array(z.object({})).optional(),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z.string().optional(),
-						restore: z.union([z.literal(false), z.literal(true)]),
-						configVersion: z.number(),
-						configChangeCount: z.number(),
-						configChanges: z.array(z.object({})),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						rulesetName: z.string(),
-						ruleGroups: z.object({}).catchall(
-							z.object({
-								active: z.union([z.literal(false), z.literal(true)]),
-								action: z.enum(["challenge", "deny", "log"]).optional(),
-							}),
-						),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						rulesetName: z.string(),
-						active: z.union([z.literal(false), z.literal(true)]),
-						action: z.enum(["challenge", "deny", "log"]).optional(),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z.string().optional(),
-						previousOwnerId: z.string(),
-						newOwnerId: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						action: z.enum(["disable", "enable"]),
-					})
-					.strict(),
-				z
-					.object({
-						source: z.enum(["create", "enable", "upgrade"]),
-					})
-					.strict(),
-				z
-					.object({
-						provider: z.enum(["bitbucket", "cursor-origin", "github", "gitlab"]),
-						actorLogin: z
-							.string()
-							.nullable()
-							.describe("Display name only. Logins are mutable; join on `actorAccountId`."),
-						actorAccountId: z.string().nullable().describe("Stable account id on `provider`."),
-						installationId: z
-							.string()
-							.nullable()
-							.describe("Set only when an App installation token was minted (GitHub only)."),
-						usedAppToken: z.union([z.literal(false), z.literal(true)]),
-						sourceRepo: z
-							.string()
-							.nullable()
-							.describe(
-								'Source repository, "owner/name". Null when the pushed content was generated in-request (push-files-to-repo) rather than copied from a repository.',
-							),
-						sourceCommitSha: z.string().nullable(),
-						destinationRepo: z
-							.string()
-							.describe('"owner/name", or the raw request value if blocked before it resolved.'),
-						destinationBranch: z
-							.string()
-							.nullable()
-							.describe("Branch actually pushed to, or the requested one if blocked."),
-						resultCommitSha: z.string().nullable(),
-						outcome: z.enum(["failure", "success"]),
-						failureStage: z
-							.enum(["authorization", "push", "unexpected", "unknown", "validation"])
-							.optional()
-							.describe("Mirrors `PushFailureStage` in `@api/git-push-repo`."),
-						failureCode: z
-							.string()
-							.optional()
-							.describe("Sanitized code, never a raw error message."),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						fromDeploymentId: z.string(),
-						toDeploymentId: z.string(),
-						projectName: z.string(),
-						reason: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						integrationId: z.string(),
-						configurationId: z.string(),
-						integrationSlug: z.string(),
-						integrationName: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						userId: z.string(),
-						integrationId: z.string(),
-						configurationId: z.string(),
-						integrationSlug: z.string(),
-						integrationName: z.string().optional(),
-						newOwner: z
-							.object({
-								abuse: z
-									.object({
-										blockHistory: z
-											.array(
-												z.object({
-													action: z.enum(["blocked", "hard-blocked", "soft-blocked", "unblocked"]),
-													createdAt: z.number(),
-													caseId: z.string().optional(),
-													reason: z.string(),
-													actor: z.string().optional(),
-													statusCode: z.number().optional(),
-													comment: z.string().optional(),
-													ineligibleForAppeal: z
-														.union([z.literal(false), z.literal(true)])
-														.optional(),
-												}),
-											)
-											.optional()
-											.describe("Since June 2023"),
-										gitAuthHistory: z
-											.array(z.string())
-											.optional()
-											.describe(
-												"Since March 2022. Helps abuse checks by tracking git auths. Format: `<platform>:<detail>:<value>`",
-											),
-										history: z
-											.array(
-												z.object({
-													scanner: z.string(),
-													reason: z.string(),
-													by: z.string(),
-													byId: z.string(),
-													at: z.number(),
-												}),
-											)
-											.optional()
-											.describe("(scanner history). Since November 2021. First element is newest."),
-										gitLineageBlocks: z
-											.number()
-											.optional()
-											.describe(
-												"Since September 2023. How often did this owner trigger an actual git lineage deploy block?",
-											),
-										gitLineageBlocksDry: z
-											.number()
-											.optional()
-											.describe(
-												"Since September 2023. How often did this owner trigger a git lineage deploy block dry run?",
-											),
-										scanner: z
-											.string()
-											.optional()
-											.describe(
-												"Since November 2021. Guides the abuse scanner in build container.",
-											),
-										scheduledUnblockAt: z
-											.string()
-											.optional()
-											.describe(
-												'Since December 2025. UTC timestamp string of when an auto-unblock is scheduled. Format: "Wed, 03 Dec 2025 20:32:13 GMT"',
-											),
-										scheduledBlock: z
-											.object({
-												executeAt: z
-													.number()
-													.describe("Unix ms timestamp of the scheduled EventBridge execution."),
-												reason: z
-													.string()
-													.describe("Violation reason (string value of the `Violation` enum)."),
-												source: z
-													.string()
-													.describe(
-														"What triggered the scheduled block (string value of `TeamBlockSource`).",
-													),
-												createdAt: z
-													.number()
-													.describe("Unix ms timestamp of when the marker was written."),
-												caseId: z
-													.string()
-													.optional()
-													.describe(
-														"Absent from the automated evaluation path, which has no case.",
-													),
-												scheduleName: z
-													.string()
-													.optional()
-													.describe(
-														"EventBridge schedule name, persisted so the pending event can be cancelled.",
-													),
-											})
-											.optional()
-											.describe(
-												'Since June 2026. A hard block that is scheduled (the delay varies by source; see `executeAt`) but not yet executed. Powers admin visibility, scheduler dedup, and cancellation. Cleared on execution or when the team is unblocked/reviewed before `executeAt`; the executor treats its absence as "block cancelled".',
-											),
-										updatedAt: z.number().describe("Since November 2021"),
-										creationUserAgent: z.string().optional(),
-										creationIp: z.string().optional(),
-										removedPhoneNumbers: z.string().optional(),
-									})
-									.optional(),
-								acceptanceState: z.string().optional(),
-								acceptedAt: z.number().optional(),
-								avatar: z.string().optional(),
-								billing: z.object({
-									plan: z.enum(["enterprise", "hobby", "pro"]),
-								}),
-								blocked: z.number().nullable(),
-								blockReason: z.string().optional(),
-								created: z.number().optional(),
-								createdAt: z.number(),
-								credentials: z
-									.array(
-										z.union([
-											z
-												.object({
-													type: z.enum([
-														"apple",
-														"bitbucket",
-														"chatgpt",
-														"github-oauth",
-														"github-oauth-limited",
-														"gitlab",
-														"google",
-														"vercel",
-													]),
-													id: z.string(),
-												})
-												.strict(),
-											z
-												.object({
-													type: z.enum(["github-oauth-custom-host"]),
-													host: z.string(),
-													id: z.string(),
-												})
-												.strict(),
-										]),
-									)
-									.optional(),
-								customerId: z.string().nullish(),
-								orbCustomerId: z.string().nullish(),
-								dataCache: z
-									.object({
-										excessBillingEnabled: z.union([z.literal(false), z.literal(true)]).optional(),
-									})
-									.optional(),
-								deletedAt: z.number().nullish(),
-								deploymentSecret: z.string(),
-								dismissedTeams: z.array(z.string()).optional(),
-								dismissedToasts: z
-									.array(
-										z.object({
-											name: z.string(),
-											dismissals: z.array(
-												z.object({
-													scopeId: z.string(),
-													createdAt: z.number(),
-												}),
-											),
-										}),
-									)
-									.optional(),
-								favoriteProjectsAndSpaces: z
-									.array(
-										z.object({
-											teamId: z.string(),
-											projectId: z.string(),
-										}),
-									)
-									.optional(),
-								email: z.string(),
-								id: z.string(),
-								importFlowGitNamespace: z.union([z.string(), z.number()]).nullish(),
-								importFlowGitNamespaceId: z.union([z.string(), z.number()]).nullish(),
-								importFlowGitProvider: z
-									.enum([
-										"bitbucket",
-										"cursor-origin",
-										"github",
-										"github-custom-host",
-										"github-limited",
-										"gitlab",
-										"vercel",
-									])
-									.nullish(),
-								preferredScopesAndGitNamespaces: z
-									.array(
-										z.object({
-											scopeId: z.string(),
-											gitNamespaceId: z.union([z.string(), z.number()]).nullable(),
-										}),
-									)
-									.optional(),
-								isDomainReseller: z.union([z.literal(false), z.literal(true)]).optional(),
-								isZeitPub: z.union([z.literal(false), z.literal(true)]).optional(),
-								testAccountExpiresAt: z.number().optional(),
-								maxActiveSlots: z.number().optional(),
-								name: z.string().optional(),
-								phoneNumber: z.string().optional(),
-								platformVersion: z.number().nullable(),
-								preventAutoBlocking: z
-									.union([z.number(), z.union([z.literal(false), z.literal(true)])])
-									.optional(),
-								projectDomainsLimit: z
-									.number()
-									.optional()
-									.describe(
-										"Overrides our DEFAULT project domains limit per account or per project.",
-									),
-								projectCardWidgetPreferences: z
-									.array(
-										z.object({
-											projectId: z.string(),
-											widget: z.enum([
-												"analytics-online",
-												"analytics-page-views",
-												"analytics-visitors",
-												"firewall-allowed",
-												"firewall-denied",
-												"observability-alert",
-												"observability-edge-requests",
-												"observability-error-rate",
-												"observability-function-invocations",
-												"shortcut",
-												"speed-insights-cls",
-												"speed-insights-lcp",
-												"speed-insights-res",
-											]),
-											config: z
-												.object({
-													url: z.string(),
-												})
-												.optional(),
-										}),
-									)
-									.optional(),
-								remoteCaching: z
-									.object({
-										enabled: z.union([z.literal(false), z.literal(true)]).optional(),
-									})
-									.optional()
-									.describe("Represents configuration for remote caching"),
-								removedAliasesAt: z.number().optional(),
-								removedBillingSubscriptionAt: z.number().optional(),
-								removedConfigurationsAt: z.number().optional(),
-								removedDeploymentsAt: z.number().optional(),
-								removedDomiansAt: z.number().optional(),
-								removedEventsAt: z.number().optional(),
-								removedProjectsAt: z.number().optional(),
-								removedSecretsAt: z.number().optional(),
-								removedSharedEnvVarsAt: z.number().optional(),
-								removedEdgeConfigsAt: z.number().optional(),
-								resourceConfig: z
-									.object({
-										concurrentBuilds: z.number().optional(),
-										nodeType: z.string().optional(),
-										elasticConcurrencyEnabled: z
-											.union([z.literal(false), z.literal(true)])
-											.optional(),
-										buildEntitlements: z
-											.object({
-												enhancedBuilds: z.union([z.literal(false), z.literal(true)]).optional(),
-											})
-											.optional(),
-										buildQueue: z
-											.object({
-												configuration: z
-													.enum(["SKIP_NAMESPACE_QUEUE", "WAIT_FOR_NAMESPACE_QUEUE"])
-													.optional(),
-											})
-											.optional(),
-										awsAccountType: z.string().optional(),
-										awsAccountIds: z.array(z.string()).optional(),
-										cfZoneName: z.string().optional(),
-										imageOptimizationType: z.string().optional(),
-										edgeConfigs: z.number().optional(),
-										edgeConfigSize: z.number().optional(),
-										edgeFunctionMaxSizeBytes: z.number().optional(),
-										edgeFunctionExecutionTimeoutMs: z.number().optional(),
-										serverlessFunctionMaxDuration: z.number().optional(),
-										serverlessFunctionMaxMemorySize: z.number().optional(),
-										kvDatabases: z.number().optional(),
-										postgresDatabases: z.number().optional(),
-										blobStores: z.number().optional(),
-										integrationStores: z.number().optional(),
-										cronJobsPerProject: z.number().optional(),
-										microfrontendGroupsPerTeam: z.number().optional(),
-										microfrontendProjectsPerGroup: z.number().optional(),
-										flagsExplorerOverridesThreshold: z.number().optional(),
-										flagsExplorerUnlimitedOverrides: z
-											.union([z.literal(false), z.literal(true)])
-											.optional(),
-										customEnvironmentsPerProject: z.number().optional(),
-										security: z
-											.object({
-												rateLimit: z.number().optional(),
-												customRules: z.number().optional(),
-												ipBlocks: z.number().optional(),
-												ipBypass: z.number().optional(),
-											})
-											.optional(),
-										bulkRedirectsFreeLimitOverride: z.number().optional(),
-										buildMachine: z
-											.object({
-												default: z
-													.enum(["basic", "elastic", "enhanced", "standard", "turbo"])
-													.optional()
-													.describe(
-														'Default build machine type for new deployments. This must be used in combination with the buildEntitlements field. It is respected over Vercel\'s notion of the default build machine, and was originally implemented to allow Teams to "downgrade". - Hobby customers cannot set this, because they only have access to one machine type - Pro customers get Turbo machines by default, so this field is effectively for downgrading - ENT customers cannot set this (yet), because their default is based on their contract. https://linear.app/vercel/project/self-serve-build-machines-for-enterprise-customers-0cbc357e26d2/overview',
-													),
-											})
-											.optional()
-											.describe(
-												"Build machine configuration recorded on a team or user `resourceConfig`. This is deliberately separate from the build machine config recorded on a deployment (`DeploymentBuildMachine` in `@api/deployments-types`). A team/user only expresses its default machine for new deployments; the per-build fields (`purchaseType`, `defaultPurchaseType`, `machineSelectionType`, `cores`, `memory`) are recorded on the deployment record when a build actually runs and never belong on a team/user document.",
-											),
-									})
-									.optional(),
-								resourceLimits: z
-									.object({})
-									.catchall(
-										z.union([
-											z
-												.object({
-													max: z.number(),
-													duration: z.number(),
-												})
-												.strict(),
-											z
-												.object({
-													minRate: z.number().optional(),
-													maxRate: z.number().optional(),
-													stepPerMinute: z.number().optional(),
-												})
-												.strict(),
-										]),
-									)
-									.optional()
-									.describe(
-										"User | Team resource limits. Each entry overrides either a token-bucket rate limit or a ramp admission limit, never both.",
-									),
-								activeDashboardViews: z
-									.array(
-										z.object({
-											scopeId: z.string(),
-											viewPreference: z.enum(["cards", "list"]).nullish(),
-											favoritesViewPreference: z.enum(["closed", "open"]).nullish(),
-											recentsViewPreference: z.enum(["closed", "open"]).nullish(),
-										}),
-									)
-									.optional(),
-								secondaryEmails: z
-									.array(
-										z.object({
-											email: z.string(),
-											verified: z.union([z.literal(false), z.literal(true)]),
-										}),
-									)
-									.optional(),
-								emailDomains: z.array(z.string()).optional(),
-								emailNotifications: z
-									.object({
-										rules: z
-											.object({})
-											.catchall(
-												z.object({
-													email: z.string(),
-												}),
-											)
-											.optional(),
-									})
-									.optional(),
-								siftScore: z.number().optional(),
-								siftScores: z
-									.object({})
-									.catchall(
-										z.object({
-											score: z.number(),
-											reasons: z.array(
-												z.object({
-													name: z.string(),
-													value: z.string(),
-												}),
-											),
-										}),
-									)
-									.optional(),
-								siftRoute: z
-									.object({
-										name: z.enum(["string"]),
-									})
-									.optional(),
-								sfdcId: z.string().optional(),
-								softBlock: z
-									.object({
-										blockedAt: z.number(),
-										reason: z.enum([
-											"BLOCKED_FOR_PLATFORM_ABUSE",
-											"DOMAIN_OWNER_DELETION_REQUEST",
-											"ENTERPRISE_TRIAL_ENDED",
-											"ENTERPRISE_UNPAID_INVOICE",
-											"EXPOSURE_CAP_EXCEEDED",
-											"FAIR_USE_LIMITS_EXCEEDED",
-											"SUBSCRIPTION_CANCELED",
-											"SUBSCRIPTION_EXPIRED",
-											"UNPAID_INVOICE",
-										]),
-										blockedDueToOverageType: z
-											.enum([
-												"analyticsUsage",
-												"artifacts",
-												"bandwidth",
-												"blobDataTransfer",
-												"blobTotalAdvancedRequests",
-												"blobTotalAvgSizeInBytes",
-												"blobTotalGetResponseObjectSizeInBytes",
-												"blobTotalSimpleRequests",
-												"connectDataTransfer",
-												"dataCacheRead",
-												"dataCacheWrite",
-												"edgeConfigRead",
-												"edgeConfigWrite",
-												"edgeFunctionExecutionUnits",
-												"edgeMiddlewareInvocations",
-												"edgeRequest",
-												"edgeRequestAdditionalCpuDuration",
-												"elasticConcurrencyBuildSlots",
-												"fastDataTransfer",
-												"fastOriginTransfer",
-												"fluidCpuDuration",
-												"fluidDuration",
-												"functionDuration",
-												"functionInvocation",
-												"imageOptimizationCacheRead",
-												"imageOptimizationCacheWrite",
-												"imageOptimizationTransformation",
-												"logDrainsVolume",
-												"monitoringMetric",
-												"observabilityEvent",
-												"onDemandConcurrencyMinutes",
-												"runtimeCacheRead",
-												"runtimeCacheWrite",
-												"serverlessFunctionExecution",
-												"sourceImages",
-												"wafOwaspExcessBytes",
-												"wafOwaspRequests",
-												"wafRateLimitRequest",
-												"webAnalyticsEvent",
-											])
-											.optional(),
-										unpauseAt: z
-											.number()
-											.optional()
-											.describe(
-												"Since September 2026. Set only by `billing-usage-alerts` for usage plans with a `blockDurationMs`; its presence marks a pause that expires on its own.",
-											),
-									})
-									.nullish(),
-								stagingPrefix: z.string(),
-								sysToken: z.string(),
-								teams: z
-									.array(
-										z.object({
-											teamId: z.string(),
-											createdAt: z.number(),
-											role: z.enum([
-												"BILLING",
-												"CONTRIBUTOR",
-												"DEVELOPER",
-												"MEMBER",
-												"OWNER",
-												"SECURITY",
-												"VIEWER",
-												"VIEWER_FOR_PLUS",
-											]),
-											confirmed: z.literal(true),
-											confirmedAt: z.number(),
-											accessRequestedAt: z.number().optional(),
-											teamRoles: z
-												.array(
-													z.enum([
-														"BILLING",
-														"CONTRIBUTOR",
-														"DEVELOPER",
-														"MEMBER",
-														"OWNER",
-														"SECURITY",
-														"VIEWER",
-														"VIEWER_FOR_PLUS",
-													]),
-												)
-												.optional(),
-											teamPermissions: z
-												.array(
-													z.enum([
-														"AiGatewayApiKeyOwnedBySelf",
-														"AiGatewayBudgetManager",
-														"AiGatewayCredits",
-														"AiGatewaySettings",
-														"AiGatewayTranscriptsManager",
-														"AiGatewayTranscriptsViewer",
-														"ConnectorManager",
-														"CreateProject",
-														"EnvVariableManager",
-														"EnvironmentManager",
-														"FullProductionDeployment",
-														"IntegrationManager",
-														"OrgAdmin",
-														"OrgViewer",
-														"UsageViewer",
-														"V0Builder",
-														"V0Chatter",
-														"V0Viewer",
-														"WorkflowDecryptor",
-													]),
-												)
-												.optional(),
-											created: z.number(),
-											joinedFrom: z
-												.object({
-													origin: z.enum([
-														"account-update",
-														"bitbucket",
-														"dsync",
-														"feedback",
-														"github",
-														"gitlab",
-														"import",
-														"link",
-														"mail",
-														"nsnb-auto-approve",
-														"nsnb-hobby-upgrade",
-														"nsnb-invite",
-														"nsnb-redeploy",
-														"nsnb-redeploy-attribution-card",
-														"nsnb-request-access",
-														"nsnb-viewer-upgrade",
-														"organization-teams",
-														"saml",
-														"teams",
-													]),
-													commitId: z.string().optional(),
-													repoId: z.string().optional(),
-													repoPath: z.string().optional(),
-													gitUserId: z.union([z.string(), z.number()]).optional(),
-													gitUserLogin: z.string().optional(),
-													ssoUserId: z.string().optional(),
-													ssoConnectedAt: z.number().optional(),
-													idpUserId: z.string().optional(),
-													dsyncUserId: z.string().optional(),
-													dsyncConnectedAt: z.number().optional(),
-												})
-												.optional(),
-										}),
-									)
-									.optional()
-									.describe(
-										"A helper that allows to describe a relationship attribute. It receives the shape of a relationship plus the foreignKey name to make it mandatory in the resulting type.",
-									),
-								trialTeamIds: z
-									.array(z.string())
-									.optional()
-									.describe(
-										"Introduced 2022-04-12 An array of teamIds (for trial teams created after 2022-04-01), created by the user in question. Used in determining whether the team has a trial available in utils/api-teams/user-has-trial-available.ts.",
-									),
-								maxTrials: z
-									.number()
-									.optional()
-									.describe(
-										"Introduced 2022-04-19 Number of maximum trials to allocate to a user. When undefined, defaults to MAX_TRIALS in utils/api-teams/user-has-trial-available.ts. This is set to trialTeamIds + 1 by services/api-backoffice/src/handlers/add-additional-trial.ts.",
-									),
-								trialTeamId: z
-									.string()
-									.optional()
-									.describe(
-										"Deprecated on 2022-04-12 in favor of trialTeamIds and using utils/api-teams/user-has-trial-available.ts.",
-									),
-								type: z.enum(["user"]),
-								usageAlerts: z
-									.object({
-										warningAt: z.number().nullish(),
-										blockingAt: z.number().nullish(),
-									})
-									.nullish()
-									.describe("Contains the timestamps when a user was notified about their usage"),
-								overageUsageAlerts: z
-									.object({
-										analyticsUsage: z
-											.object({
-												currentThreshold: z.number(),
-												warningAt: z.number().nullish(),
-												blockedAt: z.number().nullish(),
-												blockGracePeriodStartedAt: z.number().nullish(),
-											})
-											.optional(),
-										artifacts: z
-											.object({
-												currentThreshold: z.number(),
-												warningAt: z.number().nullish(),
-												blockedAt: z.number().nullish(),
-												blockGracePeriodStartedAt: z.number().nullish(),
-											})
-											.optional(),
-										bandwidth: z
-											.object({
-												currentThreshold: z.number(),
-												warningAt: z.number().nullish(),
-												blockedAt: z.number().nullish(),
-												blockGracePeriodStartedAt: z.number().nullish(),
-											})
-											.optional(),
-										blobTotalAdvancedRequests: z
-											.object({
-												currentThreshold: z.number(),
-												warningAt: z.number().nullish(),
-												blockedAt: z.number().nullish(),
-												blockGracePeriodStartedAt: z.number().nullish(),
-											})
-											.optional(),
-										blobTotalAvgSizeInBytes: z
-											.object({
-												currentThreshold: z.number(),
-												warningAt: z.number().nullish(),
-												blockedAt: z.number().nullish(),
-												blockGracePeriodStartedAt: z.number().nullish(),
-											})
-											.optional(),
-										blobTotalGetResponseObjectSizeInBytes: z
-											.object({
-												currentThreshold: z.number(),
-												warningAt: z.number().nullish(),
-												blockedAt: z.number().nullish(),
-												blockGracePeriodStartedAt: z.number().nullish(),
-											})
-											.optional(),
-										blobTotalSimpleRequests: z
-											.object({
-												currentThreshold: z.number(),
-												warningAt: z.number().nullish(),
-												blockedAt: z.number().nullish(),
-												blockGracePeriodStartedAt: z.number().nullish(),
-											})
-											.optional(),
-										connectDataTransfer: z
-											.object({
-												currentThreshold: z.number(),
-												warningAt: z.number().nullish(),
-												blockedAt: z.number().nullish(),
-												blockGracePeriodStartedAt: z.number().nullish(),
-											})
-											.optional(),
-										dataCacheRead: z
-											.object({
-												currentThreshold: z.number(),
-												warningAt: z.number().nullish(),
-												blockedAt: z.number().nullish(),
-												blockGracePeriodStartedAt: z.number().nullish(),
-											})
-											.optional(),
-										dataCacheWrite: z
-											.object({
-												currentThreshold: z.number(),
-												warningAt: z.number().nullish(),
-												blockedAt: z.number().nullish(),
-												blockGracePeriodStartedAt: z.number().nullish(),
-											})
-											.optional(),
-										edgeConfigRead: z
-											.object({
-												currentThreshold: z.number(),
-												warningAt: z.number().nullish(),
-												blockedAt: z.number().nullish(),
-												blockGracePeriodStartedAt: z.number().nullish(),
-											})
-											.optional(),
-										edgeConfigWrite: z
-											.object({
-												currentThreshold: z.number(),
-												warningAt: z.number().nullish(),
-												blockedAt: z.number().nullish(),
-												blockGracePeriodStartedAt: z.number().nullish(),
-											})
-											.optional(),
-										edgeFunctionExecutionUnits: z
-											.object({
-												currentThreshold: z.number(),
-												warningAt: z.number().nullish(),
-												blockedAt: z.number().nullish(),
-												blockGracePeriodStartedAt: z.number().nullish(),
-											})
-											.optional(),
-										edgeMiddlewareInvocations: z
-											.object({
-												currentThreshold: z.number(),
-												warningAt: z.number().nullish(),
-												blockedAt: z.number().nullish(),
-												blockGracePeriodStartedAt: z.number().nullish(),
-											})
-											.optional(),
-										edgeRequestAdditionalCpuDuration: z
-											.object({
-												currentThreshold: z.number(),
-												warningAt: z.number().nullish(),
-												blockedAt: z.number().nullish(),
-												blockGracePeriodStartedAt: z.number().nullish(),
-											})
-											.optional(),
-										edgeRequest: z
-											.object({
-												currentThreshold: z.number(),
-												warningAt: z.number().nullish(),
-												blockedAt: z.number().nullish(),
-												blockGracePeriodStartedAt: z.number().nullish(),
-											})
-											.optional(),
-										elasticConcurrencyBuildSlots: z
-											.object({
-												currentThreshold: z.number(),
-												warningAt: z.number().nullish(),
-												blockedAt: z.number().nullish(),
-												blockGracePeriodStartedAt: z.number().nullish(),
-											})
-											.optional(),
-										fastDataTransfer: z
-											.object({
-												currentThreshold: z.number(),
-												warningAt: z.number().nullish(),
-												blockedAt: z.number().nullish(),
-												blockGracePeriodStartedAt: z.number().nullish(),
-											})
-											.optional(),
-										fastOriginTransfer: z
-											.object({
-												currentThreshold: z.number(),
-												warningAt: z.number().nullish(),
-												blockedAt: z.number().nullish(),
-												blockGracePeriodStartedAt: z.number().nullish(),
-											})
-											.optional(),
-										fluidCpuDuration: z
-											.object({
-												currentThreshold: z.number(),
-												warningAt: z.number().nullish(),
-												blockedAt: z.number().nullish(),
-												blockGracePeriodStartedAt: z.number().nullish(),
-											})
-											.optional(),
-										fluidDuration: z
-											.object({
-												currentThreshold: z.number(),
-												warningAt: z.number().nullish(),
-												blockedAt: z.number().nullish(),
-												blockGracePeriodStartedAt: z.number().nullish(),
-											})
-											.optional(),
-										functionDuration: z
-											.object({
-												currentThreshold: z.number(),
-												warningAt: z.number().nullish(),
-												blockedAt: z.number().nullish(),
-												blockGracePeriodStartedAt: z.number().nullish(),
-											})
-											.optional(),
-										functionInvocation: z
-											.object({
-												currentThreshold: z.number(),
-												warningAt: z.number().nullish(),
-												blockedAt: z.number().nullish(),
-												blockGracePeriodStartedAt: z.number().nullish(),
-											})
-											.optional(),
-										imageOptimizationCacheRead: z
-											.object({
-												currentThreshold: z.number(),
-												warningAt: z.number().nullish(),
-												blockedAt: z.number().nullish(),
-												blockGracePeriodStartedAt: z.number().nullish(),
-											})
-											.optional(),
-										imageOptimizationCacheWrite: z
-											.object({
-												currentThreshold: z.number(),
-												warningAt: z.number().nullish(),
-												blockedAt: z.number().nullish(),
-												blockGracePeriodStartedAt: z.number().nullish(),
-											})
-											.optional(),
-										imageOptimizationTransformation: z
-											.object({
-												currentThreshold: z.number(),
-												warningAt: z.number().nullish(),
-												blockedAt: z.number().nullish(),
-												blockGracePeriodStartedAt: z.number().nullish(),
-											})
-											.optional(),
-										logDrainsVolume: z
-											.object({
-												currentThreshold: z.number(),
-												warningAt: z.number().nullish(),
-												blockedAt: z.number().nullish(),
-												blockGracePeriodStartedAt: z.number().nullish(),
-											})
-											.optional(),
-										monitoringMetric: z
-											.object({
-												currentThreshold: z.number(),
-												warningAt: z.number().nullish(),
-												blockedAt: z.number().nullish(),
-												blockGracePeriodStartedAt: z.number().nullish(),
-											})
-											.optional(),
-										blobDataTransfer: z
-											.object({
-												currentThreshold: z.number(),
-												warningAt: z.number().nullish(),
-												blockedAt: z.number().nullish(),
-												blockGracePeriodStartedAt: z.number().nullish(),
-											})
-											.optional(),
-										observabilityEvent: z
-											.object({
-												currentThreshold: z.number(),
-												warningAt: z.number().nullish(),
-												blockedAt: z.number().nullish(),
-												blockGracePeriodStartedAt: z.number().nullish(),
-											})
-											.optional(),
-										onDemandConcurrencyMinutes: z
-											.object({
-												currentThreshold: z.number(),
-												warningAt: z.number().nullish(),
-												blockedAt: z.number().nullish(),
-												blockGracePeriodStartedAt: z.number().nullish(),
-											})
-											.optional(),
-										runtimeCacheRead: z
-											.object({
-												currentThreshold: z.number(),
-												warningAt: z.number().nullish(),
-												blockedAt: z.number().nullish(),
-												blockGracePeriodStartedAt: z.number().nullish(),
-											})
-											.optional(),
-										runtimeCacheWrite: z
-											.object({
-												currentThreshold: z.number(),
-												warningAt: z.number().nullish(),
-												blockedAt: z.number().nullish(),
-												blockGracePeriodStartedAt: z.number().nullish(),
-											})
-											.optional(),
-										serverlessFunctionExecution: z
-											.object({
-												currentThreshold: z.number(),
-												warningAt: z.number().nullish(),
-												blockedAt: z.number().nullish(),
-												blockGracePeriodStartedAt: z.number().nullish(),
-											})
-											.optional(),
-										sourceImages: z
-											.object({
-												currentThreshold: z.number(),
-												warningAt: z.number().nullish(),
-												blockedAt: z.number().nullish(),
-												blockGracePeriodStartedAt: z.number().nullish(),
-											})
-											.optional(),
-										wafOwaspExcessBytes: z
-											.object({
-												currentThreshold: z.number(),
-												warningAt: z.number().nullish(),
-												blockedAt: z.number().nullish(),
-												blockGracePeriodStartedAt: z.number().nullish(),
-											})
-											.optional(),
-										wafOwaspRequests: z
-											.object({
-												currentThreshold: z.number(),
-												warningAt: z.number().nullish(),
-												blockedAt: z.number().nullish(),
-												blockGracePeriodStartedAt: z.number().nullish(),
-											})
-											.optional(),
-										wafRateLimitRequest: z
-											.object({
-												currentThreshold: z.number(),
-												warningAt: z.number().nullish(),
-												blockedAt: z.number().nullish(),
-												blockGracePeriodStartedAt: z.number().nullish(),
-											})
-											.optional(),
-										webAnalyticsEvent: z
-											.object({
-												currentThreshold: z.number(),
-												warningAt: z.number().nullish(),
-												blockedAt: z.number().nullish(),
-												blockGracePeriodStartedAt: z.number().nullish(),
-											})
-											.optional(),
-									})
-									.optional(),
-								overageMetadata: z
-									.object({
-										firstTimeOnDemandNotificationSentAt: z
-											.number()
-											.optional()
-											.describe("Tracks if the first time on-demand overage email has been sent."),
-										dailyOverageSummaryEmailSentAt: z
-											.number()
-											.optional()
-											.describe("Tracks the last time we sent a daily summary email."),
-										weeklyOverageSummaryEmailSentAt: z
-											.number()
-											.optional()
-											.describe("Tracks the last time we sent a weekly summary email."),
-										overageSummaryExpiresAt: z
-											.number()
-											.optional()
-											.describe(
-												"Tracks when the overage summary email will stop auto-sending. We currently lock the user into email for a month after the last on-demand usage.",
-											),
-										increasedOnDemandEmailSentAt: z
-											.number()
-											.optional()
-											.describe("Tracks the last time we sent a increased on-demand email."),
-										increasedOnDemandEmailAttemptedAt: z
-											.number()
-											.optional()
-											.describe(
-												"Tracks the last time we attempted to send an increased on-demand email. This check is to limit the number of attempts per day.",
-											),
-									})
-									.optional()
-									.describe("Contains the timestamps for usage summary emails."),
-								speedInsightsFreeUsageAlert: z
-									.object({
-										currentThreshold: z
-											.number()
-											.describe(
-												"Highest allocation percentage threshold notified (e.g. 75 or 100).",
-											),
-										notifiedAt: z
-											.number()
-											.describe("When the notification for `currentThreshold` was sent."),
-									})
-									.optional()
-									.describe(
-										"Tracks notifications sent for the team-wide Speed Insights free allocation. The allocation is measured over a rolling window (not a billing period), so deduplication is time-based rather than reset at period start.",
-									),
-								username: z.string(),
-								updatedAt: z.number(),
-								enablePreviewFeedback: z
-									.enum(["default", "default-force", "off", "off-force", "on", "on-force"])
-									.optional()
-									.describe("Whether the Vercel Toolbar is enabled for preview deployments."),
-								featureBlocks: z
-									.object({
-										webAnalytics: z
-											.object({
-												updatedAt: z.number(),
-												blockedFrom: z.number().optional(),
-												blockedUntil: z.number().optional(),
-												blockReason: z.enum(["admin_override", "hard_blocked", "limits_exceeded"]),
-												graceEmailSentAt: z.number().optional(),
-											})
-											.optional(),
-										monitoring: z
-											.object({
-												updatedAt: z.number(),
-												blockedFrom: z.number().optional(),
-												blockedUntil: z.number().optional(),
-												blockReason: z.enum(["admin_override", "hard_blocked", "limits_exceeded"]),
-												blockType: z.enum(["hard", "soft"]),
-											})
-											.optional()
-											.describe(
-												"A soft block indicates a temporary pause in data collection (ex limit exceeded for the current cycle) A hard block indicates a stoppage in data collection that requires manual intervention (ex upgrading a pro trial)",
-											),
-										observabilityPlus: z
-											.object({
-												updatedAt: z.number(),
-												blockedFrom: z.number().optional(),
-												blockedUntil: z.number().optional(),
-												blockReason: z.enum(["admin_override", "hard_blocked", "limits_exceeded"]),
-												blockType: z.enum(["hard", "soft"]),
-											})
-											.optional(),
-										dataCache: z
-											.object({
-												updatedAt: z.number(),
-												blockedFrom: z.number().optional(),
-												blockedUntil: z.number().optional(),
-												blockReason: z.enum(["admin_override", "hard_blocked", "limits_exceeded"]),
-											})
-											.optional(),
-										imageOptimizationTransformation: z
-											.object({
-												updatedAt: z.number(),
-												blockedFrom: z.number().optional(),
-												blockedUntil: z.number().optional(),
-												blockReason: z.enum(["admin_override", "hard_blocked", "limits_exceeded"]),
-											})
-											.optional(),
-										sourceImages: z
-											.object({
-												updatedAt: z.number(),
-												blockedFrom: z.number().optional(),
-												blockedUntil: z.number().optional(),
-												blockReason: z.enum(["admin_override", "hard_blocked", "limits_exceeded"]),
-											})
-											.optional(),
-										blob: z
-											.union([
-												z
-													.object({
-														updatedAt: z.number(),
-														blockedFrom: z.number().optional(),
-														blockedUntil: z.number().optional(),
-														blockReason: z.enum(["limits_exceeded"]),
-														overageReason: z.enum([
-															"analyticsUsage",
-															"artifacts",
-															"bandwidth",
-															"blobDataTransfer",
-															"blobTotalAdvancedRequests",
-															"blobTotalAvgSizeInBytes",
-															"blobTotalGetResponseObjectSizeInBytes",
-															"blobTotalSimpleRequests",
-															"connectDataTransfer",
-															"dataCacheRead",
-															"dataCacheWrite",
-															"edgeConfigRead",
-															"edgeConfigWrite",
-															"edgeFunctionExecutionUnits",
-															"edgeMiddlewareInvocations",
-															"edgeRequest",
-															"edgeRequestAdditionalCpuDuration",
-															"elasticConcurrencyBuildSlots",
-															"fastDataTransfer",
-															"fastOriginTransfer",
-															"fluidCpuDuration",
-															"fluidDuration",
-															"functionDuration",
-															"functionInvocation",
-															"imageOptimizationCacheRead",
-															"imageOptimizationCacheWrite",
-															"imageOptimizationTransformation",
-															"logDrainsVolume",
-															"monitoringMetric",
-															"observabilityEvent",
-															"onDemandConcurrencyMinutes",
-															"runtimeCacheRead",
-															"runtimeCacheWrite",
-															"serverlessFunctionExecution",
-															"sourceImages",
-															"wafOwaspExcessBytes",
-															"wafOwaspRequests",
-															"wafRateLimitRequest",
-															"webAnalyticsEvent",
-														]),
-													})
-													.strict(),
-												z
-													.object({
-														updatedAt: z.number(),
-														blockedFrom: z.number().optional(),
-														blockedUntil: z.number().optional(),
-														blockReason: z.enum(["admin_override", "hard_blocked"]),
-													})
-													.strict(),
-											])
-											.optional(),
-										postgres: z
-											.union([
-												z
-													.object({
-														updatedAt: z.number(),
-														blockedFrom: z.number().optional(),
-														blockedUntil: z.number().optional(),
-														blockReason: z.enum(["limits_exceeded"]),
-														overageReason: z.enum([
-															"analyticsUsage",
-															"artifacts",
-															"bandwidth",
-															"blobDataTransfer",
-															"blobTotalAdvancedRequests",
-															"blobTotalAvgSizeInBytes",
-															"blobTotalGetResponseObjectSizeInBytes",
-															"blobTotalSimpleRequests",
-															"connectDataTransfer",
-															"dataCacheRead",
-															"dataCacheWrite",
-															"edgeConfigRead",
-															"edgeConfigWrite",
-															"edgeFunctionExecutionUnits",
-															"edgeMiddlewareInvocations",
-															"edgeRequest",
-															"edgeRequestAdditionalCpuDuration",
-															"elasticConcurrencyBuildSlots",
-															"fastDataTransfer",
-															"fastOriginTransfer",
-															"fluidCpuDuration",
-															"fluidDuration",
-															"functionDuration",
-															"functionInvocation",
-															"imageOptimizationCacheRead",
-															"imageOptimizationCacheWrite",
-															"imageOptimizationTransformation",
-															"logDrainsVolume",
-															"monitoringMetric",
-															"observabilityEvent",
-															"onDemandConcurrencyMinutes",
-															"runtimeCacheRead",
-															"runtimeCacheWrite",
-															"serverlessFunctionExecution",
-															"sourceImages",
-															"wafOwaspExcessBytes",
-															"wafOwaspRequests",
-															"wafRateLimitRequest",
-															"webAnalyticsEvent",
-														]),
-													})
-													.strict(),
-												z
-													.object({
-														updatedAt: z.number(),
-														blockedFrom: z.number().optional(),
-														blockedUntil: z.number().optional(),
-														blockReason: z.enum(["admin_override", "hard_blocked"]),
-													})
-													.strict(),
-											])
-											.optional(),
-										redis: z
-											.union([
-												z
-													.object({
-														updatedAt: z.number(),
-														blockedFrom: z.number().optional(),
-														blockedUntil: z.number().optional(),
-														blockReason: z.enum(["limits_exceeded"]),
-														overageReason: z.enum([
-															"analyticsUsage",
-															"artifacts",
-															"bandwidth",
-															"blobDataTransfer",
-															"blobTotalAdvancedRequests",
-															"blobTotalAvgSizeInBytes",
-															"blobTotalGetResponseObjectSizeInBytes",
-															"blobTotalSimpleRequests",
-															"connectDataTransfer",
-															"dataCacheRead",
-															"dataCacheWrite",
-															"edgeConfigRead",
-															"edgeConfigWrite",
-															"edgeFunctionExecutionUnits",
-															"edgeMiddlewareInvocations",
-															"edgeRequest",
-															"edgeRequestAdditionalCpuDuration",
-															"elasticConcurrencyBuildSlots",
-															"fastDataTransfer",
-															"fastOriginTransfer",
-															"fluidCpuDuration",
-															"fluidDuration",
-															"functionDuration",
-															"functionInvocation",
-															"imageOptimizationCacheRead",
-															"imageOptimizationCacheWrite",
-															"imageOptimizationTransformation",
-															"logDrainsVolume",
-															"monitoringMetric",
-															"observabilityEvent",
-															"onDemandConcurrencyMinutes",
-															"runtimeCacheRead",
-															"runtimeCacheWrite",
-															"serverlessFunctionExecution",
-															"sourceImages",
-															"wafOwaspExcessBytes",
-															"wafOwaspRequests",
-															"wafRateLimitRequest",
-															"webAnalyticsEvent",
-														]),
-													})
-													.strict(),
-												z
-													.object({
-														updatedAt: z.number(),
-														blockedFrom: z.number().optional(),
-														blockedUntil: z.number().optional(),
-														blockReason: z.enum(["admin_override", "hard_blocked"]),
-													})
-													.strict(),
-											])
-											.optional(),
-										microfrontendsRequest: z
-											.object({
-												updatedAt: z.number(),
-												blockedFrom: z.number().optional(),
-												blockedUntil: z.number().optional(),
-												blockReason: z.enum(["admin_override", "hard_blocked", "limits_exceeded"]),
-											})
-											.optional(),
-										workflowStorageWrite: z
-											.object({
-												updatedAt: z.number(),
-												blockedFrom: z.number().optional(),
-												blockedUntil: z.number().optional(),
-												blockReason: z.enum(["admin_override", "hard_blocked", "limits_exceeded"]),
-											})
-											.optional(),
-										workflowEvents: z
-											.object({
-												updatedAt: z.number(),
-												blockedFrom: z.number().optional(),
-												blockedUntil: z.number().optional(),
-												blockReason: z.enum(["admin_override", "hard_blocked", "limits_exceeded"]),
-											})
-											.optional(),
-										connexForwardTriggers: z
-											.object({
-												updatedAt: z.number(),
-												blockedFrom: z.number().optional(),
-												blockedUntil: z.number().optional(),
-												blockReason: z.enum(["admin_override", "hard_blocked", "limits_exceeded"]),
-											})
-											.optional(),
-										connexTokenRequests: z
-											.object({
-												updatedAt: z.number(),
-												blockedFrom: z.number().optional(),
-												blockedUntil: z.number().optional(),
-												blockReason: z.enum(["admin_override", "hard_blocked", "limits_exceeded"]),
-											})
-											.optional(),
-										kmsOperations: z
-											.object({
-												updatedAt: z.number(),
-												blockedFrom: z.number().optional(),
-												blockedUntil: z.number().optional(),
-												blockReason: z.enum(["admin_override", "hard_blocked", "limits_exceeded"]),
-											})
-											.optional(),
-										tracing: z
-											.object({
-												updatedAt: z.number(),
-												blockedFrom: z.number().optional(),
-												blockedUntil: z.number().optional(),
-												blockReason: z.enum(["admin_override", "hard_blocked", "limits_exceeded"]),
-											})
-											.optional(),
-										sandboxStorage: z
-											.object({
-												updatedAt: z.number(),
-												blockedFrom: z.number().optional(),
-												blockedUntil: z.number().optional(),
-												blockReason: z.enum(["admin_override", "hard_blocked", "limits_exceeded"]),
-											})
-											.optional(),
-										vcr: z
-											.object({
-												updatedAt: z.number(),
-												blockedFrom: z.number().optional(),
-												blockedUntil: z.number().optional(),
-												blockReason: z.enum(["admin_override", "hard_blocked", "limits_exceeded"]),
-											})
-											.optional(),
-										speedInsightsFree: z
-											.object({
-												updatedAt: z.number(),
-												blockedFrom: z.number().optional(),
-												blockedUntil: z.number().optional(),
-												blockReason: z.enum(["admin_override", "hard_blocked", "limits_exceeded"]),
-											})
-											.optional()
-											.describe(
-												"Pauses Speed Insights free data-point ingestion when the team-wide free allocation is exhausted. The block lasts at least 14 days and is extended while rolling usage stays above half of the allocation.",
-											),
-									})
-									.optional()
-									.describe(
-										"Information about which features are blocked for a user. Blocks can be either soft (the user can still access the feature, but with a warning, e.g. prompting an upgrade) or hard (the user cannot access the feature at all).",
-									),
-								defaultTeamId: z.string().optional(),
-								version: z.enum(["northstar"]),
-								isMFAEnforced: z
-									.union([z.literal(false), z.literal(true)])
-									.optional()
-									.describe(
-										"Whether MFA is enforced for this user. Set to true when the user has a",
-									),
-								northstarMigration: z
-									.object({
-										teamId: z.string().describe("The ID of the team we created for this user."),
-										projects: z.number().describe("The number of projects migrated for this user."),
-										stores: z.number().describe("The number of stores migrated for this user."),
-										integrationConfigurations: z
-											.number()
-											.describe("The number of integration configurations migrated for this user."),
-										integrationClients: z
-											.number()
-											.describe("The number of integration clients migrated for this user."),
-										startTime: z
-											.number()
-											.describe("The migration start time timestamp for this user."),
-										endTime: z.number().describe("The migration end time timestamp for this user."),
-									})
-									.optional()
-									.describe(
-										"An archive of information about the Northstar migration, derived from the old (deprecated) property, `northstarMigrationEvents`.",
-									),
-								opportunityId: z
-									.string()
-									.optional()
-									.describe(
-										"The salesforce opportunity ID that this user is linked to. This is used to automatically associate a team of the user's choosing with the opportunity.",
-									),
-								mfaConfiguration: z
-									.object({
-										enabled: z.union([z.literal(false), z.literal(true)]),
-										enabledAt: z.number().optional(),
-										recoveryCodes: z.array(z.string()),
-										totp: z
-											.object({
-												secret: z.string(),
-												createdAt: z.number(),
-											})
-											.optional(),
-										history: z
-											.array(
-												z.object({
-													action: z
-														.enum(["disabled", "enabled"])
-														.describe("The action that occurred"),
-													timestamp: z
-														.number()
-														.nullable()
-														.describe(
-															"Unix timestamp (milliseconds) when the change occurred. May be null for events that occurred before history tracking was implemented.",
-														),
-													method: z
-														.enum([
-															"admin_removal",
-															"passkey",
-															"self_serve_recovery",
-															"totp",
-															"unknown",
-															"user_disabled",
-														])
-														.describe(
-															"Method used for the state change - 'totp': User set up TOTP authenticator - 'passkey': User registered a passkey - 'user_disabled': User disabled their own MFA - 'admin_removal': Admin removed MFA via backoffice - 'self_serve_recovery': User disabled their own MFA through the self-serve MFA disable recovery flow (a \"Locked Out User\" with only a passkey) - 'unknown': Method unknown (for pre-tracking events)",
-														),
-													actorId: z
-														.string()
-														.describe(
-															"ID of the actor who made the change - For user actions: the user's own ID - For admin actions: the admin's user ID",
-														),
-													actorType: z.enum(["admin", "user"]).describe("Type of actor"),
-													reason: z
-														.string()
-														.optional()
-														.describe(
-															'Optional: Additional context or reason e.g., "Account recovery request - ticket #12345"',
-														),
-												}),
-											)
-											.optional()
-											.describe(
-												"History of MFA state changes (enabled/disabled events). Most recent events first.",
-											),
-									})
-									.optional()
-									.describe(
-										"MFA configuration. When enabled, the user will be required to provide a second factor of authentication when logging in.",
-									),
-								isEnterpriseManaged: z
-									.union([z.literal(false), z.literal(true)])
-									.optional()
-									.describe(
-										"Indicates that the underlying user entity is a managed user for the enterprise it's associated with The intention is that this field is only set to true for users that are provisioned by the enterprise which means that the domain associated with the user's email is the same domain associated with the team Allowing us to query information about the user's team at login time through the domain verification service",
-									),
-							})
-							.nullable(),
-					})
-					.strict(),
-				z
-					.object({
-						integrationId: z.string(),
-						configurationId: z.string(),
-						integrationSlug: z.string(),
-						integrationName: z.string(),
-						ownerId: z.string(),
-						projectIds: z.array(z.string()).optional(),
-						confirmedScopes: z.array(z.string()),
-					})
-					.strict(),
-				z
-					.object({
-						integration: z.object({
-							id: z.string(),
-							slug: z.string(),
-							name: z.string(),
-							configurationId: z.string(),
-						}),
-						destinationTeamId: z.string(),
-						destinationTeamName: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						integration: z.object({
-							id: z.string(),
-							slug: z.string(),
-							name: z.string(),
-							configurationId: z.string(),
-						}),
-						originTeamId: z.string(),
-						originTeamName: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						configurations: z.array(
-							z.object({
-								integrationId: z.string(),
-								configurationId: z.string(),
-								integrationSlug: z.string(),
-								integrationName: z.string().optional(),
-							}),
-						),
-						ownerId: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						integrationId: z.string(),
-						configurationId: z.string(),
-						integrationSlug: z.string(),
-						integrationName: z.string(),
-						ownerId: z.string(),
-						billingPlanId: z.string(),
-						billingPlanName: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						integrationId: z.string(),
-						configurationId: z.string(),
-						integrationSlug: z.string(),
-						integrationName: z.string(),
-						ownerId: z.string(),
-						projectIds: z.union([z.array(z.string()), z.enum(["all"])]).optional(),
-					})
-					.strict(),
-				z
-					.object({
-						resourceId: z.string(),
-						integrationId: z.string(),
-						integrationSlug: z.string(),
-						integrationProductSlug: z.string(),
-						configurationId: z.string(),
-						databaseName: z.string(),
-						queryType: z.enum(["data-edit", "data-view", "schema", "user"]),
-						readonly: z.union([z.literal(false), z.literal(true)]),
-						rolledBack: z.union([z.literal(false), z.literal(true)]),
-						failedQueryIndex: z.number().nullable(),
-						errorCode: z.string().nullable(),
-						queryCount: z.number(),
-						queries: z.array(
-							z.object({
-								command: z.string().nullable(),
-								rowCount: z.number().optional(),
-								tables: z.array(z.string()).optional(),
-								primaryKey: z
-									.array(
-										z.object({
-											column: z.string(),
-											value: z.string().nullable(),
-										}),
-									)
-									.optional(),
-							}),
-						),
-					})
-					.strict(),
-				z
-					.object({
-						resourceId: z.string(),
-						integrationId: z.string(),
-						integrationSlug: z.string(),
-						integrationProductSlug: z.string(),
-						configurationId: z.string(),
-						errorCode: z.string().optional(),
-						requestKind: z.enum(["raw_commands"]),
-						readonly: z.union([z.literal(false), z.literal(true)]),
-						commands: z.array(
-							z.object({
-								command: z.string(),
-								errorCode: z.string().optional(),
-							}),
-						),
-						errorIndex: z.number().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						resourceId: z.string(),
-						integrationId: z.string(),
-						integrationSlug: z.string(),
-						integrationProductSlug: z.string(),
-						configurationId: z.string(),
-						errorCode: z.string().optional(),
-						requestKind: z.enum(["list_keys"]),
-						pattern: z.string().optional(),
-						type: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						resourceId: z.string(),
-						integrationId: z.string(),
-						integrationSlug: z.string(),
-						integrationProductSlug: z.string(),
-						configurationId: z.string(),
-						errorCode: z.string().optional(),
-						requestKind: z.enum(["get_keys_metadata"]),
-						keys: z.array(z.string()),
-					})
-					.strict(),
-				z
-					.object({
-						resourceId: z.string(),
-						integrationId: z.string(),
-						integrationSlug: z.string(),
-						integrationProductSlug: z.string(),
-						configurationId: z.string(),
-						errorCode: z.string().optional(),
-						requestKind: z.enum(["get_key_data"]),
-						key: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						integrationId: z.string(),
-						integrationSlug: z.string(),
-						integrationName: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						issuerId: z.string(),
-						issuerName: z.string(),
-						algorithm: z.string(),
-						origin: z.string(),
-						managedBy: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						issuerId: z.string(),
-						issuerName: z.string(),
-						managedBy: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						issuerId: z.string(),
-						issuerName: z.string(),
-						keyId: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						issuerId: z.string(),
-						issuerName: z.string(),
-						kind: z.string(),
-						projectId: z.string().optional(),
-						clientId: z.string().optional(),
-						environments: z.array(z.string()).optional(),
-					})
-					.strict(),
-				z
-					.object({
-						issuerId: z.string(),
-						issuerName: z.string(),
-						kind: z.string(),
-						policyKey: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						logDrainUrl: z.string().nullable(),
-						integrationName: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						logDrainUrl: z.string(),
-						integrationName: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						provider: z.enum([
-							"apple",
-							"bitbucket",
-							"chatgpt",
-							"github",
-							"github-custom-host",
-							"github-limited",
-							"gitlab",
-							"google",
-							"saml",
-						]),
-						login: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						provider: z.enum([
-							"apple",
-							"bitbucket",
-							"chatgpt",
-							"github",
-							"github-custom-host",
-							"github-limited",
-							"gitlab",
-							"google",
-							"saml",
-						]),
-					})
-					.strict(),
-				z
-					.object({
-						userAgent: z.string().optional(),
-						geolocation: z
-							.object({
-								city: z
-									.object({
-										names: z.object({
-											en: z.string(),
-										}),
-									})
-									.optional(),
-								country: z.object({
-									names: z.object({
-										en: z.string(),
-									}),
-								}),
-								mostSpecificSubdivision: z
-									.object({
-										names: z.object({
-											en: z.string(),
-										}),
-									})
-									.optional(),
-								regionName: z.string().optional(),
-							})
-							.nullish(),
-						env: z.string().optional(),
-						os: z.string().optional(),
-						loginSessionId: z
-							.string()
-							.optional()
-							.describe("Browser login correlation ID. This is not an authentication credential."),
-						username: z.string().optional(),
-						ssoType: z.string().optional(),
-						factors: z
-							.union([
-								z
-									.array(
-										z
-											.object({
-												origin: z.enum([
-													"apple",
-													"bitbucket",
-													"chatgpt",
-													"email",
-													"emu-recovery",
-													"github",
-													"gitlab",
-													"google",
-													"invite",
-													"magic-link",
-													"otp",
-													"otp-link",
-													"saml",
-													"webauthn",
-												]),
-												username: z.string().optional(),
-												teamId: z.string().optional(),
-												legacy: z.union([z.literal(false), z.literal(true)]).optional(),
-												ssoType: z.string().optional(),
-											})
-											.strict(),
-									)
-									.min(1)
-									.max(1),
-								z
-									.array(
-										z.union([
-											z
-												.object({
-													origin: z.enum([
-														"apple",
-														"bitbucket",
-														"chatgpt",
-														"email",
-														"emu-recovery",
-														"github",
-														"gitlab",
-														"google",
-														"invite",
-														"magic-link",
-														"otp",
-														"otp-link",
-														"saml",
-														"webauthn",
-													]),
-													username: z.string().optional(),
-													teamId: z.string().optional(),
-													legacy: z.union([z.literal(false), z.literal(true)]).optional(),
-													ssoType: z.string().optional(),
-												})
-												.strict(),
-											z
-												.object({
-													origin: z.enum(["recovery-code", "totp", "webauthn"]),
-												})
-												.strict(),
-										]),
-									)
-									.min(2)
-									.max(2),
-							])
-							.optional(),
-						viaOTP: z.union([z.literal(false), z.literal(true)]).optional(),
-						viaGithub: z.union([z.literal(false), z.literal(true)]).optional(),
-						viaGitlab: z.union([z.literal(false), z.literal(true)]).optional(),
-						viaBitbucket: z.union([z.literal(false), z.literal(true)]).optional(),
-						viaGoogle: z.union([z.literal(false), z.literal(true)]).optional(),
-						viaApple: z.union([z.literal(false), z.literal(true)]).optional(),
-						viaSamlSso: z.union([z.literal(false), z.literal(true)]).optional(),
-						viaPasskey: z.union([z.literal(false), z.literal(true)]).optional(),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						toDeploymentId: z.string(),
-						projectName: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						periods: z.array(
-							z.object({
-								periodNumber: z.number(),
-								percent: z.string(),
-								startDate: z.string(),
-								endDate: z.string(),
-							}),
-						),
-					})
-					.strict(),
-				z
-					.object({
-						enabled: z.union([z.literal(false), z.literal(true)]),
-						allowedIntegrationCount: z.number().optional(),
-						allowedIntegrationIds: z.array(z.string()).optional(),
-					})
-					.strict(),
-				z
-					.object({
-						id: z.string(),
-						slug: z.string(),
-						name: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						id: z.string(),
-						slug: z.string().optional(),
-						name: z.string().optional(),
-						fallbackEnvironment: z.string().optional(),
-						enablePolyrepoBranchRouting: z.union([z.literal(false), z.literal(true)]).optional(),
-						prev: z.object({
-							name: z.string(),
-							slug: z.string(),
-							fallbackEnvironment: z.string(),
-							enablePolyrepoBranchRouting: z.union([z.literal(false), z.literal(true)]).optional(),
-						}),
-					})
-					.strict(),
-				z
-					.object({
-						project: z.object({
-							id: z.string(),
-							name: z.string(),
-						}),
-						group: z.object({
-							id: z.string(),
-							slug: z.string(),
-							name: z.string(),
-						}),
-					})
-					.strict(),
-				z
-					.object({
-						project: z.object({
-							id: z.string(),
-							name: z.string(),
-							microfrontends: z
-								.union([
-									z
-										.object({
-											isDefaultApp: z.literal(true),
-											updatedAt: z
-												.number()
-												.describe("Timestamp when the microfrontends settings were last updated."),
-											groupIds: z
-												.array(z.string())
-												.min(1)
-												.describe(
-													"The group IDs of microfrontends that this project belongs to. Each microfrontend project must belong to a microfrontends group that is the set of microfrontends that are used together.",
-												),
-											enabled: z
-												.literal(true)
-												.describe("Whether microfrontends are enabled for this project."),
-											defaultRoute: z
-												.string()
-												.optional()
-												.describe(
-													"A path that is used to take screenshots and as the default path in preview links when a domain for this microfrontend is shown in the UI. Includes the leading slash, e.g. `/docs`",
-												),
-											freeProjectForLegacyLimits: z
-												.union([z.literal(false), z.literal(true)])
-												.optional()
-												.describe(
-													"Whether the project was part of the legacy limits for hobby and pro-trial before billing was added. This field is only set when the team is upgraded to a paid plan and we are backfilling the subscription status. We cap the subscription to 2 projects and set this field for the 3rd project. When this field is set, the project is not charged for and we do not call any billing APIs for this project.",
-												),
-										})
-										.strict(),
-									z
-										.object({
-											isDefaultApp: z.literal(false).optional(),
-											routeObservabilityToThisProject: z
-												.union([z.literal(false), z.literal(true)])
-												.optional()
-												.describe(
-													"Whether observability data should be routed to this microfrontend project or a root project.",
-												),
-											doNotRouteWithMicrofrontendsRouting: z
-												.union([z.literal(false), z.literal(true)])
-												.optional()
-												.describe(
-													"Whether to add microfrontends routing to aliases. This means domains in this project will route as a microfrontend.",
-												),
-											updatedAt: z
-												.number()
-												.describe("Timestamp when the microfrontends settings were last updated."),
-											groupIds: z
-												.array(z.string())
-												.min(1)
-												.describe(
-													"The group IDs of microfrontends that this project belongs to. Each microfrontend project must belong to a microfrontends group that is the set of microfrontends that are used together.",
-												),
-											enabled: z
-												.literal(true)
-												.describe("Whether microfrontends are enabled for this project."),
-											defaultRoute: z
-												.string()
-												.optional()
-												.describe(
-													"A path that is used to take screenshots and as the default path in preview links when a domain for this microfrontend is shown in the UI. Includes the leading slash, e.g. `/docs`",
-												),
-											freeProjectForLegacyLimits: z
-												.union([z.literal(false), z.literal(true)])
-												.optional()
-												.describe(
-													"Whether the project was part of the legacy limits for hobby and pro-trial before billing was added. This field is only set when the team is upgraded to a paid plan and we are backfilling the subscription status. We cap the subscription to 2 projects and set this field for the 3rd project. When this field is set, the project is not charged for and we do not call any billing APIs for this project.",
-												),
-										})
-										.strict(),
-									z
-										.object({
-											updatedAt: z.number(),
-											groupIds: z
-												.array(z.union([z.string(), z.string()]))
-												.min(2)
-												.max(2),
-											enabled: z.literal(false),
-											freeProjectForLegacyLimits: z
-												.union([z.literal(false), z.literal(true)])
-												.optional(),
-										})
-										.strict(),
-								])
-								.optional(),
-						}),
-						prev: z.object({
-							project: z.object({
-								microfrontends: z
-									.union([
-										z
-											.object({
-												isDefaultApp: z.literal(true),
-												updatedAt: z
-													.number()
-													.describe(
-														"Timestamp when the microfrontends settings were last updated.",
-													),
-												groupIds: z
-													.array(z.string())
-													.min(1)
-													.describe(
-														"The group IDs of microfrontends that this project belongs to. Each microfrontend project must belong to a microfrontends group that is the set of microfrontends that are used together.",
-													),
-												enabled: z
-													.literal(true)
-													.describe("Whether microfrontends are enabled for this project."),
-												defaultRoute: z
-													.string()
-													.optional()
-													.describe(
-														"A path that is used to take screenshots and as the default path in preview links when a domain for this microfrontend is shown in the UI. Includes the leading slash, e.g. `/docs`",
-													),
-												freeProjectForLegacyLimits: z
-													.union([z.literal(false), z.literal(true)])
-													.optional()
-													.describe(
-														"Whether the project was part of the legacy limits for hobby and pro-trial before billing was added. This field is only set when the team is upgraded to a paid plan and we are backfilling the subscription status. We cap the subscription to 2 projects and set this field for the 3rd project. When this field is set, the project is not charged for and we do not call any billing APIs for this project.",
-													),
-											})
-											.strict(),
-										z
-											.object({
-												isDefaultApp: z.literal(false).optional(),
-												routeObservabilityToThisProject: z
-													.union([z.literal(false), z.literal(true)])
-													.optional()
-													.describe(
-														"Whether observability data should be routed to this microfrontend project or a root project.",
-													),
-												doNotRouteWithMicrofrontendsRouting: z
-													.union([z.literal(false), z.literal(true)])
-													.optional()
-													.describe(
-														"Whether to add microfrontends routing to aliases. This means domains in this project will route as a microfrontend.",
-													),
-												updatedAt: z
-													.number()
-													.describe(
-														"Timestamp when the microfrontends settings were last updated.",
-													),
-												groupIds: z
-													.array(z.string())
-													.min(1)
-													.describe(
-														"The group IDs of microfrontends that this project belongs to. Each microfrontend project must belong to a microfrontends group that is the set of microfrontends that are used together.",
-													),
-												enabled: z
-													.literal(true)
-													.describe("Whether microfrontends are enabled for this project."),
-												defaultRoute: z
-													.string()
-													.optional()
-													.describe(
-														"A path that is used to take screenshots and as the default path in preview links when a domain for this microfrontend is shown in the UI. Includes the leading slash, e.g. `/docs`",
-													),
-												freeProjectForLegacyLimits: z
-													.union([z.literal(false), z.literal(true)])
-													.optional()
-													.describe(
-														"Whether the project was part of the legacy limits for hobby and pro-trial before billing was added. This field is only set when the team is upgraded to a paid plan and we are backfilling the subscription status. We cap the subscription to 2 projects and set this field for the 3rd project. When this field is set, the project is not charged for and we do not call any billing APIs for this project.",
-													),
-											})
-											.strict(),
-										z
-											.object({
-												updatedAt: z.number(),
-												groupIds: z
-													.array(z.union([z.string(), z.string()]))
-													.min(2)
-													.max(2),
-												enabled: z.literal(false),
-												freeProjectForLegacyLimits: z
-													.union([z.literal(false), z.literal(true)])
-													.optional(),
-											})
-											.strict(),
-									])
-									.optional(),
-							}),
-						}),
-						group: z.object({
-							id: z.string(),
-							slug: z.string(),
-							name: z.string(),
-						}),
-					})
-					.strict(),
-				z
-					.object({
-						alertId: z.string(),
-						alertName: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string().optional(),
-						projectName: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						organizationId: z.string(),
-						rootTeamId: z.string(),
-						slug: z.string(),
-						name: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						directoryGroupId: z.string(),
-						directoryId: z.string(),
-						groupName: z.string(),
-						next: z.object({
-							default: z
-								.enum([
-									"BILLING",
-									"CONTRIBUTOR",
-									"DEVELOPER",
-									"MEMBER",
-									"OWNER",
-									"SECURITY",
-									"VIEWER",
-									"VIEWER_FOR_PLUS",
-								])
-								.optional(),
-							roles: z
-								.object({})
-								.catchall(
-									z.enum([
-										"BILLING",
-										"CONTRIBUTOR",
-										"DEVELOPER",
-										"MEMBER",
-										"OWNER",
-										"SECURITY",
-										"VIEWER",
-										"VIEWER_FOR_PLUS",
-									]),
-								),
-						}),
-						organizationId: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						directoryGroupId: z.string(),
-						directoryId: z.string(),
-						organizationId: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						organizationId: z.string(),
-						previousEnabled: z.union([z.literal(false), z.literal(true)]),
-						enabled: z.union([z.literal(false), z.literal(true)]),
-						enforcedTeamIds: z.array(z.string()),
-						unenforcedTeamIds: z.array(z.string()),
-						trigger: z.enum([
-							"directory_sync_updated",
-							"domain_deleted",
-							"domain_verified",
-							"saml_updated",
-							"team_attached",
-							"team_participation_updated",
-							"toggle",
-						]),
-					})
-					.strict(),
-				z
-					.object({
-						organizationId: z.string(),
-						slug: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						organizationId: z.string(),
-						teamId: z.string(),
-						billingPlan: z.enum(["enterprise", "platform"]),
-					})
-					.strict(),
-				z
-					.object({
-						organizationId: z.string(),
-						teamId: z.string(),
-						teamName: z.string(),
-						previousMode: z.enum(["organization", "team"]),
-						mode: z.enum(["organization", "team"]),
-					})
-					.strict(),
-				z
-					.object({
-						ownerId: z.string(),
-						source: z.string(),
-						cause: z.string(),
-						blockReason: z.string().optional(),
-						siftRoute: z
-							.object({
-								name: z.string(),
-							})
-							.optional(),
-					})
-					.strict(),
-				z
-					.object({
-						ownerId: z.string(),
-						source: z.string(),
-						cause: z.string(),
-						reason: z.string().nullish(),
-					})
-					.strict(),
-				z
-					.object({
-						ownerId: z.string(),
-						source: z.string(),
-						cause: z.string(),
-						blockReason: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						ownerId: z.string(),
-						source: z.string(),
-						cause: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						previous: z
-							.object({
-								enabled: z.union([z.literal(false), z.literal(true)]),
-								mode: z.string(),
-								enforcementScope: z.enum(["all", "preview"]).optional(),
-								enforcePercentage: z.number(),
-								newResourceBlockingPolicy: z.enum(["allow", "block"]),
-								allowUnsafeScriptSrcKeywords: z.union([z.literal(false), z.literal(true)]),
-								omitScriptNonce: z.union([z.literal(false), z.literal(true)]).optional(),
-								connectSrcNotificationsEnabled: z
-									.union([z.literal(false), z.literal(true)])
-									.optional(),
-								computedScriptSrc: z.string().optional(),
-								computedScriptSrcPreview: z.string().optional(),
-								computedConnectSrc: z.string().optional(),
-								computedConnectSrcPreview: z.string().optional(),
-							})
-							.nullable(),
-						next: z.object({
-							enabled: z.union([z.literal(false), z.literal(true)]),
-							mode: z.string(),
-							enforcementScope: z.enum(["all", "preview"]).optional(),
-							enforcePercentage: z.number(),
-							newResourceBlockingPolicy: z.enum(["allow", "block"]),
-							allowUnsafeScriptSrcKeywords: z.union([z.literal(false), z.literal(true)]),
-							omitScriptNonce: z.union([z.literal(false), z.literal(true)]).optional(),
-							connectSrcNotificationsEnabled: z
-								.union([z.literal(false), z.literal(true)])
-								.optional(),
-							computedScriptSrc: z.string().optional(),
-							computedScriptSrcPreview: z.string().optional(),
-							computedConnectSrc: z.string().optional(),
-							computedConnectSrcPreview: z.string().optional(),
-						}),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						headerName: z.string(),
-						previousStatus: z.string(),
-						justification: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						headerName: z.string(),
-						previousStatus: z.string(),
-						justification: z.string().nullable(),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z.string(),
-						deletedCount: z.number(),
-						scriptCount: z.number(),
-						connectSrcCount: z.number(),
-						connectSrcOriginCount: z.number(),
-						headerCount: z.number(),
-						connectSrcUserNormalizationRuleCount: z.number().optional(),
-						connectSrcNormalizationRulesCleared: z
-							.union([z.literal(false), z.literal(true)])
-							.optional(),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						url: z.string(),
-						previousStatus: z.string(),
-						justification: z.string(),
-						approvalScope: z.enum(["all", "preview"]).optional(),
-						kind: z.enum(["connectSrc", "script"]).optional(),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						type: z.enum(["script"]),
-						resourceUrl: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						type: z.enum(["header"]),
-						headerName: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						type: z.enum(["connectSrc"]),
-						resourceUrl: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						url: z.string().optional(),
-						headerName: z.string().optional(),
-						previousStatus: z.string(),
-						justification: z.string().nullable(),
-						kind: z.enum(["connectSrc", "script"]).optional(),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z.string(),
-						pattern: z.string(),
-						justification: z.string(),
-					})
-					.catchall(z.unknown()),
-				z
-					.object({
-						oldName: z.string(),
-						newName: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						environment: z.string(),
-						host: z.string(),
-						connectorId: z.string(),
-						connectorType: z.string(),
-						connectorService: z.string(),
-						externalIssuer: z.string(),
-						externalSubject: z.string(),
-						sessionId: z.string(),
-						emailVerified: z.union([z.literal(false), z.literal(true)]).optional(),
-						tenantId: z.string().optional(),
-						installationId: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z.string(),
-						previous: z.object({
-							passport: z
-								.object({
-									connectorId: z.string(),
-									deploymentType: z.enum([
-										"all",
-										"all_except_custom_domains",
-										"preview",
-										"prod_deployment_urls_and_all_previews",
-									]),
-								})
-								.nullish(),
-						}),
-						next: z.object({
-							passport: z
-								.object({
-									connectorId: z.string(),
-									deploymentType: z.enum([
-										"all",
-										"all_except_custom_domains",
-										"preview",
-										"prod_deployment_urls_and_all_previews",
-									]),
-								})
-								.nullish(),
-						}),
-					})
-					.strict(),
-				z
-					.object({
-						previous: z.object({
-							passport: z
-								.object({
-									connectorId: z.string(),
-									deploymentType: z.enum([
-										"all",
-										"all_except_custom_domains",
-										"preview",
-										"prod_deployment_urls_and_all_previews",
-									]),
-								})
-								.nullish(),
-						}),
-						next: z.object({
-							passport: z
-								.object({
-									connectorId: z.string(),
-									deploymentType: z.enum([
-										"all",
-										"all_except_custom_domains",
-										"preview",
-										"prod_deployment_urls_and_all_previews",
-									]),
-								})
-								.nullish(),
-						}),
-					})
-					.strict(),
-				z
-					.object({
-						plan: z.string(),
-						removedUsers: z
-							.object({})
-							.catchall(
-								z.object({
-									role: z.enum([
-										"BILLING",
-										"CONTRIBUTOR",
-										"DEVELOPER",
-										"MEMBER",
-										"OWNER",
-										"SECURITY",
-										"VIEWER",
-										"VIEWER_FOR_PLUS",
-									]),
-									confirmed: z.union([z.literal(false), z.literal(true)]),
-									confirmedAt: z.number().optional(),
-									joinedFrom: z
-										.object({
-											origin: z.enum([
-												"account-update",
-												"bitbucket",
-												"dsync",
-												"feedback",
-												"github",
-												"gitlab",
-												"import",
-												"link",
-												"mail",
-												"nsnb-auto-approve",
-												"nsnb-hobby-upgrade",
-												"nsnb-invite",
-												"nsnb-redeploy",
-												"nsnb-redeploy-attribution-card",
-												"nsnb-request-access",
-												"nsnb-viewer-upgrade",
-												"organization-teams",
-												"saml",
-												"teams",
-											]),
-											commitId: z.string().optional(),
-											repoId: z.string().optional(),
-											repoPath: z.string().optional(),
-											gitUserId: z.union([z.string(), z.number()]).optional(),
-											gitUserLogin: z.string().optional(),
-											ssoUserId: z.string().optional(),
-											ssoConnectedAt: z.number().optional(),
-											idpUserId: z.string().optional(),
-											dsyncUserId: z.string().optional(),
-											dsyncConnectedAt: z.number().optional(),
-										})
-										.optional(),
-								}),
-							)
-							.optional(),
-						prevPlan: z.string().optional(),
-						priorPlan: z.string().optional(),
-						isDowngrade: z.union([z.literal(false), z.literal(true)]).optional(),
-						userAgent: z.string().optional(),
-						isReactivate: z.union([z.literal(false), z.literal(true)]).optional(),
-						isTrialUpgrade: z.union([z.literal(false), z.literal(true)]).optional(),
-						automated: z
-							.union([z.literal(false), z.literal(true)])
-							.optional()
-							.describe(
-								"Whether the plan change was system-initiated rather than human-initiated.",
-							),
-						reason: z
-							.string()
-							.optional()
-							.describe(
-								"Why the plan changed. For downgrades, this is a {@link DowngradeReason} from `@api/pubsub-types` (e.g. `user_downgrade`, `trial_expired`).",
-							),
-						timestamp: z.number().optional(),
-						removedMemberCount: z.number().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						plan: z.string(),
-						removedUsers: z
-							.object({})
-							.catchall(
-								z.object({
-									role: z.enum([
-										"BILLING",
-										"CONTRIBUTOR",
-										"DEVELOPER",
-										"MEMBER",
-										"OWNER",
-										"SECURITY",
-										"VIEWER",
-										"VIEWER_FOR_PLUS",
-									]),
-									confirmed: z.union([z.literal(false), z.literal(true)]),
-									confirmedAt: z.number().optional(),
-									joinedFrom: z
-										.object({
-											origin: z.enum([
-												"account-update",
-												"bitbucket",
-												"dsync",
-												"feedback",
-												"github",
-												"gitlab",
-												"import",
-												"link",
-												"mail",
-												"nsnb-auto-approve",
-												"nsnb-hobby-upgrade",
-												"nsnb-invite",
-												"nsnb-redeploy",
-												"nsnb-redeploy-attribution-card",
-												"nsnb-request-access",
-												"nsnb-viewer-upgrade",
-												"organization-teams",
-												"saml",
-												"teams",
-											]),
-											commitId: z.string().optional(),
-											repoId: z.string().optional(),
-											repoPath: z.string().optional(),
-											gitUserId: z.union([z.string(), z.number()]).optional(),
-											gitUserLogin: z.string().optional(),
-											ssoUserId: z.string().optional(),
-											ssoConnectedAt: z.number().optional(),
-											idpUserId: z.string().optional(),
-											dsyncUserId: z.string().optional(),
-											dsyncConnectedAt: z.number().optional(),
-										})
-										.optional(),
-								}),
-							)
-							.optional(),
-						prevPlan: z.string().optional(),
-						priorPlan: z.string().optional(),
-						isDowngrade: z.union([z.literal(false), z.literal(true)]).optional(),
-						userAgent: z.string().optional(),
-						isReactivate: z.union([z.literal(false), z.literal(true)]).optional(),
-						isTrialUpgrade: z.union([z.literal(false), z.literal(true)]).optional(),
-						automated: z
-							.union([z.literal(false), z.literal(true)])
-							.optional()
-							.describe(
-								"Whether the plan change was system-initiated rather than human-initiated.",
-							),
-						reason: z
-							.string()
-							.optional()
-							.describe(
-								"Why the plan changed. For downgrades, this is a {@link DowngradeReason} from `@api/pubsub-types` (e.g. `user_downgrade`, `trial_expired`).",
-							),
-						timestamp: z.number().optional(),
-						removedMemberCount: z.number().optional(),
-						actorId: z.string().describe("Okta user id."),
-						actorType: z.enum(["admin"]),
-						actorName: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						price: z.number().optional(),
-						currency: z.string().optional(),
-						enabled: z.union([z.literal(false), z.literal(true)]).optional(),
-					})
-					.strict(),
-				z
-					.object({
-						previewDeploymentSuffix: z.string().nullish(),
-						previousPreviewDeploymentSuffix: z.string().nullish(),
-					})
-					.strict(),
-				z
-					.object({
-						projectName: z.string().optional(),
-						endpoint: z.object({
-							id: z.string(),
-							name: z.string(),
-							projectId: z.string(),
-							vercelRegion: z.string(),
-							awsServiceName: z.string(),
-							privateDnsNames: z.array(z.string()).optional(),
-						}),
-					})
-					.strict(),
-				z
-					.object({
-						projectName: z.string().optional(),
-						privateLinkEndpoint: z.object({
-							id: z.string(),
-							name: z.string(),
-						}),
-						projectId: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						projectName: z.string().optional(),
-						prev: z.object({
-							id: z.string(),
-							name: z.string(),
-							projectId: z.string(),
-							vercelRegion: z.string(),
-							awsServiceName: z.string(),
-							privateDnsNames: z.array(z.string()).optional(),
-						}),
-						current: z.object({
-							id: z.string(),
-							name: z.string(),
-							projectId: z.string(),
-							vercelRegion: z.string(),
-							awsServiceName: z.string(),
-							privateDnsNames: z.array(z.string()).optional(),
-						}),
-					})
-					.strict(),
-				z
-					.object({
-						projectName: z.string().optional(),
-						privateLinkEndpoint: z.object({
-							id: z.string(),
-							name: z.string(),
-							environmentIds: z.array(z.string()).optional(),
-							privateDnsNames: z.array(z.string()).optional(),
-						}),
-						projectId: z.string(),
-						previousEndpoint: z.object({
-							name: z.string(),
-							environmentIds: z.array(z.string()).optional(),
-							privateDnsNames: z.array(z.string()).optional(),
-						}),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string().optional(),
-						projectName: z.string(),
-						branch: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z.string(),
-						directoryListing: z.union([z.literal(false), z.literal(true)]),
-					})
-					.strict(),
-				z
-					.object({
-						projectName: z.string().optional(),
-						projectId: z.string(),
-						projectAnalytics: z
-							.object({
-								id: z.string(),
-								canceledAt: z.number().nullish(),
-								disabledAt: z.number(),
-								enabledAt: z.number(),
-								paidAt: z.number().optional(),
-								sampleRatePercent: z.number().nullish(),
-								spendLimitInDollars: z.number().nullish(),
-							})
-							.nullable(),
-						prevProjectAnalytics: z
-							.object({
-								id: z.string(),
-								canceledAt: z.number().nullish(),
-								disabledAt: z.number(),
-								enabledAt: z.number(),
-								paidAt: z.number().optional(),
-								sampleRatePercent: z.number().nullish(),
-								spendLimitInDollars: z.number().nullish(),
-							})
-							.nullable(),
-					})
-					.strict(),
-				z
-					.object({
-						projectName: z.string().optional(),
-						projectId: z.string(),
-						projectAnalytics: z.object({}).catchall(z.unknown()).optional(),
-						prevProjectAnalytics: z.object({}).catchall(z.unknown()).nullish(),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z.string(),
-						action: z.enum(["disabled", "enabled", "regenerated", "updated"]),
-						isEnvVar: z.union([z.literal(false), z.literal(true)]).optional(),
-						note: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z.string(),
-						avatar: z.string().nullish(),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z.string(),
-						enableAffectedProjectsDeployments: z.union([z.literal(false), z.literal(true)]),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z.string(),
-						enableExternalRewriteCaching: z.union([z.literal(false), z.literal(true)]),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z.string(),
-						previous: z.object({}),
-						next: z.object({}),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z.string(),
-						productionDeploymentsFastLane: z.union([z.literal(false), z.literal(true)]),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z.string(),
-						sourceFilesOutsideRootDirectory: z.union([z.literal(false), z.literal(true)]),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string().optional(),
-						projectName: z.string(),
-						deploymentId: z
-							.string()
-							.optional()
-							.describe("Deployment whose outcome caused a system-initiated elastic resize."),
-						previousBuildMachineType: z.string().optional(),
-						nextBuildMachineType: z.string(),
-						previousBuildMachineSelection: z.string(),
-						nextBuildMachineSelection: z.string(),
-						isSystemInitiated: z.union([z.literal(false), z.literal(true)]).optional(),
-						reason: z
-							.string()
-							.optional()
-							.describe(
-								"For system-initiated (elastic) changes, why the build machine was upgraded/downgraded. Stored as the raw reason code (see `ElasticChangeReason` in `@api/build-machines-types`) and rendered as a human-readable clause in the activity/audit log.",
-							),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z.string(),
-						widget: z
-							.enum([
-								"alert",
-								"analytics-online",
-								"analytics-page-views",
-								"analytics-visitors",
-								"firewall-allowed",
-								"firewall-denied",
-								"observability-alert",
-								"observability-edge-requests",
-								"observability-error-rate",
-								"observability-function-invocations",
-								"online",
-								"res",
-								"shortcut",
-								"speed-insights-cls",
-								"speed-insights-lcp",
-								"speed-insights-res",
-							])
-							.nullable(),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string().optional(),
-						projectName: z.string().optional(),
-						certId: z.string().optional(),
-						origin: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string().optional(),
-						projectName: z.string().optional(),
-						target: z.array(z.string()).optional(),
-						updated: z.union([z.literal(false), z.literal(true)]).optional(),
-					})
-					.strict(),
-				z
-					.object({
-						team: z.object({
-							name: z.string(),
-							id: z.string(),
-						}),
-						project: z.object({
-							id: z.string(),
-							name: z.string().optional(),
-							oldConnectConfigurations: z
-								.array(
-									z.object({
-										envId: z.string(),
-										connectConfigurationId: z.string(),
-										dc: z.string().optional(),
-										passive: z.union([z.literal(false), z.literal(true)]),
-										buildsEnabled: z.union([z.literal(false), z.literal(true)]),
-										aws: z
-											.object({
-												subnetIds: z.array(z.string()),
-												securityGroupId: z.string().optional(),
-											})
-											.optional(),
-										createdAt: z.number(),
-										updatedAt: z.number(),
-									}),
-								)
-								.nullable(),
-							newConnectConfigurations: z
-								.array(
-									z.object({
-										envId: z.string(),
-										connectConfigurationId: z.string(),
-										dc: z.string().optional(),
-										passive: z.union([z.literal(false), z.literal(true)]),
-										buildsEnabled: z.union([z.literal(false), z.literal(true)]),
-										aws: z
-											.object({
-												subnetIds: z.array(z.string()),
-												securityGroupId: z.string().optional(),
-											})
-											.optional(),
-										createdAt: z.number(),
-										updatedAt: z.number(),
-									}),
-								)
-								.nullable(),
-						}),
-					})
-					.strict(),
-				z
-					.object({
-						projectName: z.string().optional(),
-						projectId: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z.string(),
-						action: z.enum(["disabled", "enabled"]),
-					})
-					.strict(),
-				z
-					.object({
-						name: z.string(),
-						ownerId: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z.string(),
-						elasticConcurrencyEnabled: z.union([z.literal(false), z.literal(true)]),
-						oldElasticConcurrencyEnabled: z.union([z.literal(false), z.literal(true)]),
-						buildQueueConfiguration: z
-							.enum(["SKIP_NAMESPACE_QUEUE", "WAIT_FOR_NAMESPACE_QUEUE"])
-							.optional(),
-						oldBuildQueueConfiguration: z
-							.enum(["SKIP_NAMESPACE_QUEUE", "WAIT_FOR_NAMESPACE_QUEUE"])
-							.optional(),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z.string(),
-						autoAssignCustomDomains: z.union([z.literal(false), z.literal(true)]),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z.string(),
-						previewDeploymentsEnabled: z.union([z.literal(false), z.literal(true)]),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z.string(),
-						customEnvironmentId: z.string(),
-						customEnvironmentSlug: z.string(),
-						previous: z.object({
-							branchMatcher: z
-								.object({
-									type: z
-										.enum(["endsWith", "equals", "startsWith"])
-										.describe("The type of matching to perform"),
-									pattern: z.string().describe("The pattern to match against branch names"),
-								})
-								.optional(),
-						}),
-						next: z.object({
-							branchMatcher: z
-								.object({
-									type: z
-										.enum(["endsWith", "equals", "startsWith"])
-										.describe("The type of matching to perform"),
-									pattern: z.string().describe("The pattern to match against branch names"),
-								})
-								.optional(),
-						}),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z.string(),
-						customEnvironmentId: z.string(),
-						customEnvironmentSlug: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						projectName: z.string().optional(),
-						projectId: z.string(),
-						enableFunctionsBeta: z.union([z.literal(false), z.literal(true)]),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z.string(),
-						previous: z.object({
-							functionDefaultTimeout: z.number().nullable(),
-						}),
-						next: z.object({
-							functionDefaultTimeout: z.number(),
-						}),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z.string(),
-						previous: z.object({
-							functionDefaultMemoryType: z.string().nullable(),
-						}),
-						next: z.object({
-							functionDefaultMemoryType: z.string(),
-						}),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z.string(),
-						previous: z.object({
-							functionDefaultRegions: z.array(z.string()).nullable(),
-						}),
-						next: z.object({
-							functionDefaultRegions: z.array(z.string()),
-						}),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z.string(),
-						previous: z.object({
-							functionZeroConfigFailover: z.union([z.literal(false), z.literal(true)]).nullable(),
-						}),
-						next: z.object({
-							functionZeroConfigFailover: z.union([z.literal(false), z.literal(true)]),
-						}),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z.string(),
-						previewDeploymentSuffix: z.string().nullable(),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z.string(),
-						newProjectName: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z.string(),
-						previous: z
-							.object({
-								gitProvider: z.enum([
-									"bitbucket",
-									"cursor-origin",
-									"github",
-									"github-custom-host",
-									"github-limited",
-									"gitlab",
-									"v0",
-									"vercel",
-								]),
-								gitRepoId: z.string(),
-								gitRepositoryName: z.string(),
-							})
-							.optional(),
-						next: z.object({
-							gitProvider: z.enum([
-								"bitbucket",
-								"cursor-origin",
-								"github",
-								"github-custom-host",
-								"github-limited",
-								"gitlab",
-								"v0",
-								"vercel",
-							]),
-							gitRepoId: z.string(),
-							gitRepositoryName: z.string(),
-						}),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z.string(),
-						gitProvider: z.enum([
-							"bitbucket",
-							"cursor-origin",
-							"github",
-							"github-custom-host",
-							"github-limited",
-							"gitlab",
-							"v0",
-							"vercel",
-						]),
-						gitRepoId: z.string(),
-						gitRepositoryName: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z.string(),
-						onPullRequest: z.union([z.literal(false), z.literal(true)]),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z.string(),
-						onCommit: z.union([z.literal(false), z.literal(true)]),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z.string(),
-						disableRepositoryDispatchEvents: z.union([z.literal(false), z.literal(true)]),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z.string(),
-						createDeployments: z.enum(["disabled", "enabled"]),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z.string(),
-						requireVerifiedCommits: z.union([z.literal(false), z.literal(true)]).nullable(),
-					})
-					.strict(),
-				z
-					.object({
-						requireVerifiedCommits: z.union([z.literal(false), z.literal(true)]),
-					})
-					.strict(),
-				z
-					.object({
-						disableRepositoryDispatchEvents: z.union([z.literal(false), z.literal(true)]),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z.string(),
-						gitCommitStatus: z.union([z.literal(false), z.literal(true)]),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z.string(),
-						gitLFS: z.union([z.literal(false), z.literal(true)]),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z.string(),
-						consolidatedGitCommitStatus: z
-							.object({
-								enabled: z.union([z.literal(false), z.literal(true)]),
-								propagateFailures: z.union([z.literal(false), z.literal(true)]),
-							})
-							.nullable(),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z.string(),
-						previous: z.object({
-							commandForIgnoringBuildStep: z.string().optional(),
-						}),
-						next: z.object({
-							commandForIgnoringBuildStep: z.string().optional(),
-						}),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z.string(),
-						domain: z.string(),
-						target: z.string(),
-						redirect: z.string().nullable(),
-						redirectStatusCode: z.number().nullable(),
-						gitBranch: z.string().nullable(),
-						configuredBy: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z.string(),
-						domain: z.string(),
-						target: z.string(),
-						redirect: z.string().nullish(),
-						redirectStatusCode: z.number().nullish(),
-					})
-					.strict(),
-				z
-					.object({
-						oldProjectId: z.string(),
-						oldProjectName: z.string(),
-						newProjectId: z.string(),
-						newProjectName: z.string(),
-						domain: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z.string(),
-						domain: z.string(),
-						redirect: z.string().nullish(),
-						redirectStatusCode: z.number().nullish(),
-					})
-					.strict(),
-				z
-					.object({
-						projects: z.array(
-							z.object({
-								projectId: z.string(),
-								role: z.enum(["ADMIN", "PROJECT_DEVELOPER", "PROJECT_GUEST", "PROJECT_VIEWER"]),
-								membershipCreatedAt: z.number(),
-							}),
-						),
-						teamMembership: z
-							.object({
-								uid: z.string(),
-								username: z.string().optional(),
-							})
-							.optional(),
-						directoryType: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z.string(),
-						target: z.string(),
-						domain: z.string(),
-						configuredBy: z.string().nullish(),
-						prevConfiguredBy: z.string().nullish(),
-					})
-					.strict(),
-				z
-					.object({
-						project: z.object({
-							name: z.string(),
-							id: z.string().optional(),
-						}),
-						projectMembership: z
-							.object({
-								role: z.enum(["ADMIN", "PROJECT_DEVELOPER", "PROJECT_GUEST", "PROJECT_VIEWER"]),
-								uid: z.string(),
-								createdAt: z.number(),
-								username: z.string().optional(),
-							})
-							.nullable(),
-					})
-					.strict(),
-				z
-					.object({
-						project: z.object({
-							name: z.string(),
-							role: z.enum(["ADMIN", "PROJECT_DEVELOPER", "PROJECT_GUEST", "PROJECT_VIEWER"]),
-							invitedUserName: z.string(),
-							id: z.string().optional(),
-							invitedUserId: z.string().optional(),
-						}),
-					})
-					.strict(),
-				z
-					.object({
-						project: z.object({
-							name: z.string(),
-							id: z.string().optional(),
-						}),
-						removedMembership: z.object({
-							role: z.enum(["ADMIN", "PROJECT_DEVELOPER", "PROJECT_GUEST", "PROJECT_VIEWER"]),
-							uid: z.string(),
-							createdAt: z.number(),
-							username: z.string().optional(),
-						}),
-					})
-					.strict(),
-				z
-					.object({
-						project: z.object({
-							id: z.string(),
-							name: z.string(),
-						}),
-						projectMembership: z.object({
-							role: z
-								.enum(["ADMIN", "PROJECT_DEVELOPER", "PROJECT_GUEST", "PROJECT_VIEWER"])
-								.optional(),
-							uid: z.string().optional(),
-							createdAt: z.number().optional(),
-							username: z.string().optional(),
-							previousRole: z
-								.enum(["ADMIN", "PROJECT_DEVELOPER", "PROJECT_GUEST", "PROJECT_VIEWER"])
-								.optional(),
-						}),
-					})
-					.strict(),
-				z
-					.object({
-						previousProjectId: z.string().optional(),
-						newProjectId: z.string().optional(),
-						previousProjectName: z.string(),
-						newProjectName: z.string(),
-						originAccountName: z.string(),
-						transferId: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						previousProjectId: z.string().optional(),
-						projectName: z.string(),
-						destinationAccountName: z.string().nullable(),
-						transferId: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z.string(),
-						originAccountName: z.string(),
-						destinationAccountName: z.string(),
-						destinationAccountId: z.string(),
-						transferId: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						previousProjectId: z.string().optional(),
-						newProjectId: z.string().optional(),
-						previousProjectName: z.string(),
-						newProjectName: z.string(),
-						destinationAccountName: z.string(),
-						transferId: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						source: z.string(),
-						projectId: z.string(),
-						projectName: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z.string(),
-						optionsAllowlist: z
-							.object({
-								paths: z.array(
-									z.object({
-										value: z.string(),
-									}),
-								),
-							})
-							.nullish(),
-						oldOptionsAllowlist: z
-							.object({
-								paths: z.array(
-									z.object({
-										value: z.string(),
-									}),
-								),
-							})
-							.nullish(),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string().optional(),
-						projectName: z.string().optional(),
-						passwordProtection: z
-							.union([
-								z
-									.object({
-										deploymentType: z.enum([
-											"all",
-											"all_except_custom_domains",
-											"preview",
-											"prod_deployment_urls_and_all_previews",
-										]),
-									})
-									.strict(),
-								z.enum([
-									"all",
-									"all_except_custom_domains",
-									"preview",
-									"prod_deployment_urls_and_all_previews",
-								]),
-							])
-							.nullable(),
-						oldPasswordProtection: z
-							.union([
-								z
-									.object({
-										deploymentType: z.enum([
-											"all",
-											"all_except_custom_domains",
-											"preview",
-											"prod_deployment_urls_and_all_previews",
-										]),
-									})
-									.strict(),
-								z.enum([
-									"all",
-									"all_except_custom_domains",
-									"preview",
-									"prod_deployment_urls_and_all_previews",
-								]),
-							])
-							.nullable(),
-						passwordChanged: z.union([z.literal(false), z.literal(true)]).optional(),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						expiresAt: z.number(),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z
-							.string()
-							.optional()
-							.describe(
-								"Display name for Activity links. Optional for events stored before it was published.",
-							),
-						reasonCode: z.enum(["BACKOFFICE", "BUDGET_REACHED", "PUBLIC_API"]).optional(),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string().optional(),
-						projectName: z.string(),
-						consent: z.enum(["granted", "refused"]),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z.string(),
-						projectAccountId: z.string(),
-						deploymentId: z.string(),
-						rollbackDescription: z
-							.object({
-								userId: z.string().describe("The user who rolled back the project."),
-								username: z
-									.string()
-									.describe("The username of the user who rolled back the project."),
-								description: z
-									.string()
-									.describe(
-										"User-supplied explanation of why they rolled back the project. Limited to 250 characters.",
-									),
-								createdAt: z.number().describe("Timestamp of when the rollback was requested."),
-							})
-							.optional()
-							.describe(
-								"Description of why a project was rolled back, and by whom. Note that lastAliasRequest contains the from/to details of the rollback.",
-							),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z.string(),
-						targetDeploymentId: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z.string(),
-						targetDeploymentId: z.string().optional(),
-						newTargetPercentage: z.number().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z.string(),
-						targetDeploymentId: z.string().optional(),
-						action: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z.string(),
-						previous: z
-							.object({
-								gitSources: z.array(z.string()).nullish(),
-								deploymentSources: z.array(z.string()).nullish(),
-							})
-							.nullable(),
-						next: z
-							.object({
-								gitSources: z.array(z.string()).nullish(),
-								deploymentSources: z.array(z.string()).nullish(),
-							})
-							.nullable(),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z.string(),
-						region: z.string().optional(),
-						failoverRegions: z.array(z.string()).optional(),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z.string(),
-						previous: z.object({
-							issuerMode: z.enum(["global", "team"]).optional(),
-						}),
-						next: z.object({
-							issuerMode: z.enum(["global", "team"]),
-						}),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z.string(),
-						customerSupportCodeVisibility: z.union([z.literal(false), z.literal(true)]),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z.string(),
-						gitForkProtection: z.union([z.literal(false), z.literal(true)]),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z.string(),
-						protectedSourcemaps: z.union([z.literal(false), z.literal(true)]),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z.string(),
-						inheritDeploymentProtection: z.union([z.literal(false), z.literal(true)]),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z.string(),
-						publicSource: z.union([z.literal(false), z.literal(true)]),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string().optional(),
-						projectName: z.string().optional(),
-						previous: z.object({
-							expiration: z.string().optional(),
-							expirationProduction: z.string().optional(),
-							expirationCanceled: z.string().optional(),
-							expirationErrored: z.string().optional(),
-						}),
-						next: z.object({
-							expiration: z.string().optional(),
-							expirationProduction: z.string().optional(),
-							expirationCanceled: z.string().optional(),
-							expirationErrored: z.string().optional(),
-						}),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z.string(),
-						next: z.object({
-							skewProtectionBoundaryAt: z.number(),
-						}),
-						previous: z.object({
-							skewProtectionBoundaryAt: z.number().optional(),
-						}),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z.string(),
-						next: z.object({
-							skewProtectionMaxAge: z.number(),
-						}),
-						previous: z.object({
-							skewProtectionMaxAge: z.number().optional(),
-						}),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z.string(),
-						next: z.object({
-							skewProtectionAllowedDomains: z.array(z.string()),
-						}),
-						previous: z.object({
-							skewProtectionAllowedDomains: z.array(z.string()).optional(),
-						}),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string().optional(),
-						projectName: z.string().optional(),
-						ssoProtection: z
-							.union([
-								z
-									.object({
-										deploymentType: z.enum([
-											"all",
-											"all_except_custom_domains",
-											"preview",
-											"prod_deployment_urls_and_all_previews",
-										]),
-										cve55182MigrationAppliedFrom: z
-											.enum([
-												"all",
-												"all_except_custom_domains",
-												"preview",
-												"prod_deployment_urls_and_all_previews",
-											])
-											.nullish(),
-										april2026SecurityIncidentMigrationAppliedFrom: z
-											.enum([
-												"all",
-												"all_except_custom_domains",
-												"preview",
-												"prod_deployment_urls_and_all_previews",
-											])
-											.nullish(),
-									})
-									.strict(),
-								z.enum([
-									"all",
-									"all_except_custom_domains",
-									"preview",
-									"prod_deployment_urls_and_all_previews",
-								]),
-							])
-							.nullable(),
-						oldSsoProtection: z
-							.union([
-								z
-									.object({
-										deploymentType: z.enum([
-											"all",
-											"all_except_custom_domains",
-											"preview",
-											"prod_deployment_urls_and_all_previews",
-										]),
-										cve55182MigrationAppliedFrom: z
-											.enum([
-												"all",
-												"all_except_custom_domains",
-												"preview",
-												"prod_deployment_urls_and_all_previews",
-											])
-											.nullish(),
-										april2026SecurityIncidentMigrationAppliedFrom: z
-											.enum([
-												"all",
-												"all_except_custom_domains",
-												"preview",
-												"prod_deployment_urls_and_all_previews",
-											])
-											.nullish(),
-									})
-									.strict(),
-								z.enum([
-									"all",
-									"all_except_custom_domains",
-									"preview",
-									"prod_deployment_urls_and_all_previews",
-								]),
-							])
-							.nullable(),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z.string(),
-						next: z.object({
-							project: z.object({
-								id: z.string().optional(),
-								staticIps: z.object({
-									builds: z.union([z.literal(false), z.literal(true)]).optional(),
-									buildRegion: z.string().optional(),
-									enabled: z.union([z.literal(false), z.literal(true)]),
-									regions: z.array(z.string()).optional(),
-								}),
-							}),
-						}),
-						previous: z.object({
-							project: z.object({
-								id: z.string().optional(),
-								staticIps: z.object({
-									builds: z.union([z.literal(false), z.literal(true)]).optional(),
-									buildRegion: z.string().optional(),
-									enabled: z.union([z.literal(false), z.literal(true)]),
-									regions: z.array(z.string()).optional(),
-								}),
-							}),
-						}),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z.string(),
-						trustedIps: z
-							.enum([
-								"all",
-								"all_except_custom_domains",
-								"preview",
-								"prod_deployment_urls_and_all_previews",
-								"production",
-							])
-							.nullish(),
-						oldTrustedIps: z
-							.enum([
-								"all",
-								"all_except_custom_domains",
-								"preview",
-								"prod_deployment_urls_and_all_previews",
-								"production",
-							])
-							.nullish(),
-						addedAddresses: z.array(z.string()).nullish(),
-						removedAddresses: z.array(z.string()).nullish(),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z.string(),
-						enableVercelCiSameRepository: z.union([z.literal(false), z.literal(true)]).optional(),
-						addedProjects: z.array(
-							z.object({
-								id: z.string(),
-								name: z.string(),
-							}),
-						),
-						removedProjects: z.array(
-							z.object({
-								id: z.string(),
-								name: z.string(),
-							}),
-						),
-						addedProviders: z.array(z.string()),
-						removedProviders: z.array(z.string()),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z
-							.string()
-							.optional()
-							.describe(
-								"Display name for Activity links. Optional for events stored before it was published.",
-							),
-						reasonCode: z.enum(["BACKOFFICE", "PUBLIC_API"]).optional(),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z.string(),
-						projectWebAnalytics: z
-							.object({
-								id: z.string(),
-								disabledAt: z.number().optional(),
-								canceledAt: z.number().optional(),
-								enabledAt: z.number().optional(),
-								hasData: z.literal(true).optional(),
-							})
-							.optional(),
-						prevProjectWebAnalytics: z
-							.object({
-								id: z.string(),
-								disabledAt: z.number().optional(),
-								canceledAt: z.number().optional(),
-								enabledAt: z.number().optional(),
-								hasData: z.literal(true).optional(),
-							})
-							.nullish(),
-					})
-					.strict(),
-				z
-					.object({
-						gitProvider: z.string(),
-						gitProviderGroupDescriptor: z.string(),
-						gitScope: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						connectionId: z.string(),
-						connectionType: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						alias: z.string(),
-						sandboxName: z.string(),
-						sandboxId: z.string().optional(),
-						projectId: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						driveName: z.string(),
-						projectId: z.string(),
-						projectName: z.string(),
-						region: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z.string(),
-						snapshotId: z.string(),
-						targetRegions: z.array(z.string()),
-					})
-					.strict(),
-				z
-					.object({
-						instances: z.number(),
-						url: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						email: z.string(),
-						verified: z.union([z.literal(false), z.literal(true)]),
-					})
-					.strict(),
-				z
-					.object({
-						email: z.string(),
-						verified: z.union([z.literal(false), z.literal(true)]),
-						actorId: z.string().describe("Okta user id."),
-						actorType: z.enum(["admin"]),
-						actorName: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						email: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						uid: z.string(),
-						name: z.union([
-							z.string(),
-							z
-								.object({
-									name: z.string(),
-								})
-								.strict(),
-						]),
-					})
-					.strict(),
-				z
-					.object({
-						oldName: z.string(),
-						newName: z.string(),
-						uid: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						enabled: z.union([z.literal(false), z.literal(true)]),
-						updatedAt: z.number(),
-						firstEnabledAt: z.number().optional(),
-						projectId: z.string().optional(),
-						projectName: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						bio: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						scalingRules: z.object({}).catchall(
-							z.object({
-								min: z.number(),
-								max: z.number(),
-							}),
-						),
-						min: z.number(),
-						max: z.number(),
-						url: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						userAgent: z.string().optional(),
-						geolocation: z
-							.object({
-								city: z
-									.object({
-										names: z.object({
-											en: z.string(),
-										}),
-									})
-									.optional(),
-								country: z.object({
-									names: z.object({
-										en: z.string(),
-									}),
-								}),
-								mostSpecificSubdivision: z
-									.object({
-										names: z.object({
-											en: z.string(),
-										}),
-									})
-									.optional(),
-								regionName: z.string().optional(),
-							})
-							.nullish(),
-						env: z.string().optional(),
-						os: z.string().optional(),
-						username: z.string().optional(),
-						ssoType: z.string().optional(),
-						factors: z
-							.array(
-								z
-									.object({
-										origin: z.enum([
-											"apple",
-											"bitbucket",
-											"chatgpt",
-											"email",
-											"github",
-											"gitlab",
-											"google",
-											"otp",
-											"saml",
-										]),
-										username: z.string().optional(),
-										teamId: z.string().optional(),
-										legacy: z.union([z.literal(false), z.literal(true)]).optional(),
-										ssoType: z.string().optional(),
-									})
-									.strict(),
-							)
-							.min(1)
-							.max(1)
-							.optional(),
-						viaOTP: z.union([z.literal(false), z.literal(true)]).optional(),
-						viaGithub: z.union([z.literal(false), z.literal(true)]).optional(),
-						viaGitlab: z.union([z.literal(false), z.literal(true)]).optional(),
-						viaBitbucket: z.union([z.literal(false), z.literal(true)]).optional(),
-						viaGoogle: z.union([z.literal(false), z.literal(true)]).optional(),
-						viaApple: z.union([z.literal(false), z.literal(true)]).optional(),
-						viaSamlSso: z.union([z.literal(false), z.literal(true)]).optional(),
-						viaPasskey: z.union([z.literal(false), z.literal(true)]).optional(),
-					})
-					.strict(),
-				z
-					.object({
-						email: z.string(),
-						bitbucketLogin: z.string(),
-						bitbucketEmail: z.string(),
-						bitbucketName: z.string(),
-						zeitAccount: z.string(),
-						zeitAccountType: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						email: z.string(),
-						githubLogin: z.string(),
-						zeitAccount: z.string(),
-						zeitAccountType: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						email: z.string(),
-						gitlabLogin: z.string(),
-						gitlabEmail: z.string(),
-						gitlabName: z.string(),
-						zeitAccount: z.string(),
-						zeitAccountType: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string().optional(),
-						projectName: z.string().optional(),
-						analyticsId: z.string().optional(),
-						sampleRatePercent: z.number().nullable(),
-						spendLimitInDollars: z.number().nullable(),
-						previous: z.object({
-							sampleRatePercent: z.number().nullable(),
-							spendLimitInDollars: z.number().nullable(),
-						}),
-					})
-					.strict(),
-				z
-					.object({
-						budget: z.object({
-							budgetItem: z
-								.object({
-									type: z.enum(["fixed"]).describe("The budget type"),
-									fixedBudget: z.number().describe("Budget amount (USD / dollars)"),
-									previousSpend: z
-										.array(z.number())
-										.describe("Array of the last 3 months of spend data"),
-									notifiedAt: z
-										.array(z.number())
-										.describe("Array of 50, 75, 100 to keep track of notifications sent out"),
-									webhookId: z
-										.string()
-										.optional()
-										.describe(
-											"Webhook id that corresponds to a webhook in Cosmos webhook collection",
-										),
-									webhookNotified: z
-										.union([z.literal(false), z.literal(true)])
-										.optional()
-										.describe("Keep track if the webhook has been called for the month"),
-									createdAt: z.number().describe("Date time when budget is created"),
-									updatedAt: z
-										.number()
-										.optional()
-										.describe("Date time when budget is updated last"),
-									isActive: z
-										.union([z.literal(false), z.literal(true)])
-										.describe("Is the budget currently active for a customer"),
-									pauseProjects: z
-										.union([z.literal(false), z.literal(true)])
-										.optional()
-										.describe("Should all projects be paused if budget is exceeded"),
-									pricingPlan: z
-										.enum(["flex", "legacy", "platform", "plus", "unbundled"])
-										.optional()
-										.describe("The acive pricing plan the team is billed with"),
-									scope: z
-										.enum(["organization", "project", "team"])
-										.optional()
-										.describe(
-											"Which budget this is. Matches Copper SDK `BudgetScope`. Omitted on events published before team/org/project scopes existed (treat as team).",
-										),
-									scopeId: z.string().optional().describe("Project id when `scope` is `project`."),
-									teamId: z.string().describe("Partition key"),
-									id: z.string().describe("Sort key that needs to be unique per teamId"),
-								})
-								.describe(
-									"Represents a budget for tracking and notifying teams on their spending.",
-								),
-						}),
-					})
-					.strict(),
-				z
-					.object({
-						budget: z
-							.object({
-								type: z.enum(["fixed"]).describe("The budget type"),
-								fixedBudget: z.number().describe("Budget amount (USD / dollars)"),
-								previousSpend: z
-									.array(z.number())
-									.describe("Array of the last 3 months of spend data"),
-								notifiedAt: z
-									.array(z.number())
-									.describe("Array of 50, 75, 100 to keep track of notifications sent out"),
-								webhookId: z
-									.string()
-									.optional()
-									.describe(
-										"Webhook id that corresponds to a webhook in Cosmos webhook collection",
-									),
-								webhookNotified: z
-									.union([z.literal(false), z.literal(true)])
-									.optional()
-									.describe("Keep track if the webhook has been called for the month"),
-								createdAt: z.number().describe("Date time when budget is created"),
-								updatedAt: z.number().optional().describe("Date time when budget is updated last"),
-								isActive: z
-									.union([z.literal(false), z.literal(true)])
-									.describe("Is the budget currently active for a customer"),
-								pauseProjects: z
-									.union([z.literal(false), z.literal(true)])
-									.optional()
-									.describe("Should all projects be paused if budget is exceeded"),
-								pricingPlan: z
-									.enum(["flex", "legacy", "platform", "plus", "unbundled"])
-									.optional()
-									.describe("The acive pricing plan the team is billed with"),
-								scope: z
-									.enum(["organization", "project", "team"])
-									.optional()
-									.describe(
-										"Which budget this is. Matches Copper SDK `BudgetScope`. Omitted on events published before team/org/project scopes existed (treat as team).",
-									),
-								scopeId: z.string().optional().describe("Project id when `scope` is `project`."),
-								teamId: z.string().describe("Partition key"),
-								id: z.string().describe("Sort key that needs to be unique per teamId"),
-							})
-							.describe("Represents a budget for tracking and notifying teams on their spending."),
-					})
-					.strict(),
-				z
-					.object({
-						budget: z
-							.object({
-								type: z.enum(["fixed"]).describe("The budget type"),
-								fixedBudget: z.number().describe("Budget amount (USD / dollars)"),
-								previousSpend: z
-									.array(z.number())
-									.describe("Array of the last 3 months of spend data"),
-								notifiedAt: z
-									.array(z.number())
-									.describe("Array of 50, 75, 100 to keep track of notifications sent out"),
-								webhookId: z
-									.string()
-									.optional()
-									.describe(
-										"Webhook id that corresponds to a webhook in Cosmos webhook collection",
-									),
-								webhookNotified: z
-									.union([z.literal(false), z.literal(true)])
-									.optional()
-									.describe("Keep track if the webhook has been called for the month"),
-								createdAt: z.number().describe("Date time when budget is created"),
-								updatedAt: z.number().optional().describe("Date time when budget is updated last"),
-								isActive: z
-									.union([z.literal(false), z.literal(true)])
-									.describe("Is the budget currently active for a customer"),
-								pauseProjects: z
-									.union([z.literal(false), z.literal(true)])
-									.optional()
-									.describe("Should all projects be paused if budget is exceeded"),
-								pricingPlan: z
-									.enum(["flex", "legacy", "platform", "plus", "unbundled"])
-									.optional()
-									.describe("The acive pricing plan the team is billed with"),
-								scope: z
-									.enum(["organization", "project", "team"])
-									.optional()
-									.describe(
-										"Which budget this is. Matches Copper SDK `BudgetScope`. Omitted on events published before team/org/project scopes existed (treat as team).",
-									),
-								scopeId: z.string().optional().describe("Project id when `scope` is `project`."),
-								teamId: z.string().describe("Partition key"),
-								id: z.string().describe("Sort key that needs to be unique per teamId"),
-							})
-							.describe("Represents a budget for tracking and notifying teams on their spending."),
-						webhookUrl: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						budget: z
-							.object({
-								type: z.enum(["fixed"]).describe("The budget type"),
-								fixedBudget: z.number().describe("Budget amount (USD / dollars)"),
-								previousSpend: z
-									.array(z.number())
-									.describe("Array of the last 3 months of spend data"),
-								notifiedAt: z
-									.array(z.number())
-									.describe("Array of 50, 75, 100 to keep track of notifications sent out"),
-								webhookId: z
-									.string()
-									.optional()
-									.describe(
-										"Webhook id that corresponds to a webhook in Cosmos webhook collection",
-									),
-								webhookNotified: z
-									.union([z.literal(false), z.literal(true)])
-									.optional()
-									.describe("Keep track if the webhook has been called for the month"),
-								createdAt: z.number().describe("Date time when budget is created"),
-								updatedAt: z.number().optional().describe("Date time when budget is updated last"),
-								isActive: z
-									.union([z.literal(false), z.literal(true)])
-									.describe("Is the budget currently active for a customer"),
-								pauseProjects: z
-									.union([z.literal(false), z.literal(true)])
-									.optional()
-									.describe("Should all projects be paused if budget is exceeded"),
-								pricingPlan: z
-									.enum(["flex", "legacy", "platform", "plus", "unbundled"])
-									.optional()
-									.describe("The acive pricing plan the team is billed with"),
-								scope: z
-									.enum(["organization", "project", "team"])
-									.optional()
-									.describe(
-										"Which budget this is. Matches Copper SDK `BudgetScope`. Omitted on events published before team/org/project scopes existed (treat as team).",
-									),
-								scopeId: z.string().optional().describe("Project id when `scope` is `project`."),
-								teamId: z.string().describe("Partition key"),
-								id: z.string().describe("Sort key that needs to be unique per teamId"),
-							})
-							.describe("Represents a budget for tracking and notifying teams on their spending."),
-						prevBudget: z
-							.object({
-								type: z.enum(["fixed"]).describe("The budget type"),
-								fixedBudget: z.number().describe("Budget amount (USD / dollars)"),
-								previousSpend: z
-									.array(z.number())
-									.describe("Array of the last 3 months of spend data"),
-								notifiedAt: z
-									.array(z.number())
-									.describe("Array of 50, 75, 100 to keep track of notifications sent out"),
-								webhookId: z
-									.string()
-									.optional()
-									.describe(
-										"Webhook id that corresponds to a webhook in Cosmos webhook collection",
-									),
-								webhookNotified: z
-									.union([z.literal(false), z.literal(true)])
-									.optional()
-									.describe("Keep track if the webhook has been called for the month"),
-								createdAt: z.number().describe("Date time when budget is created"),
-								updatedAt: z.number().optional().describe("Date time when budget is updated last"),
-								isActive: z
-									.union([z.literal(false), z.literal(true)])
-									.describe("Is the budget currently active for a customer"),
-								pauseProjects: z
-									.union([z.literal(false), z.literal(true)])
-									.optional()
-									.describe("Should all projects be paused if budget is exceeded"),
-								pricingPlan: z
-									.enum(["flex", "legacy", "platform", "plus", "unbundled"])
-									.optional()
-									.describe("The acive pricing plan the team is billed with"),
-								scope: z
-									.enum(["organization", "project", "team"])
-									.optional()
-									.describe(
-										"Which budget this is. Matches Copper SDK `BudgetScope`. Omitted on events published before team/org/project scopes existed (treat as team).",
-									),
-								scopeId: z.string().optional().describe("Project id when `scope` is `project`."),
-								teamId: z.string().describe("Partition key"),
-								id: z.string().describe("Sort key that needs to be unique per teamId"),
-							})
-							.optional()
-							.describe("Represents a budget for tracking and notifying teams on their spending."),
-						webhookUrl: z.string().optional(),
-						prevWebhookUrl: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						webhookUrl: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						storeType: z.enum(["postgres", "redis"]),
-					})
-					.strict(),
-				z
-					.object({
-						transferRequestCode: z.string(),
-						store: z.object({
-							id: z.string(),
-							name: z.string().optional(),
-							type: z.enum(["blob", "edge-config", "integration", "postgres", "redis"]),
-						}),
-					})
-					.strict(),
-				z
-					.object({
-						transferRequestCode: z.string(),
-						store: z.object({
-							id: z.string(),
-							name: z.string().optional(),
-							type: z.enum(["blob", "edge-config", "integration", "postgres", "redis"]),
-						}),
-						destinationTeamId: z.string(),
-						destinationTeamName: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						transferRequestCode: z.string(),
-						store: z.object({
-							id: z.string(),
-							name: z.string().optional(),
-							type: z.enum(["blob", "edge-config", "integration", "postgres", "redis"]),
-						}),
-						originTeamId: z.string(),
-						originTeamName: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						id: z.string(),
-						name: z.string().optional(),
-						computeUnitsMax: z.number().optional(),
-						computeUnitsMin: z.number().optional(),
-						suspendTimeoutSeconds: z.number().optional(),
-						type: z.enum(["blob", "edge-config", "integration", "postgres", "redis"]),
-						access: z.enum(["private", "public"]).optional(),
-					})
-					.strict(),
-				z
-					.object({
-						store: z.object({
-							name: z.string(),
-							id: z.string(),
-						}),
-						ownerId: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						id: z.string(),
-						name: z.string().optional(),
-						computeUnitsMax: z.number().optional(),
-						computeUnitsMin: z.number().optional(),
-						suspendTimeoutSeconds: z.number().optional(),
-						type: z.enum(["blob", "edge-config", "integration", "postgres", "redis"]),
-						access: z.enum(["private", "public"]).optional(),
-						locked: z.union([z.literal(false), z.literal(true)]),
-					})
-					.strict(),
-				z
-					.object({
-						actorId: z.string().optional(),
-						actorType: z.enum(["admin", "user"]).optional(),
-						reason: z.string().optional(),
-						caseNumber: z.string().optional(),
-						client: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						slug: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						previous: z
-							.object({
-								enabled: z
-									.union([z.literal(false), z.literal(true)])
-									.describe("Whether automatic code reviews are enabled"),
-								scope: z
-									.enum(["all", "private", "public", "selected_repos"])
-									.describe("Which repository visibilities get automatic reviews"),
-								includeDrafts: z
-									.union([z.literal(false), z.literal(true)])
-									.describe("Whether to include draft pull requests in automatic reviews"),
-								selectedRepos: z
-									.array(z.string())
-									.nullish()
-									.describe(
-										"GitHub repos to scope automatic reviews to. Format: \"owner/repo\" (lowercase). Only used when scope='selected_repos'.",
-									),
-							})
-							.optional()
-							.describe("Automatic code review settings"),
-						next: z
-							.object({
-								enabled: z
-									.union([z.literal(false), z.literal(true)])
-									.describe("Whether automatic code reviews are enabled"),
-								scope: z
-									.enum(["all", "private", "public", "selected_repos"])
-									.describe("Which repository visibilities get automatic reviews"),
-								includeDrafts: z
-									.union([z.literal(false), z.literal(true)])
-									.describe("Whether to include draft pull requests in automatic reviews"),
-								selectedRepos: z
-									.array(z.string())
-									.nullish()
-									.describe(
-										"GitHub repos to scope automatic reviews to. Format: \"owner/repo\" (lowercase). Only used when scope='selected_repos'.",
-									),
-							})
-							.describe("Automatic code review settings"),
-					})
-					.strict(),
-				z
-					.object({
-						trialCreditsIssuedAt: z.number(),
-						expiresAt: z.string(),
-						amount: z.string(),
-						currency: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						eventId: z.string(),
-						sessionId: z.string(),
-						sessionKind: z
-							.string()
-							.describe("Currently emitted session kinds: chat, investigation."),
-						surface: z
-							.string()
-							.describe(
-								"Currently emitted surfaces: dashboard, internal, slack, automation, github.",
-							),
-						occurredAt: z.number(),
-					})
-					.strict(),
-				z
-					.object({
-						eventId: z.string(),
-						sessionId: z.string(),
-						sessionKind: z
-							.string()
-							.describe("Currently emitted session kinds: chat, investigation."),
-						surface: z
-							.string()
-							.describe(
-								"Currently emitted surfaces: dashboard, internal, slack, automation, github.",
-							),
-						occurredAt: z.number(),
-						planId: z.string(),
-						requestedScopes: z
-							.array(z.string())
-							.describe("Scopes requested by the model-authored plan."),
-						elevatedScopes: z
-							.array(z.string())
-							.describe("Requested Vercel scopes that are not included in the baseline token."),
-						mergedScopes: z
-							.array(z.string())
-							.describe("Baseline plus elevated Vercel scopes used when minting scoped tokens."),
-						githubScopes: z
-							.array(z.string())
-							.describe(
-								"External GitHub scopes requested by the plan; these are not Vercel token scopes.",
-							),
-						requestedScopeCount: z.number(),
-						elevatedScopeCount: z.number(),
-						mergedScopeCount: z.number(),
-						githubScopeCount: z.number(),
-					})
-					.strict(),
-				z
-					.object({
-						previous: z.enum(["auto-approval", "block", "manual-approval"]).nullable(),
-						next: z.enum(["auto-approval", "block", "manual-approval"]).nullable(),
-						teamSlug: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						previous: z.enum(["basic", "elastic", "enhanced", "standard", "turbo"]).optional(),
-						next: z.enum(["basic", "elastic", "enhanced", "standard", "turbo"]).optional(),
-						isSystemInitiated: z.union([z.literal(false), z.literal(true)]).optional(),
-						reason: z
-							.enum([
-								"basic-floor",
-								"build-timeout-failure",
-								"enospc-failure",
-								"enterprise-floor",
-								"high-peak-disk",
-								"high-peak-memory",
-								"long-build-duration",
-								"oom-failure",
-								"plan-change",
-								"project-transfer",
-								"short-build-duration",
-								"sustained-high-cpu",
-							])
-							.optional(),
-					})
-					.strict(),
-				z
-					.object({
-						slug: z.string(),
-						teamId: z.string(),
-						by: z.string(),
-						byUid: z.string().optional(),
-						reasons: z
-							.array(
-								z.object({
-									slug: z.string(),
-									description: z.string(),
-								}),
-							)
-							.optional(),
-						removedUsers: z
-							.object({})
-							.catchall(
-								z.object({
-									role: z.enum([
-										"BILLING",
-										"CONTRIBUTOR",
-										"DEVELOPER",
-										"MEMBER",
-										"OWNER",
-										"SECURITY",
-										"VIEWER",
-										"VIEWER_FOR_PLUS",
-									]),
-									confirmed: z.union([z.literal(false), z.literal(true)]),
-									confirmedAt: z.number().optional(),
-								}),
-							)
-							.optional(),
-						removedMemberCount: z.number().optional(),
-						timestamp: z.number().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						previous: z
-							.object({
-								gitSources: z.array(z.string()).nullish(),
-								deploymentSources: z.array(z.string()).nullish(),
-							})
-							.nullable(),
-						next: z
-							.object({
-								gitSources: z.array(z.string()).nullish(),
-								deploymentSources: z.array(z.string()).nullish(),
-							})
-							.nullable(),
-					})
-					.strict(),
-				z
-					.object({
-						enabled: z.union([z.literal(false), z.literal(true)]),
-						domain: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z.string(),
-						enabled: z.union([z.literal(false), z.literal(true)]).nullable(),
-						environment: z.enum(["preview", "production"]),
-					})
-					.strict(),
-				z
-					.object({
-						environment: z.enum(["preview", "production"]),
-						enabled: z.enum(["default", "default-force", "off", "off-force", "on", "on-force"]),
-					})
-					.strict(),
-				z
-					.object({
-						emailDomain: z.string().nullish(),
-					})
-					.strict(),
-				z
-					.object({
-						deletedCount: z.number(),
-						inviteIds: z.array(z.string()),
-					})
-					.strict(),
-				z
-					.object({
-						directoryType: z.string().optional(),
-						ssoType: z.string().optional(),
-						invitedUser: z
-							.object({
-								username: z.string(),
-								email: z.string(),
-							})
-							.optional(),
-						invitedEmail: z.string().optional(),
-						invitationRole: z.string().optional(),
-						entitlements: z.array(z.string()).optional(),
-						invitedUid: z.string().optional(),
-						origin: z.string().optional(),
-						teamSlug: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						teamName: z.string(),
-						username: z.string().optional(),
-						gitUsername: z.string().optional(),
-						githubUsername: z.string().nullish(),
-						gitlabUsername: z.string().nullish(),
-						bitbucketUsername: z.string().nullish(),
-						updatedUid: z.string().optional(),
-						teamId: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						teamName: z.string(),
-						username: z.string().optional(),
-						gitUsername: z.string().nullish(),
-						githubUsername: z.string().nullish(),
-						gitlabUsername: z.string().nullish(),
-						bitbucketUsername: z.string().nullish(),
-					})
-					.strict(),
-				z
-					.object({
-						deletedUser: z
-							.object({
-								username: z.string(),
-								email: z.string(),
-							})
-							.optional(),
-						deletedUid: z.string().optional(),
-						githubUsername: z.string().nullish(),
-						gitlabUsername: z.string().nullish(),
-						bitbucketUsername: z.string().nullish(),
-						directoryType: z.string().optional(),
-						role: z
-							.enum([
-								"BILLING",
-								"CONTRIBUTOR",
-								"DEVELOPER",
-								"MEMBER",
-								"OWNER",
-								"SECURITY",
-								"VIEWER",
-								"VIEWER_FOR_PLUS",
-							])
-							.optional(),
-						reason: z
-							.string()
-							.optional()
-							.describe(
-								"Why the member was removed. When removed due to a plan downgrade, this is a {@link DowngradeReason} from `@api/pubsub-types` (e.g. `trial_expired`, `user_downgrade`).",
-							),
-						previousPlan: z.enum(["enterprise", "hobby", "pro"]).optional(),
-						newPlan: z.enum(["enterprise", "hobby", "pro"]).optional(),
-						automated: z
-							.union([z.literal(false), z.literal(true)])
-							.optional()
-							.describe("Whether the removal was system-initiated rather than human-initiated."),
-					})
-					.strict(),
-				z
-					.object({
-						entitlement: z.string(),
-						user: z.object({
-							id: z.string(),
-							username: z.string(),
-						}),
-					})
-					.strict(),
-				z
-					.object({
-						entitlement: z.string(),
-						user: z.object({
-							id: z.string(),
-							username: z.string(),
-						}),
-						previousCanceledAt: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						role: z.string().optional(),
-						uid: z.string().optional(),
-						updatedUid: z.string().optional(),
-						updatedUser: z
-							.object({
-								username: z.string(),
-								email: z.string(),
-							})
-							.optional(),
-						origin: z.string().optional(),
-						teamSlug: z.string().optional(),
-						teamRoles: z.array(z.string()).optional(),
-						teamPermissions: z.array(z.string()).optional(),
-						entitlements: z.array(z.string()).optional(),
-						invitedBy: z
-							.object({
-								email: z.string(),
-								userId: z.string().optional(),
-								name: z.string().optional(),
-							})
-							.optional(),
-					})
-					.strict(),
-				z
-					.object({
-						requestedTeamName: z.string(),
-						requestedTeamSlug: z.string().optional(),
-						requestedUserName: z.string().optional(),
-						gitUsername: z.string().optional(),
-						githubUsername: z.string().optional(),
-						gitlabUsername: z.string().optional(),
-						bitbucketUsername: z.string().optional(),
-						source: z
-							.enum([
-								"account-update",
-								"bitbucket",
-								"dsync",
-								"feedback",
-								"github",
-								"gitlab",
-								"import",
-								"link",
-								"mail",
-								"nsnb-auto-approve",
-								"nsnb-hobby-upgrade",
-								"nsnb-invite",
-								"nsnb-redeploy",
-								"nsnb-redeploy-attribution-card",
-								"nsnb-request-access",
-								"nsnb-viewer-upgrade",
-								"organization-teams",
-								"saml",
-								"teams",
-							])
-							.optional(),
-					})
-					.strict(),
-				z
-					.object({
-						directoryType: z.string().optional(),
-						ssoType: z.string().optional(),
-						updatedUser: z
-							.object({
-								username: z.string(),
-								email: z.string(),
-							})
-							.optional(),
-						role: z.string().optional(),
-						previousRole: z.string(),
-						previousTeamRoles: z
-							.array(
-								z.enum([
-									"BILLING",
-									"CONTRIBUTOR",
-									"DEVELOPER",
-									"MEMBER",
-									"OWNER",
-									"SECURITY",
-									"VIEWER",
-									"VIEWER_FOR_PLUS",
-								]),
-							)
-							.optional(),
-						teamRoles: z
-							.array(
-								z.enum([
-									"BILLING",
-									"CONTRIBUTOR",
-									"DEVELOPER",
-									"MEMBER",
-									"OWNER",
-									"SECURITY",
-									"VIEWER",
-									"VIEWER_FOR_PLUS",
-								]),
-							)
-							.optional(),
-						previousTeamPermissions: z
-							.array(
-								z.enum([
-									"AiGatewayApiKeyOwnedBySelf",
-									"AiGatewayBudgetManager",
-									"AiGatewayCredits",
-									"AiGatewaySettings",
-									"AiGatewayTranscriptsManager",
-									"AiGatewayTranscriptsViewer",
-									"ConnectorManager",
-									"CreateProject",
-									"EnvVariableManager",
-									"EnvironmentManager",
-									"FullProductionDeployment",
-									"IntegrationManager",
-									"OrgAdmin",
-									"OrgViewer",
-									"UsageViewer",
-									"V0Builder",
-									"V0Chatter",
-									"V0Viewer",
-									"WorkflowDecryptor",
-								]),
-							)
-							.optional(),
-						teamPermissions: z
-							.array(
-								z.enum([
-									"AiGatewayApiKeyOwnedBySelf",
-									"AiGatewayBudgetManager",
-									"AiGatewayCredits",
-									"AiGatewaySettings",
-									"AiGatewayTranscriptsManager",
-									"AiGatewayTranscriptsViewer",
-									"ConnectorManager",
-									"CreateProject",
-									"EnvVariableManager",
-									"EnvironmentManager",
-									"FullProductionDeployment",
-									"IntegrationManager",
-									"OrgAdmin",
-									"OrgViewer",
-									"UsageViewer",
-									"V0Builder",
-									"V0Chatter",
-									"V0Viewer",
-									"WorkflowDecryptor",
-								]),
-							)
-							.optional(),
-						updatedUid: z.string().optional(),
-						origin: z.string().optional(),
-						teamSlug: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						email: z.string().optional(),
-						authorized: z.union([z.literal(false), z.literal(true)]),
-						reason: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						enforced: z.union([z.literal(false), z.literal(true)]),
-					})
-					.strict(),
-				z
-					.object({
-						publicId: z.string(),
-						role: z.string(),
-						maxUses: z.number(),
-						expiresAt: z.string(),
-						name: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						publicId: z.string(),
-						name: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						previousConcurrentBuilds: z.number(),
-						nextConcurrentBuilds: z.number(),
-					})
-					.strict(),
-				z
-					.object({
-						plan: z.enum(["enterprise", "hobby", "pro"]),
-						trial: z
-							.object({
-								start: z.number(),
-								end: z.number(),
-							})
-							.nullish(),
-					})
-					.strict(),
-				z
-					.object({
-						invoiceId: z.string(),
-						convertedFromTrial: z.union([z.literal(false), z.literal(true)]),
-						plan: z.enum(["enterprise", "hobby", "pro"]),
-					})
-					.strict(),
-				z
-					.object({
-						inviteCode: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						name: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						name: z.string().optional(),
-						actorId: z.string().describe("Okta user id."),
-						actorType: z.enum(["admin"]),
-						actorName: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						decision: z.enum(["keep_on", "turn_off"]),
-						version: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						consent: z.enum(["granted", "refused"]),
-					})
-					.strict(),
-				z
-					.object({
-						remoteCaching: z
-							.object({
-								enabled: z.union([z.literal(false), z.literal(true)]).optional(),
-							})
-							.optional()
-							.describe("Represents configuration for remote caching"),
-					})
-					.strict(),
-				z
-					.object({
-						deletedCount: z.number(),
-					})
-					.strict(),
-				z
-					.object({
-						enabled: z.enum(["default", "off", "on"]),
-					})
-					.strict(),
-				z
-					.object({
-						enabled: z.union([z.literal(false), z.literal(true)]),
-						scope: z.enum(["dashboard", "log-drains"]),
-					})
-					.strict(),
-				z
-					.object({
-						previous: z
-							.object({})
-							.catchall(
-								z.union([
-									z
-										.object({
-											accessGroupId: z.string(),
-										})
-										.strict(),
-									z.enum([
-										"BILLING",
-										"CONTRIBUTOR",
-										"DEVELOPER",
-										"MEMBER",
-										"OWNER",
-										"SECURITY",
-										"VIEWER",
-										"VIEWER_FOR_PLUS",
-									]),
-								]),
-							)
-							.optional(),
-						next: z
-							.object({})
-							.catchall(
-								z.union([
-									z
-										.object({
-											accessGroupId: z.string(),
-										})
-										.strict(),
-									z.enum([
-										"BILLING",
-										"CONTRIBUTOR",
-										"DEVELOPER",
-										"MEMBER",
-										"OWNER",
-										"SECURITY",
-										"VIEWER",
-										"VIEWER_FOR_PLUS",
-									]),
-								]),
-							)
-							.optional(),
-					})
-					.strict(),
-				z
-					.object({
-						domain: z.string(),
-						ips: z.array(z.string()),
-					})
-					.strict(),
-				z
-					.object({
-						tokenTypes: z.array(z.string()),
-					})
-					.strict(),
-				z
-					.object({
-						exportId: z.string(),
-						from: z.number(),
-						to: z.number(),
-						format: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						fileId: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						slug: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						slug: z.string().optional(),
-						actorId: z.string().describe("Okta user id."),
-						actorType: z.enum(["admin"]),
-						actorName: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z.string(),
-						sampling: z
-							.array(
-								z.object({
-									type: z.enum(["head_sampling"]),
-									rate: z.number(),
-									env: z.enum(["preview", "production"]).optional(),
-									requestPath: z.string().optional(),
-								}),
-							)
-							.optional(),
-					})
-					.strict(),
-				z
-					.object({
-						reason: z.enum(["limits-exceeded"]),
-					})
-					.strict(),
-				z
-					.object({
-						teamName: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						totp: z.union([z.literal(false), z.literal(true)]),
-						recoveryCodes: z.number(),
-						actorId: z.string().optional(),
-						actorType: z.enum(["admin", "user"]).optional(),
-						actorName: z
-							.string()
-							.optional()
-							.describe("Human-readable admin who performed the removal."),
-						reason: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						deletedAt: z.number().nullish(),
-						username: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						deletedAt: z.number().nullish(),
-						username: z.string(),
-						actorId: z.string().describe("Okta user id."),
-						actorType: z.enum(["admin"]),
-						actorName: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						username: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						teamName: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						teamId: z.string(),
-						teamName: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						actorId: z.string(),
-						actorType: z.enum(["admin"]),
-						reason: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						actorId: z.string(),
-						actorType: z.enum(["admin"]),
-					})
-					.strict(),
-				z
-					.object({
-						enabled: z.union([z.literal(false), z.literal(true)]),
-						actorId: z.string(),
-						actorType: z.enum(["admin"]),
-					})
-					.strict(),
-				z
-					.object({
-						autoBlockPrevented: z.union([z.literal(false), z.literal(true)]),
-						preventUntil: z.number().optional(),
-						actorId: z.string(),
-						actorType: z.enum(["admin"]),
-						reason: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						method: z.enum(["email-otp", "recovery-code", "totp", "webauthn"]),
-						reason: z.string(),
-						flowId: z.string().optional(),
-						loginSessionId: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						allowedMethods: z.array(z.enum(["recovery-code", "totp", "webauthn"])),
-						firstFactor: z.string(),
-						flowId: z.string(),
-						loginSessionId: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						action: z.enum([
-							"add-passkey",
-							"add-totp",
-							"admin-remove",
-							"disable",
-							"enable",
-							"regenerate-recovery-codes",
-							"remove-passkey",
-						]),
-						reason: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						previous: z.object({
-							enabled: z.union([z.literal(false), z.literal(true)]),
-							totpVerified: z.union([z.literal(false), z.literal(true)]),
-						}),
-						next: z.object({
-							enabled: z.union([z.literal(false), z.literal(true)]),
-							totpVerified: z.union([z.literal(false), z.literal(true)]),
-						}),
-						method: z.enum(["passkey", "self_serve_recovery", "totp", "user_disabled"]).optional(),
-					})
-					.strict(),
-				z
-					.object({
-						remaining: z.number(),
-						context: z
-							.enum(["login", "sudo"])
-							.optional()
-							.describe("Absent on events predating the field; those were all logins."),
-					})
-					.strict(),
-				z
-					.object({
-						mfaEnabled: z.union([z.literal(false), z.literal(true)]),
-					})
-					.strict(),
-				z
-					.object({
-						mfa: z.object({
-							enabled: z.union([z.literal(false), z.literal(true)]),
-							totpVerified: z.union([z.literal(false), z.literal(true)]),
-						}),
-					})
-					.strict(),
-				z
-					.object({
-						enabled: z.union([z.literal(false), z.literal(true)]),
-						totpVerified: z.union([z.literal(false), z.literal(true)]),
-					})
-					.strict(),
-				z
-					.object({
-						previous: z.object({
-							enabled: z.union([z.literal(false), z.literal(true)]),
-							totpVerified: z.union([z.literal(false), z.literal(true)]),
-						}),
-						next: z.object({
-							enabled: z.union([z.literal(false), z.literal(true)]),
-							totpVerified: z.union([z.literal(false), z.literal(true)]),
-						}),
-					})
-					.strict(),
-				z
-					.object({
-						provider: z.enum(["google"]),
-						providerSubjectId: z.string(),
-						outcome: z.enum(["account-matched", "linking-required"]),
-						decision: z.object({
-							authoritative: z.union([z.literal(false), z.literal(true)]),
-							basis: z.enum(["gmail", "none", "workspace-mx"]),
-							emailDomain: z.string(),
-							emailVerified: z.union([z.literal(false), z.literal(true)]),
-							hostedDomainMatch: z.union([z.literal(false), z.literal(true)]),
-							mxOutcome: z.enum(["google", "lookup-error", "non-google", "not-checked"]),
-						}),
-					})
-					.strict(),
-				z
-					.object({
-						email: z.string(),
-						prevEmail: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						email: z.string(),
-						prevEmail: z.string(),
-						actorId: z.string().describe("Okta user id."),
-						actorType: z.enum(["admin"]),
-						actorName: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						username: z.string(),
-						actorId: z.string().describe("Okta user id."),
-						actorType: z.enum(["admin"]),
-						actorName: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z.string(),
-						repositoryName: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z.string(),
-						repositoryName: z.string(),
-						reference: z.string(),
-						digest: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z.string(),
-						repositoryName: z.string(),
-						reference: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z.string(),
-						repositoryName: z.string(),
-						sharedWithTeamId: z.string(),
-						sharedWithTeamSlug: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z.string(),
-						repositoryName: z.string(),
-						sharedWithTeamId: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z.string(),
-						repositoryName: z.string(),
-						public: z.union([z.literal(false), z.literal(true)]),
-					})
-					.strict(),
-				z
-					.object({
-						projectId: z.string(),
-						projectName: z.string(),
-						repositoryName: z.string(),
-						removedTeamIds: z.array(z.string()),
-					})
-					.strict(),
-				z
-					.object({
-						ruleName: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						previousProjectCount: z.number().nullable(),
-						nextProjectCount: z.number().nullable(),
-					})
-					.strict(),
-				z
-					.object({
-						customAlertTitle: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						vulnerabilities: z.array(z.string()),
-						protectionEnabled: z.union([z.literal(false), z.literal(true)]),
-						protectedProjectCount: z.number(),
-					})
-					.strict(),
-				z
-					.object({
-						team: z.object({
-							name: z.string(),
-							id: z.string(),
-						}),
-						configuration: z.object({
-							id: z.string(),
-							name: z.string().optional(),
-						}),
-						peering: z.object({
-							id: z.string(),
-							accountId: z.string(),
-							region: z.string(),
-							vpcId: z.string(),
-						}),
-					})
-					.strict(),
-				z
-					.object({
-						team: z.object({
-							name: z.string(),
-							id: z.string(),
-						}),
-						configuration: z.object({
-							id: z.string(),
-							name: z.string().optional(),
-						}),
-						peering: z.object({
-							id: z.string(),
-							name: z.string().optional(),
-						}),
-					})
-					.strict(),
-				z
-					.object({
-						team: z.object({
-							name: z.string(),
-							id: z.string(),
-						}),
-						configuration: z.object({
-							id: z.string(),
-							name: z.string().optional(),
-						}),
-						peering: z.object({
-							id: z.string(),
-							name: z.string().optional(),
-						}),
-						newName: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						tier: z.enum(["plus", "pro"]),
-					})
-					.strict(),
-				z
-					.object({
-						id: z.string(),
-						url: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						chatId: z.string(),
-						chatTitle: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						model: z.string(),
-						useCase: z.string(),
-						chatId: z.string(),
-						messageId: z.string(),
-						inputTokens: z.number(),
-						outputTokens: z.number(),
-						timestamp: z.number(),
-						events: z.array(
-							z.object({
-								eventId: z.string(),
-								modelId: z.string(),
-								inputTokens: z.number(),
-								outputTokens: z.number(),
-								totalTokens: z.number(),
-								cacheCreationInputTokens: z.number(),
-								cacheReadInputTokens: z.number(),
-								timestamp: z.string(),
-							}),
-						),
-					})
-					.strict(),
-				z
-					.object({
-						chatId: z.string(),
-						chatTitle: z.string().optional(),
-						messageId: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						deploymentId: z.string(),
-						projectId: z.string(),
-						projectName: z.string().optional(),
-						runId: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						grantType: z.enum([
-							"authorization_code",
-							"urn:ietf:params:oauth:grant-type:device_code",
-							"urn:ietf:params:oauth:grant-type:token-exchange",
-						]),
-						appName: z
-							.string()
-							.describe(
-								"the app's name at the time the event was published (it could have changed since then)",
-							),
-						atTTL: z.number().describe("access_token TTL"),
-						rtTTL: z.number().optional().describe("refresh_token TTL"),
-						scope: z.string(),
-						authMethod: z.enum([
-							"app",
-							"apple",
-							"bitbucket",
-							"chatgpt",
-							"email",
-							"emu",
-							"github",
-							"github-webhook",
-							"gitlab",
-							"google",
-							"invite",
-							"manual",
-							"otp",
-							"passkey",
-							"saml",
-							"sms",
-							"token-exchange-oidc",
-						]),
-						app: z
-							.object({
-								clientId: z.string(),
-								name: z
-									.string()
-									.describe(
-										"the app's name at the time the event was published (it could have changed since then)",
-									),
-								clientAuthenticationUsed: z.object({
-									method: z.enum([
-										"client_secret_basic",
-										"client_secret_jwt",
-										"client_secret_post",
-										"none",
-										"oidc_token",
-										"private_key_jwt",
-									]),
-									secretId: z.string().optional(),
-								}),
-							})
-							.optional()
-							.describe(
-								"optional since entries prior to 2025-10-13 do not contain app information",
-							),
-						includesRefreshToken: z
-							.union([z.literal(false), z.literal(true)])
-							.optional()
-							.describe("optional since entries prior to 2025-10-13 do not contain this field"),
-						publicId: z
-							.string()
-							.optional()
-							.describe("optional since entries prior to 2025-10-13 do not contain this field"),
-						tokenPrefix: z
-							.enum(["vca_"])
-							.optional()
-							.describe("optional since entries prior to 2026-04-23 do not contain this field"),
-						tokenSuffix: z
-							.string()
-							.optional()
-							.describe("optional since entries prior to 2026-04-23 do not contain this field"),
-						refreshTokenPublicId: z
-							.string()
-							.optional()
-							.describe("optional; only present when a refresh token was issued (offline_access)."),
-						refreshTokenPrefix: z
-							.enum(["vcr_"])
-							.optional()
-							.describe("optional; only present when a refresh token was issued (offline_access)."),
-						refreshTokenSuffix: z
-							.string()
-							.optional()
-							.describe("optional; only present when a refresh token was issued (offline_access)."),
-						sessionId: z
-							.string()
-							.optional()
-							.describe("optional since entries prior to 2025-10-13 do not contain this field"),
-						ip: z
-							.string()
-							.nullish()
-							.describe("optional since entries prior to 2026-04-23 do not contain this field"),
-						geolocation: z
-							.object({
-								city: z
-									.object({
-										names: z.object({
-											en: z.string(),
-										}),
-									})
-									.optional(),
-								country: z.object({
-									names: z.object({
-										en: z.string(),
-									}),
-								}),
-								mostSpecificSubdivision: z
-									.object({
-										names: z.object({
-											en: z.string(),
-										}),
-									})
-									.optional(),
-								regionName: z.string().optional(),
-							})
-							.nullish()
-							.describe("optional since entries prior to 2026-04-23 do not contain this field"),
-						userAgent: z
-							.string()
-							.optional()
-							.describe("optional since entries prior to 2026-04-23 do not contain this field"),
-						issuerUrl: z
-							.string()
-							.optional()
-							.describe(
-								"OIDC issuer (`iss`) of the token that authenticated the request. Present for OIDC-authenticated flows: the token-exchange grant, or `client_credentials` with the `oidc_token` client-authentication method.",
-							),
-						policyId: z
-							.string()
-							.optional()
-							.describe(
-								"ID of the OIDC-exchange policy that authorized a token-exchange grant. Absent for the `client_credentials` + `oidc_token` flow, which matches an app `oidcProviders` entry rather than a policy.",
-							),
-						oidcSubject: z
-							.string()
-							.optional()
-							.describe(
-								"`sub` claim of the OIDC token. Present for OIDC-authenticated flows (see {@link issuerUrl}).",
-							),
-					})
-					.strict(),
-				z
-					.object({
-						policy: z
-							.object({
-								policyId: z.string(),
-								clientId: z.string(),
-								issuerUrl: z.string(),
-								teamId: z.string(),
-								name: z
-									.string()
-									.nullable()
-									.describe("Human-readable policy name, or `null` when unnamed."),
-								claims: z
-									.array(
-										z.object({
-											name: z.string(),
-											values: z.array(
-												z.object({
-													value: z.string(),
-													wildcards: z.union([z.literal(false), z.literal(true)]),
-												}),
-											),
-										}),
-									)
-									.describe("Claim matchers an OIDC token must satisfy to use the policy."),
-								permissions: z
-									.array(z.string())
-									.describe("Permission boundary (`['*']` = the app's full declared permissions)."),
-								resources: z
-									.object({
-										projectIds: z.array(z.string()),
-									})
-									.nullable()
-									.describe("Resource boundary, or `null` when the policy has none."),
-								createdAt: z.number().describe("Creation time (epoch ms)."),
-								updatedAt: z.number().describe("Last-update time (epoch ms)."),
-							})
-							.describe(
-								"A full point-in-time snapshot of an OIDC exchange policy, captured on every lifecycle event so the audit trail records exactly what the policy looked like. Mirrors the management endpoints' public response shape.",
-							),
-						appName: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						before: z
-							.object({
-								policyId: z.string(),
-								clientId: z.string(),
-								issuerUrl: z.string(),
-								teamId: z.string(),
-								name: z
-									.string()
-									.nullable()
-									.describe("Human-readable policy name, or `null` when unnamed."),
-								claims: z
-									.array(
-										z.object({
-											name: z.string(),
-											values: z.array(
-												z.object({
-													value: z.string(),
-													wildcards: z.union([z.literal(false), z.literal(true)]),
-												}),
-											),
-										}),
-									)
-									.describe("Claim matchers an OIDC token must satisfy to use the policy."),
-								permissions: z
-									.array(z.string())
-									.describe("Permission boundary (`['*']` = the app's full declared permissions)."),
-								resources: z
-									.object({
-										projectIds: z.array(z.string()),
-									})
-									.nullable()
-									.describe("Resource boundary, or `null` when the policy has none."),
-								createdAt: z.number().describe("Creation time (epoch ms)."),
-								updatedAt: z.number().describe("Last-update time (epoch ms)."),
-							})
-							.describe(
-								"A full point-in-time snapshot of an OIDC exchange policy, captured on every lifecycle event so the audit trail records exactly what the policy looked like. Mirrors the management endpoints' public response shape.",
-							),
-						after: z
-							.object({
-								policyId: z.string(),
-								clientId: z.string(),
-								issuerUrl: z.string(),
-								teamId: z.string(),
-								name: z
-									.string()
-									.nullable()
-									.describe("Human-readable policy name, or `null` when unnamed."),
-								claims: z
-									.array(
-										z.object({
-											name: z.string(),
-											values: z.array(
-												z.object({
-													value: z.string(),
-													wildcards: z.union([z.literal(false), z.literal(true)]),
-												}),
-											),
-										}),
-									)
-									.describe("Claim matchers an OIDC token must satisfy to use the policy."),
-								permissions: z
-									.array(z.string())
-									.describe("Permission boundary (`['*']` = the app's full declared permissions)."),
-								resources: z
-									.object({
-										projectIds: z.array(z.string()),
-									})
-									.nullable()
-									.describe("Resource boundary, or `null` when the policy has none."),
-								createdAt: z.number().describe("Creation time (epoch ms)."),
-								updatedAt: z.number().describe("Last-update time (epoch ms)."),
-							})
-							.describe(
-								"A full point-in-time snapshot of an OIDC exchange policy, captured on every lifecycle event so the audit trail records exactly what the policy looked like. Mirrors the management endpoints' public response shape.",
-							),
-						appName: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						tokenId: z.string().describe("The token's public ID."),
-						tokenPrefix: z
-							.enum(["vcp_"])
-							.optional()
-							.describe("The token prefix used when showing a safe checksum-style fingerprint."),
-						tokenSuffix: z.string().optional().describe("The token checksum suffix."),
-						tokenName: z.string().describe("User-supplied name of the token."),
-						origin: z
-							.enum([
-								"app",
-								"apple",
-								"bitbucket",
-								"chatgpt",
-								"email",
-								"emu",
-								"github",
-								"github-webhook",
-								"gitlab",
-								"google",
-								"invite",
-								"manual",
-								"otp",
-								"passkey",
-								"saml",
-								"sms",
-								"token-exchange-oidc",
-							])
-							.describe("How the token was issued. Always `'manual'` for explicit PAT creation."),
-						scope: z
-							.enum(["project", "team", "user"])
-							.describe(
-								"Scope of the token: - `'user'`: full-account token (not tied to any team). - `'team'`: scoped to a single team. - `'project'`: scoped to a single project within a team.",
-							),
-						teamId: z
-							.string()
-							.optional()
-							.describe("Present when `scope` is `'team'` or `'project'`."),
-						teamSlug: z
-							.string()
-							.optional()
-							.describe("Present when `scope` is `'team'` or `'project'`."),
-						projectId: z.string().optional().describe("Present when `scope` is `'project'`."),
-						projectName: z.string().optional().describe("Present when `scope` is `'project'`."),
-						projectScope: z
-							.enum(["account", "project-only"])
-							.optional()
-							.describe("Present when `scope` is `'project'`."),
-						expiresAt: z
-							.number()
-							.optional()
-							.describe("Unix epoch milliseconds. Absent when the token never expires."),
-						hasAuthorizationDetails: z
-							.union([z.literal(false), z.literal(true)])
-							.optional()
-							.describe("Whether the token was issued with RFC 9396 authorization details."),
-						ip: z.string().nullish(),
-						geolocation: z
-							.object({
-								city: z
-									.object({
-										names: z.object({
-											en: z.string(),
-										}),
-									})
-									.optional(),
-								country: z.object({
-									names: z.object({
-										en: z.string(),
-									}),
-								}),
-								mostSpecificSubdivision: z
-									.object({
-										names: z.object({
-											en: z.string(),
-										}),
-									})
-									.optional(),
-								regionName: z.string().optional(),
-							})
-							.nullish(),
-						userAgent: z.string().optional(),
-						reqId: z.string().optional(),
-						reqUrl: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						tokenId: z.string(),
-						tokenType: z.string(),
-						tokenName: z.string(),
-						actorTokenId: z.string().describe("The token's public ID."),
-						origin: z
-							.enum([
-								"app",
-								"apple",
-								"bitbucket",
-								"chatgpt",
-								"email",
-								"emu",
-								"github",
-								"github-webhook",
-								"gitlab",
-								"google",
-								"invite",
-								"manual",
-								"otp",
-								"passkey",
-								"saml",
-								"sms",
-								"token-exchange-oidc",
-							])
-							.optional(),
-						teamId: z.string().optional(),
-						expired: z.union([z.literal(false), z.literal(true)]).optional(),
-						leaked: z.union([z.literal(false), z.literal(true)]).optional(),
-						revoked: z.union([z.literal(false), z.literal(true)]).optional(),
-						ip: z.string().nullish(),
-						geolocation: z
-							.object({
-								city: z
-									.object({
-										names: z.object({
-											en: z.string(),
-										}),
-									})
-									.optional(),
-								country: z.object({
-									names: z.object({
-										en: z.string(),
-									}),
-								}),
-								mostSpecificSubdivision: z
-									.object({
-										names: z.object({
-											en: z.string(),
-										}),
-									})
-									.optional(),
-								regionName: z.string().optional(),
-							})
-							.nullish(),
-						userAgent: z.string().optional(),
-						reqId: z.string().optional(),
-						reqUrl: z.string().optional(),
-					})
-					.strict(),
-				z
-					.object({
-						deletedCount: z.number(),
-						actorTokenId: z.string().describe("The token's public ID."),
-						ip: z.string().nullish(),
-						geolocation: z
-							.object({
-								city: z
-									.object({
-										names: z.object({
-											en: z.string(),
-										}),
-									})
-									.optional(),
-								country: z.object({
-									names: z.object({
-										en: z.string(),
-									}),
-								}),
-								mostSpecificSubdivision: z
-									.object({
-										names: z.object({
-											en: z.string(),
-										}),
-									})
-									.optional(),
-								regionName: z.string().optional(),
-							})
-							.nullish(),
-						userAgent: z.string().optional(),
-						reqId: z.string().optional(),
-						reqUrl: z.string().optional(),
-					})
-					.strict(),
-			])
-			.optional(),
-	})
-	.describe("Array of events generated by the User.");
-
-export const listEventTypeSchema = z
-	.object({
+			.describe("Description of the event, visible to users in the Activity dashboard and docs."),
 		name: z
 			.enum([
 				"access-group-created",
@@ -13677,43 +13714,6 @@ export const listEventTypeSchema = z
 			])
 			.describe("The name of the event type.")
 			.meta({ examples: ["deployment-created"] }),
-		description: z
-			.string()
-			.describe("Description of the event, visible to users in the Activity dashboard and docs."),
-		categories: z
-			.array(
-				z.enum([
-					"account",
-					"ai",
-					"ai-gateway",
-					"billing",
-					"connect",
-					"deployment",
-					"domain",
-					"edge",
-					"env-variable",
-					"feature-flags",
-					"firewall",
-					"integration",
-					"microfrontends",
-					"network",
-					"observability",
-					"other",
-					"project",
-					"security",
-					"storage",
-					"team",
-					"v0",
-					"vercel-app",
-					"workflow",
-				]),
-			)
-			.describe("Categories that group this event type with related event types.")
-			.meta({ examples: [["deployment"]] }),
-		deprecated: z
-			.union([z.literal(false), z.literal(true)])
-			.optional()
-			.describe("Present only when this event type is deprecated."),
 		replacedBy: z
 			.array(
 				z.enum([
@@ -14405,9 +14405,9 @@ export const listEventTypeSchema = z
 
 export const listEventTypesResponseSchema = z
 	.object({
-		types: z.array(z.unknown()),
 		categories: z.array(
 			z.object({
+				label: z.string(),
 				name: z.enum([
 					"account",
 					"ai",
@@ -14433,39 +14433,203 @@ export const listEventTypesResponseSchema = z
 					"vercel-app",
 					"workflow",
 				]),
-				label: z.string(),
 			}),
 		),
+		types: z.array(z.unknown()),
 	})
 	.describe("Response returned by the List Event Types endpoint.");
 
 export const flagSchema = z.object({
+	createdAt: z.number(),
+	createdBy: z.string(),
 	description: z.string().optional(),
-	variants: z.array(
-		z.object({
-			description: z.string().optional(),
-			label: z.string().optional(),
-			value: z
-				.union([
-					z.string(),
-					z.number(),
-					z.object({}).catchall(z.unknown()),
-					z.array(z.string()),
-					z.union([z.literal(false), z.literal(true)]),
-				])
-				.nullable(),
-			id: z.string(),
-		}),
-	),
-	id: z.string(),
 	environments: z.object({}).catchall(
 		z.object({
+			active: z.union([z.literal(false), z.literal(true)]),
+			fallthrough: z.discriminatedUnion("type", [
+				z
+					.object({
+						type: z.enum(["variant"]),
+						variantId: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						base: z.object({
+							attribute: z.string(),
+							kind: z.string(),
+							type: z.enum(["entity"]),
+						}),
+						defaultVariantId: z.string(),
+						type: z.enum(["split"]),
+						weights: z.object({}).catchall(z.number()),
+					})
+					.strict(),
+				z
+					.object({
+						base: z.object({
+							attribute: z.string(),
+							kind: z.string(),
+							type: z.enum(["entity"]),
+						}),
+						defaultVariantId: z.string(),
+						rollFromVariantId: z.string(),
+						rollToVariantId: z.string(),
+						slots: z.array(
+							z.object({
+								durationMs: z.number(),
+								promille: z.number(),
+							}),
+						),
+						startTimestamp: z.number(),
+						type: z.enum(["rollout"]),
+					})
+					.strict(),
+				z
+					.object({
+						type: z.enum(["experiment"]),
+					})
+					.strict(),
+			]),
+			pausedOutcome: z.object({
+				type: z.enum(["variant"]),
+				variantId: z.string(),
+			}),
 			reuse: z
 				.object({
 					active: z.union([z.literal(false), z.literal(true)]),
 					environment: z.string(),
 				})
 				.optional(),
+			revision: z.number().optional(),
+			rules: z.array(
+				z.object({
+					conditions: z.array(
+						z.object({
+							cmp: z.enum([
+								"after",
+								"before",
+								"contains",
+								"containsAllOf",
+								"containsAnyOf",
+								"containsNoneOf",
+								"endsWith",
+								"eq",
+								"ex",
+								"gt",
+								"gte",
+								"lt",
+								"lte",
+								"oneOf",
+								"regex",
+								"startsWith",
+							]),
+							cmpOptions: z
+								.object({
+									ignoreCase: z.union([z.literal(false), z.literal(true)]).optional(),
+								})
+								.optional(),
+							lhs: z.discriminatedUnion("type", [
+								z
+									.object({
+										type: z.enum(["segment"]),
+									})
+									.strict(),
+								z
+									.object({
+										attribute: z.string(),
+										kind: z.string(),
+										type: z.enum(["entity"]),
+									})
+									.strict(),
+							]),
+							rhs: z
+								.union([
+									z.string(),
+									z.number(),
+									z
+										.object({
+											items: z.array(
+												z.union([
+													z
+														.object({
+															label: z.string().optional(),
+															note: z.string().optional(),
+															value: z.number(),
+														})
+														.strict(),
+													z
+														.object({
+															label: z.string().optional(),
+															note: z.string().optional(),
+															value: z.string(),
+														})
+														.strict(),
+												]),
+											),
+											type: z.enum(["list", "list/inline"]),
+										})
+										.strict(),
+									z
+										.object({
+											flags: z.string(),
+											pattern: z.string(),
+											type: z.enum(["regex"]),
+										})
+										.strict(),
+									z.union([z.literal(false), z.literal(true)]),
+								])
+								.optional(),
+						}),
+					),
+					id: z.string(),
+					outcome: z.discriminatedUnion("type", [
+						z
+							.object({
+								type: z.enum(["variant"]),
+								variantId: z.string(),
+							})
+							.strict(),
+						z
+							.object({
+								base: z.object({
+									attribute: z.string(),
+									kind: z.string(),
+									type: z.enum(["entity"]),
+								}),
+								defaultVariantId: z.string(),
+								type: z.enum(["split"]),
+								weights: z.object({}).catchall(z.number()),
+							})
+							.strict(),
+						z
+							.object({
+								base: z.object({
+									attribute: z.string(),
+									kind: z.string(),
+									type: z.enum(["entity"]),
+								}),
+								defaultVariantId: z.string(),
+								rollFromVariantId: z.string(),
+								rollToVariantId: z.string(),
+								slots: z.array(
+									z.object({
+										durationMs: z.number(),
+										promille: z.number(),
+									}),
+								),
+								startTimestamp: z.number(),
+								type: z.enum(["rollout"]),
+							})
+							.strict(),
+						z
+							.object({
+								type: z.enum(["experiment"]),
+							})
+							.strict(),
+					]),
+				}),
+			),
 			targets: z
 				.object({})
 				.catchall(
@@ -14481,202 +14645,38 @@ export const flagSchema = z.object({
 					),
 				)
 				.optional(),
-			revision: z.number().optional(),
-			pausedOutcome: z.object({
-				type: z.enum(["variant"]),
-				variantId: z.string(),
-			}),
-			fallthrough: z.discriminatedUnion("type", [
-				z
-					.object({
-						type: z.enum(["variant"]),
-						variantId: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						type: z.enum(["split"]),
-						base: z.object({
-							type: z.enum(["entity"]),
-							kind: z.string(),
-							attribute: z.string(),
-						}),
-						weights: z.object({}).catchall(z.number()),
-						defaultVariantId: z.string(),
-					})
-					.strict(),
-				z
-					.object({
-						type: z.enum(["rollout"]),
-						base: z.object({
-							type: z.enum(["entity"]),
-							kind: z.string(),
-							attribute: z.string(),
-						}),
-						defaultVariantId: z.string(),
-						startTimestamp: z.number(),
-						rollFromVariantId: z.string(),
-						rollToVariantId: z.string(),
-						slots: z.array(
-							z.object({
-								promille: z.number(),
-								durationMs: z.number(),
-							}),
-						),
-					})
-					.strict(),
-				z
-					.object({
-						type: z.enum(["experiment"]),
-					})
-					.strict(),
-			]),
-			active: z.union([z.literal(false), z.literal(true)]),
-			rules: z.array(
-				z.object({
-					id: z.string(),
-					outcome: z.discriminatedUnion("type", [
-						z
-							.object({
-								type: z.enum(["variant"]),
-								variantId: z.string(),
-							})
-							.strict(),
-						z
-							.object({
-								type: z.enum(["split"]),
-								base: z.object({
-									type: z.enum(["entity"]),
-									kind: z.string(),
-									attribute: z.string(),
-								}),
-								weights: z.object({}).catchall(z.number()),
-								defaultVariantId: z.string(),
-							})
-							.strict(),
-						z
-							.object({
-								type: z.enum(["rollout"]),
-								base: z.object({
-									type: z.enum(["entity"]),
-									kind: z.string(),
-									attribute: z.string(),
-								}),
-								defaultVariantId: z.string(),
-								startTimestamp: z.number(),
-								rollFromVariantId: z.string(),
-								rollToVariantId: z.string(),
-								slots: z.array(
-									z.object({
-										promille: z.number(),
-										durationMs: z.number(),
-									}),
-								),
-							})
-							.strict(),
-						z
-							.object({
-								type: z.enum(["experiment"]),
-							})
-							.strict(),
-					]),
-					conditions: z.array(
-						z.object({
-							rhs: z
-								.union([
-									z.string(),
-									z.number(),
-									z
-										.object({
-											type: z.enum(["list", "list/inline"]),
-											items: z.array(
-												z.union([
-													z
-														.object({
-															label: z.string().optional(),
-															note: z.string().optional(),
-															value: z.number(),
-														})
-														.strict(),
-													z
-														.object({
-															label: z.string().optional(),
-															note: z.string().optional(),
-															value: z.string(),
-														})
-														.strict(),
-												]),
-											),
-										})
-										.strict(),
-									z
-										.object({
-											type: z.enum(["regex"]),
-											pattern: z.string(),
-											flags: z.string(),
-										})
-										.strict(),
-									z.union([z.literal(false), z.literal(true)]),
-								])
-								.optional(),
-							cmpOptions: z
-								.object({
-									ignoreCase: z.union([z.literal(false), z.literal(true)]).optional(),
-								})
-								.optional(),
-							lhs: z.discriminatedUnion("type", [
-								z
-									.object({
-										type: z.enum(["segment"]),
-									})
-									.strict(),
-								z
-									.object({
-										type: z.enum(["entity"]),
-										kind: z.string(),
-										attribute: z.string(),
-									})
-									.strict(),
-							]),
-							cmp: z.enum([
-								"after",
-								"before",
-								"contains",
-								"containsAllOf",
-								"containsAnyOf",
-								"containsNoneOf",
-								"endsWith",
-								"eq",
-								"ex",
-								"gt",
-								"gte",
-								"lt",
-								"lte",
-								"oneOf",
-								"regex",
-								"startsWith",
-							]),
-						}),
-					),
-				}),
-			),
 		}),
 	),
+	id: z.string(),
 	kind: z.enum(["boolean", "json", "number", "string"]),
+	maintainerIds: z.array(z.string()).optional(),
+	ownerId: z.string(),
+	permanent: z.union([z.literal(false), z.literal(true)]).optional(),
+	projectId: z.string(),
 	revision: z.number(),
 	seed: z.number(),
-	state: z.enum(["active", "archived"]),
-	maintainerIds: z.array(z.string()).optional(),
-	permanent: z.union([z.literal(false), z.literal(true)]).optional(),
-	tags: z.array(z.string()).optional(),
 	slug: z.string(),
-	createdAt: z.number(),
+	state: z.enum(["active", "archived"]),
+	tags: z.array(z.string()).optional(),
+	typeName: z.enum(["flag"]),
 	updatedAt: z.number(),
 	updatedBy: z.string().optional(),
-	createdBy: z.string(),
-	ownerId: z.string(),
-	projectId: z.string(),
-	typeName: z.enum(["flag"]),
+	variants: z.array(
+		z.object({
+			description: z.string().optional(),
+			id: z.string(),
+			label: z.string().optional(),
+			value: z
+				.union([
+					z.string(),
+					z.number(),
+					z.object({}).catchall(z.unknown()),
+					z.array(z.string()),
+					z.union([z.literal(false), z.literal(true)]),
+				])
+				.nullable(),
+		}),
+	),
 	metadata: z
 		.object({
 			creator: z
@@ -14690,130 +14690,38 @@ export const flagSchema = z.object({
 });
 
 export const marketplaceFlagSchema = z.object({
-	typeName: z.enum(["marketplaceFlag"]),
-	id: z.string(),
+	category: z.enum(["experiment", "flag"]).optional(),
+	createdAt: z.number().optional(),
+	description: z.string().optional(),
 	externalId: z.string(),
-	slug: z.string(),
+	id: z.string(),
+	integrationConfigurationId: z.string(),
+	name: z.string().optional(),
 	origin: z.string(),
 	ownerId: z.string(),
 	projectId: z.string(),
 	resourceId: z.string(),
-	integrationConfigurationId: z.string(),
+	slug: z.string(),
 	state: z.enum(["active", "archived"]),
-	name: z.string().optional(),
-	description: z.string().optional(),
-	category: z.enum(["experiment", "flag"]).optional(),
-	createdAt: z.number().optional(),
+	typeName: z.enum(["marketplaceFlag"]),
 	updatedAt: z.number().optional(),
 });
 
 export const segmentSchema = z.object({
-	description: z.string().optional(),
+	createdAt: z.number(),
 	createdBy: z.string().optional(),
-	usedByFlags: z.array(z.string()).optional(),
-	usedBySegments: z.array(z.string()).optional(),
 	data: z.object({
-		rules: z
-			.array(
-				z.object({
-					id: z.string(),
-					outcome: z.discriminatedUnion("type", [
-						z
-							.object({
-								type: z.enum(["all"]),
-							})
-							.strict(),
-						z
-							.object({
-								type: z.enum(["split"]),
-								base: z.object({
-									type: z.enum(["entity"]),
-									kind: z.string(),
-									attribute: z.string(),
-								}),
-								passPromille: z.number(),
-							})
-							.strict(),
-					]),
-					conditions: z.array(
+		exclude: z
+			.object({})
+			.catchall(
+				z.object({}).catchall(
+					z.array(
 						z.object({
-							rhs: z
-								.union([
-									z.string(),
-									z.number(),
-									z
-										.object({
-											type: z.enum(["list", "list/inline"]),
-											items: z.array(
-												z.union([
-													z
-														.object({
-															label: z.string().optional(),
-															note: z.string().optional(),
-															value: z.number(),
-														})
-														.strict(),
-													z
-														.object({
-															label: z.string().optional(),
-															note: z.string().optional(),
-															value: z.string(),
-														})
-														.strict(),
-												]),
-											),
-										})
-										.strict(),
-									z
-										.object({
-											type: z.enum(["regex"]),
-											pattern: z.string(),
-											flags: z.string(),
-										})
-										.strict(),
-									z.union([z.literal(false), z.literal(true)]),
-								])
-								.optional(),
-							cmpOptions: z
-								.object({
-									ignoreCase: z.union([z.literal(false), z.literal(true)]).optional(),
-								})
-								.optional(),
-							lhs: z.discriminatedUnion("type", [
-								z
-									.object({
-										type: z.enum(["segment"]),
-									})
-									.strict(),
-								z
-									.object({
-										type: z.enum(["entity"]),
-										kind: z.string(),
-										attribute: z.string(),
-									})
-									.strict(),
-							]),
-							cmp: z.enum([
-								"after",
-								"before",
-								"contains",
-								"containsAllOf",
-								"containsAnyOf",
-								"containsNoneOf",
-								"endsWith",
-								"eq",
-								"ex",
-								"gt",
-								"gte",
-								"lt",
-								"lte",
-								"oneOf",
-								"regex",
-								"startsWith",
-							]),
+							note: z.string().optional(),
+							value: z.string(),
 						}),
 					),
-				}),
+				),
 			)
 			.optional(),
 		include: z
@@ -14829,28 +14737,120 @@ export const segmentSchema = z.object({
 				),
 			)
 			.optional(),
-		exclude: z
-			.object({})
-			.catchall(
-				z.object({}).catchall(
-					z.array(
+		rules: z
+			.array(
+				z.object({
+					conditions: z.array(
 						z.object({
-							note: z.string().optional(),
-							value: z.string(),
+							cmp: z.enum([
+								"after",
+								"before",
+								"contains",
+								"containsAllOf",
+								"containsAnyOf",
+								"containsNoneOf",
+								"endsWith",
+								"eq",
+								"ex",
+								"gt",
+								"gte",
+								"lt",
+								"lte",
+								"oneOf",
+								"regex",
+								"startsWith",
+							]),
+							cmpOptions: z
+								.object({
+									ignoreCase: z.union([z.literal(false), z.literal(true)]).optional(),
+								})
+								.optional(),
+							lhs: z.discriminatedUnion("type", [
+								z
+									.object({
+										type: z.enum(["segment"]),
+									})
+									.strict(),
+								z
+									.object({
+										attribute: z.string(),
+										kind: z.string(),
+										type: z.enum(["entity"]),
+									})
+									.strict(),
+							]),
+							rhs: z
+								.union([
+									z.string(),
+									z.number(),
+									z
+										.object({
+											items: z.array(
+												z.union([
+													z
+														.object({
+															label: z.string().optional(),
+															note: z.string().optional(),
+															value: z.number(),
+														})
+														.strict(),
+													z
+														.object({
+															label: z.string().optional(),
+															note: z.string().optional(),
+															value: z.string(),
+														})
+														.strict(),
+												]),
+											),
+											type: z.enum(["list", "list/inline"]),
+										})
+										.strict(),
+									z
+										.object({
+											flags: z.string(),
+											pattern: z.string(),
+											type: z.enum(["regex"]),
+										})
+										.strict(),
+									z.union([z.literal(false), z.literal(true)]),
+								])
+								.optional(),
 						}),
 					),
-				),
+					id: z.string(),
+					outcome: z.discriminatedUnion("type", [
+						z
+							.object({
+								type: z.enum(["all"]),
+							})
+							.strict(),
+						z
+							.object({
+								base: z.object({
+									attribute: z.string(),
+									kind: z.string(),
+									type: z.enum(["entity"]),
+								}),
+								passPromille: z.number(),
+								type: z.enum(["split"]),
+							})
+							.strict(),
+					]),
+				}),
 			)
 			.optional(),
 	}),
+	description: z.string().optional(),
+	hint: z.string(),
 	id: z.string(),
 	label: z.string(),
-	slug: z.string(),
-	createdAt: z.number(),
-	updatedAt: z.number(),
 	projectId: z.string(),
+	slug: z.string(),
 	typeName: z.enum(["segment"]),
-	hint: z.string(),
+	updatedAt: z.number(),
+	usedByFlags: z.array(z.string()).optional(),
+	usedBySegments: z.array(z.string()).optional(),
 	metadata: z
 		.object({
 			creator: z
@@ -14865,20 +14865,20 @@ export const segmentSchema = z.object({
 
 export const flagsSdkKeyWithSecretsSchema = z
 	.object({
-		hashKey: z.string(),
-		projectId: z.string(),
-		type: z.enum(["client", "mobile", "server"]),
-		environment: z.string(),
-		createdBy: z.string(),
 		createdAt: z.number(),
-		updatedAt: z.number(),
-		label: z.string().optional(),
+		createdBy: z.string(),
 		deletedAt: z.number().optional(),
+		environment: z.string(),
+		hashKey: z.string(),
+		label: z.string().optional(),
 		partialKeyValue: z
 			.string()
 			.describe(
 				"Partially-masked representation of the SDK key value, safe to display in UIs. The value is the `vf_<type>_` prefix followed by the first 3 characters of the secret portion and a fixed 8-character `*` mask (e.g. `vf_server_abc********`).",
 			),
+		projectId: z.string(),
+		type: z.enum(["client", "mobile", "server"]),
+		updatedAt: z.number(),
 		keyValue: z.string().describe("Cleartext value of the SDK key."),
 		tokenValue: z
 			.string()
@@ -14992,36 +14992,27 @@ export const aCLActionSchema = z
 
 export const namedSandboxSchema = z
 	.object({
-		name: z
-			.string()
-			.describe("The unique identifier of the sandbox.")
-			.meta({ examples: ["my-sandbox"] }),
+		createdAt: z
+			.number()
+			.describe("The time when the named sandbox was created, in milliseconds since the epoch.")
+			.meta({ examples: [1750344501629] }),
+		currentSessionId: z.string().describe("Current session ID the sandbox is pointing to."),
 		currentSnapshotId: z
 			.string()
 			.optional()
 			.describe("Current snapshot ID that the named sandbox is pointing to."),
-		currentSessionId: z.string().describe("Current session ID the sandbox is pointing to."),
-		status: z
-			.enum(["running", "stopped", "stopping"])
-			.describe("The status of the current sandbox.")
-			.meta({ examples: ["running"] }),
-		statusUpdatedAt: z
-			.number()
-			.describe(
-				"The time when the sandbox status was last updated, in milliseconds since the epoch.",
-			)
-			.meta({ examples: [1750344501629] }),
-		persistent: z
-			.union([z.literal(false), z.literal(true)])
-			.describe("Whether the sandbox persists its state across restarts via automatic snapshots.")
-			.meta({ examples: [true] }),
-		region: z
+		cwd: z
 			.string()
 			.optional()
+			.describe("The working directory of the sandbox.")
+			.meta({ examples: ["/vercel/sandbox"] }),
+		expiresAt: z
+			.number()
+			.optional()
 			.describe(
-				"The region the sandbox is pinned to: the region stored on the sandbox, otherwise the platform default. Where a running session actually landed is reported by `session.region`.",
+				"The time at which the currently running sandbox will time out, in milliseconds since the epoch. Only present while a session is running.",
 			)
-			.meta({ examples: ["iad1"] }),
+			.meta({ examples: [1750344801629] }),
 		failoverRegions: z
 			.array(
 				z.enum([
@@ -15049,21 +15040,6 @@ export const namedSandboxSchema = z
 			.optional()
 			.describe("The regions the sandbox fails over to. Empty when it does not fail over.")
 			.meta({ examples: [["cle1", "sfo1"]] }),
-		vcpus: z
-			.number()
-			.optional()
-			.describe("Number of virtual CPUs allocated.")
-			.meta({ examples: [2] }),
-		memory: z
-			.number()
-			.optional()
-			.describe("Memory allocated in MB.")
-			.meta({ examples: [1024] }),
-		runtime: z
-			.string()
-			.optional()
-			.describe("Runtime identifier.")
-			.meta({ examples: ["node22"] }),
 		image: z
 			.string()
 			.optional()
@@ -15075,79 +15051,29 @@ export const namedSandboxSchema = z
 					"my-repo@sha256:2c4e8f9a1b3d5e7f091a2b3c4d5e6f708192a3b4c5d6e7f8091a2b3c4d5e6f708",
 				],
 			}),
-		timeout: z
-			.number()
-			.optional()
-			.describe("Timeout in milliseconds.")
-			.meta({ examples: [300000] }),
-		snapshotExpiration: z
-			.number()
-			.optional()
-			.describe("Default snapshot expiration time in milliseconds. 0 means no expiration.")
-			.meta({ examples: [604800000] }),
 		keepLastSnapshots: z
 			.object({
 				count: z
 					.number()
 					.describe("Number of most recent snapshots to keep.")
 					.meta({ examples: [5] }),
+				deleteEvicted: z
+					.union([z.literal(false), z.literal(true)])
+					.describe("Whether to immediately delete evicted snapshots.")
+					.meta({ examples: [true] }),
 				expiration: z
 					.number()
 					.optional()
 					.describe("Expiration time in milliseconds for kept snapshots.")
 					.meta({ examples: [604800000] }),
-				deleteEvicted: z
-					.union([z.literal(false), z.literal(true)])
-					.describe("Whether to immediately delete evicted snapshots.")
-					.meta({ examples: [true] }),
 			})
 			.optional()
 			.describe("Keep-last snapshot configuration."),
-		networkPolicy: z
-			.object({
-				mode: z.enum(["allow-all", "custom", "default-allow", "default-deny", "deny-all"]),
-				allowedDomains: z.array(z.string()).optional(),
-				allowedCIDRs: z.array(z.string()).optional(),
-				deniedCIDRs: z.array(z.string()).optional(),
-				s3Key: z.string().optional(),
-			})
-			.optional()
-			.describe("Network policy configuration."),
-		networkId: z
-			.string()
-			.optional()
-			.describe("The Connect network id for the target Secure Compute private network."),
-		totalEgressBytes: z
+		memory: z
 			.number()
 			.optional()
-			.describe("Cumulative egress bytes across all sandbox runs.")
-			.meta({ examples: [4096] }),
-		totalIngressBytes: z
-			.number()
-			.optional()
-			.describe("Cumulative ingress bytes across all sandbox runs.")
-			.meta({ examples: [2048] }),
-		totalActiveCpuDurationMs: z
-			.number()
-			.optional()
-			.describe("Cumulative active CPU duration in milliseconds across all sandbox runs.")
-			.meta({ examples: [5000] }),
-		totalDurationMs: z
-			.number()
-			.optional()
-			.describe("Cumulative wall-clock duration in milliseconds across all sandbox runs.")
-			.meta({ examples: [60000] }),
-		cwd: z
-			.string()
-			.optional()
-			.describe("The working directory of the sandbox.")
-			.meta({ examples: ["/vercel/sandbox"] }),
-		tags: z
-			.object({})
-			.catchall(z.string())
-			.optional()
-			.describe("Key-value tags attached to the named sandbox.")
-			.meta({ examples: [{}] }),
+			.describe("Memory allocated in MB.")
+			.meta({ examples: [1024] }),
 		mounts: z
 			.object({})
 			.catchall(
@@ -15158,25 +15084,111 @@ export const namedSandboxSchema = z
 			)
 			.optional()
 			.describe("Key-value pairs of mount path and drive."),
-		createdAt: z
+		name: z
+			.string()
+			.describe("The unique identifier of the sandbox.")
+			.meta({ examples: ["my-sandbox"] }),
+		networkId: z
+			.string()
+			.optional()
+			.describe("The Connect network id for the target Secure Compute private network."),
+		networkPolicy: z
+			.object({
+				allowedCIDRs: z.array(z.string()).optional(),
+				allowedDomains: z.array(z.string()).optional(),
+				deniedCIDRs: z.array(z.string()).optional(),
+				mode: z.enum(["allow-all", "custom", "default-allow", "default-deny", "deny-all"]),
+				s3Key: z.string().optional(),
+			})
+			.optional()
+			.describe("Network policy configuration."),
+		persistent: z
+			.union([z.literal(false), z.literal(true)])
+			.describe("Whether the sandbox persists its state across restarts via automatic snapshots.")
+			.meta({ examples: [true] }),
+		region: z
+			.string()
+			.optional()
+			.describe(
+				"The region the sandbox is pinned to: the region stored on the sandbox, otherwise the platform default. Where a running session actually landed is reported by `session.region`.",
+			)
+			.meta({ examples: ["iad1"] }),
+		runtime: z
+			.string()
+			.optional()
+			.describe("Runtime identifier.")
+			.meta({ examples: ["node22"] }),
+		snapshotExpiration: z
 			.number()
-			.describe("The time when the named sandbox was created, in milliseconds since the epoch.")
+			.optional()
+			.describe("Default snapshot expiration time in milliseconds. 0 means no expiration.")
+			.meta({ examples: [604800000] }),
+		status: z
+			.enum(["running", "stopped", "stopping"])
+			.describe("The status of the current sandbox.")
+			.meta({ examples: ["running"] }),
+		statusUpdatedAt: z
+			.number()
+			.describe(
+				"The time when the sandbox status was last updated, in milliseconds since the epoch.",
+			)
 			.meta({ examples: [1750344501629] }),
+		tags: z
+			.object({})
+			.catchall(z.string())
+			.optional()
+			.describe("Key-value tags attached to the named sandbox.")
+			.meta({ examples: [{}] }),
+		timeout: z
+			.number()
+			.optional()
+			.describe("Timeout in milliseconds.")
+			.meta({ examples: [300000] }),
+		totalActiveCpuDurationMs: z
+			.number()
+			.optional()
+			.describe("Cumulative active CPU duration in milliseconds across all sandbox runs.")
+			.meta({ examples: [5000] }),
+		totalDurationMs: z
+			.number()
+			.optional()
+			.describe("Cumulative wall-clock duration in milliseconds across all sandbox runs.")
+			.meta({ examples: [60000] }),
+		totalEgressBytes: z
+			.number()
+			.optional()
+			.describe("Cumulative egress bytes across all sandbox runs.")
+			.meta({ examples: [4096] }),
+		totalIngressBytes: z
+			.number()
+			.optional()
+			.describe("Cumulative ingress bytes across all sandbox runs.")
+			.meta({ examples: [2048] }),
 		updatedAt: z
 			.number()
 			.describe(
 				"The time when the named sandbox was last updated, in milliseconds since the epoch.",
 			)
 			.meta({ examples: [1750344501629] }),
-		expiresAt: z
+		vcpus: z
 			.number()
 			.optional()
-			.describe(
-				"The time at which the currently running sandbox will time out, in milliseconds since the epoch. Only present while a session is running.",
-			)
-			.meta({ examples: [1750344801629] }),
+			.describe("Number of virtual CPUs allocated.")
+			.meta({ examples: [2] }),
 	})
 	.describe("This object contains information related to a Vercel NamedSandbox.");
+
+export const sandboxPublicRouteSchema = z
+	.object({
+		port: z.number().describe("The user port number that the route is mapped to."),
+		subdomain: z.string().describe("The subdomain assigned to this route."),
+		system: z
+			.literal(true)
+			.optional()
+			.describe("Whether the route is reserved by the system (e.g. for internal use)."),
+		url: z.string().describe("A public URL to access the corresponding port in the Sandbox."),
+	})
+	.describe("This object represents a public route in a Vercel Sandbox.");
 
 export const sandboxInjectionRuleSchema = z
 	.object({
@@ -15198,19 +15210,6 @@ export const sandboxInjectionRuleSchema = z
 
 export const sandboxNetworkPolicySchema = z
 	.object({
-		mode: z
-			.enum(["allow-all", "custom", "deny-all"])
-			.describe(
-				"The network policy mode. - 'allow-all': All traffic is allowed. - 'deny-all': All traffic is blocked. - 'custom': Traffic is controlled by explicit allow/deny rules.",
-			)
-			.meta({ examples: ["custom"] }),
-		allowedDomains: z
-			.array(z.string())
-			.optional()
-			.describe(
-				'List of domain names the sandbox is allowed to connect to. Supports wildcard patterns (e.g., "*.vercel.com" matches all subdomains).',
-			)
-			.meta({ examples: [["*.example.com", "api.vercel.com"]] }),
 		allowedCIDRs: z
 			.array(z.string())
 			.optional()
@@ -15218,6 +15217,13 @@ export const sandboxNetworkPolicySchema = z
 				"List of IP address ranges (in CIDR notation) the sandbox is allowed to connect to.",
 			)
 			.meta({ examples: [["10.0.0.0/8"]] }),
+		allowedDomains: z
+			.array(z.string())
+			.optional()
+			.describe(
+				'List of domain names the sandbox is allowed to connect to. Supports wildcard patterns (e.g., "*.vercel.com" matches all subdomains).',
+			)
+			.meta({ examples: [["*.example.com", "api.vercel.com"]] }),
 		deniedCIDRs: z
 			.array(z.string())
 			.optional()
@@ -15229,19 +15235,42 @@ export const sandboxNetworkPolicySchema = z
 			.array(z.unknown())
 			.optional()
 			.describe("HTTP header injection rules for outgoing requests matching specific domains."),
+		mode: z
+			.enum(["allow-all", "custom", "deny-all"])
+			.describe(
+				"The network policy mode. - 'allow-all': All traffic is allowed. - 'deny-all': All traffic is blocked. - 'custom': Traffic is controlled by explicit allow/deny rules.",
+			)
+			.meta({ examples: ["custom"] }),
 	})
 	.describe("The network policy applied to this sandbox, if any.");
 
 export const sessionSchema = z
 	.object({
-		sourceSandboxName: z
+		abortedAt: z
+			.number()
+			.optional()
+			.describe("The time when the sandbox was aborted, in milliseconds since the epoch.")
+			.meta({ examples: [1750344501629] }),
+		activeCpuDurationMs: z
+			.number()
+			.optional()
+			.describe(
+				"The amount of CPU time the sandbox consumed, if available, in milliseconds. This value is only available once the sandbox is stopped, and only if it stopped successfully.",
+			)
+			.meta({ examples: [42] }),
+		createdAt: z
+			.number()
+			.describe("The time when the sandbox was created, in milliseconds since the epoch.")
+			.meta({ examples: [1750344501629] }),
+		cwd: z
 			.string()
-			.describe("The name of the source sandbox.")
-			.meta({ examples: ["my-sandbox"] }),
-		projectId: z
-			.string()
-			.describe("The unique identifier of the project associated with this session.")
-			.meta({ examples: ["prj_123a6c5209bc3778245d011443644c8d27dc2c50"] }),
+			.describe("The working directory of the sandbox.")
+			.meta({ examples: ["/vercel/sandbox"] }),
+		duration: z
+			.number()
+			.optional()
+			.describe("The duration of the sandbox in milliseconds.")
+			.meta({ examples: [3600000] }),
 		id: z
 			.string()
 			.describe("The unique identifier of the sandbox.")
@@ -15250,118 +15279,107 @@ export const sessionSchema = z
 			.number()
 			.describe("Memory allocated to this sandbox in MB.")
 			.meta({ examples: [2048] }),
-		vcpus: z
-			.number()
-			.describe("Number of vCPUs allocated to this sandbox.")
-			.meta({ examples: [2] }),
-		region: z
-			.string()
-			.describe("The region where the sandbox is hosted.")
-			.meta({ examples: ["iad1"] }),
-		runtime: z
-			.string()
-			.describe("The runtime of the sandbox.")
-			.meta({ examples: ["node22"] }),
-		timeout: z
-			.number()
-			.describe("The maximum amount of time the sandbox will run for in milliseconds.")
-			.meta({ examples: [3600000] }),
-		status: z
-			.enum(["aborted", "failed", "pending", "running", "snapshotting", "stopped", "stopping"])
-			.describe("The status of the sandbox.")
-			.meta({ examples: ["running"] }),
-		requestedAt: z
-			.number()
-			.describe("The time when the sandbox was requested, in milliseconds since the epoch.")
-			.meta({ examples: [1750344501629] }),
-		startedAt: z
-			.number()
-			.optional()
-			.describe("The time when the sandbox was started, in milliseconds since the epoch.")
-			.meta({ examples: [1750344501629] }),
-		cwd: z
-			.string()
-			.describe("The working directory of the sandbox.")
-			.meta({ examples: ["/vercel/sandbox"] }),
-		requestedStopAt: z
-			.number()
-			.optional()
-			.describe("The time when the sandbox was requested to stop, in milliseconds since the epoch.")
-			.meta({ examples: [1750344501629] }),
-		stoppedAt: z
-			.number()
-			.optional()
-			.describe("The time when the sandbox was stopped, in milliseconds since the epoch.")
-			.meta({ examples: [1750344501629] }),
-		abortedAt: z
-			.number()
-			.optional()
-			.describe("The time when the sandbox was aborted, in milliseconds since the epoch.")
-			.meta({ examples: [1750344501629] }),
-		duration: z
-			.number()
-			.optional()
-			.describe("The duration of the sandbox in milliseconds.")
-			.meta({ examples: [3600000] }),
-		sourceSnapshotId: z
-			.string()
-			.optional()
-			.describe("The unique identifier of the snapshot associated with this sandbox, if any.")
-			.meta({ examples: ["snap_123a6c5209bc3778245d011443644c8d27dc2c50"] }),
-		snapshottedAt: z
-			.number()
-			.optional()
-			.describe("The time when a snapshot was requested, in milliseconds since the epoch.")
-			.meta({ examples: [1750344501629] }),
-		createdAt: z
-			.number()
-			.describe("The time when the sandbox was created, in milliseconds since the epoch.")
-			.meta({ examples: [1750344501629] }),
-		updatedAt: z
-			.number()
-			.describe("The last time the sandbox was updated, in milliseconds since the epoch.")
-			.meta({ examples: [1750344501629] }),
 		networkPolicy: z.unknown().optional(),
-		activeCpuDurationMs: z
-			.number()
-			.optional()
-			.describe(
-				"The amount of CPU time the sandbox consumed, if available, in milliseconds. This value is only available once the sandbox is stopped, and only if it stopped successfully.",
-			)
-			.meta({ examples: [42] }),
 		networkTransfer: z
 			.object({
-				ingress: z.number(),
 				egress: z.number(),
+				ingress: z.number(),
 			})
 			.optional()
 			.describe(
 				"The quantity of data transfered to and from the sandbox, in bytes. This value is only available once the sandbox is stopped, and only if it stopped successfully.",
 			)
 			.meta({ examples: [{}] }),
+		projectId: z
+			.string()
+			.describe("The unique identifier of the project associated with this session.")
+			.meta({ examples: ["prj_123a6c5209bc3778245d011443644c8d27dc2c50"] }),
+		region: z
+			.string()
+			.describe("The region where the sandbox is hosted.")
+			.meta({ examples: ["iad1"] }),
+		requestedAt: z
+			.number()
+			.describe("The time when the sandbox was requested, in milliseconds since the epoch.")
+			.meta({ examples: [1750344501629] }),
+		requestedStopAt: z
+			.number()
+			.optional()
+			.describe("The time when the sandbox was requested to stop, in milliseconds since the epoch.")
+			.meta({ examples: [1750344501629] }),
+		runtime: z
+			.string()
+			.describe("The runtime of the sandbox.")
+			.meta({ examples: ["node22"] }),
+		snapshottedAt: z
+			.number()
+			.optional()
+			.describe("The time when a snapshot was requested, in milliseconds since the epoch.")
+			.meta({ examples: [1750344501629] }),
+		sourceSandboxName: z
+			.string()
+			.describe("The name of the source sandbox.")
+			.meta({ examples: ["my-sandbox"] }),
+		sourceSnapshotId: z
+			.string()
+			.optional()
+			.describe("The unique identifier of the snapshot associated with this sandbox, if any.")
+			.meta({ examples: ["snap_123a6c5209bc3778245d011443644c8d27dc2c50"] }),
+		startedAt: z
+			.number()
+			.optional()
+			.describe("The time when the sandbox was started, in milliseconds since the epoch.")
+			.meta({ examples: [1750344501629] }),
+		status: z
+			.enum(["aborted", "failed", "pending", "running", "snapshotting", "stopped", "stopping"])
+			.describe("The status of the sandbox.")
+			.meta({ examples: ["running"] }),
+		stoppedAt: z
+			.number()
+			.optional()
+			.describe("The time when the sandbox was stopped, in milliseconds since the epoch.")
+			.meta({ examples: [1750344501629] }),
+		timeout: z
+			.number()
+			.describe("The maximum amount of time the sandbox will run for in milliseconds.")
+			.meta({ examples: [3600000] }),
+		updatedAt: z
+			.number()
+			.describe("The last time the sandbox was updated, in milliseconds since the epoch.")
+			.meta({ examples: [1750344501629] }),
+		vcpus: z
+			.number()
+			.describe("Number of vCPUs allocated to this sandbox.")
+			.meta({ examples: [2] }),
 	})
 	.describe(
 		'This object contains information related to a Vercel Sandbox Session. v2 endpoints return "session" instead of "sandbox" as the response wrapper key.',
 	);
 
-export const sandboxPublicRouteSchema = z
-	.object({
-		url: z.string().describe("A public URL to access the corresponding port in the Sandbox."),
-		port: z.number().describe("The user port number that the route is mapped to."),
-		subdomain: z.string().describe("The subdomain assigned to this route."),
-		system: z
-			.literal(true)
-			.optional()
-			.describe("Whether the route is reserved by the system (e.g. for internal use)."),
-	})
-	.describe("This object represents a public route in a Vercel Sandbox.");
-
 export const driveSchema = z
 	.object({
+		createdAt: z
+			.number()
+			.describe("The time when the drive was created, in milliseconds since the epoch.")
+			.meta({ examples: [1750344501629] }),
+		currentSandboxName: z
+			.string()
+			.optional()
+			.describe("Current sandbox name the drive is attached to, if any.")
+			.meta({ examples: ["my-sandbox"] }),
+		currentSessionId: z
+			.string()
+			.optional()
+			.describe("Current session ID the drive is attached to, if any.")
+			.meta({ examples: ["sbx_123"] }),
 		id: z
 			.string()
 			.describe("The unique drive ID.")
 			.meta({ examples: ["drive_abc123"] }),
+		maxSizeBytes: z
+			.number()
+			.describe("The maximum drive size in bytes.")
+			.meta({ examples: [1099511627776] }),
 		name: z
 			.string()
 			.describe("The unique drive name within the project.")
@@ -15370,28 +15388,10 @@ export const driveSchema = z
 			.string()
 			.describe("The project that owns the drive.")
 			.meta({ examples: ["prj_abc123"] }),
-		maxSizeBytes: z
-			.number()
-			.describe("The maximum drive size in bytes.")
-			.meta({ examples: [1099511627776] }),
 		region: z
 			.string()
 			.describe("The region where the drive is stored.")
 			.meta({ examples: ["iad1"] }),
-		currentSessionId: z
-			.string()
-			.optional()
-			.describe("Current session ID the drive is attached to, if any.")
-			.meta({ examples: ["sbx_123"] }),
-		currentSandboxName: z
-			.string()
-			.optional()
-			.describe("Current sandbox name the drive is attached to, if any.")
-			.meta({ examples: ["my-sandbox"] }),
-		createdAt: z
-			.number()
-			.describe("The time when the drive was created, in milliseconds since the epoch.")
-			.meta({ examples: [1750344501629] }),
 		updatedAt: z
 			.number()
 			.describe("The last time the drive was updated, in milliseconds since the epoch.")
@@ -15401,14 +15401,39 @@ export const driveSchema = z
 
 export const snapshotSchema = z
 	.object({
+		createdAt: z
+			.number()
+			.describe("The time when the snapshot was created, in milliseconds since the epoch.")
+			.meta({ examples: [1750344501629] }),
+		creationMethod: z
+			.enum(["automatic", "manual"])
+			.optional()
+			.describe("The method used to create the snapshot.")
+			.meta({ examples: ["manual"] }),
+		expiresAt: z
+			.number()
+			.optional()
+			.describe(
+				"The time when the snapshot will expire, in milliseconds since the epoch. If not set, the snapshot does not have any expiration.",
+			)
+			.meta({ examples: [1750344501629] }),
 		id: z
 			.string()
 			.describe("The unique identifier of the snapshot.")
 			.meta({ examples: ["snap_123a6c5209bc3778245d011443644c8d27dc2c50"] }),
-		sourceSessionId: z
+		lastUsedAt: z
+			.number()
+			.describe(
+				"The last time the snapshot was used (e.g. to resume or create a sandbox), in milliseconds since the epoch. Falls back to `createdAt` for older snapshots that predate this field.",
+			)
+			.meta({ examples: [1750344501629] }),
+		parentId: z
 			.string()
-			.describe("The unique identifier of the session from which the snapshot was created.")
-			.meta({ examples: ["sbx_123a6c5209bc3778245d011443644c8d27dc2c50"] }),
+			.optional()
+			.describe(
+				"The unique identifier of the parent snapshot, if this snapshot was created from another snapshot.",
+			)
+			.meta({ examples: ["snap_parent123"] }),
 		region: z
 			.string()
 			.optional()
@@ -15419,47 +15444,22 @@ export const snapshotSchema = z
 			.optional()
 			.describe("The regions where the snapshot is available.")
 			.meta({ examples: [["iad1", "sfo1"]] }),
-		status: z
-			.enum(["created", "deleted", "failed"])
-			.describe("The status of the snapshot.")
-			.meta({ examples: ["created"] }),
 		sizeBytes: z
 			.number()
 			.describe("The size of the snapshot in bytes.")
 			.meta({ examples: [104857600] }),
-		expiresAt: z
-			.number()
-			.optional()
-			.describe(
-				"The time when the snapshot will expire, in milliseconds since the epoch. If not set, the snapshot does not have any expiration.",
-			)
-			.meta({ examples: [1750344501629] }),
-		createdAt: z
-			.number()
-			.describe("The time when the snapshot was created, in milliseconds since the epoch.")
-			.meta({ examples: [1750344501629] }),
+		sourceSessionId: z
+			.string()
+			.describe("The unique identifier of the session from which the snapshot was created.")
+			.meta({ examples: ["sbx_123a6c5209bc3778245d011443644c8d27dc2c50"] }),
+		status: z
+			.enum(["created", "deleted", "failed"])
+			.describe("The status of the snapshot.")
+			.meta({ examples: ["created"] }),
 		updatedAt: z
 			.number()
 			.describe("The last time the snapshot was updated, in milliseconds since the epoch.")
 			.meta({ examples: [1750344501629] }),
-		lastUsedAt: z
-			.number()
-			.describe(
-				"The last time the snapshot was used (e.g. to resume or create a sandbox), in milliseconds since the epoch. Falls back to `createdAt` for older snapshots that predate this field.",
-			)
-			.meta({ examples: [1750344501629] }),
-		creationMethod: z
-			.enum(["automatic", "manual"])
-			.optional()
-			.describe("The method used to create the snapshot.")
-			.meta({ examples: ["manual"] }),
-		parentId: z
-			.string()
-			.optional()
-			.describe(
-				"The unique identifier of the parent snapshot, if this snapshot was created from another snapshot.",
-			)
-			.meta({ examples: ["snap_parent123"] }),
 	})
 	.describe(
 		"This object contains information related to a Snapshot of a Vercel Sandbox session (v2 API).",
@@ -15467,14 +15467,6 @@ export const snapshotSchema = z
 
 export const sessionCommandSchema = z
 	.object({
-		id: z
-			.string()
-			.describe("The ID of the command.")
-			.meta({ examples: ["cmd_123a6c5209bc3778245d011443644c8d27dc2c50"] }),
-		name: z
-			.string()
-			.describe("The name of the command.")
-			.meta({ examples: ["npm"] }),
 		args: z
 			.array(z.string())
 			.describe("The arguments of the command.")
@@ -15483,37 +15475,37 @@ export const sessionCommandSchema = z
 			.string()
 			.describe("The current working directory of the command.")
 			.meta({ examples: ["/vercel/sandbox"] }),
-		sessionId: z
-			.string()
-			.describe("The ID of the session associated with the command.")
-			.meta({ examples: ["sbx_123a6c5209bc3778245d011443644c8d27dc2c50"] }),
-		exitCode: z
-			.number()
-			.nullable()
-			.describe("If the command did finish, the exit code.")
-			.meta({ examples: [0] }),
-		startedAt: z
-			.number()
-			.describe("When the command was started, in milliseconds since the epoch.")
-			.meta({ examples: [1673123456789] }),
 		durationMs: z
 			.number()
 			.optional()
 			.describe("Duration of the command execution in milliseconds.")
 			.meta({ examples: [1234] }),
+		exitCode: z
+			.number()
+			.nullable()
+			.describe("If the command did finish, the exit code.")
+			.meta({ examples: [0] }),
+		id: z
+			.string()
+			.describe("The ID of the command.")
+			.meta({ examples: ["cmd_123a6c5209bc3778245d011443644c8d27dc2c50"] }),
+		name: z
+			.string()
+			.describe("The name of the command.")
+			.meta({ examples: ["npm"] }),
+		sessionId: z
+			.string()
+			.describe("The ID of the session associated with the command.")
+			.meta({ examples: ["sbx_123a6c5209bc3778245d011443644c8d27dc2c50"] }),
+		startedAt: z
+			.number()
+			.describe("When the command was started, in milliseconds since the epoch.")
+			.meta({ examples: [1673123456789] }),
 	})
 	.describe("This object represents a command run in a Vercel Sandbox session (v2 API).");
 
 export const invitedTeamMemberSchema = z
 	.object({
-		uid: z
-			.string()
-			.describe("The ID of the invited user")
-			.meta({ examples: ["kr1PsOIzqEL5Xg6M4VZcZosf"] }),
-		username: z
-			.string()
-			.describe("The username of the invited user")
-			.meta({ examples: ["john-doe"] }),
 		email: z
 			.string()
 			.describe("The email of the invited user.")
@@ -15531,22 +15523,6 @@ export const invitedTeamMemberSchema = z
 			])
 			.describe("The role used for the invitation")
 			.meta({ examples: ["MEMBER"] }),
-		teamRoles: z
-			.array(
-				z.enum([
-					"BILLING",
-					"CONTRIBUTOR",
-					"DEVELOPER",
-					"MEMBER",
-					"OWNER",
-					"SECURITY",
-					"VIEWER",
-					"VIEWER_FOR_PLUS",
-				]),
-			)
-			.optional()
-			.describe("The team roles of the user")
-			.meta({ examples: [["MEMBER"]] }),
 		teamPermissions: z
 			.array(
 				z.enum([
@@ -15574,24 +15550,302 @@ export const invitedTeamMemberSchema = z
 			.optional()
 			.describe("The team permissions of the user")
 			.meta({ examples: [["CreateProject"]] }),
+		teamRoles: z
+			.array(
+				z.enum([
+					"BILLING",
+					"CONTRIBUTOR",
+					"DEVELOPER",
+					"MEMBER",
+					"OWNER",
+					"SECURITY",
+					"VIEWER",
+					"VIEWER_FOR_PLUS",
+				]),
+			)
+			.optional()
+			.describe("The team roles of the user")
+			.meta({ examples: [["MEMBER"]] }),
+		uid: z
+			.string()
+			.describe("The ID of the invited user")
+			.meta({ examples: ["kr1PsOIzqEL5Xg6M4VZcZosf"] }),
+		username: z
+			.string()
+			.describe("The username of the invited user")
+			.meta({ examples: ["john-doe"] }),
 	})
 	.describe("The member was successfully added to the team.");
 
 export const teamSchema = z
 	.object({
+		apiKeysInvalidatedAt: z
+			.number()
+			.optional()
+			.describe(
+				"Timestamp (ms) after which API keys created at or before this time are considered invalid for this team.",
+			),
+		appTokensInvalidatedAt: z
+			.number()
+			.optional()
+			.describe(
+				"Timestamp (ms) after which Vercel App tokens created at or before this time are considered invalid for this team.",
+			),
+		avatar: z
+			.string()
+			.nullable()
+			.describe("The ID of the file used as avatar for this Team.")
+			.meta({ examples: ["6eb07268bcfadd309905ffb1579354084c24655c"] }),
+		billing: z
+			.object({
+				plan: z.enum(["enterprise", "hobby", "pro"]),
+			})
+			.nullable()
+			.describe("The team's billing plan."),
 		connect: z
 			.object({
 				enabled: z.union([z.literal(false), z.literal(true)]).optional(),
 			})
 			.optional(),
+		createdAt: z
+			.number()
+			.describe("UNIX timestamp (in milliseconds) when the Team was created.")
+			.meta({ examples: [1630748523395] }),
 		creatorId: z
 			.string()
 			.describe("The ID of the user who created the Team.")
 			.meta({ examples: ["R6efeCJQ2HKXywuasPDc0fOWB"] }),
-		updatedAt: z
-			.number()
-			.describe("Timestamp (in milliseconds) of when the Team was last updated.")
-			.meta({ examples: [1611796915677] }),
+		defaultDeploymentProtection: z
+			.object({
+				passwordProtection: z
+					.object({
+						deploymentType: z.string(),
+					})
+					.nullish(),
+				ssoProtection: z
+					.object({
+						deploymentType: z.string(),
+					})
+					.nullish(),
+			})
+			.optional()
+			.describe(
+				"Default deployment protection for this team null indicates protection is disabled",
+			),
+		defaultExpirationSettings: z
+			.object({
+				deploymentsToKeep: z
+					.number()
+					.optional()
+					.describe(
+						"Minimum number of production deployments to keep for this project, even if they are over the production expiration limit.",
+					),
+				expirationDays: z
+					.number()
+					.optional()
+					.describe(
+						"Number of days to keep non-production deployments (mostly preview deployments) before soft deletion.",
+					),
+				expirationDaysCanceled: z
+					.number()
+					.optional()
+					.describe("Number of days to keep canceled deployments before soft deletion."),
+				expirationDaysErrored: z
+					.number()
+					.optional()
+					.describe("Number of days to keep errored deployments before soft deletion."),
+				expirationDaysProduction: z
+					.number()
+					.optional()
+					.describe("Number of days to keep production deployments before soft deletion."),
+			})
+			.optional()
+			.describe("Default deployment expiration settings for this team"),
+		defaultPassport: z
+			.object({
+				connectorId: z
+					.string()
+					.describe("Default Passport configuration for new projects in this team."),
+				deploymentType: z
+					.enum([
+						"all",
+						"all_except_custom_domains",
+						"preview",
+						"prod_deployment_urls_and_all_previews",
+					])
+					.describe("Default Passport configuration for new projects in this team."),
+			})
+			.nullish()
+			.describe("Default Passport configuration for new projects in this team."),
+		defaultProjectJobs: z
+			.object({
+				lint: z
+					.object({
+						targets: z
+							.array(z.string())
+							.describe("Default job configuration applied to new projects created in this team."),
+					})
+					.optional()
+					.describe("Default job configuration applied to new projects created in this team."),
+				mfeConfigPresent: z
+					.object({
+						targets: z
+							.array(z.string())
+							.describe("Default job configuration applied to new projects created in this team."),
+					})
+					.optional()
+					.describe("Default job configuration applied to new projects created in this team."),
+				typecheck: z
+					.object({
+						targets: z
+							.array(z.string())
+							.describe("Default job configuration applied to new projects created in this team."),
+					})
+					.optional()
+					.describe("Default job configuration applied to new projects created in this team."),
+			})
+			.optional()
+			.describe("Default job configuration applied to new projects created in this team."),
+		defaultRoles: z
+			.object({
+				teamPermissions: z
+					.array(
+						z.enum([
+							"AiGatewayApiKeyOwnedBySelf",
+							"AiGatewayBudgetManager",
+							"AiGatewayCredits",
+							"AiGatewaySettings",
+							"AiGatewayTranscriptsManager",
+							"AiGatewayTranscriptsViewer",
+							"ConnectorManager",
+							"CreateProject",
+							"EnvVariableManager",
+							"EnvironmentManager",
+							"FullProductionDeployment",
+							"IntegrationManager",
+							"OrgAdmin",
+							"OrgViewer",
+							"UsageViewer",
+							"V0Builder",
+							"V0Chatter",
+							"V0Viewer",
+							"WorkflowDecryptor",
+						]),
+					)
+					.optional(),
+				teamRoles: z
+					.array(
+						z.enum([
+							"BILLING",
+							"CONTRIBUTOR",
+							"DEVELOPER",
+							"MEMBER",
+							"OWNER",
+							"SECURITY",
+							"VIEWER",
+							"VIEWER_FOR_PLUS",
+						]),
+					)
+					.optional(),
+			})
+			.optional()
+			.describe("Default roles for the team."),
+		deploymentPolicy: z
+			.object({
+				deploymentSources: z
+					.array(
+						z.object({
+							enabled: z.union([z.literal(false), z.literal(true)]),
+							environments: z.array(
+								z.discriminatedUnion("type", [
+									z
+										.object({
+											target: z.enum(["preview", "production"]),
+											type: z.enum(["system"]),
+										})
+										.strict(),
+									z
+										.object({
+											environmentId: z.string(),
+											type: z.enum(["custom"]),
+										})
+										.strict(),
+								]),
+							),
+							sources: z.array(
+								z.enum(["cli", "deploy-hook", "git", "integration", "rest-api", "v0"]),
+							),
+						}),
+					)
+					.optional(),
+				gitSources: z
+					.array(
+						z.object({
+							enabled: z.union([z.literal(false), z.literal(true)]),
+							environments: z.array(
+								z.discriminatedUnion("type", [
+									z
+										.object({
+											target: z.enum(["preview", "production"]),
+											type: z.enum(["system"]),
+										})
+										.strict(),
+									z
+										.object({
+											environmentId: z.string(),
+											type: z.enum(["custom"]),
+										})
+										.strict(),
+								]),
+							),
+							sources: z.array(
+								z.union([
+									z
+										.object({
+											org: z.string(),
+											provider: z.enum(["bitbucket", "github"]),
+											repo: z.string().optional(),
+										})
+										.strict(),
+									z
+										.object({
+											namespace: z.string(),
+											project: z.string().optional(),
+											provider: z.enum(["gitlab"]),
+										})
+										.strict(),
+								]),
+							),
+						}),
+					)
+					.optional(),
+			})
+			.optional()
+			.describe(
+				"Composable deployment-time policy for the team. Used as the default for every project on the team, with optional per-project overrides on `project.deploymentPolicy`.",
+			),
+		description: z
+			.string()
+			.nullable()
+			.describe("A short description of the Team.")
+			.meta({ examples: ["Our mission is to make cloud computing accessible to everyone."] }),
+		disableHardAutoBlocks: z
+			.union([z.number(), z.union([z.literal(false), z.literal(true)])])
+			.optional(),
+		disableRepositoryDispatchEvents: z
+			.union([z.literal(false), z.literal(true)])
+			.optional()
+			.describe(
+				"Default for projects in the team. When `true`, projects in this team will not emit GitHub repository-dispatch events on deployment events unless the project explicitly overrides this setting via `project.gitProviderOptions.disableRepositoryDispatchEvents`.",
+			),
+		disjunctiveProductionSecretPolicy: z
+			.enum(["default", "off", "on"])
+			.nullish()
+			.describe("Require production secrets to use a different value than preview or development."),
+		dpAccessRequestsMode: z
+			.enum(["all", "email-domain", "none"])
+			.optional()
+			.describe("Controls who can request access to protected deployments."),
 		emailDomain: z
 			.string()
 			.nullish()
@@ -15599,18 +15853,265 @@ export const teamSchema = z
 				"Hostname that'll be matched with emails on sign-up to automatically join the Team.",
 			)
 			.meta({ examples: ["example.com"] }),
+		enablePreviewFeedback: z
+			.enum(["default", "default-force", "off", "off-force", "on", "on-force"])
+			.nullish()
+			.describe("Whether toolbar is enabled on preview deployments"),
+		enableProductionFeedback: z
+			.enum(["default", "default-force", "off", "off-force", "on", "on-force"])
+			.nullish()
+			.describe("Whether toolbar is enabled on production deployments"),
+		hideIpAddresses: z
+			.union([z.literal(false), z.literal(true)])
+			.nullish()
+			.describe("Indicates if IP addresses should be accessible in observability (o11y) tooling"),
+		hideIpAddressesInLogDrains: z
+			.union([z.literal(false), z.literal(true)])
+			.nullish()
+			.describe("Indicates if IP addresses should be accessible in log drains"),
+		id: z
+			.string()
+			.describe("The Team's unique identifier.")
+			.meta({ examples: ["team_nllPyCtREAqxxdyFKbbMDlxd"] }),
+		integrationTokensInvalidatedAt: z
+			.number()
+			.optional()
+			.describe(
+				"Timestamp (ms) after which integration tokens created at or before this time are considered invalid for this team.",
+			),
+		inviteCode: z
+			.string()
+			.optional()
+			.describe("Code that can be used to join this Team. Only visible to Team owners.")
+			.meta({ examples: ["hasihf9e89"] }),
+		ipBuckets: z
+			.array(
+				z.object({
+					bucket: z.string(),
+					default: z.union([z.literal(false), z.literal(true)]).optional(),
+					supportUntil: z.number().optional(),
+				}),
+			)
+			.optional(),
+		membership: z
+			.object({
+				accessRequestedAt: z.number().optional(),
+				confirmed: z.literal(true),
+				created: z.number(),
+				createdAt: z.number(),
+				entitlements: z
+					.array(
+						z.object({
+							entitlement: z.string(),
+						}),
+					)
+					.optional(),
+				joinedFrom: z
+					.object({
+						commitId: z.string().optional(),
+						dsyncConnectedAt: z.number().optional(),
+						dsyncUserId: z.string().optional(),
+						gitUserId: z.union([z.string(), z.number()]).optional(),
+						gitUserLogin: z.string().optional(),
+						idpUserId: z.string().optional(),
+						origin: z.enum([
+							"account-update",
+							"bitbucket",
+							"dsync",
+							"feedback",
+							"github",
+							"gitlab",
+							"import",
+							"link",
+							"mail",
+							"nsnb-auto-approve",
+							"nsnb-hobby-upgrade",
+							"nsnb-invite",
+							"nsnb-redeploy",
+							"nsnb-redeploy-attribution-card",
+							"nsnb-request-access",
+							"nsnb-viewer-upgrade",
+							"organization-teams",
+							"saml",
+							"teams",
+						]),
+						repoId: z.string().optional(),
+						repoPath: z.string().optional(),
+						ssoConnectedAt: z.number().optional(),
+						ssoUserId: z.string().optional(),
+					})
+					.optional(),
+				role: z.enum([
+					"BILLING",
+					"CONTRIBUTOR",
+					"DEVELOPER",
+					"MEMBER",
+					"OWNER",
+					"SECURITY",
+					"VIEWER",
+					"VIEWER_FOR_PLUS",
+				]),
+				teamId: z.string().optional(),
+				teamPermissions: z
+					.array(
+						z.enum([
+							"AiGatewayApiKeyOwnedBySelf",
+							"AiGatewayBudgetManager",
+							"AiGatewayCredits",
+							"AiGatewaySettings",
+							"AiGatewayTranscriptsManager",
+							"AiGatewayTranscriptsViewer",
+							"ConnectorManager",
+							"CreateProject",
+							"EnvVariableManager",
+							"EnvironmentManager",
+							"FullProductionDeployment",
+							"IntegrationManager",
+							"OrgAdmin",
+							"OrgViewer",
+							"UsageViewer",
+							"V0Builder",
+							"V0Chatter",
+							"V0Viewer",
+							"WorkflowDecryptor",
+						]),
+					)
+					.optional(),
+				teamRoles: z
+					.array(
+						z.enum([
+							"BILLING",
+							"CONTRIBUTOR",
+							"DEVELOPER",
+							"MEMBER",
+							"OWNER",
+							"SECURITY",
+							"VIEWER",
+							"VIEWER_FOR_PLUS",
+						]),
+					)
+					.optional(),
+				uid: z.string().optional(),
+			})
+			.optional()
+			.describe("The membership of the authenticated User in relation to the Team."),
+		name: z
+			.string()
+			.nullable()
+			.describe("Name associated with the Team account, or `null` if none has been provided.")
+			.meta({ examples: ["My Team"] }),
+		nsnbConfig: z
+			.object({
+				preference: z.enum(["auto-approval", "block", "manual-approval"]),
+			})
+			.optional()
+			.describe("NSNB configuration for the team."),
+		orgRootTeamId: z
+			.string()
+			.optional()
+			.describe(
+				"Best-effort ID of the organization’s root billing team. When present, compare `orgRootTeamId === id` to identify the root team. It may be omitted even when `parentId` is set if organization resolution fails or the referenced organization is missing. Always omitted for non-organization teams.",
+			)
+			.meta({ examples: ["team_nllPyCtREAqxxdyFKbbMDlxd"] }),
+		parentId: z
+			.string()
+			.optional()
+			.describe(
+				"The organizationId for teams that belong to an organization (set on both the organization's root team and its child teams).",
+			)
+			.meta({ examples: ["org_nllPyCtREAqxxdyFKbbMDlxd"] }),
+		personalAccessTokensInvalidatedAt: z
+			.number()
+			.optional()
+			.describe(
+				"Timestamp (ms) after which personal access tokens created at or before this time are considered invalid for this team.",
+			),
+		platform: z
+			.union([z.literal(false), z.literal(true)])
+			.optional()
+			.describe("Whether the team is a platform team.")
+			.meta({ examples: [true] }),
+		previewDeploymentSuffix: z
+			.string()
+			.nullish()
+			.describe("The hostname that is current set as preview deployment suffix.")
+			.meta({ examples: ["example.dev"] }),
+		remoteCaching: z
+			.object({
+				enabled: z.union([z.literal(false), z.literal(true)]).optional(),
+			})
+			.optional()
+			.describe("Is remote caching enabled for this team"),
+		requireVerifiedCommits: z
+			.union([z.literal(false), z.literal(true)])
+			.optional()
+			.describe(
+				"When enabled, all projects in the team require commits to be signed and verified by the git provider before deployments will be created. Projects may override this via `project.gitProviderOptions.requireVerifiedCommits` (gated by `Project:Update`).",
+			),
+		resourceConfig: z
+			.object({
+				blobStores: z
+					.number()
+					.optional()
+					.describe("The maximum number of blob stores an account can create."),
+				buildEntitlements: z
+					.object({
+						enhancedBuilds: z.union([z.literal(false), z.literal(true)]).optional(),
+					})
+					.optional(),
+				buildMachine: z
+					.object({
+						default: z
+							.enum(["basic", "elastic", "enhanced", "standard", "turbo"])
+							.optional()
+							.describe("Default build machine type for new builds"),
+					})
+					.optional()
+					.describe("Build machine configuration"),
+				concurrentBuilds: z
+					.number()
+					.optional()
+					.describe("The total amount of concurrent builds that can be used."),
+				customEnvironmentsPerProject: z
+					.number()
+					.optional()
+					.describe("The maximum number of custom environments allowed per project."),
+				edgeConfigs: z
+					.number()
+					.optional()
+					.describe("The maximum number of edge configs an account can create."),
+				edgeConfigSize: z
+					.number()
+					.optional()
+					.describe(
+						"The maximum size in kilobytes of an Edge Config. Only specified if a custom limit is set.",
+					),
+				elasticConcurrencyEnabled: z
+					.union([z.literal(false), z.literal(true)])
+					.optional()
+					.describe(
+						"Whether every build for this team / user has elastic concurrency enabled automatically.",
+					),
+				kvDatabases: z
+					.number()
+					.optional()
+					.describe("The maximum number of kv databases an account can create."),
+				postgresDatabases: z
+					.number()
+					.optional()
+					.describe("The maximum number of postgres databases an account can create."),
+				serverlessFunctionMaxMemorySize: z
+					.number()
+					.optional()
+					.describe(
+						"The maximum memory size (in MB) for a serverless function. Only specified if a custom limit is set.",
+					),
+			})
+			.optional(),
 		saml: z
 			.object({
 				connection: z
 					.object({
-						type: z
-							.string()
-							.describe('The Identity Provider "type", for example Okta.')
-							.meta({ examples: ["OktaSAML"] }),
-						state: z
-							.string()
-							.describe("Current state of the connection.")
-							.meta({ examples: ["active"] }),
 						connectedAt: z
 							.number()
 							.describe("Timestamp (in milliseconds) of when the configuration was connected.")
@@ -15629,26 +16130,30 @@ export const teamSchema = z
 								"Timestamp (in milliseconds) of when the last directory sync was performed.",
 							)
 							.meta({ examples: [1611796915677] }),
+						state: z
+							.string()
+							.describe("Current state of the connection.")
+							.meta({ examples: ["active"] }),
 						syncState: z
 							.enum(["ACTIVE", "SETUP"])
 							.optional()
 							.describe(
 								"Controls whether directory sync events are processed. - 'SETUP': Directory connected but role mappings not yet configured. Events are acknowledged but not processed. - 'ACTIVE': Fully configured. Events are processed normally. - undefined: Legacy directory (pre-feature), treat as 'ACTIVE' for backwards compatibility.",
 							),
+						type: z
+							.string()
+							.describe('The Identity Provider "type", for example Okta.')
+							.meta({ examples: ["OktaSAML"] }),
 						status: z.string(),
 					})
 					.optional()
 					.describe("Information for the SAML Single Sign-On configuration."),
+				defaultRedirectUri: z
+					.enum(["v0.app", "v0.dev", "vercel.com"])
+					.optional()
+					.describe("The default redirect URI to use after successful SAML authentication."),
 				directory: z
 					.object({
-						type: z
-							.string()
-							.describe('The Identity Provider "type", for example Okta.')
-							.meta({ examples: ["OktaSAML"] }),
-						state: z
-							.string()
-							.describe("Current state of the connection.")
-							.meta({ examples: ["active"] }),
 						connectedAt: z
 							.number()
 							.describe("Timestamp (in milliseconds) of when the configuration was connected.")
@@ -15667,12 +16172,20 @@ export const teamSchema = z
 								"Timestamp (in milliseconds) of when the last directory sync was performed.",
 							)
 							.meta({ examples: [1611796915677] }),
+						state: z
+							.string()
+							.describe("Current state of the connection.")
+							.meta({ examples: ["active"] }),
 						syncState: z
 							.enum(["ACTIVE", "SETUP"])
 							.optional()
 							.describe(
 								"Controls whether directory sync events are processed. - 'SETUP': Directory connected but role mappings not yet configured. Events are acknowledged but not processed. - 'ACTIVE': Fully configured. Events are processed normally. - undefined: Legacy directory (pre-feature), treat as 'ACTIVE' for backwards compatibility.",
 							),
+						type: z
+							.string()
+							.describe('The Identity Provider "type", for example Okta.')
+							.meta({ examples: ["OktaSAML"] }),
 					})
 					.optional()
 					.describe("Information for the Directory Sync configuration."),
@@ -15681,10 +16194,6 @@ export const teamSchema = z
 					.describe(
 						"When `true`, interactions with the Team **must** be done with an authentication token that has been authenticated with the Team's SAML Single Sign-On provider.",
 					),
-				defaultRedirectUri: z
-					.enum(["v0.app", "v0.dev", "vercel.com"])
-					.optional()
-					.describe("The default redirect URI to use after successful SAML authentication."),
 				roles: z
 					.object({})
 					.catchall(
@@ -15715,285 +16224,23 @@ export const teamSchema = z
 			.describe(
 				'When "Single Sign-On (SAML)" is configured, this object contains information regarding the configuration of the Identity Provider (IdP).',
 			),
-		inviteCode: z
-			.string()
-			.optional()
-			.describe("Code that can be used to join this Team. Only visible to Team owners.")
-			.meta({ examples: ["hasihf9e89"] }),
-		billing: z
-			.object({
-				plan: z.enum(["enterprise", "hobby", "pro"]),
-			})
-			.nullable()
-			.describe("The team's billing plan."),
-		description: z
-			.string()
-			.nullable()
-			.describe("A short description of the Team.")
-			.meta({ examples: ["Our mission is to make cloud computing accessible to everyone."] }),
-		defaultRoles: z
-			.object({
-				teamRoles: z
-					.array(
-						z.enum([
-							"BILLING",
-							"CONTRIBUTOR",
-							"DEVELOPER",
-							"MEMBER",
-							"OWNER",
-							"SECURITY",
-							"VIEWER",
-							"VIEWER_FOR_PLUS",
-						]),
-					)
-					.optional(),
-				teamPermissions: z
-					.array(
-						z.enum([
-							"AiGatewayApiKeyOwnedBySelf",
-							"AiGatewayBudgetManager",
-							"AiGatewayCredits",
-							"AiGatewaySettings",
-							"AiGatewayTranscriptsManager",
-							"AiGatewayTranscriptsViewer",
-							"ConnectorManager",
-							"CreateProject",
-							"EnvVariableManager",
-							"EnvironmentManager",
-							"FullProductionDeployment",
-							"IntegrationManager",
-							"OrgAdmin",
-							"OrgViewer",
-							"UsageViewer",
-							"V0Builder",
-							"V0Chatter",
-							"V0Viewer",
-							"WorkflowDecryptor",
-						]),
-					)
-					.optional(),
-			})
-			.optional()
-			.describe("Default roles for the team."),
-		stagingPrefix: z.string().describe("The prefix that is prepended to automatic aliases."),
-		resourceConfig: z
-			.object({
-				concurrentBuilds: z
-					.number()
-					.optional()
-					.describe("The total amount of concurrent builds that can be used."),
-				elasticConcurrencyEnabled: z
-					.union([z.literal(false), z.literal(true)])
-					.optional()
-					.describe(
-						"Whether every build for this team / user has elastic concurrency enabled automatically.",
-					),
-				edgeConfigSize: z
-					.number()
-					.optional()
-					.describe(
-						"The maximum size in kilobytes of an Edge Config. Only specified if a custom limit is set.",
-					),
-				edgeConfigs: z
-					.number()
-					.optional()
-					.describe("The maximum number of edge configs an account can create."),
-				kvDatabases: z
-					.number()
-					.optional()
-					.describe("The maximum number of kv databases an account can create."),
-				blobStores: z
-					.number()
-					.optional()
-					.describe("The maximum number of blob stores an account can create."),
-				postgresDatabases: z
-					.number()
-					.optional()
-					.describe("The maximum number of postgres databases an account can create."),
-				customEnvironmentsPerProject: z
-					.number()
-					.optional()
-					.describe("The maximum number of custom environments allowed per project."),
-				serverlessFunctionMaxMemorySize: z
-					.number()
-					.optional()
-					.describe(
-						"The maximum memory size (in MB) for a serverless function. Only specified if a custom limit is set.",
-					),
-				buildEntitlements: z
-					.object({
-						enhancedBuilds: z.union([z.literal(false), z.literal(true)]).optional(),
-					})
-					.optional(),
-				buildMachine: z
-					.object({
-						default: z
-							.enum(["basic", "elastic", "enhanced", "standard", "turbo"])
-							.optional()
-							.describe("Default build machine type for new builds"),
-					})
-					.optional()
-					.describe("Build machine configuration"),
-			})
-			.optional(),
-		previewDeploymentSuffix: z
-			.string()
-			.nullish()
-			.describe("The hostname that is current set as preview deployment suffix.")
-			.meta({ examples: ["example.dev"] }),
-		platform: z
-			.union([z.literal(false), z.literal(true)])
-			.optional()
-			.describe("Whether the team is a platform team.")
-			.meta({ examples: [true] }),
-		disableHardAutoBlocks: z
-			.union([z.number(), z.union([z.literal(false), z.literal(true)])])
-			.optional(),
-		remoteCaching: z
-			.object({
-				enabled: z.union([z.literal(false), z.literal(true)]).optional(),
-			})
-			.optional()
-			.describe("Is remote caching enabled for this team"),
-		defaultDeploymentProtection: z
-			.object({
-				passwordProtection: z
-					.object({
-						deploymentType: z.string(),
-					})
-					.nullish(),
-				ssoProtection: z
-					.object({
-						deploymentType: z.string(),
-					})
-					.nullish(),
-			})
-			.optional()
-			.describe(
-				"Default deployment protection for this team null indicates protection is disabled",
-			),
-		defaultPassport: z
-			.object({
-				connectorId: z
-					.string()
-					.describe("Default Passport configuration for new projects in this team."),
-				deploymentType: z
-					.enum([
-						"all",
-						"all_except_custom_domains",
-						"preview",
-						"prod_deployment_urls_and_all_previews",
-					])
-					.describe("Default Passport configuration for new projects in this team."),
-			})
-			.nullish()
-			.describe("Default Passport configuration for new projects in this team."),
-		defaultExpirationSettings: z
-			.object({
-				expirationDays: z
-					.number()
-					.optional()
-					.describe(
-						"Number of days to keep non-production deployments (mostly preview deployments) before soft deletion.",
-					),
-				expirationDaysProduction: z
-					.number()
-					.optional()
-					.describe("Number of days to keep production deployments before soft deletion."),
-				expirationDaysCanceled: z
-					.number()
-					.optional()
-					.describe("Number of days to keep canceled deployments before soft deletion."),
-				expirationDaysErrored: z
-					.number()
-					.optional()
-					.describe("Number of days to keep errored deployments before soft deletion."),
-				deploymentsToKeep: z
-					.number()
-					.optional()
-					.describe(
-						"Minimum number of production deployments to keep for this project, even if they are over the production expiration limit.",
-					),
-			})
-			.optional()
-			.describe("Default deployment expiration settings for this team"),
-		defaultProjectJobs: z
-			.object({
-				lint: z
-					.object({
-						targets: z
-							.array(z.string())
-							.describe("Default job configuration applied to new projects created in this team."),
-					})
-					.optional()
-					.describe("Default job configuration applied to new projects created in this team."),
-				typecheck: z
-					.object({
-						targets: z
-							.array(z.string())
-							.describe("Default job configuration applied to new projects created in this team."),
-					})
-					.optional()
-					.describe("Default job configuration applied to new projects created in this team."),
-				mfeConfigPresent: z
-					.object({
-						targets: z
-							.array(z.string())
-							.describe("Default job configuration applied to new projects created in this team."),
-					})
-					.optional()
-					.describe("Default job configuration applied to new projects created in this team."),
-			})
-			.optional()
-			.describe("Default job configuration applied to new projects created in this team."),
-		enablePreviewFeedback: z
-			.enum(["default", "default-force", "off", "off-force", "on", "on-force"])
-			.nullish()
-			.describe("Whether toolbar is enabled on preview deployments"),
-		enableProductionFeedback: z
-			.enum(["default", "default-force", "off", "off-force", "on", "on-force"])
-			.nullish()
-			.describe("Whether toolbar is enabled on production deployments"),
 		sensitiveEnvironmentVariablePolicy: z
 			.enum(["default", "off", "on"])
 			.nullish()
 			.describe("Sensitive environment variable policy for this team"),
-		disjunctiveProductionSecretPolicy: z
-			.enum(["default", "off", "on"])
-			.nullish()
-			.describe("Require production secrets to use a different value than preview or development."),
-		hideIpAddresses: z
-			.union([z.literal(false), z.literal(true)])
-			.nullish()
-			.describe("Indicates if IP addresses should be accessible in observability (o11y) tooling"),
-		hideIpAddressesInLogDrains: z
-			.union([z.literal(false), z.literal(true)])
-			.nullish()
-			.describe("Indicates if IP addresses should be accessible in log drains"),
-		dpAccessRequestsMode: z
-			.enum(["all", "email-domain", "none"])
-			.optional()
-			.describe("Controls who can request access to protected deployments."),
-		ipBuckets: z
-			.array(
-				z.object({
-					bucket: z.string(),
-					supportUntil: z.number().optional(),
-					default: z.union([z.literal(false), z.literal(true)]).optional(),
-				}),
-			)
-			.optional(),
-		requireVerifiedCommits: z
-			.union([z.literal(false), z.literal(true)])
+		slug: z
+			.string()
+			.describe("The Team's slug, which is unique across the Vercel platform.")
+			.meta({ examples: ["my-team"] }),
+		stagingPrefix: z.string().describe("The prefix that is prepended to automatic aliases."),
+		strictConnectors: z
+			.object({
+				enabled: z.union([z.literal(false), z.literal(true)]),
+				updatedAt: z.number(),
+			})
 			.optional()
 			.describe(
-				"When enabled, all projects in the team require commits to be signed and verified by the git provider before deployments will be created. Projects may override this via `project.gitProviderOptions.requireVerifiedCommits` (gated by `Project:Update`).",
-			),
-		disableRepositoryDispatchEvents: z
-			.union([z.literal(false), z.literal(true)])
-			.optional()
-			.describe(
-				"Default for projects in the team. When `true`, projects in this team will not emit GitHub repository-dispatch events on deployment events unless the project explicitly overrides this setting via `project.gitProviderOptions.disableRepositoryDispatchEvents`.",
+				"When enabled, creating and managing connectors requires Owner role or the ConnectorManager permission.",
 			),
 		strictDeploymentProtectionSettings: z
 			.object({
@@ -16004,13 +16251,6 @@ export const teamSchema = z
 			.describe(
 				"When enabled, deployment protection settings require stricter permissions (owner-only).",
 			),
-		strictShareableLinks: z
-			.object({
-				enabled: z.union([z.literal(false), z.literal(true)]),
-				updatedAt: z.number(),
-			})
-			.optional()
-			.describe("When enabled, creating shareable links requires Owner role."),
 		strictPasswordProtectionSettings: z
 			.object({
 				enabled: z.union([z.literal(false), z.literal(true)]),
@@ -16020,140 +16260,48 @@ export const teamSchema = z
 			.describe(
 				"When enabled, adding, changing, or removing project password protection requires Owner role.",
 			),
-		strictConnectors: z
+		strictShareableLinks: z
 			.object({
 				enabled: z.union([z.literal(false), z.literal(true)]),
 				updatedAt: z.number(),
 			})
 			.optional()
-			.describe(
-				"When enabled, creating and managing connectors requires Owner role or the ConnectorManager permission.",
-			),
-		nsnbConfig: z
-			.object({
-				preference: z.enum(["auto-approval", "block", "manual-approval"]),
-			})
-			.optional()
-			.describe("NSNB configuration for the team."),
-		deploymentPolicy: z
-			.object({
-				gitSources: z
-					.array(
-						z.object({
-							sources: z.array(
-								z.union([
-									z
-										.object({
-											provider: z.enum(["bitbucket", "github"]),
-											org: z.string(),
-											repo: z.string().optional(),
-										})
-										.strict(),
-									z
-										.object({
-											provider: z.enum(["gitlab"]),
-											namespace: z.string(),
-											project: z.string().optional(),
-										})
-										.strict(),
-								]),
-							),
-							enabled: z.union([z.literal(false), z.literal(true)]),
-							environments: z.array(
-								z.discriminatedUnion("type", [
-									z
-										.object({
-											type: z.enum(["system"]),
-											target: z.enum(["preview", "production"]),
-										})
-										.strict(),
-									z
-										.object({
-											type: z.enum(["custom"]),
-											environmentId: z.string(),
-										})
-										.strict(),
-								]),
-							),
-						}),
-					)
-					.optional(),
-				deploymentSources: z
-					.array(
-						z.object({
-							sources: z.array(
-								z.enum(["cli", "deploy-hook", "git", "integration", "rest-api", "v0"]),
-							),
-							enabled: z.union([z.literal(false), z.literal(true)]),
-							environments: z.array(
-								z.discriminatedUnion("type", [
-									z
-										.object({
-											type: z.enum(["system"]),
-											target: z.enum(["preview", "production"]),
-										})
-										.strict(),
-									z
-										.object({
-											type: z.enum(["custom"]),
-											environmentId: z.string(),
-										})
-										.strict(),
-								]),
-							),
-						}),
-					)
-					.optional(),
-			})
-			.optional()
-			.describe(
-				"Composable deployment-time policy for the team. Used as the default for every project on the team, with optional per-project overrides on `project.deploymentPolicy`.",
-			),
-		personalAccessTokensInvalidatedAt: z
+			.describe("When enabled, creating shareable links requires Owner role."),
+		updatedAt: z
 			.number()
-			.optional()
-			.describe(
-				"Timestamp (ms) after which personal access tokens created at or before this time are considered invalid for this team.",
-			),
-		appTokensInvalidatedAt: z
-			.number()
-			.optional()
-			.describe(
-				"Timestamp (ms) after which Vercel App tokens created at or before this time are considered invalid for this team.",
-			),
-		apiKeysInvalidatedAt: z
-			.number()
-			.optional()
-			.describe(
-				"Timestamp (ms) after which API keys created at or before this time are considered invalid for this team.",
-			),
-		integrationTokensInvalidatedAt: z
-			.number()
-			.optional()
-			.describe(
-				"Timestamp (ms) after which integration tokens created at or before this time are considered invalid for this team.",
-			),
-		id: z
-			.string()
-			.describe("The Team's unique identifier.")
-			.meta({ examples: ["team_nllPyCtREAqxxdyFKbbMDlxd"] }),
-		slug: z
-			.string()
-			.describe("The Team's slug, which is unique across the Vercel platform.")
-			.meta({ examples: ["my-team"] }),
-		name: z
-			.string()
-			.nullable()
-			.describe("Name associated with the Team account, or `null` if none has been provided.")
-			.meta({ examples: ["My Team"] }),
+			.describe("Timestamp (in milliseconds) of when the Team was last updated.")
+			.meta({ examples: [1611796915677] }),
+	})
+	.catchall(z.unknown())
+	.describe("Data representing a Team.");
+
+export const teamLimitedSchema = z
+	.object({
 		avatar: z
 			.string()
 			.nullable()
 			.describe("The ID of the file used as avatar for this Team.")
 			.meta({ examples: ["6eb07268bcfadd309905ffb1579354084c24655c"] }),
+		createdAt: z
+			.number()
+			.describe("UNIX timestamp (in milliseconds) when the Team was created.")
+			.meta({ examples: [1630748523395] }),
+		id: z
+			.string()
+			.describe("The Team's unique identifier.")
+			.meta({ examples: ["team_nllPyCtREAqxxdyFKbbMDlxd"] }),
+		limited: z
+			.literal(true)
+			.describe(
+				"Property indicating that this Team data contains only limited information, due to the authentication token missing privileges to read the full Team data or due to team having MFA enforced and the user not having MFA enabled. Re-login with the Team's configured SAML Single Sign-On provider in order to upgrade the authentication token with the necessary privileges.",
+			),
+		limitedBy: z.array(z.enum(["invalidated", "mfa", "scope"])),
 		membership: z
 			.object({
-				uid: z.string().optional(),
+				accessRequestedAt: z.number().optional(),
+				confirmed: z.literal(true),
+				created: z.number(),
+				createdAt: z.number(),
 				entitlements: z
 					.array(
 						z.object({
@@ -16161,62 +16309,14 @@ export const teamSchema = z
 						}),
 					)
 					.optional(),
-				teamId: z.string().optional(),
-				confirmed: z.literal(true),
-				accessRequestedAt: z.number().optional(),
-				role: z.enum([
-					"BILLING",
-					"CONTRIBUTOR",
-					"DEVELOPER",
-					"MEMBER",
-					"OWNER",
-					"SECURITY",
-					"VIEWER",
-					"VIEWER_FOR_PLUS",
-				]),
-				teamRoles: z
-					.array(
-						z.enum([
-							"BILLING",
-							"CONTRIBUTOR",
-							"DEVELOPER",
-							"MEMBER",
-							"OWNER",
-							"SECURITY",
-							"VIEWER",
-							"VIEWER_FOR_PLUS",
-						]),
-					)
-					.optional(),
-				teamPermissions: z
-					.array(
-						z.enum([
-							"AiGatewayApiKeyOwnedBySelf",
-							"AiGatewayBudgetManager",
-							"AiGatewayCredits",
-							"AiGatewaySettings",
-							"AiGatewayTranscriptsManager",
-							"AiGatewayTranscriptsViewer",
-							"ConnectorManager",
-							"CreateProject",
-							"EnvVariableManager",
-							"EnvironmentManager",
-							"FullProductionDeployment",
-							"IntegrationManager",
-							"OrgAdmin",
-							"OrgViewer",
-							"UsageViewer",
-							"V0Builder",
-							"V0Chatter",
-							"V0Viewer",
-							"WorkflowDecryptor",
-						]),
-					)
-					.optional(),
-				createdAt: z.number(),
-				created: z.number(),
 				joinedFrom: z
 					.object({
+						commitId: z.string().optional(),
+						dsyncConnectedAt: z.number().optional(),
+						dsyncUserId: z.string().optional(),
+						gitUserId: z.union([z.string(), z.number()]).optional(),
+						gitUserLogin: z.string().optional(),
+						idpUserId: z.string().optional(),
 						origin: z.enum([
 							"account-update",
 							"bitbucket",
@@ -16238,32 +16338,71 @@ export const teamSchema = z
 							"saml",
 							"teams",
 						]),
-						commitId: z.string().optional(),
 						repoId: z.string().optional(),
 						repoPath: z.string().optional(),
-						gitUserId: z.union([z.string(), z.number()]).optional(),
-						gitUserLogin: z.string().optional(),
-						ssoUserId: z.string().optional(),
 						ssoConnectedAt: z.number().optional(),
-						idpUserId: z.string().optional(),
-						dsyncUserId: z.string().optional(),
-						dsyncConnectedAt: z.number().optional(),
+						ssoUserId: z.string().optional(),
 					})
 					.optional(),
+				role: z.enum([
+					"BILLING",
+					"CONTRIBUTOR",
+					"DEVELOPER",
+					"MEMBER",
+					"OWNER",
+					"SECURITY",
+					"VIEWER",
+					"VIEWER_FOR_PLUS",
+				]),
+				teamId: z.string().optional(),
+				teamPermissions: z
+					.array(
+						z.enum([
+							"AiGatewayApiKeyOwnedBySelf",
+							"AiGatewayBudgetManager",
+							"AiGatewayCredits",
+							"AiGatewaySettings",
+							"AiGatewayTranscriptsManager",
+							"AiGatewayTranscriptsViewer",
+							"ConnectorManager",
+							"CreateProject",
+							"EnvVariableManager",
+							"EnvironmentManager",
+							"FullProductionDeployment",
+							"IntegrationManager",
+							"OrgAdmin",
+							"OrgViewer",
+							"UsageViewer",
+							"V0Builder",
+							"V0Chatter",
+							"V0Viewer",
+							"WorkflowDecryptor",
+						]),
+					)
+					.optional(),
+				teamRoles: z
+					.array(
+						z.enum([
+							"BILLING",
+							"CONTRIBUTOR",
+							"DEVELOPER",
+							"MEMBER",
+							"OWNER",
+							"SECURITY",
+							"VIEWER",
+							"VIEWER_FOR_PLUS",
+						]),
+					)
+					.optional(),
+				uid: z.string().optional(),
 			})
 			.optional()
 			.describe("The membership of the authenticated User in relation to the Team."),
-		createdAt: z
-			.number()
-			.describe("UNIX timestamp (in milliseconds) when the Team was created.")
-			.meta({ examples: [1630748523395] }),
-		parentId: z
+		name: z
 			.string()
-			.optional()
-			.describe(
-				"The organizationId for teams that belong to an organization (set on both the organization's root team and its child teams).",
-			)
-			.meta({ examples: ["org_nllPyCtREAqxxdyFKbbMDlxd"] }),
+			.nullable()
+			.describe("Name associated with the Team account, or `null` if none has been provided.")
+			.meta({ examples: ["My Team"] }),
 		orgRootTeamId: z
 			.string()
 			.optional()
@@ -16271,30 +16410,17 @@ export const teamSchema = z
 				"Best-effort ID of the organization’s root billing team. When present, compare `orgRootTeamId === id` to identify the root team. It may be omitted even when `parentId` is set if organization resolution fails or the referenced organization is missing. Always omitted for non-organization teams.",
 			)
 			.meta({ examples: ["team_nllPyCtREAqxxdyFKbbMDlxd"] }),
-	})
-	.catchall(z.unknown())
-	.describe("Data representing a Team.");
-
-export const teamLimitedSchema = z
-	.object({
-		limited: z
-			.literal(true)
+		parentId: z
+			.string()
+			.optional()
 			.describe(
-				"Property indicating that this Team data contains only limited information, due to the authentication token missing privileges to read the full Team data or due to team having MFA enforced and the user not having MFA enabled. Re-login with the Team's configured SAML Single Sign-On provider in order to upgrade the authentication token with the necessary privileges.",
-			),
-		limitedBy: z.array(z.enum(["invalidated", "mfa", "scope"])),
+				"The organizationId for teams that belong to an organization (set on both the organization's root team and its child teams).",
+			)
+			.meta({ examples: ["org_nllPyCtREAqxxdyFKbbMDlxd"] }),
 		saml: z
 			.object({
 				connection: z
 					.object({
-						type: z
-							.string()
-							.describe('The Identity Provider "type", for example Okta.')
-							.meta({ examples: ["OktaSAML"] }),
-						state: z
-							.string()
-							.describe("Current state of the connection.")
-							.meta({ examples: ["active"] }),
 						connectedAt: z
 							.number()
 							.describe("Timestamp (in milliseconds) of when the configuration was connected.")
@@ -16313,26 +16439,26 @@ export const teamLimitedSchema = z
 								"Timestamp (in milliseconds) of when the last directory sync was performed.",
 							)
 							.meta({ examples: [1611796915677] }),
+						state: z
+							.string()
+							.describe("Current state of the connection.")
+							.meta({ examples: ["active"] }),
 						syncState: z
 							.enum(["ACTIVE", "SETUP"])
 							.optional()
 							.describe(
 								"Controls whether directory sync events are processed. - 'SETUP': Directory connected but role mappings not yet configured. Events are acknowledged but not processed. - 'ACTIVE': Fully configured. Events are processed normally. - undefined: Legacy directory (pre-feature), treat as 'ACTIVE' for backwards compatibility.",
 							),
+						type: z
+							.string()
+							.describe('The Identity Provider "type", for example Okta.')
+							.meta({ examples: ["OktaSAML"] }),
 						status: z.string(),
 					})
 					.optional()
 					.describe("Information for the SAML Single Sign-On configuration."),
 				directory: z
 					.object({
-						type: z
-							.string()
-							.describe('The Identity Provider "type", for example Okta.')
-							.meta({ examples: ["OktaSAML"] }),
-						state: z
-							.string()
-							.describe("Current state of the connection.")
-							.meta({ examples: ["active"] }),
 						connectedAt: z
 							.number()
 							.describe("Timestamp (in milliseconds) of when the configuration was connected.")
@@ -16351,12 +16477,20 @@ export const teamLimitedSchema = z
 								"Timestamp (in milliseconds) of when the last directory sync was performed.",
 							)
 							.meta({ examples: [1611796915677] }),
+						state: z
+							.string()
+							.describe("Current state of the connection.")
+							.meta({ examples: ["active"] }),
 						syncState: z
 							.enum(["ACTIVE", "SETUP"])
 							.optional()
 							.describe(
 								"Controls whether directory sync events are processed. - 'SETUP': Directory connected but role mappings not yet configured. Events are acknowledged but not processed. - 'ACTIVE': Fully configured. Events are processed normally. - undefined: Legacy directory (pre-feature), treat as 'ACTIVE' for backwards compatibility.",
 							),
+						type: z
+							.string()
+							.describe('The Identity Provider "type", for example Okta.')
+							.meta({ examples: ["OktaSAML"] }),
 					})
 					.optional()
 					.describe("Information for the Directory Sync configuration."),
@@ -16370,144 +16504,10 @@ export const teamLimitedSchema = z
 			.describe(
 				'When "Single Sign-On (SAML)" is configured, this object contains information that allows the client-side to identify whether or not this Team has SAML enforced.',
 			),
-		id: z
-			.string()
-			.describe("The Team's unique identifier.")
-			.meta({ examples: ["team_nllPyCtREAqxxdyFKbbMDlxd"] }),
 		slug: z
 			.string()
 			.describe("The Team's slug, which is unique across the Vercel platform.")
 			.meta({ examples: ["my-team"] }),
-		name: z
-			.string()
-			.nullable()
-			.describe("Name associated with the Team account, or `null` if none has been provided.")
-			.meta({ examples: ["My Team"] }),
-		avatar: z
-			.string()
-			.nullable()
-			.describe("The ID of the file used as avatar for this Team.")
-			.meta({ examples: ["6eb07268bcfadd309905ffb1579354084c24655c"] }),
-		membership: z
-			.object({
-				uid: z.string().optional(),
-				entitlements: z
-					.array(
-						z.object({
-							entitlement: z.string(),
-						}),
-					)
-					.optional(),
-				teamId: z.string().optional(),
-				confirmed: z.literal(true),
-				accessRequestedAt: z.number().optional(),
-				role: z.enum([
-					"BILLING",
-					"CONTRIBUTOR",
-					"DEVELOPER",
-					"MEMBER",
-					"OWNER",
-					"SECURITY",
-					"VIEWER",
-					"VIEWER_FOR_PLUS",
-				]),
-				teamRoles: z
-					.array(
-						z.enum([
-							"BILLING",
-							"CONTRIBUTOR",
-							"DEVELOPER",
-							"MEMBER",
-							"OWNER",
-							"SECURITY",
-							"VIEWER",
-							"VIEWER_FOR_PLUS",
-						]),
-					)
-					.optional(),
-				teamPermissions: z
-					.array(
-						z.enum([
-							"AiGatewayApiKeyOwnedBySelf",
-							"AiGatewayBudgetManager",
-							"AiGatewayCredits",
-							"AiGatewaySettings",
-							"AiGatewayTranscriptsManager",
-							"AiGatewayTranscriptsViewer",
-							"ConnectorManager",
-							"CreateProject",
-							"EnvVariableManager",
-							"EnvironmentManager",
-							"FullProductionDeployment",
-							"IntegrationManager",
-							"OrgAdmin",
-							"OrgViewer",
-							"UsageViewer",
-							"V0Builder",
-							"V0Chatter",
-							"V0Viewer",
-							"WorkflowDecryptor",
-						]),
-					)
-					.optional(),
-				createdAt: z.number(),
-				created: z.number(),
-				joinedFrom: z
-					.object({
-						origin: z.enum([
-							"account-update",
-							"bitbucket",
-							"dsync",
-							"feedback",
-							"github",
-							"gitlab",
-							"import",
-							"link",
-							"mail",
-							"nsnb-auto-approve",
-							"nsnb-hobby-upgrade",
-							"nsnb-invite",
-							"nsnb-redeploy",
-							"nsnb-redeploy-attribution-card",
-							"nsnb-request-access",
-							"nsnb-viewer-upgrade",
-							"organization-teams",
-							"saml",
-							"teams",
-						]),
-						commitId: z.string().optional(),
-						repoId: z.string().optional(),
-						repoPath: z.string().optional(),
-						gitUserId: z.union([z.string(), z.number()]).optional(),
-						gitUserLogin: z.string().optional(),
-						ssoUserId: z.string().optional(),
-						ssoConnectedAt: z.number().optional(),
-						idpUserId: z.string().optional(),
-						dsyncUserId: z.string().optional(),
-						dsyncConnectedAt: z.number().optional(),
-					})
-					.optional(),
-			})
-			.optional()
-			.describe("The membership of the authenticated User in relation to the Team."),
-		createdAt: z
-			.number()
-			.describe("UNIX timestamp (in milliseconds) when the Team was created.")
-			.meta({ examples: [1630748523395] }),
-		parentId: z
-			.string()
-			.optional()
-			.describe(
-				"The organizationId for teams that belong to an organization (set on both the organization's root team and its child teams).",
-			)
-			.meta({ examples: ["org_nllPyCtREAqxxdyFKbbMDlxd"] }),
-		orgRootTeamId: z
-			.string()
-			.optional()
-			.describe(
-				"Best-effort ID of the organization’s root billing team. When present, compare `orgRootTeamId === id` to identify the root team. It may be omitted even when `parentId` is set if organization resolution fails or the referenced organization is missing. Always omitted for non-organization teams.",
-			)
-			.meta({ examples: ["team_nllPyCtREAqxxdyFKbbMDlxd"] }),
 	})
 	.describe(
 		"A limited form of data representing a Team, due to the authentication token missing privileges to read the full Team data.",
@@ -16515,150 +16515,507 @@ export const teamLimitedSchema = z
 
 export const authTokenSchema = z
 	.object({
-		id: z
-			.string()
-			.describe("The unique identifier of the token.")
-			.meta({ examples: ["5d9f2ebd38ddca62e5d51e9c1704c72530bdc8bfdd41e782a6687c48399e8391"] }),
-		name: z.string().describe("The human-readable name of the token."),
-		type: z
-			.string()
-			.describe("The type of the token.")
-			.meta({ examples: ["oauth2-token"] }),
-		prefix: z
-			.string()
-			.optional()
-			.describe("The token's prefix, for identification purposes.")
-			.meta({ examples: ["vcp_"] }),
-		suffix: z
-			.string()
-			.optional()
-			.describe("The last few characters of the token, for identification purposes.")
-			.meta({ examples: ["abc123"] }),
-		origin: z
-			.string()
-			.optional()
-			.describe("The origin of how the token was created.")
-			.meta({ examples: ["github"] }),
-		scopes: z
-			.array(
-				z.discriminatedUnion("type", [
-					z
-						.object({
-							type: z.enum(["user"]),
-							sudo: z
-								.object({
-									origin: z
-										.enum(["email-otp", "otp", "recovery-code", "totp", "webauthn"])
-										.describe("Possible step-up auth origins"),
-									verifiedAt: z.number().optional(),
-									expiresAt: z.number(),
-								})
-								.optional(),
-							origin: z
-								.enum([
-									"app",
-									"apple",
-									"bitbucket",
-									"chatgpt",
-									"email",
-									"emu",
-									"github",
-									"github-webhook",
-									"gitlab",
-									"google",
-									"invite",
-									"manual",
-									"otp",
-									"passkey",
-									"saml",
-									"sms",
-									"token-exchange-oidc",
-								])
-								.optional(),
-							createdAt: z.number(),
-							expiresAt: z.number().optional(),
-						})
-						.strict(),
-					z
-						.object({
-							type: z.enum(["team"]),
-							teamId: z.string(),
-							origin: z
-								.enum([
-									"app",
-									"apple",
-									"bitbucket",
-									"chatgpt",
-									"email",
-									"emu",
-									"github",
-									"github-webhook",
-									"gitlab",
-									"google",
-									"invite",
-									"manual",
-									"otp",
-									"passkey",
-									"saml",
-									"sms",
-									"token-exchange-oidc",
-								])
-								.optional(),
-							createdAt: z.number(),
-							expiresAt: z.number().optional(),
-						})
-						.strict(),
-				]),
-			)
-			.optional()
-			.describe("The access scopes granted to the token."),
-		createdAt: z
-			.number()
-			.describe("Timestamp (in milliseconds) of when the token was created.")
-			.meta({ examples: [1632816536002] }),
 		activeAt: z
 			.number()
 			.describe("Timestamp (in milliseconds) of when the token was most recently used.")
+			.meta({ examples: [1632816536002] }),
+		createdAt: z
+			.number()
+			.describe("Timestamp (in milliseconds) of when the token was created.")
 			.meta({ examples: [1632816536002] }),
 		expiresAt: z
 			.number()
 			.optional()
 			.describe("Timestamp (in milliseconds) of when the token expires.")
 			.meta({ examples: [1632816536002] }),
-		revokedAt: z
-			.number()
-			.optional()
-			.describe("Timestamp (in milliseconds) of when the token was revoked.")
-			.meta({ examples: [1632816536002] }),
+		id: z
+			.string()
+			.describe("The unique identifier of the token.")
+			.meta({ examples: ["5d9f2ebd38ddca62e5d51e9c1704c72530bdc8bfdd41e782a6687c48399e8391"] }),
 		leakedAt: z
 			.number()
 			.optional()
 			.describe("Timestamp (in milliseconds) of when the token was marked as leaked.")
 			.meta({ examples: [1632816536002] }),
 		leakedUrl: z.string().optional().describe("URL where the token was discovered as leaked."),
+		name: z.string().describe("The human-readable name of the token."),
+		origin: z
+			.string()
+			.optional()
+			.describe("The origin of how the token was created.")
+			.meta({ examples: ["github"] }),
+		prefix: z
+			.string()
+			.optional()
+			.describe("The token's prefix, for identification purposes.")
+			.meta({ examples: ["vcp_"] }),
+		revokedAt: z
+			.number()
+			.optional()
+			.describe("Timestamp (in milliseconds) of when the token was revoked.")
+			.meta({ examples: [1632816536002] }),
+		scopes: z
+			.array(
+				z.discriminatedUnion("type", [
+					z
+						.object({
+							createdAt: z.number(),
+							expiresAt: z.number().optional(),
+							origin: z
+								.enum([
+									"app",
+									"apple",
+									"bitbucket",
+									"chatgpt",
+									"email",
+									"emu",
+									"github",
+									"github-webhook",
+									"gitlab",
+									"google",
+									"invite",
+									"manual",
+									"otp",
+									"passkey",
+									"saml",
+									"sms",
+									"token-exchange-oidc",
+								])
+								.optional(),
+							sudo: z
+								.object({
+									expiresAt: z.number(),
+									origin: z
+										.enum(["email-otp", "otp", "recovery-code", "totp", "webauthn"])
+										.describe("Possible step-up auth origins"),
+									verifiedAt: z.number().optional(),
+								})
+								.optional(),
+							type: z.enum(["user"]),
+						})
+						.strict(),
+					z
+						.object({
+							createdAt: z.number(),
+							expiresAt: z.number().optional(),
+							origin: z
+								.enum([
+									"app",
+									"apple",
+									"bitbucket",
+									"chatgpt",
+									"email",
+									"emu",
+									"github",
+									"github-webhook",
+									"gitlab",
+									"google",
+									"invite",
+									"manual",
+									"otp",
+									"passkey",
+									"saml",
+									"sms",
+									"token-exchange-oidc",
+								])
+								.optional(),
+							teamId: z.string(),
+							type: z.enum(["team"]),
+						})
+						.strict(),
+				]),
+			)
+			.optional()
+			.describe("The access scopes granted to the token."),
+		suffix: z
+			.string()
+			.optional()
+			.describe("The last few characters of the token, for identification purposes.")
+			.meta({ examples: ["abc123"] }),
+		type: z
+			.string()
+			.describe("The type of the token.")
+			.meta({ examples: ["oauth2-token"] }),
 	})
 	.describe("Authentication token metadata.");
 
 export const authUserSchema = z
 	.object({
+		accountUpdateContext: z
+			.object({
+				canOptOut: z
+					.union([z.literal(false), z.literal(true)])
+					.describe("Whether this user can cancel their optional Account Update flow."),
+				managedTeams: z.array(
+					z.object({
+						avatar: z.string().nullable(),
+						name: z.string(),
+						slug: z.string(),
+						teamId: z.string(),
+						workEmail: z.string(),
+					}),
+				),
+				organization: z
+					.object({
+						id: z.string(),
+						name: z.string(),
+						slug: z.string(),
+					})
+					.optional(),
+				verifiedEmuDomains: z.array(z.string()),
+			})
+			.optional()
+			.describe(
+				"Context for the Update Account screen. Present only when `isAccountUpdateRequired` is true. `managedTeams` is empty for orphan mode (user matches an EMU domain but is not on the team).",
+			),
+		activeDashboardViews: z
+			.array(
+				z.object({
+					favoritesViewPreference: z.enum(["closed", "open"]).nullish(),
+					recentsViewPreference: z.enum(["closed", "open"]).nullish(),
+					scopeId: z.string(),
+					viewPreference: z.enum(["cards", "list"]).nullish(),
+				}),
+			)
+			.optional()
+			.describe("set of dashboard view preferences (cards or list) per scopeId"),
+		avatar: z
+			.string()
+			.nullable()
+			.describe(
+				"SHA1 hash of the avatar for the User account. Can be used in conjuction with the ... endpoint to retrieve the avatar image.",
+			)
+			.meta({ examples: ["22cb30c85ff45ac4c72de8981500006b28114aa1"] }),
+		billing: z
+			.object({})
+			.nullable()
+			.describe("An object containing billing infomation associated with the User account."),
 		createdAt: z
 			.number()
 			.describe("UNIX timestamp (in milliseconds) when the User account was created.")
 			.meta({ examples: [1630748523395] }),
+		dataCache: z
+			.object({
+				excessBillingEnabled: z.union([z.literal(false), z.literal(true)]).optional(),
+			})
+			.optional()
+			.describe("data cache settings"),
+		defaultTeamId: z.string().nullable().describe("The user's default team."),
+		dismissedToasts: z
+			.array(
+				z.object({
+					dismissals: z.array(
+						z.object({
+							createdAt: z.number(),
+							scopeId: z.string(),
+						}),
+					),
+					name: z.string(),
+				}),
+			)
+			.optional()
+			.describe("A record of when, under a certain scopeId, a toast was dismissed"),
+		email: z
+			.string()
+			.describe("Email address associated with the User account.")
+			.meta({ examples: ["me@example.com"] }),
+		favoriteProjectsAndSpaces: z
+			.array(
+				z.object({
+					projectId: z.string(),
+					teamId: z.string(),
+				}),
+			)
+			.optional()
+			.describe("A list of projects and spaces across teams that a user has marked as a favorite."),
+		featureBlocks: z
+			.object({
+				speedInsightsFree: z
+					.object({
+						blockedFrom: z.number().optional(),
+						blockedUntil: z.number().optional(),
+						blockReason: z.enum(["admin_override", "hard_blocked", "limits_exceeded"]),
+						isCurrentlyBlocked: z.union([z.literal(false), z.literal(true)]),
+					})
+					.optional()
+					.describe(
+						"Client-facing view of the `speedInsightsFree` ingestion block. The dashboard needs `blockReason` to tell usage pauses apart from admin blocks.",
+					),
+				webAnalytics: z
+					.object({
+						blockedFrom: z.number().optional(),
+						blockedUntil: z.number().optional(),
+						isCurrentlyBlocked: z.union([z.literal(false), z.literal(true)]),
+					})
+					.optional(),
+			})
+			.optional()
+			.describe("Feature blocks for the user"),
+		hasTrialAvailable: z
+			.union([z.literal(false), z.literal(true)])
+			.describe("Whether the user has a trial available for a paid plan subscription."),
+		id: z
+			.string()
+			.describe("The User's unique identifier.")
+			.meta({ examples: ["AEIIDYVk59zbFF2Sxfyxxmua"] }),
+		importFlowGitNamespace: z.union([z.string(), z.number()]).nullish(),
+		importFlowGitNamespaceId: z.union([z.string(), z.number()]).nullish(),
+		importFlowGitProvider: z
+			.enum([
+				"bitbucket",
+				"cursor-origin",
+				"github",
+				"github-custom-host",
+				"github-limited",
+				"gitlab",
+				"vercel",
+			])
+			.nullish(),
+		isAccountUpdateRequired: z
+			.union([z.literal(false), z.literal(true)])
+			.optional()
+			.describe(
+				"When `true`, the user must complete the EMU Update Account flow before they can use the dashboard.",
+			),
+		isEnterpriseManaged: z
+			.union([z.literal(false), z.literal(true)])
+			.optional()
+			.describe("Indicates whether the user is managed by an enterprise."),
+		name: z
+			.string()
+			.nullable()
+			.describe("Name associated with the User account, or `null` if none has been provided.")
+			.meta({ examples: ["John Doe"] }),
+		preferredScopesAndGitNamespaces: z
+			.array(
+				z.object({
+					gitNamespaceId: z.union([z.string(), z.number()]).nullable(),
+					scopeId: z.string(),
+				}),
+			)
+			.optional(),
+		remoteCaching: z
+			.object({
+				enabled: z.union([z.literal(false), z.literal(true)]).optional(),
+			})
+			.optional()
+			.describe("remote caching settings"),
+		resourceConfig: z
+			.object({
+				awsAccountIds: z
+					.array(z.string())
+					.optional()
+					.describe(
+						"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
+					),
+				awsAccountType: z
+					.string()
+					.optional()
+					.describe(
+						"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
+					),
+				blobStores: z
+					.number()
+					.optional()
+					.describe(
+						"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
+					),
+				buildEntitlements: z
+					.object({
+						enhancedBuilds: z
+							.union([z.literal(false), z.literal(true)])
+							.optional()
+							.describe(
+								"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
+							),
+					})
+					.optional()
+					.describe(
+						"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
+					),
+				buildQueue: z
+					.object({
+						configuration: z
+							.enum(["SKIP_NAMESPACE_QUEUE", "WAIT_FOR_NAMESPACE_QUEUE"])
+							.optional()
+							.describe(
+								"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
+							),
+					})
+					.optional()
+					.describe(
+						"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
+					),
+				bulkRedirectsFreeLimitOverride: z
+					.number()
+					.optional()
+					.describe(
+						"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
+					),
+				cfZoneName: z
+					.string()
+					.optional()
+					.describe(
+						"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
+					),
+				concurrentBuilds: z
+					.number()
+					.optional()
+					.describe(
+						"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
+					),
+				cronJobsPerProject: z
+					.number()
+					.optional()
+					.describe(
+						"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
+					),
+				customEnvironmentsPerProject: z
+					.number()
+					.optional()
+					.describe(
+						"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
+					),
+				edgeConfigs: z
+					.number()
+					.optional()
+					.describe(
+						"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
+					),
+				edgeConfigSize: z
+					.number()
+					.optional()
+					.describe(
+						"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
+					),
+				edgeFunctionExecutionTimeoutMs: z
+					.number()
+					.optional()
+					.describe(
+						"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
+					),
+				edgeFunctionMaxSizeBytes: z
+					.number()
+					.optional()
+					.describe(
+						"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
+					),
+				elasticConcurrencyEnabled: z
+					.union([z.literal(false), z.literal(true)])
+					.optional()
+					.describe(
+						"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
+					),
+				flagsExplorerOverridesThreshold: z
+					.number()
+					.optional()
+					.describe(
+						"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
+					),
+				flagsExplorerUnlimitedOverrides: z
+					.union([z.literal(false), z.literal(true)])
+					.optional()
+					.describe(
+						"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
+					),
+				imageOptimizationType: z
+					.string()
+					.optional()
+					.describe(
+						"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
+					),
+				integrationStores: z
+					.number()
+					.optional()
+					.describe(
+						"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
+					),
+				kvDatabases: z
+					.number()
+					.optional()
+					.describe(
+						"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
+					),
+				microfrontendGroupsPerTeam: z
+					.number()
+					.optional()
+					.describe(
+						"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
+					),
+				microfrontendProjectsPerGroup: z
+					.number()
+					.optional()
+					.describe(
+						"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
+					),
+				nodeType: z
+					.string()
+					.optional()
+					.describe(
+						"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
+					),
+				postgresDatabases: z
+					.number()
+					.optional()
+					.describe(
+						"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
+					),
+				security: z
+					.object({
+						customRules: z
+							.number()
+							.optional()
+							.describe(
+								"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
+							),
+						ipBlocks: z
+							.number()
+							.optional()
+							.describe(
+								"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
+							),
+						ipBypass: z
+							.number()
+							.optional()
+							.describe(
+								"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
+							),
+						rateLimit: z
+							.number()
+							.optional()
+							.describe(
+								"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
+							),
+					})
+					.optional()
+					.describe(
+						"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
+					),
+				serverlessFunctionMaxDuration: z
+					.number()
+					.optional()
+					.describe(
+						"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
+					),
+				serverlessFunctionMaxMemorySize: z
+					.number()
+					.optional()
+					.describe(
+						"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
+					),
+			})
+			.describe(
+				"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
+			),
+		shouldShowEnterpriseManagedWelcome: z
+			.union([z.literal(false), z.literal(true)])
+			.optional()
+			.describe(
+				"Whether the Enterprise Managed User joined the current team through the Update Account flow and should see its welcome experience.",
+			),
 		softBlock: z
 			.object({
 				blockedAt: z.number(),
-				reason: z.enum([
-					"BLOCKED_FOR_PLATFORM_ABUSE",
-					"DOMAIN_OWNER_DELETION_REQUEST",
-					"ENTERPRISE_TRIAL_ENDED",
-					"ENTERPRISE_UNPAID_INVOICE",
-					"EXPOSURE_CAP_EXCEEDED",
-					"FAIR_USE_LIMITS_EXCEEDED",
-					"SUBSCRIPTION_CANCELED",
-					"SUBSCRIPTION_EXPIRED",
-					"UNPAID_INVOICE",
-				]),
 				blockedDueToOverageType: z
 					.enum([
 						"analyticsUsage",
@@ -16702,6 +17059,17 @@ export const authUserSchema = z
 						"webAnalyticsEvent",
 					])
 					.optional(),
+				reason: z.enum([
+					"BLOCKED_FOR_PLATFORM_ABUSE",
+					"DOMAIN_OWNER_DELETION_REQUEST",
+					"ENTERPRISE_TRIAL_ENDED",
+					"ENTERPRISE_UNPAID_INVOICE",
+					"EXPOSURE_CAP_EXCEEDED",
+					"FAIR_USE_LIMITS_EXCEEDED",
+					"SUBSCRIPTION_CANCELED",
+					"SUBSCRIPTION_EXPIRED",
+					"UNPAID_INVOICE",
+				]),
 				unpauseAt: z
 					.number()
 					.optional()
@@ -16713,410 +17081,20 @@ export const authUserSchema = z
 			.describe(
 				'When the User account has been "soft blocked", this property will contain the date when the restriction was enacted, and the identifier for why.',
 			),
-		billing: z
-			.object({})
-			.nullable()
-			.describe("An object containing billing infomation associated with the User account."),
-		resourceConfig: z
-			.object({
-				concurrentBuilds: z
-					.number()
-					.optional()
-					.describe(
-						"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
-					),
-				nodeType: z
-					.string()
-					.optional()
-					.describe(
-						"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
-					),
-				elasticConcurrencyEnabled: z
-					.union([z.literal(false), z.literal(true)])
-					.optional()
-					.describe(
-						"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
-					),
-				buildEntitlements: z
-					.object({
-						enhancedBuilds: z
-							.union([z.literal(false), z.literal(true)])
-							.optional()
-							.describe(
-								"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
-							),
-					})
-					.optional()
-					.describe(
-						"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
-					),
-				buildQueue: z
-					.object({
-						configuration: z
-							.enum(["SKIP_NAMESPACE_QUEUE", "WAIT_FOR_NAMESPACE_QUEUE"])
-							.optional()
-							.describe(
-								"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
-							),
-					})
-					.optional()
-					.describe(
-						"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
-					),
-				awsAccountType: z
-					.string()
-					.optional()
-					.describe(
-						"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
-					),
-				awsAccountIds: z
-					.array(z.string())
-					.optional()
-					.describe(
-						"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
-					),
-				cfZoneName: z
-					.string()
-					.optional()
-					.describe(
-						"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
-					),
-				imageOptimizationType: z
-					.string()
-					.optional()
-					.describe(
-						"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
-					),
-				edgeConfigs: z
-					.number()
-					.optional()
-					.describe(
-						"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
-					),
-				edgeConfigSize: z
-					.number()
-					.optional()
-					.describe(
-						"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
-					),
-				edgeFunctionMaxSizeBytes: z
-					.number()
-					.optional()
-					.describe(
-						"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
-					),
-				edgeFunctionExecutionTimeoutMs: z
-					.number()
-					.optional()
-					.describe(
-						"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
-					),
-				serverlessFunctionMaxDuration: z
-					.number()
-					.optional()
-					.describe(
-						"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
-					),
-				serverlessFunctionMaxMemorySize: z
-					.number()
-					.optional()
-					.describe(
-						"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
-					),
-				kvDatabases: z
-					.number()
-					.optional()
-					.describe(
-						"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
-					),
-				postgresDatabases: z
-					.number()
-					.optional()
-					.describe(
-						"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
-					),
-				blobStores: z
-					.number()
-					.optional()
-					.describe(
-						"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
-					),
-				integrationStores: z
-					.number()
-					.optional()
-					.describe(
-						"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
-					),
-				cronJobsPerProject: z
-					.number()
-					.optional()
-					.describe(
-						"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
-					),
-				microfrontendGroupsPerTeam: z
-					.number()
-					.optional()
-					.describe(
-						"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
-					),
-				microfrontendProjectsPerGroup: z
-					.number()
-					.optional()
-					.describe(
-						"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
-					),
-				flagsExplorerOverridesThreshold: z
-					.number()
-					.optional()
-					.describe(
-						"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
-					),
-				flagsExplorerUnlimitedOverrides: z
-					.union([z.literal(false), z.literal(true)])
-					.optional()
-					.describe(
-						"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
-					),
-				customEnvironmentsPerProject: z
-					.number()
-					.optional()
-					.describe(
-						"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
-					),
-				security: z
-					.object({
-						rateLimit: z
-							.number()
-							.optional()
-							.describe(
-								"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
-							),
-						customRules: z
-							.number()
-							.optional()
-							.describe(
-								"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
-							),
-						ipBlocks: z
-							.number()
-							.optional()
-							.describe(
-								"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
-							),
-						ipBypass: z
-							.number()
-							.optional()
-							.describe(
-								"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
-							),
-					})
-					.optional()
-					.describe(
-						"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
-					),
-				bulkRedirectsFreeLimitOverride: z
-					.number()
-					.optional()
-					.describe(
-						"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
-					),
-			})
-			.describe(
-				"An object containing infomation related to the amount of platform resources may be allocated to the User account.",
-			),
 		stagingPrefix: z
 			.string()
 			.describe(
 				'Prefix that will be used in the URL of "Preview" deployments created by the User account.',
 			),
-		activeDashboardViews: z
-			.array(
-				z.object({
-					scopeId: z.string(),
-					viewPreference: z.enum(["cards", "list"]).nullish(),
-					favoritesViewPreference: z.enum(["closed", "open"]).nullish(),
-					recentsViewPreference: z.enum(["closed", "open"]).nullish(),
-				}),
-			)
-			.optional()
-			.describe("set of dashboard view preferences (cards or list) per scopeId"),
-		importFlowGitNamespace: z.union([z.string(), z.number()]).nullish(),
-		importFlowGitNamespaceId: z.union([z.string(), z.number()]).nullish(),
-		importFlowGitProvider: z
-			.enum([
-				"bitbucket",
-				"cursor-origin",
-				"github",
-				"github-custom-host",
-				"github-limited",
-				"gitlab",
-				"vercel",
-			])
-			.nullish(),
-		preferredScopesAndGitNamespaces: z
-			.array(
-				z.object({
-					scopeId: z.string(),
-					gitNamespaceId: z.union([z.string(), z.number()]).nullable(),
-				}),
-			)
-			.optional(),
-		dismissedToasts: z
-			.array(
-				z.object({
-					name: z.string(),
-					dismissals: z.array(
-						z.object({
-							scopeId: z.string(),
-							createdAt: z.number(),
-						}),
-					),
-				}),
-			)
-			.optional()
-			.describe("A record of when, under a certain scopeId, a toast was dismissed"),
-		favoriteProjectsAndSpaces: z
-			.array(
-				z.object({
-					teamId: z.string(),
-					projectId: z.string(),
-				}),
-			)
-			.optional()
-			.describe("A list of projects and spaces across teams that a user has marked as a favorite."),
-		hasTrialAvailable: z
-			.union([z.literal(false), z.literal(true)])
-			.describe("Whether the user has a trial available for a paid plan subscription."),
-		remoteCaching: z
-			.object({
-				enabled: z.union([z.literal(false), z.literal(true)]).optional(),
-			})
-			.optional()
-			.describe("remote caching settings"),
-		dataCache: z
-			.object({
-				excessBillingEnabled: z.union([z.literal(false), z.literal(true)]).optional(),
-			})
-			.optional()
-			.describe("data cache settings"),
-		featureBlocks: z
-			.object({
-				webAnalytics: z
-					.object({
-						blockedFrom: z.number().optional(),
-						blockedUntil: z.number().optional(),
-						isCurrentlyBlocked: z.union([z.literal(false), z.literal(true)]),
-					})
-					.optional(),
-				speedInsightsFree: z
-					.object({
-						blockedFrom: z.number().optional(),
-						blockedUntil: z.number().optional(),
-						blockReason: z.enum(["admin_override", "hard_blocked", "limits_exceeded"]),
-						isCurrentlyBlocked: z.union([z.literal(false), z.literal(true)]),
-					})
-					.optional()
-					.describe(
-						"Client-facing view of the `speedInsightsFree` ingestion block. The dashboard needs `blockReason` to tell usage pauses apart from admin blocks.",
-					),
-			})
-			.optional()
-			.describe("Feature blocks for the user"),
-		isAccountUpdateRequired: z
-			.union([z.literal(false), z.literal(true)])
-			.optional()
-			.describe(
-				"When `true`, the user must complete the EMU Update Account flow before they can use the dashboard.",
-			),
-		accountUpdateContext: z
-			.object({
-				canOptOut: z
-					.union([z.literal(false), z.literal(true)])
-					.describe("Whether this user can cancel their optional Account Update flow."),
-				organization: z
-					.object({
-						id: z.string(),
-						name: z.string(),
-						slug: z.string(),
-					})
-					.optional(),
-				managedTeams: z.array(
-					z.object({
-						teamId: z.string(),
-						slug: z.string(),
-						name: z.string(),
-						avatar: z.string().nullable(),
-						workEmail: z.string(),
-					}),
-				),
-				verifiedEmuDomains: z.array(z.string()),
-			})
-			.optional()
-			.describe(
-				"Context for the Update Account screen. Present only when `isAccountUpdateRequired` is true. `managedTeams` is empty for orphan mode (user matches an EMU domain but is not on the team).",
-			),
-		id: z
-			.string()
-			.describe("The User's unique identifier.")
-			.meta({ examples: ["AEIIDYVk59zbFF2Sxfyxxmua"] }),
-		email: z
-			.string()
-			.describe("Email address associated with the User account.")
-			.meta({ examples: ["me@example.com"] }),
-		name: z
-			.string()
-			.nullable()
-			.describe("Name associated with the User account, or `null` if none has been provided.")
-			.meta({ examples: ["John Doe"] }),
 		username: z
 			.string()
 			.describe("Unique username associated with the User account.")
 			.meta({ examples: ["jdoe"] }),
-		avatar: z
-			.string()
-			.nullable()
-			.describe(
-				"SHA1 hash of the avatar for the User account. Can be used in conjuction with the ... endpoint to retrieve the avatar image.",
-			)
-			.meta({ examples: ["22cb30c85ff45ac4c72de8981500006b28114aa1"] }),
-		defaultTeamId: z.string().nullable().describe("The user's default team."),
-		isEnterpriseManaged: z
-			.union([z.literal(false), z.literal(true)])
-			.optional()
-			.describe("Indicates whether the user is managed by an enterprise."),
-		shouldShowEnterpriseManagedWelcome: z
-			.union([z.literal(false), z.literal(true)])
-			.optional()
-			.describe(
-				"Whether the Enterprise Managed User joined the current team through the Update Account flow and should see its welcome experience.",
-			),
 	})
 	.describe("Data for the currently authenticated User.");
 
 export const authUserLimitedSchema = z
 	.object({
-		limited: z
-			.literal(true)
-			.describe(
-				"Property indicating that this User data contains only limited information, due to the authentication token missing privileges to read the full User data. Re-login with email, GitHub, GitLab or Bitbucket in order to upgrade the authentication token with the necessary privileges.",
-			),
-		id: z
-			.string()
-			.describe("The User's unique identifier.")
-			.meta({ examples: ["AEIIDYVk59zbFF2Sxfyxxmua"] }),
-		email: z
-			.string()
-			.describe("Email address associated with the User account.")
-			.meta({ examples: ["me@example.com"] }),
-		name: z
-			.string()
-			.nullable()
-			.describe("Name associated with the User account, or `null` if none has been provided.")
-			.meta({ examples: ["John Doe"] }),
-		username: z
-			.string()
-			.describe("Unique username associated with the User account.")
-			.meta({ examples: ["jdoe"] }),
 		avatar: z
 			.string()
 			.nullable()
@@ -17125,16 +17103,38 @@ export const authUserLimitedSchema = z
 			)
 			.meta({ examples: ["22cb30c85ff45ac4c72de8981500006b28114aa1"] }),
 		defaultTeamId: z.string().nullable().describe("The user's default team."),
+		email: z
+			.string()
+			.describe("Email address associated with the User account.")
+			.meta({ examples: ["me@example.com"] }),
+		id: z
+			.string()
+			.describe("The User's unique identifier.")
+			.meta({ examples: ["AEIIDYVk59zbFF2Sxfyxxmua"] }),
 		isEnterpriseManaged: z
 			.union([z.literal(false), z.literal(true)])
 			.optional()
 			.describe("Indicates whether the user is managed by an enterprise."),
+		limited: z
+			.literal(true)
+			.describe(
+				"Property indicating that this User data contains only limited information, due to the authentication token missing privileges to read the full User data. Re-login with email, GitHub, GitLab or Bitbucket in order to upgrade the authentication token with the necessary privileges.",
+			),
+		name: z
+			.string()
+			.nullable()
+			.describe("Name associated with the User account, or `null` if none has been provided.")
+			.meta({ examples: ["John Doe"] }),
 		shouldShowEnterpriseManagedWelcome: z
 			.union([z.literal(false), z.literal(true)])
 			.optional()
 			.describe(
 				"Whether the Enterprise Managed User joined the current team through the Update Account flow and should see its welcome experience.",
 			),
+		username: z
+			.string()
+			.describe("Unique username associated with the User account.")
+			.meta({ examples: ["jdoe"] }),
 	})
 	.describe(
 		"A limited form of data for the currently authenticated User, due to the authentication token missing privileges to read the full User data.",
@@ -17142,28 +17142,28 @@ export const authUserLimitedSchema = z
 
 export const vcrRepositorySchema = z
 	.object({
+		createdAt: z
+			.string()
+			.describe("ISO 8601 timestamp of when the repository was created.")
+			.meta({ examples: ["2026-06-30T10:00:00.000Z"] }),
 		id: z
 			.string()
 			.describe("Unique identifier of the repository.")
 			.meta({ examples: ["repo_a1b2c3d4e5f6"] }),
-		projectId: z
-			.string()
-			.describe("Identifier of the project the repository belongs to.")
-			.meta({ examples: ["prj_a1b2c3d4e5f6"] }),
 		name: z
 			.string()
 			.describe("Name of the repository.")
 			.meta({ examples: ["my-app"] }),
+		projectId: z
+			.string()
+			.describe("Identifier of the project the repository belongs to.")
+			.meta({ examples: ["prj_a1b2c3d4e5f6"] }),
 		public: z
 			.union([z.literal(false), z.literal(true)])
 			.describe(
 				"Whether the repository is public. Images in public repositories can be pulled by anyone. Defaults to `false` (private).",
 			)
 			.meta({ examples: [false] }),
-		createdAt: z
-			.string()
-			.describe("ISO 8601 timestamp of when the repository was created.")
-			.meta({ examples: ["2026-06-30T10:00:00.000Z"] }),
 		updatedAt: z
 			.string()
 			.describe("ISO 8601 timestamp of when the repository was last updated.")
@@ -17173,43 +17173,16 @@ export const vcrRepositorySchema = z
 
 export const vcrRepositoryListSchema = z
 	.object({
-		repositories: z.array(z.unknown()),
 		nextCursor: z
 			.string()
 			.optional()
 			.describe("Cursor to fetch the next page of results, when more are available."),
+		repositories: z.array(z.unknown()),
 	})
 	.describe("A paginated list of Vercel Container Registry repositories.");
 
 export const vcrImageListItemSchema = z
 	.object({
-		tags: z.array(z.string()).describe("Tags pointing at this image's manifest."),
-		id: z
-			.string()
-			.describe("Internal identifier of the image.")
-			.meta({ examples: ["img_a1b2c3d4e5f6"] }),
-		repositoryId: z
-			.string()
-			.describe("Identifier of the repository the image belongs to.")
-			.meta({ examples: ["repo_a1b2c3d4e5f6"] }),
-		manifestDigest: z
-			.string()
-			.describe("SHA-256 digest of the image manifest.")
-			.meta({
-				examples: ["sha256:2c4e8f3a1b9d0e5c7a6f4b2d8e1c9a0b3d5f7e9c1a2b4d6f8e0c2a4b6d8f0e2c"],
-			}),
-		kind: z
-			.enum(["attestation", "index", "manifest"])
-			.describe(
-				"Whether the manifest is a multi-platform image index, a single-platform image manifest or an attestation.",
-			),
-		platform: z
-			.string()
-			.optional()
-			.describe(
-				"Operating system the manifest targets. Only present for single-platform manifests.",
-			)
-			.meta({ examples: ["linux"] }),
 		arch: z
 			.string()
 			.optional()
@@ -17217,7 +17190,37 @@ export const vcrImageListItemSchema = z
 				"CPU architecture the manifest targets. Only present for single-platform manifests.",
 			)
 			.meta({ examples: ["amd64"] }),
+		createdAt: z
+			.string()
+			.describe("ISO 8601 timestamp of when the image was created.")
+			.meta({ examples: ["2026-06-30T10:00:00.000Z"] }),
+		id: z
+			.string()
+			.describe("Internal identifier of the image.")
+			.meta({ examples: ["img_a1b2c3d4e5f6"] }),
+		kind: z
+			.enum(["attestation", "index", "manifest"])
+			.describe(
+				"Whether the manifest is a multi-platform image index, a single-platform image manifest or an attestation.",
+			),
+		manifestDigest: z
+			.string()
+			.describe("SHA-256 digest of the image manifest.")
+			.meta({
+				examples: ["sha256:2c4e8f3a1b9d0e5c7a6f4b2d8e1c9a0b3d5f7e9c1a2b4d6f8e0c2a4b6d8f0e2c"],
+			}),
+		platform: z
+			.string()
+			.optional()
+			.describe(
+				"Operating system the manifest targets. Only present for single-platform manifests.",
+			)
+			.meta({ examples: ["linux"] }),
 		pushedBy: z.string().optional().describe("Identifier of the actor that pushed the image."),
+		repositoryId: z
+			.string()
+			.describe("Identifier of the repository the image belongs to.")
+			.meta({ examples: ["repo_a1b2c3d4e5f6"] }),
 		sizeInBytes: z
 			.number()
 			.describe(
@@ -17227,10 +17230,7 @@ export const vcrImageListItemSchema = z
 			.enum(["preparing", "ready", "unoptimized"])
 			.nullable()
 			.describe("VHS-readiness status, or `null` for a multi-platform index."),
-		createdAt: z
-			.string()
-			.describe("ISO 8601 timestamp of when the image was created.")
-			.meta({ examples: ["2026-06-30T10:00:00.000Z"] }),
+		tags: z.array(z.string()).describe("Tags pointing at this image's manifest."),
 	})
 	.describe(
 		"An image enriched with its tags and VHS-readiness status, as returned when listing a repository's images.",
@@ -17248,6 +17248,10 @@ export const vcrImageListSchema = z
 
 export const vcrRepositoryPermissionSchema = z
 	.object({
+		createdAt: z
+			.string()
+			.describe("ISO 8601 timestamp of when the permission was created.")
+			.meta({ examples: ["2026-06-30T10:00:00.000Z"] }),
 		repositoryId: z
 			.string()
 			.describe("Identifier of the repository the permission grants access to.")
@@ -17260,25 +17264,22 @@ export const vcrRepositoryPermissionSchema = z
 			.string()
 			.describe("Slug of the team that is granted access to the repository.")
 			.meta({ examples: ["my-team"] }),
-		createdAt: z
-			.string()
-			.describe("ISO 8601 timestamp of when the permission was created.")
-			.meta({ examples: ["2026-06-30T10:00:00.000Z"] }),
 	})
 	.describe("A team's access grant to a Vercel Container Registry repository.");
 
 export const vcrTagSchema = z
 	.object({
-		tag: z
+		arch: z
 			.string()
-			.describe("The tag name.")
-			.meta({ examples: ["latest"] }),
-		manifestDigest: z
+			.optional()
+			.describe(
+				"CPU architecture the manifest targets. Only present for single-platform manifests.",
+			)
+			.meta({ examples: ["amd64"] }),
+		createdAt: z
 			.string()
-			.describe("SHA-256 digest of the image manifest the tag points at.")
-			.meta({
-				examples: ["sha256:2c4e8f3a1b9d0e5c7a6f4b2d8e1c9a0b3d5f7e9c1a2b4d6f8e0c2a4b6d8f0e2c"],
-			}),
+			.describe("ISO 8601 timestamp of when the tag was created.")
+			.meta({ examples: ["2026-06-30T10:00:00.000Z"] }),
 		imageId: z
 			.string()
 			.describe("Internal identifier of the image the tag points at.")
@@ -17288,6 +17289,12 @@ export const vcrTagSchema = z
 			.describe(
 				"Whether the manifest is a multi-platform image index, a single-platform image manifest or an attestation.",
 			),
+		manifestDigest: z
+			.string()
+			.describe("SHA-256 digest of the image manifest the tag points at.")
+			.meta({
+				examples: ["sha256:2c4e8f3a1b9d0e5c7a6f4b2d8e1c9a0b3d5f7e9c1a2b4d6f8e0c2a4b6d8f0e2c"],
+			}),
 		platform: z
 			.string()
 			.optional()
@@ -17295,27 +17302,20 @@ export const vcrTagSchema = z
 				"Operating system the manifest targets. Only present for single-platform manifests.",
 			)
 			.meta({ examples: ["linux"] }),
-		arch: z
-			.string()
-			.optional()
-			.describe(
-				"CPU architecture the manifest targets. Only present for single-platform manifests.",
-			)
-			.meta({ examples: ["amd64"] }),
 		pushedBy: z.string().optional().describe("Identifier of the actor that pushed the image."),
-		status: z
-			.enum(["preparing", "ready", "unoptimized"])
-			.nullable()
-			.describe("VHS-readiness status, or `null` for a multi-platform index."),
 		sizeInBytes: z
 			.number()
 			.describe(
 				"Total size in bytes of the image's resources (manifest, config and layer blobs) stored by the registry.",
 			),
-		createdAt: z
+		status: z
+			.enum(["preparing", "ready", "unoptimized"])
+			.nullable()
+			.describe("VHS-readiness status, or `null` for a multi-platform index."),
+		tag: z
 			.string()
-			.describe("ISO 8601 timestamp of when the tag was created.")
-			.meta({ examples: ["2026-06-30T10:00:00.000Z"] }),
+			.describe("The tag name.")
+			.meta({ examples: ["latest"] }),
 		updatedAt: z
 			.string()
 			.describe("ISO 8601 timestamp of when the tag was last updated.")
@@ -17353,10 +17353,10 @@ export const vcrImageLayerSchema = z.union([
 				])
 				.describe("Docker/OCI build instruction associated with an image layer."),
 			sizeBytes: z.number().nullable(),
-			type: z.enum(["FROM"]),
 			baseImage: z.string().nullable(),
 			collapsedDigests: z.array(z.string()),
 			collapsedLayerCount: z.number(),
+			type: z.enum(["FROM"]),
 		})
 		.strict(),
 	z
@@ -17386,8 +17386,8 @@ export const vcrImageLayerSchema = z.union([
 				])
 				.describe("Docker/OCI build instruction associated with an image layer."),
 			sizeBytes: z.number().nullable(),
-			type: z.enum(["RUN"]),
 			command: z.string().nullable(),
+			type: z.enum(["RUN"]),
 		})
 		.strict(),
 	z
@@ -17417,8 +17417,8 @@ export const vcrImageLayerSchema = z.union([
 				])
 				.describe("Docker/OCI build instruction associated with an image layer."),
 			sizeBytes: z.number().nullable(),
-			type: z.enum(["ENV"]),
 			env: z.string().nullable(),
+			type: z.enum(["ENV"]),
 		})
 		.strict(),
 	z
@@ -17472,34 +17472,6 @@ export const vcrImageLayerSchema = z.union([
 
 export const vcrImageDetailSchema = z
 	.object({
-		layers: z.array(z.unknown()),
-		tags: z.array(z.string()).describe("Tags pointing at this image's manifest."),
-		id: z
-			.string()
-			.describe("Internal identifier of the image.")
-			.meta({ examples: ["img_a1b2c3d4e5f6"] }),
-		repositoryId: z
-			.string()
-			.describe("Identifier of the repository the image belongs to.")
-			.meta({ examples: ["repo_a1b2c3d4e5f6"] }),
-		manifestDigest: z
-			.string()
-			.describe("SHA-256 digest of the image manifest.")
-			.meta({
-				examples: ["sha256:2c4e8f3a1b9d0e5c7a6f4b2d8e1c9a0b3d5f7e9c1a2b4d6f8e0c2a4b6d8f0e2c"],
-			}),
-		kind: z
-			.enum(["attestation", "index", "manifest"])
-			.describe(
-				"Whether the manifest is a multi-platform image index, a single-platform image manifest or an attestation.",
-			),
-		platform: z
-			.string()
-			.optional()
-			.describe(
-				"Operating system the manifest targets. Only present for single-platform manifests.",
-			)
-			.meta({ examples: ["linux"] }),
 		arch: z
 			.string()
 			.optional()
@@ -17507,7 +17479,38 @@ export const vcrImageDetailSchema = z
 				"CPU architecture the manifest targets. Only present for single-platform manifests.",
 			)
 			.meta({ examples: ["amd64"] }),
+		createdAt: z
+			.string()
+			.describe("ISO 8601 timestamp of when the image was created.")
+			.meta({ examples: ["2026-06-30T10:00:00.000Z"] }),
+		id: z
+			.string()
+			.describe("Internal identifier of the image.")
+			.meta({ examples: ["img_a1b2c3d4e5f6"] }),
+		kind: z
+			.enum(["attestation", "index", "manifest"])
+			.describe(
+				"Whether the manifest is a multi-platform image index, a single-platform image manifest or an attestation.",
+			),
+		layers: z.array(z.unknown()),
+		manifestDigest: z
+			.string()
+			.describe("SHA-256 digest of the image manifest.")
+			.meta({
+				examples: ["sha256:2c4e8f3a1b9d0e5c7a6f4b2d8e1c9a0b3d5f7e9c1a2b4d6f8e0c2a4b6d8f0e2c"],
+			}),
+		platform: z
+			.string()
+			.optional()
+			.describe(
+				"Operating system the manifest targets. Only present for single-platform manifests.",
+			)
+			.meta({ examples: ["linux"] }),
 		pushedBy: z.string().optional().describe("Identifier of the actor that pushed the image."),
+		repositoryId: z
+			.string()
+			.describe("Identifier of the repository the image belongs to.")
+			.meta({ examples: ["repo_a1b2c3d4e5f6"] }),
 		sizeInBytes: z
 			.number()
 			.describe(
@@ -17517,25 +17520,34 @@ export const vcrImageDetailSchema = z
 			.enum(["preparing", "ready", "unoptimized"])
 			.nullable()
 			.describe("VHS-readiness status, or `null` for a multi-platform index."),
-		createdAt: z
-			.string()
-			.describe("ISO 8601 timestamp of when the image was created.")
-			.meta({ examples: ["2026-06-30T10:00:00.000Z"] }),
+		tags: z.array(z.string()).describe("Tags pointing at this image's manifest."),
 	})
 	.describe("A single image with its tags, status and resolved Dockerfile layer history.");
 
 export const vcrRepositoryPermissionListSchema = z
 	.object({
-		permissions: z.array(z.unknown()),
 		nextCursor: z
 			.string()
 			.optional()
 			.describe("Cursor to fetch the next page of results, when more are available."),
+		permissions: z.array(z.unknown()),
 	})
 	.describe("A paginated list of Vercel Container Registry repository permissions.");
 
 export const fileTreeSchema = z
 	.object({
+		children: z
+			.array(z.unknown())
+			.optional()
+			.describe(
+				"The list of children files of the directory (only valid for the `directory` type)",
+			),
+		contentType: z
+			.string()
+			.optional()
+			.describe("The content-type of the file (only valid for the `file` type)")
+			.meta({ examples: ["application/json"] }),
+		mode: z.number().describe('The file "mode" indicating file type and permissions.'),
 		name: z
 			.string()
 			.describe("The name of the file tree entry")
@@ -17549,18 +17561,6 @@ export const fileTreeSchema = z
 			.optional()
 			.describe("The unique identifier of the file (only valid for the `file` type)")
 			.meta({ examples: ["2d4aad419917f15b1146e9e03ddc9bb31747e4d0"] }),
-		children: z
-			.array(z.unknown())
-			.optional()
-			.describe(
-				"The list of children files of the directory (only valid for the `directory` type)",
-			),
-		contentType: z
-			.string()
-			.optional()
-			.describe("The content-type of the file (only valid for the `file` type)")
-			.meta({ examples: ["application/json"] }),
-		mode: z.number().describe('The file "mode" indicating file type and permissions.'),
 	})
 	.describe("A deployment file tree entry");
 

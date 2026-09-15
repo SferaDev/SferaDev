@@ -11,6 +11,14 @@ export type AiGatewayProviderOptionBag = {
 	[key: string]: unknown;
 };
 
+export const aiGatewayVirtualModelConfigHasEnum = {
+	"implicit-caching": "implicit-caching",
+	vision: "vision",
+} as const;
+
+export type AiGatewayVirtualModelConfigHasEnumKey =
+	(typeof aiGatewayVirtualModelConfigHasEnum)[keyof typeof aiGatewayVirtualModelConfigHasEnum];
+
 export const scopeEnum = {
 	global: "global",
 	specific: "specific",
@@ -38,6 +46,15 @@ export const aiGatewayVirtualModelConfigSelectorEnum = {
 export type AiGatewayVirtualModelConfigSelectorEnumKey =
 	(typeof aiGatewayVirtualModelConfigSelectorEnum)[keyof typeof aiGatewayVirtualModelConfigSelectorEnum];
 
+export const aiGatewayVirtualModelConfigServiceTierEnum = {
+	fast: "fast",
+	flex: "flex",
+	priority: "priority",
+} as const;
+
+export type AiGatewayVirtualModelConfigServiceTierEnumKey =
+	(typeof aiGatewayVirtualModelConfigServiceTierEnum)[keyof typeof aiGatewayVirtualModelConfigServiceTierEnum];
+
 export const aiGatewayVirtualModelConfigSortEnum = {
 	cost: "cost",
 	latency: "latency",
@@ -50,88 +67,144 @@ export const aiGatewayVirtualModelConfigSortEnum = {
 export type AiGatewayVirtualModelConfigSortEnumKey =
 	(typeof aiGatewayVirtualModelConfigSortEnum)[keyof typeof aiGatewayVirtualModelConfigSortEnum];
 
-export const aiGatewayVirtualModelConfigHasEnum = {
-	"implicit-caching": "implicit-caching",
-	vision: "vision",
-} as const;
-
-export type AiGatewayVirtualModelConfigHasEnumKey =
-	(typeof aiGatewayVirtualModelConfigHasEnum)[keyof typeof aiGatewayVirtualModelConfigHasEnum];
-
-export const aiGatewayVirtualModelConfigServiceTierEnum = {
-	fast: "fast",
-	flex: "flex",
-	priority: "priority",
-} as const;
-
-export type AiGatewayVirtualModelConfigServiceTierEnumKey =
-	(typeof aiGatewayVirtualModelConfigServiceTierEnum)[keyof typeof aiGatewayVirtualModelConfigServiceTierEnum];
-
 /**
  * @description Public response shape for virtual model configs. Used so OpenAPI generation can avoid ElectroDB\'s recursive EntityItem types.
  * @type object
  */
 export type AiGatewayVirtualModelConfig = {
 	/**
-	 * @description Team (owner) that owns this VMC.
-	 * @type string
+	 * @description Allow fallback from fast to standard providers on failure.
+	 * @type boolean | undefined
 	 */
-	ownerId: string;
-	/**
-	 * @description Client-facing alias used as the model slug in Gateway calls.
-	 * @type string
-	 */
-	virtualModelSlug: string;
-	/**
-	 * @description Human-readable name for UI.
-	 * @type string | undefined
-	 */
-	displayName?: string | undefined;
-	/**
-	 * @description Optional description for UI.
-	 * @type string | undefined
-	 */
-	description?: string | undefined;
-	/**
-	 * @description Whether this VMC is soft-deleted.
-	 * @type boolean
-	 */
-	deleted: false | true;
-	/**
-	 * @description UI lifecycle status: draft, active, or archived.
-	 * @type string
-	 */
-	status: string;
-	/**
-	 * @description Visibility in listings: public, internal, or stealth.
-	 * @type string | undefined
-	 */
-	visibility?: string | undefined;
-	/**
-	 * @description User id that last updated this VMC.
-	 * @type string | undefined
-	 */
-	updatedBy?: string | undefined;
-	/**
-	 * @description VMC kind: alias, relay, or router.
-	 * @type string
-	 */
-	kind: string;
+	allowFallbackFromFast?: (false | true) | undefined;
 	/**
 	 * @description For kind=relay: URL the gateway forwards requests to as a transparent proxy.
 	 * @type string | undefined
 	 */
 	baseUrl?: string | undefined;
 	/**
+	 * @description BYOK credential IDs allowed for this VMC.
+	 * @type array | undefined
+	 */
+	byokCredentialIds?: string[] | undefined;
+	/**
+	 * @description Use caching if available.
+	 * @type string | undefined
+	 */
+	caching?: "auto" | undefined;
+	/**
+	 * @description Creation timestamp (epoch ms).
+	 * @type number
+	 */
+	createdAt: number;
+	/**
+	 * @description Whether this VMC is soft-deleted.
+	 * @type boolean
+	 */
+	deleted: false | true;
+	/**
+	 * @description Optional description for UI.
+	 * @type string | undefined
+	 */
+	description?: string | undefined;
+	/**
+	 * @description Only use providers that will not train on your prompts.
+	 * @type boolean | undefined
+	 */
+	disallowPromptTraining?: (false | true) | undefined;
+	/**
+	 * @description Human-readable name for UI.
+	 * @type string | undefined
+	 */
+	displayName?: string | undefined;
+	/**
+	 * @description Limit providers to those with these features.
+	 * @type array | undefined
+	 */
+	has?: AiGatewayVirtualModelConfigHasEnumKey[] | undefined;
+	/**
+	 * @description Only use HIPAA-compliant providers.
+	 * @type boolean | undefined
+	 */
+	hipaaCompliant?: (false | true) | undefined;
+	/**
+	 * @description Region pinned on the VMC for system-credential routing (alias/router only).
+	 * @type object | undefined
+	 */
+	inferenceRegion?:
+		| {
+				/**
+				 * @description Geo zone (e.g. \"us\", \"eu\").
+				 * @type string | undefined
+				 */
+				geoRegion?: string | undefined;
+				/**
+				 * @description Provider-specific region identifier.
+				 * @type string | undefined
+				 */
+				providerRegion?: string | undefined;
+				/**
+				 * @description Per-provider region overrides keyed by provider slug.
+				 * @type object | undefined
+				 */
+				providers?:
+					| {
+							[key: string]: {
+								/**
+								 * @description Geo zone (e.g. \"us\", \"eu\").
+								 * @type string | undefined
+								 */
+								geoRegion?: string | undefined;
+								/**
+								 * @description Provider-specific region identifier.
+								 * @type string | undefined
+								 */
+								providerRegion?: string | undefined;
+								/**
+								 * @description Pin scope: `specific` (one provider region), `zone` (geo zone), or `global`.
+								 * @type string | undefined
+								 */
+								scope?: ScopeEnumKey | undefined;
+							};
+					  }
+					| undefined;
+				/**
+				 * @description Pin scope: `specific` (one provider region), `zone` (geo zone), or `global`.
+				 * @type string | undefined
+				 */
+				scope?: AiGatewayVirtualModelConfigInferenceRegionScopeEnumKey | undefined;
+		  }
+		| undefined;
+	/**
 	 * @description The concrete model-provider instance this VMC resolves to.
 	 * @type string | undefined
 	 */
 	instanceId?: string | undefined;
 	/**
-	 * @description Ordered list of providers to try as fallbacks on failure.
+	 * @description VMC kind: alias, relay, or router.
+	 * @type string
+	 */
+	kind: string;
+	/**
+	 * @description For kind=router: ordered candidates, model slugs or router references. Otherwise: fallback models.
 	 * @type array | undefined
 	 */
-	providerOrder?: string[] | undefined;
+	models?: string[] | undefined;
+	/**
+	 * @description Canonical model slug this VMC maps to (e.g. \"creator/model\"). Not used by kind=router.
+	 * @type string | undefined
+	 */
+	modelSlug?: string | undefined;
+	/**
+	 * @description Observability tags attached to requests through this VMC.
+	 * @type array | undefined
+	 */
+	observabilityTags?: string[] | undefined;
+	/**
+	 * @description Team (owner) that owns this VMC.
+	 * @type string
+	 */
+	ownerId: string;
 	/**
 	 * @description Restrict routing to only these providers.
 	 * @type array | undefined
@@ -147,103 +220,10 @@ export type AiGatewayVirtualModelConfig = {
 		  }
 		| undefined;
 	/**
-	 * @description Region pinned on the VMC for system-credential routing (alias/router only).
-	 * @type object | undefined
-	 */
-	inferenceRegion?:
-		| {
-				/**
-				 * @description Per-provider region overrides keyed by provider slug.
-				 * @type object | undefined
-				 */
-				providers?:
-					| {
-							[key: string]: {
-								/**
-								 * @description Pin scope: `specific` (one provider region), `zone` (geo zone), or `global`.
-								 * @type string | undefined
-								 */
-								scope?: ScopeEnumKey | undefined;
-								/**
-								 * @description Geo zone (e.g. \"us\", \"eu\").
-								 * @type string | undefined
-								 */
-								geoRegion?: string | undefined;
-								/**
-								 * @description Provider-specific region identifier.
-								 * @type string | undefined
-								 */
-								providerRegion?: string | undefined;
-							};
-					  }
-					| undefined;
-				/**
-				 * @description Pin scope: `specific` (one provider region), `zone` (geo zone), or `global`.
-				 * @type string | undefined
-				 */
-				scope?: AiGatewayVirtualModelConfigInferenceRegionScopeEnumKey | undefined;
-				/**
-				 * @description Geo zone (e.g. \"us\", \"eu\").
-				 * @type string | undefined
-				 */
-				geoRegion?: string | undefined;
-				/**
-				 * @description Provider-specific region identifier.
-				 * @type string | undefined
-				 */
-				providerRegion?: string | undefined;
-		  }
-		| undefined;
-	/**
-	 * @description Canonical model slug this VMC maps to (e.g. \"creator/model\"). Not used by kind=router.
-	 * @type string | undefined
-	 */
-	modelSlug?: string | undefined;
-	/**
-	 * @description For kind=router: ordered candidates, model slugs or router references. Otherwise: fallback models.
+	 * @description Ordered list of providers to try as fallbacks on failure.
 	 * @type array | undefined
 	 */
-	models?: string[] | undefined;
-	/**
-	 * @description For kind=router: how to order candidates.
-	 * @type string | undefined
-	 */
-	selector?: AiGatewayVirtualModelConfigSelectorEnumKey | undefined;
-	/**
-	 * @description For kind=router: capability tags a candidate must have.
-	 * @type array | undefined
-	 */
-	requires?: string[] | undefined;
-	/**
-	 * @description BYOK credential IDs allowed for this VMC.
-	 * @type array | undefined
-	 */
-	byokCredentialIds?: string[] | undefined;
-	/**
-	 * @description Observability tags attached to requests through this VMC.
-	 * @type array | undefined
-	 */
-	observabilityTags?: string[] | undefined;
-	/**
-	 * @description Rank eligible providers by an attribute.
-	 * @type string | undefined
-	 */
-	sort?: AiGatewayVirtualModelConfigSortEnumKey | undefined;
-	/**
-	 * @description Limit providers to those with these features.
-	 * @type array | undefined
-	 */
-	has?: AiGatewayVirtualModelConfigHasEnumKey[] | undefined;
-	/**
-	 * @description Use caching if available.
-	 * @type string | undefined
-	 */
-	caching?: "auto" | undefined;
-	/**
-	 * @description Service tier for providers that support it.
-	 * @type string | undefined
-	 */
-	serviceTier?: AiGatewayVirtualModelConfigServiceTierEnumKey | undefined;
+	providerOrder?: string[] | undefined;
 	/**
 	 * @description Per-request provider timeouts in ms, keyed by provider slug for BYOK credentials.
 	 * @type object | undefined
@@ -258,53 +238,73 @@ export type AiGatewayVirtualModelConfig = {
 		  }
 		| undefined;
 	/**
-	 * @description Only use providers with zero data retention.
-	 * @type boolean | undefined
+	 * @description For kind=router: capability tags a candidate must have.
+	 * @type array | undefined
 	 */
-	zeroDataRetention?: (false | true) | undefined;
+	requires?: string[] | undefined;
 	/**
-	 * @description Only use HIPAA-compliant providers.
-	 * @type boolean | undefined
+	 * @description For kind=router: how to order candidates.
+	 * @type string | undefined
 	 */
-	hipaaCompliant?: (false | true) | undefined;
+	selector?: AiGatewayVirtualModelConfigSelectorEnumKey | undefined;
 	/**
-	 * @description Only use providers that will not train on your prompts.
-	 * @type boolean | undefined
+	 * @description Service tier for providers that support it.
+	 * @type string | undefined
 	 */
-	disallowPromptTraining?: (false | true) | undefined;
+	serviceTier?: AiGatewayVirtualModelConfigServiceTierEnumKey | undefined;
+	/**
+	 * @description Rank eligible providers by an attribute.
+	 * @type string | undefined
+	 */
+	sort?: AiGatewayVirtualModelConfigSortEnumKey | undefined;
 	/**
 	 * @description Only use fastest providers with short timeouts.
 	 * @type string | undefined
 	 */
 	speed?: "fast" | undefined;
 	/**
-	 * @description Allow fallback from fast to standard providers on failure.
-	 * @type boolean | undefined
+	 * @description UI lifecycle status: draft, active, or archived.
+	 * @type string
 	 */
-	allowFallbackFromFast?: (false | true) | undefined;
-	/**
-	 * @description Creation timestamp (epoch ms).
-	 * @type number
-	 */
-	createdAt: number;
+	status: string;
 	/**
 	 * @description Last update timestamp (epoch ms).
 	 * @type number
 	 */
 	updatedAt: number;
+	/**
+	 * @description User id that last updated this VMC.
+	 * @type string | undefined
+	 */
+	updatedBy?: string | undefined;
+	/**
+	 * @description Client-facing alias used as the model slug in Gateway calls.
+	 * @type string
+	 */
+	virtualModelSlug: string;
+	/**
+	 * @description Visibility in listings: public, internal, or stealth.
+	 * @type string | undefined
+	 */
+	visibility?: string | undefined;
+	/**
+	 * @description Only use providers with zero data retention.
+	 * @type boolean | undefined
+	 */
+	zeroDataRetention?: (false | true) | undefined;
 };
 
 export type AiGatewayVirtualModelConfigList = {
-	/**
-	 * @description The page of VMCs.
-	 * @type array
-	 */
-	virtualModelConfigs: unknown[];
 	/**
 	 * @description Cursor for the next page, or null when no more pages remain.
 	 * @type string
 	 */
 	cursor: string | null;
+	/**
+	 * @description The page of VMCs.
+	 * @type array
+	 */
+	virtualModelConfigs: unknown[];
 };
 
 export const aiGatewayRuleTypeEnum = {
@@ -320,27 +320,27 @@ export type AiGatewayRuleTypeEnumKey =
  * @type object
  */
 export type AiGatewayRule = {
-	ownerId: string;
-	ruleId: string;
-	type: AiGatewayRuleTypeEnumKey;
+	action?:
+		| {
+				reason?: string | undefined;
+				rewriteModel?: string | undefined;
+		  }
+		| undefined;
+	createdAt: number;
+	createdBy?: string | undefined;
+	deleted?: (false | true) | undefined;
+	description?: string | undefined;
+	enabled: false | true;
 	match?:
 		| {
 				model?: string | undefined;
 		  }
 		| undefined;
-	action?:
-		| {
-				rewriteModel?: string | undefined;
-				reason?: string | undefined;
-		  }
-		| undefined;
-	enabled: false | true;
-	deleted?: (false | true) | undefined;
-	description?: string | undefined;
-	createdBy?: string | undefined;
-	updatedBy?: string | undefined;
-	createdAt: number;
+	ownerId: string;
+	ruleId: string;
+	type: AiGatewayRuleTypeEnumKey;
 	updatedAt: number;
+	updatedBy?: string | undefined;
 };
 
 export type AiGatewayRuleList = {
@@ -470,6 +470,24 @@ export type PrivateLinkEndpointStatusEnumKey =
  */
 export type PrivateLinkEndpoint = {
 	/**
+	 * @description The regional DNS names assigned to the endpoint by AWS. Use these to reach the service when private DNS is not enabled.
+	 * @example ["vpce-0123456789abcdef0-a1b2c3d4.vpce-svc-0123456789abcdef0.us-east-1.vpce.amazonaws.com"]
+	 * @type array | undefined
+	 */
+	awsDnsEntries?: string[] | undefined;
+	/**
+	 * @description The AWS VPC endpoint service the endpoint connects to.
+	 * @example com.amazonaws.vpce.us-east-1.vpce-svc-0123456789abcdef0
+	 * @type string
+	 */
+	awsServiceName: string;
+	/**
+	 * @description Timestamp in milliseconds since the UNIX epoch for when the endpoint was created.
+	 * @example 1610963878358
+	 * @type number
+	 */
+	createdAt: number;
+	/**
 	 * @description The unique identifier of the PrivateLink endpoint.
 	 * @example ple_a1b2c3d4e5f6g7h8
 	 * @type string
@@ -482,47 +500,17 @@ export type PrivateLinkEndpoint = {
 	 */
 	name: string;
 	/**
-	 * @description The identifier of the team that owns the PrivateLink endpoint.
-	 * @example team_a1b2c3d4e5f6g7h8
-	 * @type string
+	 * @description The private DNS names of the endpoint service, populated when private DNS is enabled for the endpoint.
+	 * @example ["payments.internal.example.com"]
+	 * @type array | undefined
 	 */
-	teamId: string;
+	privateDnsNames?: string[] | undefined;
 	/**
 	 * @description The identifier of the project the PrivateLink endpoint belongs to.
 	 * @example prj_a1b2c3d4e5f6g7h8
 	 * @type string
 	 */
 	projectId: string;
-	/**
-	 * @description The Vercel region the endpoint is provisioned in.
-	 * @example iad1
-	 * @type string
-	 */
-	vercelRegion: string;
-	/**
-	 * @description The AWS VPC endpoint service the endpoint connects to.
-	 * @example com.amazonaws.vpce.us-east-1.vpce-svc-0123456789abcdef0
-	 * @type string
-	 */
-	awsServiceName: string;
-	/**
-	 * @description The identifier of the underlying AWS VPC endpoint. Absent until AWS has created the endpoint.
-	 * @example vpce-0123456789abcdef0
-	 * @type string | undefined
-	 */
-	vpcEndpointId?: string | undefined;
-	/**
-	 * @description The regional DNS names assigned to the endpoint by AWS. Use these to reach the service when private DNS is not enabled.
-	 * @example ["vpce-0123456789abcdef0-a1b2c3d4.vpce-svc-0123456789abcdef0.us-east-1.vpce.amazonaws.com"]
-	 * @type array | undefined
-	 */
-	awsDnsEntries?: string[] | undefined;
-	/**
-	 * @description The private DNS names of the endpoint service, populated when private DNS is enabled for the endpoint.
-	 * @example ["payments.internal.example.com"]
-	 * @type array | undefined
-	 */
-	privateDnsNames?: string[] | undefined;
 	/**
 	 * @description The current state of the endpoint. - `creating`: the endpoint is being created. - `pending-acceptance`: waiting for the endpoint service owner to accept the connection. Only occurs for services that require manual acceptance. - `provisioning`: the connection was accepted and AWS is finishing setup. - `available`: the endpoint is fully provisioned and ready to use. - `rejected`: the endpoint service owner rejected the connection. - `failed`: the endpoint could not be provisioned. - `deleting`: the endpoint is being deleted.
 	 * @example available
@@ -536,17 +524,56 @@ export type PrivateLinkEndpoint = {
 	 */
 	statusMessage?: string | undefined;
 	/**
-	 * @description Timestamp in milliseconds since the UNIX epoch for when the endpoint was created.
-	 * @example 1610963878358
-	 * @type number
+	 * @description The identifier of the team that owns the PrivateLink endpoint.
+	 * @example team_a1b2c3d4e5f6g7h8
+	 * @type string
 	 */
-	createdAt: number;
+	teamId: string;
 	/**
 	 * @description Timestamp in milliseconds since the UNIX epoch for when the endpoint was last updated.
 	 * @example 1610963878358
 	 * @type number
 	 */
 	updatedAt: number;
+	/**
+	 * @description The Vercel region the endpoint is provisioned in.
+	 * @example iad1
+	 * @type string
+	 */
+	vercelRegion: string;
+	/**
+	 * @description The identifier of the underlying AWS VPC endpoint. Absent until AWS has created the endpoint.
+	 * @example vpce-0123456789abcdef0
+	 * @type string | undefined
+	 */
+	vpcEndpointId?: string | undefined;
+};
+
+/**
+ * @description Destinations that incoming triggers should be forwarded to. Limited to 3 entries. Set the initial destination with `triggerDestination` during creation. Replace the complete set with `PATCH /v1/connect/connectors/{connector}/trigger-destinations`.
+ * @type object
+ */
+export type ConnectTriggerDestination = {
+	/**
+	 * @description Git branch used to select a preview deployment.
+	 * @type string | undefined
+	 */
+	branch?: string | undefined;
+	/**
+	 * @description Stable custom-environment ID to route this destination to. Mutually exclusive with `branch`; omitted destinations keep the legacy production behavior.
+	 * @type string | undefined
+	 */
+	customEnvironmentId?: string | undefined;
+	/**
+	 * @description Route path that receives the forwarded trigger request.
+	 * @type string | undefined
+	 */
+	path?: string | undefined;
+	/**
+	 * @description Vercel project that receives matching trigger requests.
+	 * @type string
+	 */
+	projectId: string;
 };
 
 /**
@@ -561,33 +588,6 @@ export type ConnectTriggerConfiguration = {
 	enabled: false | true;
 };
 
-/**
- * @description Destinations that incoming triggers should be forwarded to. Limited to 3 entries. Set the initial destination with `triggerDestination` during creation. Replace the complete set with `PATCH /v1/connect/connectors/{connector}/trigger-destinations`.
- * @type object
- */
-export type ConnectTriggerDestination = {
-	/**
-	 * @description Vercel project that receives matching trigger requests.
-	 * @type string
-	 */
-	projectId: string;
-	/**
-	 * @description Stable custom-environment ID to route this destination to. Mutually exclusive with `branch`; omitted destinations keep the legacy production behavior.
-	 * @type string | undefined
-	 */
-	customEnvironmentId?: string | undefined;
-	/**
-	 * @description Git branch used to select a preview deployment.
-	 * @type string | undefined
-	 */
-	branch?: string | undefined;
-	/**
-	 * @description Route path that receives the forwarded trigger request.
-	 * @type string | undefined
-	 */
-	path?: string | undefined;
-};
-
 export const connectConnectorCreationModeEnum = {
 	managed: "managed",
 	manual: "manual",
@@ -595,6 +595,15 @@ export const connectConnectorCreationModeEnum = {
 
 export type ConnectConnectorCreationModeEnumKey =
 	(typeof connectConnectorCreationModeEnum)[keyof typeof connectConnectorCreationModeEnum];
+
+export const connectConnectorSupportsIconEnum = {
+	false: false,
+	maybe: "maybe",
+	true: true,
+} as const;
+
+export type ConnectConnectorSupportsIconEnumKey =
+	(typeof connectConnectorSupportsIconEnum)[keyof typeof connectConnectorSupportsIconEnum];
 
 export const connectConnectorTypeEnum = {
 	"api-key": "api-key",
@@ -618,228 +627,16 @@ export const connectConnectorTypeEnum = {
 export type ConnectConnectorTypeEnumKey =
 	(typeof connectConnectorTypeEnum)[keyof typeof connectConnectorTypeEnum];
 
-export const connectConnectorSupportsIconEnum = {
-	false: false,
-	maybe: "maybe",
-	true: true,
-} as const;
-
-export type ConnectConnectorSupportsIconEnumKey =
-	(typeof connectConnectorSupportsIconEnum)[keyof typeof connectConnectorSupportsIconEnum];
-
 /**
  * @description A connector that defines how Vercel accesses an external service.
  * @type object
  */
 export type ConnectConnector = {
 	/**
-	 * @description Stable `scl_` connector ID. Use this value directly in `{connector}`.
-	 * @type string
-	 */
-	id: string;
-	/**
-	 * @description Team-scoped UID. URL-encode this value before using it in `{connector}`.
-	 * @type string
-	 */
-	uid: string;
-	/**
-	 * @description Installation used when a token request does not specify an installation.
-	 * @type string | undefined
-	 */
-	defaultInstallationId?: string | undefined;
-	/**
-	 * @description Creation time in epoch milliseconds.
-	 * @type number
-	 */
-	createdAt: number;
-	/**
-	 * @description Last update time in epoch milliseconds.
-	 * @type number
-	 */
-	updatedAt: number;
-	/**
-	 * @description Time when this connector started requiring reinstallation because an installation-affecting app-token grant changed.
-	 * @type number | undefined
-	 */
-	reinstallAt?: number | undefined;
-	/**
-	 * @description Whether the connector is known to have been edited since the app package it publishes to the provider was last built, so that package no longer matches it. Absent when it was not computed, or when the connector type publishes no such package. Derived on every read rather than marked at edit time, so reverting an edit clears it. Only reported by connector types that publish a package a user has to re-publish by hand — Microsoft Teams today.
-	 * @type boolean | undefined
-	 */
-	knownStale?: (false | true) | undefined;
-	/**
-	 * @description Principal that created the connector.
-	 */
-	createdBy?:
-		| (
-				| {
-						/**
-						 * @description Principal kind.
-						 * @type string
-						 */
-						type: "user";
-						/**
-						 * @description Vercel user ID.
-						 * @type string
-						 */
-						id: string;
-				  }
-				| {
-						/**
-						 * @description Principal kind.
-						 * @type string
-						 */
-						type: "project";
-						/**
-						 * @description Vercel project ID.
-						 * @type string
-						 */
-						id: string;
-						/**
-						 * @description Deployment environment of the project principal.
-						 */
-						environment: string;
-				  }
-		  )
-		| undefined;
-	/**
-	 * @description Principal that most recently updated the connector.
-	 */
-	updatedBy?:
-		| (
-				| {
-						/**
-						 * @description Principal kind.
-						 * @type string
-						 */
-						type: "user";
-						/**
-						 * @description Vercel user ID.
-						 * @type string
-						 */
-						id: string;
-				  }
-				| {
-						/**
-						 * @description Principal kind.
-						 * @type string
-						 */
-						type: "project";
-						/**
-						 * @description Vercel project ID.
-						 * @type string
-						 */
-						id: string;
-						/**
-						 * @description Deployment environment of the project principal.
-						 */
-						environment: string;
-				  }
-		  )
-		| undefined;
-	/**
-	 * @description How the connector row was originally created. New create paths stamp this explicitly; older rows may omit it.
-	 * @type string | undefined
-	 */
-	creationMode?: ConnectConnectorCreationModeEnumKey | undefined;
-	/**
-	 * @description Managed connector metadata exposed without leaking the manager connector or installation identifiers.
-	 * @type object | undefined
-	 */
-	managed?:
-		| {
-				/**
-				 * @description Whether Vercel synchronizes provider-side configuration.
-				 * @type boolean | undefined
-				 */
-				sync?: (false | true) | undefined;
-		  }
-		| undefined;
-	/**
-	 * @description Connector implementation type.
-	 * @type string
-	 */
-	type: ConnectConnectorTypeEnumKey;
-	/**
-	 * @description Best-effort identifier of the third-party service this connector represents, independent of `type`. Examples: `\'slack\'`, `\'mcp.linear.app\'`, and `\'auth.example.com\'`. Always present in API responses.
-	 * @type string
-	 */
-	service: string;
-	/**
-	 * @description The connection method this connector was created from, when the create request named one.
-	 * @type string | undefined
-	 */
-	connectionMethod?: string | undefined;
-	/**
-	 * @description Which of the service\'s products/surfaces this connector points at.
-	 * @type string | undefined
-	 */
-	target?: string | undefined;
-	/**
-	 * @description Connector name within the owning team.
-	 * @type string
-	 */
-	name: string;
-	/**
-	 * @description Human-readable connector name.
-	 * @type string
-	 */
-	displayName: string;
-	/**
-	 * @description Provider-side URL for viewing or managing the resource represented by the connector. The destination can be an app, account, phone line, or service instance, depending on the connector type.
-	 * @type string | undefined
-	 */
-	clientUrl?: (string | null) | undefined;
-	/**
-	 * @description Redirect URI registered with the third-party service for this connector, if any. Used by `startAuthorization`/`startInstallation` to replay the exact URI back to the provider\'s token endpoint. Absent on connectors created before this field was introduced; those callers fall back to the `https://connect.vercel.com/callback` default.
-	 * @type string | undefined
-	 */
-	redirectUri?: string | undefined;
-	/**
-	 * @description Human-readable name of the connector type.
-	 * @type string
-	 */
-	typeName: string;
-	/**
-	 * @description Icon identifier supplied by the connector type.
-	 * @type string | undefined
-	 */
-	typeIcon?: string | undefined;
-	/**
-	 * @description Public website for the connected service.
-	 * @type string | undefined
-	 */
-	website?: string | undefined;
-	/**
-	 * @description Developer website for the connected service.
-	 * @type string | undefined
-	 */
-	devsite?: string | undefined;
-	/**
-	 * @description Developer documentation for the connected service.
-	 * @type string | undefined
-	 */
-	docsite?: string | undefined;
-	/**
-	 * @description Connector branding icon. SHA-1 hash that resolves to the uploaded icon through the Vercel avatar service. Consumers render this with `https://vercel.com/api/www/avatar/{icon}`.
-	 * @type string | undefined
-	 */
-	icon?: string | undefined;
-	/**
-	 * @description Hex background color (e.g., `#000000`) for branding.
-	 * @type string | undefined
-	 */
-	backgroundColor?: string | undefined;
-	/**
 	 * @description Hex accent color (e.g., `#000000`) for branding.
 	 * @type string | undefined
 	 */
 	accentColor?: string | undefined;
-	/**
-	 * @description Token subject types supported by the connector.
-	 * @type array
-	 */
-	supportedSubjectTypes: string[];
 	/**
 	 * @description App-token capabilities and known grants for the connector.
 	 * @type object | undefined
@@ -852,15 +649,10 @@ export type ConnectConnector = {
 				 */
 				crossInstallation: false | true;
 				/**
-				 * @description Whether callers can narrow app-token grants per request.
-				 * @type boolean
+				 * @description Link to the page on the service where this connector\'s app-level permissions are declared and granted, when the service has one and it differs from `clientUrl`.
+				 * @type string | undefined
 				 */
-				supportsRefinement: false | true;
-				/**
-				 * @description Whether callers can request resource-specific app tokens.
-				 * @type boolean | undefined
-				 */
-				supportsResources?: (false | true) | undefined;
+				permissionsUrl?: string | undefined;
 				/**
 				 * @description True when changing app token grants requires reinstalling the app, so tokens cannot be partitioned independently by requester environment.
 				 * @type boolean | undefined
@@ -877,50 +669,160 @@ export type ConnectConnector = {
 				 */
 				supportedAuthorizationDetails?: string[] | undefined;
 				/**
-				 * @description Link to the page on the service where this connector\'s app-level permissions are declared and granted, when the service has one and it differs from `clientUrl`.
-				 * @type string | undefined
-				 */
-				permissionsUrl?: string | undefined;
-		  }
-		| undefined;
-	/**
-	 * @description User-token capabilities and known grants for the connector.
-	 * @type object | undefined
-	 */
-	userTokens?:
-		| {
-				/**
-				 * @description Whether one user token can be used across installations.
-				 * @type boolean
-				 */
-				crossInstallation: false | true;
-				/**
-				 * @description Whether callers can narrow user-token grants per request.
+				 * @description Whether callers can narrow app-token grants per request.
 				 * @type boolean
 				 */
 				supportsRefinement: false | true;
 				/**
-				 * @description Whether callers can request resource-specific user tokens.
+				 * @description Whether callers can request resource-specific app tokens.
 				 * @type boolean | undefined
 				 */
 				supportsResources?: (false | true) | undefined;
-				/**
-				 * @description Known allowed user-level scopes. For Slack this is the user scope set configured on the app; for OAuth it is the connector\'s enabled `userAuthorization.scopes` configuration.
-				 * @type array | undefined
-				 */
-				scopes?: string[] | undefined;
-				/**
-				 * @description Supported OAuth authorization-detail type names.
-				 * @type array | undefined
-				 */
-				supportedAuthorizationDetails?: string[] | undefined;
-				/**
-				 * @description User authorization is completed by the Connect consent screen submitting a credential instead of an OAuth redirect.
-				 * @type boolean | undefined
-				 */
-				manualCredentialInput?: (false | true) | undefined;
 		  }
 		| undefined;
+	/**
+	 * @description Hex background color (e.g., `#000000`) for branding.
+	 * @type string | undefined
+	 */
+	backgroundColor?: string | undefined;
+	/**
+	 * @description Provider-side URL for viewing or managing the resource represented by the connector. The destination can be an app, account, phone line, or service instance, depending on the connector type.
+	 * @type string | undefined
+	 */
+	clientUrl?: (string | null) | undefined;
+	/**
+	 * @description The connection method this connector was created from, when the create request named one.
+	 * @type string | undefined
+	 */
+	connectionMethod?: string | undefined;
+	/**
+	 * @description Creation time in epoch milliseconds.
+	 * @type number
+	 */
+	createdAt: number;
+	/**
+	 * @description Principal that created the connector.
+	 */
+	createdBy?:
+		| (
+				| {
+						/**
+						 * @description Vercel user ID.
+						 * @type string
+						 */
+						id: string;
+						/**
+						 * @description Principal kind.
+						 * @type string
+						 */
+						type: "user";
+				  }
+				| {
+						/**
+						 * @description Deployment environment of the project principal.
+						 */
+						environment: string;
+						/**
+						 * @description Vercel project ID.
+						 * @type string
+						 */
+						id: string;
+						/**
+						 * @description Principal kind.
+						 * @type string
+						 */
+						type: "project";
+				  }
+		  )
+		| undefined;
+	/**
+	 * @description How the connector row was originally created. New create paths stamp this explicitly; older rows may omit it.
+	 * @type string | undefined
+	 */
+	creationMode?: ConnectConnectorCreationModeEnumKey | undefined;
+	/**
+	 * @description Installation used when a token request does not specify an installation.
+	 * @type string | undefined
+	 */
+	defaultInstallationId?: string | undefined;
+	/**
+	 * @description Developer website for the connected service.
+	 * @type string | undefined
+	 */
+	devsite?: string | undefined;
+	/**
+	 * @description Human-readable connector name.
+	 * @type string
+	 */
+	displayName: string;
+	/**
+	 * @description Developer documentation for the connected service.
+	 * @type string | undefined
+	 */
+	docsite?: string | undefined;
+	/**
+	 * @description Known events this connector subscribes to (e.g. Slack bot events, GitHub webhook events). Names are type-specific and validated by the managed-create flow when forwarded to the third-party service.
+	 * @type array | undefined
+	 */
+	events?: string[] | undefined;
+	/**
+	 * @description Connector branding icon. SHA-1 hash that resolves to the uploaded icon through the Vercel avatar service. Consumers render this with `https://vercel.com/api/www/avatar/{icon}`.
+	 * @type string | undefined
+	 */
+	icon?: string | undefined;
+	/**
+	 * @description Stable `scl_` connector ID. Use this value directly in `{connector}`.
+	 * @type string
+	 */
+	id: string;
+	/**
+	 * @description Whether the connector is known to have been edited since the app package it publishes to the provider was last built, so that package no longer matches it. Absent when it was not computed, or when the connector type publishes no such package. Derived on every read rather than marked at edit time, so reverting an edit clears it. Only reported by connector types that publish a package a user has to re-publish by hand — Microsoft Teams today.
+	 * @type boolean | undefined
+	 */
+	knownStale?: (false | true) | undefined;
+	/**
+	 * @description Managed connector metadata exposed without leaking the manager connector or installation identifiers.
+	 * @type object | undefined
+	 */
+	managed?:
+		| {
+				/**
+				 * @description Whether Vercel synchronizes provider-side configuration.
+				 * @type boolean | undefined
+				 */
+				sync?: (false | true) | undefined;
+		  }
+		| undefined;
+	/**
+	 * @description Connector name within the owning team.
+	 * @type string
+	 */
+	name: string;
+	/**
+	 * @description Redirect URI registered with the third-party service for this connector, if any. Used by `startAuthorization`/`startInstallation` to replay the exact URI back to the provider\'s token endpoint. Absent on connectors created before this field was introduced; those callers fall back to the `https://connect.vercel.com/callback` default.
+	 * @type string | undefined
+	 */
+	redirectUri?: string | undefined;
+	/**
+	 * @description Time when this connector started requiring reinstallation because an installation-affecting app-token grant changed.
+	 * @type number | undefined
+	 */
+	reinstallAt?: number | undefined;
+	/**
+	 * @description Best-effort identifier of the third-party service this connector represents, independent of `type`. Examples: `\'slack\'`, `\'mcp.linear.app\'`, and `\'auth.example.com\'`. Always present in API responses.
+	 * @type string
+	 */
+	service: string;
+	/**
+	 * @description Token subject types supported by the connector.
+	 * @type array
+	 */
+	supportedSubjectTypes: string[];
+	/**
+	 * @description Whether the connector icon can propagate to the provider.
+	 * @type string
+	 */
+	supportsIcon: ConnectConnectorSupportsIconEnumKey;
 	/**
 	 * @description Whether the connector supports an installation flow.
 	 * @type boolean
@@ -937,25 +839,123 @@ export type ConnectConnector = {
 	 */
 	supportsTriggers: false | true;
 	/**
-	 * @description Whether the connector icon can propagate to the provider.
-	 * @type string
+	 * @description Which of the service\'s products/surfaces this connector points at.
+	 * @type string | undefined
 	 */
-	supportsIcon: ConnectConnectorSupportsIconEnumKey;
+	target?: string | undefined;
+	/**
+	 * @description Destinations that incoming triggers should be forwarded to. Limited to 3 entries. Set the initial destination with `triggerDestination` during creation. Replace the complete set with `PATCH /v1/connect/connectors/{connector}/trigger-destinations`.
+	 * @type array | undefined
+	 */
+	triggerDestinations?: unknown[] | undefined;
 	/**
 	 * @description Incoming trigger configuration for the connector.
 	 * @type unknown | undefined
 	 */
 	triggers?: unknown | undefined;
 	/**
-	 * @description Known events this connector subscribes to (e.g. Slack bot events, GitHub webhook events). Names are type-specific and validated by the managed-create flow when forwarded to the third-party service.
-	 * @type array | undefined
+	 * @description Connector implementation type.
+	 * @type string
 	 */
-	events?: string[] | undefined;
+	type: ConnectConnectorTypeEnumKey;
 	/**
-	 * @description Destinations that incoming triggers should be forwarded to. Limited to 3 entries. Set the initial destination with `triggerDestination` during creation. Replace the complete set with `PATCH /v1/connect/connectors/{connector}/trigger-destinations`.
-	 * @type array | undefined
+	 * @description Icon identifier supplied by the connector type.
+	 * @type string | undefined
 	 */
-	triggerDestinations?: unknown[] | undefined;
+	typeIcon?: string | undefined;
+	/**
+	 * @description Human-readable name of the connector type.
+	 * @type string
+	 */
+	typeName: string;
+	/**
+	 * @description Team-scoped UID. URL-encode this value before using it in `{connector}`.
+	 * @type string
+	 */
+	uid: string;
+	/**
+	 * @description Last update time in epoch milliseconds.
+	 * @type number
+	 */
+	updatedAt: number;
+	/**
+	 * @description Principal that most recently updated the connector.
+	 */
+	updatedBy?:
+		| (
+				| {
+						/**
+						 * @description Vercel user ID.
+						 * @type string
+						 */
+						id: string;
+						/**
+						 * @description Principal kind.
+						 * @type string
+						 */
+						type: "user";
+				  }
+				| {
+						/**
+						 * @description Deployment environment of the project principal.
+						 */
+						environment: string;
+						/**
+						 * @description Vercel project ID.
+						 * @type string
+						 */
+						id: string;
+						/**
+						 * @description Principal kind.
+						 * @type string
+						 */
+						type: "project";
+				  }
+		  )
+		| undefined;
+	/**
+	 * @description User-token capabilities and known grants for the connector.
+	 * @type object | undefined
+	 */
+	userTokens?:
+		| {
+				/**
+				 * @description Whether one user token can be used across installations.
+				 * @type boolean
+				 */
+				crossInstallation: false | true;
+				/**
+				 * @description User authorization is completed by the Connect consent screen submitting a credential instead of an OAuth redirect.
+				 * @type boolean | undefined
+				 */
+				manualCredentialInput?: (false | true) | undefined;
+				/**
+				 * @description Known allowed user-level scopes. For Slack this is the user scope set configured on the app; for OAuth it is the connector\'s enabled `userAuthorization.scopes` configuration.
+				 * @type array | undefined
+				 */
+				scopes?: string[] | undefined;
+				/**
+				 * @description Supported OAuth authorization-detail type names.
+				 * @type array | undefined
+				 */
+				supportedAuthorizationDetails?: string[] | undefined;
+				/**
+				 * @description Whether callers can narrow user-token grants per request.
+				 * @type boolean
+				 */
+				supportsRefinement: false | true;
+				/**
+				 * @description Whether callers can request resource-specific user tokens.
+				 * @type boolean | undefined
+				 */
+				supportsResources?: (false | true) | undefined;
+		  }
+		| undefined;
+	/**
+	 * @description Public website for the connected service.
+	 * @type string | undefined
+	 */
+	website?: string | undefined;
 };
 
 /**
@@ -995,6 +995,15 @@ export const connectConnectorCreateResultCreationModeEnum = {
 export type ConnectConnectorCreateResultCreationModeEnumKey =
 	(typeof connectConnectorCreateResultCreationModeEnum)[keyof typeof connectConnectorCreateResultCreationModeEnum];
 
+export const connectConnectorCreateResultSupportsIconEnum = {
+	false: false,
+	maybe: "maybe",
+	true: true,
+} as const;
+
+export type ConnectConnectorCreateResultSupportsIconEnumKey =
+	(typeof connectConnectorCreateResultSupportsIconEnum)[keyof typeof connectConnectorCreateResultSupportsIconEnum];
+
 export const connectConnectorCreateResultTypeEnum = {
 	"api-key": "api-key",
 	"aws-alpha": "aws-alpha",
@@ -1017,228 +1026,16 @@ export const connectConnectorCreateResultTypeEnum = {
 export type ConnectConnectorCreateResultTypeEnumKey =
 	(typeof connectConnectorCreateResultTypeEnum)[keyof typeof connectConnectorCreateResultTypeEnum];
 
-export const connectConnectorCreateResultSupportsIconEnum = {
-	false: false,
-	maybe: "maybe",
-	true: true,
-} as const;
-
-export type ConnectConnectorCreateResultSupportsIconEnumKey =
-	(typeof connectConnectorCreateResultSupportsIconEnum)[keyof typeof connectConnectorCreateResultSupportsIconEnum];
-
 /**
  * @description Connector created by the request.
  * @type object
  */
 export type ConnectConnectorCreateResult = {
 	/**
-	 * @description Stable `scl_` connector ID. Use this value directly in `{connector}`.
-	 * @type string
-	 */
-	id: string;
-	/**
-	 * @description Team-scoped UID. URL-encode this value before using it in `{connector}`.
-	 * @type string
-	 */
-	uid: string;
-	/**
-	 * @description Installation used when a token request does not specify an installation.
-	 * @type string | undefined
-	 */
-	defaultInstallationId?: string | undefined;
-	/**
-	 * @description Creation time in epoch milliseconds.
-	 * @type number
-	 */
-	createdAt: number;
-	/**
-	 * @description Last update time in epoch milliseconds.
-	 * @type number
-	 */
-	updatedAt: number;
-	/**
-	 * @description Time when this connector started requiring reinstallation because an installation-affecting app-token grant changed.
-	 * @type number | undefined
-	 */
-	reinstallAt?: number | undefined;
-	/**
-	 * @description Whether the connector is known to have been edited since the app package it publishes to the provider was last built, so that package no longer matches it. Absent when it was not computed, or when the connector type publishes no such package. Derived on every read rather than marked at edit time, so reverting an edit clears it. Only reported by connector types that publish a package a user has to re-publish by hand — Microsoft Teams today.
-	 * @type boolean | undefined
-	 */
-	knownStale?: (false | true) | undefined;
-	/**
-	 * @description Principal that created the connector.
-	 */
-	createdBy?:
-		| (
-				| {
-						/**
-						 * @description Principal kind.
-						 * @type string
-						 */
-						type: "user";
-						/**
-						 * @description Vercel user ID.
-						 * @type string
-						 */
-						id: string;
-				  }
-				| {
-						/**
-						 * @description Principal kind.
-						 * @type string
-						 */
-						type: "project";
-						/**
-						 * @description Vercel project ID.
-						 * @type string
-						 */
-						id: string;
-						/**
-						 * @description Deployment environment of the project principal.
-						 */
-						environment: string;
-				  }
-		  )
-		| undefined;
-	/**
-	 * @description Principal that most recently updated the connector.
-	 */
-	updatedBy?:
-		| (
-				| {
-						/**
-						 * @description Principal kind.
-						 * @type string
-						 */
-						type: "user";
-						/**
-						 * @description Vercel user ID.
-						 * @type string
-						 */
-						id: string;
-				  }
-				| {
-						/**
-						 * @description Principal kind.
-						 * @type string
-						 */
-						type: "project";
-						/**
-						 * @description Vercel project ID.
-						 * @type string
-						 */
-						id: string;
-						/**
-						 * @description Deployment environment of the project principal.
-						 */
-						environment: string;
-				  }
-		  )
-		| undefined;
-	/**
-	 * @description How the connector row was originally created. New create paths stamp this explicitly; older rows may omit it.
-	 * @type string | undefined
-	 */
-	creationMode?: ConnectConnectorCreateResultCreationModeEnumKey | undefined;
-	/**
-	 * @description Managed connector metadata exposed without leaking the manager connector or installation identifiers.
-	 * @type object | undefined
-	 */
-	managed?:
-		| {
-				/**
-				 * @description Whether Vercel synchronizes provider-side configuration.
-				 * @type boolean | undefined
-				 */
-				sync?: (false | true) | undefined;
-		  }
-		| undefined;
-	/**
-	 * @description Connector implementation type.
-	 * @type string
-	 */
-	type: ConnectConnectorCreateResultTypeEnumKey;
-	/**
-	 * @description Best-effort identifier of the third-party service this connector represents, independent of `type`. Examples: `\'slack\'`, `\'mcp.linear.app\'`, and `\'auth.example.com\'`. Always present in API responses.
-	 * @type string
-	 */
-	service: string;
-	/**
-	 * @description The connection method this connector was created from, when the create request named one.
-	 * @type string | undefined
-	 */
-	connectionMethod?: string | undefined;
-	/**
-	 * @description Which of the service\'s products/surfaces this connector points at.
-	 * @type string | undefined
-	 */
-	target?: string | undefined;
-	/**
-	 * @description Connector name within the owning team.
-	 * @type string
-	 */
-	name: string;
-	/**
-	 * @description Human-readable connector name.
-	 * @type string
-	 */
-	displayName: string;
-	/**
-	 * @description Provider-side URL for viewing or managing the resource represented by the connector. The destination can be an app, account, phone line, or service instance, depending on the connector type.
-	 * @type string | undefined
-	 */
-	clientUrl?: (string | null) | undefined;
-	/**
-	 * @description Redirect URI registered with the third-party service for this connector, if any. Used by `startAuthorization`/`startInstallation` to replay the exact URI back to the provider\'s token endpoint. Absent on connectors created before this field was introduced; those callers fall back to the `https://connect.vercel.com/callback` default.
-	 * @type string | undefined
-	 */
-	redirectUri?: string | undefined;
-	/**
-	 * @description Human-readable name of the connector type.
-	 * @type string
-	 */
-	typeName: string;
-	/**
-	 * @description Icon identifier supplied by the connector type.
-	 * @type string | undefined
-	 */
-	typeIcon?: string | undefined;
-	/**
-	 * @description Public website for the connected service.
-	 * @type string | undefined
-	 */
-	website?: string | undefined;
-	/**
-	 * @description Developer website for the connected service.
-	 * @type string | undefined
-	 */
-	devsite?: string | undefined;
-	/**
-	 * @description Developer documentation for the connected service.
-	 * @type string | undefined
-	 */
-	docsite?: string | undefined;
-	/**
-	 * @description Connector branding icon. SHA-1 hash that resolves to the uploaded icon through the Vercel avatar service. Consumers render this with `https://vercel.com/api/www/avatar/{icon}`.
-	 * @type string | undefined
-	 */
-	icon?: string | undefined;
-	/**
-	 * @description Hex background color (e.g., `#000000`) for branding.
-	 * @type string | undefined
-	 */
-	backgroundColor?: string | undefined;
-	/**
 	 * @description Hex accent color (e.g., `#000000`) for branding.
 	 * @type string | undefined
 	 */
 	accentColor?: string | undefined;
-	/**
-	 * @description Token subject types supported by the connector.
-	 * @type array
-	 */
-	supportedSubjectTypes: string[];
 	/**
 	 * @description App-token capabilities and known grants for the connector.
 	 * @type object | undefined
@@ -1251,15 +1048,10 @@ export type ConnectConnectorCreateResult = {
 				 */
 				crossInstallation: false | true;
 				/**
-				 * @description Whether callers can narrow app-token grants per request.
-				 * @type boolean
+				 * @description Link to the page on the service where this connector\'s app-level permissions are declared and granted, when the service has one and it differs from `clientUrl`.
+				 * @type string | undefined
 				 */
-				supportsRefinement: false | true;
-				/**
-				 * @description Whether callers can request resource-specific app tokens.
-				 * @type boolean | undefined
-				 */
-				supportsResources?: (false | true) | undefined;
+				permissionsUrl?: string | undefined;
 				/**
 				 * @description True when changing app token grants requires reinstalling the app, so tokens cannot be partitioned independently by requester environment.
 				 * @type boolean | undefined
@@ -1276,50 +1068,160 @@ export type ConnectConnectorCreateResult = {
 				 */
 				supportedAuthorizationDetails?: string[] | undefined;
 				/**
-				 * @description Link to the page on the service where this connector\'s app-level permissions are declared and granted, when the service has one and it differs from `clientUrl`.
-				 * @type string | undefined
-				 */
-				permissionsUrl?: string | undefined;
-		  }
-		| undefined;
-	/**
-	 * @description User-token capabilities and known grants for the connector.
-	 * @type object | undefined
-	 */
-	userTokens?:
-		| {
-				/**
-				 * @description Whether one user token can be used across installations.
-				 * @type boolean
-				 */
-				crossInstallation: false | true;
-				/**
-				 * @description Whether callers can narrow user-token grants per request.
+				 * @description Whether callers can narrow app-token grants per request.
 				 * @type boolean
 				 */
 				supportsRefinement: false | true;
 				/**
-				 * @description Whether callers can request resource-specific user tokens.
+				 * @description Whether callers can request resource-specific app tokens.
 				 * @type boolean | undefined
 				 */
 				supportsResources?: (false | true) | undefined;
-				/**
-				 * @description Known allowed user-level scopes. For Slack this is the user scope set configured on the app; for OAuth it is the connector\'s enabled `userAuthorization.scopes` configuration.
-				 * @type array | undefined
-				 */
-				scopes?: string[] | undefined;
-				/**
-				 * @description Supported OAuth authorization-detail type names.
-				 * @type array | undefined
-				 */
-				supportedAuthorizationDetails?: string[] | undefined;
-				/**
-				 * @description User authorization is completed by the Connect consent screen submitting a credential instead of an OAuth redirect.
-				 * @type boolean | undefined
-				 */
-				manualCredentialInput?: (false | true) | undefined;
 		  }
 		| undefined;
+	/**
+	 * @description Hex background color (e.g., `#000000`) for branding.
+	 * @type string | undefined
+	 */
+	backgroundColor?: string | undefined;
+	/**
+	 * @description Provider-side URL for viewing or managing the resource represented by the connector. The destination can be an app, account, phone line, or service instance, depending on the connector type.
+	 * @type string | undefined
+	 */
+	clientUrl?: (string | null) | undefined;
+	/**
+	 * @description The connection method this connector was created from, when the create request named one.
+	 * @type string | undefined
+	 */
+	connectionMethod?: string | undefined;
+	/**
+	 * @description Creation time in epoch milliseconds.
+	 * @type number
+	 */
+	createdAt: number;
+	/**
+	 * @description Principal that created the connector.
+	 */
+	createdBy?:
+		| (
+				| {
+						/**
+						 * @description Vercel user ID.
+						 * @type string
+						 */
+						id: string;
+						/**
+						 * @description Principal kind.
+						 * @type string
+						 */
+						type: "user";
+				  }
+				| {
+						/**
+						 * @description Deployment environment of the project principal.
+						 */
+						environment: string;
+						/**
+						 * @description Vercel project ID.
+						 * @type string
+						 */
+						id: string;
+						/**
+						 * @description Principal kind.
+						 * @type string
+						 */
+						type: "project";
+				  }
+		  )
+		| undefined;
+	/**
+	 * @description How the connector row was originally created. New create paths stamp this explicitly; older rows may omit it.
+	 * @type string | undefined
+	 */
+	creationMode?: ConnectConnectorCreateResultCreationModeEnumKey | undefined;
+	/**
+	 * @description Installation used when a token request does not specify an installation.
+	 * @type string | undefined
+	 */
+	defaultInstallationId?: string | undefined;
+	/**
+	 * @description Developer website for the connected service.
+	 * @type string | undefined
+	 */
+	devsite?: string | undefined;
+	/**
+	 * @description Human-readable connector name.
+	 * @type string
+	 */
+	displayName: string;
+	/**
+	 * @description Developer documentation for the connected service.
+	 * @type string | undefined
+	 */
+	docsite?: string | undefined;
+	/**
+	 * @description Known events this connector subscribes to (e.g. Slack bot events, GitHub webhook events). Names are type-specific and validated by the managed-create flow when forwarded to the third-party service.
+	 * @type array | undefined
+	 */
+	events?: string[] | undefined;
+	/**
+	 * @description Connector branding icon. SHA-1 hash that resolves to the uploaded icon through the Vercel avatar service. Consumers render this with `https://vercel.com/api/www/avatar/{icon}`.
+	 * @type string | undefined
+	 */
+	icon?: string | undefined;
+	/**
+	 * @description Stable `scl_` connector ID. Use this value directly in `{connector}`.
+	 * @type string
+	 */
+	id: string;
+	/**
+	 * @description Whether the connector is known to have been edited since the app package it publishes to the provider was last built, so that package no longer matches it. Absent when it was not computed, or when the connector type publishes no such package. Derived on every read rather than marked at edit time, so reverting an edit clears it. Only reported by connector types that publish a package a user has to re-publish by hand — Microsoft Teams today.
+	 * @type boolean | undefined
+	 */
+	knownStale?: (false | true) | undefined;
+	/**
+	 * @description Managed connector metadata exposed without leaking the manager connector or installation identifiers.
+	 * @type object | undefined
+	 */
+	managed?:
+		| {
+				/**
+				 * @description Whether Vercel synchronizes provider-side configuration.
+				 * @type boolean | undefined
+				 */
+				sync?: (false | true) | undefined;
+		  }
+		| undefined;
+	/**
+	 * @description Connector name within the owning team.
+	 * @type string
+	 */
+	name: string;
+	/**
+	 * @description Redirect URI registered with the third-party service for this connector, if any. Used by `startAuthorization`/`startInstallation` to replay the exact URI back to the provider\'s token endpoint. Absent on connectors created before this field was introduced; those callers fall back to the `https://connect.vercel.com/callback` default.
+	 * @type string | undefined
+	 */
+	redirectUri?: string | undefined;
+	/**
+	 * @description Time when this connector started requiring reinstallation because an installation-affecting app-token grant changed.
+	 * @type number | undefined
+	 */
+	reinstallAt?: number | undefined;
+	/**
+	 * @description Best-effort identifier of the third-party service this connector represents, independent of `type`. Examples: `\'slack\'`, `\'mcp.linear.app\'`, and `\'auth.example.com\'`. Always present in API responses.
+	 * @type string
+	 */
+	service: string;
+	/**
+	 * @description Token subject types supported by the connector.
+	 * @type array
+	 */
+	supportedSubjectTypes: string[];
+	/**
+	 * @description Whether the connector icon can propagate to the provider.
+	 * @type string
+	 */
+	supportsIcon: ConnectConnectorCreateResultSupportsIconEnumKey;
 	/**
 	 * @description Whether the connector supports an installation flow.
 	 * @type boolean
@@ -1336,25 +1238,123 @@ export type ConnectConnectorCreateResult = {
 	 */
 	supportsTriggers: false | true;
 	/**
-	 * @description Whether the connector icon can propagate to the provider.
-	 * @type string
+	 * @description Which of the service\'s products/surfaces this connector points at.
+	 * @type string | undefined
 	 */
-	supportsIcon: ConnectConnectorCreateResultSupportsIconEnumKey;
+	target?: string | undefined;
+	/**
+	 * @description Destinations that incoming triggers should be forwarded to. Limited to 3 entries. Set the initial destination with `triggerDestination` during creation. Replace the complete set with `PATCH /v1/connect/connectors/{connector}/trigger-destinations`.
+	 * @type array | undefined
+	 */
+	triggerDestinations?: unknown[] | undefined;
 	/**
 	 * @description Incoming trigger configuration for the connector.
 	 * @type unknown | undefined
 	 */
 	triggers?: unknown | undefined;
 	/**
-	 * @description Known events this connector subscribes to (e.g. Slack bot events, GitHub webhook events). Names are type-specific and validated by the managed-create flow when forwarded to the third-party service.
-	 * @type array | undefined
+	 * @description Connector implementation type.
+	 * @type string
 	 */
-	events?: string[] | undefined;
+	type: ConnectConnectorCreateResultTypeEnumKey;
 	/**
-	 * @description Destinations that incoming triggers should be forwarded to. Limited to 3 entries. Set the initial destination with `triggerDestination` during creation. Replace the complete set with `PATCH /v1/connect/connectors/{connector}/trigger-destinations`.
-	 * @type array | undefined
+	 * @description Icon identifier supplied by the connector type.
+	 * @type string | undefined
 	 */
-	triggerDestinations?: unknown[] | undefined;
+	typeIcon?: string | undefined;
+	/**
+	 * @description Human-readable name of the connector type.
+	 * @type string
+	 */
+	typeName: string;
+	/**
+	 * @description Team-scoped UID. URL-encode this value before using it in `{connector}`.
+	 * @type string
+	 */
+	uid: string;
+	/**
+	 * @description Last update time in epoch milliseconds.
+	 * @type number
+	 */
+	updatedAt: number;
+	/**
+	 * @description Principal that most recently updated the connector.
+	 */
+	updatedBy?:
+		| (
+				| {
+						/**
+						 * @description Vercel user ID.
+						 * @type string
+						 */
+						id: string;
+						/**
+						 * @description Principal kind.
+						 * @type string
+						 */
+						type: "user";
+				  }
+				| {
+						/**
+						 * @description Deployment environment of the project principal.
+						 */
+						environment: string;
+						/**
+						 * @description Vercel project ID.
+						 * @type string
+						 */
+						id: string;
+						/**
+						 * @description Principal kind.
+						 * @type string
+						 */
+						type: "project";
+				  }
+		  )
+		| undefined;
+	/**
+	 * @description User-token capabilities and known grants for the connector.
+	 * @type object | undefined
+	 */
+	userTokens?:
+		| {
+				/**
+				 * @description Whether one user token can be used across installations.
+				 * @type boolean
+				 */
+				crossInstallation: false | true;
+				/**
+				 * @description User authorization is completed by the Connect consent screen submitting a credential instead of an OAuth redirect.
+				 * @type boolean | undefined
+				 */
+				manualCredentialInput?: (false | true) | undefined;
+				/**
+				 * @description Known allowed user-level scopes. For Slack this is the user scope set configured on the app; for OAuth it is the connector\'s enabled `userAuthorization.scopes` configuration.
+				 * @type array | undefined
+				 */
+				scopes?: string[] | undefined;
+				/**
+				 * @description Supported OAuth authorization-detail type names.
+				 * @type array | undefined
+				 */
+				supportedAuthorizationDetails?: string[] | undefined;
+				/**
+				 * @description Whether callers can narrow user-token grants per request.
+				 * @type boolean
+				 */
+				supportsRefinement: false | true;
+				/**
+				 * @description Whether callers can request resource-specific user tokens.
+				 * @type boolean | undefined
+				 */
+				supportsResources?: (false | true) | undefined;
+		  }
+		| undefined;
+	/**
+	 * @description Public website for the connected service.
+	 * @type string | undefined
+	 */
+	website?: string | undefined;
 };
 
 export const connectConnectorCreateDataServerConfigJwksKeysUseEnum = {
@@ -2505,15 +2505,15 @@ export type ConnectReconsent = {
  */
 export type ConnectServiceSyncError = {
 	/**
-	 * @description Human-readable provider synchronization error.
-	 * @type string
-	 */
-	message: string;
-	/**
 	 * @description Connector fields that caused the synchronization error.
 	 * @type array | undefined
 	 */
 	fields?: string[] | undefined;
+	/**
+	 * @description Human-readable provider synchronization error.
+	 * @type string
+	 */
+	message: string;
 	/**
 	 * @description Provider-specific error details that are safe to expose.
 	 * @type object | undefined
@@ -2539,15 +2539,15 @@ export type ConnectServiceSyncStatusEnumKey =
  */
 export type ConnectServiceSync = {
 	/**
-	 * @description done means the external service was updated. required means the Vercel update was saved, but provider-side configuration still needs attention.
-	 * @type string
-	 */
-	status: ConnectServiceSyncStatusEnumKey;
-	/**
 	 * @description Provider synchronization errors. Present when serviceSync.status is required.
 	 * @type array | undefined
 	 */
 	errors?: unknown[] | undefined;
+	/**
+	 * @description done means the external service was updated. required means the Vercel update was saved, but provider-side configuration still needs attention.
+	 * @type string
+	 */
+	status: ConnectServiceSyncStatusEnumKey;
 };
 
 /**
@@ -2561,15 +2561,15 @@ export type ConnectConnectorUpdateResult = {
 	 */
 	connector: unknown;
 	/**
-	 * @description When true, prompt a team owner or administrator to reinstall the connector before relying on the change.
-	 * @type boolean | undefined
-	 */
-	reinstallNeeded?: (false | true) | undefined;
-	/**
 	 * @description Present when affected users must authorize the connector\'s new permissions.
 	 * @type unknown | undefined
 	 */
 	reconsentNeeded?: unknown | undefined;
+	/**
+	 * @description When true, prompt a team owner or administrator to reinstall the connector before relying on the change.
+	 * @type boolean | undefined
+	 */
+	reinstallNeeded?: (false | true) | undefined;
 	/**
 	 * @description Result of synchronizing the change with the external service.
 	 * @type unknown | undefined
@@ -3660,20 +3660,20 @@ export type ConnectProjectConnection = {
 	 */
 	connectorId: string;
 	/**
+	 * @description Time when the project connection was created, in epoch milliseconds.
+	 * @type number
+	 */
+	createdAt: number;
+	/**
+	 * @description Environments where the connector is enabled for the project.
+	 * @type array
+	 */
+	enabledEnvironments: string[];
+	/**
 	 * @description Vercel project connected to the connector.
 	 * @type object
 	 */
 	project: {
-		/**
-		 * @description Same Vercel project ID as the connection\'s top-level `projectId`.
-		 * @type string
-		 */
-		id: string;
-		/**
-		 * @description Current Vercel project name.
-		 * @type string
-		 */
-		name: string;
 		/**
 		 * @description Custom environments available on the project. This list can include environments where the connector is not enabled.
 		 * @type array | undefined
@@ -3692,17 +3692,17 @@ export type ConnectProjectConnection = {
 					slug: string;
 			  }[]
 			| undefined;
+		/**
+		 * @description Same Vercel project ID as the connection\'s top-level `projectId`.
+		 * @type string
+		 */
+		id: string;
+		/**
+		 * @description Current Vercel project name.
+		 * @type string
+		 */
+		name: string;
 	};
-	/**
-	 * @description Environments where the connector is enabled for the project.
-	 * @type array
-	 */
-	enabledEnvironments: string[];
-	/**
-	 * @description Time when the project connection was created, in epoch milliseconds.
-	 * @type number
-	 */
-	createdAt: number;
 	/**
 	 * @description Time when the project connection was last updated, in epoch milliseconds.
 	 * @type number
@@ -3716,15 +3716,15 @@ export type ConnectProjectConnection = {
  */
 export type ConnectConnectorProjectConnectionList = {
 	/**
-	 * @description Project connections in this page.
-	 * @type array
-	 */
-	projects: unknown[];
-	/**
 	 * @description Cursor for the next page.
 	 * @type unknown
 	 */
 	pagination: unknown;
+	/**
+	 * @description Project connections in this page.
+	 * @type array
+	 */
+	projects: unknown[];
 };
 
 /**
@@ -4287,12 +4287,12 @@ export type GlobalConfigItemValue =
  * @type object
  */
 export type GlobalConfigItem = {
-	key: string;
-	value: unknown;
+	createdAt: number;
 	description?: string | undefined;
 	edgeConfigId: string;
-	createdAt: number;
+	key: string;
 	updatedAt: number;
+	value: unknown;
 };
 
 /**
@@ -4300,25 +4300,54 @@ export type GlobalConfigItem = {
  * @type object
  */
 export type GlobalConfigToken = {
-	/**
-	 * @description A partially-masked representation of the token, safe to display in UIs. The format is the first 3 characters of the token followed by a fixed 8-character `*` mask (e.g. `550e8400-e29b-41d4-a716-446655440000` → `550********`). The mask length is intentionally fixed (not proportional to the original token length) to avoid leaking the token length. Prefer this field for display/reference in UIs and logs. The full, plaintext token is only disclosed once at creation time via `POST /v1/edge-config/:edgeConfigId/token`; use `id` to reference a token in subsequent calls (e.g. when deleting).
-	 * @type string
-	 */
-	partialToken: string;
-	label: string;
+	createdAt: number;
+	edgeConfigId: string;
 	/**
 	 * @description This is not the token itself, but rather an id to identify the token by
 	 * @type string
 	 */
 	id: string;
-	edgeConfigId: string;
-	createdAt: number;
+	label: string;
+	/**
+	 * @description A partially-masked representation of the token, safe to display in UIs. The format is the first 3 characters of the token followed by a fixed 8-character `*` mask (e.g. `550e8400-e29b-41d4-a716-446655440000` → `550********`). The mask length is intentionally fixed (not proportional to the original token length) to avoid leaking the token length. Prefer this field for display/reference in UIs and logs. The full, plaintext token is only disclosed once at creation time via `POST /v1/edge-config/:edgeConfigId/token`; use `id` to reference a token in subsequent calls (e.g. when deleting).
+	 * @type string
+	 */
+	partialToken: string;
 	/**
 	 * @description Deprecated: the full, plaintext token. - Returned once by `POST /v1/edge-config/:edgeConfigId/token` (create). - Still returned by `GET /v1/edge-config/:edgeConfigId/token/:token` (detail) for backwards compatibility, but scheduled for removal. - **Not** returned by `GET /v1/edge-config/:edgeConfigId/tokens` (list); use `partialToken` for display and `id` to reference tokens. Do not rely on this field being present on read operations. Prefer `partialToken` for display and `id` for references.
 	 * @type string | undefined
 	 */
 	token?: string | undefined;
 };
+
+export const userEventCategoriesEnum = {
+	account: "account",
+	ai: "ai",
+	"ai-gateway": "ai-gateway",
+	billing: "billing",
+	connect: "connect",
+	deployment: "deployment",
+	domain: "domain",
+	edge: "edge",
+	"env-variable": "env-variable",
+	"feature-flags": "feature-flags",
+	firewall: "firewall",
+	integration: "integration",
+	microfrontends: "microfrontends",
+	network: "network",
+	observability: "observability",
+	other: "other",
+	project: "project",
+	security: "security",
+	storage: "storage",
+	team: "team",
+	v0: "v0",
+	"vercel-app": "vercel-app",
+	workflow: "workflow",
+} as const;
+
+export type UserEventCategoriesEnumKey =
+	(typeof userEventCategoriesEnum)[keyof typeof userEventCategoriesEnum];
 
 export const userEventEntitiesTypeEnum = {
 	app: "app",
@@ -4348,6 +4377,2240 @@ export const userEventEntitiesTypeEnum = {
 
 export type UserEventEntitiesTypeEnumKey =
 	(typeof userEventEntitiesTypeEnum)[keyof typeof userEventEntitiesTypeEnum];
+
+export const userEventPayloadActionEnum = {
+	"add-passkey": "add-passkey",
+	"add-totp": "add-totp",
+	"admin-remove": "admin-remove",
+	disable: "disable",
+	enable: "enable",
+	"regenerate-recovery-codes": "regenerate-recovery-codes",
+	"remove-passkey": "remove-passkey",
+} as const;
+
+export type UserEventPayloadActionEnumKey =
+	(typeof userEventPayloadActionEnum)[keyof typeof userEventPayloadActionEnum];
+
+export const userEventPayloadProviderEnum = {
+	apple: "apple",
+	bitbucket: "bitbucket",
+	chatgpt: "chatgpt",
+	github: "github",
+	"github-custom-host": "github-custom-host",
+	"github-limited": "github-limited",
+	gitlab: "gitlab",
+	google: "google",
+	saml: "saml",
+} as const;
+
+export type UserEventPayloadProviderEnumKey =
+	(typeof userEventPayloadProviderEnum)[keyof typeof userEventPayloadProviderEnum];
+
+export const userEventPayloadFromPlanEnum = {
+	hobby: "hobby",
+	pro: "pro",
+} as const;
+
+export type UserEventPayloadFromPlanEnumKey =
+	(typeof userEventPayloadFromPlanEnum)[keyof typeof userEventPayloadFromPlanEnum];
+
+export const userEventPayloadToPlanEnum = {
+	hobby: "hobby",
+	pro: "pro",
+} as const;
+
+export type UserEventPayloadToPlanEnumKey =
+	(typeof userEventPayloadToPlanEnum)[keyof typeof userEventPayloadToPlanEnum];
+
+export const userEventPayloadBudgetRefreshPeriodEnum = {
+	daily: "daily",
+	monthly: "monthly",
+	none: "none",
+	weekly: "weekly",
+} as const;
+
+export type UserEventPayloadBudgetRefreshPeriodEnumKey =
+	(typeof userEventPayloadBudgetRefreshPeriodEnum)[keyof typeof userEventPayloadBudgetRefreshPeriodEnum];
+
+export const userEventPayloadChangeEnum = {
+	disable: "disable",
+	enable: "enable",
+	remove: "remove",
+	set: "set",
+} as const;
+
+export type UserEventPayloadChangeEnumKey =
+	(typeof userEventPayloadChangeEnum)[keyof typeof userEventPayloadChangeEnum];
+
+export const userEventPayloadScopeTypeEnum = {
+	project: "project",
+	team: "team",
+	user: "user",
+} as const;
+
+export type UserEventPayloadScopeTypeEnumKey =
+	(typeof userEventPayloadScopeTypeEnum)[keyof typeof userEventPayloadScopeTypeEnum];
+
+export const userEventPayloadRetentionCeilingModeEnum = {
+	days: "days",
+	"until-requested": "until-requested",
+} as const;
+
+export type UserEventPayloadRetentionCeilingModeEnumKey =
+	(typeof userEventPayloadRetentionCeilingModeEnum)[keyof typeof userEventPayloadRetentionCeilingModeEnum];
+
+export const userEventPayloadRetentionDefaultModeEnum = {
+	days: "days",
+	"until-requested": "until-requested",
+} as const;
+
+export type UserEventPayloadRetentionDefaultModeEnumKey =
+	(typeof userEventPayloadRetentionDefaultModeEnum)[keyof typeof userEventPayloadRetentionDefaultModeEnum];
+
+export const userEventPayloadNextRoleEnum = {
+	ADMIN: "ADMIN",
+	PROJECT_DEVELOPER: "PROJECT_DEVELOPER",
+	PROJECT_GUEST: "PROJECT_GUEST",
+	PROJECT_VIEWER: "PROJECT_VIEWER",
+} as const;
+
+export type UserEventPayloadNextRoleEnumKey =
+	(typeof userEventPayloadNextRoleEnum)[keyof typeof userEventPayloadNextRoleEnum];
+
+export const userEventPayloadPreviousRoleEnum = {
+	ADMIN: "ADMIN",
+	PROJECT_DEVELOPER: "PROJECT_DEVELOPER",
+	PROJECT_GUEST: "PROJECT_GUEST",
+	PROJECT_VIEWER: "PROJECT_VIEWER",
+} as const;
+
+export type UserEventPayloadPreviousRoleEnumKey =
+	(typeof userEventPayloadPreviousRoleEnum)[keyof typeof userEventPayloadPreviousRoleEnum];
+
+export const userEventPayloadDeploymentAllowListedReadyStateReasonInternalEnum = {
+	EARLY_IGNORE_STEP: "EARLY_IGNORE_STEP",
+	IGNORE_STEP: "IGNORE_STEP",
+	NAMESPACE_PRUNED: "NAMESPACE_PRUNED",
+	UNAFFECTED_PROJECT: "UNAFFECTED_PROJECT",
+	UNVERIFIED_COMMIT: "UNVERIFIED_COMMIT",
+} as const;
+
+export type UserEventPayloadDeploymentAllowListedReadyStateReasonInternalEnumKey =
+	(typeof userEventPayloadDeploymentAllowListedReadyStateReasonInternalEnum)[keyof typeof userEventPayloadDeploymentAllowListedReadyStateReasonInternalEnum];
+
+export const userEventPayloadPermissionsEnum = {
+	"manage:speed-insights": "manage:speed-insights",
+	"manage:web-analytics": "manage:web-analytics",
+	"read-write:ai-gateway-api-key": "read-write:ai-gateway-api-key",
+	"read-write:ai-gateway-guardrails": "read-write:ai-gateway-guardrails",
+	"read-write:ai-gateway-private-models": "read-write:ai-gateway-private-models",
+	"read-write:ai-gateway-rules": "read-write:ai-gateway-rules",
+	"read-write:ai-gateway-virtual-model-configs": "read-write:ai-gateway-virtual-model-configs",
+	"read-write:alerts": "read-write:alerts",
+	"read-write:automations": "read-write:automations",
+	"read-write:billing": "read-write:billing",
+	"read-write:blob": "read-write:blob",
+	"read-write:connect": "read-write:connect",
+	"read-write:deployment": "read-write:deployment",
+	"read-write:domain": "read-write:domain",
+	"read-write:domain-registrar": "read-write:domain-registrar",
+	"read-write:drains": "read-write:drains",
+	"read-write:edge-cache": "read-write:edge-cache",
+	"read-write:edge-config": "read-write:edge-config",
+	"read-write:firewall": "read-write:firewall",
+	"read-write:integration-configuration": "read-write:integration-configuration",
+	"read-write:integration-resource": "read-write:integration-resource",
+	"read-write:kms": "read-write:kms",
+	"read-write:project": "read-write:project",
+	"read-write:project-env-vars": "read-write:project-env-vars",
+	"read-write:project-env-vars-non-production": "read-write:project-env-vars-non-production",
+	"read-write:project-env-vars-production": "read-write:project-env-vars-production",
+	"read-write:project-flags-non-production": "read-write:project-flags-non-production",
+	"read-write:project-flags-production": "read-write:project-flags-production",
+	"read-write:project-protection-bypass": "read-write:project-protection-bypass",
+	"read-write:remote-cache": "read-write:remote-cache",
+	"read-write:sandbox": "read-write:sandbox",
+	"read-write:team-members": "read-write:team-members",
+	"read-write:vcr": "read-write:vcr",
+	"read:access-group": "read:access-group",
+	"read:ai-gateway-guardrails": "read:ai-gateway-guardrails",
+	"read:ai-gateway-private-models": "read:ai-gateway-private-models",
+	"read:ai-gateway-rules": "read:ai-gateway-rules",
+	"read:ai-gateway-virtual-model-configs": "read:ai-gateway-virtual-model-configs",
+	"read:alerts": "read:alerts",
+	"read:automations": "read:automations",
+	"read:billing": "read:billing",
+	"read:connect": "read:connect",
+	"read:deployment": "read:deployment",
+	"read:domain": "read:domain",
+	"read:event": "read:event",
+	"read:firewall": "read:firewall",
+	"read:integration-configuration": "read:integration-configuration",
+	"read:integration-resource": "read:integration-resource",
+	"read:kms": "read:kms",
+	"read:monitoring": "read:monitoring",
+	"read:project": "read:project",
+	"read:project-env-vars-non-production": "read:project-env-vars-non-production",
+	"read:project-env-vars-production": "read:project-env-vars-production",
+	"read:project-flags": "read:project-flags",
+	"read:remote-cache": "read:remote-cache",
+	"read:sandbox": "read:sandbox",
+	"read:speed-insights": "read:speed-insights",
+	"read:team": "read:team",
+	"read:vcr": "read:vcr",
+	"read:web-analytics": "read:web-analytics",
+	"read:webhooks": "read:webhooks",
+	"use:ai-gateway": "use:ai-gateway",
+} as const;
+
+export type UserEventPayloadPermissionsEnumKey =
+	(typeof userEventPayloadPermissionsEnum)[keyof typeof userEventPayloadPermissionsEnum];
+
+export const userEventPayloadScopesEnum = {
+	email: "email",
+	offline_access: "offline_access",
+	openid: "openid",
+	profile: "profile",
+} as const;
+
+export type UserEventPayloadScopesEnumKey =
+	(typeof userEventPayloadScopesEnum)[keyof typeof userEventPayloadScopesEnum];
+
+export const userEventPayloadNextPermissionsEnum = {
+	"manage:speed-insights": "manage:speed-insights",
+	"manage:web-analytics": "manage:web-analytics",
+	"read-write:ai-gateway-api-key": "read-write:ai-gateway-api-key",
+	"read-write:ai-gateway-guardrails": "read-write:ai-gateway-guardrails",
+	"read-write:ai-gateway-private-models": "read-write:ai-gateway-private-models",
+	"read-write:ai-gateway-rules": "read-write:ai-gateway-rules",
+	"read-write:ai-gateway-virtual-model-configs": "read-write:ai-gateway-virtual-model-configs",
+	"read-write:alerts": "read-write:alerts",
+	"read-write:automations": "read-write:automations",
+	"read-write:billing": "read-write:billing",
+	"read-write:blob": "read-write:blob",
+	"read-write:connect": "read-write:connect",
+	"read-write:deployment": "read-write:deployment",
+	"read-write:domain": "read-write:domain",
+	"read-write:domain-registrar": "read-write:domain-registrar",
+	"read-write:drains": "read-write:drains",
+	"read-write:edge-cache": "read-write:edge-cache",
+	"read-write:edge-config": "read-write:edge-config",
+	"read-write:firewall": "read-write:firewall",
+	"read-write:integration-configuration": "read-write:integration-configuration",
+	"read-write:integration-resource": "read-write:integration-resource",
+	"read-write:kms": "read-write:kms",
+	"read-write:project": "read-write:project",
+	"read-write:project-env-vars": "read-write:project-env-vars",
+	"read-write:project-env-vars-non-production": "read-write:project-env-vars-non-production",
+	"read-write:project-env-vars-production": "read-write:project-env-vars-production",
+	"read-write:project-flags-non-production": "read-write:project-flags-non-production",
+	"read-write:project-flags-production": "read-write:project-flags-production",
+	"read-write:project-protection-bypass": "read-write:project-protection-bypass",
+	"read-write:remote-cache": "read-write:remote-cache",
+	"read-write:sandbox": "read-write:sandbox",
+	"read-write:team-members": "read-write:team-members",
+	"read-write:vcr": "read-write:vcr",
+	"read:access-group": "read:access-group",
+	"read:ai-gateway-guardrails": "read:ai-gateway-guardrails",
+	"read:ai-gateway-private-models": "read:ai-gateway-private-models",
+	"read:ai-gateway-rules": "read:ai-gateway-rules",
+	"read:ai-gateway-virtual-model-configs": "read:ai-gateway-virtual-model-configs",
+	"read:alerts": "read:alerts",
+	"read:automations": "read:automations",
+	"read:billing": "read:billing",
+	"read:connect": "read:connect",
+	"read:deployment": "read:deployment",
+	"read:domain": "read:domain",
+	"read:event": "read:event",
+	"read:firewall": "read:firewall",
+	"read:integration-configuration": "read:integration-configuration",
+	"read:integration-resource": "read:integration-resource",
+	"read:kms": "read:kms",
+	"read:monitoring": "read:monitoring",
+	"read:project": "read:project",
+	"read:project-env-vars-non-production": "read:project-env-vars-non-production",
+	"read:project-env-vars-production": "read:project-env-vars-production",
+	"read:project-flags": "read:project-flags",
+	"read:remote-cache": "read:remote-cache",
+	"read:sandbox": "read:sandbox",
+	"read:speed-insights": "read:speed-insights",
+	"read:team": "read:team",
+	"read:user": "read:user",
+	"read:vcr": "read:vcr",
+	"read:web-analytics": "read:web-analytics",
+	"read:webhooks": "read:webhooks",
+	"use:ai-gateway": "use:ai-gateway",
+} as const;
+
+export type UserEventPayloadNextPermissionsEnumKey =
+	(typeof userEventPayloadNextPermissionsEnum)[keyof typeof userEventPayloadNextPermissionsEnum];
+
+export const userEventPayloadNextScopesEnum = {
+	email: "email",
+	offline_access: "offline_access",
+	openid: "openid",
+	profile: "profile",
+} as const;
+
+export type UserEventPayloadNextScopesEnumKey =
+	(typeof userEventPayloadNextScopesEnum)[keyof typeof userEventPayloadNextScopesEnum];
+
+export const userEventPayloadAfterPermissionsEnum = {
+	"manage:speed-insights": "manage:speed-insights",
+	"manage:web-analytics": "manage:web-analytics",
+	"read-write:ai-gateway-api-key": "read-write:ai-gateway-api-key",
+	"read-write:ai-gateway-guardrails": "read-write:ai-gateway-guardrails",
+	"read-write:ai-gateway-private-models": "read-write:ai-gateway-private-models",
+	"read-write:ai-gateway-rules": "read-write:ai-gateway-rules",
+	"read-write:ai-gateway-virtual-model-configs": "read-write:ai-gateway-virtual-model-configs",
+	"read-write:alerts": "read-write:alerts",
+	"read-write:automations": "read-write:automations",
+	"read-write:billing": "read-write:billing",
+	"read-write:blob": "read-write:blob",
+	"read-write:connect": "read-write:connect",
+	"read-write:deployment": "read-write:deployment",
+	"read-write:domain": "read-write:domain",
+	"read-write:domain-registrar": "read-write:domain-registrar",
+	"read-write:drains": "read-write:drains",
+	"read-write:edge-cache": "read-write:edge-cache",
+	"read-write:edge-config": "read-write:edge-config",
+	"read-write:firewall": "read-write:firewall",
+	"read-write:integration-configuration": "read-write:integration-configuration",
+	"read-write:integration-resource": "read-write:integration-resource",
+	"read-write:kms": "read-write:kms",
+	"read-write:project": "read-write:project",
+	"read-write:project-env-vars": "read-write:project-env-vars",
+	"read-write:project-env-vars-non-production": "read-write:project-env-vars-non-production",
+	"read-write:project-env-vars-production": "read-write:project-env-vars-production",
+	"read-write:project-flags-non-production": "read-write:project-flags-non-production",
+	"read-write:project-flags-production": "read-write:project-flags-production",
+	"read-write:project-protection-bypass": "read-write:project-protection-bypass",
+	"read-write:remote-cache": "read-write:remote-cache",
+	"read-write:sandbox": "read-write:sandbox",
+	"read-write:team-members": "read-write:team-members",
+	"read-write:vcr": "read-write:vcr",
+	"read:access-group": "read:access-group",
+	"read:ai-gateway-guardrails": "read:ai-gateway-guardrails",
+	"read:ai-gateway-private-models": "read:ai-gateway-private-models",
+	"read:ai-gateway-rules": "read:ai-gateway-rules",
+	"read:ai-gateway-virtual-model-configs": "read:ai-gateway-virtual-model-configs",
+	"read:alerts": "read:alerts",
+	"read:automations": "read:automations",
+	"read:billing": "read:billing",
+	"read:connect": "read:connect",
+	"read:deployment": "read:deployment",
+	"read:domain": "read:domain",
+	"read:event": "read:event",
+	"read:firewall": "read:firewall",
+	"read:integration-configuration": "read:integration-configuration",
+	"read:integration-resource": "read:integration-resource",
+	"read:kms": "read:kms",
+	"read:monitoring": "read:monitoring",
+	"read:project": "read:project",
+	"read:project-env-vars-non-production": "read:project-env-vars-non-production",
+	"read:project-env-vars-production": "read:project-env-vars-production",
+	"read:project-flags": "read:project-flags",
+	"read:remote-cache": "read:remote-cache",
+	"read:sandbox": "read:sandbox",
+	"read:speed-insights": "read:speed-insights",
+	"read:team": "read:team",
+	"read:vcr": "read:vcr",
+	"read:web-analytics": "read:web-analytics",
+	"read:webhooks": "read:webhooks",
+	"use:ai-gateway": "use:ai-gateway",
+} as const;
+
+export type UserEventPayloadAfterPermissionsEnumKey =
+	(typeof userEventPayloadAfterPermissionsEnum)[keyof typeof userEventPayloadAfterPermissionsEnum];
+
+export const userEventPayloadBeforePermissionsEnum = {
+	"manage:speed-insights": "manage:speed-insights",
+	"manage:web-analytics": "manage:web-analytics",
+	"read-write:ai-gateway-api-key": "read-write:ai-gateway-api-key",
+	"read-write:ai-gateway-guardrails": "read-write:ai-gateway-guardrails",
+	"read-write:ai-gateway-private-models": "read-write:ai-gateway-private-models",
+	"read-write:ai-gateway-rules": "read-write:ai-gateway-rules",
+	"read-write:ai-gateway-virtual-model-configs": "read-write:ai-gateway-virtual-model-configs",
+	"read-write:alerts": "read-write:alerts",
+	"read-write:automations": "read-write:automations",
+	"read-write:billing": "read-write:billing",
+	"read-write:blob": "read-write:blob",
+	"read-write:connect": "read-write:connect",
+	"read-write:deployment": "read-write:deployment",
+	"read-write:domain": "read-write:domain",
+	"read-write:domain-registrar": "read-write:domain-registrar",
+	"read-write:drains": "read-write:drains",
+	"read-write:edge-cache": "read-write:edge-cache",
+	"read-write:edge-config": "read-write:edge-config",
+	"read-write:firewall": "read-write:firewall",
+	"read-write:integration-configuration": "read-write:integration-configuration",
+	"read-write:integration-resource": "read-write:integration-resource",
+	"read-write:kms": "read-write:kms",
+	"read-write:project": "read-write:project",
+	"read-write:project-env-vars": "read-write:project-env-vars",
+	"read-write:project-env-vars-non-production": "read-write:project-env-vars-non-production",
+	"read-write:project-env-vars-production": "read-write:project-env-vars-production",
+	"read-write:project-flags-non-production": "read-write:project-flags-non-production",
+	"read-write:project-flags-production": "read-write:project-flags-production",
+	"read-write:project-protection-bypass": "read-write:project-protection-bypass",
+	"read-write:remote-cache": "read-write:remote-cache",
+	"read-write:sandbox": "read-write:sandbox",
+	"read-write:team-members": "read-write:team-members",
+	"read-write:vcr": "read-write:vcr",
+	"read:access-group": "read:access-group",
+	"read:ai-gateway-guardrails": "read:ai-gateway-guardrails",
+	"read:ai-gateway-private-models": "read:ai-gateway-private-models",
+	"read:ai-gateway-rules": "read:ai-gateway-rules",
+	"read:ai-gateway-virtual-model-configs": "read:ai-gateway-virtual-model-configs",
+	"read:alerts": "read:alerts",
+	"read:automations": "read:automations",
+	"read:billing": "read:billing",
+	"read:connect": "read:connect",
+	"read:deployment": "read:deployment",
+	"read:domain": "read:domain",
+	"read:event": "read:event",
+	"read:firewall": "read:firewall",
+	"read:integration-configuration": "read:integration-configuration",
+	"read:integration-resource": "read:integration-resource",
+	"read:kms": "read:kms",
+	"read:monitoring": "read:monitoring",
+	"read:project": "read:project",
+	"read:project-env-vars-non-production": "read:project-env-vars-non-production",
+	"read:project-env-vars-production": "read:project-env-vars-production",
+	"read:project-flags": "read:project-flags",
+	"read:remote-cache": "read:remote-cache",
+	"read:sandbox": "read:sandbox",
+	"read:speed-insights": "read:speed-insights",
+	"read:team": "read:team",
+	"read:vcr": "read:vcr",
+	"read:web-analytics": "read:web-analytics",
+	"read:webhooks": "read:webhooks",
+	"use:ai-gateway": "use:ai-gateway",
+} as const;
+
+export type UserEventPayloadBeforePermissionsEnumKey =
+	(typeof userEventPayloadBeforePermissionsEnum)[keyof typeof userEventPayloadBeforePermissionsEnum];
+
+export const userEventPayloadSettlementMethodEnum = {
+	"credited-paid": "credited-paid",
+	"credited-payment-pending": "credited-payment-pending",
+	"refunded-paid": "refunded-paid",
+	"refunded-payment-pending": "refunded-payment-pending",
+} as const;
+
+export type UserEventPayloadSettlementMethodEnumKey =
+	(typeof userEventPayloadSettlementMethodEnum)[keyof typeof userEventPayloadSettlementMethodEnum];
+
+export const userEventPayloadChangedFieldsEnum = {
+	address: "address",
+	email: "email",
+	language: "language",
+	name: "name",
+	purchaseOrder: "purchaseOrder",
+	tax: "tax",
+} as const;
+
+export type UserEventPayloadChangedFieldsEnumKey =
+	(typeof userEventPayloadChangedFieldsEnum)[keyof typeof userEventPayloadChangedFieldsEnum];
+
+export const userEventPayloadDataPlanSlugEnum = {
+	v0_business: "v0_business",
+	v0_teams: "v0_teams",
+} as const;
+
+export type UserEventPayloadDataPlanSlugEnumKey =
+	(typeof userEventPayloadDataPlanSlugEnum)[keyof typeof userEventPayloadDataPlanSlugEnum];
+
+export const userEventPayloadSubjectTypeEnum = {
+	app: "app",
+	user: "user",
+} as const;
+
+export type UserEventPayloadSubjectTypeEnumKey =
+	(typeof userEventPayloadSubjectTypeEnum)[keyof typeof userEventPayloadSubjectTypeEnum];
+
+export const userEventPayloadJobCommitVerificationEnum = {
+	unknown: "unknown",
+	unverified: "unverified",
+	verified: "verified",
+} as const;
+
+export type UserEventPayloadJobCommitVerificationEnumKey =
+	(typeof userEventPayloadJobCommitVerificationEnum)[keyof typeof userEventPayloadJobCommitVerificationEnum];
+
+export const userEventPayloadJobNsnbSideEffectActionEnum = {
+	"auto-approved-member": "auto-approved-member",
+	"auto-approved-pending-invite": "auto-approved-pending-invite",
+} as const;
+
+export type UserEventPayloadJobNsnbSideEffectActionEnumKey =
+	(typeof userEventPayloadJobNsnbSideEffectActionEnum)[keyof typeof userEventPayloadJobNsnbSideEffectActionEnum];
+
+export const userEventPayloadJobProviderEnum = {
+	github: "github",
+	"github-custom-host": "github-custom-host",
+	"github-limited": "github-limited",
+} as const;
+
+export type UserEventPayloadJobProviderEnumKey =
+	(typeof userEventPayloadJobProviderEnum)[keyof typeof userEventPayloadJobProviderEnum];
+
+export const userEventPayloadRuleNameEnum = {
+	deploymentSources: "deploymentSources",
+	gitSources: "gitSources",
+} as const;
+
+export type UserEventPayloadRuleNameEnumKey =
+	(typeof userEventPayloadRuleNameEnum)[keyof typeof userEventPayloadRuleNameEnum];
+
+export const userEventPayloadRuleProvenanceEnum = {
+	default: "default",
+	project: "project",
+	team: "team",
+} as const;
+
+export type UserEventPayloadRuleProvenanceEnumKey =
+	(typeof userEventPayloadRuleProvenanceEnum)[keyof typeof userEventPayloadRuleProvenanceEnum];
+
+export const userEventPayloadInitiatorEnum = {
+	system: "system",
+	user: "user",
+} as const;
+
+export type UserEventPayloadInitiatorEnumKey =
+	(typeof userEventPayloadInitiatorEnum)[keyof typeof userEventPayloadInitiatorEnum];
+
+export const userEventPayloadEchModeEnum = {
+	auto: "auto",
+	disabled: "disabled",
+	enabled: "enabled",
+} as const;
+
+export type UserEventPayloadEchModeEnumKey =
+	(typeof userEventPayloadEchModeEnum)[keyof typeof userEventPayloadEchModeEnum];
+
+export const userEventPayloadPreviousEchModeEnum = {
+	auto: "auto",
+	disabled: "disabled",
+	enabled: "enabled",
+} as const;
+
+export type UserEventPayloadPreviousEchModeEnumKey =
+	(typeof userEventPayloadPreviousEchModeEnum)[keyof typeof userEventPayloadPreviousEchModeEnum];
+
+export const userEventPayloadFromAccountTypeEnum = {
+	team: "team",
+	user: "user",
+} as const;
+
+export type UserEventPayloadFromAccountTypeEnumKey =
+	(typeof userEventPayloadFromAccountTypeEnum)[keyof typeof userEventPayloadFromAccountTypeEnum];
+
+export const userEventPayloadToAccountTypeEnum = {
+	team: "team",
+	user: "user",
+} as const;
+
+export type UserEventPayloadToAccountTypeEnumKey =
+	(typeof userEventPayloadToAccountTypeEnum)[keyof typeof userEventPayloadToAccountTypeEnum];
+
+export const userEventPayloadVisibilityEnum = {
+	config: "config",
+	secret: "secret",
+} as const;
+
+export type UserEventPayloadVisibilityEnumKey =
+	(typeof userEventPayloadVisibilityEnum)[keyof typeof userEventPayloadVisibilityEnum];
+
+export const userEventPayloadTargetEnum = {
+	development: "development",
+	preview: "preview",
+	production: "production",
+} as const;
+
+export type UserEventPayloadTargetEnumKey =
+	(typeof userEventPayloadTargetEnum)[keyof typeof userEventPayloadTargetEnum];
+
+export const userEventPayloadTypeEnum = {
+	blob: "blob",
+	"edge-config": "edge-config",
+	integration: "integration",
+	postgres: "postgres",
+	redis: "redis",
+} as const;
+
+export type UserEventPayloadTypeEnumKey =
+	(typeof userEventPayloadTypeEnum)[keyof typeof userEventPayloadTypeEnum];
+
+export const userEventPayloadNewEnvVarTargetEnum = {
+	development: "development",
+	preview: "preview",
+	production: "production",
+} as const;
+
+export type UserEventPayloadNewEnvVarTargetEnumKey =
+	(typeof userEventPayloadNewEnvVarTargetEnum)[keyof typeof userEventPayloadNewEnvVarTargetEnum];
+
+export const userEventPayloadNewEnvVarTypeEnum = {
+	encrypted: "encrypted",
+	plain: "plain",
+	sensitive: "sensitive",
+	system: "system",
+} as const;
+
+export type UserEventPayloadNewEnvVarTypeEnumKey =
+	(typeof userEventPayloadNewEnvVarTypeEnum)[keyof typeof userEventPayloadNewEnvVarTypeEnum];
+
+export const userEventPayloadOldEnvVarTargetEnum = {
+	development: "development",
+	preview: "preview",
+	production: "production",
+} as const;
+
+export type UserEventPayloadOldEnvVarTargetEnumKey =
+	(typeof userEventPayloadOldEnvVarTargetEnum)[keyof typeof userEventPayloadOldEnvVarTargetEnum];
+
+export const userEventPayloadOldEnvVarTypeEnum = {
+	encrypted: "encrypted",
+	plain: "plain",
+	sensitive: "sensitive",
+	system: "system",
+} as const;
+
+export type UserEventPayloadOldEnvVarTypeEnumKey =
+	(typeof userEventPayloadOldEnvVarTypeEnum)[keyof typeof userEventPayloadOldEnvVarTypeEnum];
+
+export const userEventPayloadUpdateDiffNewTargetEnum = {
+	development: "development",
+	preview: "preview",
+	production: "production",
+} as const;
+
+export type UserEventPayloadUpdateDiffNewTargetEnumKey =
+	(typeof userEventPayloadUpdateDiffNewTargetEnum)[keyof typeof userEventPayloadUpdateDiffNewTargetEnum];
+
+export const userEventPayloadUpdateDiffOldTargetEnum = {
+	development: "development",
+	preview: "preview",
+	production: "production",
+} as const;
+
+export type UserEventPayloadUpdateDiffOldTargetEnumKey =
+	(typeof userEventPayloadUpdateDiffOldTargetEnum)[keyof typeof userEventPayloadUpdateDiffOldTargetEnum];
+
+export const actionEnum = {
+	challenge: "challenge",
+	deny: "deny",
+	log: "log",
+} as const;
+
+export type ActionEnumKey = (typeof actionEnum)[keyof typeof actionEnum];
+
+export const userEventPayloadSourceEnum = {
+	"account-update": "account-update",
+	bitbucket: "bitbucket",
+	dsync: "dsync",
+	feedback: "feedback",
+	github: "github",
+	gitlab: "gitlab",
+	import: "import",
+	link: "link",
+	mail: "mail",
+	"nsnb-auto-approve": "nsnb-auto-approve",
+	"nsnb-hobby-upgrade": "nsnb-hobby-upgrade",
+	"nsnb-invite": "nsnb-invite",
+	"nsnb-redeploy": "nsnb-redeploy",
+	"nsnb-redeploy-attribution-card": "nsnb-redeploy-attribution-card",
+	"nsnb-request-access": "nsnb-request-access",
+	"nsnb-viewer-upgrade": "nsnb-viewer-upgrade",
+	"organization-teams": "organization-teams",
+	saml: "saml",
+	teams: "teams",
+} as const;
+
+export type UserEventPayloadSourceEnumKey =
+	(typeof userEventPayloadSourceEnum)[keyof typeof userEventPayloadSourceEnum];
+
+export const userEventPayloadFailureStageEnum = {
+	authorization: "authorization",
+	push: "push",
+	unexpected: "unexpected",
+	unknown: "unknown",
+	validation: "validation",
+} as const;
+
+export type UserEventPayloadFailureStageEnumKey =
+	(typeof userEventPayloadFailureStageEnum)[keyof typeof userEventPayloadFailureStageEnum];
+
+export const userEventPayloadOutcomeEnum = {
+	"account-matched": "account-matched",
+	"linking-required": "linking-required",
+} as const;
+
+export type UserEventPayloadOutcomeEnumKey =
+	(typeof userEventPayloadOutcomeEnum)[keyof typeof userEventPayloadOutcomeEnum];
+
+export const userEventPayloadNewOwnerAbuseBlockHistoryActionEnum = {
+	blocked: "blocked",
+	"hard-blocked": "hard-blocked",
+	"soft-blocked": "soft-blocked",
+	unblocked: "unblocked",
+} as const;
+
+export type UserEventPayloadNewOwnerAbuseBlockHistoryActionEnumKey =
+	(typeof userEventPayloadNewOwnerAbuseBlockHistoryActionEnum)[keyof typeof userEventPayloadNewOwnerAbuseBlockHistoryActionEnum];
+
+export const userEventPayloadNewOwnerActiveDashboardViewsFavoritesViewPreferenceEnum = {
+	closed: "closed",
+	open: "open",
+} as const;
+
+export type UserEventPayloadNewOwnerActiveDashboardViewsFavoritesViewPreferenceEnumKey =
+	(typeof userEventPayloadNewOwnerActiveDashboardViewsFavoritesViewPreferenceEnum)[keyof typeof userEventPayloadNewOwnerActiveDashboardViewsFavoritesViewPreferenceEnum];
+
+export const userEventPayloadNewOwnerActiveDashboardViewsRecentsViewPreferenceEnum = {
+	closed: "closed",
+	open: "open",
+} as const;
+
+export type UserEventPayloadNewOwnerActiveDashboardViewsRecentsViewPreferenceEnumKey =
+	(typeof userEventPayloadNewOwnerActiveDashboardViewsRecentsViewPreferenceEnum)[keyof typeof userEventPayloadNewOwnerActiveDashboardViewsRecentsViewPreferenceEnum];
+
+export const userEventPayloadNewOwnerActiveDashboardViewsViewPreferenceEnum = {
+	cards: "cards",
+	list: "list",
+} as const;
+
+export type UserEventPayloadNewOwnerActiveDashboardViewsViewPreferenceEnumKey =
+	(typeof userEventPayloadNewOwnerActiveDashboardViewsViewPreferenceEnum)[keyof typeof userEventPayloadNewOwnerActiveDashboardViewsViewPreferenceEnum];
+
+export const userEventPayloadNewOwnerBillingPlanEnum = {
+	enterprise: "enterprise",
+	hobby: "hobby",
+	pro: "pro",
+} as const;
+
+export type UserEventPayloadNewOwnerBillingPlanEnumKey =
+	(typeof userEventPayloadNewOwnerBillingPlanEnum)[keyof typeof userEventPayloadNewOwnerBillingPlanEnum];
+
+export const userEventPayloadNewOwnerCredentialsTypeEnum = {
+	apple: "apple",
+	bitbucket: "bitbucket",
+	chatgpt: "chatgpt",
+	"github-oauth": "github-oauth",
+	"github-oauth-limited": "github-oauth-limited",
+	gitlab: "gitlab",
+	google: "google",
+	vercel: "vercel",
+} as const;
+
+export type UserEventPayloadNewOwnerCredentialsTypeEnumKey =
+	(typeof userEventPayloadNewOwnerCredentialsTypeEnum)[keyof typeof userEventPayloadNewOwnerCredentialsTypeEnum];
+
+export const userEventPayloadNewOwnerEnablePreviewFeedbackEnum = {
+	default: "default",
+	"default-force": "default-force",
+	off: "off",
+	"off-force": "off-force",
+	on: "on",
+	"on-force": "on-force",
+} as const;
+
+export type UserEventPayloadNewOwnerEnablePreviewFeedbackEnumKey =
+	(typeof userEventPayloadNewOwnerEnablePreviewFeedbackEnum)[keyof typeof userEventPayloadNewOwnerEnablePreviewFeedbackEnum];
+
+export const userEventPayloadNewOwnerFeatureBlocksBlobOverageReasonEnum = {
+	analyticsUsage: "analyticsUsage",
+	artifacts: "artifacts",
+	bandwidth: "bandwidth",
+	blobDataTransfer: "blobDataTransfer",
+	blobTotalAdvancedRequests: "blobTotalAdvancedRequests",
+	blobTotalAvgSizeInBytes: "blobTotalAvgSizeInBytes",
+	blobTotalGetResponseObjectSizeInBytes: "blobTotalGetResponseObjectSizeInBytes",
+	blobTotalSimpleRequests: "blobTotalSimpleRequests",
+	connectDataTransfer: "connectDataTransfer",
+	dataCacheRead: "dataCacheRead",
+	dataCacheWrite: "dataCacheWrite",
+	edgeConfigRead: "edgeConfigRead",
+	edgeConfigWrite: "edgeConfigWrite",
+	edgeFunctionExecutionUnits: "edgeFunctionExecutionUnits",
+	edgeMiddlewareInvocations: "edgeMiddlewareInvocations",
+	edgeRequest: "edgeRequest",
+	edgeRequestAdditionalCpuDuration: "edgeRequestAdditionalCpuDuration",
+	elasticConcurrencyBuildSlots: "elasticConcurrencyBuildSlots",
+	fastDataTransfer: "fastDataTransfer",
+	fastOriginTransfer: "fastOriginTransfer",
+	fluidCpuDuration: "fluidCpuDuration",
+	fluidDuration: "fluidDuration",
+	functionDuration: "functionDuration",
+	functionInvocation: "functionInvocation",
+	imageOptimizationCacheRead: "imageOptimizationCacheRead",
+	imageOptimizationCacheWrite: "imageOptimizationCacheWrite",
+	imageOptimizationTransformation: "imageOptimizationTransformation",
+	logDrainsVolume: "logDrainsVolume",
+	monitoringMetric: "monitoringMetric",
+	observabilityEvent: "observabilityEvent",
+	onDemandConcurrencyMinutes: "onDemandConcurrencyMinutes",
+	runtimeCacheRead: "runtimeCacheRead",
+	runtimeCacheWrite: "runtimeCacheWrite",
+	serverlessFunctionExecution: "serverlessFunctionExecution",
+	sourceImages: "sourceImages",
+	wafOwaspExcessBytes: "wafOwaspExcessBytes",
+	wafOwaspRequests: "wafOwaspRequests",
+	wafRateLimitRequest: "wafRateLimitRequest",
+	webAnalyticsEvent: "webAnalyticsEvent",
+} as const;
+
+export type UserEventPayloadNewOwnerFeatureBlocksBlobOverageReasonEnumKey =
+	(typeof userEventPayloadNewOwnerFeatureBlocksBlobOverageReasonEnum)[keyof typeof userEventPayloadNewOwnerFeatureBlocksBlobOverageReasonEnum];
+
+export const userEventPayloadNewOwnerFeatureBlocksBlobBlockReasonEnum = {
+	admin_override: "admin_override",
+	hard_blocked: "hard_blocked",
+} as const;
+
+export type UserEventPayloadNewOwnerFeatureBlocksBlobBlockReasonEnumKey =
+	(typeof userEventPayloadNewOwnerFeatureBlocksBlobBlockReasonEnum)[keyof typeof userEventPayloadNewOwnerFeatureBlocksBlobBlockReasonEnum];
+
+export const userEventPayloadNewOwnerFeatureBlocksConnexForwardTriggersBlockReasonEnum = {
+	admin_override: "admin_override",
+	hard_blocked: "hard_blocked",
+	limits_exceeded: "limits_exceeded",
+} as const;
+
+export type UserEventPayloadNewOwnerFeatureBlocksConnexForwardTriggersBlockReasonEnumKey =
+	(typeof userEventPayloadNewOwnerFeatureBlocksConnexForwardTriggersBlockReasonEnum)[keyof typeof userEventPayloadNewOwnerFeatureBlocksConnexForwardTriggersBlockReasonEnum];
+
+export const userEventPayloadNewOwnerFeatureBlocksConnexTokenRequestsBlockReasonEnum = {
+	admin_override: "admin_override",
+	hard_blocked: "hard_blocked",
+	limits_exceeded: "limits_exceeded",
+} as const;
+
+export type UserEventPayloadNewOwnerFeatureBlocksConnexTokenRequestsBlockReasonEnumKey =
+	(typeof userEventPayloadNewOwnerFeatureBlocksConnexTokenRequestsBlockReasonEnum)[keyof typeof userEventPayloadNewOwnerFeatureBlocksConnexTokenRequestsBlockReasonEnum];
+
+export const userEventPayloadNewOwnerFeatureBlocksDataCacheBlockReasonEnum = {
+	admin_override: "admin_override",
+	hard_blocked: "hard_blocked",
+	limits_exceeded: "limits_exceeded",
+} as const;
+
+export type UserEventPayloadNewOwnerFeatureBlocksDataCacheBlockReasonEnumKey =
+	(typeof userEventPayloadNewOwnerFeatureBlocksDataCacheBlockReasonEnum)[keyof typeof userEventPayloadNewOwnerFeatureBlocksDataCacheBlockReasonEnum];
+
+export const userEventPayloadNewOwnerFeatureBlocksImageOptimizationTransformationBlockReasonEnum = {
+	admin_override: "admin_override",
+	hard_blocked: "hard_blocked",
+	limits_exceeded: "limits_exceeded",
+} as const;
+
+export type UserEventPayloadNewOwnerFeatureBlocksImageOptimizationTransformationBlockReasonEnumKey =
+	(typeof userEventPayloadNewOwnerFeatureBlocksImageOptimizationTransformationBlockReasonEnum)[keyof typeof userEventPayloadNewOwnerFeatureBlocksImageOptimizationTransformationBlockReasonEnum];
+
+export const userEventPayloadNewOwnerFeatureBlocksKmsOperationsBlockReasonEnum = {
+	admin_override: "admin_override",
+	hard_blocked: "hard_blocked",
+	limits_exceeded: "limits_exceeded",
+} as const;
+
+export type UserEventPayloadNewOwnerFeatureBlocksKmsOperationsBlockReasonEnumKey =
+	(typeof userEventPayloadNewOwnerFeatureBlocksKmsOperationsBlockReasonEnum)[keyof typeof userEventPayloadNewOwnerFeatureBlocksKmsOperationsBlockReasonEnum];
+
+export const userEventPayloadNewOwnerFeatureBlocksMicrofrontendsRequestBlockReasonEnum = {
+	admin_override: "admin_override",
+	hard_blocked: "hard_blocked",
+	limits_exceeded: "limits_exceeded",
+} as const;
+
+export type UserEventPayloadNewOwnerFeatureBlocksMicrofrontendsRequestBlockReasonEnumKey =
+	(typeof userEventPayloadNewOwnerFeatureBlocksMicrofrontendsRequestBlockReasonEnum)[keyof typeof userEventPayloadNewOwnerFeatureBlocksMicrofrontendsRequestBlockReasonEnum];
+
+export const userEventPayloadNewOwnerFeatureBlocksMonitoringBlockReasonEnum = {
+	admin_override: "admin_override",
+	hard_blocked: "hard_blocked",
+	limits_exceeded: "limits_exceeded",
+} as const;
+
+export type UserEventPayloadNewOwnerFeatureBlocksMonitoringBlockReasonEnumKey =
+	(typeof userEventPayloadNewOwnerFeatureBlocksMonitoringBlockReasonEnum)[keyof typeof userEventPayloadNewOwnerFeatureBlocksMonitoringBlockReasonEnum];
+
+export const userEventPayloadNewOwnerFeatureBlocksMonitoringBlockTypeEnum = {
+	hard: "hard",
+	soft: "soft",
+} as const;
+
+export type UserEventPayloadNewOwnerFeatureBlocksMonitoringBlockTypeEnumKey =
+	(typeof userEventPayloadNewOwnerFeatureBlocksMonitoringBlockTypeEnum)[keyof typeof userEventPayloadNewOwnerFeatureBlocksMonitoringBlockTypeEnum];
+
+export const userEventPayloadNewOwnerFeatureBlocksObservabilityPlusBlockReasonEnum = {
+	admin_override: "admin_override",
+	hard_blocked: "hard_blocked",
+	limits_exceeded: "limits_exceeded",
+} as const;
+
+export type UserEventPayloadNewOwnerFeatureBlocksObservabilityPlusBlockReasonEnumKey =
+	(typeof userEventPayloadNewOwnerFeatureBlocksObservabilityPlusBlockReasonEnum)[keyof typeof userEventPayloadNewOwnerFeatureBlocksObservabilityPlusBlockReasonEnum];
+
+export const userEventPayloadNewOwnerFeatureBlocksObservabilityPlusBlockTypeEnum = {
+	hard: "hard",
+	soft: "soft",
+} as const;
+
+export type UserEventPayloadNewOwnerFeatureBlocksObservabilityPlusBlockTypeEnumKey =
+	(typeof userEventPayloadNewOwnerFeatureBlocksObservabilityPlusBlockTypeEnum)[keyof typeof userEventPayloadNewOwnerFeatureBlocksObservabilityPlusBlockTypeEnum];
+
+export const userEventPayloadNewOwnerFeatureBlocksPostgresOverageReasonEnum = {
+	analyticsUsage: "analyticsUsage",
+	artifacts: "artifacts",
+	bandwidth: "bandwidth",
+	blobDataTransfer: "blobDataTransfer",
+	blobTotalAdvancedRequests: "blobTotalAdvancedRequests",
+	blobTotalAvgSizeInBytes: "blobTotalAvgSizeInBytes",
+	blobTotalGetResponseObjectSizeInBytes: "blobTotalGetResponseObjectSizeInBytes",
+	blobTotalSimpleRequests: "blobTotalSimpleRequests",
+	connectDataTransfer: "connectDataTransfer",
+	dataCacheRead: "dataCacheRead",
+	dataCacheWrite: "dataCacheWrite",
+	edgeConfigRead: "edgeConfigRead",
+	edgeConfigWrite: "edgeConfigWrite",
+	edgeFunctionExecutionUnits: "edgeFunctionExecutionUnits",
+	edgeMiddlewareInvocations: "edgeMiddlewareInvocations",
+	edgeRequest: "edgeRequest",
+	edgeRequestAdditionalCpuDuration: "edgeRequestAdditionalCpuDuration",
+	elasticConcurrencyBuildSlots: "elasticConcurrencyBuildSlots",
+	fastDataTransfer: "fastDataTransfer",
+	fastOriginTransfer: "fastOriginTransfer",
+	fluidCpuDuration: "fluidCpuDuration",
+	fluidDuration: "fluidDuration",
+	functionDuration: "functionDuration",
+	functionInvocation: "functionInvocation",
+	imageOptimizationCacheRead: "imageOptimizationCacheRead",
+	imageOptimizationCacheWrite: "imageOptimizationCacheWrite",
+	imageOptimizationTransformation: "imageOptimizationTransformation",
+	logDrainsVolume: "logDrainsVolume",
+	monitoringMetric: "monitoringMetric",
+	observabilityEvent: "observabilityEvent",
+	onDemandConcurrencyMinutes: "onDemandConcurrencyMinutes",
+	runtimeCacheRead: "runtimeCacheRead",
+	runtimeCacheWrite: "runtimeCacheWrite",
+	serverlessFunctionExecution: "serverlessFunctionExecution",
+	sourceImages: "sourceImages",
+	wafOwaspExcessBytes: "wafOwaspExcessBytes",
+	wafOwaspRequests: "wafOwaspRequests",
+	wafRateLimitRequest: "wafRateLimitRequest",
+	webAnalyticsEvent: "webAnalyticsEvent",
+} as const;
+
+export type UserEventPayloadNewOwnerFeatureBlocksPostgresOverageReasonEnumKey =
+	(typeof userEventPayloadNewOwnerFeatureBlocksPostgresOverageReasonEnum)[keyof typeof userEventPayloadNewOwnerFeatureBlocksPostgresOverageReasonEnum];
+
+export const userEventPayloadNewOwnerFeatureBlocksPostgresBlockReasonEnum = {
+	admin_override: "admin_override",
+	hard_blocked: "hard_blocked",
+} as const;
+
+export type UserEventPayloadNewOwnerFeatureBlocksPostgresBlockReasonEnumKey =
+	(typeof userEventPayloadNewOwnerFeatureBlocksPostgresBlockReasonEnum)[keyof typeof userEventPayloadNewOwnerFeatureBlocksPostgresBlockReasonEnum];
+
+export const userEventPayloadNewOwnerFeatureBlocksRedisOverageReasonEnum = {
+	analyticsUsage: "analyticsUsage",
+	artifacts: "artifacts",
+	bandwidth: "bandwidth",
+	blobDataTransfer: "blobDataTransfer",
+	blobTotalAdvancedRequests: "blobTotalAdvancedRequests",
+	blobTotalAvgSizeInBytes: "blobTotalAvgSizeInBytes",
+	blobTotalGetResponseObjectSizeInBytes: "blobTotalGetResponseObjectSizeInBytes",
+	blobTotalSimpleRequests: "blobTotalSimpleRequests",
+	connectDataTransfer: "connectDataTransfer",
+	dataCacheRead: "dataCacheRead",
+	dataCacheWrite: "dataCacheWrite",
+	edgeConfigRead: "edgeConfigRead",
+	edgeConfigWrite: "edgeConfigWrite",
+	edgeFunctionExecutionUnits: "edgeFunctionExecutionUnits",
+	edgeMiddlewareInvocations: "edgeMiddlewareInvocations",
+	edgeRequest: "edgeRequest",
+	edgeRequestAdditionalCpuDuration: "edgeRequestAdditionalCpuDuration",
+	elasticConcurrencyBuildSlots: "elasticConcurrencyBuildSlots",
+	fastDataTransfer: "fastDataTransfer",
+	fastOriginTransfer: "fastOriginTransfer",
+	fluidCpuDuration: "fluidCpuDuration",
+	fluidDuration: "fluidDuration",
+	functionDuration: "functionDuration",
+	functionInvocation: "functionInvocation",
+	imageOptimizationCacheRead: "imageOptimizationCacheRead",
+	imageOptimizationCacheWrite: "imageOptimizationCacheWrite",
+	imageOptimizationTransformation: "imageOptimizationTransformation",
+	logDrainsVolume: "logDrainsVolume",
+	monitoringMetric: "monitoringMetric",
+	observabilityEvent: "observabilityEvent",
+	onDemandConcurrencyMinutes: "onDemandConcurrencyMinutes",
+	runtimeCacheRead: "runtimeCacheRead",
+	runtimeCacheWrite: "runtimeCacheWrite",
+	serverlessFunctionExecution: "serverlessFunctionExecution",
+	sourceImages: "sourceImages",
+	wafOwaspExcessBytes: "wafOwaspExcessBytes",
+	wafOwaspRequests: "wafOwaspRequests",
+	wafRateLimitRequest: "wafRateLimitRequest",
+	webAnalyticsEvent: "webAnalyticsEvent",
+} as const;
+
+export type UserEventPayloadNewOwnerFeatureBlocksRedisOverageReasonEnumKey =
+	(typeof userEventPayloadNewOwnerFeatureBlocksRedisOverageReasonEnum)[keyof typeof userEventPayloadNewOwnerFeatureBlocksRedisOverageReasonEnum];
+
+export const userEventPayloadNewOwnerFeatureBlocksRedisBlockReasonEnum = {
+	admin_override: "admin_override",
+	hard_blocked: "hard_blocked",
+} as const;
+
+export type UserEventPayloadNewOwnerFeatureBlocksRedisBlockReasonEnumKey =
+	(typeof userEventPayloadNewOwnerFeatureBlocksRedisBlockReasonEnum)[keyof typeof userEventPayloadNewOwnerFeatureBlocksRedisBlockReasonEnum];
+
+export const userEventPayloadNewOwnerFeatureBlocksSandboxStorageBlockReasonEnum = {
+	admin_override: "admin_override",
+	hard_blocked: "hard_blocked",
+	limits_exceeded: "limits_exceeded",
+} as const;
+
+export type UserEventPayloadNewOwnerFeatureBlocksSandboxStorageBlockReasonEnumKey =
+	(typeof userEventPayloadNewOwnerFeatureBlocksSandboxStorageBlockReasonEnum)[keyof typeof userEventPayloadNewOwnerFeatureBlocksSandboxStorageBlockReasonEnum];
+
+export const userEventPayloadNewOwnerFeatureBlocksSourceImagesBlockReasonEnum = {
+	admin_override: "admin_override",
+	hard_blocked: "hard_blocked",
+	limits_exceeded: "limits_exceeded",
+} as const;
+
+export type UserEventPayloadNewOwnerFeatureBlocksSourceImagesBlockReasonEnumKey =
+	(typeof userEventPayloadNewOwnerFeatureBlocksSourceImagesBlockReasonEnum)[keyof typeof userEventPayloadNewOwnerFeatureBlocksSourceImagesBlockReasonEnum];
+
+export const userEventPayloadNewOwnerFeatureBlocksSpeedInsightsFreeBlockReasonEnum = {
+	admin_override: "admin_override",
+	hard_blocked: "hard_blocked",
+	limits_exceeded: "limits_exceeded",
+} as const;
+
+export type UserEventPayloadNewOwnerFeatureBlocksSpeedInsightsFreeBlockReasonEnumKey =
+	(typeof userEventPayloadNewOwnerFeatureBlocksSpeedInsightsFreeBlockReasonEnum)[keyof typeof userEventPayloadNewOwnerFeatureBlocksSpeedInsightsFreeBlockReasonEnum];
+
+export const userEventPayloadNewOwnerFeatureBlocksTracingBlockReasonEnum = {
+	admin_override: "admin_override",
+	hard_blocked: "hard_blocked",
+	limits_exceeded: "limits_exceeded",
+} as const;
+
+export type UserEventPayloadNewOwnerFeatureBlocksTracingBlockReasonEnumKey =
+	(typeof userEventPayloadNewOwnerFeatureBlocksTracingBlockReasonEnum)[keyof typeof userEventPayloadNewOwnerFeatureBlocksTracingBlockReasonEnum];
+
+export const userEventPayloadNewOwnerFeatureBlocksVcrBlockReasonEnum = {
+	admin_override: "admin_override",
+	hard_blocked: "hard_blocked",
+	limits_exceeded: "limits_exceeded",
+} as const;
+
+export type UserEventPayloadNewOwnerFeatureBlocksVcrBlockReasonEnumKey =
+	(typeof userEventPayloadNewOwnerFeatureBlocksVcrBlockReasonEnum)[keyof typeof userEventPayloadNewOwnerFeatureBlocksVcrBlockReasonEnum];
+
+export const userEventPayloadNewOwnerFeatureBlocksWebAnalyticsBlockReasonEnum = {
+	admin_override: "admin_override",
+	hard_blocked: "hard_blocked",
+	limits_exceeded: "limits_exceeded",
+} as const;
+
+export type UserEventPayloadNewOwnerFeatureBlocksWebAnalyticsBlockReasonEnumKey =
+	(typeof userEventPayloadNewOwnerFeatureBlocksWebAnalyticsBlockReasonEnum)[keyof typeof userEventPayloadNewOwnerFeatureBlocksWebAnalyticsBlockReasonEnum];
+
+export const userEventPayloadNewOwnerFeatureBlocksWorkflowEventsBlockReasonEnum = {
+	admin_override: "admin_override",
+	hard_blocked: "hard_blocked",
+	limits_exceeded: "limits_exceeded",
+} as const;
+
+export type UserEventPayloadNewOwnerFeatureBlocksWorkflowEventsBlockReasonEnumKey =
+	(typeof userEventPayloadNewOwnerFeatureBlocksWorkflowEventsBlockReasonEnum)[keyof typeof userEventPayloadNewOwnerFeatureBlocksWorkflowEventsBlockReasonEnum];
+
+export const userEventPayloadNewOwnerFeatureBlocksWorkflowStorageWriteBlockReasonEnum = {
+	admin_override: "admin_override",
+	hard_blocked: "hard_blocked",
+	limits_exceeded: "limits_exceeded",
+} as const;
+
+export type UserEventPayloadNewOwnerFeatureBlocksWorkflowStorageWriteBlockReasonEnumKey =
+	(typeof userEventPayloadNewOwnerFeatureBlocksWorkflowStorageWriteBlockReasonEnum)[keyof typeof userEventPayloadNewOwnerFeatureBlocksWorkflowStorageWriteBlockReasonEnum];
+
+export const userEventPayloadNewOwnerImportFlowGitProviderEnum = {
+	bitbucket: "bitbucket",
+	"cursor-origin": "cursor-origin",
+	github: "github",
+	"github-custom-host": "github-custom-host",
+	"github-limited": "github-limited",
+	gitlab: "gitlab",
+	vercel: "vercel",
+} as const;
+
+export type UserEventPayloadNewOwnerImportFlowGitProviderEnumKey =
+	(typeof userEventPayloadNewOwnerImportFlowGitProviderEnum)[keyof typeof userEventPayloadNewOwnerImportFlowGitProviderEnum];
+
+export const userEventPayloadNewOwnerMfaConfigurationHistoryActionEnum = {
+	disabled: "disabled",
+	enabled: "enabled",
+} as const;
+
+export type UserEventPayloadNewOwnerMfaConfigurationHistoryActionEnumKey =
+	(typeof userEventPayloadNewOwnerMfaConfigurationHistoryActionEnum)[keyof typeof userEventPayloadNewOwnerMfaConfigurationHistoryActionEnum];
+
+export const userEventPayloadNewOwnerMfaConfigurationHistoryActorTypeEnum = {
+	admin: "admin",
+	user: "user",
+} as const;
+
+export type UserEventPayloadNewOwnerMfaConfigurationHistoryActorTypeEnumKey =
+	(typeof userEventPayloadNewOwnerMfaConfigurationHistoryActorTypeEnum)[keyof typeof userEventPayloadNewOwnerMfaConfigurationHistoryActorTypeEnum];
+
+export const userEventPayloadNewOwnerMfaConfigurationHistoryMethodEnum = {
+	admin_removal: "admin_removal",
+	passkey: "passkey",
+	self_serve_recovery: "self_serve_recovery",
+	totp: "totp",
+	unknown: "unknown",
+	user_disabled: "user_disabled",
+} as const;
+
+export type UserEventPayloadNewOwnerMfaConfigurationHistoryMethodEnumKey =
+	(typeof userEventPayloadNewOwnerMfaConfigurationHistoryMethodEnum)[keyof typeof userEventPayloadNewOwnerMfaConfigurationHistoryMethodEnum];
+
+export const userEventPayloadNewOwnerPreventAutoBlocking = {
+	false: false,
+	true: true,
+} as const;
+
+export type UserEventPayloadNewOwnerPreventAutoBlockingKey =
+	(typeof userEventPayloadNewOwnerPreventAutoBlocking)[keyof typeof userEventPayloadNewOwnerPreventAutoBlocking];
+
+export const userEventPayloadNewOwnerProjectCardWidgetPreferencesWidgetEnum = {
+	"analytics-online": "analytics-online",
+	"analytics-page-views": "analytics-page-views",
+	"analytics-visitors": "analytics-visitors",
+	"firewall-allowed": "firewall-allowed",
+	"firewall-denied": "firewall-denied",
+	"observability-alert": "observability-alert",
+	"observability-edge-requests": "observability-edge-requests",
+	"observability-error-rate": "observability-error-rate",
+	"observability-function-invocations": "observability-function-invocations",
+	shortcut: "shortcut",
+	"speed-insights-cls": "speed-insights-cls",
+	"speed-insights-lcp": "speed-insights-lcp",
+	"speed-insights-res": "speed-insights-res",
+} as const;
+
+export type UserEventPayloadNewOwnerProjectCardWidgetPreferencesWidgetEnumKey =
+	(typeof userEventPayloadNewOwnerProjectCardWidgetPreferencesWidgetEnum)[keyof typeof userEventPayloadNewOwnerProjectCardWidgetPreferencesWidgetEnum];
+
+export const userEventPayloadNewOwnerResourceConfigBuildQueueConfigurationEnum = {
+	SKIP_NAMESPACE_QUEUE: "SKIP_NAMESPACE_QUEUE",
+	WAIT_FOR_NAMESPACE_QUEUE: "WAIT_FOR_NAMESPACE_QUEUE",
+} as const;
+
+export type UserEventPayloadNewOwnerResourceConfigBuildQueueConfigurationEnumKey =
+	(typeof userEventPayloadNewOwnerResourceConfigBuildQueueConfigurationEnum)[keyof typeof userEventPayloadNewOwnerResourceConfigBuildQueueConfigurationEnum];
+
+export const userEventPayloadNewOwnerResourceConfigBuildMachineDefaultEnum = {
+	basic: "basic",
+	elastic: "elastic",
+	enhanced: "enhanced",
+	standard: "standard",
+	turbo: "turbo",
+} as const;
+
+export type UserEventPayloadNewOwnerResourceConfigBuildMachineDefaultEnumKey =
+	(typeof userEventPayloadNewOwnerResourceConfigBuildMachineDefaultEnum)[keyof typeof userEventPayloadNewOwnerResourceConfigBuildMachineDefaultEnum];
+
+export const userEventPayloadNewOwnerSoftBlockBlockedDueToOverageTypeEnum = {
+	analyticsUsage: "analyticsUsage",
+	artifacts: "artifacts",
+	bandwidth: "bandwidth",
+	blobDataTransfer: "blobDataTransfer",
+	blobTotalAdvancedRequests: "blobTotalAdvancedRequests",
+	blobTotalAvgSizeInBytes: "blobTotalAvgSizeInBytes",
+	blobTotalGetResponseObjectSizeInBytes: "blobTotalGetResponseObjectSizeInBytes",
+	blobTotalSimpleRequests: "blobTotalSimpleRequests",
+	connectDataTransfer: "connectDataTransfer",
+	dataCacheRead: "dataCacheRead",
+	dataCacheWrite: "dataCacheWrite",
+	edgeConfigRead: "edgeConfigRead",
+	edgeConfigWrite: "edgeConfigWrite",
+	edgeFunctionExecutionUnits: "edgeFunctionExecutionUnits",
+	edgeMiddlewareInvocations: "edgeMiddlewareInvocations",
+	edgeRequest: "edgeRequest",
+	edgeRequestAdditionalCpuDuration: "edgeRequestAdditionalCpuDuration",
+	elasticConcurrencyBuildSlots: "elasticConcurrencyBuildSlots",
+	fastDataTransfer: "fastDataTransfer",
+	fastOriginTransfer: "fastOriginTransfer",
+	fluidCpuDuration: "fluidCpuDuration",
+	fluidDuration: "fluidDuration",
+	functionDuration: "functionDuration",
+	functionInvocation: "functionInvocation",
+	imageOptimizationCacheRead: "imageOptimizationCacheRead",
+	imageOptimizationCacheWrite: "imageOptimizationCacheWrite",
+	imageOptimizationTransformation: "imageOptimizationTransformation",
+	logDrainsVolume: "logDrainsVolume",
+	monitoringMetric: "monitoringMetric",
+	observabilityEvent: "observabilityEvent",
+	onDemandConcurrencyMinutes: "onDemandConcurrencyMinutes",
+	runtimeCacheRead: "runtimeCacheRead",
+	runtimeCacheWrite: "runtimeCacheWrite",
+	serverlessFunctionExecution: "serverlessFunctionExecution",
+	sourceImages: "sourceImages",
+	wafOwaspExcessBytes: "wafOwaspExcessBytes",
+	wafOwaspRequests: "wafOwaspRequests",
+	wafRateLimitRequest: "wafRateLimitRequest",
+	webAnalyticsEvent: "webAnalyticsEvent",
+} as const;
+
+export type UserEventPayloadNewOwnerSoftBlockBlockedDueToOverageTypeEnumKey =
+	(typeof userEventPayloadNewOwnerSoftBlockBlockedDueToOverageTypeEnum)[keyof typeof userEventPayloadNewOwnerSoftBlockBlockedDueToOverageTypeEnum];
+
+export const userEventPayloadNewOwnerSoftBlockReasonEnum = {
+	BLOCKED_FOR_PLATFORM_ABUSE: "BLOCKED_FOR_PLATFORM_ABUSE",
+	DOMAIN_OWNER_DELETION_REQUEST: "DOMAIN_OWNER_DELETION_REQUEST",
+	ENTERPRISE_TRIAL_ENDED: "ENTERPRISE_TRIAL_ENDED",
+	ENTERPRISE_UNPAID_INVOICE: "ENTERPRISE_UNPAID_INVOICE",
+	EXPOSURE_CAP_EXCEEDED: "EXPOSURE_CAP_EXCEEDED",
+	FAIR_USE_LIMITS_EXCEEDED: "FAIR_USE_LIMITS_EXCEEDED",
+	SUBSCRIPTION_CANCELED: "SUBSCRIPTION_CANCELED",
+	SUBSCRIPTION_EXPIRED: "SUBSCRIPTION_EXPIRED",
+	UNPAID_INVOICE: "UNPAID_INVOICE",
+} as const;
+
+export type UserEventPayloadNewOwnerSoftBlockReasonEnumKey =
+	(typeof userEventPayloadNewOwnerSoftBlockReasonEnum)[keyof typeof userEventPayloadNewOwnerSoftBlockReasonEnum];
+
+export const userEventPayloadNewOwnerTeamsJoinedFromOriginEnum = {
+	"account-update": "account-update",
+	bitbucket: "bitbucket",
+	dsync: "dsync",
+	feedback: "feedback",
+	github: "github",
+	gitlab: "gitlab",
+	import: "import",
+	link: "link",
+	mail: "mail",
+	"nsnb-auto-approve": "nsnb-auto-approve",
+	"nsnb-hobby-upgrade": "nsnb-hobby-upgrade",
+	"nsnb-invite": "nsnb-invite",
+	"nsnb-redeploy": "nsnb-redeploy",
+	"nsnb-redeploy-attribution-card": "nsnb-redeploy-attribution-card",
+	"nsnb-request-access": "nsnb-request-access",
+	"nsnb-viewer-upgrade": "nsnb-viewer-upgrade",
+	"organization-teams": "organization-teams",
+	saml: "saml",
+	teams: "teams",
+} as const;
+
+export type UserEventPayloadNewOwnerTeamsJoinedFromOriginEnumKey =
+	(typeof userEventPayloadNewOwnerTeamsJoinedFromOriginEnum)[keyof typeof userEventPayloadNewOwnerTeamsJoinedFromOriginEnum];
+
+export const userEventPayloadNewOwnerTeamsRoleEnum = {
+	BILLING: "BILLING",
+	CONTRIBUTOR: "CONTRIBUTOR",
+	DEVELOPER: "DEVELOPER",
+	MEMBER: "MEMBER",
+	OWNER: "OWNER",
+	SECURITY: "SECURITY",
+	VIEWER: "VIEWER",
+	VIEWER_FOR_PLUS: "VIEWER_FOR_PLUS",
+} as const;
+
+export type UserEventPayloadNewOwnerTeamsRoleEnumKey =
+	(typeof userEventPayloadNewOwnerTeamsRoleEnum)[keyof typeof userEventPayloadNewOwnerTeamsRoleEnum];
+
+export const userEventPayloadNewOwnerTeamsTeamPermissionsEnum = {
+	AiGatewayApiKeyOwnedBySelf: "AiGatewayApiKeyOwnedBySelf",
+	AiGatewayBudgetManager: "AiGatewayBudgetManager",
+	AiGatewayCredits: "AiGatewayCredits",
+	AiGatewaySettings: "AiGatewaySettings",
+	AiGatewayTranscriptsManager: "AiGatewayTranscriptsManager",
+	AiGatewayTranscriptsViewer: "AiGatewayTranscriptsViewer",
+	ConnectorManager: "ConnectorManager",
+	CreateProject: "CreateProject",
+	EnvVariableManager: "EnvVariableManager",
+	EnvironmentManager: "EnvironmentManager",
+	FullProductionDeployment: "FullProductionDeployment",
+	IntegrationManager: "IntegrationManager",
+	OrgAdmin: "OrgAdmin",
+	OrgViewer: "OrgViewer",
+	UsageViewer: "UsageViewer",
+	V0Builder: "V0Builder",
+	V0Chatter: "V0Chatter",
+	V0Viewer: "V0Viewer",
+	WorkflowDecryptor: "WorkflowDecryptor",
+} as const;
+
+export type UserEventPayloadNewOwnerTeamsTeamPermissionsEnumKey =
+	(typeof userEventPayloadNewOwnerTeamsTeamPermissionsEnum)[keyof typeof userEventPayloadNewOwnerTeamsTeamPermissionsEnum];
+
+export const userEventPayloadNewOwnerTeamsTeamRolesEnum = {
+	BILLING: "BILLING",
+	CONTRIBUTOR: "CONTRIBUTOR",
+	DEVELOPER: "DEVELOPER",
+	MEMBER: "MEMBER",
+	OWNER: "OWNER",
+	SECURITY: "SECURITY",
+	VIEWER: "VIEWER",
+	VIEWER_FOR_PLUS: "VIEWER_FOR_PLUS",
+} as const;
+
+export type UserEventPayloadNewOwnerTeamsTeamRolesEnumKey =
+	(typeof userEventPayloadNewOwnerTeamsTeamRolesEnum)[keyof typeof userEventPayloadNewOwnerTeamsTeamRolesEnum];
+
+export const userEventPayloadQueryTypeEnum = {
+	"data-edit": "data-edit",
+	"data-view": "data-view",
+	schema: "schema",
+	user: "user",
+} as const;
+
+export type UserEventPayloadQueryTypeEnumKey =
+	(typeof userEventPayloadQueryTypeEnum)[keyof typeof userEventPayloadQueryTypeEnum];
+
+export const userEventPayloadFactorsOriginEnum = {
+	apple: "apple",
+	bitbucket: "bitbucket",
+	chatgpt: "chatgpt",
+	email: "email",
+	github: "github",
+	gitlab: "gitlab",
+	google: "google",
+	otp: "otp",
+	saml: "saml",
+} as const;
+
+export type UserEventPayloadFactorsOriginEnumKey =
+	(typeof userEventPayloadFactorsOriginEnum)[keyof typeof userEventPayloadFactorsOriginEnum];
+
+export const userEventPayloadNextDefaultEnum = {
+	BILLING: "BILLING",
+	CONTRIBUTOR: "CONTRIBUTOR",
+	DEVELOPER: "DEVELOPER",
+	MEMBER: "MEMBER",
+	OWNER: "OWNER",
+	SECURITY: "SECURITY",
+	VIEWER: "VIEWER",
+	VIEWER_FOR_PLUS: "VIEWER_FOR_PLUS",
+} as const;
+
+export type UserEventPayloadNextDefaultEnumKey =
+	(typeof userEventPayloadNextDefaultEnum)[keyof typeof userEventPayloadNextDefaultEnum];
+
+export const userEventPayloadTriggerEnum = {
+	directory_sync_updated: "directory_sync_updated",
+	domain_deleted: "domain_deleted",
+	domain_verified: "domain_verified",
+	saml_updated: "saml_updated",
+	team_attached: "team_attached",
+	team_participation_updated: "team_participation_updated",
+	toggle: "toggle",
+} as const;
+
+export type UserEventPayloadTriggerEnumKey =
+	(typeof userEventPayloadTriggerEnum)[keyof typeof userEventPayloadTriggerEnum];
+
+export const userEventPayloadBillingPlanEnum = {
+	enterprise: "enterprise",
+	platform: "platform",
+} as const;
+
+export type UserEventPayloadBillingPlanEnumKey =
+	(typeof userEventPayloadBillingPlanEnum)[keyof typeof userEventPayloadBillingPlanEnum];
+
+export const userEventPayloadModeEnum = {
+	organization: "organization",
+	team: "team",
+} as const;
+
+export type UserEventPayloadModeEnumKey =
+	(typeof userEventPayloadModeEnum)[keyof typeof userEventPayloadModeEnum];
+
+export const userEventPayloadPreviousModeEnum = {
+	organization: "organization",
+	team: "team",
+} as const;
+
+export type UserEventPayloadPreviousModeEnumKey =
+	(typeof userEventPayloadPreviousModeEnum)[keyof typeof userEventPayloadPreviousModeEnum];
+
+export const userEventPayloadNextEnforcementScopeEnum = {
+	all: "all",
+	preview: "preview",
+} as const;
+
+export type UserEventPayloadNextEnforcementScopeEnumKey =
+	(typeof userEventPayloadNextEnforcementScopeEnum)[keyof typeof userEventPayloadNextEnforcementScopeEnum];
+
+export const userEventPayloadNextNewResourceBlockingPolicyEnum = {
+	allow: "allow",
+	block: "block",
+} as const;
+
+export type UserEventPayloadNextNewResourceBlockingPolicyEnumKey =
+	(typeof userEventPayloadNextNewResourceBlockingPolicyEnum)[keyof typeof userEventPayloadNextNewResourceBlockingPolicyEnum];
+
+export const userEventPayloadPreviousEnforcementScopeEnum = {
+	all: "all",
+	preview: "preview",
+} as const;
+
+export type UserEventPayloadPreviousEnforcementScopeEnumKey =
+	(typeof userEventPayloadPreviousEnforcementScopeEnum)[keyof typeof userEventPayloadPreviousEnforcementScopeEnum];
+
+export const userEventPayloadPreviousNewResourceBlockingPolicyEnum = {
+	allow: "allow",
+	block: "block",
+} as const;
+
+export type UserEventPayloadPreviousNewResourceBlockingPolicyEnumKey =
+	(typeof userEventPayloadPreviousNewResourceBlockingPolicyEnum)[keyof typeof userEventPayloadPreviousNewResourceBlockingPolicyEnum];
+
+export const userEventPayloadApprovalScopeEnum = {
+	all: "all",
+	preview: "preview",
+} as const;
+
+export type UserEventPayloadApprovalScopeEnumKey =
+	(typeof userEventPayloadApprovalScopeEnum)[keyof typeof userEventPayloadApprovalScopeEnum];
+
+export const userEventPayloadKindEnum = {
+	connectSrc: "connectSrc",
+	script: "script",
+} as const;
+
+export type UserEventPayloadKindEnumKey =
+	(typeof userEventPayloadKindEnum)[keyof typeof userEventPayloadKindEnum];
+
+export const userEventPayloadNextPassportDeploymentTypeEnum = {
+	all: "all",
+	all_except_custom_domains: "all_except_custom_domains",
+	preview: "preview",
+	prod_deployment_urls_and_all_previews: "prod_deployment_urls_and_all_previews",
+} as const;
+
+export type UserEventPayloadNextPassportDeploymentTypeEnumKey =
+	(typeof userEventPayloadNextPassportDeploymentTypeEnum)[keyof typeof userEventPayloadNextPassportDeploymentTypeEnum];
+
+export const userEventPayloadPreviousPassportDeploymentTypeEnum = {
+	all: "all",
+	all_except_custom_domains: "all_except_custom_domains",
+	preview: "preview",
+	prod_deployment_urls_and_all_previews: "prod_deployment_urls_and_all_previews",
+} as const;
+
+export type UserEventPayloadPreviousPassportDeploymentTypeEnumKey =
+	(typeof userEventPayloadPreviousPassportDeploymentTypeEnum)[keyof typeof userEventPayloadPreviousPassportDeploymentTypeEnum];
+
+export const originEnum = {
+	"account-update": "account-update",
+	bitbucket: "bitbucket",
+	dsync: "dsync",
+	feedback: "feedback",
+	github: "github",
+	gitlab: "gitlab",
+	import: "import",
+	link: "link",
+	mail: "mail",
+	"nsnb-auto-approve": "nsnb-auto-approve",
+	"nsnb-hobby-upgrade": "nsnb-hobby-upgrade",
+	"nsnb-invite": "nsnb-invite",
+	"nsnb-redeploy": "nsnb-redeploy",
+	"nsnb-redeploy-attribution-card": "nsnb-redeploy-attribution-card",
+	"nsnb-request-access": "nsnb-request-access",
+	"nsnb-viewer-upgrade": "nsnb-viewer-upgrade",
+	"organization-teams": "organization-teams",
+	saml: "saml",
+	teams: "teams",
+} as const;
+
+export type OriginEnumKey = (typeof originEnum)[keyof typeof originEnum];
+
+export const roleEnum = {
+	BILLING: "BILLING",
+	CONTRIBUTOR: "CONTRIBUTOR",
+	DEVELOPER: "DEVELOPER",
+	MEMBER: "MEMBER",
+	OWNER: "OWNER",
+	SECURITY: "SECURITY",
+	VIEWER: "VIEWER",
+	VIEWER_FOR_PLUS: "VIEWER_FOR_PLUS",
+} as const;
+
+export type RoleEnumKey = (typeof roleEnum)[keyof typeof roleEnum];
+
+export const userEventPayloadWidgetEnum = {
+	alert: "alert",
+	"analytics-online": "analytics-online",
+	"analytics-page-views": "analytics-page-views",
+	"analytics-visitors": "analytics-visitors",
+	"firewall-allowed": "firewall-allowed",
+	"firewall-denied": "firewall-denied",
+	"observability-alert": "observability-alert",
+	"observability-edge-requests": "observability-edge-requests",
+	"observability-error-rate": "observability-error-rate",
+	"observability-function-invocations": "observability-function-invocations",
+	online: "online",
+	res: "res",
+	shortcut: "shortcut",
+	"speed-insights-cls": "speed-insights-cls",
+	"speed-insights-lcp": "speed-insights-lcp",
+	"speed-insights-res": "speed-insights-res",
+} as const;
+
+export type UserEventPayloadWidgetEnumKey =
+	(typeof userEventPayloadWidgetEnum)[keyof typeof userEventPayloadWidgetEnum];
+
+export const userEventPayloadBuildQueueConfigurationEnum = {
+	SKIP_NAMESPACE_QUEUE: "SKIP_NAMESPACE_QUEUE",
+	WAIT_FOR_NAMESPACE_QUEUE: "WAIT_FOR_NAMESPACE_QUEUE",
+} as const;
+
+export type UserEventPayloadBuildQueueConfigurationEnumKey =
+	(typeof userEventPayloadBuildQueueConfigurationEnum)[keyof typeof userEventPayloadBuildQueueConfigurationEnum];
+
+export const userEventPayloadOldBuildQueueConfigurationEnum = {
+	SKIP_NAMESPACE_QUEUE: "SKIP_NAMESPACE_QUEUE",
+	WAIT_FOR_NAMESPACE_QUEUE: "WAIT_FOR_NAMESPACE_QUEUE",
+} as const;
+
+export type UserEventPayloadOldBuildQueueConfigurationEnumKey =
+	(typeof userEventPayloadOldBuildQueueConfigurationEnum)[keyof typeof userEventPayloadOldBuildQueueConfigurationEnum];
+
+export const userEventPayloadNextBranchMatcherTypeEnum = {
+	endsWith: "endsWith",
+	equals: "equals",
+	startsWith: "startsWith",
+} as const;
+
+export type UserEventPayloadNextBranchMatcherTypeEnumKey =
+	(typeof userEventPayloadNextBranchMatcherTypeEnum)[keyof typeof userEventPayloadNextBranchMatcherTypeEnum];
+
+export const userEventPayloadPreviousBranchMatcherTypeEnum = {
+	endsWith: "endsWith",
+	equals: "equals",
+	startsWith: "startsWith",
+} as const;
+
+export type UserEventPayloadPreviousBranchMatcherTypeEnumKey =
+	(typeof userEventPayloadPreviousBranchMatcherTypeEnum)[keyof typeof userEventPayloadPreviousBranchMatcherTypeEnum];
+
+export const userEventPayloadNextGitProviderEnum = {
+	bitbucket: "bitbucket",
+	"cursor-origin": "cursor-origin",
+	github: "github",
+	"github-custom-host": "github-custom-host",
+	"github-limited": "github-limited",
+	gitlab: "gitlab",
+	v0: "v0",
+	vercel: "vercel",
+} as const;
+
+export type UserEventPayloadNextGitProviderEnumKey =
+	(typeof userEventPayloadNextGitProviderEnum)[keyof typeof userEventPayloadNextGitProviderEnum];
+
+export const userEventPayloadPreviousGitProviderEnum = {
+	bitbucket: "bitbucket",
+	"cursor-origin": "cursor-origin",
+	github: "github",
+	"github-custom-host": "github-custom-host",
+	"github-limited": "github-limited",
+	gitlab: "gitlab",
+	v0: "v0",
+	vercel: "vercel",
+} as const;
+
+export type UserEventPayloadPreviousGitProviderEnumKey =
+	(typeof userEventPayloadPreviousGitProviderEnum)[keyof typeof userEventPayloadPreviousGitProviderEnum];
+
+export const userEventPayloadGitProviderEnum = {
+	bitbucket: "bitbucket",
+	"cursor-origin": "cursor-origin",
+	github: "github",
+	"github-custom-host": "github-custom-host",
+	"github-limited": "github-limited",
+	gitlab: "gitlab",
+	v0: "v0",
+	vercel: "vercel",
+} as const;
+
+export type UserEventPayloadGitProviderEnumKey =
+	(typeof userEventPayloadGitProviderEnum)[keyof typeof userEventPayloadGitProviderEnum];
+
+export const userEventPayloadCreateDeploymentsEnum = {
+	disabled: "disabled",
+	enabled: "enabled",
+} as const;
+
+export type UserEventPayloadCreateDeploymentsEnumKey =
+	(typeof userEventPayloadCreateDeploymentsEnum)[keyof typeof userEventPayloadCreateDeploymentsEnum];
+
+export const userEventPayloadProjectsRoleEnum = {
+	ADMIN: "ADMIN",
+	PROJECT_DEVELOPER: "PROJECT_DEVELOPER",
+	PROJECT_GUEST: "PROJECT_GUEST",
+	PROJECT_VIEWER: "PROJECT_VIEWER",
+} as const;
+
+export type UserEventPayloadProjectsRoleEnumKey =
+	(typeof userEventPayloadProjectsRoleEnum)[keyof typeof userEventPayloadProjectsRoleEnum];
+
+export const userEventPayloadProjectMembershipRoleEnum = {
+	ADMIN: "ADMIN",
+	PROJECT_DEVELOPER: "PROJECT_DEVELOPER",
+	PROJECT_GUEST: "PROJECT_GUEST",
+	PROJECT_VIEWER: "PROJECT_VIEWER",
+} as const;
+
+export type UserEventPayloadProjectMembershipRoleEnumKey =
+	(typeof userEventPayloadProjectMembershipRoleEnum)[keyof typeof userEventPayloadProjectMembershipRoleEnum];
+
+export const userEventPayloadProjectRoleEnum = {
+	ADMIN: "ADMIN",
+	PROJECT_DEVELOPER: "PROJECT_DEVELOPER",
+	PROJECT_GUEST: "PROJECT_GUEST",
+	PROJECT_VIEWER: "PROJECT_VIEWER",
+} as const;
+
+export type UserEventPayloadProjectRoleEnumKey =
+	(typeof userEventPayloadProjectRoleEnum)[keyof typeof userEventPayloadProjectRoleEnum];
+
+export const userEventPayloadRemovedMembershipRoleEnum = {
+	ADMIN: "ADMIN",
+	PROJECT_DEVELOPER: "PROJECT_DEVELOPER",
+	PROJECT_GUEST: "PROJECT_GUEST",
+	PROJECT_VIEWER: "PROJECT_VIEWER",
+} as const;
+
+export type UserEventPayloadRemovedMembershipRoleEnumKey =
+	(typeof userEventPayloadRemovedMembershipRoleEnum)[keyof typeof userEventPayloadRemovedMembershipRoleEnum];
+
+export const userEventPayloadProjectMembershipPreviousRoleEnum = {
+	ADMIN: "ADMIN",
+	PROJECT_DEVELOPER: "PROJECT_DEVELOPER",
+	PROJECT_GUEST: "PROJECT_GUEST",
+	PROJECT_VIEWER: "PROJECT_VIEWER",
+} as const;
+
+export type UserEventPayloadProjectMembershipPreviousRoleEnumKey =
+	(typeof userEventPayloadProjectMembershipPreviousRoleEnum)[keyof typeof userEventPayloadProjectMembershipPreviousRoleEnum];
+
+export const userEventPayloadOldPasswordProtectionDeploymentTypeEnum = {
+	all: "all",
+	all_except_custom_domains: "all_except_custom_domains",
+	preview: "preview",
+	prod_deployment_urls_and_all_previews: "prod_deployment_urls_and_all_previews",
+} as const;
+
+export type UserEventPayloadOldPasswordProtectionDeploymentTypeEnumKey =
+	(typeof userEventPayloadOldPasswordProtectionDeploymentTypeEnum)[keyof typeof userEventPayloadOldPasswordProtectionDeploymentTypeEnum];
+
+export const userEventPayloadOldPasswordProtection = {
+	all: "all",
+	all_except_custom_domains: "all_except_custom_domains",
+	preview: "preview",
+	prod_deployment_urls_and_all_previews: "prod_deployment_urls_and_all_previews",
+} as const;
+
+export type UserEventPayloadOldPasswordProtectionKey =
+	(typeof userEventPayloadOldPasswordProtection)[keyof typeof userEventPayloadOldPasswordProtection];
+
+export const userEventPayloadPasswordProtectionDeploymentTypeEnum = {
+	all: "all",
+	all_except_custom_domains: "all_except_custom_domains",
+	preview: "preview",
+	prod_deployment_urls_and_all_previews: "prod_deployment_urls_and_all_previews",
+} as const;
+
+export type UserEventPayloadPasswordProtectionDeploymentTypeEnumKey =
+	(typeof userEventPayloadPasswordProtectionDeploymentTypeEnum)[keyof typeof userEventPayloadPasswordProtectionDeploymentTypeEnum];
+
+export const userEventPayloadPasswordProtection = {
+	all: "all",
+	all_except_custom_domains: "all_except_custom_domains",
+	preview: "preview",
+	prod_deployment_urls_and_all_previews: "prod_deployment_urls_and_all_previews",
+} as const;
+
+export type UserEventPayloadPasswordProtectionKey =
+	(typeof userEventPayloadPasswordProtection)[keyof typeof userEventPayloadPasswordProtection];
+
+export const userEventPayloadReasonCodeEnum = {
+	BACKOFFICE: "BACKOFFICE",
+	PUBLIC_API: "PUBLIC_API",
+} as const;
+
+export type UserEventPayloadReasonCodeEnumKey =
+	(typeof userEventPayloadReasonCodeEnum)[keyof typeof userEventPayloadReasonCodeEnum];
+
+export const userEventPayloadConsentEnum = {
+	granted: "granted",
+	refused: "refused",
+} as const;
+
+export type UserEventPayloadConsentEnumKey =
+	(typeof userEventPayloadConsentEnum)[keyof typeof userEventPayloadConsentEnum];
+
+export const userEventPayloadNextIssuerModeEnum = {
+	global: "global",
+	team: "team",
+} as const;
+
+export type UserEventPayloadNextIssuerModeEnumKey =
+	(typeof userEventPayloadNextIssuerModeEnum)[keyof typeof userEventPayloadNextIssuerModeEnum];
+
+export const userEventPayloadPreviousIssuerModeEnum = {
+	global: "global",
+	team: "team",
+} as const;
+
+export type UserEventPayloadPreviousIssuerModeEnumKey =
+	(typeof userEventPayloadPreviousIssuerModeEnum)[keyof typeof userEventPayloadPreviousIssuerModeEnum];
+
+export const userEventPayloadOldSsoProtectionApril2026SecurityIncidentMigrationAppliedFromEnum = {
+	all: "all",
+	all_except_custom_domains: "all_except_custom_domains",
+	preview: "preview",
+	prod_deployment_urls_and_all_previews: "prod_deployment_urls_and_all_previews",
+} as const;
+
+export type UserEventPayloadOldSsoProtectionApril2026SecurityIncidentMigrationAppliedFromEnumKey =
+	(typeof userEventPayloadOldSsoProtectionApril2026SecurityIncidentMigrationAppliedFromEnum)[keyof typeof userEventPayloadOldSsoProtectionApril2026SecurityIncidentMigrationAppliedFromEnum];
+
+export const userEventPayloadOldSsoProtectionCve55182MigrationAppliedFromEnum = {
+	all: "all",
+	all_except_custom_domains: "all_except_custom_domains",
+	preview: "preview",
+	prod_deployment_urls_and_all_previews: "prod_deployment_urls_and_all_previews",
+} as const;
+
+export type UserEventPayloadOldSsoProtectionCve55182MigrationAppliedFromEnumKey =
+	(typeof userEventPayloadOldSsoProtectionCve55182MigrationAppliedFromEnum)[keyof typeof userEventPayloadOldSsoProtectionCve55182MigrationAppliedFromEnum];
+
+export const userEventPayloadOldSsoProtectionDeploymentTypeEnum = {
+	all: "all",
+	all_except_custom_domains: "all_except_custom_domains",
+	preview: "preview",
+	prod_deployment_urls_and_all_previews: "prod_deployment_urls_and_all_previews",
+} as const;
+
+export type UserEventPayloadOldSsoProtectionDeploymentTypeEnumKey =
+	(typeof userEventPayloadOldSsoProtectionDeploymentTypeEnum)[keyof typeof userEventPayloadOldSsoProtectionDeploymentTypeEnum];
+
+export const userEventPayloadOldSsoProtection = {
+	all: "all",
+	all_except_custom_domains: "all_except_custom_domains",
+	preview: "preview",
+	prod_deployment_urls_and_all_previews: "prod_deployment_urls_and_all_previews",
+} as const;
+
+export type UserEventPayloadOldSsoProtectionKey =
+	(typeof userEventPayloadOldSsoProtection)[keyof typeof userEventPayloadOldSsoProtection];
+
+export const userEventPayloadSsoProtectionApril2026SecurityIncidentMigrationAppliedFromEnum = {
+	all: "all",
+	all_except_custom_domains: "all_except_custom_domains",
+	preview: "preview",
+	prod_deployment_urls_and_all_previews: "prod_deployment_urls_and_all_previews",
+} as const;
+
+export type UserEventPayloadSsoProtectionApril2026SecurityIncidentMigrationAppliedFromEnumKey =
+	(typeof userEventPayloadSsoProtectionApril2026SecurityIncidentMigrationAppliedFromEnum)[keyof typeof userEventPayloadSsoProtectionApril2026SecurityIncidentMigrationAppliedFromEnum];
+
+export const userEventPayloadSsoProtectionCve55182MigrationAppliedFromEnum = {
+	all: "all",
+	all_except_custom_domains: "all_except_custom_domains",
+	preview: "preview",
+	prod_deployment_urls_and_all_previews: "prod_deployment_urls_and_all_previews",
+} as const;
+
+export type UserEventPayloadSsoProtectionCve55182MigrationAppliedFromEnumKey =
+	(typeof userEventPayloadSsoProtectionCve55182MigrationAppliedFromEnum)[keyof typeof userEventPayloadSsoProtectionCve55182MigrationAppliedFromEnum];
+
+export const userEventPayloadSsoProtectionDeploymentTypeEnum = {
+	all: "all",
+	all_except_custom_domains: "all_except_custom_domains",
+	preview: "preview",
+	prod_deployment_urls_and_all_previews: "prod_deployment_urls_and_all_previews",
+} as const;
+
+export type UserEventPayloadSsoProtectionDeploymentTypeEnumKey =
+	(typeof userEventPayloadSsoProtectionDeploymentTypeEnum)[keyof typeof userEventPayloadSsoProtectionDeploymentTypeEnum];
+
+export const userEventPayloadSsoProtection = {
+	all: "all",
+	all_except_custom_domains: "all_except_custom_domains",
+	preview: "preview",
+	prod_deployment_urls_and_all_previews: "prod_deployment_urls_and_all_previews",
+} as const;
+
+export type UserEventPayloadSsoProtectionKey =
+	(typeof userEventPayloadSsoProtection)[keyof typeof userEventPayloadSsoProtection];
+
+export const userEventPayloadOldTrustedIpsEnum = {
+	all: "all",
+	all_except_custom_domains: "all_except_custom_domains",
+	preview: "preview",
+	prod_deployment_urls_and_all_previews: "prod_deployment_urls_and_all_previews",
+	production: "production",
+} as const;
+
+export type UserEventPayloadOldTrustedIpsEnumKey =
+	(typeof userEventPayloadOldTrustedIpsEnum)[keyof typeof userEventPayloadOldTrustedIpsEnum];
+
+export const userEventPayloadTrustedIpsEnum = {
+	all: "all",
+	all_except_custom_domains: "all_except_custom_domains",
+	preview: "preview",
+	prod_deployment_urls_and_all_previews: "prod_deployment_urls_and_all_previews",
+	production: "production",
+} as const;
+
+export type UserEventPayloadTrustedIpsEnumKey =
+	(typeof userEventPayloadTrustedIpsEnum)[keyof typeof userEventPayloadTrustedIpsEnum];
+
+export const userEventPayloadBudgetBudgetItemPricingPlanEnum = {
+	flex: "flex",
+	legacy: "legacy",
+	platform: "platform",
+	plus: "plus",
+	unbundled: "unbundled",
+} as const;
+
+export type UserEventPayloadBudgetBudgetItemPricingPlanEnumKey =
+	(typeof userEventPayloadBudgetBudgetItemPricingPlanEnum)[keyof typeof userEventPayloadBudgetBudgetItemPricingPlanEnum];
+
+export const userEventPayloadBudgetBudgetItemScopeEnum = {
+	organization: "organization",
+	project: "project",
+	team: "team",
+} as const;
+
+export type UserEventPayloadBudgetBudgetItemScopeEnumKey =
+	(typeof userEventPayloadBudgetBudgetItemScopeEnum)[keyof typeof userEventPayloadBudgetBudgetItemScopeEnum];
+
+export const userEventPayloadBudgetPricingPlanEnum = {
+	flex: "flex",
+	legacy: "legacy",
+	platform: "platform",
+	plus: "plus",
+	unbundled: "unbundled",
+} as const;
+
+export type UserEventPayloadBudgetPricingPlanEnumKey =
+	(typeof userEventPayloadBudgetPricingPlanEnum)[keyof typeof userEventPayloadBudgetPricingPlanEnum];
+
+export const userEventPayloadBudgetScopeEnum = {
+	organization: "organization",
+	project: "project",
+	team: "team",
+} as const;
+
+export type UserEventPayloadBudgetScopeEnumKey =
+	(typeof userEventPayloadBudgetScopeEnum)[keyof typeof userEventPayloadBudgetScopeEnum];
+
+export const userEventPayloadPrevBudgetPricingPlanEnum = {
+	flex: "flex",
+	legacy: "legacy",
+	platform: "platform",
+	plus: "plus",
+	unbundled: "unbundled",
+} as const;
+
+export type UserEventPayloadPrevBudgetPricingPlanEnumKey =
+	(typeof userEventPayloadPrevBudgetPricingPlanEnum)[keyof typeof userEventPayloadPrevBudgetPricingPlanEnum];
+
+export const userEventPayloadPrevBudgetScopeEnum = {
+	organization: "organization",
+	project: "project",
+	team: "team",
+} as const;
+
+export type UserEventPayloadPrevBudgetScopeEnumKey =
+	(typeof userEventPayloadPrevBudgetScopeEnum)[keyof typeof userEventPayloadPrevBudgetScopeEnum];
+
+export const userEventPayloadStoreTypeEnum = {
+	blob: "blob",
+	"edge-config": "edge-config",
+	integration: "integration",
+	postgres: "postgres",
+	redis: "redis",
+} as const;
+
+export type UserEventPayloadStoreTypeEnumKey =
+	(typeof userEventPayloadStoreTypeEnum)[keyof typeof userEventPayloadStoreTypeEnum];
+
+export const userEventPayloadAccessEnum = {
+	private: "private",
+	public: "public",
+} as const;
+
+export type UserEventPayloadAccessEnumKey =
+	(typeof userEventPayloadAccessEnum)[keyof typeof userEventPayloadAccessEnum];
+
+export const userEventPayloadActorTypeEnum = {
+	admin: "admin",
+	user: "user",
+} as const;
+
+export type UserEventPayloadActorTypeEnumKey =
+	(typeof userEventPayloadActorTypeEnum)[keyof typeof userEventPayloadActorTypeEnum];
+
+export const userEventPayloadNextScopeEnum = {
+	all: "all",
+	private: "private",
+	public: "public",
+	selected_repos: "selected_repos",
+} as const;
+
+export type UserEventPayloadNextScopeEnumKey =
+	(typeof userEventPayloadNextScopeEnum)[keyof typeof userEventPayloadNextScopeEnum];
+
+export const userEventPayloadPreviousScopeEnum = {
+	all: "all",
+	private: "private",
+	public: "public",
+	selected_repos: "selected_repos",
+} as const;
+
+export type UserEventPayloadPreviousScopeEnumKey =
+	(typeof userEventPayloadPreviousScopeEnum)[keyof typeof userEventPayloadPreviousScopeEnum];
+
+export const userEventPayloadNextEnum = {
+	basic: "basic",
+	elastic: "elastic",
+	enhanced: "enhanced",
+	standard: "standard",
+	turbo: "turbo",
+} as const;
+
+export type UserEventPayloadNextEnumKey =
+	(typeof userEventPayloadNextEnum)[keyof typeof userEventPayloadNextEnum];
+
+export const userEventPayloadPreviousEnum = {
+	basic: "basic",
+	elastic: "elastic",
+	enhanced: "enhanced",
+	standard: "standard",
+	turbo: "turbo",
+} as const;
+
+export type UserEventPayloadPreviousEnumKey =
+	(typeof userEventPayloadPreviousEnum)[keyof typeof userEventPayloadPreviousEnum];
+
+export const userEventPayloadReasonEnum = {
+	"basic-floor": "basic-floor",
+	"build-timeout-failure": "build-timeout-failure",
+	"enospc-failure": "enospc-failure",
+	"enterprise-floor": "enterprise-floor",
+	"high-peak-disk": "high-peak-disk",
+	"high-peak-memory": "high-peak-memory",
+	"long-build-duration": "long-build-duration",
+	"oom-failure": "oom-failure",
+	"plan-change": "plan-change",
+	"project-transfer": "project-transfer",
+	"short-build-duration": "short-build-duration",
+	"sustained-high-cpu": "sustained-high-cpu",
+} as const;
+
+export type UserEventPayloadReasonEnumKey =
+	(typeof userEventPayloadReasonEnum)[keyof typeof userEventPayloadReasonEnum];
+
+export const userEventPayloadEnvironmentEnum = {
+	preview: "preview",
+	production: "production",
+} as const;
+
+export type UserEventPayloadEnvironmentEnumKey =
+	(typeof userEventPayloadEnvironmentEnum)[keyof typeof userEventPayloadEnvironmentEnum];
+
+export const userEventPayloadEnabledEnum = {
+	default: "default",
+	off: "off",
+	on: "on",
+} as const;
+
+export type UserEventPayloadEnabledEnumKey =
+	(typeof userEventPayloadEnabledEnum)[keyof typeof userEventPayloadEnabledEnum];
+
+export const userEventPayloadNewPlanEnum = {
+	enterprise: "enterprise",
+	hobby: "hobby",
+	pro: "pro",
+} as const;
+
+export type UserEventPayloadNewPlanEnumKey =
+	(typeof userEventPayloadNewPlanEnum)[keyof typeof userEventPayloadNewPlanEnum];
+
+export const userEventPayloadPreviousPlanEnum = {
+	enterprise: "enterprise",
+	hobby: "hobby",
+	pro: "pro",
+} as const;
+
+export type UserEventPayloadPreviousPlanEnumKey =
+	(typeof userEventPayloadPreviousPlanEnum)[keyof typeof userEventPayloadPreviousPlanEnum];
+
+export const userEventPayloadRoleEnum = {
+	BILLING: "BILLING",
+	CONTRIBUTOR: "CONTRIBUTOR",
+	DEVELOPER: "DEVELOPER",
+	MEMBER: "MEMBER",
+	OWNER: "OWNER",
+	SECURITY: "SECURITY",
+	VIEWER: "VIEWER",
+	VIEWER_FOR_PLUS: "VIEWER_FOR_PLUS",
+} as const;
+
+export type UserEventPayloadRoleEnumKey =
+	(typeof userEventPayloadRoleEnum)[keyof typeof userEventPayloadRoleEnum];
+
+export const userEventPayloadPreviousTeamPermissionsEnum = {
+	AiGatewayApiKeyOwnedBySelf: "AiGatewayApiKeyOwnedBySelf",
+	AiGatewayBudgetManager: "AiGatewayBudgetManager",
+	AiGatewayCredits: "AiGatewayCredits",
+	AiGatewaySettings: "AiGatewaySettings",
+	AiGatewayTranscriptsManager: "AiGatewayTranscriptsManager",
+	AiGatewayTranscriptsViewer: "AiGatewayTranscriptsViewer",
+	ConnectorManager: "ConnectorManager",
+	CreateProject: "CreateProject",
+	EnvVariableManager: "EnvVariableManager",
+	EnvironmentManager: "EnvironmentManager",
+	FullProductionDeployment: "FullProductionDeployment",
+	IntegrationManager: "IntegrationManager",
+	OrgAdmin: "OrgAdmin",
+	OrgViewer: "OrgViewer",
+	UsageViewer: "UsageViewer",
+	V0Builder: "V0Builder",
+	V0Chatter: "V0Chatter",
+	V0Viewer: "V0Viewer",
+	WorkflowDecryptor: "WorkflowDecryptor",
+} as const;
+
+export type UserEventPayloadPreviousTeamPermissionsEnumKey =
+	(typeof userEventPayloadPreviousTeamPermissionsEnum)[keyof typeof userEventPayloadPreviousTeamPermissionsEnum];
+
+export const userEventPayloadPreviousTeamRolesEnum = {
+	BILLING: "BILLING",
+	CONTRIBUTOR: "CONTRIBUTOR",
+	DEVELOPER: "DEVELOPER",
+	MEMBER: "MEMBER",
+	OWNER: "OWNER",
+	SECURITY: "SECURITY",
+	VIEWER: "VIEWER",
+	VIEWER_FOR_PLUS: "VIEWER_FOR_PLUS",
+} as const;
+
+export type UserEventPayloadPreviousTeamRolesEnumKey =
+	(typeof userEventPayloadPreviousTeamRolesEnum)[keyof typeof userEventPayloadPreviousTeamRolesEnum];
+
+export const userEventPayloadTeamPermissionsEnum = {
+	AiGatewayApiKeyOwnedBySelf: "AiGatewayApiKeyOwnedBySelf",
+	AiGatewayBudgetManager: "AiGatewayBudgetManager",
+	AiGatewayCredits: "AiGatewayCredits",
+	AiGatewaySettings: "AiGatewaySettings",
+	AiGatewayTranscriptsManager: "AiGatewayTranscriptsManager",
+	AiGatewayTranscriptsViewer: "AiGatewayTranscriptsViewer",
+	ConnectorManager: "ConnectorManager",
+	CreateProject: "CreateProject",
+	EnvVariableManager: "EnvVariableManager",
+	EnvironmentManager: "EnvironmentManager",
+	FullProductionDeployment: "FullProductionDeployment",
+	IntegrationManager: "IntegrationManager",
+	OrgAdmin: "OrgAdmin",
+	OrgViewer: "OrgViewer",
+	UsageViewer: "UsageViewer",
+	V0Builder: "V0Builder",
+	V0Chatter: "V0Chatter",
+	V0Viewer: "V0Viewer",
+	WorkflowDecryptor: "WorkflowDecryptor",
+} as const;
+
+export type UserEventPayloadTeamPermissionsEnumKey =
+	(typeof userEventPayloadTeamPermissionsEnum)[keyof typeof userEventPayloadTeamPermissionsEnum];
+
+export const userEventPayloadTeamRolesEnum = {
+	BILLING: "BILLING",
+	CONTRIBUTOR: "CONTRIBUTOR",
+	DEVELOPER: "DEVELOPER",
+	MEMBER: "MEMBER",
+	OWNER: "OWNER",
+	SECURITY: "SECURITY",
+	VIEWER: "VIEWER",
+	VIEWER_FOR_PLUS: "VIEWER_FOR_PLUS",
+} as const;
+
+export type UserEventPayloadTeamRolesEnumKey =
+	(typeof userEventPayloadTeamRolesEnum)[keyof typeof userEventPayloadTeamRolesEnum];
+
+export const userEventPayloadPlanEnum = {
+	enterprise: "enterprise",
+	hobby: "hobby",
+	pro: "pro",
+} as const;
+
+export type UserEventPayloadPlanEnumKey =
+	(typeof userEventPayloadPlanEnum)[keyof typeof userEventPayloadPlanEnum];
+
+export const userEventPayloadDecisionEnum = {
+	keep_on: "keep_on",
+	turn_off: "turn_off",
+} as const;
+
+export type UserEventPayloadDecisionEnumKey =
+	(typeof userEventPayloadDecisionEnum)[keyof typeof userEventPayloadDecisionEnum];
+
+export const userEventPayloadScopeEnum = {
+	project: "project",
+	team: "team",
+	user: "user",
+} as const;
+
+export type UserEventPayloadScopeEnumKey =
+	(typeof userEventPayloadScopeEnum)[keyof typeof userEventPayloadScopeEnum];
+
+export const userEventPayloadSamplingEnvEnum = {
+	preview: "preview",
+	production: "production",
+} as const;
+
+export type UserEventPayloadSamplingEnvEnumKey =
+	(typeof userEventPayloadSamplingEnvEnum)[keyof typeof userEventPayloadSamplingEnvEnum];
+
+export const userEventPayloadMethodEnum = {
+	passkey: "passkey",
+	self_serve_recovery: "self_serve_recovery",
+	totp: "totp",
+	user_disabled: "user_disabled",
+} as const;
+
+export type UserEventPayloadMethodEnumKey =
+	(typeof userEventPayloadMethodEnum)[keyof typeof userEventPayloadMethodEnum];
+
+export const userEventPayloadAllowedMethodsEnum = {
+	"recovery-code": "recovery-code",
+	totp: "totp",
+	webauthn: "webauthn",
+} as const;
+
+export type UserEventPayloadAllowedMethodsEnumKey =
+	(typeof userEventPayloadAllowedMethodsEnum)[keyof typeof userEventPayloadAllowedMethodsEnum];
+
+export const userEventPayloadContextEnum = {
+	login: "login",
+	sudo: "sudo",
+} as const;
+
+export type UserEventPayloadContextEnumKey =
+	(typeof userEventPayloadContextEnum)[keyof typeof userEventPayloadContextEnum];
+
+export const userEventPayloadDecisionBasisEnum = {
+	gmail: "gmail",
+	none: "none",
+	"workspace-mx": "workspace-mx",
+} as const;
+
+export type UserEventPayloadDecisionBasisEnumKey =
+	(typeof userEventPayloadDecisionBasisEnum)[keyof typeof userEventPayloadDecisionBasisEnum];
+
+export const userEventPayloadDecisionMxOutcomeEnum = {
+	google: "google",
+	"lookup-error": "lookup-error",
+	"non-google": "non-google",
+	"not-checked": "not-checked",
+} as const;
+
+export type UserEventPayloadDecisionMxOutcomeEnumKey =
+	(typeof userEventPayloadDecisionMxOutcomeEnum)[keyof typeof userEventPayloadDecisionMxOutcomeEnum];
+
+export const userEventPayloadTierEnum = {
+	plus: "plus",
+	pro: "pro",
+} as const;
+
+export type UserEventPayloadTierEnumKey =
+	(typeof userEventPayloadTierEnum)[keyof typeof userEventPayloadTierEnum];
+
+export const userEventPayloadAppClientAuthenticationUsedMethodEnum = {
+	client_secret_basic: "client_secret_basic",
+	client_secret_jwt: "client_secret_jwt",
+	client_secret_post: "client_secret_post",
+	none: "none",
+	oidc_token: "oidc_token",
+	private_key_jwt: "private_key_jwt",
+} as const;
+
+export type UserEventPayloadAppClientAuthenticationUsedMethodEnumKey =
+	(typeof userEventPayloadAppClientAuthenticationUsedMethodEnum)[keyof typeof userEventPayloadAppClientAuthenticationUsedMethodEnum];
+
+export const userEventPayloadAuthMethodEnum = {
+	app: "app",
+	apple: "apple",
+	bitbucket: "bitbucket",
+	chatgpt: "chatgpt",
+	email: "email",
+	emu: "emu",
+	github: "github",
+	"github-webhook": "github-webhook",
+	gitlab: "gitlab",
+	google: "google",
+	invite: "invite",
+	manual: "manual",
+	otp: "otp",
+	passkey: "passkey",
+	saml: "saml",
+	sms: "sms",
+	"token-exchange-oidc": "token-exchange-oidc",
+} as const;
+
+export type UserEventPayloadAuthMethodEnumKey =
+	(typeof userEventPayloadAuthMethodEnum)[keyof typeof userEventPayloadAuthMethodEnum];
+
+export const userEventPayloadGrantTypeEnum = {
+	authorization_code: "authorization_code",
+	"urn:ietf:params:oauth:grant-type:device_code": "urn:ietf:params:oauth:grant-type:device_code",
+	"urn:ietf:params:oauth:grant-type:token-exchange":
+		"urn:ietf:params:oauth:grant-type:token-exchange",
+} as const;
+
+export type UserEventPayloadGrantTypeEnumKey =
+	(typeof userEventPayloadGrantTypeEnum)[keyof typeof userEventPayloadGrantTypeEnum];
+
+export const userEventPayloadOriginEnum = {
+	app: "app",
+	apple: "apple",
+	bitbucket: "bitbucket",
+	chatgpt: "chatgpt",
+	email: "email",
+	emu: "emu",
+	github: "github",
+	"github-webhook": "github-webhook",
+	gitlab: "gitlab",
+	google: "google",
+	invite: "invite",
+	manual: "manual",
+	otp: "otp",
+	passkey: "passkey",
+	saml: "saml",
+	sms: "sms",
+	"token-exchange-oidc": "token-exchange-oidc",
+} as const;
+
+export type UserEventPayloadOriginEnumKey =
+	(typeof userEventPayloadOriginEnum)[keyof typeof userEventPayloadOriginEnum];
+
+export const userEventPayloadProjectScopeEnum = {
+	account: "account",
+	"project-only": "project-only",
+} as const;
+
+export type UserEventPayloadProjectScopeEnumKey =
+	(typeof userEventPayloadProjectScopeEnum)[keyof typeof userEventPayloadProjectScopeEnum];
 
 export const userEventTypeEnum = {
 	"access-group-created": "access-group-created",
@@ -5046,2316 +7309,11 @@ export const userEventTypeEnum = {
 
 export type UserEventTypeEnumKey = (typeof userEventTypeEnum)[keyof typeof userEventTypeEnum];
 
-export const userEventCategoriesEnum = {
-	account: "account",
-	ai: "ai",
-	"ai-gateway": "ai-gateway",
-	billing: "billing",
-	connect: "connect",
-	deployment: "deployment",
-	domain: "domain",
-	edge: "edge",
-	"env-variable": "env-variable",
-	"feature-flags": "feature-flags",
-	firewall: "firewall",
-	integration: "integration",
-	microfrontends: "microfrontends",
-	network: "network",
-	observability: "observability",
-	other: "other",
-	project: "project",
-	security: "security",
-	storage: "storage",
-	team: "team",
-	v0: "v0",
-	"vercel-app": "vercel-app",
-	workflow: "workflow",
-} as const;
-
-export type UserEventCategoriesEnumKey =
-	(typeof userEventCategoriesEnum)[keyof typeof userEventCategoriesEnum];
-
-export const userEventPayloadActionEnum = {
-	"add-passkey": "add-passkey",
-	"add-totp": "add-totp",
-	"admin-remove": "admin-remove",
-	disable: "disable",
-	enable: "enable",
-	"regenerate-recovery-codes": "regenerate-recovery-codes",
-	"remove-passkey": "remove-passkey",
-} as const;
-
-export type UserEventPayloadActionEnumKey =
-	(typeof userEventPayloadActionEnum)[keyof typeof userEventPayloadActionEnum];
-
-export const userEventPayloadProviderEnum = {
-	apple: "apple",
-	bitbucket: "bitbucket",
-	chatgpt: "chatgpt",
-	github: "github",
-	"github-custom-host": "github-custom-host",
-	"github-limited": "github-limited",
-	gitlab: "gitlab",
-	google: "google",
-	saml: "saml",
-} as const;
-
-export type UserEventPayloadProviderEnumKey =
-	(typeof userEventPayloadProviderEnum)[keyof typeof userEventPayloadProviderEnum];
-
-export const userEventPayloadFromPlanEnum = {
-	hobby: "hobby",
-	pro: "pro",
-} as const;
-
-export type UserEventPayloadFromPlanEnumKey =
-	(typeof userEventPayloadFromPlanEnum)[keyof typeof userEventPayloadFromPlanEnum];
-
-export const userEventPayloadToPlanEnum = {
-	hobby: "hobby",
-	pro: "pro",
-} as const;
-
-export type UserEventPayloadToPlanEnumKey =
-	(typeof userEventPayloadToPlanEnum)[keyof typeof userEventPayloadToPlanEnum];
-
-export const userEventPayloadBudgetRefreshPeriodEnum = {
-	daily: "daily",
-	monthly: "monthly",
-	none: "none",
-	weekly: "weekly",
-} as const;
-
-export type UserEventPayloadBudgetRefreshPeriodEnumKey =
-	(typeof userEventPayloadBudgetRefreshPeriodEnum)[keyof typeof userEventPayloadBudgetRefreshPeriodEnum];
-
-export const userEventPayloadChangeEnum = {
-	disable: "disable",
-	enable: "enable",
-	remove: "remove",
-	set: "set",
-} as const;
-
-export type UserEventPayloadChangeEnumKey =
-	(typeof userEventPayloadChangeEnum)[keyof typeof userEventPayloadChangeEnum];
-
-export const userEventPayloadScopeTypeEnum = {
-	project: "project",
-	team: "team",
-	user: "user",
-} as const;
-
-export type UserEventPayloadScopeTypeEnumKey =
-	(typeof userEventPayloadScopeTypeEnum)[keyof typeof userEventPayloadScopeTypeEnum];
-
-export const userEventPayloadRetentionDefaultModeEnum = {
-	days: "days",
-	"until-requested": "until-requested",
-} as const;
-
-export type UserEventPayloadRetentionDefaultModeEnumKey =
-	(typeof userEventPayloadRetentionDefaultModeEnum)[keyof typeof userEventPayloadRetentionDefaultModeEnum];
-
-export const userEventPayloadRetentionCeilingModeEnum = {
-	days: "days",
-	"until-requested": "until-requested",
-} as const;
-
-export type UserEventPayloadRetentionCeilingModeEnumKey =
-	(typeof userEventPayloadRetentionCeilingModeEnum)[keyof typeof userEventPayloadRetentionCeilingModeEnum];
-
-export const userEventPayloadNextRoleEnum = {
-	ADMIN: "ADMIN",
-	PROJECT_DEVELOPER: "PROJECT_DEVELOPER",
-	PROJECT_GUEST: "PROJECT_GUEST",
-	PROJECT_VIEWER: "PROJECT_VIEWER",
-} as const;
-
-export type UserEventPayloadNextRoleEnumKey =
-	(typeof userEventPayloadNextRoleEnum)[keyof typeof userEventPayloadNextRoleEnum];
-
-export const userEventPayloadPreviousRoleEnum = {
-	ADMIN: "ADMIN",
-	PROJECT_DEVELOPER: "PROJECT_DEVELOPER",
-	PROJECT_GUEST: "PROJECT_GUEST",
-	PROJECT_VIEWER: "PROJECT_VIEWER",
-} as const;
-
-export type UserEventPayloadPreviousRoleEnumKey =
-	(typeof userEventPayloadPreviousRoleEnum)[keyof typeof userEventPayloadPreviousRoleEnum];
-
-export const userEventPayloadDeploymentAllowListedReadyStateReasonInternalEnum = {
-	EARLY_IGNORE_STEP: "EARLY_IGNORE_STEP",
-	IGNORE_STEP: "IGNORE_STEP",
-	NAMESPACE_PRUNED: "NAMESPACE_PRUNED",
-	UNAFFECTED_PROJECT: "UNAFFECTED_PROJECT",
-	UNVERIFIED_COMMIT: "UNVERIFIED_COMMIT",
-} as const;
-
-export type UserEventPayloadDeploymentAllowListedReadyStateReasonInternalEnumKey =
-	(typeof userEventPayloadDeploymentAllowListedReadyStateReasonInternalEnum)[keyof typeof userEventPayloadDeploymentAllowListedReadyStateReasonInternalEnum];
-
-export const userEventPayloadScopesEnum = {
-	email: "email",
-	offline_access: "offline_access",
-	openid: "openid",
-	profile: "profile",
-} as const;
-
-export type UserEventPayloadScopesEnumKey =
-	(typeof userEventPayloadScopesEnum)[keyof typeof userEventPayloadScopesEnum];
-
-export const userEventPayloadPermissionsEnum = {
-	"manage:speed-insights": "manage:speed-insights",
-	"manage:web-analytics": "manage:web-analytics",
-	"read-write:ai-gateway-api-key": "read-write:ai-gateway-api-key",
-	"read-write:ai-gateway-guardrails": "read-write:ai-gateway-guardrails",
-	"read-write:ai-gateway-private-models": "read-write:ai-gateway-private-models",
-	"read-write:ai-gateway-rules": "read-write:ai-gateway-rules",
-	"read-write:ai-gateway-virtual-model-configs": "read-write:ai-gateway-virtual-model-configs",
-	"read-write:alerts": "read-write:alerts",
-	"read-write:automations": "read-write:automations",
-	"read-write:billing": "read-write:billing",
-	"read-write:blob": "read-write:blob",
-	"read-write:connect": "read-write:connect",
-	"read-write:deployment": "read-write:deployment",
-	"read-write:domain": "read-write:domain",
-	"read-write:domain-registrar": "read-write:domain-registrar",
-	"read-write:drains": "read-write:drains",
-	"read-write:edge-cache": "read-write:edge-cache",
-	"read-write:edge-config": "read-write:edge-config",
-	"read-write:firewall": "read-write:firewall",
-	"read-write:integration-configuration": "read-write:integration-configuration",
-	"read-write:integration-resource": "read-write:integration-resource",
-	"read-write:kms": "read-write:kms",
-	"read-write:project": "read-write:project",
-	"read-write:project-env-vars": "read-write:project-env-vars",
-	"read-write:project-env-vars-non-production": "read-write:project-env-vars-non-production",
-	"read-write:project-env-vars-production": "read-write:project-env-vars-production",
-	"read-write:project-flags-non-production": "read-write:project-flags-non-production",
-	"read-write:project-flags-production": "read-write:project-flags-production",
-	"read-write:project-protection-bypass": "read-write:project-protection-bypass",
-	"read-write:remote-cache": "read-write:remote-cache",
-	"read-write:sandbox": "read-write:sandbox",
-	"read-write:team-members": "read-write:team-members",
-	"read-write:vcr": "read-write:vcr",
-	"read:access-group": "read:access-group",
-	"read:ai-gateway-guardrails": "read:ai-gateway-guardrails",
-	"read:ai-gateway-private-models": "read:ai-gateway-private-models",
-	"read:ai-gateway-rules": "read:ai-gateway-rules",
-	"read:ai-gateway-virtual-model-configs": "read:ai-gateway-virtual-model-configs",
-	"read:alerts": "read:alerts",
-	"read:automations": "read:automations",
-	"read:billing": "read:billing",
-	"read:connect": "read:connect",
-	"read:deployment": "read:deployment",
-	"read:domain": "read:domain",
-	"read:event": "read:event",
-	"read:firewall": "read:firewall",
-	"read:integration-configuration": "read:integration-configuration",
-	"read:integration-resource": "read:integration-resource",
-	"read:kms": "read:kms",
-	"read:monitoring": "read:monitoring",
-	"read:project": "read:project",
-	"read:project-env-vars-non-production": "read:project-env-vars-non-production",
-	"read:project-env-vars-production": "read:project-env-vars-production",
-	"read:project-flags": "read:project-flags",
-	"read:remote-cache": "read:remote-cache",
-	"read:sandbox": "read:sandbox",
-	"read:speed-insights": "read:speed-insights",
-	"read:team": "read:team",
-	"read:vcr": "read:vcr",
-	"read:web-analytics": "read:web-analytics",
-	"read:webhooks": "read:webhooks",
-	"use:ai-gateway": "use:ai-gateway",
-} as const;
-
-export type UserEventPayloadPermissionsEnumKey =
-	(typeof userEventPayloadPermissionsEnum)[keyof typeof userEventPayloadPermissionsEnum];
-
-export const userEventPayloadNextScopesEnum = {
-	email: "email",
-	offline_access: "offline_access",
-	openid: "openid",
-	profile: "profile",
-} as const;
-
-export type UserEventPayloadNextScopesEnumKey =
-	(typeof userEventPayloadNextScopesEnum)[keyof typeof userEventPayloadNextScopesEnum];
-
-export const userEventPayloadNextPermissionsEnum = {
-	"manage:speed-insights": "manage:speed-insights",
-	"manage:web-analytics": "manage:web-analytics",
-	"read-write:ai-gateway-api-key": "read-write:ai-gateway-api-key",
-	"read-write:ai-gateway-guardrails": "read-write:ai-gateway-guardrails",
-	"read-write:ai-gateway-private-models": "read-write:ai-gateway-private-models",
-	"read-write:ai-gateway-rules": "read-write:ai-gateway-rules",
-	"read-write:ai-gateway-virtual-model-configs": "read-write:ai-gateway-virtual-model-configs",
-	"read-write:alerts": "read-write:alerts",
-	"read-write:automations": "read-write:automations",
-	"read-write:billing": "read-write:billing",
-	"read-write:blob": "read-write:blob",
-	"read-write:connect": "read-write:connect",
-	"read-write:deployment": "read-write:deployment",
-	"read-write:domain": "read-write:domain",
-	"read-write:domain-registrar": "read-write:domain-registrar",
-	"read-write:drains": "read-write:drains",
-	"read-write:edge-cache": "read-write:edge-cache",
-	"read-write:edge-config": "read-write:edge-config",
-	"read-write:firewall": "read-write:firewall",
-	"read-write:integration-configuration": "read-write:integration-configuration",
-	"read-write:integration-resource": "read-write:integration-resource",
-	"read-write:kms": "read-write:kms",
-	"read-write:project": "read-write:project",
-	"read-write:project-env-vars": "read-write:project-env-vars",
-	"read-write:project-env-vars-non-production": "read-write:project-env-vars-non-production",
-	"read-write:project-env-vars-production": "read-write:project-env-vars-production",
-	"read-write:project-flags-non-production": "read-write:project-flags-non-production",
-	"read-write:project-flags-production": "read-write:project-flags-production",
-	"read-write:project-protection-bypass": "read-write:project-protection-bypass",
-	"read-write:remote-cache": "read-write:remote-cache",
-	"read-write:sandbox": "read-write:sandbox",
-	"read-write:team-members": "read-write:team-members",
-	"read-write:vcr": "read-write:vcr",
-	"read:access-group": "read:access-group",
-	"read:ai-gateway-guardrails": "read:ai-gateway-guardrails",
-	"read:ai-gateway-private-models": "read:ai-gateway-private-models",
-	"read:ai-gateway-rules": "read:ai-gateway-rules",
-	"read:ai-gateway-virtual-model-configs": "read:ai-gateway-virtual-model-configs",
-	"read:alerts": "read:alerts",
-	"read:automations": "read:automations",
-	"read:billing": "read:billing",
-	"read:connect": "read:connect",
-	"read:deployment": "read:deployment",
-	"read:domain": "read:domain",
-	"read:event": "read:event",
-	"read:firewall": "read:firewall",
-	"read:integration-configuration": "read:integration-configuration",
-	"read:integration-resource": "read:integration-resource",
-	"read:kms": "read:kms",
-	"read:monitoring": "read:monitoring",
-	"read:project": "read:project",
-	"read:project-env-vars-non-production": "read:project-env-vars-non-production",
-	"read:project-env-vars-production": "read:project-env-vars-production",
-	"read:project-flags": "read:project-flags",
-	"read:remote-cache": "read:remote-cache",
-	"read:sandbox": "read:sandbox",
-	"read:speed-insights": "read:speed-insights",
-	"read:team": "read:team",
-	"read:user": "read:user",
-	"read:vcr": "read:vcr",
-	"read:web-analytics": "read:web-analytics",
-	"read:webhooks": "read:webhooks",
-	"use:ai-gateway": "use:ai-gateway",
-} as const;
-
-export type UserEventPayloadNextPermissionsEnumKey =
-	(typeof userEventPayloadNextPermissionsEnum)[keyof typeof userEventPayloadNextPermissionsEnum];
-
-export const userEventPayloadBeforePermissionsEnum = {
-	"manage:speed-insights": "manage:speed-insights",
-	"manage:web-analytics": "manage:web-analytics",
-	"read-write:ai-gateway-api-key": "read-write:ai-gateway-api-key",
-	"read-write:ai-gateway-guardrails": "read-write:ai-gateway-guardrails",
-	"read-write:ai-gateway-private-models": "read-write:ai-gateway-private-models",
-	"read-write:ai-gateway-rules": "read-write:ai-gateway-rules",
-	"read-write:ai-gateway-virtual-model-configs": "read-write:ai-gateway-virtual-model-configs",
-	"read-write:alerts": "read-write:alerts",
-	"read-write:automations": "read-write:automations",
-	"read-write:billing": "read-write:billing",
-	"read-write:blob": "read-write:blob",
-	"read-write:connect": "read-write:connect",
-	"read-write:deployment": "read-write:deployment",
-	"read-write:domain": "read-write:domain",
-	"read-write:domain-registrar": "read-write:domain-registrar",
-	"read-write:drains": "read-write:drains",
-	"read-write:edge-cache": "read-write:edge-cache",
-	"read-write:edge-config": "read-write:edge-config",
-	"read-write:firewall": "read-write:firewall",
-	"read-write:integration-configuration": "read-write:integration-configuration",
-	"read-write:integration-resource": "read-write:integration-resource",
-	"read-write:kms": "read-write:kms",
-	"read-write:project": "read-write:project",
-	"read-write:project-env-vars": "read-write:project-env-vars",
-	"read-write:project-env-vars-non-production": "read-write:project-env-vars-non-production",
-	"read-write:project-env-vars-production": "read-write:project-env-vars-production",
-	"read-write:project-flags-non-production": "read-write:project-flags-non-production",
-	"read-write:project-flags-production": "read-write:project-flags-production",
-	"read-write:project-protection-bypass": "read-write:project-protection-bypass",
-	"read-write:remote-cache": "read-write:remote-cache",
-	"read-write:sandbox": "read-write:sandbox",
-	"read-write:team-members": "read-write:team-members",
-	"read-write:vcr": "read-write:vcr",
-	"read:access-group": "read:access-group",
-	"read:ai-gateway-guardrails": "read:ai-gateway-guardrails",
-	"read:ai-gateway-private-models": "read:ai-gateway-private-models",
-	"read:ai-gateway-rules": "read:ai-gateway-rules",
-	"read:ai-gateway-virtual-model-configs": "read:ai-gateway-virtual-model-configs",
-	"read:alerts": "read:alerts",
-	"read:automations": "read:automations",
-	"read:billing": "read:billing",
-	"read:connect": "read:connect",
-	"read:deployment": "read:deployment",
-	"read:domain": "read:domain",
-	"read:event": "read:event",
-	"read:firewall": "read:firewall",
-	"read:integration-configuration": "read:integration-configuration",
-	"read:integration-resource": "read:integration-resource",
-	"read:kms": "read:kms",
-	"read:monitoring": "read:monitoring",
-	"read:project": "read:project",
-	"read:project-env-vars-non-production": "read:project-env-vars-non-production",
-	"read:project-env-vars-production": "read:project-env-vars-production",
-	"read:project-flags": "read:project-flags",
-	"read:remote-cache": "read:remote-cache",
-	"read:sandbox": "read:sandbox",
-	"read:speed-insights": "read:speed-insights",
-	"read:team": "read:team",
-	"read:vcr": "read:vcr",
-	"read:web-analytics": "read:web-analytics",
-	"read:webhooks": "read:webhooks",
-	"use:ai-gateway": "use:ai-gateway",
-} as const;
-
-export type UserEventPayloadBeforePermissionsEnumKey =
-	(typeof userEventPayloadBeforePermissionsEnum)[keyof typeof userEventPayloadBeforePermissionsEnum];
-
-export const userEventPayloadAfterPermissionsEnum = {
-	"manage:speed-insights": "manage:speed-insights",
-	"manage:web-analytics": "manage:web-analytics",
-	"read-write:ai-gateway-api-key": "read-write:ai-gateway-api-key",
-	"read-write:ai-gateway-guardrails": "read-write:ai-gateway-guardrails",
-	"read-write:ai-gateway-private-models": "read-write:ai-gateway-private-models",
-	"read-write:ai-gateway-rules": "read-write:ai-gateway-rules",
-	"read-write:ai-gateway-virtual-model-configs": "read-write:ai-gateway-virtual-model-configs",
-	"read-write:alerts": "read-write:alerts",
-	"read-write:automations": "read-write:automations",
-	"read-write:billing": "read-write:billing",
-	"read-write:blob": "read-write:blob",
-	"read-write:connect": "read-write:connect",
-	"read-write:deployment": "read-write:deployment",
-	"read-write:domain": "read-write:domain",
-	"read-write:domain-registrar": "read-write:domain-registrar",
-	"read-write:drains": "read-write:drains",
-	"read-write:edge-cache": "read-write:edge-cache",
-	"read-write:edge-config": "read-write:edge-config",
-	"read-write:firewall": "read-write:firewall",
-	"read-write:integration-configuration": "read-write:integration-configuration",
-	"read-write:integration-resource": "read-write:integration-resource",
-	"read-write:kms": "read-write:kms",
-	"read-write:project": "read-write:project",
-	"read-write:project-env-vars": "read-write:project-env-vars",
-	"read-write:project-env-vars-non-production": "read-write:project-env-vars-non-production",
-	"read-write:project-env-vars-production": "read-write:project-env-vars-production",
-	"read-write:project-flags-non-production": "read-write:project-flags-non-production",
-	"read-write:project-flags-production": "read-write:project-flags-production",
-	"read-write:project-protection-bypass": "read-write:project-protection-bypass",
-	"read-write:remote-cache": "read-write:remote-cache",
-	"read-write:sandbox": "read-write:sandbox",
-	"read-write:team-members": "read-write:team-members",
-	"read-write:vcr": "read-write:vcr",
-	"read:access-group": "read:access-group",
-	"read:ai-gateway-guardrails": "read:ai-gateway-guardrails",
-	"read:ai-gateway-private-models": "read:ai-gateway-private-models",
-	"read:ai-gateway-rules": "read:ai-gateway-rules",
-	"read:ai-gateway-virtual-model-configs": "read:ai-gateway-virtual-model-configs",
-	"read:alerts": "read:alerts",
-	"read:automations": "read:automations",
-	"read:billing": "read:billing",
-	"read:connect": "read:connect",
-	"read:deployment": "read:deployment",
-	"read:domain": "read:domain",
-	"read:event": "read:event",
-	"read:firewall": "read:firewall",
-	"read:integration-configuration": "read:integration-configuration",
-	"read:integration-resource": "read:integration-resource",
-	"read:kms": "read:kms",
-	"read:monitoring": "read:monitoring",
-	"read:project": "read:project",
-	"read:project-env-vars-non-production": "read:project-env-vars-non-production",
-	"read:project-env-vars-production": "read:project-env-vars-production",
-	"read:project-flags": "read:project-flags",
-	"read:remote-cache": "read:remote-cache",
-	"read:sandbox": "read:sandbox",
-	"read:speed-insights": "read:speed-insights",
-	"read:team": "read:team",
-	"read:vcr": "read:vcr",
-	"read:web-analytics": "read:web-analytics",
-	"read:webhooks": "read:webhooks",
-	"use:ai-gateway": "use:ai-gateway",
-} as const;
-
-export type UserEventPayloadAfterPermissionsEnumKey =
-	(typeof userEventPayloadAfterPermissionsEnum)[keyof typeof userEventPayloadAfterPermissionsEnum];
-
-export const userEventPayloadSettlementMethodEnum = {
-	"credited-paid": "credited-paid",
-	"credited-payment-pending": "credited-payment-pending",
-	"refunded-paid": "refunded-paid",
-	"refunded-payment-pending": "refunded-payment-pending",
-} as const;
-
-export type UserEventPayloadSettlementMethodEnumKey =
-	(typeof userEventPayloadSettlementMethodEnum)[keyof typeof userEventPayloadSettlementMethodEnum];
-
-export const userEventPayloadChangedFieldsEnum = {
-	address: "address",
-	email: "email",
-	language: "language",
-	name: "name",
-	purchaseOrder: "purchaseOrder",
-	tax: "tax",
-} as const;
-
-export type UserEventPayloadChangedFieldsEnumKey =
-	(typeof userEventPayloadChangedFieldsEnum)[keyof typeof userEventPayloadChangedFieldsEnum];
-
-export const userEventPayloadDataPlanSlugEnum = {
-	v0_business: "v0_business",
-	v0_teams: "v0_teams",
-} as const;
-
-export type UserEventPayloadDataPlanSlugEnumKey =
-	(typeof userEventPayloadDataPlanSlugEnum)[keyof typeof userEventPayloadDataPlanSlugEnum];
-
-export const userEventPayloadSubjectTypeEnum = {
-	app: "app",
-	user: "user",
-} as const;
-
-export type UserEventPayloadSubjectTypeEnumKey =
-	(typeof userEventPayloadSubjectTypeEnum)[keyof typeof userEventPayloadSubjectTypeEnum];
-
-export const userEventPayloadJobCommitVerificationEnum = {
-	unknown: "unknown",
-	unverified: "unverified",
-	verified: "verified",
-} as const;
-
-export type UserEventPayloadJobCommitVerificationEnumKey =
-	(typeof userEventPayloadJobCommitVerificationEnum)[keyof typeof userEventPayloadJobCommitVerificationEnum];
-
-export const userEventPayloadJobNsnbSideEffectActionEnum = {
-	"auto-approved-member": "auto-approved-member",
-	"auto-approved-pending-invite": "auto-approved-pending-invite",
-} as const;
-
-export type UserEventPayloadJobNsnbSideEffectActionEnumKey =
-	(typeof userEventPayloadJobNsnbSideEffectActionEnum)[keyof typeof userEventPayloadJobNsnbSideEffectActionEnum];
-
-export const userEventPayloadJobProviderEnum = {
-	github: "github",
-	"github-custom-host": "github-custom-host",
-	"github-limited": "github-limited",
-} as const;
-
-export type UserEventPayloadJobProviderEnumKey =
-	(typeof userEventPayloadJobProviderEnum)[keyof typeof userEventPayloadJobProviderEnum];
-
-export const userEventPayloadRuleNameEnum = {
-	deploymentSources: "deploymentSources",
-	gitSources: "gitSources",
-} as const;
-
-export type UserEventPayloadRuleNameEnumKey =
-	(typeof userEventPayloadRuleNameEnum)[keyof typeof userEventPayloadRuleNameEnum];
-
-export const userEventPayloadRuleProvenanceEnum = {
-	default: "default",
-	project: "project",
-	team: "team",
-} as const;
-
-export type UserEventPayloadRuleProvenanceEnumKey =
-	(typeof userEventPayloadRuleProvenanceEnum)[keyof typeof userEventPayloadRuleProvenanceEnum];
-
-export const userEventPayloadInitiatorEnum = {
-	system: "system",
-	user: "user",
-} as const;
-
-export type UserEventPayloadInitiatorEnumKey =
-	(typeof userEventPayloadInitiatorEnum)[keyof typeof userEventPayloadInitiatorEnum];
-
-export const userEventPayloadEchModeEnum = {
-	auto: "auto",
-	disabled: "disabled",
-	enabled: "enabled",
-} as const;
-
-export type UserEventPayloadEchModeEnumKey =
-	(typeof userEventPayloadEchModeEnum)[keyof typeof userEventPayloadEchModeEnum];
-
-export const userEventPayloadPreviousEchModeEnum = {
-	auto: "auto",
-	disabled: "disabled",
-	enabled: "enabled",
-} as const;
-
-export type UserEventPayloadPreviousEchModeEnumKey =
-	(typeof userEventPayloadPreviousEchModeEnum)[keyof typeof userEventPayloadPreviousEchModeEnum];
-
-export const userEventPayloadFromAccountTypeEnum = {
-	team: "team",
-	user: "user",
-} as const;
-
-export type UserEventPayloadFromAccountTypeEnumKey =
-	(typeof userEventPayloadFromAccountTypeEnum)[keyof typeof userEventPayloadFromAccountTypeEnum];
-
-export const userEventPayloadToAccountTypeEnum = {
-	team: "team",
-	user: "user",
-} as const;
-
-export type UserEventPayloadToAccountTypeEnumKey =
-	(typeof userEventPayloadToAccountTypeEnum)[keyof typeof userEventPayloadToAccountTypeEnum];
-
-export const userEventPayloadVisibilityEnum = {
-	config: "config",
-	secret: "secret",
-} as const;
-
-export type UserEventPayloadVisibilityEnumKey =
-	(typeof userEventPayloadVisibilityEnum)[keyof typeof userEventPayloadVisibilityEnum];
-
-export const userEventPayloadTypeEnum = {
-	blob: "blob",
-	"edge-config": "edge-config",
-	integration: "integration",
-	postgres: "postgres",
-	redis: "redis",
-} as const;
-
-export type UserEventPayloadTypeEnumKey =
-	(typeof userEventPayloadTypeEnum)[keyof typeof userEventPayloadTypeEnum];
-
-export const userEventPayloadTargetEnum = {
-	development: "development",
-	preview: "preview",
-	production: "production",
-} as const;
-
-export type UserEventPayloadTargetEnumKey =
-	(typeof userEventPayloadTargetEnum)[keyof typeof userEventPayloadTargetEnum];
-
-export const userEventPayloadOldEnvVarTypeEnum = {
-	encrypted: "encrypted",
-	plain: "plain",
-	sensitive: "sensitive",
-	system: "system",
-} as const;
-
-export type UserEventPayloadOldEnvVarTypeEnumKey =
-	(typeof userEventPayloadOldEnvVarTypeEnum)[keyof typeof userEventPayloadOldEnvVarTypeEnum];
-
-export const userEventPayloadOldEnvVarTargetEnum = {
-	development: "development",
-	preview: "preview",
-	production: "production",
-} as const;
-
-export type UserEventPayloadOldEnvVarTargetEnumKey =
-	(typeof userEventPayloadOldEnvVarTargetEnum)[keyof typeof userEventPayloadOldEnvVarTargetEnum];
-
-export const userEventPayloadNewEnvVarTypeEnum = {
-	encrypted: "encrypted",
-	plain: "plain",
-	sensitive: "sensitive",
-	system: "system",
-} as const;
-
-export type UserEventPayloadNewEnvVarTypeEnumKey =
-	(typeof userEventPayloadNewEnvVarTypeEnum)[keyof typeof userEventPayloadNewEnvVarTypeEnum];
-
-export const userEventPayloadNewEnvVarTargetEnum = {
-	development: "development",
-	preview: "preview",
-	production: "production",
-} as const;
-
-export type UserEventPayloadNewEnvVarTargetEnumKey =
-	(typeof userEventPayloadNewEnvVarTargetEnum)[keyof typeof userEventPayloadNewEnvVarTargetEnum];
-
-export const userEventPayloadUpdateDiffOldTargetEnum = {
-	development: "development",
-	preview: "preview",
-	production: "production",
-} as const;
-
-export type UserEventPayloadUpdateDiffOldTargetEnumKey =
-	(typeof userEventPayloadUpdateDiffOldTargetEnum)[keyof typeof userEventPayloadUpdateDiffOldTargetEnum];
-
-export const userEventPayloadUpdateDiffNewTargetEnum = {
-	development: "development",
-	preview: "preview",
-	production: "production",
-} as const;
-
-export type UserEventPayloadUpdateDiffNewTargetEnumKey =
-	(typeof userEventPayloadUpdateDiffNewTargetEnum)[keyof typeof userEventPayloadUpdateDiffNewTargetEnum];
-
-export const actionEnum = {
-	challenge: "challenge",
-	deny: "deny",
-	log: "log",
-} as const;
-
-export type ActionEnumKey = (typeof actionEnum)[keyof typeof actionEnum];
-
-export const userEventPayloadSourceEnum = {
-	"account-update": "account-update",
-	bitbucket: "bitbucket",
-	dsync: "dsync",
-	feedback: "feedback",
-	github: "github",
-	gitlab: "gitlab",
-	import: "import",
-	link: "link",
-	mail: "mail",
-	"nsnb-auto-approve": "nsnb-auto-approve",
-	"nsnb-hobby-upgrade": "nsnb-hobby-upgrade",
-	"nsnb-invite": "nsnb-invite",
-	"nsnb-redeploy": "nsnb-redeploy",
-	"nsnb-redeploy-attribution-card": "nsnb-redeploy-attribution-card",
-	"nsnb-request-access": "nsnb-request-access",
-	"nsnb-viewer-upgrade": "nsnb-viewer-upgrade",
-	"organization-teams": "organization-teams",
-	saml: "saml",
-	teams: "teams",
-} as const;
-
-export type UserEventPayloadSourceEnumKey =
-	(typeof userEventPayloadSourceEnum)[keyof typeof userEventPayloadSourceEnum];
-
-export const userEventPayloadOutcomeEnum = {
-	"account-matched": "account-matched",
-	"linking-required": "linking-required",
-} as const;
-
-export type UserEventPayloadOutcomeEnumKey =
-	(typeof userEventPayloadOutcomeEnum)[keyof typeof userEventPayloadOutcomeEnum];
-
-export const userEventPayloadFailureStageEnum = {
-	authorization: "authorization",
-	push: "push",
-	unexpected: "unexpected",
-	unknown: "unknown",
-	validation: "validation",
-} as const;
-
-export type UserEventPayloadFailureStageEnumKey =
-	(typeof userEventPayloadFailureStageEnum)[keyof typeof userEventPayloadFailureStageEnum];
-
-export const userEventPayloadNewOwnerAbuseBlockHistoryActionEnum = {
-	blocked: "blocked",
-	"hard-blocked": "hard-blocked",
-	"soft-blocked": "soft-blocked",
-	unblocked: "unblocked",
-} as const;
-
-export type UserEventPayloadNewOwnerAbuseBlockHistoryActionEnumKey =
-	(typeof userEventPayloadNewOwnerAbuseBlockHistoryActionEnum)[keyof typeof userEventPayloadNewOwnerAbuseBlockHistoryActionEnum];
-
-export const userEventPayloadNewOwnerBillingPlanEnum = {
-	enterprise: "enterprise",
-	hobby: "hobby",
-	pro: "pro",
-} as const;
-
-export type UserEventPayloadNewOwnerBillingPlanEnumKey =
-	(typeof userEventPayloadNewOwnerBillingPlanEnum)[keyof typeof userEventPayloadNewOwnerBillingPlanEnum];
-
-export const userEventPayloadNewOwnerCredentialsTypeEnum = {
-	apple: "apple",
-	bitbucket: "bitbucket",
-	chatgpt: "chatgpt",
-	"github-oauth": "github-oauth",
-	"github-oauth-limited": "github-oauth-limited",
-	gitlab: "gitlab",
-	google: "google",
-	vercel: "vercel",
-} as const;
-
-export type UserEventPayloadNewOwnerCredentialsTypeEnumKey =
-	(typeof userEventPayloadNewOwnerCredentialsTypeEnum)[keyof typeof userEventPayloadNewOwnerCredentialsTypeEnum];
-
-export const userEventPayloadNewOwnerImportFlowGitProviderEnum = {
-	bitbucket: "bitbucket",
-	"cursor-origin": "cursor-origin",
-	github: "github",
-	"github-custom-host": "github-custom-host",
-	"github-limited": "github-limited",
-	gitlab: "gitlab",
-	vercel: "vercel",
-} as const;
-
-export type UserEventPayloadNewOwnerImportFlowGitProviderEnumKey =
-	(typeof userEventPayloadNewOwnerImportFlowGitProviderEnum)[keyof typeof userEventPayloadNewOwnerImportFlowGitProviderEnum];
-
-export const userEventPayloadNewOwnerPreventAutoBlocking = {
-	false: false,
-	true: true,
-} as const;
-
-export type UserEventPayloadNewOwnerPreventAutoBlockingKey =
-	(typeof userEventPayloadNewOwnerPreventAutoBlocking)[keyof typeof userEventPayloadNewOwnerPreventAutoBlocking];
-
-export const userEventPayloadNewOwnerProjectCardWidgetPreferencesWidgetEnum = {
-	"analytics-online": "analytics-online",
-	"analytics-page-views": "analytics-page-views",
-	"analytics-visitors": "analytics-visitors",
-	"firewall-allowed": "firewall-allowed",
-	"firewall-denied": "firewall-denied",
-	"observability-alert": "observability-alert",
-	"observability-edge-requests": "observability-edge-requests",
-	"observability-error-rate": "observability-error-rate",
-	"observability-function-invocations": "observability-function-invocations",
-	shortcut: "shortcut",
-	"speed-insights-cls": "speed-insights-cls",
-	"speed-insights-lcp": "speed-insights-lcp",
-	"speed-insights-res": "speed-insights-res",
-} as const;
-
-export type UserEventPayloadNewOwnerProjectCardWidgetPreferencesWidgetEnumKey =
-	(typeof userEventPayloadNewOwnerProjectCardWidgetPreferencesWidgetEnum)[keyof typeof userEventPayloadNewOwnerProjectCardWidgetPreferencesWidgetEnum];
-
-export const userEventPayloadNewOwnerResourceConfigBuildQueueConfigurationEnum = {
-	SKIP_NAMESPACE_QUEUE: "SKIP_NAMESPACE_QUEUE",
-	WAIT_FOR_NAMESPACE_QUEUE: "WAIT_FOR_NAMESPACE_QUEUE",
-} as const;
-
-export type UserEventPayloadNewOwnerResourceConfigBuildQueueConfigurationEnumKey =
-	(typeof userEventPayloadNewOwnerResourceConfigBuildQueueConfigurationEnum)[keyof typeof userEventPayloadNewOwnerResourceConfigBuildQueueConfigurationEnum];
-
-export const userEventPayloadNewOwnerResourceConfigBuildMachineDefaultEnum = {
-	basic: "basic",
-	elastic: "elastic",
-	enhanced: "enhanced",
-	standard: "standard",
-	turbo: "turbo",
-} as const;
-
-export type UserEventPayloadNewOwnerResourceConfigBuildMachineDefaultEnumKey =
-	(typeof userEventPayloadNewOwnerResourceConfigBuildMachineDefaultEnum)[keyof typeof userEventPayloadNewOwnerResourceConfigBuildMachineDefaultEnum];
-
-export const userEventPayloadNewOwnerActiveDashboardViewsViewPreferenceEnum = {
-	cards: "cards",
-	list: "list",
-} as const;
-
-export type UserEventPayloadNewOwnerActiveDashboardViewsViewPreferenceEnumKey =
-	(typeof userEventPayloadNewOwnerActiveDashboardViewsViewPreferenceEnum)[keyof typeof userEventPayloadNewOwnerActiveDashboardViewsViewPreferenceEnum];
-
-export const userEventPayloadNewOwnerActiveDashboardViewsFavoritesViewPreferenceEnum = {
-	closed: "closed",
-	open: "open",
-} as const;
-
-export type UserEventPayloadNewOwnerActiveDashboardViewsFavoritesViewPreferenceEnumKey =
-	(typeof userEventPayloadNewOwnerActiveDashboardViewsFavoritesViewPreferenceEnum)[keyof typeof userEventPayloadNewOwnerActiveDashboardViewsFavoritesViewPreferenceEnum];
-
-export const userEventPayloadNewOwnerActiveDashboardViewsRecentsViewPreferenceEnum = {
-	closed: "closed",
-	open: "open",
-} as const;
-
-export type UserEventPayloadNewOwnerActiveDashboardViewsRecentsViewPreferenceEnumKey =
-	(typeof userEventPayloadNewOwnerActiveDashboardViewsRecentsViewPreferenceEnum)[keyof typeof userEventPayloadNewOwnerActiveDashboardViewsRecentsViewPreferenceEnum];
-
-export const userEventPayloadNewOwnerSoftBlockReasonEnum = {
-	BLOCKED_FOR_PLATFORM_ABUSE: "BLOCKED_FOR_PLATFORM_ABUSE",
-	DOMAIN_OWNER_DELETION_REQUEST: "DOMAIN_OWNER_DELETION_REQUEST",
-	ENTERPRISE_TRIAL_ENDED: "ENTERPRISE_TRIAL_ENDED",
-	ENTERPRISE_UNPAID_INVOICE: "ENTERPRISE_UNPAID_INVOICE",
-	EXPOSURE_CAP_EXCEEDED: "EXPOSURE_CAP_EXCEEDED",
-	FAIR_USE_LIMITS_EXCEEDED: "FAIR_USE_LIMITS_EXCEEDED",
-	SUBSCRIPTION_CANCELED: "SUBSCRIPTION_CANCELED",
-	SUBSCRIPTION_EXPIRED: "SUBSCRIPTION_EXPIRED",
-	UNPAID_INVOICE: "UNPAID_INVOICE",
-} as const;
-
-export type UserEventPayloadNewOwnerSoftBlockReasonEnumKey =
-	(typeof userEventPayloadNewOwnerSoftBlockReasonEnum)[keyof typeof userEventPayloadNewOwnerSoftBlockReasonEnum];
-
-export const userEventPayloadNewOwnerSoftBlockBlockedDueToOverageTypeEnum = {
-	analyticsUsage: "analyticsUsage",
-	artifacts: "artifacts",
-	bandwidth: "bandwidth",
-	blobDataTransfer: "blobDataTransfer",
-	blobTotalAdvancedRequests: "blobTotalAdvancedRequests",
-	blobTotalAvgSizeInBytes: "blobTotalAvgSizeInBytes",
-	blobTotalGetResponseObjectSizeInBytes: "blobTotalGetResponseObjectSizeInBytes",
-	blobTotalSimpleRequests: "blobTotalSimpleRequests",
-	connectDataTransfer: "connectDataTransfer",
-	dataCacheRead: "dataCacheRead",
-	dataCacheWrite: "dataCacheWrite",
-	edgeConfigRead: "edgeConfigRead",
-	edgeConfigWrite: "edgeConfigWrite",
-	edgeFunctionExecutionUnits: "edgeFunctionExecutionUnits",
-	edgeMiddlewareInvocations: "edgeMiddlewareInvocations",
-	edgeRequest: "edgeRequest",
-	edgeRequestAdditionalCpuDuration: "edgeRequestAdditionalCpuDuration",
-	elasticConcurrencyBuildSlots: "elasticConcurrencyBuildSlots",
-	fastDataTransfer: "fastDataTransfer",
-	fastOriginTransfer: "fastOriginTransfer",
-	fluidCpuDuration: "fluidCpuDuration",
-	fluidDuration: "fluidDuration",
-	functionDuration: "functionDuration",
-	functionInvocation: "functionInvocation",
-	imageOptimizationCacheRead: "imageOptimizationCacheRead",
-	imageOptimizationCacheWrite: "imageOptimizationCacheWrite",
-	imageOptimizationTransformation: "imageOptimizationTransformation",
-	logDrainsVolume: "logDrainsVolume",
-	monitoringMetric: "monitoringMetric",
-	observabilityEvent: "observabilityEvent",
-	onDemandConcurrencyMinutes: "onDemandConcurrencyMinutes",
-	runtimeCacheRead: "runtimeCacheRead",
-	runtimeCacheWrite: "runtimeCacheWrite",
-	serverlessFunctionExecution: "serverlessFunctionExecution",
-	sourceImages: "sourceImages",
-	wafOwaspExcessBytes: "wafOwaspExcessBytes",
-	wafOwaspRequests: "wafOwaspRequests",
-	wafRateLimitRequest: "wafRateLimitRequest",
-	webAnalyticsEvent: "webAnalyticsEvent",
-} as const;
-
-export type UserEventPayloadNewOwnerSoftBlockBlockedDueToOverageTypeEnumKey =
-	(typeof userEventPayloadNewOwnerSoftBlockBlockedDueToOverageTypeEnum)[keyof typeof userEventPayloadNewOwnerSoftBlockBlockedDueToOverageTypeEnum];
-
-export const userEventPayloadNewOwnerTeamsRoleEnum = {
-	BILLING: "BILLING",
-	CONTRIBUTOR: "CONTRIBUTOR",
-	DEVELOPER: "DEVELOPER",
-	MEMBER: "MEMBER",
-	OWNER: "OWNER",
-	SECURITY: "SECURITY",
-	VIEWER: "VIEWER",
-	VIEWER_FOR_PLUS: "VIEWER_FOR_PLUS",
-} as const;
-
-export type UserEventPayloadNewOwnerTeamsRoleEnumKey =
-	(typeof userEventPayloadNewOwnerTeamsRoleEnum)[keyof typeof userEventPayloadNewOwnerTeamsRoleEnum];
-
-export const userEventPayloadNewOwnerTeamsTeamRolesEnum = {
-	BILLING: "BILLING",
-	CONTRIBUTOR: "CONTRIBUTOR",
-	DEVELOPER: "DEVELOPER",
-	MEMBER: "MEMBER",
-	OWNER: "OWNER",
-	SECURITY: "SECURITY",
-	VIEWER: "VIEWER",
-	VIEWER_FOR_PLUS: "VIEWER_FOR_PLUS",
-} as const;
-
-export type UserEventPayloadNewOwnerTeamsTeamRolesEnumKey =
-	(typeof userEventPayloadNewOwnerTeamsTeamRolesEnum)[keyof typeof userEventPayloadNewOwnerTeamsTeamRolesEnum];
-
-export const userEventPayloadNewOwnerTeamsTeamPermissionsEnum = {
-	AiGatewayApiKeyOwnedBySelf: "AiGatewayApiKeyOwnedBySelf",
-	AiGatewayBudgetManager: "AiGatewayBudgetManager",
-	AiGatewayCredits: "AiGatewayCredits",
-	AiGatewaySettings: "AiGatewaySettings",
-	AiGatewayTranscriptsManager: "AiGatewayTranscriptsManager",
-	AiGatewayTranscriptsViewer: "AiGatewayTranscriptsViewer",
-	ConnectorManager: "ConnectorManager",
-	CreateProject: "CreateProject",
-	EnvVariableManager: "EnvVariableManager",
-	EnvironmentManager: "EnvironmentManager",
-	FullProductionDeployment: "FullProductionDeployment",
-	IntegrationManager: "IntegrationManager",
-	OrgAdmin: "OrgAdmin",
-	OrgViewer: "OrgViewer",
-	UsageViewer: "UsageViewer",
-	V0Builder: "V0Builder",
-	V0Chatter: "V0Chatter",
-	V0Viewer: "V0Viewer",
-	WorkflowDecryptor: "WorkflowDecryptor",
-} as const;
-
-export type UserEventPayloadNewOwnerTeamsTeamPermissionsEnumKey =
-	(typeof userEventPayloadNewOwnerTeamsTeamPermissionsEnum)[keyof typeof userEventPayloadNewOwnerTeamsTeamPermissionsEnum];
-
-export const userEventPayloadNewOwnerTeamsJoinedFromOriginEnum = {
-	"account-update": "account-update",
-	bitbucket: "bitbucket",
-	dsync: "dsync",
-	feedback: "feedback",
-	github: "github",
-	gitlab: "gitlab",
-	import: "import",
-	link: "link",
-	mail: "mail",
-	"nsnb-auto-approve": "nsnb-auto-approve",
-	"nsnb-hobby-upgrade": "nsnb-hobby-upgrade",
-	"nsnb-invite": "nsnb-invite",
-	"nsnb-redeploy": "nsnb-redeploy",
-	"nsnb-redeploy-attribution-card": "nsnb-redeploy-attribution-card",
-	"nsnb-request-access": "nsnb-request-access",
-	"nsnb-viewer-upgrade": "nsnb-viewer-upgrade",
-	"organization-teams": "organization-teams",
-	saml: "saml",
-	teams: "teams",
-} as const;
-
-export type UserEventPayloadNewOwnerTeamsJoinedFromOriginEnumKey =
-	(typeof userEventPayloadNewOwnerTeamsJoinedFromOriginEnum)[keyof typeof userEventPayloadNewOwnerTeamsJoinedFromOriginEnum];
-
-export const userEventPayloadNewOwnerEnablePreviewFeedbackEnum = {
-	default: "default",
-	"default-force": "default-force",
-	off: "off",
-	"off-force": "off-force",
-	on: "on",
-	"on-force": "on-force",
-} as const;
-
-export type UserEventPayloadNewOwnerEnablePreviewFeedbackEnumKey =
-	(typeof userEventPayloadNewOwnerEnablePreviewFeedbackEnum)[keyof typeof userEventPayloadNewOwnerEnablePreviewFeedbackEnum];
-
-export const userEventPayloadNewOwnerFeatureBlocksWebAnalyticsBlockReasonEnum = {
-	admin_override: "admin_override",
-	hard_blocked: "hard_blocked",
-	limits_exceeded: "limits_exceeded",
-} as const;
-
-export type UserEventPayloadNewOwnerFeatureBlocksWebAnalyticsBlockReasonEnumKey =
-	(typeof userEventPayloadNewOwnerFeatureBlocksWebAnalyticsBlockReasonEnum)[keyof typeof userEventPayloadNewOwnerFeatureBlocksWebAnalyticsBlockReasonEnum];
-
-export const userEventPayloadNewOwnerFeatureBlocksMonitoringBlockReasonEnum = {
-	admin_override: "admin_override",
-	hard_blocked: "hard_blocked",
-	limits_exceeded: "limits_exceeded",
-} as const;
-
-export type UserEventPayloadNewOwnerFeatureBlocksMonitoringBlockReasonEnumKey =
-	(typeof userEventPayloadNewOwnerFeatureBlocksMonitoringBlockReasonEnum)[keyof typeof userEventPayloadNewOwnerFeatureBlocksMonitoringBlockReasonEnum];
-
-export const userEventPayloadNewOwnerFeatureBlocksMonitoringBlockTypeEnum = {
-	hard: "hard",
-	soft: "soft",
-} as const;
-
-export type UserEventPayloadNewOwnerFeatureBlocksMonitoringBlockTypeEnumKey =
-	(typeof userEventPayloadNewOwnerFeatureBlocksMonitoringBlockTypeEnum)[keyof typeof userEventPayloadNewOwnerFeatureBlocksMonitoringBlockTypeEnum];
-
-export const userEventPayloadNewOwnerFeatureBlocksObservabilityPlusBlockReasonEnum = {
-	admin_override: "admin_override",
-	hard_blocked: "hard_blocked",
-	limits_exceeded: "limits_exceeded",
-} as const;
-
-export type UserEventPayloadNewOwnerFeatureBlocksObservabilityPlusBlockReasonEnumKey =
-	(typeof userEventPayloadNewOwnerFeatureBlocksObservabilityPlusBlockReasonEnum)[keyof typeof userEventPayloadNewOwnerFeatureBlocksObservabilityPlusBlockReasonEnum];
-
-export const userEventPayloadNewOwnerFeatureBlocksObservabilityPlusBlockTypeEnum = {
-	hard: "hard",
-	soft: "soft",
-} as const;
-
-export type UserEventPayloadNewOwnerFeatureBlocksObservabilityPlusBlockTypeEnumKey =
-	(typeof userEventPayloadNewOwnerFeatureBlocksObservabilityPlusBlockTypeEnum)[keyof typeof userEventPayloadNewOwnerFeatureBlocksObservabilityPlusBlockTypeEnum];
-
-export const userEventPayloadNewOwnerFeatureBlocksDataCacheBlockReasonEnum = {
-	admin_override: "admin_override",
-	hard_blocked: "hard_blocked",
-	limits_exceeded: "limits_exceeded",
-} as const;
-
-export type UserEventPayloadNewOwnerFeatureBlocksDataCacheBlockReasonEnumKey =
-	(typeof userEventPayloadNewOwnerFeatureBlocksDataCacheBlockReasonEnum)[keyof typeof userEventPayloadNewOwnerFeatureBlocksDataCacheBlockReasonEnum];
-
-export const userEventPayloadNewOwnerFeatureBlocksImageOptimizationTransformationBlockReasonEnum = {
-	admin_override: "admin_override",
-	hard_blocked: "hard_blocked",
-	limits_exceeded: "limits_exceeded",
-} as const;
-
-export type UserEventPayloadNewOwnerFeatureBlocksImageOptimizationTransformationBlockReasonEnumKey =
-	(typeof userEventPayloadNewOwnerFeatureBlocksImageOptimizationTransformationBlockReasonEnum)[keyof typeof userEventPayloadNewOwnerFeatureBlocksImageOptimizationTransformationBlockReasonEnum];
-
-export const userEventPayloadNewOwnerFeatureBlocksSourceImagesBlockReasonEnum = {
-	admin_override: "admin_override",
-	hard_blocked: "hard_blocked",
-	limits_exceeded: "limits_exceeded",
-} as const;
-
-export type UserEventPayloadNewOwnerFeatureBlocksSourceImagesBlockReasonEnumKey =
-	(typeof userEventPayloadNewOwnerFeatureBlocksSourceImagesBlockReasonEnum)[keyof typeof userEventPayloadNewOwnerFeatureBlocksSourceImagesBlockReasonEnum];
-
-export const userEventPayloadNewOwnerFeatureBlocksBlobOverageReasonEnum = {
-	analyticsUsage: "analyticsUsage",
-	artifacts: "artifacts",
-	bandwidth: "bandwidth",
-	blobDataTransfer: "blobDataTransfer",
-	blobTotalAdvancedRequests: "blobTotalAdvancedRequests",
-	blobTotalAvgSizeInBytes: "blobTotalAvgSizeInBytes",
-	blobTotalGetResponseObjectSizeInBytes: "blobTotalGetResponseObjectSizeInBytes",
-	blobTotalSimpleRequests: "blobTotalSimpleRequests",
-	connectDataTransfer: "connectDataTransfer",
-	dataCacheRead: "dataCacheRead",
-	dataCacheWrite: "dataCacheWrite",
-	edgeConfigRead: "edgeConfigRead",
-	edgeConfigWrite: "edgeConfigWrite",
-	edgeFunctionExecutionUnits: "edgeFunctionExecutionUnits",
-	edgeMiddlewareInvocations: "edgeMiddlewareInvocations",
-	edgeRequest: "edgeRequest",
-	edgeRequestAdditionalCpuDuration: "edgeRequestAdditionalCpuDuration",
-	elasticConcurrencyBuildSlots: "elasticConcurrencyBuildSlots",
-	fastDataTransfer: "fastDataTransfer",
-	fastOriginTransfer: "fastOriginTransfer",
-	fluidCpuDuration: "fluidCpuDuration",
-	fluidDuration: "fluidDuration",
-	functionDuration: "functionDuration",
-	functionInvocation: "functionInvocation",
-	imageOptimizationCacheRead: "imageOptimizationCacheRead",
-	imageOptimizationCacheWrite: "imageOptimizationCacheWrite",
-	imageOptimizationTransformation: "imageOptimizationTransformation",
-	logDrainsVolume: "logDrainsVolume",
-	monitoringMetric: "monitoringMetric",
-	observabilityEvent: "observabilityEvent",
-	onDemandConcurrencyMinutes: "onDemandConcurrencyMinutes",
-	runtimeCacheRead: "runtimeCacheRead",
-	runtimeCacheWrite: "runtimeCacheWrite",
-	serverlessFunctionExecution: "serverlessFunctionExecution",
-	sourceImages: "sourceImages",
-	wafOwaspExcessBytes: "wafOwaspExcessBytes",
-	wafOwaspRequests: "wafOwaspRequests",
-	wafRateLimitRequest: "wafRateLimitRequest",
-	webAnalyticsEvent: "webAnalyticsEvent",
-} as const;
-
-export type UserEventPayloadNewOwnerFeatureBlocksBlobOverageReasonEnumKey =
-	(typeof userEventPayloadNewOwnerFeatureBlocksBlobOverageReasonEnum)[keyof typeof userEventPayloadNewOwnerFeatureBlocksBlobOverageReasonEnum];
-
-export const userEventPayloadNewOwnerFeatureBlocksBlobBlockReasonEnum = {
-	admin_override: "admin_override",
-	hard_blocked: "hard_blocked",
-} as const;
-
-export type UserEventPayloadNewOwnerFeatureBlocksBlobBlockReasonEnumKey =
-	(typeof userEventPayloadNewOwnerFeatureBlocksBlobBlockReasonEnum)[keyof typeof userEventPayloadNewOwnerFeatureBlocksBlobBlockReasonEnum];
-
-export const userEventPayloadNewOwnerFeatureBlocksPostgresOverageReasonEnum = {
-	analyticsUsage: "analyticsUsage",
-	artifacts: "artifacts",
-	bandwidth: "bandwidth",
-	blobDataTransfer: "blobDataTransfer",
-	blobTotalAdvancedRequests: "blobTotalAdvancedRequests",
-	blobTotalAvgSizeInBytes: "blobTotalAvgSizeInBytes",
-	blobTotalGetResponseObjectSizeInBytes: "blobTotalGetResponseObjectSizeInBytes",
-	blobTotalSimpleRequests: "blobTotalSimpleRequests",
-	connectDataTransfer: "connectDataTransfer",
-	dataCacheRead: "dataCacheRead",
-	dataCacheWrite: "dataCacheWrite",
-	edgeConfigRead: "edgeConfigRead",
-	edgeConfigWrite: "edgeConfigWrite",
-	edgeFunctionExecutionUnits: "edgeFunctionExecutionUnits",
-	edgeMiddlewareInvocations: "edgeMiddlewareInvocations",
-	edgeRequest: "edgeRequest",
-	edgeRequestAdditionalCpuDuration: "edgeRequestAdditionalCpuDuration",
-	elasticConcurrencyBuildSlots: "elasticConcurrencyBuildSlots",
-	fastDataTransfer: "fastDataTransfer",
-	fastOriginTransfer: "fastOriginTransfer",
-	fluidCpuDuration: "fluidCpuDuration",
-	fluidDuration: "fluidDuration",
-	functionDuration: "functionDuration",
-	functionInvocation: "functionInvocation",
-	imageOptimizationCacheRead: "imageOptimizationCacheRead",
-	imageOptimizationCacheWrite: "imageOptimizationCacheWrite",
-	imageOptimizationTransformation: "imageOptimizationTransformation",
-	logDrainsVolume: "logDrainsVolume",
-	monitoringMetric: "monitoringMetric",
-	observabilityEvent: "observabilityEvent",
-	onDemandConcurrencyMinutes: "onDemandConcurrencyMinutes",
-	runtimeCacheRead: "runtimeCacheRead",
-	runtimeCacheWrite: "runtimeCacheWrite",
-	serverlessFunctionExecution: "serverlessFunctionExecution",
-	sourceImages: "sourceImages",
-	wafOwaspExcessBytes: "wafOwaspExcessBytes",
-	wafOwaspRequests: "wafOwaspRequests",
-	wafRateLimitRequest: "wafRateLimitRequest",
-	webAnalyticsEvent: "webAnalyticsEvent",
-} as const;
-
-export type UserEventPayloadNewOwnerFeatureBlocksPostgresOverageReasonEnumKey =
-	(typeof userEventPayloadNewOwnerFeatureBlocksPostgresOverageReasonEnum)[keyof typeof userEventPayloadNewOwnerFeatureBlocksPostgresOverageReasonEnum];
-
-export const userEventPayloadNewOwnerFeatureBlocksPostgresBlockReasonEnum = {
-	admin_override: "admin_override",
-	hard_blocked: "hard_blocked",
-} as const;
-
-export type UserEventPayloadNewOwnerFeatureBlocksPostgresBlockReasonEnumKey =
-	(typeof userEventPayloadNewOwnerFeatureBlocksPostgresBlockReasonEnum)[keyof typeof userEventPayloadNewOwnerFeatureBlocksPostgresBlockReasonEnum];
-
-export const userEventPayloadNewOwnerFeatureBlocksRedisOverageReasonEnum = {
-	analyticsUsage: "analyticsUsage",
-	artifacts: "artifacts",
-	bandwidth: "bandwidth",
-	blobDataTransfer: "blobDataTransfer",
-	blobTotalAdvancedRequests: "blobTotalAdvancedRequests",
-	blobTotalAvgSizeInBytes: "blobTotalAvgSizeInBytes",
-	blobTotalGetResponseObjectSizeInBytes: "blobTotalGetResponseObjectSizeInBytes",
-	blobTotalSimpleRequests: "blobTotalSimpleRequests",
-	connectDataTransfer: "connectDataTransfer",
-	dataCacheRead: "dataCacheRead",
-	dataCacheWrite: "dataCacheWrite",
-	edgeConfigRead: "edgeConfigRead",
-	edgeConfigWrite: "edgeConfigWrite",
-	edgeFunctionExecutionUnits: "edgeFunctionExecutionUnits",
-	edgeMiddlewareInvocations: "edgeMiddlewareInvocations",
-	edgeRequest: "edgeRequest",
-	edgeRequestAdditionalCpuDuration: "edgeRequestAdditionalCpuDuration",
-	elasticConcurrencyBuildSlots: "elasticConcurrencyBuildSlots",
-	fastDataTransfer: "fastDataTransfer",
-	fastOriginTransfer: "fastOriginTransfer",
-	fluidCpuDuration: "fluidCpuDuration",
-	fluidDuration: "fluidDuration",
-	functionDuration: "functionDuration",
-	functionInvocation: "functionInvocation",
-	imageOptimizationCacheRead: "imageOptimizationCacheRead",
-	imageOptimizationCacheWrite: "imageOptimizationCacheWrite",
-	imageOptimizationTransformation: "imageOptimizationTransformation",
-	logDrainsVolume: "logDrainsVolume",
-	monitoringMetric: "monitoringMetric",
-	observabilityEvent: "observabilityEvent",
-	onDemandConcurrencyMinutes: "onDemandConcurrencyMinutes",
-	runtimeCacheRead: "runtimeCacheRead",
-	runtimeCacheWrite: "runtimeCacheWrite",
-	serverlessFunctionExecution: "serverlessFunctionExecution",
-	sourceImages: "sourceImages",
-	wafOwaspExcessBytes: "wafOwaspExcessBytes",
-	wafOwaspRequests: "wafOwaspRequests",
-	wafRateLimitRequest: "wafRateLimitRequest",
-	webAnalyticsEvent: "webAnalyticsEvent",
-} as const;
-
-export type UserEventPayloadNewOwnerFeatureBlocksRedisOverageReasonEnumKey =
-	(typeof userEventPayloadNewOwnerFeatureBlocksRedisOverageReasonEnum)[keyof typeof userEventPayloadNewOwnerFeatureBlocksRedisOverageReasonEnum];
-
-export const userEventPayloadNewOwnerFeatureBlocksRedisBlockReasonEnum = {
-	admin_override: "admin_override",
-	hard_blocked: "hard_blocked",
-} as const;
-
-export type UserEventPayloadNewOwnerFeatureBlocksRedisBlockReasonEnumKey =
-	(typeof userEventPayloadNewOwnerFeatureBlocksRedisBlockReasonEnum)[keyof typeof userEventPayloadNewOwnerFeatureBlocksRedisBlockReasonEnum];
-
-export const userEventPayloadNewOwnerFeatureBlocksMicrofrontendsRequestBlockReasonEnum = {
-	admin_override: "admin_override",
-	hard_blocked: "hard_blocked",
-	limits_exceeded: "limits_exceeded",
-} as const;
-
-export type UserEventPayloadNewOwnerFeatureBlocksMicrofrontendsRequestBlockReasonEnumKey =
-	(typeof userEventPayloadNewOwnerFeatureBlocksMicrofrontendsRequestBlockReasonEnum)[keyof typeof userEventPayloadNewOwnerFeatureBlocksMicrofrontendsRequestBlockReasonEnum];
-
-export const userEventPayloadNewOwnerFeatureBlocksWorkflowStorageWriteBlockReasonEnum = {
-	admin_override: "admin_override",
-	hard_blocked: "hard_blocked",
-	limits_exceeded: "limits_exceeded",
-} as const;
-
-export type UserEventPayloadNewOwnerFeatureBlocksWorkflowStorageWriteBlockReasonEnumKey =
-	(typeof userEventPayloadNewOwnerFeatureBlocksWorkflowStorageWriteBlockReasonEnum)[keyof typeof userEventPayloadNewOwnerFeatureBlocksWorkflowStorageWriteBlockReasonEnum];
-
-export const userEventPayloadNewOwnerFeatureBlocksWorkflowEventsBlockReasonEnum = {
-	admin_override: "admin_override",
-	hard_blocked: "hard_blocked",
-	limits_exceeded: "limits_exceeded",
-} as const;
-
-export type UserEventPayloadNewOwnerFeatureBlocksWorkflowEventsBlockReasonEnumKey =
-	(typeof userEventPayloadNewOwnerFeatureBlocksWorkflowEventsBlockReasonEnum)[keyof typeof userEventPayloadNewOwnerFeatureBlocksWorkflowEventsBlockReasonEnum];
-
-export const userEventPayloadNewOwnerFeatureBlocksConnexForwardTriggersBlockReasonEnum = {
-	admin_override: "admin_override",
-	hard_blocked: "hard_blocked",
-	limits_exceeded: "limits_exceeded",
-} as const;
-
-export type UserEventPayloadNewOwnerFeatureBlocksConnexForwardTriggersBlockReasonEnumKey =
-	(typeof userEventPayloadNewOwnerFeatureBlocksConnexForwardTriggersBlockReasonEnum)[keyof typeof userEventPayloadNewOwnerFeatureBlocksConnexForwardTriggersBlockReasonEnum];
-
-export const userEventPayloadNewOwnerFeatureBlocksConnexTokenRequestsBlockReasonEnum = {
-	admin_override: "admin_override",
-	hard_blocked: "hard_blocked",
-	limits_exceeded: "limits_exceeded",
-} as const;
-
-export type UserEventPayloadNewOwnerFeatureBlocksConnexTokenRequestsBlockReasonEnumKey =
-	(typeof userEventPayloadNewOwnerFeatureBlocksConnexTokenRequestsBlockReasonEnum)[keyof typeof userEventPayloadNewOwnerFeatureBlocksConnexTokenRequestsBlockReasonEnum];
-
-export const userEventPayloadNewOwnerFeatureBlocksKmsOperationsBlockReasonEnum = {
-	admin_override: "admin_override",
-	hard_blocked: "hard_blocked",
-	limits_exceeded: "limits_exceeded",
-} as const;
-
-export type UserEventPayloadNewOwnerFeatureBlocksKmsOperationsBlockReasonEnumKey =
-	(typeof userEventPayloadNewOwnerFeatureBlocksKmsOperationsBlockReasonEnum)[keyof typeof userEventPayloadNewOwnerFeatureBlocksKmsOperationsBlockReasonEnum];
-
-export const userEventPayloadNewOwnerFeatureBlocksTracingBlockReasonEnum = {
-	admin_override: "admin_override",
-	hard_blocked: "hard_blocked",
-	limits_exceeded: "limits_exceeded",
-} as const;
-
-export type UserEventPayloadNewOwnerFeatureBlocksTracingBlockReasonEnumKey =
-	(typeof userEventPayloadNewOwnerFeatureBlocksTracingBlockReasonEnum)[keyof typeof userEventPayloadNewOwnerFeatureBlocksTracingBlockReasonEnum];
-
-export const userEventPayloadNewOwnerFeatureBlocksSandboxStorageBlockReasonEnum = {
-	admin_override: "admin_override",
-	hard_blocked: "hard_blocked",
-	limits_exceeded: "limits_exceeded",
-} as const;
-
-export type UserEventPayloadNewOwnerFeatureBlocksSandboxStorageBlockReasonEnumKey =
-	(typeof userEventPayloadNewOwnerFeatureBlocksSandboxStorageBlockReasonEnum)[keyof typeof userEventPayloadNewOwnerFeatureBlocksSandboxStorageBlockReasonEnum];
-
-export const userEventPayloadNewOwnerFeatureBlocksVcrBlockReasonEnum = {
-	admin_override: "admin_override",
-	hard_blocked: "hard_blocked",
-	limits_exceeded: "limits_exceeded",
-} as const;
-
-export type UserEventPayloadNewOwnerFeatureBlocksVcrBlockReasonEnumKey =
-	(typeof userEventPayloadNewOwnerFeatureBlocksVcrBlockReasonEnum)[keyof typeof userEventPayloadNewOwnerFeatureBlocksVcrBlockReasonEnum];
-
-export const userEventPayloadNewOwnerFeatureBlocksSpeedInsightsFreeBlockReasonEnum = {
-	admin_override: "admin_override",
-	hard_blocked: "hard_blocked",
-	limits_exceeded: "limits_exceeded",
-} as const;
-
-export type UserEventPayloadNewOwnerFeatureBlocksSpeedInsightsFreeBlockReasonEnumKey =
-	(typeof userEventPayloadNewOwnerFeatureBlocksSpeedInsightsFreeBlockReasonEnum)[keyof typeof userEventPayloadNewOwnerFeatureBlocksSpeedInsightsFreeBlockReasonEnum];
-
-export const userEventPayloadNewOwnerMfaConfigurationHistoryActionEnum = {
-	disabled: "disabled",
-	enabled: "enabled",
-} as const;
-
-export type UserEventPayloadNewOwnerMfaConfigurationHistoryActionEnumKey =
-	(typeof userEventPayloadNewOwnerMfaConfigurationHistoryActionEnum)[keyof typeof userEventPayloadNewOwnerMfaConfigurationHistoryActionEnum];
-
-export const userEventPayloadNewOwnerMfaConfigurationHistoryMethodEnum = {
-	admin_removal: "admin_removal",
-	passkey: "passkey",
-	self_serve_recovery: "self_serve_recovery",
-	totp: "totp",
-	unknown: "unknown",
-	user_disabled: "user_disabled",
-} as const;
-
-export type UserEventPayloadNewOwnerMfaConfigurationHistoryMethodEnumKey =
-	(typeof userEventPayloadNewOwnerMfaConfigurationHistoryMethodEnum)[keyof typeof userEventPayloadNewOwnerMfaConfigurationHistoryMethodEnum];
-
-export const userEventPayloadNewOwnerMfaConfigurationHistoryActorTypeEnum = {
-	admin: "admin",
-	user: "user",
-} as const;
-
-export type UserEventPayloadNewOwnerMfaConfigurationHistoryActorTypeEnumKey =
-	(typeof userEventPayloadNewOwnerMfaConfigurationHistoryActorTypeEnum)[keyof typeof userEventPayloadNewOwnerMfaConfigurationHistoryActorTypeEnum];
-
-export const userEventPayloadQueryTypeEnum = {
-	"data-edit": "data-edit",
-	"data-view": "data-view",
-	schema: "schema",
-	user: "user",
-} as const;
-
-export type UserEventPayloadQueryTypeEnumKey =
-	(typeof userEventPayloadQueryTypeEnum)[keyof typeof userEventPayloadQueryTypeEnum];
-
-export const userEventPayloadFactorsOriginEnum = {
-	apple: "apple",
-	bitbucket: "bitbucket",
-	chatgpt: "chatgpt",
-	email: "email",
-	github: "github",
-	gitlab: "gitlab",
-	google: "google",
-	otp: "otp",
-	saml: "saml",
-} as const;
-
-export type UserEventPayloadFactorsOriginEnumKey =
-	(typeof userEventPayloadFactorsOriginEnum)[keyof typeof userEventPayloadFactorsOriginEnum];
-
-export const userEventPayloadNextDefaultEnum = {
-	BILLING: "BILLING",
-	CONTRIBUTOR: "CONTRIBUTOR",
-	DEVELOPER: "DEVELOPER",
-	MEMBER: "MEMBER",
-	OWNER: "OWNER",
-	SECURITY: "SECURITY",
-	VIEWER: "VIEWER",
-	VIEWER_FOR_PLUS: "VIEWER_FOR_PLUS",
-} as const;
-
-export type UserEventPayloadNextDefaultEnumKey =
-	(typeof userEventPayloadNextDefaultEnum)[keyof typeof userEventPayloadNextDefaultEnum];
-
-export const userEventPayloadTriggerEnum = {
-	directory_sync_updated: "directory_sync_updated",
-	domain_deleted: "domain_deleted",
-	domain_verified: "domain_verified",
-	saml_updated: "saml_updated",
-	team_attached: "team_attached",
-	team_participation_updated: "team_participation_updated",
-	toggle: "toggle",
-} as const;
-
-export type UserEventPayloadTriggerEnumKey =
-	(typeof userEventPayloadTriggerEnum)[keyof typeof userEventPayloadTriggerEnum];
-
-export const userEventPayloadBillingPlanEnum = {
-	enterprise: "enterprise",
-	platform: "platform",
-} as const;
-
-export type UserEventPayloadBillingPlanEnumKey =
-	(typeof userEventPayloadBillingPlanEnum)[keyof typeof userEventPayloadBillingPlanEnum];
-
-export const userEventPayloadPreviousModeEnum = {
-	organization: "organization",
-	team: "team",
-} as const;
-
-export type UserEventPayloadPreviousModeEnumKey =
-	(typeof userEventPayloadPreviousModeEnum)[keyof typeof userEventPayloadPreviousModeEnum];
-
-export const userEventPayloadModeEnum = {
-	organization: "organization",
-	team: "team",
-} as const;
-
-export type UserEventPayloadModeEnumKey =
-	(typeof userEventPayloadModeEnum)[keyof typeof userEventPayloadModeEnum];
-
-export const userEventPayloadPreviousEnforcementScopeEnum = {
-	all: "all",
-	preview: "preview",
-} as const;
-
-export type UserEventPayloadPreviousEnforcementScopeEnumKey =
-	(typeof userEventPayloadPreviousEnforcementScopeEnum)[keyof typeof userEventPayloadPreviousEnforcementScopeEnum];
-
-export const userEventPayloadPreviousNewResourceBlockingPolicyEnum = {
-	allow: "allow",
-	block: "block",
-} as const;
-
-export type UserEventPayloadPreviousNewResourceBlockingPolicyEnumKey =
-	(typeof userEventPayloadPreviousNewResourceBlockingPolicyEnum)[keyof typeof userEventPayloadPreviousNewResourceBlockingPolicyEnum];
-
-export const userEventPayloadNextEnforcementScopeEnum = {
-	all: "all",
-	preview: "preview",
-} as const;
-
-export type UserEventPayloadNextEnforcementScopeEnumKey =
-	(typeof userEventPayloadNextEnforcementScopeEnum)[keyof typeof userEventPayloadNextEnforcementScopeEnum];
-
-export const userEventPayloadNextNewResourceBlockingPolicyEnum = {
-	allow: "allow",
-	block: "block",
-} as const;
-
-export type UserEventPayloadNextNewResourceBlockingPolicyEnumKey =
-	(typeof userEventPayloadNextNewResourceBlockingPolicyEnum)[keyof typeof userEventPayloadNextNewResourceBlockingPolicyEnum];
-
-export const userEventPayloadApprovalScopeEnum = {
-	all: "all",
-	preview: "preview",
-} as const;
-
-export type UserEventPayloadApprovalScopeEnumKey =
-	(typeof userEventPayloadApprovalScopeEnum)[keyof typeof userEventPayloadApprovalScopeEnum];
-
-export const userEventPayloadKindEnum = {
-	connectSrc: "connectSrc",
-	script: "script",
-} as const;
-
-export type UserEventPayloadKindEnumKey =
-	(typeof userEventPayloadKindEnum)[keyof typeof userEventPayloadKindEnum];
-
-export const userEventPayloadPreviousPassportDeploymentTypeEnum = {
-	all: "all",
-	all_except_custom_domains: "all_except_custom_domains",
-	preview: "preview",
-	prod_deployment_urls_and_all_previews: "prod_deployment_urls_and_all_previews",
-} as const;
-
-export type UserEventPayloadPreviousPassportDeploymentTypeEnumKey =
-	(typeof userEventPayloadPreviousPassportDeploymentTypeEnum)[keyof typeof userEventPayloadPreviousPassportDeploymentTypeEnum];
-
-export const userEventPayloadNextPassportDeploymentTypeEnum = {
-	all: "all",
-	all_except_custom_domains: "all_except_custom_domains",
-	preview: "preview",
-	prod_deployment_urls_and_all_previews: "prod_deployment_urls_and_all_previews",
-} as const;
-
-export type UserEventPayloadNextPassportDeploymentTypeEnumKey =
-	(typeof userEventPayloadNextPassportDeploymentTypeEnum)[keyof typeof userEventPayloadNextPassportDeploymentTypeEnum];
-
-export const roleEnum = {
-	BILLING: "BILLING",
-	CONTRIBUTOR: "CONTRIBUTOR",
-	DEVELOPER: "DEVELOPER",
-	MEMBER: "MEMBER",
-	OWNER: "OWNER",
-	SECURITY: "SECURITY",
-	VIEWER: "VIEWER",
-	VIEWER_FOR_PLUS: "VIEWER_FOR_PLUS",
-} as const;
-
-export type RoleEnumKey = (typeof roleEnum)[keyof typeof roleEnum];
-
-export const originEnum = {
-	"account-update": "account-update",
-	bitbucket: "bitbucket",
-	dsync: "dsync",
-	feedback: "feedback",
-	github: "github",
-	gitlab: "gitlab",
-	import: "import",
-	link: "link",
-	mail: "mail",
-	"nsnb-auto-approve": "nsnb-auto-approve",
-	"nsnb-hobby-upgrade": "nsnb-hobby-upgrade",
-	"nsnb-invite": "nsnb-invite",
-	"nsnb-redeploy": "nsnb-redeploy",
-	"nsnb-redeploy-attribution-card": "nsnb-redeploy-attribution-card",
-	"nsnb-request-access": "nsnb-request-access",
-	"nsnb-viewer-upgrade": "nsnb-viewer-upgrade",
-	"organization-teams": "organization-teams",
-	saml: "saml",
-	teams: "teams",
-} as const;
-
-export type OriginEnumKey = (typeof originEnum)[keyof typeof originEnum];
-
-export const userEventPayloadWidgetEnum = {
-	alert: "alert",
-	"analytics-online": "analytics-online",
-	"analytics-page-views": "analytics-page-views",
-	"analytics-visitors": "analytics-visitors",
-	"firewall-allowed": "firewall-allowed",
-	"firewall-denied": "firewall-denied",
-	"observability-alert": "observability-alert",
-	"observability-edge-requests": "observability-edge-requests",
-	"observability-error-rate": "observability-error-rate",
-	"observability-function-invocations": "observability-function-invocations",
-	online: "online",
-	res: "res",
-	shortcut: "shortcut",
-	"speed-insights-cls": "speed-insights-cls",
-	"speed-insights-lcp": "speed-insights-lcp",
-	"speed-insights-res": "speed-insights-res",
-} as const;
-
-export type UserEventPayloadWidgetEnumKey =
-	(typeof userEventPayloadWidgetEnum)[keyof typeof userEventPayloadWidgetEnum];
-
-export const userEventPayloadBuildQueueConfigurationEnum = {
-	SKIP_NAMESPACE_QUEUE: "SKIP_NAMESPACE_QUEUE",
-	WAIT_FOR_NAMESPACE_QUEUE: "WAIT_FOR_NAMESPACE_QUEUE",
-} as const;
-
-export type UserEventPayloadBuildQueueConfigurationEnumKey =
-	(typeof userEventPayloadBuildQueueConfigurationEnum)[keyof typeof userEventPayloadBuildQueueConfigurationEnum];
-
-export const userEventPayloadOldBuildQueueConfigurationEnum = {
-	SKIP_NAMESPACE_QUEUE: "SKIP_NAMESPACE_QUEUE",
-	WAIT_FOR_NAMESPACE_QUEUE: "WAIT_FOR_NAMESPACE_QUEUE",
-} as const;
-
-export type UserEventPayloadOldBuildQueueConfigurationEnumKey =
-	(typeof userEventPayloadOldBuildQueueConfigurationEnum)[keyof typeof userEventPayloadOldBuildQueueConfigurationEnum];
-
-export const userEventPayloadPreviousBranchMatcherTypeEnum = {
-	endsWith: "endsWith",
-	equals: "equals",
-	startsWith: "startsWith",
-} as const;
-
-export type UserEventPayloadPreviousBranchMatcherTypeEnumKey =
-	(typeof userEventPayloadPreviousBranchMatcherTypeEnum)[keyof typeof userEventPayloadPreviousBranchMatcherTypeEnum];
-
-export const userEventPayloadNextBranchMatcherTypeEnum = {
-	endsWith: "endsWith",
-	equals: "equals",
-	startsWith: "startsWith",
-} as const;
-
-export type UserEventPayloadNextBranchMatcherTypeEnumKey =
-	(typeof userEventPayloadNextBranchMatcherTypeEnum)[keyof typeof userEventPayloadNextBranchMatcherTypeEnum];
-
-export const userEventPayloadPreviousGitProviderEnum = {
-	bitbucket: "bitbucket",
-	"cursor-origin": "cursor-origin",
-	github: "github",
-	"github-custom-host": "github-custom-host",
-	"github-limited": "github-limited",
-	gitlab: "gitlab",
-	v0: "v0",
-	vercel: "vercel",
-} as const;
-
-export type UserEventPayloadPreviousGitProviderEnumKey =
-	(typeof userEventPayloadPreviousGitProviderEnum)[keyof typeof userEventPayloadPreviousGitProviderEnum];
-
-export const userEventPayloadNextGitProviderEnum = {
-	bitbucket: "bitbucket",
-	"cursor-origin": "cursor-origin",
-	github: "github",
-	"github-custom-host": "github-custom-host",
-	"github-limited": "github-limited",
-	gitlab: "gitlab",
-	v0: "v0",
-	vercel: "vercel",
-} as const;
-
-export type UserEventPayloadNextGitProviderEnumKey =
-	(typeof userEventPayloadNextGitProviderEnum)[keyof typeof userEventPayloadNextGitProviderEnum];
-
-export const userEventPayloadGitProviderEnum = {
-	bitbucket: "bitbucket",
-	"cursor-origin": "cursor-origin",
-	github: "github",
-	"github-custom-host": "github-custom-host",
-	"github-limited": "github-limited",
-	gitlab: "gitlab",
-	v0: "v0",
-	vercel: "vercel",
-} as const;
-
-export type UserEventPayloadGitProviderEnumKey =
-	(typeof userEventPayloadGitProviderEnum)[keyof typeof userEventPayloadGitProviderEnum];
-
-export const userEventPayloadCreateDeploymentsEnum = {
-	disabled: "disabled",
-	enabled: "enabled",
-} as const;
-
-export type UserEventPayloadCreateDeploymentsEnumKey =
-	(typeof userEventPayloadCreateDeploymentsEnum)[keyof typeof userEventPayloadCreateDeploymentsEnum];
-
-export const userEventPayloadProjectsRoleEnum = {
-	ADMIN: "ADMIN",
-	PROJECT_DEVELOPER: "PROJECT_DEVELOPER",
-	PROJECT_GUEST: "PROJECT_GUEST",
-	PROJECT_VIEWER: "PROJECT_VIEWER",
-} as const;
-
-export type UserEventPayloadProjectsRoleEnumKey =
-	(typeof userEventPayloadProjectsRoleEnum)[keyof typeof userEventPayloadProjectsRoleEnum];
-
-export const userEventPayloadProjectMembershipRoleEnum = {
-	ADMIN: "ADMIN",
-	PROJECT_DEVELOPER: "PROJECT_DEVELOPER",
-	PROJECT_GUEST: "PROJECT_GUEST",
-	PROJECT_VIEWER: "PROJECT_VIEWER",
-} as const;
-
-export type UserEventPayloadProjectMembershipRoleEnumKey =
-	(typeof userEventPayloadProjectMembershipRoleEnum)[keyof typeof userEventPayloadProjectMembershipRoleEnum];
-
-export const userEventPayloadProjectRoleEnum = {
-	ADMIN: "ADMIN",
-	PROJECT_DEVELOPER: "PROJECT_DEVELOPER",
-	PROJECT_GUEST: "PROJECT_GUEST",
-	PROJECT_VIEWER: "PROJECT_VIEWER",
-} as const;
-
-export type UserEventPayloadProjectRoleEnumKey =
-	(typeof userEventPayloadProjectRoleEnum)[keyof typeof userEventPayloadProjectRoleEnum];
-
-export const userEventPayloadRemovedMembershipRoleEnum = {
-	ADMIN: "ADMIN",
-	PROJECT_DEVELOPER: "PROJECT_DEVELOPER",
-	PROJECT_GUEST: "PROJECT_GUEST",
-	PROJECT_VIEWER: "PROJECT_VIEWER",
-} as const;
-
-export type UserEventPayloadRemovedMembershipRoleEnumKey =
-	(typeof userEventPayloadRemovedMembershipRoleEnum)[keyof typeof userEventPayloadRemovedMembershipRoleEnum];
-
-export const userEventPayloadProjectMembershipPreviousRoleEnum = {
-	ADMIN: "ADMIN",
-	PROJECT_DEVELOPER: "PROJECT_DEVELOPER",
-	PROJECT_GUEST: "PROJECT_GUEST",
-	PROJECT_VIEWER: "PROJECT_VIEWER",
-} as const;
-
-export type UserEventPayloadProjectMembershipPreviousRoleEnumKey =
-	(typeof userEventPayloadProjectMembershipPreviousRoleEnum)[keyof typeof userEventPayloadProjectMembershipPreviousRoleEnum];
-
-export const userEventPayloadPasswordProtectionDeploymentTypeEnum = {
-	all: "all",
-	all_except_custom_domains: "all_except_custom_domains",
-	preview: "preview",
-	prod_deployment_urls_and_all_previews: "prod_deployment_urls_and_all_previews",
-} as const;
-
-export type UserEventPayloadPasswordProtectionDeploymentTypeEnumKey =
-	(typeof userEventPayloadPasswordProtectionDeploymentTypeEnum)[keyof typeof userEventPayloadPasswordProtectionDeploymentTypeEnum];
-
-export const userEventPayloadPasswordProtection = {
-	all: "all",
-	all_except_custom_domains: "all_except_custom_domains",
-	preview: "preview",
-	prod_deployment_urls_and_all_previews: "prod_deployment_urls_and_all_previews",
-} as const;
-
-export type UserEventPayloadPasswordProtectionKey =
-	(typeof userEventPayloadPasswordProtection)[keyof typeof userEventPayloadPasswordProtection];
-
-export const userEventPayloadOldPasswordProtectionDeploymentTypeEnum = {
-	all: "all",
-	all_except_custom_domains: "all_except_custom_domains",
-	preview: "preview",
-	prod_deployment_urls_and_all_previews: "prod_deployment_urls_and_all_previews",
-} as const;
-
-export type UserEventPayloadOldPasswordProtectionDeploymentTypeEnumKey =
-	(typeof userEventPayloadOldPasswordProtectionDeploymentTypeEnum)[keyof typeof userEventPayloadOldPasswordProtectionDeploymentTypeEnum];
-
-export const userEventPayloadOldPasswordProtection = {
-	all: "all",
-	all_except_custom_domains: "all_except_custom_domains",
-	preview: "preview",
-	prod_deployment_urls_and_all_previews: "prod_deployment_urls_and_all_previews",
-} as const;
-
-export type UserEventPayloadOldPasswordProtectionKey =
-	(typeof userEventPayloadOldPasswordProtection)[keyof typeof userEventPayloadOldPasswordProtection];
-
-export const userEventPayloadReasonCodeEnum = {
-	BACKOFFICE: "BACKOFFICE",
-	PUBLIC_API: "PUBLIC_API",
-} as const;
-
-export type UserEventPayloadReasonCodeEnumKey =
-	(typeof userEventPayloadReasonCodeEnum)[keyof typeof userEventPayloadReasonCodeEnum];
-
-export const userEventPayloadConsentEnum = {
-	granted: "granted",
-	refused: "refused",
-} as const;
-
-export type UserEventPayloadConsentEnumKey =
-	(typeof userEventPayloadConsentEnum)[keyof typeof userEventPayloadConsentEnum];
-
-export const userEventPayloadPreviousIssuerModeEnum = {
-	global: "global",
-	team: "team",
-} as const;
-
-export type UserEventPayloadPreviousIssuerModeEnumKey =
-	(typeof userEventPayloadPreviousIssuerModeEnum)[keyof typeof userEventPayloadPreviousIssuerModeEnum];
-
-export const userEventPayloadNextIssuerModeEnum = {
-	global: "global",
-	team: "team",
-} as const;
-
-export type UserEventPayloadNextIssuerModeEnumKey =
-	(typeof userEventPayloadNextIssuerModeEnum)[keyof typeof userEventPayloadNextIssuerModeEnum];
-
-export const userEventPayloadSsoProtectionDeploymentTypeEnum = {
-	all: "all",
-	all_except_custom_domains: "all_except_custom_domains",
-	preview: "preview",
-	prod_deployment_urls_and_all_previews: "prod_deployment_urls_and_all_previews",
-} as const;
-
-export type UserEventPayloadSsoProtectionDeploymentTypeEnumKey =
-	(typeof userEventPayloadSsoProtectionDeploymentTypeEnum)[keyof typeof userEventPayloadSsoProtectionDeploymentTypeEnum];
-
-export const userEventPayloadSsoProtectionCve55182MigrationAppliedFromEnum = {
-	all: "all",
-	all_except_custom_domains: "all_except_custom_domains",
-	preview: "preview",
-	prod_deployment_urls_and_all_previews: "prod_deployment_urls_and_all_previews",
-} as const;
-
-export type UserEventPayloadSsoProtectionCve55182MigrationAppliedFromEnumKey =
-	(typeof userEventPayloadSsoProtectionCve55182MigrationAppliedFromEnum)[keyof typeof userEventPayloadSsoProtectionCve55182MigrationAppliedFromEnum];
-
-export const userEventPayloadSsoProtectionApril2026SecurityIncidentMigrationAppliedFromEnum = {
-	all: "all",
-	all_except_custom_domains: "all_except_custom_domains",
-	preview: "preview",
-	prod_deployment_urls_and_all_previews: "prod_deployment_urls_and_all_previews",
-} as const;
-
-export type UserEventPayloadSsoProtectionApril2026SecurityIncidentMigrationAppliedFromEnumKey =
-	(typeof userEventPayloadSsoProtectionApril2026SecurityIncidentMigrationAppliedFromEnum)[keyof typeof userEventPayloadSsoProtectionApril2026SecurityIncidentMigrationAppliedFromEnum];
-
-export const userEventPayloadSsoProtection = {
-	all: "all",
-	all_except_custom_domains: "all_except_custom_domains",
-	preview: "preview",
-	prod_deployment_urls_and_all_previews: "prod_deployment_urls_and_all_previews",
-} as const;
-
-export type UserEventPayloadSsoProtectionKey =
-	(typeof userEventPayloadSsoProtection)[keyof typeof userEventPayloadSsoProtection];
-
-export const userEventPayloadOldSsoProtectionDeploymentTypeEnum = {
-	all: "all",
-	all_except_custom_domains: "all_except_custom_domains",
-	preview: "preview",
-	prod_deployment_urls_and_all_previews: "prod_deployment_urls_and_all_previews",
-} as const;
-
-export type UserEventPayloadOldSsoProtectionDeploymentTypeEnumKey =
-	(typeof userEventPayloadOldSsoProtectionDeploymentTypeEnum)[keyof typeof userEventPayloadOldSsoProtectionDeploymentTypeEnum];
-
-export const userEventPayloadOldSsoProtectionCve55182MigrationAppliedFromEnum = {
-	all: "all",
-	all_except_custom_domains: "all_except_custom_domains",
-	preview: "preview",
-	prod_deployment_urls_and_all_previews: "prod_deployment_urls_and_all_previews",
-} as const;
-
-export type UserEventPayloadOldSsoProtectionCve55182MigrationAppliedFromEnumKey =
-	(typeof userEventPayloadOldSsoProtectionCve55182MigrationAppliedFromEnum)[keyof typeof userEventPayloadOldSsoProtectionCve55182MigrationAppliedFromEnum];
-
-export const userEventPayloadOldSsoProtectionApril2026SecurityIncidentMigrationAppliedFromEnum = {
-	all: "all",
-	all_except_custom_domains: "all_except_custom_domains",
-	preview: "preview",
-	prod_deployment_urls_and_all_previews: "prod_deployment_urls_and_all_previews",
-} as const;
-
-export type UserEventPayloadOldSsoProtectionApril2026SecurityIncidentMigrationAppliedFromEnumKey =
-	(typeof userEventPayloadOldSsoProtectionApril2026SecurityIncidentMigrationAppliedFromEnum)[keyof typeof userEventPayloadOldSsoProtectionApril2026SecurityIncidentMigrationAppliedFromEnum];
-
-export const userEventPayloadOldSsoProtection = {
-	all: "all",
-	all_except_custom_domains: "all_except_custom_domains",
-	preview: "preview",
-	prod_deployment_urls_and_all_previews: "prod_deployment_urls_and_all_previews",
-} as const;
-
-export type UserEventPayloadOldSsoProtectionKey =
-	(typeof userEventPayloadOldSsoProtection)[keyof typeof userEventPayloadOldSsoProtection];
-
-export const userEventPayloadTrustedIpsEnum = {
-	all: "all",
-	all_except_custom_domains: "all_except_custom_domains",
-	preview: "preview",
-	prod_deployment_urls_and_all_previews: "prod_deployment_urls_and_all_previews",
-	production: "production",
-} as const;
-
-export type UserEventPayloadTrustedIpsEnumKey =
-	(typeof userEventPayloadTrustedIpsEnum)[keyof typeof userEventPayloadTrustedIpsEnum];
-
-export const userEventPayloadOldTrustedIpsEnum = {
-	all: "all",
-	all_except_custom_domains: "all_except_custom_domains",
-	preview: "preview",
-	prod_deployment_urls_and_all_previews: "prod_deployment_urls_and_all_previews",
-	production: "production",
-} as const;
-
-export type UserEventPayloadOldTrustedIpsEnumKey =
-	(typeof userEventPayloadOldTrustedIpsEnum)[keyof typeof userEventPayloadOldTrustedIpsEnum];
-
-export const userEventPayloadBudgetBudgetItemPricingPlanEnum = {
-	flex: "flex",
-	legacy: "legacy",
-	platform: "platform",
-	plus: "plus",
-	unbundled: "unbundled",
-} as const;
-
-export type UserEventPayloadBudgetBudgetItemPricingPlanEnumKey =
-	(typeof userEventPayloadBudgetBudgetItemPricingPlanEnum)[keyof typeof userEventPayloadBudgetBudgetItemPricingPlanEnum];
-
-export const userEventPayloadBudgetBudgetItemScopeEnum = {
-	organization: "organization",
-	project: "project",
-	team: "team",
-} as const;
-
-export type UserEventPayloadBudgetBudgetItemScopeEnumKey =
-	(typeof userEventPayloadBudgetBudgetItemScopeEnum)[keyof typeof userEventPayloadBudgetBudgetItemScopeEnum];
-
-export const userEventPayloadBudgetPricingPlanEnum = {
-	flex: "flex",
-	legacy: "legacy",
-	platform: "platform",
-	plus: "plus",
-	unbundled: "unbundled",
-} as const;
-
-export type UserEventPayloadBudgetPricingPlanEnumKey =
-	(typeof userEventPayloadBudgetPricingPlanEnum)[keyof typeof userEventPayloadBudgetPricingPlanEnum];
-
-export const userEventPayloadBudgetScopeEnum = {
-	organization: "organization",
-	project: "project",
-	team: "team",
-} as const;
-
-export type UserEventPayloadBudgetScopeEnumKey =
-	(typeof userEventPayloadBudgetScopeEnum)[keyof typeof userEventPayloadBudgetScopeEnum];
-
-export const userEventPayloadPrevBudgetPricingPlanEnum = {
-	flex: "flex",
-	legacy: "legacy",
-	platform: "platform",
-	plus: "plus",
-	unbundled: "unbundled",
-} as const;
-
-export type UserEventPayloadPrevBudgetPricingPlanEnumKey =
-	(typeof userEventPayloadPrevBudgetPricingPlanEnum)[keyof typeof userEventPayloadPrevBudgetPricingPlanEnum];
-
-export const userEventPayloadPrevBudgetScopeEnum = {
-	organization: "organization",
-	project: "project",
-	team: "team",
-} as const;
-
-export type UserEventPayloadPrevBudgetScopeEnumKey =
-	(typeof userEventPayloadPrevBudgetScopeEnum)[keyof typeof userEventPayloadPrevBudgetScopeEnum];
-
-export const userEventPayloadStoreTypeEnum = {
-	blob: "blob",
-	"edge-config": "edge-config",
-	integration: "integration",
-	postgres: "postgres",
-	redis: "redis",
-} as const;
-
-export type UserEventPayloadStoreTypeEnumKey =
-	(typeof userEventPayloadStoreTypeEnum)[keyof typeof userEventPayloadStoreTypeEnum];
-
-export const userEventPayloadAccessEnum = {
-	private: "private",
-	public: "public",
-} as const;
-
-export type UserEventPayloadAccessEnumKey =
-	(typeof userEventPayloadAccessEnum)[keyof typeof userEventPayloadAccessEnum];
-
-export const userEventPayloadActorTypeEnum = {
-	admin: "admin",
-	user: "user",
-} as const;
-
-export type UserEventPayloadActorTypeEnumKey =
-	(typeof userEventPayloadActorTypeEnum)[keyof typeof userEventPayloadActorTypeEnum];
-
-export const userEventPayloadPreviousScopeEnum = {
-	all: "all",
-	private: "private",
-	public: "public",
-	selected_repos: "selected_repos",
-} as const;
-
-export type UserEventPayloadPreviousScopeEnumKey =
-	(typeof userEventPayloadPreviousScopeEnum)[keyof typeof userEventPayloadPreviousScopeEnum];
-
-export const userEventPayloadNextScopeEnum = {
-	all: "all",
-	private: "private",
-	public: "public",
-	selected_repos: "selected_repos",
-} as const;
-
-export type UserEventPayloadNextScopeEnumKey =
-	(typeof userEventPayloadNextScopeEnum)[keyof typeof userEventPayloadNextScopeEnum];
-
-export const userEventPayloadPreviousEnum = {
-	basic: "basic",
-	elastic: "elastic",
-	enhanced: "enhanced",
-	standard: "standard",
-	turbo: "turbo",
-} as const;
-
-export type UserEventPayloadPreviousEnumKey =
-	(typeof userEventPayloadPreviousEnum)[keyof typeof userEventPayloadPreviousEnum];
-
-export const userEventPayloadNextEnum = {
-	basic: "basic",
-	elastic: "elastic",
-	enhanced: "enhanced",
-	standard: "standard",
-	turbo: "turbo",
-} as const;
-
-export type UserEventPayloadNextEnumKey =
-	(typeof userEventPayloadNextEnum)[keyof typeof userEventPayloadNextEnum];
-
-export const userEventPayloadReasonEnum = {
-	"basic-floor": "basic-floor",
-	"build-timeout-failure": "build-timeout-failure",
-	"enospc-failure": "enospc-failure",
-	"enterprise-floor": "enterprise-floor",
-	"high-peak-disk": "high-peak-disk",
-	"high-peak-memory": "high-peak-memory",
-	"long-build-duration": "long-build-duration",
-	"oom-failure": "oom-failure",
-	"plan-change": "plan-change",
-	"project-transfer": "project-transfer",
-	"short-build-duration": "short-build-duration",
-	"sustained-high-cpu": "sustained-high-cpu",
-} as const;
-
-export type UserEventPayloadReasonEnumKey =
-	(typeof userEventPayloadReasonEnum)[keyof typeof userEventPayloadReasonEnum];
-
-export const userEventPayloadEnvironmentEnum = {
-	preview: "preview",
-	production: "production",
-} as const;
-
-export type UserEventPayloadEnvironmentEnumKey =
-	(typeof userEventPayloadEnvironmentEnum)[keyof typeof userEventPayloadEnvironmentEnum];
-
-export const userEventPayloadEnabledEnum = {
-	default: "default",
-	off: "off",
-	on: "on",
-} as const;
-
-export type UserEventPayloadEnabledEnumKey =
-	(typeof userEventPayloadEnabledEnum)[keyof typeof userEventPayloadEnabledEnum];
-
-export const userEventPayloadRoleEnum = {
-	BILLING: "BILLING",
-	CONTRIBUTOR: "CONTRIBUTOR",
-	DEVELOPER: "DEVELOPER",
-	MEMBER: "MEMBER",
-	OWNER: "OWNER",
-	SECURITY: "SECURITY",
-	VIEWER: "VIEWER",
-	VIEWER_FOR_PLUS: "VIEWER_FOR_PLUS",
-} as const;
-
-export type UserEventPayloadRoleEnumKey =
-	(typeof userEventPayloadRoleEnum)[keyof typeof userEventPayloadRoleEnum];
-
-export const userEventPayloadPreviousPlanEnum = {
-	enterprise: "enterprise",
-	hobby: "hobby",
-	pro: "pro",
-} as const;
-
-export type UserEventPayloadPreviousPlanEnumKey =
-	(typeof userEventPayloadPreviousPlanEnum)[keyof typeof userEventPayloadPreviousPlanEnum];
-
-export const userEventPayloadNewPlanEnum = {
-	enterprise: "enterprise",
-	hobby: "hobby",
-	pro: "pro",
-} as const;
-
-export type UserEventPayloadNewPlanEnumKey =
-	(typeof userEventPayloadNewPlanEnum)[keyof typeof userEventPayloadNewPlanEnum];
-
-export const userEventPayloadPreviousTeamRolesEnum = {
-	BILLING: "BILLING",
-	CONTRIBUTOR: "CONTRIBUTOR",
-	DEVELOPER: "DEVELOPER",
-	MEMBER: "MEMBER",
-	OWNER: "OWNER",
-	SECURITY: "SECURITY",
-	VIEWER: "VIEWER",
-	VIEWER_FOR_PLUS: "VIEWER_FOR_PLUS",
-} as const;
-
-export type UserEventPayloadPreviousTeamRolesEnumKey =
-	(typeof userEventPayloadPreviousTeamRolesEnum)[keyof typeof userEventPayloadPreviousTeamRolesEnum];
-
-export const userEventPayloadTeamRolesEnum = {
-	BILLING: "BILLING",
-	CONTRIBUTOR: "CONTRIBUTOR",
-	DEVELOPER: "DEVELOPER",
-	MEMBER: "MEMBER",
-	OWNER: "OWNER",
-	SECURITY: "SECURITY",
-	VIEWER: "VIEWER",
-	VIEWER_FOR_PLUS: "VIEWER_FOR_PLUS",
-} as const;
-
-export type UserEventPayloadTeamRolesEnumKey =
-	(typeof userEventPayloadTeamRolesEnum)[keyof typeof userEventPayloadTeamRolesEnum];
-
-export const userEventPayloadPreviousTeamPermissionsEnum = {
-	AiGatewayApiKeyOwnedBySelf: "AiGatewayApiKeyOwnedBySelf",
-	AiGatewayBudgetManager: "AiGatewayBudgetManager",
-	AiGatewayCredits: "AiGatewayCredits",
-	AiGatewaySettings: "AiGatewaySettings",
-	AiGatewayTranscriptsManager: "AiGatewayTranscriptsManager",
-	AiGatewayTranscriptsViewer: "AiGatewayTranscriptsViewer",
-	ConnectorManager: "ConnectorManager",
-	CreateProject: "CreateProject",
-	EnvVariableManager: "EnvVariableManager",
-	EnvironmentManager: "EnvironmentManager",
-	FullProductionDeployment: "FullProductionDeployment",
-	IntegrationManager: "IntegrationManager",
-	OrgAdmin: "OrgAdmin",
-	OrgViewer: "OrgViewer",
-	UsageViewer: "UsageViewer",
-	V0Builder: "V0Builder",
-	V0Chatter: "V0Chatter",
-	V0Viewer: "V0Viewer",
-	WorkflowDecryptor: "WorkflowDecryptor",
-} as const;
-
-export type UserEventPayloadPreviousTeamPermissionsEnumKey =
-	(typeof userEventPayloadPreviousTeamPermissionsEnum)[keyof typeof userEventPayloadPreviousTeamPermissionsEnum];
-
-export const userEventPayloadTeamPermissionsEnum = {
-	AiGatewayApiKeyOwnedBySelf: "AiGatewayApiKeyOwnedBySelf",
-	AiGatewayBudgetManager: "AiGatewayBudgetManager",
-	AiGatewayCredits: "AiGatewayCredits",
-	AiGatewaySettings: "AiGatewaySettings",
-	AiGatewayTranscriptsManager: "AiGatewayTranscriptsManager",
-	AiGatewayTranscriptsViewer: "AiGatewayTranscriptsViewer",
-	ConnectorManager: "ConnectorManager",
-	CreateProject: "CreateProject",
-	EnvVariableManager: "EnvVariableManager",
-	EnvironmentManager: "EnvironmentManager",
-	FullProductionDeployment: "FullProductionDeployment",
-	IntegrationManager: "IntegrationManager",
-	OrgAdmin: "OrgAdmin",
-	OrgViewer: "OrgViewer",
-	UsageViewer: "UsageViewer",
-	V0Builder: "V0Builder",
-	V0Chatter: "V0Chatter",
-	V0Viewer: "V0Viewer",
-	WorkflowDecryptor: "WorkflowDecryptor",
-} as const;
-
-export type UserEventPayloadTeamPermissionsEnumKey =
-	(typeof userEventPayloadTeamPermissionsEnum)[keyof typeof userEventPayloadTeamPermissionsEnum];
-
-export const userEventPayloadPlanEnum = {
-	enterprise: "enterprise",
-	hobby: "hobby",
-	pro: "pro",
-} as const;
-
-export type UserEventPayloadPlanEnumKey =
-	(typeof userEventPayloadPlanEnum)[keyof typeof userEventPayloadPlanEnum];
-
-export const userEventPayloadDecisionEnum = {
-	keep_on: "keep_on",
-	turn_off: "turn_off",
-} as const;
-
-export type UserEventPayloadDecisionEnumKey =
-	(typeof userEventPayloadDecisionEnum)[keyof typeof userEventPayloadDecisionEnum];
-
-export const userEventPayloadScopeEnum = {
-	project: "project",
-	team: "team",
-	user: "user",
-} as const;
-
-export type UserEventPayloadScopeEnumKey =
-	(typeof userEventPayloadScopeEnum)[keyof typeof userEventPayloadScopeEnum];
-
-export const userEventPayloadSamplingEnvEnum = {
-	preview: "preview",
-	production: "production",
-} as const;
-
-export type UserEventPayloadSamplingEnvEnumKey =
-	(typeof userEventPayloadSamplingEnvEnum)[keyof typeof userEventPayloadSamplingEnvEnum];
-
-export const userEventPayloadMethodEnum = {
-	passkey: "passkey",
-	self_serve_recovery: "self_serve_recovery",
-	totp: "totp",
-	user_disabled: "user_disabled",
-} as const;
-
-export type UserEventPayloadMethodEnumKey =
-	(typeof userEventPayloadMethodEnum)[keyof typeof userEventPayloadMethodEnum];
-
-export const userEventPayloadAllowedMethodsEnum = {
-	"recovery-code": "recovery-code",
-	totp: "totp",
-	webauthn: "webauthn",
-} as const;
-
-export type UserEventPayloadAllowedMethodsEnumKey =
-	(typeof userEventPayloadAllowedMethodsEnum)[keyof typeof userEventPayloadAllowedMethodsEnum];
-
-export const userEventPayloadContextEnum = {
-	login: "login",
-	sudo: "sudo",
-} as const;
-
-export type UserEventPayloadContextEnumKey =
-	(typeof userEventPayloadContextEnum)[keyof typeof userEventPayloadContextEnum];
-
-export const userEventPayloadDecisionBasisEnum = {
-	gmail: "gmail",
-	none: "none",
-	"workspace-mx": "workspace-mx",
-} as const;
-
-export type UserEventPayloadDecisionBasisEnumKey =
-	(typeof userEventPayloadDecisionBasisEnum)[keyof typeof userEventPayloadDecisionBasisEnum];
-
-export const userEventPayloadDecisionMxOutcomeEnum = {
-	google: "google",
-	"lookup-error": "lookup-error",
-	"non-google": "non-google",
-	"not-checked": "not-checked",
-} as const;
-
-export type UserEventPayloadDecisionMxOutcomeEnumKey =
-	(typeof userEventPayloadDecisionMxOutcomeEnum)[keyof typeof userEventPayloadDecisionMxOutcomeEnum];
-
-export const userEventPayloadTierEnum = {
-	plus: "plus",
-	pro: "pro",
-} as const;
-
-export type UserEventPayloadTierEnumKey =
-	(typeof userEventPayloadTierEnum)[keyof typeof userEventPayloadTierEnum];
-
-export const userEventPayloadGrantTypeEnum = {
-	authorization_code: "authorization_code",
-	"urn:ietf:params:oauth:grant-type:device_code": "urn:ietf:params:oauth:grant-type:device_code",
-	"urn:ietf:params:oauth:grant-type:token-exchange":
-		"urn:ietf:params:oauth:grant-type:token-exchange",
-} as const;
-
-export type UserEventPayloadGrantTypeEnumKey =
-	(typeof userEventPayloadGrantTypeEnum)[keyof typeof userEventPayloadGrantTypeEnum];
-
-export const userEventPayloadAuthMethodEnum = {
-	app: "app",
-	apple: "apple",
-	bitbucket: "bitbucket",
-	chatgpt: "chatgpt",
-	email: "email",
-	emu: "emu",
-	github: "github",
-	"github-webhook": "github-webhook",
-	gitlab: "gitlab",
-	google: "google",
-	invite: "invite",
-	manual: "manual",
-	otp: "otp",
-	passkey: "passkey",
-	saml: "saml",
-	sms: "sms",
-	"token-exchange-oidc": "token-exchange-oidc",
-} as const;
-
-export type UserEventPayloadAuthMethodEnumKey =
-	(typeof userEventPayloadAuthMethodEnum)[keyof typeof userEventPayloadAuthMethodEnum];
-
-export const userEventPayloadAppClientAuthenticationUsedMethodEnum = {
-	client_secret_basic: "client_secret_basic",
-	client_secret_jwt: "client_secret_jwt",
-	client_secret_post: "client_secret_post",
-	none: "none",
-	oidc_token: "oidc_token",
-	private_key_jwt: "private_key_jwt",
-} as const;
-
-export type UserEventPayloadAppClientAuthenticationUsedMethodEnumKey =
-	(typeof userEventPayloadAppClientAuthenticationUsedMethodEnum)[keyof typeof userEventPayloadAppClientAuthenticationUsedMethodEnum];
-
-export const userEventPayloadOriginEnum = {
-	app: "app",
-	apple: "apple",
-	bitbucket: "bitbucket",
-	chatgpt: "chatgpt",
-	email: "email",
-	emu: "emu",
-	github: "github",
-	"github-webhook": "github-webhook",
-	gitlab: "gitlab",
-	google: "google",
-	invite: "invite",
-	manual: "manual",
-	otp: "otp",
-	passkey: "passkey",
-	saml: "saml",
-	sms: "sms",
-	"token-exchange-oidc": "token-exchange-oidc",
-} as const;
-
-export type UserEventPayloadOriginEnumKey =
-	(typeof userEventPayloadOriginEnum)[keyof typeof userEventPayloadOriginEnum];
-
-export const userEventPayloadProjectScopeEnum = {
-	account: "account",
-	"project-only": "project-only",
-} as const;
-
-export type UserEventPayloadProjectScopeEnumKey =
-	(typeof userEventPayloadProjectScopeEnum)[keyof typeof userEventPayloadProjectScopeEnum];
-
 /**
  * @description Array of events generated by the User.
  * @type object
  */
 export type UserEvent = {
-	/**
-	 * @description The unique identifier of the Event.
-	 * @example uev_bfmMjiMnXfnPbT97dGdpJbCN
-	 * @type string
-	 */
-	id: string;
-	/**
-	 * @description The human-readable text of the Event.
-	 * @example You logged in via GitHub
-	 * @type string
-	 */
-	text: string;
-	/**
-	 * @description A list of \"entities\" within the event `text`. Useful for enhancing the displayed text with additional styling and links.
-	 * @type array
-	 */
-	entities: {
-		/**
-		 * @description The type of entity.
-		 * @example author
-		 * @type string
-		 */
-		type: UserEventEntitiesTypeEnumKey;
-		/**
-		 * @description The index of where the entity begins within the `text` (inclusive).
-		 * @example 0
-		 * @type number
-		 */
-		start: number;
-		/**
-		 * @description The index of where the entity ends within the `text` (non-inclusive).
-		 * @example 3
-		 * @type number
-		 */
-		end: number;
-	}[];
-	/**
-	 * @description The type of the event.
-	 * @example login
-	 * @type string | undefined
-	 */
-	type?: UserEventTypeEnumKey | undefined;
 	/**
 	 * @description The categories that group this event with related event types. An event can belong to multiple categories (e.g. a firewall event is both Firewall and Security). The first entry is the \"primary\" category. Use the `/events/types` endpoint to discover the full list of categories.
 	 * @example ["deployment"]
@@ -7369,155 +7327,71 @@ export type UserEvent = {
 	 */
 	createdAt: number;
 	/**
-	 * @description Metadata for {@link userId}.
-	 * @type object | undefined
+	 * @description A list of \"entities\" within the event `text`. Useful for enhancing the displayed text with additional styling and links.
+	 * @type array
 	 */
-	user?:
-		| {
-				slug?: string | undefined;
-				avatar: string;
-				email: string;
-				username: string;
-				uid: string;
-		  }
-		| undefined;
-	principal?:
-		| (
-				| {
-						type?: "user" | undefined;
-						avatar: string;
-						email: string;
-						slug?: string | undefined;
-						uid: string;
-						username: string;
-				  }
-				| {
-						type: "app";
-						/**
-						 * @description The backing Vercel App ID. When absent, defaults to `clientId`.
-						 * @type string | undefined
-						 */
-						id?: string | undefined;
-						/**
-						 * @description The OAuth 2.0 client ID, which may be a CIMD URL.
-						 * @type string
-						 */
-						clientId: string;
-						name: string;
-				  }
-				| {
-						type: "external";
-						id: string;
-						name: string;
-						email?: string | undefined;
-				  }
-				| {
-						type: "system";
-				  }
-		  )
-		| undefined;
+	entities: {
+		/**
+		 * @description The index of where the entity ends within the `text` (non-inclusive).
+		 * @example 3
+		 * @type number
+		 */
+		end: number;
+		/**
+		 * @description The index of where the entity begins within the `text` (inclusive).
+		 * @example 0
+		 * @type number
+		 */
+		start: number;
+		/**
+		 * @description The type of entity.
+		 * @example author
+		 * @type string
+		 */
+		type: UserEventEntitiesTypeEnumKey;
+	}[];
 	/**
-	 * @description Metadata for {@link viaIds}.
-	 * @type array | undefined
-	 */
-	via?:
-		| (
-				| {
-						type?: "user" | undefined;
-						avatar: string;
-						email: string;
-						slug?: string | undefined;
-						uid: string;
-						username: string;
-				  }
-				| {
-						type: "app";
-						/**
-						 * @description The backing Vercel App ID. When absent, defaults to `clientId`.
-						 * @type string | undefined
-						 */
-						id?: string | undefined;
-						/**
-						 * @description The OAuth 2.0 client ID, which may be a CIMD URL.
-						 * @type string
-						 */
-						clientId: string;
-						name: string;
-				  }
-				| {
-						type: "external";
-						id: string;
-						name: string;
-						email?: string | undefined;
-				  }
-				| {
-						type: "system";
-				  }
-		  )[]
-		| undefined;
-	/**
-	 * @description When the principal who generated the event is a user, this is their ID; otherwise, it is empty.
-	 * @example zTuNVUXEAvvnNN3IaqinkyMw
-	 * @type string | undefined
-	 */
-	userId?: string | undefined;
-	/**
-	 * @description The ID of the principal who generated the event. The principal is typically a user, but it could also be an app, an integration, etc. The principal may have delegated its authority to an acting party, and so {@link viaIds} should be checked as well.
+	 * @description The unique identifier of the Event.
+	 * @example uev_bfmMjiMnXfnPbT97dGdpJbCN
 	 * @type string
 	 */
-	principalId: string;
-	/**
-	 * @description If the principal delegated its authority (for example, a user delegating to an app), then this array contains the ID of the current actor. For example, if `principalId` is \"user123\" and `viaIds` is `[\"app456\"]`, we can say the event was triggered by - \"app456 on behalf of user123\", or - \"user123 via app4556\". Both are equivalent. Arbitrarily long chains of delegation can be represented. For example, if `principalId` is \"user123\" and `viaIds` is `[\"service1\", \"service2\"]`, we can say the event was triggered by \"user123 via service1 via service2\".
-	 * @type array | undefined
-	 */
-	viaIds?: string[] | undefined;
-	/**
-	 * @description The public ID of the token that the principal authenticated with, when the request behind this event carried one.
-	 * @type string | undefined
-	 */
-	tokenId?: string | undefined;
-	/**
-	 * @description The ID of the session that the principal\'s token belongs to, when it belongs to one.
-	 * @type string | undefined
-	 */
-	sessionId?: string | undefined;
-	requestId?: string | undefined;
+	id: string;
 	payload?:
 		| (
 				| object
 				| {
 						action: UserEventPayloadActionEnumKey;
 						id: string;
-						slug: string;
 						projectId: string;
 						projectName?: string | undefined;
+						slug: string;
 				  }
 				| {
 						action: UserEventPayloadActionEnumKey;
 						id: string;
 						name: string;
-						slug: string;
-						state: string;
 						projectId: string;
 						projectName?: string | undefined;
+						slug: string;
+						state: string;
 				  }
 				| {
 						action: UserEventPayloadActionEnumKey;
-						label?: string | undefined;
-						projectName?: string | undefined;
-						projectId?: string | undefined;
 						environment: string;
+						label?: string | undefined;
+						projectId?: string | undefined;
+						projectName?: string | undefined;
 				  }
 				| {
 						action: "read";
-						projectName?: string | undefined;
-						projectId?: string | undefined;
 						environment: string[];
+						projectId?: string | undefined;
+						projectName?: string | undefined;
 				  }
 				| {
+						policyId: string;
 						projectId: string;
 						projectName: string;
-						policyId: string;
 				  }
 				| {
 						/**
@@ -7540,8 +7414,8 @@ export type UserEvent = {
 						 * @type string | undefined
 						 */
 						stripeOrganisation?: string | undefined;
-						teamId: string;
 						accountRequestId: string;
+						teamId: string;
 				  }
 				| {
 						/**
@@ -7611,8 +7485,8 @@ export type UserEvent = {
 						 * @type string | undefined
 						 */
 						stripeOrganisation?: string | undefined;
-						reason: string;
 						blockCode: string;
+						reason: string;
 				  }
 				| {
 						/**
@@ -7630,8 +7504,8 @@ export type UserEvent = {
 						 * @type string | undefined
 						 */
 						stripeAccount?: string | undefined;
-						resourceId: string;
 						projectName: string;
+						resourceId: string;
 				  }
 				| {
 						/**
@@ -7660,8 +7534,8 @@ export type UserEvent = {
 						 * @type string
 						 */
 						actorId: string;
-						actorType: "admin";
 						actorName?: string | undefined;
+						actorType: "admin";
 				  }
 				| {
 						/**
@@ -7684,9 +7558,9 @@ export type UserEvent = {
 						 * @type string | undefined
 						 */
 						stripeOrganisation?: string | undefined;
-						teamId: string;
-						resourceId: string;
 						fromPlan: UserEventPayloadFromPlanEnumKey;
+						resourceId: string;
+						teamId: string;
 						toPlan: UserEventPayloadToPlanEnumKey;
 				  }
 				| {
@@ -7700,25 +7574,25 @@ export type UserEvent = {
 						 */
 						budget?:
 							| ({
+									alertThresholds?: number[] | undefined;
 									/**
 									 * @description Spend cap, in dollars.
 									 * @type number
 									 */
 									limitAmount: number;
 									refreshPeriod: UserEventPayloadBudgetRefreshPeriodEnumKey;
-									alertThresholds?: number[] | undefined;
 							  } | null)
 							| undefined;
-						/**
-						 * @description True when the key was created with a ZDR exemption.
-						 * @type boolean | undefined
-						 */
-						zdrExemption?: (false | true) | undefined;
 						/**
 						 * @description True when the key was created to bypass all of the team\'s restrictions (the ZDR-only model restriction and the provider/model allowlist).
 						 * @type boolean | undefined
 						 */
 						bypassAll?: (false | true) | undefined;
+						/**
+						 * @description True when the key was created with a ZDR exemption.
+						 * @type boolean | undefined
+						 */
+						zdrExemption?: (false | true) | undefined;
 				  }
 				| {
 						apiKey: {
@@ -7737,89 +7611,89 @@ export type UserEvent = {
 						 */
 						budget?:
 							| ({
+									alertThresholds?: number[] | undefined;
 									/**
 									 * @description Spend cap, in dollars.
 									 * @type number
 									 */
 									limitAmount: number;
 									refreshPeriod: UserEventPayloadBudgetRefreshPeriodEnumKey;
-									alertThresholds?: number[] | undefined;
 							  } | null)
 							| undefined;
 						change: UserEventPayloadChangeEnumKey;
 				  }
 				| {
 						change: UserEventPayloadChangeEnumKey;
-						settings?:
+						commitment?:
 							| {
-									minimumBalance: string;
-									targetBalance: string;
+									deferredInvoiceTargetBalance: string;
 									maximumMonthlySpend: string | null;
 							  }
 							| undefined;
 						previous?:
 							| {
+									maximumMonthlySpend: string | null;
 									minimumBalance: string;
 									targetBalance: string;
-									maximumMonthlySpend: string | null;
 							  }
 							| undefined;
-						commitment?:
+						settings?:
 							| {
 									maximumMonthlySpend: string | null;
-									deferredInvoiceTargetBalance: string;
+									minimumBalance: string;
+									targetBalance: string;
 							  }
 							| undefined;
 				  }
 				| {
-						scopeType: UserEventPayloadScopeTypeEnumKey;
 						/**
 						 * @description Spend budget on an AI Gateway API key, as surfaced in activity messages. Defined locally (rather than imported from `@api/pubsub-types`) because `@api/pubsub-types` already depends on `@api/events`; importing it here would create a circular dependency. Must stay structurally aligned with `APIKeyBudget` in `@api/pubsub-types/event-payloads/api-keys`.
 						 * @type object | undefined
 						 */
 						budget?:
 							| ({
+									alertThresholds?: number[] | undefined;
 									/**
 									 * @description Spend cap, in dollars.
 									 * @type number
 									 */
 									limitAmount: number;
 									refreshPeriod: UserEventPayloadBudgetRefreshPeriodEnumKey;
-									alertThresholds?: number[] | undefined;
 							  } | null)
 							| undefined;
 						change: UserEventPayloadChangeEnumKey;
+						scopeType: UserEventPayloadScopeTypeEnumKey;
 				  }
 				| {
-						scopeType: UserEventPayloadScopeTypeEnumKey;
+						/**
+						 * @description Spend budget on an AI Gateway API key, as surfaced in activity messages. Defined locally (rather than imported from `@api/pubsub-types`) because `@api/pubsub-types` already depends on `@api/events`; importing it here would create a circular dependency. Must stay structurally aligned with `APIKeyBudget` in `@api/pubsub-types/event-payloads/api-keys`.
+						 * @type object | undefined
+						 */
+						budget?:
+							| ({
+									alertThresholds?: number[] | undefined;
+									/**
+									 * @description Spend cap, in dollars.
+									 * @type number
+									 */
+									limitAmount: number;
+									refreshPeriod: UserEventPayloadBudgetRefreshPeriodEnumKey;
+							  } | null)
+							| undefined;
+						change: UserEventPayloadChangeEnumKey;
 						/**
 						 * @description Associates the event with a project for filtering; not rendered.
 						 * @type string | undefined
 						 */
 						projectId?: string | undefined;
 						projectName?: string | undefined;
+						scopeType: UserEventPayloadScopeTypeEnumKey;
 						/**
 						 * @description Associates the event with a member for filtering; not rendered.
 						 * @type string | undefined
 						 */
 						userId?: string | undefined;
 						userName?: string | undefined;
-						/**
-						 * @description Spend budget on an AI Gateway API key, as surfaced in activity messages. Defined locally (rather than imported from `@api/pubsub-types`) because `@api/pubsub-types` already depends on `@api/events`; importing it here would create a circular dependency. Must stay structurally aligned with `APIKeyBudget` in `@api/pubsub-types/event-payloads/api-keys`.
-						 * @type object | undefined
-						 */
-						budget?:
-							| ({
-									/**
-									 * @description Spend cap, in dollars.
-									 * @type number
-									 */
-									limitAmount: number;
-									refreshPeriod: UserEventPayloadBudgetRefreshPeriodEnumKey;
-									alertThresholds?: number[] | undefined;
-							  } | null)
-							| undefined;
-						change: UserEventPayloadChangeEnumKey;
 				  }
 				| {
 						credential: {
@@ -7829,14 +7703,14 @@ export type UserEvent = {
 						};
 				  }
 				| {
-						credential: {
-							id: string;
-							name: string;
-							providerSlug: string;
-						};
 						added: string[];
-						removed: string[];
 						changed: string[];
+						credential: {
+							id: string;
+							name: string;
+							providerSlug: string;
+						};
+						removed: string[];
 				  }
 				| {
 						enabled: false | true;
@@ -7851,8 +7725,8 @@ export type UserEvent = {
 				  }
 				| {
 						privateModel: {
-							slug: string;
 							providerSlug: string;
+							slug: string;
 						};
 				  }
 				| {
@@ -7866,53 +7740,53 @@ export type UserEvent = {
 						};
 				  }
 				| {
+						moderationPolicyCount: number;
 						piiRedaction: {
 							from: false | true;
 							to: false | true;
 						};
-						moderationPolicyCount: number;
 						policiesAdded: string[];
-						policiesRemoved: string[];
 						policiesModified: string[];
+						policiesRemoved: string[];
 				  }
 				| {
 						regions: string[];
 				  }
 				| {
 						retention: {
-							defaultMode: UserEventPayloadRetentionDefaultModeEnumKey;
-							defaultDays?: number | undefined;
-							ceilingMode: UserEventPayloadRetentionCeilingModeEnumKey;
 							ceilingDays?: number | undefined;
+							ceilingMode: UserEventPayloadRetentionCeilingModeEnumKey;
+							defaultDays?: number | undefined;
+							defaultMode: UserEventPayloadRetentionDefaultModeEnumKey;
 						};
 				  }
 				| {
 						rule: {
 							id: string;
-							type: string;
 							model?: string | undefined;
 							rewriteModel?: string | undefined;
+							type: string;
 						};
 				  }
 				| {
 						rule: {
 							id: string;
-							type: string;
 							model?: string | undefined;
+							type: string;
 						};
 				  }
 				| {
-						rule: {
-							id: string;
-							type: string;
-							model?: string | undefined;
-						};
 						enabled?: (false | true) | undefined;
+						rule: {
+							id: string;
+							model?: string | undefined;
+							type: string;
+						};
 				  }
 				| {
 						virtualModelConfig: {
-							id: string;
 							displayName?: string | undefined;
+							id: string;
 							modelSlug?: string | undefined;
 						};
 				  }
@@ -7921,69 +7795,64 @@ export type UserEvent = {
 							id: string;
 							name: string;
 						};
-						teamRoles?: string[] | undefined;
-						teamPermissions?: string[] | undefined;
 						entitlements?: string[] | undefined;
+						teamPermissions?: string[] | undefined;
+						teamRoles?: string[] | undefined;
 				  }
 				| {
+						accessGroup: {
+							id: string;
+							name: string;
+						};
 						author: string;
-						accessGroup: {
-							id: string;
-							name: string;
-						};
 				  }
 				| {
 						accessGroup: {
 							id: string;
 							name: string;
 						};
+						nextRole?: (UserEventPayloadNextRoleEnumKey | null) | undefined;
+						previousRole?: UserEventPayloadPreviousRoleEnumKey | undefined;
 						project: {
 							id: string;
 							name?: string | undefined;
 						};
-						nextRole?: (UserEventPayloadNextRoleEnumKey | null) | undefined;
-						previousRole?: UserEventPayloadPreviousRoleEnumKey | undefined;
 				  }
 				| {
 						accessGroup: {
 							id: string;
 							name: string;
 						};
-						name?: string | undefined;
-						previousName?: string | undefined;
-						teamRoles?: string[] | undefined;
-						previousTeamRoles?: string[] | undefined;
-						teamPermissions?: string[] | undefined;
-						previousTeamPermissions?: string[] | undefined;
 						entitlementsAdded?: string[] | undefined;
 						entitlementsRemoved?: string[] | undefined;
+						name?: string | undefined;
+						previousName?: string | undefined;
+						previousTeamPermissions?: string[] | undefined;
+						previousTeamRoles?: string[] | undefined;
+						teamPermissions?: string[] | undefined;
+						teamRoles?: string[] | undefined;
 				  }
 				| {
 						accessGroup: {
 							id: string;
 							name?: string | undefined;
 						};
+						directoryType?: string | undefined;
 						user: {
 							id: string;
 							username?: string | undefined;
 						};
-						directoryType?: string | undefined;
 				  }
 				| {
-						price?: number | undefined;
 						currency?: string | undefined;
+						price?: number | undefined;
 				  }
 				| {
 						alias?: string | undefined;
+						aliasId?: string | undefined;
+						aliasUpdatedAt?: number | undefined;
 						deployment?:
 							| ({
-									id: string;
-									name: string;
-									url: string;
-									meta: {
-										[key: string]: string;
-									};
-									readyState?: string | undefined;
 									/**
 									 * @description A narrowed subset of the deployment\'s `readyStateReasonInternal` — only values in the public allowlist are permitted here. Callers should run their raw reason through `toAllowListedReadyStateReasonInternal` from `@api/events` before assigning. This keeps abuse / moderation / admin reasons out of the public activity log.
 									 * @type string | undefined
@@ -7991,31 +7860,28 @@ export type UserEvent = {
 									allowListedReadyStateReasonInternal?:
 										| UserEventPayloadDeploymentAllowListedReadyStateReasonInternalEnumKey
 										| undefined;
+									id: string;
+									meta: {
+										[key: string]: string;
+									};
+									name: string;
+									readyState?: string | undefined;
+									url: string;
 							  } | null)
 							| undefined;
-						ruleCount?: number | undefined;
-						deploymentUrl?: string | undefined;
-						aliasId?: string | undefined;
 						deploymentId?: (string | null) | undefined;
+						deploymentUrl?: string | undefined;
 						oldDeploymentId?: (string | null) | undefined;
 						redirect?: string | undefined;
 						redirectStatusCode?: (number | null) | undefined;
-						target?: (string | null) | undefined;
+						ruleCount?: number | undefined;
 						system?: (false | true) | undefined;
-						aliasUpdatedAt?: number | undefined;
+						target?: (string | null) | undefined;
 				  }
 				| {
-						projectId: string;
 						aliasCount: number;
 						deployment?:
 							| ({
-									id: string;
-									name: string;
-									url: string;
-									meta: {
-										[key: string]: string;
-									};
-									readyState?: string | undefined;
 									/**
 									 * @description A narrowed subset of the deployment\'s `readyStateReasonInternal` — only values in the public allowlist are permitted here. Callers should run their raw reason through `toAllowListedReadyStateReasonInternal` from `@api/events` before assigning. This keeps abuse / moderation / admin reasons out of the public activity log.
 									 * @type string | undefined
@@ -8023,28 +7889,36 @@ export type UserEvent = {
 									allowListedReadyStateReasonInternal?:
 										| UserEventPayloadDeploymentAllowListedReadyStateReasonInternalEnumKey
 										| undefined;
+									id: string;
+									meta: {
+										[key: string]: string;
+									};
+									name: string;
+									readyState?: string | undefined;
+									url: string;
 							  } | null)
 							| undefined;
+						projectId: string;
 				  }
 				| {
-						name?: string | undefined;
 						alias: string;
-						oldTeam?:
-							| {
-									name: string;
-							  }
-							| undefined;
+						name?: string | undefined;
 						newTeam?:
 							| {
 									name: string;
 							  }
 							| undefined;
+						oldTeam?:
+							| {
+									name: string;
+							  }
+							| undefined;
 				  }
 				| {
-						name?: string | undefined;
 						alias: string;
 						aliasId: string;
 						deploymentId: string | null;
+						name?: string | undefined;
 				  }
 				| {
 						alias?: string | undefined;
@@ -8059,16 +7933,16 @@ export type UserEvent = {
 						email?: string | undefined;
 				  }
 				| {
-						aliasId?: string | undefined;
 						alias?: string | undefined;
+						aliasId?: string | undefined;
 						projectId?: string | undefined;
 						projectName?: string | undefined;
 				  }
 				| {
+						action: UserEventPayloadActionEnumKey;
+						alias: string;
 						projectId?: string | undefined;
 						projectName: string;
-						alias: string;
-						action: UserEventPayloadActionEnumKey;
 				  }
 				| {
 						alias: string;
@@ -8086,47 +7960,25 @@ export type UserEvent = {
 						username?: string | undefined;
 				  }
 				| {
-						appName: string;
 						appId?: string | undefined;
-						scopes: UserEventPayloadScopesEnumKey[];
+						appName: string;
 						permissions?: UserEventPayloadPermissionsEnumKey[] | undefined;
+						scopes: UserEventPayloadScopesEnumKey[];
 				  }
 				| {
-						appName: string;
 						appId?: string | undefined;
+						appName: string;
 				  }
 				| {
-						appName: string;
 						appId?: string | undefined;
-						nextScopes: UserEventPayloadNextScopesEnumKey[];
+						appName: string;
 						nextPermissions?: UserEventPayloadNextPermissionsEnumKey[] | undefined;
+						nextScopes: UserEventPayloadNextScopesEnumKey[];
 				  }
 				| {
-						appName: string;
-						appId?: string | undefined;
-						installationId?: string | undefined;
-						before?:
-							| {
-									resources?:
-										| {
-												/**
-												 * @description Specific project IDs or all projects on the team (`[\'*\']`).
-												 * @type object
-												 */
-												projectIds: {
-													type: "list";
-													required: true;
-													items: {
-														type: "string";
-													};
-												};
-										  }
-										| undefined;
-									permissions?: UserEventPayloadBeforePermissionsEnumKey[] | undefined;
-							  }
-							| undefined;
 						after?:
 							| {
+									permissions?: UserEventPayloadAfterPermissionsEnumKey[] | undefined;
 									resources?:
 										| {
 												/**
@@ -8134,21 +7986,44 @@ export type UserEvent = {
 												 * @type object
 												 */
 												projectIds: {
-													type: "list";
-													required: true;
 													items: {
 														type: "string";
 													};
+													required: true;
+													type: "list";
 												};
 										  }
 										| undefined;
-									permissions?: UserEventPayloadAfterPermissionsEnumKey[] | undefined;
 							  }
 							| undefined;
+						appId?: string | undefined;
+						appName: string;
+						before?:
+							| {
+									permissions?: UserEventPayloadBeforePermissionsEnumKey[] | undefined;
+									resources?:
+										| {
+												/**
+												 * @description Specific project IDs or all projects on the team (`[\'*\']`).
+												 * @type object
+												 */
+												projectIds: {
+													items: {
+														type: "string";
+													};
+													required: true;
+													type: "list";
+												};
+										  }
+										| undefined;
+							  }
+							| undefined;
+						installationId?: string | undefined;
 				  }
 				| {
-						appName: string;
 						appId?: string | undefined;
+						appName: string;
+						permissions?: UserEventPayloadPermissionsEnumKey[] | undefined;
 						resources?:
 							| {
 									/**
@@ -8156,32 +8031,21 @@ export type UserEvent = {
 									 * @type object
 									 */
 									projectIds: {
-										type: "list";
-										required: true;
 										items: {
 											type: "string";
 										};
+										required: true;
+										type: "list";
 									};
 							  }
 							| undefined;
-						permissions?: UserEventPayloadPermissionsEnumKey[] | undefined;
 				  }
 				| {
-						appName: string;
 						appId?: string | undefined;
+						appName: string;
 						secretLastFourChars?: string | undefined;
 				  }
 				| {
-						/**
-						 * @description The App\'s name at the moment this even was published (it may have changed since then).
-						 * @type string
-						 */
-						appName: string;
-						/**
-						 * @description The App\'s ID. Note that not all historical events have this field.
-						 * @type string | undefined
-						 */
-						appId?: string | undefined;
 						/**
 						 * @description Note that not all historical events have this field.
 						 * @type object | undefined
@@ -8201,42 +8065,52 @@ export type UserEvent = {
 							  }
 							| undefined;
 						/**
+						 * @description The App\'s ID. Note that not all historical events have this field.
+						 * @type string | undefined
+						 */
+						appId?: string | undefined;
+						/**
+						 * @description The App\'s name at the moment this even was published (it may have changed since then).
+						 * @type string
+						 */
+						appName: string;
+						/**
 						 * @description UNIX timestamp in seconds. Tokens issued before this timestamp will be revoked. Note that not all historical events have this field.
 						 * @type number | undefined
 						 */
 						issuedBefore?: number | undefined;
 				  }
 				| {
-						projectId: string;
-						prevAttackModeEnabled?: (false | true) | undefined;
-						prevAttackModeActiveUntil?: (number | null) | undefined;
-						attackModeEnabled: false | true;
 						attackModeActiveUntil?: (number | null) | undefined;
+						attackModeEnabled: false | true;
+						prevAttackModeActiveUntil?: (number | null) | undefined;
+						prevAttackModeEnabled?: (false | true) | undefined;
+						projectId: string;
 				  }
 				| {
+						autoExposeSystemEnvs: false | true;
 						projectId?: string | undefined;
 						projectName: string;
-						autoExposeSystemEnvs: false | true;
 				  }
 				| {
 						avatar?: string | undefined;
 				  }
 				| {
-						invoiceId: string;
 						amount: number;
-						refundReason: string;
+						invoiceId: string;
 						lineItemCount: number;
+						refundReason: string;
 				  }
 				| {
+						amount: number;
 						invoiceId: string;
 						newInvoiceId: string;
 						settlementMethod: UserEventPayloadSettlementMethodEnumKey;
-						amount: number;
 				  }
 				| {
-						paymentMethodId: string;
 						brand?: string | undefined;
 						last4?: string | undefined;
+						paymentMethodId: string;
 				  }
 				| {
 						changedFields: UserEventPayloadChangedFieldsEnumKey[];
@@ -8272,12 +8146,12 @@ export type UserEvent = {
 						productAliases: string[];
 				  }
 				| {
+						bulkRedirectsLimit: number;
+						prevBulkRedirectsLimit: number;
 						project: {
 							id: string;
 							name: string;
 						};
-						bulkRedirectsLimit: number;
-						prevBulkRedirectsLimit: number;
 				  }
 				| {
 						project: {
@@ -8293,9 +8167,9 @@ export type UserEvent = {
 						id?: string | undefined;
 				  }
 				| {
-						id: string;
 						cns: string[];
 						custom: false | true;
+						id: string;
 				  }
 				| {
 						cn?: string | undefined;
@@ -8304,25 +8178,25 @@ export type UserEvent = {
 				  }
 				| {
 						id: string;
-						oldTeam?:
-							| {
-									name: string;
-							  }
-							| undefined;
 						newTeam?:
 							| {
 									name: string;
 							  }
 							| undefined;
+						oldTeam?:
+							| {
+									name: string;
+							  }
+							| undefined;
 				  }
 				| {
-						src: string;
 						dst: string;
+						src: string;
 				  }
 				| {
-						id: string;
 						cn?: string | undefined;
 						cns?: string[] | undefined;
+						id: string;
 				  }
 				| {
 						cn?: string | undefined;
@@ -8331,28 +8205,28 @@ export type UserEvent = {
 				| {
 						gitOwnerName: string;
 						gitRepositoryName: string;
-						previous: {
-							enabled: false | true;
-							autoAddReviewers: false | true;
-						};
 						next: {
-							enabled: false | true;
 							autoAddReviewers: false | true;
+							enabled: false | true;
+						};
+						previous: {
+							autoAddReviewers: false | true;
+							enabled: false | true;
 						};
 				  }
 				| {
-						slug: string;
 						documentId: string;
-						title: string;
 						fingerprint: string;
+						slug: string;
+						title: string;
 				  }
 				| {
 						count: number;
 						documents: {
-							slug: string;
 							documentId: string;
-							title: string;
 							fingerprint: string;
+							slug: string;
+							title: string;
 						}[];
 				  }
 				| {
@@ -8362,10 +8236,7 @@ export type UserEvent = {
 						};
 				  }
 				| {
-						team: {
-							name: string;
-							id: string;
-						};
+						buildsEnabled?: (false | true) | undefined;
 						configuration: {
 							id: string;
 							name?: string | undefined;
@@ -8374,29 +8245,28 @@ export type UserEvent = {
 							id: string;
 							name?: string | undefined;
 						};
-						buildsEnabled?: (false | true) | undefined;
+						team: {
+							id: string;
+							name: string;
+						};
 				  }
 				| {
-						team: {
-							name: string;
-							id: string;
-						};
+						buildsEnabled?: (false | true) | undefined;
 						configuration: {
 							id: string;
 							name?: string | undefined;
 						};
-						project: {
-							id: string;
-							name?: string | undefined;
-						};
-						buildsEnabled?: (false | true) | undefined;
 						passive?: (false | true) | undefined;
+						project: {
+							id: string;
+							name?: string | undefined;
+						};
+						team: {
+							id: string;
+							name: string;
+						};
 				  }
 				| {
-						team: {
-							name: string;
-							id: string;
-						};
 						configuration: {
 							id: string;
 							name?: string | undefined;
@@ -8405,17 +8275,21 @@ export type UserEvent = {
 							id: string;
 							name?: string | undefined;
 						};
+						team: {
+							id: string;
+							name: string;
+						};
 				  }
 				| {
-						team: {
-							name: string;
-							id: string;
-						};
 						configuration: {
 							id: string;
 							name?: string | undefined;
 						};
 						newName: string;
+						team: {
+							id: string;
+							name: string;
+						};
 				  }
 				| {
 						githubLogin: string;
@@ -8429,8 +8303,8 @@ export type UserEvent = {
 						host: string;
 				  }
 				| {
-						gitlabLogin: string;
 						gitlabEmail: string;
+						gitlabLogin: string;
 						gitlabName?: string | undefined;
 						zeitAccount?: string | undefined;
 						zeitAccountType?: string | undefined;
@@ -8445,32 +8319,32 @@ export type UserEvent = {
 						bitbucketName?: string | undefined;
 				  }
 				| {
-						bitbucketLogin: string;
 						bitbucketAccountId: string;
+						bitbucketLogin: string;
 				  }
 				| {
+						acceptedTokenCount?: number | undefined;
 						clientId?: string | undefined;
-						clientUid?: string | undefined;
 						clientName?: string | undefined;
+						clientUid?: string | undefined;
+						environments?: string[] | undefined;
+						fields?: string[] | undefined;
+						importedTokenCount?: number | undefined;
+						installationId?: string | undefined;
 						projectId?: string | undefined;
 						projectName?: string | undefined;
-						installationId?: string | undefined;
 						subjectType?: UserEventPayloadSubjectTypeEnumKey | undefined;
-						fields?: string[] | undefined;
-						environments?: string[] | undefined;
-						triggerDestinationCount?: number | undefined;
 						tokenCount?: number | undefined;
-						acceptedTokenCount?: number | undefined;
-						importedTokenCount?: number | undefined;
 						tokensDeleted?: number | undefined;
+						triggerDestinationCount?: number | undefined;
 				  }
 				| {
+						prevPurchasedAmount: number;
 						project: {
 							id: string;
 							name: string;
 						};
 						purchasedAmount: number;
-						prevPurchasedAmount: number;
 				  }
 				| {
 						metricName: string;
@@ -8488,15 +8362,12 @@ export type UserEvent = {
 						suffix: string;
 				  }
 				| {
+						hookName: string;
 						projectId: string;
 						projectName: string;
-						hookName: string;
 						ref: string;
 				  }
 				| {
-						project: {
-							name: string;
-						};
 						job: {
 							deployHook: {
 								createdAt: number;
@@ -8506,26 +8377,20 @@ export type UserEvent = {
 							};
 							state: string;
 						};
+						project: {
+							name: string;
+						};
 				  }
 				| {
-						projectId: string;
-						projectName: string;
 						checkId: string;
 						checkName: string;
+						projectId: string;
+						projectName: string;
 				  }
 				| {
-						name?: string | undefined;
 						alias?: string[] | undefined;
-						target?: (string | null) | undefined;
 						deployment?:
 							| ({
-									id: string;
-									name: string;
-									url: string;
-									meta: {
-										[key: string]: string;
-									};
-									readyState?: string | undefined;
 									/**
 									 * @description A narrowed subset of the deployment\'s `readyStateReasonInternal` — only values in the public allowlist are permitted here. Callers should run their raw reason through `toAllowListedReadyStateReasonInternal` from `@api/events` before assigning. This keeps abuse / moderation / admin reasons out of the public activity log.
 									 * @type string | undefined
@@ -8533,74 +8398,94 @@ export type UserEvent = {
 									allowListedReadyStateReasonInternal?:
 										| UserEventPayloadDeploymentAllowListedReadyStateReasonInternalEnumKey
 										| undefined;
+									id: string;
+									meta: {
+										[key: string]: string;
+									};
+									name: string;
+									readyState?: string | undefined;
+									url: string;
 							  } | null)
 							| undefined;
-						url: string;
+						deploymentId?: string | undefined;
 						forced?: (false | true) | undefined;
 						gitCredentialSource?: "external-token" | undefined;
-						deploymentId?: string | undefined;
+						name?: string | undefined;
 						plan?: string | undefined;
 						project?: string | undefined;
 						projectId?: string | undefined;
 						regions?: string[] | undefined;
+						target?: (string | null) | undefined;
 						type?: string | undefined;
+						url: string;
 				  }
 				| {
 						job:
 							| {
-									type: "bitbucket-push";
 									authorized?: (false | true) | undefined;
 									authorizedBy?: string | undefined;
 									/**
-									 * @description Since December 2022 All project ids associated to this job. Think monorepo. This job will be for one of these project.
-									 * @type array | undefined
+									 * @description Since 6 Nov 2025 The verification status of the commit. - \'verified\' if the commit is verified - \'unverified\' if the commit is not verified - \'unknown\' if the commit verification status is unknown or not supported
+									 * @type string | undefined
 									 */
-									jobProjectIds?: string[] | undefined;
-									/**
-									 * @description Since December 2022 Pairs of projects and owner ids to build for this build request.
-									 * @type array | undefined
-									 */
-									jobPairs?: (string | string)[][] | undefined;
-									/**
-									 * @description Since June 2024 Pairs of projects and owner ids to immediately finish (without building) because we want to create them in a skipped state.
-									 * @type array | undefined
-									 */
-									skippedJobPairs?: (string | string)[][] | undefined;
-									/**
-									 * @description Since February 2022 All the hashtag-vercel tags found in the commit message triggering the deploy. For example, #VERCEL_DO_SOMETHING
-									 * @type array | undefined
-									 */
-									gitHashtagVercel?: string[] | undefined;
+									commitVerification?: UserEventPayloadJobCommitVerificationEnumKey | undefined;
 									/**
 									 * @description Since April 2023 Cached count of how many projects are connected to the repo. Saves a few Cosmos queries down the road in the main flow.
 									 * @type number | undefined
 									 */
 									connectedProjectCount?: number | undefined;
-									/**
-									 * @description Since April 2023 If set then it is a cached result of asking the remote for the PR ID the commit that triggered this Job. Or zero if it was not a PR. This prevents a few git round trips by the git updater.
-									 * @type number | undefined
-									 */
-									prIdOrZero?: number | undefined;
+									createdAt?: number | undefined;
+									customEnvId?: (string | null) | undefined;
+									deployHook?:
+										| {
+												createdAt: number;
+												id: string;
+												name: string;
+												ref: string;
+										  }
+										| undefined;
+									deploymentId?: string | undefined;
+									eventful?: (false | true) | undefined;
+									forceNew?: (false | true) | undefined;
 									/**
 									 * @description Since June 2023 Determines if comments should be posted to the git host. Replaces `github.silent` in the vercel.json.
 									 * @type object | undefined
 									 */
 									gitComments?:
 										| {
-												onPullRequest: false | true;
 												onCommit: false | true;
+												onPullRequest: false | true;
 										  }
 										| undefined;
+									/**
+									 * @description Since February 2022 All the hashtag-vercel tags found in the commit message triggering the deploy. For example, #VERCEL_DO_SOMETHING
+									 * @type array | undefined
+									 */
+									gitHashtagVercel?: string[] | undefined;
+									headInfo: {
+										owner: string;
+										ref: string;
+										repoUuid: string;
+										sha: string;
+										slug: string;
+									};
 									/**
 									 * @description Since 28 Feb 2024 If set to true, identifies that the git job was created for a manual git deployment
 									 * @type boolean | undefined
 									 */
 									isManualGitDeploy?: (false | true) | undefined;
 									/**
-									 * @description Since 6 Nov 2025 The verification status of the commit. - \'verified\' if the commit is verified - \'unverified\' if the commit is not verified - \'unknown\' if the commit verification status is unknown or not supported
-									 * @type string | undefined
+									 * @description Since December 2022 Pairs of projects and owner ids to build for this build request.
+									 * @type array | undefined
 									 */
-									commitVerification?: UserEventPayloadJobCommitVerificationEnumKey | undefined;
+									jobPairs?: (string | string)[][] | undefined;
+									/**
+									 * @description Since December 2022 All project ids associated to this job. Think monorepo. This job will be for one of these project.
+									 * @type array | undefined
+									 */
+									jobProjectIds?: string[] | undefined;
+									linkedProjectId?: string | undefined;
+									name: string;
 									/**
 									 * @description Since March 2026 Records a successful NSNB auto-add result so later GitHub PR comments can deterministically explain why this SHA was allowed to deploy.
 									 * @type object | undefined
@@ -8611,46 +8496,42 @@ export type UserEvent = {
 												gitUserLogin: string;
 										  }
 										| undefined;
-									createdAt?: number | undefined;
-									deploymentId?: string | undefined;
-									deployHook?:
-										| {
-												createdAt: number;
-												id: string;
-												name: string;
-												ref: string;
-										  }
-										| undefined;
-									eventful?: (false | true) | undefined;
-									forceNew?: (false | true) | undefined;
-									headInfo: {
-										owner: string;
-										ref: string;
-										repoUuid: string;
-										sha: string;
-										slug: string;
-									};
-									linkedProjectId?: string | undefined;
-									name: string;
 									owner: string;
 									prId?: number | undefined;
+									/**
+									 * @description Since April 2023 If set then it is a cached result of asking the remote for the PR ID the commit that triggered this Job. Or zero if it was not a PR. This prevents a few git round trips by the git updater.
+									 * @type number | undefined
+									 */
+									prIdOrZero?: number | undefined;
 									projectId?: string | undefined;
-									customEnvId?: (string | null) | undefined;
+									provider: "bitbucket";
 									ref: string;
 									repoPushedAt?: (number | null) | undefined;
 									repoUuid: string;
 									sha: string;
 									silent?: (false | true) | undefined;
+									/**
+									 * @description Since June 2024 Pairs of projects and owner ids to immediately finish (without building) because we want to create them in a skipped state.
+									 * @type array | undefined
+									 */
+									skippedJobPairs?: (string | string)[][] | undefined;
 									slug: string;
 									target?: (string | null) | undefined;
+									type: "bitbucket-push";
 									url?: string | undefined;
 									withCache?: (false | true) | undefined;
 									workspaceUuid: string;
-									provider: "bitbucket";
 							  }
 							| {
 									createdAt?: number | undefined;
+									customEnvId?: (string | null) | undefined;
 									eventful?: (false | true) | undefined;
+									gitComments?:
+										| {
+												onCommit: false | true;
+												onPullRequest: false | true;
+										  }
+										| undefined;
 									headInfo: {
 										owner: string;
 										ref: string;
@@ -8663,86 +8544,18 @@ export type UserEvent = {
 									owner: string;
 									prId: number;
 									projectId?: string | undefined;
-									customEnvId?: (string | null) | undefined;
+									provider: "bitbucket";
 									ref: string;
 									repoUuid: string;
 									sha: string;
 									slug: string;
 									type: "bitbucket-now-comment";
 									workspaceUuid: string;
-									gitComments?:
-										| {
-												onPullRequest: false | true;
-												onCommit: false | true;
-										  }
-										| undefined;
-									provider: "bitbucket";
 							  }
 							| {
-									prId: number;
-									type: "pr";
 									authorized?: (false | true) | undefined;
 									authorizedBy?: string | undefined;
-									/**
-									 * @description Since December 2022 All project ids associated to this job. Think monorepo. This job will be for one of these project.
-									 * @type array | undefined
-									 */
-									jobProjectIds?: string[] | undefined;
-									/**
-									 * @description Since December 2022 Pairs of projects and owner ids to build for this build request.
-									 * @type array | undefined
-									 */
-									jobPairs?: (string | string)[][] | undefined;
-									/**
-									 * @description Since June 2024 Pairs of projects and owner ids to immediately finish (without building) because we want to create them in a skipped state.
-									 * @type array | undefined
-									 */
-									skippedJobPairs?: (string | string)[][] | undefined;
-									/**
-									 * @description Since February 2022 All the hashtag-vercel tags found in the commit message triggering the deploy. For example, #VERCEL_DO_SOMETHING
-									 * @type array | undefined
-									 */
-									gitHashtagVercel?: string[] | undefined;
-									/**
-									 * @description Since April 2023 Cached count of how many projects are connected to the repo. Saves a few Cosmos queries down the road in the main flow.
-									 * @type number | undefined
-									 */
-									connectedProjectCount?: number | undefined;
-									/**
-									 * @description Since April 2023 If set then it is a cached result of asking the remote for the PR ID the commit that triggered this Job. Or zero if it was not a PR. This prevents a few git round trips by the git updater.
-									 * @type number | undefined
-									 */
-									prIdOrZero?: number | undefined;
-									/**
-									 * @description Since June 2023 Determines if comments should be posted to the git host. Replaces `github.silent` in the vercel.json.
-									 * @type object | undefined
-									 */
-									gitComments?:
-										| {
-												onPullRequest: false | true;
-												onCommit: false | true;
-										  }
-										| undefined;
-									/**
-									 * @description Since 28 Feb 2024 If set to true, identifies that the git job was created for a manual git deployment
-									 * @type boolean | undefined
-									 */
-									isManualGitDeploy?: (false | true) | undefined;
-									/**
-									 * @description Since 6 Nov 2025 The verification status of the commit. - \'verified\' if the commit is verified - \'unverified\' if the commit is not verified - \'unknown\' if the commit verification status is unknown or not supported
-									 * @type string | undefined
-									 */
-									commitVerification?: UserEventPayloadJobCommitVerificationEnumKey | undefined;
-									/**
-									 * @description Since March 2026 Records a successful NSNB auto-add result so later GitHub PR comments can deterministically explain why this SHA was allowed to deploy.
-									 * @type object | undefined
-									 */
-									nsnbSideEffect?:
-										| {
-												action: UserEventPayloadJobNsnbSideEffectActionEnumKey;
-												gitUserLogin: string;
-										  }
-										| undefined;
+									beforeSha?: string | undefined;
 									/**
 									 * @description Remote account id of the committer details (github id etc, not vercel). Note that the committer name/email are user input verbatim and not verified. Github does appear to resolve the given email to the username so we can trust that. If the username matches that of the sender, which is verified info, then we can use the account id and account type. See api-incoming, where we determine and set this property Note that even with that, the account may still have been spoofed.
 									 * @type number | undefined
@@ -8753,9 +8566,20 @@ export type UserEvent = {
 									 * @type string | undefined
 									 */
 									committerGitUserType?: string | undefined;
+									/**
+									 * @description Since 6 Nov 2025 The verification status of the commit. - \'verified\' if the commit is verified - \'unverified\' if the commit is not verified - \'unknown\' if the commit verification status is unknown or not supported
+									 * @type string | undefined
+									 */
+									commitVerification?: UserEventPayloadJobCommitVerificationEnumKey | undefined;
+									/**
+									 * @description Since April 2023 Cached count of how many projects are connected to the repo. Saves a few Cosmos queries down the road in the main flow.
+									 * @type number | undefined
+									 */
+									connectedProjectCount?: number | undefined;
 									createdAt?: number | undefined;
-									forceNew?: (false | true) | undefined;
-									deploymentId?: string | undefined;
+									customEnvId?: (string | null) | undefined;
+									customHost?: string | undefined;
+									defaultBranch?: string | undefined;
 									deployHook?:
 										| {
 												createdAt: number;
@@ -8764,9 +8588,24 @@ export type UserEvent = {
 												ref: string;
 										  }
 										| undefined;
-									beforeSha?: string | undefined;
-									defaultBranch?: string | undefined;
+									deploymentId?: string | undefined;
 									eventful?: (false | true) | undefined;
+									forceNew?: (false | true) | undefined;
+									/**
+									 * @description Since June 2023 Determines if comments should be posted to the git host. Replaces `github.silent` in the vercel.json.
+									 * @type object | undefined
+									 */
+									gitComments?:
+										| {
+												onCommit: false | true;
+												onPullRequest: false | true;
+										  }
+										| undefined;
+									/**
+									 * @description Since February 2022 All the hashtag-vercel tags found in the commit message triggering the deploy. For example, #VERCEL_DO_SOMETHING
+									 * @type array | undefined
+									 */
+									gitHashtagVercel?: string[] | undefined;
 									githubDeploymentId?: string | undefined;
 									/**
 									 * @description Information about the head commit/branch for a GitHub repository
@@ -8780,89 +8619,62 @@ export type UserEvent = {
 										sha: string;
 									};
 									installationId: number;
+									/**
+									 * @description Since 28 Feb 2024 If set to true, identifies that the git job was created for a manual git deployment
+									 * @type boolean | undefined
+									 */
+									isManualGitDeploy?: (false | true) | undefined;
 									isPrivate: false | true;
+									/**
+									 * @description Since December 2022 Pairs of projects and owner ids to build for this build request.
+									 * @type array | undefined
+									 */
+									jobPairs?: (string | string)[][] | undefined;
+									/**
+									 * @description Since December 2022 All project ids associated to this job. Think monorepo. This job will be for one of these project.
+									 * @type array | undefined
+									 */
+									jobProjectIds?: string[] | undefined;
 									linkedProjectId?: string | undefined;
+									/**
+									 * @description Since March 2026 Records a successful NSNB auto-add result so later GitHub PR comments can deterministically explain why this SHA was allowed to deploy.
+									 * @type object | undefined
+									 */
+									nsnbSideEffect?:
+										| {
+												action: UserEventPayloadJobNsnbSideEffectActionEnumKey;
+												gitUserLogin: string;
+										  }
+										| undefined;
 									org: string;
+									prId: number;
+									/**
+									 * @description Since April 2023 If set then it is a cached result of asking the remote for the PR ID the commit that triggered this Job. Or zero if it was not a PR. This prevents a few git round trips by the git updater.
+									 * @type number | undefined
+									 */
+									prIdOrZero?: number | undefined;
 									projectId?: string | undefined;
-									customEnvId?: (string | null) | undefined;
+									provider: UserEventPayloadJobProviderEnumKey;
 									repo: string;
 									repoId: number;
+									/**
+									 * @description Since June 2024 Pairs of projects and owner ids to immediately finish (without building) because we want to create them in a skipped state.
+									 * @type array | undefined
+									 */
+									skippedJobPairs?: (string | string)[][] | undefined;
 									target?: (string | null) | undefined;
+									type: "pr";
 									url?: string | undefined;
 									withCache?: (false | true) | undefined;
-									provider: UserEventPayloadJobProviderEnumKey;
-									customHost?: string | undefined;
 							  }
 							| {
-									repoPushedAt: number | null;
+									authorized?: (false | true) | undefined;
+									authorizedBy?: string | undefined;
+									beforeSha?: string | undefined;
 									commitInfo?:
 										| {
-												total: number;
 												earliestSha?: string | undefined;
-										  }
-										| undefined;
-									forced?: (false | true) | undefined;
-									type: "push";
-									authorized?: (false | true) | undefined;
-									authorizedBy?: string | undefined;
-									/**
-									 * @description Since December 2022 All project ids associated to this job. Think monorepo. This job will be for one of these project.
-									 * @type array | undefined
-									 */
-									jobProjectIds?: string[] | undefined;
-									/**
-									 * @description Since December 2022 Pairs of projects and owner ids to build for this build request.
-									 * @type array | undefined
-									 */
-									jobPairs?: (string | string)[][] | undefined;
-									/**
-									 * @description Since June 2024 Pairs of projects and owner ids to immediately finish (without building) because we want to create them in a skipped state.
-									 * @type array | undefined
-									 */
-									skippedJobPairs?: (string | string)[][] | undefined;
-									/**
-									 * @description Since February 2022 All the hashtag-vercel tags found in the commit message triggering the deploy. For example, #VERCEL_DO_SOMETHING
-									 * @type array | undefined
-									 */
-									gitHashtagVercel?: string[] | undefined;
-									/**
-									 * @description Since April 2023 Cached count of how many projects are connected to the repo. Saves a few Cosmos queries down the road in the main flow.
-									 * @type number | undefined
-									 */
-									connectedProjectCount?: number | undefined;
-									/**
-									 * @description Since April 2023 If set then it is a cached result of asking the remote for the PR ID the commit that triggered this Job. Or zero if it was not a PR. This prevents a few git round trips by the git updater.
-									 * @type number | undefined
-									 */
-									prIdOrZero?: number | undefined;
-									/**
-									 * @description Since June 2023 Determines if comments should be posted to the git host. Replaces `github.silent` in the vercel.json.
-									 * @type object | undefined
-									 */
-									gitComments?:
-										| {
-												onPullRequest: false | true;
-												onCommit: false | true;
-										  }
-										| undefined;
-									/**
-									 * @description Since 28 Feb 2024 If set to true, identifies that the git job was created for a manual git deployment
-									 * @type boolean | undefined
-									 */
-									isManualGitDeploy?: (false | true) | undefined;
-									/**
-									 * @description Since 6 Nov 2025 The verification status of the commit. - \'verified\' if the commit is verified - \'unverified\' if the commit is not verified - \'unknown\' if the commit verification status is unknown or not supported
-									 * @type string | undefined
-									 */
-									commitVerification?: UserEventPayloadJobCommitVerificationEnumKey | undefined;
-									/**
-									 * @description Since March 2026 Records a successful NSNB auto-add result so later GitHub PR comments can deterministically explain why this SHA was allowed to deploy.
-									 * @type object | undefined
-									 */
-									nsnbSideEffect?:
-										| {
-												action: UserEventPayloadJobNsnbSideEffectActionEnumKey;
-												gitUserLogin: string;
+												total: number;
 										  }
 										| undefined;
 									/**
@@ -8875,9 +8687,20 @@ export type UserEvent = {
 									 * @type string | undefined
 									 */
 									committerGitUserType?: string | undefined;
+									/**
+									 * @description Since 6 Nov 2025 The verification status of the commit. - \'verified\' if the commit is verified - \'unverified\' if the commit is not verified - \'unknown\' if the commit verification status is unknown or not supported
+									 * @type string | undefined
+									 */
+									commitVerification?: UserEventPayloadJobCommitVerificationEnumKey | undefined;
+									/**
+									 * @description Since April 2023 Cached count of how many projects are connected to the repo. Saves a few Cosmos queries down the road in the main flow.
+									 * @type number | undefined
+									 */
+									connectedProjectCount?: number | undefined;
 									createdAt?: number | undefined;
-									forceNew?: (false | true) | undefined;
-									deploymentId?: string | undefined;
+									customEnvId?: (string | null) | undefined;
+									customHost?: string | undefined;
+									defaultBranch?: string | undefined;
 									deployHook?:
 										| {
 												createdAt: number;
@@ -8886,9 +8709,25 @@ export type UserEvent = {
 												ref: string;
 										  }
 										| undefined;
-									beforeSha?: string | undefined;
-									defaultBranch?: string | undefined;
+									deploymentId?: string | undefined;
 									eventful?: (false | true) | undefined;
+									forced?: (false | true) | undefined;
+									forceNew?: (false | true) | undefined;
+									/**
+									 * @description Since June 2023 Determines if comments should be posted to the git host. Replaces `github.silent` in the vercel.json.
+									 * @type object | undefined
+									 */
+									gitComments?:
+										| {
+												onCommit: false | true;
+												onPullRequest: false | true;
+										  }
+										| undefined;
+									/**
+									 * @description Since February 2022 All the hashtag-vercel tags found in the commit message triggering the deploy. For example, #VERCEL_DO_SOMETHING
+									 * @type array | undefined
+									 */
+									gitHashtagVercel?: string[] | undefined;
 									githubDeploymentId?: string | undefined;
 									/**
 									 * @description Information about the head commit/branch for a GitHub repository
@@ -8902,23 +8741,67 @@ export type UserEvent = {
 										sha: string;
 									};
 									installationId: number;
+									/**
+									 * @description Since 28 Feb 2024 If set to true, identifies that the git job was created for a manual git deployment
+									 * @type boolean | undefined
+									 */
+									isManualGitDeploy?: (false | true) | undefined;
 									isPrivate: false | true;
+									/**
+									 * @description Since December 2022 Pairs of projects and owner ids to build for this build request.
+									 * @type array | undefined
+									 */
+									jobPairs?: (string | string)[][] | undefined;
+									/**
+									 * @description Since December 2022 All project ids associated to this job. Think monorepo. This job will be for one of these project.
+									 * @type array | undefined
+									 */
+									jobProjectIds?: string[] | undefined;
 									linkedProjectId?: string | undefined;
+									/**
+									 * @description Since March 2026 Records a successful NSNB auto-add result so later GitHub PR comments can deterministically explain why this SHA was allowed to deploy.
+									 * @type object | undefined
+									 */
+									nsnbSideEffect?:
+										| {
+												action: UserEventPayloadJobNsnbSideEffectActionEnumKey;
+												gitUserLogin: string;
+										  }
+										| undefined;
 									org: string;
 									prId: number | null;
+									/**
+									 * @description Since April 2023 If set then it is a cached result of asking the remote for the PR ID the commit that triggered this Job. Or zero if it was not a PR. This prevents a few git round trips by the git updater.
+									 * @type number | undefined
+									 */
+									prIdOrZero?: number | undefined;
 									projectId?: string | undefined;
-									customEnvId?: (string | null) | undefined;
+									provider: UserEventPayloadJobProviderEnumKey;
 									repo: string;
 									repoId: number;
+									repoPushedAt: number | null;
+									/**
+									 * @description Since June 2024 Pairs of projects and owner ids to immediately finish (without building) because we want to create them in a skipped state.
+									 * @type array | undefined
+									 */
+									skippedJobPairs?: (string | string)[][] | undefined;
 									target?: (string | null) | undefined;
+									type: "push";
 									url?: string | undefined;
 									withCache?: (false | true) | undefined;
-									provider: UserEventPayloadJobProviderEnumKey;
-									customHost?: string | undefined;
 							  }
 							| {
+									beforeSha?: string | undefined;
 									createdAt?: number | undefined;
+									customEnvId?: (unknown | null) | undefined;
+									customHost?: string | undefined;
 									eventful?: (false | true) | undefined;
+									gitComments?:
+										| {
+												onCommit: false | true;
+												onPullRequest: false | true;
+										  }
+										| undefined;
 									/**
 									 * @description Information about the head commit/branch for a GitHub repository
 									 * @type object
@@ -8930,101 +8813,42 @@ export type UserEvent = {
 										repoId: number;
 										sha: string;
 									};
-									beforeSha?: string | undefined;
 									installationId: number;
 									isPrivate: false | true;
 									linkedProjectId?: string | undefined;
 									org: string;
 									prId: number;
 									projectId: unknown | null;
-									customEnvId?: (unknown | null) | undefined;
+									provider: UserEventPayloadJobProviderEnumKey;
 									repo: string;
 									repoId: number;
 									type: "now-comment";
-									gitComments?:
-										| {
-												onPullRequest: false | true;
-												onCommit: false | true;
-										  }
-										| undefined;
-									provider: UserEventPayloadJobProviderEnumKey;
-									customHost?: string | undefined;
 							  }
 							| {
-									type: "gitlab-push";
 									authorized?: (false | true) | undefined;
 									authorizedBy?: string | undefined;
-									/**
-									 * @description Since December 2022 All project ids associated to this job. Think monorepo. This job will be for one of these project.
-									 * @type array | undefined
-									 */
-									jobProjectIds?: string[] | undefined;
-									/**
-									 * @description Since December 2022 Pairs of projects and owner ids to build for this build request.
-									 * @type array | undefined
-									 */
-									jobPairs?: (string | string)[][] | undefined;
-									/**
-									 * @description Since June 2024 Pairs of projects and owner ids to immediately finish (without building) because we want to create them in a skipped state.
-									 * @type array | undefined
-									 */
-									skippedJobPairs?: (string | string)[][] | undefined;
-									/**
-									 * @description Since February 2022 All the hashtag-vercel tags found in the commit message triggering the deploy. For example, #VERCEL_DO_SOMETHING
-									 * @type array | undefined
-									 */
-									gitHashtagVercel?: string[] | undefined;
-									/**
-									 * @description Since April 2023 Cached count of how many projects are connected to the repo. Saves a few Cosmos queries down the road in the main flow.
-									 * @type number | undefined
-									 */
-									connectedProjectCount?: number | undefined;
-									/**
-									 * @description Since April 2023 If set then it is a cached result of asking the remote for the PR ID the commit that triggered this Job. Or zero if it was not a PR. This prevents a few git round trips by the git updater.
-									 * @type number | undefined
-									 */
-									prIdOrZero?: number | undefined;
-									/**
-									 * @description Since June 2023 Determines if comments should be posted to the git host. Replaces `github.silent` in the vercel.json.
-									 * @type object | undefined
-									 */
-									gitComments?:
+									commit?:
 										| {
-												onPullRequest: false | true;
-												onCommit: false | true;
+												authorAvatar?: (string | null) | undefined;
+												authorEmail?: (string | null) | undefined;
+												authorId?: (number | null) | undefined;
+												authorLogin?: (string | null) | undefined;
+												authorName?: (string | null) | undefined;
+												id: string;
 										  }
 										| undefined;
-									/**
-									 * @description Since 28 Feb 2024 If set to true, identifies that the git job was created for a manual git deployment
-									 * @type boolean | undefined
-									 */
-									isManualGitDeploy?: (false | true) | undefined;
 									/**
 									 * @description Since 6 Nov 2025 The verification status of the commit. - \'verified\' if the commit is verified - \'unverified\' if the commit is not verified - \'unknown\' if the commit verification status is unknown or not supported
 									 * @type string | undefined
 									 */
 									commitVerification?: UserEventPayloadJobCommitVerificationEnumKey | undefined;
 									/**
-									 * @description Since March 2026 Records a successful NSNB auto-add result so later GitHub PR comments can deterministically explain why this SHA was allowed to deploy.
-									 * @type object | undefined
+									 * @description Since April 2023 Cached count of how many projects are connected to the repo. Saves a few Cosmos queries down the road in the main flow.
+									 * @type number | undefined
 									 */
-									nsnbSideEffect?:
-										| {
-												action: UserEventPayloadJobNsnbSideEffectActionEnumKey;
-												gitUserLogin: string;
-										  }
-										| undefined;
-									commit?:
-										| {
-												id: string;
-												authorAvatar?: (string | null) | undefined;
-												authorEmail?: (string | null) | undefined;
-												authorId?: (number | null) | undefined;
-												authorLogin?: (string | null) | undefined;
-												authorName?: (string | null) | undefined;
-										  }
-										| undefined;
+									connectedProjectCount?: number | undefined;
 									createdAt?: number | undefined;
+									customEnvId?: (string | null) | undefined;
 									deployHook?:
 										| {
 												createdAt: number;
@@ -9036,6 +8860,21 @@ export type UserEvent = {
 									deploymentId?: string | undefined;
 									eventful?: (false | true) | undefined;
 									forceNew?: (false | true) | undefined;
+									/**
+									 * @description Since June 2023 Determines if comments should be posted to the git host. Replaces `github.silent` in the vercel.json.
+									 * @type object | undefined
+									 */
+									gitComments?:
+										| {
+												onCommit: false | true;
+												onPullRequest: false | true;
+										  }
+										| undefined;
+									/**
+									 * @description Since February 2022 All the hashtag-vercel tags found in the commit message triggering the deploy. For example, #VERCEL_DO_SOMETHING
+									 * @type array | undefined
+									 */
+									gitHashtagVercel?: string[] | undefined;
 									/**
 									 * @description GitLab
 									 * @type object
@@ -9052,8 +8891,38 @@ export type UserEvent = {
 										ref: string;
 										sha: string;
 									};
+									/**
+									 * @description Since 28 Feb 2024 If set to true, identifies that the git job was created for a manual git deployment
+									 * @type boolean | undefined
+									 */
+									isManualGitDeploy?: (false | true) | undefined;
+									/**
+									 * @description Since December 2022 Pairs of projects and owner ids to build for this build request.
+									 * @type array | undefined
+									 */
+									jobPairs?: (string | string)[][] | undefined;
+									/**
+									 * @description Since December 2022 All project ids associated to this job. Think monorepo. This job will be for one of these project.
+									 * @type array | undefined
+									 */
+									jobProjectIds?: string[] | undefined;
 									linkedProjectId?: string | undefined;
+									/**
+									 * @description Since March 2026 Records a successful NSNB auto-add result so later GitHub PR comments can deterministically explain why this SHA was allowed to deploy.
+									 * @type object | undefined
+									 */
+									nsnbSideEffect?:
+										| {
+												action: UserEventPayloadJobNsnbSideEffectActionEnumKey;
+												gitUserLogin: string;
+										  }
+										| undefined;
 									prId?: number | undefined;
+									/**
+									 * @description Since April 2023 If set then it is a cached result of asking the remote for the PR ID the commit that triggered this Job. Or zero if it was not a PR. This prevents a few git round trips by the git updater.
+									 * @type number | undefined
+									 */
+									prIdOrZero?: number | undefined;
 									project: {
 										defaultBranch?: (string | null) | undefined;
 										id: string;
@@ -9063,19 +8932,31 @@ export type UserEvent = {
 										url?: (string | null) | undefined;
 									};
 									projectId?: string | undefined;
-									customEnvId?: (string | null) | undefined;
+									provider: "gitlab";
 									ref: string;
 									repoPushedAt?: (number | null) | undefined;
 									sha: string;
 									silent?: (false | true) | undefined;
+									/**
+									 * @description Since June 2024 Pairs of projects and owner ids to immediately finish (without building) because we want to create them in a skipped state.
+									 * @type array | undefined
+									 */
+									skippedJobPairs?: (string | string)[][] | undefined;
 									target?: (string | null) | undefined;
+									type: "gitlab-push";
 									url?: string | undefined;
 									withCache?: (false | true) | undefined;
-									provider: "gitlab";
 							  }
 							| {
 									createdAt?: number | undefined;
+									customEnvId?: (string | null) | undefined;
 									eventful?: (false | true) | undefined;
+									gitComments?:
+										| {
+												onCommit: false | true;
+												onPullRequest: false | true;
+										  }
+										| undefined;
 									/**
 									 * @description GitLab
 									 * @type object
@@ -9103,24 +8984,25 @@ export type UserEvent = {
 										url?: (string | null) | undefined;
 									};
 									projectId?: string | undefined;
-									customEnvId?: (string | null) | undefined;
+									provider: "gitlab";
 									ref: string;
 									sha: string;
 									type: "gitlab-now-comment";
-									gitComments?:
-										| {
-												onPullRequest: false | true;
-												onCommit: false | true;
-										  }
-										| undefined;
-									provider: "gitlab";
 							  }
 							| {
-									type: "vercel-push";
-									ref: string;
-									repo: string;
-									sha: string;
-									repoPushedAt?: (number | null) | undefined;
+									authorized?: (false | true) | undefined;
+									authorizedBy?: string | undefined;
+									/**
+									 * @description Since 6 Nov 2025 The verification status of the commit. - \'verified\' if the commit is verified - \'unverified\' if the commit is not verified - \'unknown\' if the commit verification status is unknown or not supported
+									 * @type string | undefined
+									 */
+									commitVerification?: UserEventPayloadJobCommitVerificationEnumKey | undefined;
+									/**
+									 * @description Since April 2023 Cached count of how many projects are connected to the repo. Saves a few Cosmos queries down the road in the main flow.
+									 * @type number | undefined
+									 */
+									connectedProjectCount?: number | undefined;
+									customEnvId?: (string | null) | undefined;
 									deployHook?:
 										| {
 												createdAt: number;
@@ -9129,73 +9011,22 @@ export type UserEvent = {
 												ref: string;
 										  }
 										| undefined;
-									url?: string | undefined;
-									target?: (string | null) | undefined;
 									deploymentId?: string | undefined;
-									linkedProjectId?: string | undefined;
-									projectId?: string | undefined;
-									authorized?: (false | true) | undefined;
-									authorizedBy?: string | undefined;
-									/**
-									 * @description Since December 2022 All project ids associated to this job. Think monorepo. This job will be for one of these project.
-									 * @type array | undefined
-									 */
-									jobProjectIds?: string[] | undefined;
-									/**
-									 * @description Since December 2022 Pairs of projects and owner ids to build for this build request.
-									 * @type array | undefined
-									 */
-									jobPairs?: (string | string)[][] | undefined;
-									/**
-									 * @description Since June 2024 Pairs of projects and owner ids to immediately finish (without building) because we want to create them in a skipped state.
-									 * @type array | undefined
-									 */
-									skippedJobPairs?: (string | string)[][] | undefined;
-									/**
-									 * @description Since February 2022 All the hashtag-vercel tags found in the commit message triggering the deploy. For example, #VERCEL_DO_SOMETHING
-									 * @type array | undefined
-									 */
-									gitHashtagVercel?: string[] | undefined;
-									/**
-									 * @description Since April 2023 Cached count of how many projects are connected to the repo. Saves a few Cosmos queries down the road in the main flow.
-									 * @type number | undefined
-									 */
-									connectedProjectCount?: number | undefined;
-									/**
-									 * @description Since April 2023 If set then it is a cached result of asking the remote for the PR ID the commit that triggered this Job. Or zero if it was not a PR. This prevents a few git round trips by the git updater.
-									 * @type number | undefined
-									 */
-									prIdOrZero?: number | undefined;
 									/**
 									 * @description Since June 2023 Determines if comments should be posted to the git host. Replaces `github.silent` in the vercel.json.
 									 * @type object | undefined
 									 */
 									gitComments?:
 										| {
-												onPullRequest: false | true;
 												onCommit: false | true;
+												onPullRequest: false | true;
 										  }
 										| undefined;
 									/**
-									 * @description Since 28 Feb 2024 If set to true, identifies that the git job was created for a manual git deployment
-									 * @type boolean | undefined
+									 * @description Since February 2022 All the hashtag-vercel tags found in the commit message triggering the deploy. For example, #VERCEL_DO_SOMETHING
+									 * @type array | undefined
 									 */
-									isManualGitDeploy?: (false | true) | undefined;
-									/**
-									 * @description Since 6 Nov 2025 The verification status of the commit. - \'verified\' if the commit is verified - \'unverified\' if the commit is not verified - \'unknown\' if the commit verification status is unknown or not supported
-									 * @type string | undefined
-									 */
-									commitVerification?: UserEventPayloadJobCommitVerificationEnumKey | undefined;
-									/**
-									 * @description Since March 2026 Records a successful NSNB auto-add result so later GitHub PR comments can deterministically explain why this SHA was allowed to deploy.
-									 * @type object | undefined
-									 */
-									nsnbSideEffect?:
-										| {
-												action: UserEventPayloadJobNsnbSideEffectActionEnumKey;
-												gitUserLogin: string;
-										  }
-										| undefined;
+									gitHashtagVercel?: string[] | undefined;
 									/**
 									 * @description Vercel
 									 * @type object
@@ -9206,87 +9037,22 @@ export type UserEvent = {
 										repo: string;
 										sha: string;
 									};
-									org: string;
-									provider: "vercel";
-									customEnvId?: (string | null) | undefined;
-									prId?: (number | null) | undefined;
-							  }
-							| {
-									type: "cursor-origin-push";
-									ref: string;
-									sha: string;
-									beforeSha?: string | undefined;
-									defaultBranch?: string | undefined;
-									forced?: (false | true) | undefined;
-									repoPushedAt?: (number | null) | undefined;
-									deployHook?:
-										| {
-												createdAt: number;
-												id: string;
-												name: string;
-												ref: string;
-										  }
-										| undefined;
-									url?: string | undefined;
-									target?: (string | null) | undefined;
-									deploymentId?: string | undefined;
-									linkedProjectId?: string | undefined;
-									projectId?: string | undefined;
-									createdAt?: number | undefined;
-									eventful?: (false | true) | undefined;
-									forceNew?: (false | true) | undefined;
-									authorized?: (false | true) | undefined;
-									authorizedBy?: string | undefined;
-									/**
-									 * @description Since December 2022 All project ids associated to this job. Think monorepo. This job will be for one of these project.
-									 * @type array | undefined
-									 */
-									jobProjectIds?: string[] | undefined;
-									/**
-									 * @description Since December 2022 Pairs of projects and owner ids to build for this build request.
-									 * @type array | undefined
-									 */
-									jobPairs?: (string | string)[][] | undefined;
-									/**
-									 * @description Since June 2024 Pairs of projects and owner ids to immediately finish (without building) because we want to create them in a skipped state.
-									 * @type array | undefined
-									 */
-									skippedJobPairs?: (string | string)[][] | undefined;
-									/**
-									 * @description Since February 2022 All the hashtag-vercel tags found in the commit message triggering the deploy. For example, #VERCEL_DO_SOMETHING
-									 * @type array | undefined
-									 */
-									gitHashtagVercel?: string[] | undefined;
-									/**
-									 * @description Since April 2023 Cached count of how many projects are connected to the repo. Saves a few Cosmos queries down the road in the main flow.
-									 * @type number | undefined
-									 */
-									connectedProjectCount?: number | undefined;
-									/**
-									 * @description Since April 2023 If set then it is a cached result of asking the remote for the PR ID the commit that triggered this Job. Or zero if it was not a PR. This prevents a few git round trips by the git updater.
-									 * @type number | undefined
-									 */
-									prIdOrZero?: number | undefined;
-									/**
-									 * @description Since June 2023 Determines if comments should be posted to the git host. Replaces `github.silent` in the vercel.json.
-									 * @type object | undefined
-									 */
-									gitComments?:
-										| {
-												onPullRequest: false | true;
-												onCommit: false | true;
-										  }
-										| undefined;
 									/**
 									 * @description Since 28 Feb 2024 If set to true, identifies that the git job was created for a manual git deployment
 									 * @type boolean | undefined
 									 */
 									isManualGitDeploy?: (false | true) | undefined;
 									/**
-									 * @description Since 6 Nov 2025 The verification status of the commit. - \'verified\' if the commit is verified - \'unverified\' if the commit is not verified - \'unknown\' if the commit verification status is unknown or not supported
-									 * @type string | undefined
+									 * @description Since December 2022 Pairs of projects and owner ids to build for this build request.
+									 * @type array | undefined
 									 */
-									commitVerification?: UserEventPayloadJobCommitVerificationEnumKey | undefined;
+									jobPairs?: (string | string)[][] | undefined;
+									/**
+									 * @description Since December 2022 All project ids associated to this job. Think monorepo. This job will be for one of these project.
+									 * @type array | undefined
+									 */
+									jobProjectIds?: string[] | undefined;
+									linkedProjectId?: string | undefined;
 									/**
 									 * @description Since March 2026 Records a successful NSNB auto-add result so later GitHub PR comments can deterministically explain why this SHA was allowed to deploy.
 									 * @type object | undefined
@@ -9297,6 +9063,72 @@ export type UserEvent = {
 												gitUserLogin: string;
 										  }
 										| undefined;
+									org: string;
+									prId?: (number | null) | undefined;
+									/**
+									 * @description Since April 2023 If set then it is a cached result of asking the remote for the PR ID the commit that triggered this Job. Or zero if it was not a PR. This prevents a few git round trips by the git updater.
+									 * @type number | undefined
+									 */
+									prIdOrZero?: number | undefined;
+									projectId?: string | undefined;
+									provider: "vercel";
+									ref: string;
+									repo: string;
+									repoPushedAt?: (number | null) | undefined;
+									sha: string;
+									/**
+									 * @description Since June 2024 Pairs of projects and owner ids to immediately finish (without building) because we want to create them in a skipped state.
+									 * @type array | undefined
+									 */
+									skippedJobPairs?: (string | string)[][] | undefined;
+									target?: (string | null) | undefined;
+									type: "vercel-push";
+									url?: string | undefined;
+							  }
+							| {
+									authorized?: (false | true) | undefined;
+									authorizedBy?: string | undefined;
+									beforeSha?: string | undefined;
+									/**
+									 * @description Since 6 Nov 2025 The verification status of the commit. - \'verified\' if the commit is verified - \'unverified\' if the commit is not verified - \'unknown\' if the commit verification status is unknown or not supported
+									 * @type string | undefined
+									 */
+									commitVerification?: UserEventPayloadJobCommitVerificationEnumKey | undefined;
+									/**
+									 * @description Since April 2023 Cached count of how many projects are connected to the repo. Saves a few Cosmos queries down the road in the main flow.
+									 * @type number | undefined
+									 */
+									connectedProjectCount?: number | undefined;
+									createdAt?: number | undefined;
+									customEnvId?: (string | null) | undefined;
+									defaultBranch?: string | undefined;
+									deployHook?:
+										| {
+												createdAt: number;
+												id: string;
+												name: string;
+												ref: string;
+										  }
+										| undefined;
+									deploymentId?: string | undefined;
+									eventful?: (false | true) | undefined;
+									forced?: (false | true) | undefined;
+									forceNew?: (false | true) | undefined;
+									/**
+									 * @description Since June 2023 Determines if comments should be posted to the git host. Replaces `github.silent` in the vercel.json.
+									 * @type object | undefined
+									 */
+									gitComments?:
+										| {
+												onCommit: false | true;
+												onPullRequest: false | true;
+										  }
+										| undefined;
+									/**
+									 * @description Since February 2022 All the hashtag-vercel tags found in the commit message triggering the deploy. For example, #VERCEL_DO_SOMETHING
+									 * @type array | undefined
+									 */
+									gitHashtagVercel?: string[] | undefined;
 									/**
 									 * @description Cursor Origin
 									 * @type object
@@ -9330,16 +9162,65 @@ export type UserEvent = {
 									 * @type string
 									 */
 									installationId: string;
+									/**
+									 * @description Since 28 Feb 2024 If set to true, identifies that the git job was created for a manual git deployment
+									 * @type boolean | undefined
+									 */
+									isManualGitDeploy?: (false | true) | undefined;
+									/**
+									 * @description Since December 2022 Pairs of projects and owner ids to build for this build request.
+									 * @type array | undefined
+									 */
+									jobPairs?: (string | string)[][] | undefined;
+									/**
+									 * @description Since December 2022 All project ids associated to this job. Think monorepo. This job will be for one of these project.
+									 * @type array | undefined
+									 */
+									jobProjectIds?: string[] | undefined;
+									linkedProjectId?: string | undefined;
+									/**
+									 * @description Since March 2026 Records a successful NSNB auto-add result so later GitHub PR comments can deterministically explain why this SHA was allowed to deploy.
+									 * @type object | undefined
+									 */
+									nsnbSideEffect?:
+										| {
+												action: UserEventPayloadJobNsnbSideEffectActionEnumKey;
+												gitUserLogin: string;
+										  }
+										| undefined;
 									owner: string;
+									prId?: (number | null) | undefined;
+									/**
+									 * @description Since April 2023 If set then it is a cached result of asking the remote for the PR ID the commit that triggered this Job. Or zero if it was not a PR. This prevents a few git round trips by the git updater.
+									 * @type number | undefined
+									 */
+									prIdOrZero?: number | undefined;
+									projectId?: string | undefined;
+									provider: "cursor-origin";
+									ref: string;
 									repo: string;
 									repoId: string;
-									provider: "cursor-origin";
-									customEnvId?: (string | null) | undefined;
-									prId?: (number | null) | undefined;
+									repoPushedAt?: (number | null) | undefined;
+									sha: string;
+									/**
+									 * @description Since June 2024 Pairs of projects and owner ids to immediately finish (without building) because we want to create them in a skipped state.
+									 * @type array | undefined
+									 */
+									skippedJobPairs?: (string | string)[][] | undefined;
+									target?: (string | null) | undefined;
+									type: "cursor-origin-push";
+									url?: string | undefined;
 							  }
 							| {
 									createdAt?: number | undefined;
+									customEnvId?: (unknown | null) | undefined;
 									eventful?: (false | true) | undefined;
+									gitComments?:
+										| {
+												onCommit: false | true;
+												onPullRequest: false | true;
+										  }
+										| undefined;
 									/**
 									 * @description Cursor Origin
 									 * @type object
@@ -9377,66 +9258,54 @@ export type UserEvent = {
 									owner: string;
 									prId: number;
 									projectId: unknown | null;
-									customEnvId?: (unknown | null) | undefined;
+									provider: "cursor-origin";
 									repo: string;
 									repoId: string;
 									type: "cursor-origin-now-comment";
-									gitComments?:
-										| {
-												onPullRequest: false | true;
-												onCommit: false | true;
-										  }
-										| undefined;
-									provider: "cursor-origin";
 							  };
 				  }
 				| {
-						url: string;
-						oldTeam?:
-							| {
-									name: string;
-							  }
-							| undefined;
 						newTeam?:
 							| {
 									name: string;
 							  }
 							| undefined;
+						oldTeam?:
+							| {
+									name: string;
+							  }
+							| undefined;
+						url: string;
 				  }
 				| {
-						sha: string;
+						gitCommitterName: string;
 						gitUserPlatform: string;
 						projectId?: string | undefined;
 						projectName: string;
-						gitCommitterName: string;
-						source: string;
 						reason?: "ip_allow_list" | undefined;
+						sha: string;
+						source: string;
 				  }
 				| {
 						deployment: {
-							name: string;
 							id: string;
 							meta: {
 								[key: string]: string;
 							};
+							name: string;
 							url: string;
 						};
 						deploymentId: string;
 						url: string;
 				  }
 				| {
-						projectId?: string | undefined;
-						projectName: string;
 						/**
 						 * @description The blocked deployment\'s id (e.g. `dpl_…`). When present, the message links it to the deployment details (inspector) page. Optional so events emitted before this field was added still render.
 						 * @type string | undefined
 						 */
 						deploymentId?: string | undefined;
-						/**
-						 * @description Classified deploy source, e.g. \'cli\', \'git\', \'integration\'.
-						 * @type string
-						 */
-						source: string;
+						projectId?: string | undefined;
+						projectName: string;
 						/**
 						 * @description Which rule blocked the deploy.
 						 * @type string
@@ -9447,95 +9316,100 @@ export type UserEvent = {
 						 * @type string
 						 */
 						ruleProvenance: UserEventPayloadRuleProvenanceEnumKey;
+						/**
+						 * @description Classified deploy source, e.g. \'cli\', \'git\', \'integration\'.
+						 * @type string
+						 */
+						source: string;
 				  }
 				| {
 						deploymentId: string;
-						deploymentUrl: string | null;
 						deploymentName: string | null;
+						deploymentUrl: string | null;
 						projectId: string;
 						projectName: string;
 				  }
 				| {
-						integrationId: string;
 						configurationId: string;
-						integrationSlug: string;
+						integrationId: string;
 						integrationName: string;
+						integrationSlug: string;
 						ownerId: string;
 						projectIds?: string[] | undefined;
 				  }
 				| {
-						id: string;
-						value: string;
-						name: string;
 						domain: string;
-						type: string;
+						id: string;
 						mxPriority?: number | undefined;
+						name: string;
+						type: string;
+						value: string;
 				  }
 				| {
 						action: UserEventPayloadActionEnumKey;
-						initiator: UserEventPayloadInitiatorEnumKey;
-						id: string;
 						domain: string;
-						name: string;
-						type: string;
-						value: string;
+						id: string;
+						initiator: UserEventPayloadInitiatorEnumKey;
 						mxPriority?: number | undefined;
+						name: string;
 						previousValue?: string | undefined;
 						source?: string | undefined;
+						type: string;
+						value: string;
 				  }
 				| {
-						id: string;
-						value: string;
-						name: string;
 						domain: string;
+						id: string;
+						name: string;
 						type: string;
+						value: string;
 				  }
 				| {
 						name: string;
 						zone?: (false | true) | undefined;
 				  }
 				| {
+						currency?: string | undefined;
 						name: string;
 						price: number;
-						currency?: string | undefined;
 				  }
 				| {
-						name: string;
 						cdnEnabled: false | true;
+						name: string;
 				  }
 				| {
 						name: string;
-						oldTeam?:
-							| {
-									name: string;
-							  }
-							| undefined;
 						newTeam?:
 							| {
 									name: string;
 							  }
 							| undefined;
+						oldTeam?:
+							| {
+									name: string;
+							  }
+							| undefined;
 				  }
 				| {
 						name: string;
-						userId: string;
-						teamId: string;
 						ownerName: string;
+						teamId: string;
+						userId: string;
 				  }
 				| {
 						domainId: string;
 						name: string;
 				  }
 				| {
-						previousServiceType: string;
-						serviceType: string;
 						id: string;
 						name: string;
 						nameservers: string[];
+						previousServiceType: string;
+						serviceType: string;
 				  }
 				| {
-						domain: string;
 						customNameservers: string[] | null;
+						domain: string;
 						prevCustomNameservers: string[] | null;
 				  }
 				| {
@@ -9552,41 +9426,41 @@ export type UserEvent = {
 				  }
 				| {
 						domain: string;
-						zone: false | true;
 						initiator: UserEventPayloadInitiatorEnumKey;
-						source?: string | undefined;
 						previousZone?: (false | true) | undefined;
+						source?: string | undefined;
+						zone: false | true;
 				  }
 				| {
-						name: string;
 						fromId: string | null;
 						fromName: string | null;
+						name: string;
 				  }
 				| {
-						name: string;
 						destinationId: string | null;
 						destinationName: string | null;
+						name: string;
 				  }
 				| {
-						name: string;
 						destinationId: string;
 						destinationName: string;
+						name: string;
 				  }
 				| {
-						renew?: (false | true) | undefined;
 						domain: string;
+						renew?: (false | true) | undefined;
 				  }
 				| {
+						currency?: string | undefined;
 						name: string;
 						price?: number | undefined;
-						currency?: string | undefined;
 				  }
 				| {
 						name: string;
 				  }
 				| {
-						drainUrl: string | null;
 						drainName: string | null;
+						drainUrl: string | null;
 						integrationName?: string | undefined;
 				  }
 				| {
@@ -9605,34 +9479,34 @@ export type UserEvent = {
 						target?: string | undefined;
 				  }
 				| {
-						projectId: string;
-						projectName: string;
 						path: string;
+						projectId: string;
+						projectName: string;
 				  }
 				| {
 						projectId: string;
 						projectName: string;
 				  }
 				| {
+						edgeConfigDigest: string;
 						edgeConfigId: string;
 						edgeConfigSlug: string;
-						edgeConfigDigest: string;
 				  }
 				| {
+						edgeConfigDigest: string;
 						edgeConfigId: string;
 						edgeConfigSlug: string;
-						edgeConfigDigest: string;
 						edgeConfigBackupVersionId: string;
 				  }
 				| {
 						edgeConfigId: string;
-						edgeConfigSlug: string;
 						edgeConfigSchema?: object | undefined;
+						edgeConfigSlug: string;
 				  }
 				| {
+						edgeConfigDigest?: string | undefined;
 						edgeConfigId: string;
 						edgeConfigSlug: string;
-						edgeConfigDigest?: string | undefined;
 				  }
 				| {
 						edgeConfig: {
@@ -9641,14 +9515,14 @@ export type UserEvent = {
 						};
 						fromAccount: {
 							id: string;
-							type: UserEventPayloadFromAccountTypeEnumKey;
 							slug?: string | undefined;
+							type: UserEventPayloadFromAccountTypeEnumKey;
 							username?: string | undefined;
 						};
 						toAccount: {
 							id: string;
-							type: UserEventPayloadToAccountTypeEnumKey;
 							slug?: string | undefined;
+							type: UserEventPayloadToAccountTypeEnumKey;
 							username?: string | undefined;
 						};
 				  }
@@ -9672,77 +9546,87 @@ export type UserEvent = {
 						name: string;
 				  }
 				| {
-						team: {
-							id: string;
-							name?: string | undefined;
-						};
 						previousRule: {
 							email: string;
 						};
-				  }
-				| {
 						team: {
 							id: string;
 							name?: string | undefined;
 						};
-						previousRule?:
-							| {
-									email: string;
-							  }
-							| undefined;
+				  }
+				| {
 						nextRule?:
 							| {
 									email: string;
 							  }
 							| undefined;
-				  }
-				| {
-						deletedUser?:
+						previousRule?:
 							| {
-									username: string;
 									email: string;
 							  }
 							| undefined;
+						team: {
+							id: string;
+							name?: string | undefined;
+						};
+				  }
+				| {
 						deletedUid?: string | undefined;
+						deletedUser?:
+							| {
+									email: string;
+									username: string;
+							  }
+							| undefined;
 						emailDomain?: string | undefined;
 				  }
 				| {
+						customEnvironmentSlugs?: string[] | undefined;
+						edgeConfigId?: (string | null) | undefined;
+						edgeConfigTokenId?: (string | null) | undefined;
+						gitBranch?: string | undefined;
+						id?: string | undefined;
+						ipAddress?: string | undefined;
 						key?: string | undefined;
 						projectId?: string | undefined;
 						projectName?: string | undefined;
-						target?: (string | string[]) | undefined;
-						customEnvironmentSlugs?: string[] | undefined;
-						id?: string | undefined;
-						gitBranch?: string | undefined;
-						edgeConfigId?: (string | null) | undefined;
-						edgeConfigTokenId?: (string | null) | undefined;
 						source?: string | undefined;
-						ipAddress?: string | undefined;
+						target?: (string | string[]) | undefined;
 				  }
 				| {
+						customEnvironmentSlugs?: string[] | undefined;
+						edgeConfigId?: (string | null) | undefined;
+						edgeConfigTokenId?: (string | null) | undefined;
+						gitBranch?: string | undefined;
+						id?: string | undefined;
+						ipAddress?: string | undefined;
 						key?: string | undefined;
 						projectId?: string | undefined;
 						projectName?: string | undefined;
-						target?: (string | string[]) | undefined;
-						customEnvironmentSlugs?: string[] | undefined;
-						id?: string | undefined;
-						gitBranch?: string | undefined;
-						edgeConfigId?: (string | null) | undefined;
-						edgeConfigTokenId?: (string | null) | undefined;
 						source?: string | undefined;
-						ipAddress?: string | undefined;
+						target?: (string | string[]) | undefined;
 						deploymentId: string;
 						deploymentUrl: string;
 				  }
 				| {
-						provider: string;
-						organizationId: string;
-						repository: string;
-						key: string;
-						visibility: UserEventPayloadVisibilityEnumKey;
 						changedFields?: string[] | undefined;
+						key: string;
+						organizationId: string;
+						provider: string;
+						repository: string;
+						visibility: UserEventPayloadVisibilityEnumKey;
 				  }
 				| {
+						/**
+						 * @description whether or not this env varible applies to custom environments
+						 * @type boolean | undefined
+						 */
+						applyToAllCustomEnvironments?: (false | true) | undefined;
+						/**
+						 * @description A user provided comment that describes what this Shared Env Var is for.
+						 * @type string | undefined
+						 */
+						comment?: string | undefined;
 						/**
 						 * @description The date when the Shared Env Var was created.
 						 *
@@ -9752,87 +9636,17 @@ export type UserEvent = {
 						 */
 						created?: string | undefined;
 						/**
-						 * @description The name of the Shared Env Var.
-						 * @example my-api-key
-						 * @type string | undefined
-						 */
-						key?: string | undefined;
-						/**
-						 * @description The unique identifier of the owner (team) the Shared Env Var was created for.
-						 * @example team_LLHUOMOoDlqOp8wPE4kFo9pE
-						 * @type string | undefined
-						 */
-						ownerId?: (string | null) | undefined;
-						/**
-						 * @description The unique identifier of the Shared Env Var.
-						 * @example env_XCG7t7AIHuO2SBA8667zNUiM
-						 * @type string | undefined
-						 */
-						id?: string | undefined;
-						/**
-						 * @description The unique identifier of the user who created the Shared Env Var.
-						 * @example 2qDDuGFTWXBLDNnqZfWPDp1A
-						 * @type string | undefined
-						 */
-						createdBy?: (string | null) | undefined;
-						/**
-						 * @description The unique identifier of the user who deleted the Shared Env Var.
-						 * @example 2qDDuGFTWXBLDNnqZfWPDp1A
-						 * @type string | undefined
-						 */
-						deletedBy?: (string | null) | undefined;
-						/**
-						 * @description The unique identifier of the user who last updated the Shared Env Var.
-						 * @example 2qDDuGFTWXBLDNnqZfWPDp1A
-						 * @type string | undefined
-						 */
-						updatedBy?: (string | null) | undefined;
-						/**
 						 * @description Timestamp for when the Shared Env Var was created.
 						 * @example 1609492210000
 						 * @type number | undefined
 						 */
 						createdAt?: number | undefined;
 						/**
-						 * @description Timestamp for when the Shared Env Var was (soft) deleted.
-						 * @example 1609492210000
-						 * @type number | undefined
-						 */
-						deletedAt?: number | undefined;
-						/**
-						 * @description Timestamp for when the Shared Env Var was last updated.
-						 * @example 1609492210000
-						 * @type number | undefined
-						 */
-						updatedAt?: number | undefined;
-						/**
-						 * @description The value of the Shared Env Var.
+						 * @description The unique identifier of the user who created the Shared Env Var.
+						 * @example 2qDDuGFTWXBLDNnqZfWPDp1A
 						 * @type string | undefined
 						 */
-						value?: string | undefined;
-						/**
-						 * @description The unique identifiers of the projects which the Shared Env Var is linked to.
-						 * @example ["prj_2WjyKQmM8ZnGcJsPWMrHRHrE","prj_2WjyKQmM8ZnGcJsPWMrasEFg"]
-						 * @type array | undefined
-						 */
-						projectId?: string[] | undefined;
-						/**
-						 * @description The type of this cosmos doc instance, if blank, assume secret.
-						 * @example encrypted
-						 * @type string | undefined
-						 */
-						type?: UserEventPayloadTypeEnumKey | undefined;
-						/**
-						 * @description environments this env variable targets
-						 * @example production
-						 * @type array | undefined
-						 */
-						target?: UserEventPayloadTargetEnumKey[] | undefined;
-						/**
-						 * @description whether or not this env varible applies to custom environments
-						 * @type boolean | undefined
-						 */
-						applyToAllCustomEnvironments?: (false | true) | undefined;
+						createdBy?: (string | null) | undefined;
 						/**
 						 * @description The custom environment IDs that this Shared Env Var is scoped to.
 						 * @type array | undefined
@@ -9844,29 +9658,99 @@ export type UserEvent = {
 						 */
 						decrypted?: (false | true) | undefined;
 						/**
-						 * @description A user provided comment that describes what this Shared Env Var is for.
+						 * @description Timestamp for when the Shared Env Var was (soft) deleted.
+						 * @example 1609492210000
+						 * @type number | undefined
+						 */
+						deletedAt?: number | undefined;
+						/**
+						 * @description The unique identifier of the user who deleted the Shared Env Var.
+						 * @example 2qDDuGFTWXBLDNnqZfWPDp1A
 						 * @type string | undefined
 						 */
-						comment?: string | undefined;
+						deletedBy?: (string | null) | undefined;
+						/**
+						 * @description The unique identifier of the Shared Env Var.
+						 * @example env_XCG7t7AIHuO2SBA8667zNUiM
+						 * @type string | undefined
+						 */
+						id?: string | undefined;
+						/**
+						 * @description The name of the Shared Env Var.
+						 * @example my-api-key
+						 * @type string | undefined
+						 */
+						key?: string | undefined;
 						/**
 						 * @description The last editor full name or username.
 						 * @type string | undefined
 						 */
 						lastEditedByDisplayName?: string | undefined;
-						projectNames?: string[] | undefined;
+						/**
+						 * @description The unique identifier of the owner (team) the Shared Env Var was created for.
+						 * @example team_LLHUOMOoDlqOp8wPE4kFo9pE
+						 * @type string | undefined
+						 */
+						ownerId?: (string | null) | undefined;
+						/**
+						 * @description The unique identifiers of the projects which the Shared Env Var is linked to.
+						 * @example ["prj_2WjyKQmM8ZnGcJsPWMrHRHrE","prj_2WjyKQmM8ZnGcJsPWMrasEFg"]
+						 * @type array | undefined
+						 */
+						projectId?: string[] | undefined;
+						/**
+						 * @description environments this env variable targets
+						 * @example production
+						 * @type array | undefined
+						 */
+						target?: UserEventPayloadTargetEnumKey[] | undefined;
+						/**
+						 * @description The type of this cosmos doc instance, if blank, assume secret.
+						 * @example encrypted
+						 * @type string | undefined
+						 */
+						type?: UserEventPayloadTypeEnumKey | undefined;
+						/**
+						 * @description Timestamp for when the Shared Env Var was last updated.
+						 * @example 1609492210000
+						 * @type number | undefined
+						 */
+						updatedAt?: number | undefined;
+						/**
+						 * @description The unique identifier of the user who last updated the Shared Env Var.
+						 * @example 2qDDuGFTWXBLDNnqZfWPDp1A
+						 * @type string | undefined
+						 */
+						updatedBy?: (string | null) | undefined;
+						/**
+						 * @description The value of the Shared Env Var.
+						 * @type string | undefined
+						 */
+						value?: string | undefined;
 						ipAddress?: string | undefined;
+						projectNames?: string[] | undefined;
 				  }
 				| {
 						envId: string;
 						envKey: string;
-						provider: string;
 						organizationId: string;
+						provider: string;
 						repository: string;
 						target: UserEventPayloadTargetEnumKey[];
 				  }
 				| {
-						oldEnvVar?:
+						newEnvVar?:
 							| {
+									/**
+									 * @description whether or not this env varible applies to custom environments
+									 * @type boolean | undefined
+									 */
+									applyToAllCustomEnvironments?: (false | true) | undefined;
+									/**
+									 * @description A user provided comment that describes what this Shared Env Var is for.
+									 * @type string | undefined
+									 */
+									comment?: string | undefined;
 									/**
 									 * @description The date when the Shared Env Var was created.
 									 *
@@ -9876,87 +9760,17 @@ export type UserEvent = {
 									 */
 									created?: string | undefined;
 									/**
-									 * @description The name of the Shared Env Var.
-									 * @example my-api-key
-									 * @type string | undefined
-									 */
-									key?: string | undefined;
-									/**
-									 * @description The unique identifier of the owner (team) the Shared Env Var was created for.
-									 * @example team_LLHUOMOoDlqOp8wPE4kFo9pE
-									 * @type string | undefined
-									 */
-									ownerId?: (string | null) | undefined;
-									/**
-									 * @description The unique identifier of the Shared Env Var.
-									 * @example env_XCG7t7AIHuO2SBA8667zNUiM
-									 * @type string | undefined
-									 */
-									id?: string | undefined;
-									/**
-									 * @description The unique identifier of the user who created the Shared Env Var.
-									 * @example 2qDDuGFTWXBLDNnqZfWPDp1A
-									 * @type string | undefined
-									 */
-									createdBy?: (string | null) | undefined;
-									/**
-									 * @description The unique identifier of the user who deleted the Shared Env Var.
-									 * @example 2qDDuGFTWXBLDNnqZfWPDp1A
-									 * @type string | undefined
-									 */
-									deletedBy?: (string | null) | undefined;
-									/**
-									 * @description The unique identifier of the user who last updated the Shared Env Var.
-									 * @example 2qDDuGFTWXBLDNnqZfWPDp1A
-									 * @type string | undefined
-									 */
-									updatedBy?: (string | null) | undefined;
-									/**
 									 * @description Timestamp for when the Shared Env Var was created.
 									 * @example 1609492210000
 									 * @type number | undefined
 									 */
 									createdAt?: number | undefined;
 									/**
-									 * @description Timestamp for when the Shared Env Var was (soft) deleted.
-									 * @example 1609492210000
-									 * @type number | undefined
-									 */
-									deletedAt?: number | undefined;
-									/**
-									 * @description Timestamp for when the Shared Env Var was last updated.
-									 * @example 1609492210000
-									 * @type number | undefined
-									 */
-									updatedAt?: number | undefined;
-									/**
-									 * @description The value of the Shared Env Var.
+									 * @description The unique identifier of the user who created the Shared Env Var.
+									 * @example 2qDDuGFTWXBLDNnqZfWPDp1A
 									 * @type string | undefined
 									 */
-									value?: string | undefined;
-									/**
-									 * @description The unique identifiers of the projects which the Shared Env Var is linked to.
-									 * @example ["prj_2WjyKQmM8ZnGcJsPWMrHRHrE","prj_2WjyKQmM8ZnGcJsPWMrasEFg"]
-									 * @type array | undefined
-									 */
-									projectId?: string[] | undefined;
-									/**
-									 * @description The type of this cosmos doc instance, if blank, assume secret.
-									 * @example encrypted
-									 * @type string | undefined
-									 */
-									type?: UserEventPayloadOldEnvVarTypeEnumKey | undefined;
-									/**
-									 * @description environments this env variable targets
-									 * @example production
-									 * @type array | undefined
-									 */
-									target?: UserEventPayloadOldEnvVarTargetEnumKey[] | undefined;
-									/**
-									 * @description whether or not this env varible applies to custom environments
-									 * @type boolean | undefined
-									 */
-									applyToAllCustomEnvironments?: (false | true) | undefined;
+									createdBy?: (string | null) | undefined;
 									/**
 									 * @description The custom environment IDs that this Shared Env Var is scoped to.
 									 * @type array | undefined
@@ -9968,51 +9782,11 @@ export type UserEvent = {
 									 */
 									decrypted?: (false | true) | undefined;
 									/**
-									 * @description A user provided comment that describes what this Shared Env Var is for.
-									 * @type string | undefined
+									 * @description Timestamp for when the Shared Env Var was (soft) deleted.
+									 * @example 1609492210000
+									 * @type number | undefined
 									 */
-									comment?: string | undefined;
-									/**
-									 * @description The last editor full name or username.
-									 * @type string | undefined
-									 */
-									lastEditedByDisplayName?: string | undefined;
-							  }
-							| undefined;
-						newEnvVar?:
-							| {
-									/**
-									 * @description The date when the Shared Env Var was created.
-									 *
-									 * Format: `date-time`
-									 * @example 2021-02-10T13:11:49.180Z
-									 * @type string | undefined
-									 */
-									created?: string | undefined;
-									/**
-									 * @description The name of the Shared Env Var.
-									 * @example my-api-key
-									 * @type string | undefined
-									 */
-									key?: string | undefined;
-									/**
-									 * @description The unique identifier of the owner (team) the Shared Env Var was created for.
-									 * @example team_LLHUOMOoDlqOp8wPE4kFo9pE
-									 * @type string | undefined
-									 */
-									ownerId?: (string | null) | undefined;
-									/**
-									 * @description The unique identifier of the Shared Env Var.
-									 * @example env_XCG7t7AIHuO2SBA8667zNUiM
-									 * @type string | undefined
-									 */
-									id?: string | undefined;
-									/**
-									 * @description The unique identifier of the user who created the Shared Env Var.
-									 * @example 2qDDuGFTWXBLDNnqZfWPDp1A
-									 * @type string | undefined
-									 */
-									createdBy?: (string | null) | undefined;
+									deletedAt?: number | undefined;
 									/**
 									 * @description The unique identifier of the user who deleted the Shared Env Var.
 									 * @example 2qDDuGFTWXBLDNnqZfWPDp1A
@@ -10020,46 +9794,34 @@ export type UserEvent = {
 									 */
 									deletedBy?: (string | null) | undefined;
 									/**
-									 * @description The unique identifier of the user who last updated the Shared Env Var.
-									 * @example 2qDDuGFTWXBLDNnqZfWPDp1A
+									 * @description The unique identifier of the Shared Env Var.
+									 * @example env_XCG7t7AIHuO2SBA8667zNUiM
 									 * @type string | undefined
 									 */
-									updatedBy?: (string | null) | undefined;
+									id?: string | undefined;
 									/**
-									 * @description Timestamp for when the Shared Env Var was created.
-									 * @example 1609492210000
-									 * @type number | undefined
-									 */
-									createdAt?: number | undefined;
-									/**
-									 * @description Timestamp for when the Shared Env Var was (soft) deleted.
-									 * @example 1609492210000
-									 * @type number | undefined
-									 */
-									deletedAt?: number | undefined;
-									/**
-									 * @description Timestamp for when the Shared Env Var was last updated.
-									 * @example 1609492210000
-									 * @type number | undefined
-									 */
-									updatedAt?: number | undefined;
-									/**
-									 * @description The value of the Shared Env Var.
+									 * @description The name of the Shared Env Var.
+									 * @example my-api-key
 									 * @type string | undefined
 									 */
-									value?: string | undefined;
+									key?: string | undefined;
+									/**
+									 * @description The last editor full name or username.
+									 * @type string | undefined
+									 */
+									lastEditedByDisplayName?: string | undefined;
+									/**
+									 * @description The unique identifier of the owner (team) the Shared Env Var was created for.
+									 * @example team_LLHUOMOoDlqOp8wPE4kFo9pE
+									 * @type string | undefined
+									 */
+									ownerId?: (string | null) | undefined;
 									/**
 									 * @description The unique identifiers of the projects which the Shared Env Var is linked to.
 									 * @example ["prj_2WjyKQmM8ZnGcJsPWMrHRHrE","prj_2WjyKQmM8ZnGcJsPWMrasEFg"]
 									 * @type array | undefined
 									 */
 									projectId?: string[] | undefined;
-									/**
-									 * @description The type of this cosmos doc instance, if blank, assume secret.
-									 * @example encrypted
-									 * @type string | undefined
-									 */
-									type?: UserEventPayloadNewEnvVarTypeEnumKey | undefined;
 									/**
 									 * @description environments this env variable targets
 									 * @example production
@@ -10067,10 +9829,62 @@ export type UserEvent = {
 									 */
 									target?: UserEventPayloadNewEnvVarTargetEnumKey[] | undefined;
 									/**
+									 * @description The type of this cosmos doc instance, if blank, assume secret.
+									 * @example encrypted
+									 * @type string | undefined
+									 */
+									type?: UserEventPayloadNewEnvVarTypeEnumKey | undefined;
+									/**
+									 * @description Timestamp for when the Shared Env Var was last updated.
+									 * @example 1609492210000
+									 * @type number | undefined
+									 */
+									updatedAt?: number | undefined;
+									/**
+									 * @description The unique identifier of the user who last updated the Shared Env Var.
+									 * @example 2qDDuGFTWXBLDNnqZfWPDp1A
+									 * @type string | undefined
+									 */
+									updatedBy?: (string | null) | undefined;
+									/**
+									 * @description The value of the Shared Env Var.
+									 * @type string | undefined
+									 */
+									value?: string | undefined;
+							  }
+							| undefined;
+						oldEnvVar?:
+							| {
+									/**
 									 * @description whether or not this env varible applies to custom environments
 									 * @type boolean | undefined
 									 */
 									applyToAllCustomEnvironments?: (false | true) | undefined;
+									/**
+									 * @description A user provided comment that describes what this Shared Env Var is for.
+									 * @type string | undefined
+									 */
+									comment?: string | undefined;
+									/**
+									 * @description The date when the Shared Env Var was created.
+									 *
+									 * Format: `date-time`
+									 * @example 2021-02-10T13:11:49.180Z
+									 * @type string | undefined
+									 */
+									created?: string | undefined;
+									/**
+									 * @description Timestamp for when the Shared Env Var was created.
+									 * @example 1609492210000
+									 * @type number | undefined
+									 */
+									createdAt?: number | undefined;
+									/**
+									 * @description The unique identifier of the user who created the Shared Env Var.
+									 * @example 2qDDuGFTWXBLDNnqZfWPDp1A
+									 * @type string | undefined
+									 */
+									createdBy?: (string | null) | undefined;
 									/**
 									 * @description The custom environment IDs that this Shared Env Var is scoped to.
 									 * @type array | undefined
@@ -10082,49 +9896,109 @@ export type UserEvent = {
 									 */
 									decrypted?: (false | true) | undefined;
 									/**
-									 * @description A user provided comment that describes what this Shared Env Var is for.
+									 * @description Timestamp for when the Shared Env Var was (soft) deleted.
+									 * @example 1609492210000
+									 * @type number | undefined
+									 */
+									deletedAt?: number | undefined;
+									/**
+									 * @description The unique identifier of the user who deleted the Shared Env Var.
+									 * @example 2qDDuGFTWXBLDNnqZfWPDp1A
 									 * @type string | undefined
 									 */
-									comment?: string | undefined;
+									deletedBy?: (string | null) | undefined;
+									/**
+									 * @description The unique identifier of the Shared Env Var.
+									 * @example env_XCG7t7AIHuO2SBA8667zNUiM
+									 * @type string | undefined
+									 */
+									id?: string | undefined;
+									/**
+									 * @description The name of the Shared Env Var.
+									 * @example my-api-key
+									 * @type string | undefined
+									 */
+									key?: string | undefined;
 									/**
 									 * @description The last editor full name or username.
 									 * @type string | undefined
 									 */
 									lastEditedByDisplayName?: string | undefined;
+									/**
+									 * @description The unique identifier of the owner (team) the Shared Env Var was created for.
+									 * @example team_LLHUOMOoDlqOp8wPE4kFo9pE
+									 * @type string | undefined
+									 */
+									ownerId?: (string | null) | undefined;
+									/**
+									 * @description The unique identifiers of the projects which the Shared Env Var is linked to.
+									 * @example ["prj_2WjyKQmM8ZnGcJsPWMrHRHrE","prj_2WjyKQmM8ZnGcJsPWMrasEFg"]
+									 * @type array | undefined
+									 */
+									projectId?: string[] | undefined;
+									/**
+									 * @description environments this env variable targets
+									 * @example production
+									 * @type array | undefined
+									 */
+									target?: UserEventPayloadOldEnvVarTargetEnumKey[] | undefined;
+									/**
+									 * @description The type of this cosmos doc instance, if blank, assume secret.
+									 * @example encrypted
+									 * @type string | undefined
+									 */
+									type?: UserEventPayloadOldEnvVarTypeEnumKey | undefined;
+									/**
+									 * @description Timestamp for when the Shared Env Var was last updated.
+									 * @example 1609492210000
+									 * @type number | undefined
+									 */
+									updatedAt?: number | undefined;
+									/**
+									 * @description The unique identifier of the user who last updated the Shared Env Var.
+									 * @example 2qDDuGFTWXBLDNnqZfWPDp1A
+									 * @type string | undefined
+									 */
+									updatedBy?: (string | null) | undefined;
+									/**
+									 * @description The value of the Shared Env Var.
+									 * @type string | undefined
+									 */
+									value?: string | undefined;
 							  }
 							| undefined;
 						updateDiff?:
 							| {
+									changedValue: false | true;
 									id: string;
 									key?: string | undefined;
+									newCustomEnvironmentIds?: string[] | undefined;
 									newKey?: string | undefined;
-									oldTarget?: UserEventPayloadUpdateDiffOldTargetEnumKey[] | undefined;
-									newTarget?: UserEventPayloadUpdateDiffNewTargetEnumKey[] | undefined;
-									oldType?: string | undefined;
-									newType?: string | undefined;
-									oldProjects?:
-										| {
-												projectName?: string | undefined;
-												projectId: string;
-										  }[]
-										| undefined;
 									newProjects?:
 										| {
-												projectName?: string | undefined;
 												projectId: string;
+												projectName?: string | undefined;
 										  }[]
 										| undefined;
+									newTarget?: UserEventPayloadUpdateDiffNewTargetEnumKey[] | undefined;
+									newType?: string | undefined;
 									oldCustomEnvironmentIds?: string[] | undefined;
-									newCustomEnvironmentIds?: string[] | undefined;
-									changedValue: false | true;
+									oldProjects?:
+										| {
+												projectId: string;
+												projectName?: string | undefined;
+										  }[]
+										| undefined;
+									oldTarget?: UserEventPayloadUpdateDiffOldTargetEnumKey[] | undefined;
+									oldType?: string | undefined;
 							  }
 							| undefined;
 				  }
 				| {
-						projectId: string;
-						scope: string;
-						source: string;
 						expiresAt?: (number | null) | undefined;
+						projectId: string;
+						scope: string;
+						source: string;
 				  }
 				| {
 						projectId: string;
@@ -10132,47 +10006,47 @@ export type UserEvent = {
 						source: string;
 				  }
 				| {
+						configVersion: string | number;
 						projectId: string;
 						projectName: string;
-						configVersion: string | number;
 				  }
 				| {
 						configVersion: string | number;
 				  }
 				| {
-						configVersion: string | number;
 						configChangeCount?: number | undefined;
 						configChanges?: object[] | undefined;
+						configVersion: string | number;
 				  }
 				| {
+						configChangeCount: number;
+						configChanges: object[];
+						configVersion: number;
 						projectId: string;
 						projectName?: string | undefined;
 						restore: false | true;
-						configVersion: number;
-						configChangeCount: number;
-						configChanges: object[];
 				  }
 				| {
 						projectId: string;
-						rulesetName: string;
 						ruleGroups: {
 							[key: string]: {
-								active: false | true;
 								action?: ActionEnumKey | undefined;
+								active: false | true;
 							};
 						};
+						rulesetName: string;
 				  }
 				| {
+						action?: UserEventPayloadActionEnumKey | undefined;
+						active: false | true;
 						projectId: string;
 						rulesetName: string;
-						active: false | true;
-						action?: UserEventPayloadActionEnumKey | undefined;
 				  }
 				| {
+						newOwnerId: string;
+						previousOwnerId: string;
 						projectId: string;
 						projectName?: string | undefined;
-						previousOwnerId: string;
-						newOwnerId: string;
 				  }
 				| {
 						action: UserEventPayloadActionEnumKey;
@@ -10181,71 +10055,70 @@ export type UserEvent = {
 						source: UserEventPayloadSourceEnumKey;
 				  }
 				| {
-						provider: UserEventPayloadProviderEnumKey;
-						/**
-						 * @description Display name only. Logins are mutable; join on `actorAccountId`.
-						 * @type string
-						 */
-						actorLogin: string | null;
 						/**
 						 * @description Stable account id on `provider`.
 						 * @type string
 						 */
 						actorAccountId: string | null;
 						/**
-						 * @description Set only when an App installation token was minted (GitHub only).
+						 * @description Display name only. Logins are mutable; join on `actorAccountId`.
 						 * @type string
 						 */
-						installationId: string | null;
-						usedAppToken: false | true;
+						actorLogin: string | null;
 						/**
-						 * @description Source repository, \"owner/name\". Null when the pushed content was generated in-request (push-files-to-repo) rather than copied from a repository.
+						 * @description Branch actually pushed to, or the requested one if blocked.
 						 * @type string
 						 */
-						sourceRepo: string | null;
-						sourceCommitSha: string | null;
+						destinationBranch: string | null;
 						/**
 						 * @description \"owner/name\", or the raw request value if blocked before it resolved.
 						 * @type string
 						 */
 						destinationRepo: string;
 						/**
-						 * @description Branch actually pushed to, or the requested one if blocked.
-						 * @type string
+						 * @description Sanitized code, never a raw error message.
+						 * @type string | undefined
 						 */
-						destinationBranch: string | null;
-						resultCommitSha: string | null;
-						outcome: UserEventPayloadOutcomeEnumKey;
+						failureCode?: string | undefined;
 						/**
 						 * @description Mirrors `PushFailureStage` in `@api/git-push-repo`.
 						 * @type string | undefined
 						 */
 						failureStage?: UserEventPayloadFailureStageEnumKey | undefined;
 						/**
-						 * @description Sanitized code, never a raw error message.
-						 * @type string | undefined
+						 * @description Set only when an App installation token was minted (GitHub only).
+						 * @type string
 						 */
-						failureCode?: string | undefined;
+						installationId: string | null;
+						outcome: UserEventPayloadOutcomeEnumKey;
+						provider: UserEventPayloadProviderEnumKey;
+						resultCommitSha: string | null;
+						sourceCommitSha: string | null;
+						/**
+						 * @description Source repository, \"owner/name\". Null when the pushed content was generated in-request (push-files-to-repo) rather than copied from a repository.
+						 * @type string
+						 */
+						sourceRepo: string | null;
+						usedAppToken: false | true;
 				  }
 				| {
-						projectId: string;
 						fromDeploymentId: string;
-						toDeploymentId: string;
+						projectId: string;
 						projectName: string;
 						reason?: string | undefined;
+						toDeploymentId: string;
 				  }
 				| {
-						integrationId: string;
 						configurationId: string;
-						integrationSlug: string;
+						integrationId: string;
 						integrationName: string;
+						integrationSlug: string;
 				  }
 				| {
-						userId: string;
-						integrationId: string;
 						configurationId: string;
-						integrationSlug: string;
+						integrationId: string;
 						integrationName?: string | undefined;
+						integrationSlug: string;
 						newOwner: {
 							abuse?:
 								| {
@@ -10256,13 +10129,13 @@ export type UserEvent = {
 										blockHistory?:
 											| {
 													action: UserEventPayloadNewOwnerAbuseBlockHistoryActionEnumKey;
-													createdAt: number;
-													caseId?: string | undefined;
-													reason: string;
 													actor?: string | undefined;
-													statusCode?: number | undefined;
+													caseId?: string | undefined;
 													comment?: string | undefined;
+													createdAt: number;
 													ineligibleForAppeal?: (false | true) | undefined;
+													reason: string;
+													statusCode?: number | undefined;
 											  }[]
 											| undefined;
 										/**
@@ -10270,19 +10143,6 @@ export type UserEvent = {
 										 * @type array | undefined
 										 */
 										gitAuthHistory?: string[] | undefined;
-										/**
-										 * @description (scanner history). Since November 2021. First element is newest.
-										 * @type array | undefined
-										 */
-										history?:
-											| {
-													scanner: string;
-													reason: string;
-													by: string;
-													byId: string;
-													at: number;
-											  }[]
-											| undefined;
 										/**
 										 * @description Since September 2023. How often did this owner trigger an actual git lineage deploy block?
 										 * @type number | undefined
@@ -10294,21 +10154,39 @@ export type UserEvent = {
 										 */
 										gitLineageBlocksDry?: number | undefined;
 										/**
+										 * @description (scanner history). Since November 2021. First element is newest.
+										 * @type array | undefined
+										 */
+										history?:
+											| {
+													at: number;
+													by: string;
+													byId: string;
+													reason: string;
+													scanner: string;
+											  }[]
+											| undefined;
+										/**
 										 * @description Since November 2021. Guides the abuse scanner in build container.
 										 * @type string | undefined
 										 */
 										scanner?: string | undefined;
-										/**
-										 * @description Since December 2025. UTC timestamp string of when an auto-unblock is scheduled. Format: \"Wed, 03 Dec 2025 20:32:13 GMT\"
-										 * @type string | undefined
-										 */
-										scheduledUnblockAt?: string | undefined;
 										/**
 										 * @description Since June 2026. A hard block that is scheduled (the delay varies by source; see `executeAt`) but not yet executed. Powers admin visibility, scheduler dedup, and cancellation. Cleared on execution or when the team is unblocked/reviewed before `executeAt`; the executor treats its absence as \"block cancelled\".
 										 * @type object | undefined
 										 */
 										scheduledBlock?:
 											| {
+													/**
+													 * @description Absent from the automated evaluation path, which has no case.
+													 * @type string | undefined
+													 */
+													caseId?: string | undefined;
+													/**
+													 * @description Unix ms timestamp of when the marker was written.
+													 * @type number
+													 */
+													createdAt: number;
 													/**
 													 * @description Unix ms timestamp of the scheduled EventBridge execution.
 													 * @type number
@@ -10320,39 +10198,48 @@ export type UserEvent = {
 													 */
 													reason: string;
 													/**
-													 * @description What triggered the scheduled block (string value of `TeamBlockSource`).
-													 * @type string
-													 */
-													source: string;
-													/**
-													 * @description Unix ms timestamp of when the marker was written.
-													 * @type number
-													 */
-													createdAt: number;
-													/**
-													 * @description Absent from the automated evaluation path, which has no case.
-													 * @type string | undefined
-													 */
-													caseId?: string | undefined;
-													/**
 													 * @description EventBridge schedule name, persisted so the pending event can be cancelled.
 													 * @type string | undefined
 													 */
 													scheduleName?: string | undefined;
+													/**
+													 * @description What triggered the scheduled block (string value of `TeamBlockSource`).
+													 * @type string
+													 */
+													source: string;
 											  }
 											| undefined;
+										/**
+										 * @description Since December 2025. UTC timestamp string of when an auto-unblock is scheduled. Format: \"Wed, 03 Dec 2025 20:32:13 GMT\"
+										 * @type string | undefined
+										 */
+										scheduledUnblockAt?: string | undefined;
 										/**
 										 * @description Since November 2021
 										 * @type number
 										 */
 										updatedAt: number;
-										creationUserAgent?: string | undefined;
 										creationIp?: string | undefined;
+										creationUserAgent?: string | undefined;
 										removedPhoneNumbers?: string | undefined;
 								  }
 								| undefined;
 							acceptanceState?: string | undefined;
 							acceptedAt?: number | undefined;
+							activeDashboardViews?:
+								| {
+										favoritesViewPreference?:
+											| (UserEventPayloadNewOwnerActiveDashboardViewsFavoritesViewPreferenceEnumKey | null)
+											| undefined;
+										recentsViewPreference?:
+											| (UserEventPayloadNewOwnerActiveDashboardViewsRecentsViewPreferenceEnumKey | null)
+											| undefined;
+										scopeId: string;
+										viewPreference?:
+											| (UserEventPayloadNewOwnerActiveDashboardViewsViewPreferenceEnumKey | null)
+											| undefined;
+								  }[]
+								| undefined;
 							avatar?: string | undefined;
 							billing: {
 								plan: UserEventPayloadNewOwnerBillingPlanEnumKey;
@@ -10364,80 +10251,769 @@ export type UserEvent = {
 							credentials?:
 								| (
 										| {
-												type: UserEventPayloadNewOwnerCredentialsTypeEnumKey;
 												id: string;
+												type: UserEventPayloadNewOwnerCredentialsTypeEnumKey;
 										  }
 										| {
-												type: "github-oauth-custom-host";
 												host: string;
 												id: string;
+												type: "github-oauth-custom-host";
 										  }
 								  )[]
 								| undefined;
 							customerId?: (string | null) | undefined;
-							orbCustomerId?: (string | null) | undefined;
 							dataCache?:
 								| {
 										excessBillingEnabled?: (false | true) | undefined;
 								  }
 								| undefined;
+							defaultTeamId?: string | undefined;
 							deletedAt?: (number | null) | undefined;
 							deploymentSecret: string;
 							dismissedTeams?: string[] | undefined;
 							dismissedToasts?:
 								| {
-										name: string;
 										dismissals: {
-											scopeId: string;
 											createdAt: number;
+											scopeId: string;
 										}[];
-								  }[]
-								| undefined;
-							favoriteProjectsAndSpaces?:
-								| {
-										teamId: string;
-										projectId: string;
+										name: string;
 								  }[]
 								| undefined;
 							email: string;
+							emailDomains?: string[] | undefined;
+							emailNotifications?:
+								| {
+										rules?:
+											| {
+													[key: string]: {
+														email: string;
+													};
+											  }
+											| undefined;
+								  }
+								| undefined;
+							/**
+							 * @description Whether the Vercel Toolbar is enabled for preview deployments.
+							 * @type string | undefined
+							 */
+							enablePreviewFeedback?:
+								| UserEventPayloadNewOwnerEnablePreviewFeedbackEnumKey
+								| undefined;
+							favoriteProjectsAndSpaces?:
+								| {
+										projectId: string;
+										teamId: string;
+								  }[]
+								| undefined;
+							/**
+							 * @description Information about which features are blocked for a user. Blocks can be either soft (the user can still access the feature, but with a warning, e.g. prompting an upgrade) or hard (the user cannot access the feature at all).
+							 * @type object | undefined
+							 */
+							featureBlocks?:
+								| {
+										blob?:
+											| (
+													| {
+															blockedFrom?: number | undefined;
+															blockedUntil?: number | undefined;
+															blockReason: "limits_exceeded";
+															updatedAt: number;
+															overageReason: UserEventPayloadNewOwnerFeatureBlocksBlobOverageReasonEnumKey;
+													  }
+													| {
+															blockedFrom?: number | undefined;
+															blockedUntil?: number | undefined;
+															blockReason: UserEventPayloadNewOwnerFeatureBlocksBlobBlockReasonEnumKey;
+															updatedAt: number;
+													  }
+											  )
+											| undefined;
+										connexForwardTriggers?:
+											| {
+													blockedFrom?: number | undefined;
+													blockedUntil?: number | undefined;
+													blockReason: UserEventPayloadNewOwnerFeatureBlocksConnexForwardTriggersBlockReasonEnumKey;
+													updatedAt: number;
+											  }
+											| undefined;
+										connexTokenRequests?:
+											| {
+													blockedFrom?: number | undefined;
+													blockedUntil?: number | undefined;
+													blockReason: UserEventPayloadNewOwnerFeatureBlocksConnexTokenRequestsBlockReasonEnumKey;
+													updatedAt: number;
+											  }
+											| undefined;
+										dataCache?:
+											| {
+													blockedFrom?: number | undefined;
+													blockedUntil?: number | undefined;
+													blockReason: UserEventPayloadNewOwnerFeatureBlocksDataCacheBlockReasonEnumKey;
+													updatedAt: number;
+											  }
+											| undefined;
+										imageOptimizationTransformation?:
+											| {
+													blockedFrom?: number | undefined;
+													blockedUntil?: number | undefined;
+													blockReason: UserEventPayloadNewOwnerFeatureBlocksImageOptimizationTransformationBlockReasonEnumKey;
+													updatedAt: number;
+											  }
+											| undefined;
+										kmsOperations?:
+											| {
+													blockedFrom?: number | undefined;
+													blockedUntil?: number | undefined;
+													blockReason: UserEventPayloadNewOwnerFeatureBlocksKmsOperationsBlockReasonEnumKey;
+													updatedAt: number;
+											  }
+											| undefined;
+										microfrontendsRequest?:
+											| {
+													blockedFrom?: number | undefined;
+													blockedUntil?: number | undefined;
+													blockReason: UserEventPayloadNewOwnerFeatureBlocksMicrofrontendsRequestBlockReasonEnumKey;
+													updatedAt: number;
+											  }
+											| undefined;
+										/**
+										 * @description A soft block indicates a temporary pause in data collection (ex limit exceeded for the current cycle) A hard block indicates a stoppage in data collection that requires manual intervention (ex upgrading a pro trial)
+										 * @type object | undefined
+										 */
+										monitoring?:
+											| {
+													blockedFrom?: number | undefined;
+													blockedUntil?: number | undefined;
+													blockReason: UserEventPayloadNewOwnerFeatureBlocksMonitoringBlockReasonEnumKey;
+													updatedAt: number;
+													blockType: UserEventPayloadNewOwnerFeatureBlocksMonitoringBlockTypeEnumKey;
+											  }
+											| undefined;
+										observabilityPlus?:
+											| {
+													blockedFrom?: number | undefined;
+													blockedUntil?: number | undefined;
+													blockReason: UserEventPayloadNewOwnerFeatureBlocksObservabilityPlusBlockReasonEnumKey;
+													updatedAt: number;
+													blockType: UserEventPayloadNewOwnerFeatureBlocksObservabilityPlusBlockTypeEnumKey;
+											  }
+											| undefined;
+										postgres?:
+											| (
+													| {
+															blockedFrom?: number | undefined;
+															blockedUntil?: number | undefined;
+															blockReason: "limits_exceeded";
+															updatedAt: number;
+															overageReason: UserEventPayloadNewOwnerFeatureBlocksPostgresOverageReasonEnumKey;
+													  }
+													| {
+															blockedFrom?: number | undefined;
+															blockedUntil?: number | undefined;
+															blockReason: UserEventPayloadNewOwnerFeatureBlocksPostgresBlockReasonEnumKey;
+															updatedAt: number;
+													  }
+											  )
+											| undefined;
+										redis?:
+											| (
+													| {
+															blockedFrom?: number | undefined;
+															blockedUntil?: number | undefined;
+															blockReason: "limits_exceeded";
+															updatedAt: number;
+															overageReason: UserEventPayloadNewOwnerFeatureBlocksRedisOverageReasonEnumKey;
+													  }
+													| {
+															blockedFrom?: number | undefined;
+															blockedUntil?: number | undefined;
+															blockReason: UserEventPayloadNewOwnerFeatureBlocksRedisBlockReasonEnumKey;
+															updatedAt: number;
+													  }
+											  )
+											| undefined;
+										sandboxStorage?:
+											| {
+													blockedFrom?: number | undefined;
+													blockedUntil?: number | undefined;
+													blockReason: UserEventPayloadNewOwnerFeatureBlocksSandboxStorageBlockReasonEnumKey;
+													updatedAt: number;
+											  }
+											| undefined;
+										sourceImages?:
+											| {
+													blockedFrom?: number | undefined;
+													blockedUntil?: number | undefined;
+													blockReason: UserEventPayloadNewOwnerFeatureBlocksSourceImagesBlockReasonEnumKey;
+													updatedAt: number;
+											  }
+											| undefined;
+										/**
+										 * @description Pauses Speed Insights free data-point ingestion when the team-wide free allocation is exhausted. The block lasts at least 14 days and is extended while rolling usage stays above half of the allocation.
+										 * @type object | undefined
+										 */
+										speedInsightsFree?:
+											| {
+													blockedFrom?: number | undefined;
+													blockedUntil?: number | undefined;
+													blockReason: UserEventPayloadNewOwnerFeatureBlocksSpeedInsightsFreeBlockReasonEnumKey;
+													updatedAt: number;
+											  }
+											| undefined;
+										tracing?:
+											| {
+													blockedFrom?: number | undefined;
+													blockedUntil?: number | undefined;
+													blockReason: UserEventPayloadNewOwnerFeatureBlocksTracingBlockReasonEnumKey;
+													updatedAt: number;
+											  }
+											| undefined;
+										vcr?:
+											| {
+													blockedFrom?: number | undefined;
+													blockedUntil?: number | undefined;
+													blockReason: UserEventPayloadNewOwnerFeatureBlocksVcrBlockReasonEnumKey;
+													updatedAt: number;
+											  }
+											| undefined;
+										webAnalytics?:
+											| {
+													blockedFrom?: number | undefined;
+													blockedUntil?: number | undefined;
+													blockReason: UserEventPayloadNewOwnerFeatureBlocksWebAnalyticsBlockReasonEnumKey;
+													updatedAt: number;
+													graceEmailSentAt?: number | undefined;
+											  }
+											| undefined;
+										workflowEvents?:
+											| {
+													blockedFrom?: number | undefined;
+													blockedUntil?: number | undefined;
+													blockReason: UserEventPayloadNewOwnerFeatureBlocksWorkflowEventsBlockReasonEnumKey;
+													updatedAt: number;
+											  }
+											| undefined;
+										workflowStorageWrite?:
+											| {
+													blockedFrom?: number | undefined;
+													blockedUntil?: number | undefined;
+													blockReason: UserEventPayloadNewOwnerFeatureBlocksWorkflowStorageWriteBlockReasonEnumKey;
+													updatedAt: number;
+											  }
+											| undefined;
+								  }
+								| undefined;
 							id: string;
 							importFlowGitNamespace?: ((string | number) | null) | undefined;
 							importFlowGitNamespaceId?: ((string | number) | null) | undefined;
 							importFlowGitProvider?:
 								| (UserEventPayloadNewOwnerImportFlowGitProviderEnumKey | null)
 								| undefined;
-							preferredScopesAndGitNamespaces?:
-								| {
-										scopeId: string;
-										gitNamespaceId: (string | number) | null;
-								  }[]
-								| undefined;
 							isDomainReseller?: (false | true) | undefined;
+							/**
+							 * @description Indicates that the underlying user entity is a managed user for the enterprise it\'s associated with The intention is that this field is only set to true for users that are provisioned by the enterprise which means that the domain associated with the user\'s email is the same domain associated with the team Allowing us to query information about the user\'s team at login time through the domain verification service
+							 * @type boolean | undefined
+							 */
+							isEnterpriseManaged?: (false | true) | undefined;
+							/**
+							 * @description Whether MFA is enforced for this user. Set to true when the user has a
+							 * @type boolean | undefined
+							 */
+							isMFAEnforced?: (false | true) | undefined;
 							isZeitPub?: (false | true) | undefined;
-							testAccountExpiresAt?: number | undefined;
 							maxActiveSlots?: number | undefined;
+							/**
+							 * @description Introduced 2022-04-19 Number of maximum trials to allocate to a user. When undefined, defaults to MAX_TRIALS in utils/api-teams/user-has-trial-available.ts. This is set to trialTeamIds + 1 by services/api-backoffice/src/handlers/add-additional-trial.ts.
+							 * @type number | undefined
+							 */
+							maxTrials?: number | undefined;
+							/**
+							 * @description MFA configuration. When enabled, the user will be required to provide a second factor of authentication when logging in.
+							 * @type object | undefined
+							 */
+							mfaConfiguration?:
+								| {
+										enabled: false | true;
+										enabledAt?: number | undefined;
+										/**
+										 * @description History of MFA state changes (enabled/disabled events). Most recent events first.
+										 * @type array | undefined
+										 */
+										history?:
+											| {
+													/**
+													 * @description The action that occurred
+													 * @type string
+													 */
+													action: UserEventPayloadNewOwnerMfaConfigurationHistoryActionEnumKey;
+													/**
+													 * @description ID of the actor who made the change - For user actions: the user\'s own ID - For admin actions: the admin\'s user ID
+													 * @type string
+													 */
+													actorId: string;
+													/**
+													 * @description Type of actor
+													 * @type string
+													 */
+													actorType: UserEventPayloadNewOwnerMfaConfigurationHistoryActorTypeEnumKey;
+													/**
+													 * @description Method used for the state change - \'totp\': User set up TOTP authenticator - \'passkey\': User registered a passkey - \'user_disabled\': User disabled their own MFA - \'admin_removal\': Admin removed MFA via backoffice - \'self_serve_recovery\': User disabled their own MFA through the self-serve MFA disable recovery flow (a \"Locked Out User\" with only a passkey) - \'unknown\': Method unknown (for pre-tracking events)
+													 * @type string
+													 */
+													method: UserEventPayloadNewOwnerMfaConfigurationHistoryMethodEnumKey;
+													/**
+													 * @description Optional: Additional context or reason e.g., \"Account recovery request - ticket #12345\"
+													 * @type string | undefined
+													 */
+													reason?: string | undefined;
+													/**
+													 * @description Unix timestamp (milliseconds) when the change occurred. May be null for events that occurred before history tracking was implemented.
+													 * @type number
+													 */
+													timestamp: number | null;
+											  }[]
+											| undefined;
+										recoveryCodes: string[];
+										totp?:
+											| {
+													createdAt: number;
+													secret: string;
+											  }
+											| undefined;
+								  }
+								| undefined;
 							name?: string | undefined;
+							/**
+							 * @description An archive of information about the Northstar migration, derived from the old (deprecated) property, `northstarMigrationEvents`.
+							 * @type object | undefined
+							 */
+							northstarMigration?:
+								| {
+										/**
+										 * @description The migration end time timestamp for this user.
+										 * @type number
+										 */
+										endTime: number;
+										/**
+										 * @description The number of integration clients migrated for this user.
+										 * @type number
+										 */
+										integrationClients: number;
+										/**
+										 * @description The number of integration configurations migrated for this user.
+										 * @type number
+										 */
+										integrationConfigurations: number;
+										/**
+										 * @description The number of projects migrated for this user.
+										 * @type number
+										 */
+										projects: number;
+										/**
+										 * @description The migration start time timestamp for this user.
+										 * @type number
+										 */
+										startTime: number;
+										/**
+										 * @description The number of stores migrated for this user.
+										 * @type number
+										 */
+										stores: number;
+										/**
+										 * @description The ID of the team we created for this user.
+										 * @type string
+										 */
+										teamId: string;
+								  }
+								| undefined;
+							/**
+							 * @description The salesforce opportunity ID that this user is linked to. This is used to automatically associate a team of the user\'s choosing with the opportunity.
+							 * @type string | undefined
+							 */
+							opportunityId?: string | undefined;
+							orbCustomerId?: (string | null) | undefined;
+							/**
+							 * @description Contains the timestamps for usage summary emails.
+							 * @type object | undefined
+							 */
+							overageMetadata?:
+								| {
+										/**
+										 * @description Tracks the last time we sent a daily summary email.
+										 * @type number | undefined
+										 */
+										dailyOverageSummaryEmailSentAt?: number | undefined;
+										/**
+										 * @description Tracks if the first time on-demand overage email has been sent.
+										 * @type number | undefined
+										 */
+										firstTimeOnDemandNotificationSentAt?: number | undefined;
+										/**
+										 * @description Tracks the last time we attempted to send an increased on-demand email. This check is to limit the number of attempts per day.
+										 * @type number | undefined
+										 */
+										increasedOnDemandEmailAttemptedAt?: number | undefined;
+										/**
+										 * @description Tracks the last time we sent a increased on-demand email.
+										 * @type number | undefined
+										 */
+										increasedOnDemandEmailSentAt?: number | undefined;
+										/**
+										 * @description Tracks when the overage summary email will stop auto-sending. We currently lock the user into email for a month after the last on-demand usage.
+										 * @type number | undefined
+										 */
+										overageSummaryExpiresAt?: number | undefined;
+										/**
+										 * @description Tracks the last time we sent a weekly summary email.
+										 * @type number | undefined
+										 */
+										weeklyOverageSummaryEmailSentAt?: number | undefined;
+								  }
+								| undefined;
+							overageUsageAlerts?:
+								| {
+										analyticsUsage?:
+											| {
+													blockedAt?: (number | null) | undefined;
+													blockGracePeriodStartedAt?: (number | null) | undefined;
+													currentThreshold: number;
+													warningAt?: (number | null) | undefined;
+											  }
+											| undefined;
+										artifacts?:
+											| {
+													blockedAt?: (number | null) | undefined;
+													blockGracePeriodStartedAt?: (number | null) | undefined;
+													currentThreshold: number;
+													warningAt?: (number | null) | undefined;
+											  }
+											| undefined;
+										bandwidth?:
+											| {
+													blockedAt?: (number | null) | undefined;
+													blockGracePeriodStartedAt?: (number | null) | undefined;
+													currentThreshold: number;
+													warningAt?: (number | null) | undefined;
+											  }
+											| undefined;
+										blobDataTransfer?:
+											| {
+													blockedAt?: (number | null) | undefined;
+													blockGracePeriodStartedAt?: (number | null) | undefined;
+													currentThreshold: number;
+													warningAt?: (number | null) | undefined;
+											  }
+											| undefined;
+										blobTotalAdvancedRequests?:
+											| {
+													blockedAt?: (number | null) | undefined;
+													blockGracePeriodStartedAt?: (number | null) | undefined;
+													currentThreshold: number;
+													warningAt?: (number | null) | undefined;
+											  }
+											| undefined;
+										blobTotalAvgSizeInBytes?:
+											| {
+													blockedAt?: (number | null) | undefined;
+													blockGracePeriodStartedAt?: (number | null) | undefined;
+													currentThreshold: number;
+													warningAt?: (number | null) | undefined;
+											  }
+											| undefined;
+										blobTotalGetResponseObjectSizeInBytes?:
+											| {
+													blockedAt?: (number | null) | undefined;
+													blockGracePeriodStartedAt?: (number | null) | undefined;
+													currentThreshold: number;
+													warningAt?: (number | null) | undefined;
+											  }
+											| undefined;
+										blobTotalSimpleRequests?:
+											| {
+													blockedAt?: (number | null) | undefined;
+													blockGracePeriodStartedAt?: (number | null) | undefined;
+													currentThreshold: number;
+													warningAt?: (number | null) | undefined;
+											  }
+											| undefined;
+										connectDataTransfer?:
+											| {
+													blockedAt?: (number | null) | undefined;
+													blockGracePeriodStartedAt?: (number | null) | undefined;
+													currentThreshold: number;
+													warningAt?: (number | null) | undefined;
+											  }
+											| undefined;
+										dataCacheRead?:
+											| {
+													blockedAt?: (number | null) | undefined;
+													blockGracePeriodStartedAt?: (number | null) | undefined;
+													currentThreshold: number;
+													warningAt?: (number | null) | undefined;
+											  }
+											| undefined;
+										dataCacheWrite?:
+											| {
+													blockedAt?: (number | null) | undefined;
+													blockGracePeriodStartedAt?: (number | null) | undefined;
+													currentThreshold: number;
+													warningAt?: (number | null) | undefined;
+											  }
+											| undefined;
+										edgeConfigRead?:
+											| {
+													blockedAt?: (number | null) | undefined;
+													blockGracePeriodStartedAt?: (number | null) | undefined;
+													currentThreshold: number;
+													warningAt?: (number | null) | undefined;
+											  }
+											| undefined;
+										edgeConfigWrite?:
+											| {
+													blockedAt?: (number | null) | undefined;
+													blockGracePeriodStartedAt?: (number | null) | undefined;
+													currentThreshold: number;
+													warningAt?: (number | null) | undefined;
+											  }
+											| undefined;
+										edgeFunctionExecutionUnits?:
+											| {
+													blockedAt?: (number | null) | undefined;
+													blockGracePeriodStartedAt?: (number | null) | undefined;
+													currentThreshold: number;
+													warningAt?: (number | null) | undefined;
+											  }
+											| undefined;
+										edgeMiddlewareInvocations?:
+											| {
+													blockedAt?: (number | null) | undefined;
+													blockGracePeriodStartedAt?: (number | null) | undefined;
+													currentThreshold: number;
+													warningAt?: (number | null) | undefined;
+											  }
+											| undefined;
+										edgeRequest?:
+											| {
+													blockedAt?: (number | null) | undefined;
+													blockGracePeriodStartedAt?: (number | null) | undefined;
+													currentThreshold: number;
+													warningAt?: (number | null) | undefined;
+											  }
+											| undefined;
+										edgeRequestAdditionalCpuDuration?:
+											| {
+													blockedAt?: (number | null) | undefined;
+													blockGracePeriodStartedAt?: (number | null) | undefined;
+													currentThreshold: number;
+													warningAt?: (number | null) | undefined;
+											  }
+											| undefined;
+										elasticConcurrencyBuildSlots?:
+											| {
+													blockedAt?: (number | null) | undefined;
+													blockGracePeriodStartedAt?: (number | null) | undefined;
+													currentThreshold: number;
+													warningAt?: (number | null) | undefined;
+											  }
+											| undefined;
+										fastDataTransfer?:
+											| {
+													blockedAt?: (number | null) | undefined;
+													blockGracePeriodStartedAt?: (number | null) | undefined;
+													currentThreshold: number;
+													warningAt?: (number | null) | undefined;
+											  }
+											| undefined;
+										fastOriginTransfer?:
+											| {
+													blockedAt?: (number | null) | undefined;
+													blockGracePeriodStartedAt?: (number | null) | undefined;
+													currentThreshold: number;
+													warningAt?: (number | null) | undefined;
+											  }
+											| undefined;
+										fluidCpuDuration?:
+											| {
+													blockedAt?: (number | null) | undefined;
+													blockGracePeriodStartedAt?: (number | null) | undefined;
+													currentThreshold: number;
+													warningAt?: (number | null) | undefined;
+											  }
+											| undefined;
+										fluidDuration?:
+											| {
+													blockedAt?: (number | null) | undefined;
+													blockGracePeriodStartedAt?: (number | null) | undefined;
+													currentThreshold: number;
+													warningAt?: (number | null) | undefined;
+											  }
+											| undefined;
+										functionDuration?:
+											| {
+													blockedAt?: (number | null) | undefined;
+													blockGracePeriodStartedAt?: (number | null) | undefined;
+													currentThreshold: number;
+													warningAt?: (number | null) | undefined;
+											  }
+											| undefined;
+										functionInvocation?:
+											| {
+													blockedAt?: (number | null) | undefined;
+													blockGracePeriodStartedAt?: (number | null) | undefined;
+													currentThreshold: number;
+													warningAt?: (number | null) | undefined;
+											  }
+											| undefined;
+										imageOptimizationCacheRead?:
+											| {
+													blockedAt?: (number | null) | undefined;
+													blockGracePeriodStartedAt?: (number | null) | undefined;
+													currentThreshold: number;
+													warningAt?: (number | null) | undefined;
+											  }
+											| undefined;
+										imageOptimizationCacheWrite?:
+											| {
+													blockedAt?: (number | null) | undefined;
+													blockGracePeriodStartedAt?: (number | null) | undefined;
+													currentThreshold: number;
+													warningAt?: (number | null) | undefined;
+											  }
+											| undefined;
+										imageOptimizationTransformation?:
+											| {
+													blockedAt?: (number | null) | undefined;
+													blockGracePeriodStartedAt?: (number | null) | undefined;
+													currentThreshold: number;
+													warningAt?: (number | null) | undefined;
+											  }
+											| undefined;
+										logDrainsVolume?:
+											| {
+													blockedAt?: (number | null) | undefined;
+													blockGracePeriodStartedAt?: (number | null) | undefined;
+													currentThreshold: number;
+													warningAt?: (number | null) | undefined;
+											  }
+											| undefined;
+										monitoringMetric?:
+											| {
+													blockedAt?: (number | null) | undefined;
+													blockGracePeriodStartedAt?: (number | null) | undefined;
+													currentThreshold: number;
+													warningAt?: (number | null) | undefined;
+											  }
+											| undefined;
+										observabilityEvent?:
+											| {
+													blockedAt?: (number | null) | undefined;
+													blockGracePeriodStartedAt?: (number | null) | undefined;
+													currentThreshold: number;
+													warningAt?: (number | null) | undefined;
+											  }
+											| undefined;
+										onDemandConcurrencyMinutes?:
+											| {
+													blockedAt?: (number | null) | undefined;
+													blockGracePeriodStartedAt?: (number | null) | undefined;
+													currentThreshold: number;
+													warningAt?: (number | null) | undefined;
+											  }
+											| undefined;
+										runtimeCacheRead?:
+											| {
+													blockedAt?: (number | null) | undefined;
+													blockGracePeriodStartedAt?: (number | null) | undefined;
+													currentThreshold: number;
+													warningAt?: (number | null) | undefined;
+											  }
+											| undefined;
+										runtimeCacheWrite?:
+											| {
+													blockedAt?: (number | null) | undefined;
+													blockGracePeriodStartedAt?: (number | null) | undefined;
+													currentThreshold: number;
+													warningAt?: (number | null) | undefined;
+											  }
+											| undefined;
+										serverlessFunctionExecution?:
+											| {
+													blockedAt?: (number | null) | undefined;
+													blockGracePeriodStartedAt?: (number | null) | undefined;
+													currentThreshold: number;
+													warningAt?: (number | null) | undefined;
+											  }
+											| undefined;
+										sourceImages?:
+											| {
+													blockedAt?: (number | null) | undefined;
+													blockGracePeriodStartedAt?: (number | null) | undefined;
+													currentThreshold: number;
+													warningAt?: (number | null) | undefined;
+											  }
+											| undefined;
+										wafOwaspExcessBytes?:
+											| {
+													blockedAt?: (number | null) | undefined;
+													blockGracePeriodStartedAt?: (number | null) | undefined;
+													currentThreshold: number;
+													warningAt?: (number | null) | undefined;
+											  }
+											| undefined;
+										wafOwaspRequests?:
+											| {
+													blockedAt?: (number | null) | undefined;
+													blockGracePeriodStartedAt?: (number | null) | undefined;
+													currentThreshold: number;
+													warningAt?: (number | null) | undefined;
+											  }
+											| undefined;
+										wafRateLimitRequest?:
+											| {
+													blockedAt?: (number | null) | undefined;
+													blockGracePeriodStartedAt?: (number | null) | undefined;
+													currentThreshold: number;
+													warningAt?: (number | null) | undefined;
+											  }
+											| undefined;
+										webAnalyticsEvent?:
+											| {
+													blockedAt?: (number | null) | undefined;
+													blockGracePeriodStartedAt?: (number | null) | undefined;
+													currentThreshold: number;
+													warningAt?: (number | null) | undefined;
+											  }
+											| undefined;
+								  }
+								| undefined;
 							phoneNumber?: string | undefined;
 							platformVersion: number | null;
+							preferredScopesAndGitNamespaces?:
+								| {
+										gitNamespaceId: (string | number) | null;
+										scopeId: string;
+								  }[]
+								| undefined;
 							preventAutoBlocking?:
 								| (number | UserEventPayloadNewOwnerPreventAutoBlockingKey)
+								| undefined;
+							projectCardWidgetPreferences?:
+								| {
+										config?:
+											| {
+													url: string;
+											  }
+											| undefined;
+										projectId: string;
+										widget: UserEventPayloadNewOwnerProjectCardWidgetPreferencesWidgetEnumKey;
+								  }[]
 								| undefined;
 							/**
 							 * @description Overrides our DEFAULT project domains limit per account or per project.
 							 * @type number | undefined
 							 */
 							projectDomainsLimit?: number | undefined;
-							projectCardWidgetPreferences?:
-								| {
-										projectId: string;
-										widget: UserEventPayloadNewOwnerProjectCardWidgetPreferencesWidgetEnumKey;
-										config?:
-											| {
-													url: string;
-											  }
-											| undefined;
-								  }[]
-								| undefined;
 							/**
 							 * @description Represents configuration for remote caching
 							 * @type object | undefined
@@ -10452,16 +11028,16 @@ export type UserEvent = {
 							removedConfigurationsAt?: number | undefined;
 							removedDeploymentsAt?: number | undefined;
 							removedDomiansAt?: number | undefined;
+							removedEdgeConfigsAt?: number | undefined;
 							removedEventsAt?: number | undefined;
 							removedProjectsAt?: number | undefined;
 							removedSecretsAt?: number | undefined;
 							removedSharedEnvVarsAt?: number | undefined;
-							removedEdgeConfigsAt?: number | undefined;
 							resourceConfig?:
 								| {
-										concurrentBuilds?: number | undefined;
-										nodeType?: string | undefined;
-										elasticConcurrencyEnabled?: (false | true) | undefined;
+										awsAccountIds?: string[] | undefined;
+										awsAccountType?: string | undefined;
+										blobStores?: number | undefined;
 										buildEntitlements?:
 											| {
 													enhancedBuilds?: (false | true) | undefined;
@@ -10474,35 +11050,35 @@ export type UserEvent = {
 														| undefined;
 											  }
 											| undefined;
-										awsAccountType?: string | undefined;
-										awsAccountIds?: string[] | undefined;
+										bulkRedirectsFreeLimitOverride?: number | undefined;
 										cfZoneName?: string | undefined;
-										imageOptimizationType?: string | undefined;
+										concurrentBuilds?: number | undefined;
+										cronJobsPerProject?: number | undefined;
+										customEnvironmentsPerProject?: number | undefined;
 										edgeConfigs?: number | undefined;
 										edgeConfigSize?: number | undefined;
-										edgeFunctionMaxSizeBytes?: number | undefined;
 										edgeFunctionExecutionTimeoutMs?: number | undefined;
-										serverlessFunctionMaxDuration?: number | undefined;
-										serverlessFunctionMaxMemorySize?: number | undefined;
-										kvDatabases?: number | undefined;
-										postgresDatabases?: number | undefined;
-										blobStores?: number | undefined;
-										integrationStores?: number | undefined;
-										cronJobsPerProject?: number | undefined;
-										microfrontendGroupsPerTeam?: number | undefined;
-										microfrontendProjectsPerGroup?: number | undefined;
+										edgeFunctionMaxSizeBytes?: number | undefined;
+										elasticConcurrencyEnabled?: (false | true) | undefined;
 										flagsExplorerOverridesThreshold?: number | undefined;
 										flagsExplorerUnlimitedOverrides?: (false | true) | undefined;
-										customEnvironmentsPerProject?: number | undefined;
+										imageOptimizationType?: string | undefined;
+										integrationStores?: number | undefined;
+										kvDatabases?: number | undefined;
+										microfrontendGroupsPerTeam?: number | undefined;
+										microfrontendProjectsPerGroup?: number | undefined;
+										nodeType?: string | undefined;
+										postgresDatabases?: number | undefined;
 										security?:
 											| {
-													rateLimit?: number | undefined;
 													customRules?: number | undefined;
 													ipBlocks?: number | undefined;
 													ipBypass?: number | undefined;
+													rateLimit?: number | undefined;
 											  }
 											| undefined;
-										bulkRedirectsFreeLimitOverride?: number | undefined;
+										serverlessFunctionMaxDuration?: number | undefined;
+										serverlessFunctionMaxMemorySize?: number | undefined;
 										/**
 										 * @description Build machine configuration recorded on a team or user `resourceConfig`. This is deliberately separate from the build machine config recorded on a deployment (`DeploymentBuildMachine` in `@api/deployments-types`). A team/user only expresses its default machine for new deployments; the per-build fields (`purchaseType`, `defaultPurchaseType`, `machineSelectionType`, `cores`, `memory`) are recorded on the deployment record when a build actually runs and never belong on a team/user document.
 										 * @type object | undefined
@@ -10528,29 +11104,15 @@ export type UserEvent = {
 								| {
 										[key: string]:
 											| {
-													max: number;
 													duration: number;
+													max: number;
 											  }
 											| {
-													minRate?: number | undefined;
 													maxRate?: number | undefined;
+													minRate?: number | undefined;
 													stepPerMinute?: number | undefined;
 											  };
 								  }
-								| undefined;
-							activeDashboardViews?:
-								| {
-										scopeId: string;
-										viewPreference?:
-											| (UserEventPayloadNewOwnerActiveDashboardViewsViewPreferenceEnumKey | null)
-											| undefined;
-										favoritesViewPreference?:
-											| (UserEventPayloadNewOwnerActiveDashboardViewsFavoritesViewPreferenceEnumKey | null)
-											| undefined;
-										recentsViewPreference?:
-											| (UserEventPayloadNewOwnerActiveDashboardViewsRecentsViewPreferenceEnumKey | null)
-											| undefined;
-								  }[]
 								| undefined;
 							secondaryEmails?:
 								| {
@@ -10558,465 +11120,37 @@ export type UserEvent = {
 										verified: false | true;
 								  }[]
 								| undefined;
-							emailDomains?: string[] | undefined;
-							emailNotifications?:
+							sfdcId?: string | undefined;
+							siftRoute?:
 								| {
-										rules?:
-											| {
-													[key: string]: {
-														email: string;
-													};
-											  }
-											| undefined;
+										name: "string";
 								  }
 								| undefined;
 							siftScore?: number | undefined;
 							siftScores?:
 								| {
 										[key: string]: {
-											score: number;
 											reasons: {
 												name: string;
 												value: string;
 											}[];
+											score: number;
 										};
 								  }
 								| undefined;
-							siftRoute?:
-								| {
-										name: "string";
-								  }
-								| undefined;
-							sfdcId?: string | undefined;
 							softBlock?:
 								| ({
 										blockedAt: number;
-										reason: UserEventPayloadNewOwnerSoftBlockReasonEnumKey;
 										blockedDueToOverageType?:
 											| UserEventPayloadNewOwnerSoftBlockBlockedDueToOverageTypeEnumKey
 											| undefined;
+										reason: UserEventPayloadNewOwnerSoftBlockReasonEnumKey;
 										/**
 										 * @description Since September 2026. Set only by `billing-usage-alerts` for usage plans with a `blockDurationMs`; its presence marks a pause that expires on its own.
 										 * @type number | undefined
 										 */
 										unpauseAt?: number | undefined;
 								  } | null)
-								| undefined;
-							stagingPrefix: string;
-							sysToken: string;
-							/**
-							 * @description A helper that allows to describe a relationship attribute. It receives the shape of a relationship plus the foreignKey name to make it mandatory in the resulting type.
-							 * @type array | undefined
-							 */
-							teams?:
-								| {
-										teamId: string;
-										createdAt: number;
-										role: UserEventPayloadNewOwnerTeamsRoleEnumKey;
-										confirmed: true;
-										confirmedAt: number;
-										accessRequestedAt?: number | undefined;
-										teamRoles?: UserEventPayloadNewOwnerTeamsTeamRolesEnumKey[] | undefined;
-										teamPermissions?:
-											| UserEventPayloadNewOwnerTeamsTeamPermissionsEnumKey[]
-											| undefined;
-										created: number;
-										joinedFrom?:
-											| {
-													origin: UserEventPayloadNewOwnerTeamsJoinedFromOriginEnumKey;
-													commitId?: string | undefined;
-													repoId?: string | undefined;
-													repoPath?: string | undefined;
-													gitUserId?: (string | number) | undefined;
-													gitUserLogin?: string | undefined;
-													ssoUserId?: string | undefined;
-													ssoConnectedAt?: number | undefined;
-													idpUserId?: string | undefined;
-													dsyncUserId?: string | undefined;
-													dsyncConnectedAt?: number | undefined;
-											  }
-											| undefined;
-								  }[]
-								| undefined;
-							/**
-							 * @description Introduced 2022-04-12 An array of teamIds (for trial teams created after 2022-04-01), created by the user in question. Used in determining whether the team has a trial available in utils/api-teams/user-has-trial-available.ts.
-							 * @type array | undefined
-							 */
-							trialTeamIds?: string[] | undefined;
-							/**
-							 * @description Introduced 2022-04-19 Number of maximum trials to allocate to a user. When undefined, defaults to MAX_TRIALS in utils/api-teams/user-has-trial-available.ts. This is set to trialTeamIds + 1 by services/api-backoffice/src/handlers/add-additional-trial.ts.
-							 * @type number | undefined
-							 */
-							maxTrials?: number | undefined;
-							/**
-							 * @description Deprecated on 2022-04-12 in favor of trialTeamIds and using utils/api-teams/user-has-trial-available.ts.
-							 * @type string | undefined
-							 */
-							trialTeamId?: string | undefined;
-							type: "user";
-							/**
-							 * @description Contains the timestamps when a user was notified about their usage
-							 * @type object | undefined
-							 */
-							usageAlerts?:
-								| ({
-										warningAt?: (number | null) | undefined;
-										blockingAt?: (number | null) | undefined;
-								  } | null)
-								| undefined;
-							overageUsageAlerts?:
-								| {
-										analyticsUsage?:
-											| {
-													currentThreshold: number;
-													warningAt?: (number | null) | undefined;
-													blockedAt?: (number | null) | undefined;
-													blockGracePeriodStartedAt?: (number | null) | undefined;
-											  }
-											| undefined;
-										artifacts?:
-											| {
-													currentThreshold: number;
-													warningAt?: (number | null) | undefined;
-													blockedAt?: (number | null) | undefined;
-													blockGracePeriodStartedAt?: (number | null) | undefined;
-											  }
-											| undefined;
-										bandwidth?:
-											| {
-													currentThreshold: number;
-													warningAt?: (number | null) | undefined;
-													blockedAt?: (number | null) | undefined;
-													blockGracePeriodStartedAt?: (number | null) | undefined;
-											  }
-											| undefined;
-										blobTotalAdvancedRequests?:
-											| {
-													currentThreshold: number;
-													warningAt?: (number | null) | undefined;
-													blockedAt?: (number | null) | undefined;
-													blockGracePeriodStartedAt?: (number | null) | undefined;
-											  }
-											| undefined;
-										blobTotalAvgSizeInBytes?:
-											| {
-													currentThreshold: number;
-													warningAt?: (number | null) | undefined;
-													blockedAt?: (number | null) | undefined;
-													blockGracePeriodStartedAt?: (number | null) | undefined;
-											  }
-											| undefined;
-										blobTotalGetResponseObjectSizeInBytes?:
-											| {
-													currentThreshold: number;
-													warningAt?: (number | null) | undefined;
-													blockedAt?: (number | null) | undefined;
-													blockGracePeriodStartedAt?: (number | null) | undefined;
-											  }
-											| undefined;
-										blobTotalSimpleRequests?:
-											| {
-													currentThreshold: number;
-													warningAt?: (number | null) | undefined;
-													blockedAt?: (number | null) | undefined;
-													blockGracePeriodStartedAt?: (number | null) | undefined;
-											  }
-											| undefined;
-										connectDataTransfer?:
-											| {
-													currentThreshold: number;
-													warningAt?: (number | null) | undefined;
-													blockedAt?: (number | null) | undefined;
-													blockGracePeriodStartedAt?: (number | null) | undefined;
-											  }
-											| undefined;
-										dataCacheRead?:
-											| {
-													currentThreshold: number;
-													warningAt?: (number | null) | undefined;
-													blockedAt?: (number | null) | undefined;
-													blockGracePeriodStartedAt?: (number | null) | undefined;
-											  }
-											| undefined;
-										dataCacheWrite?:
-											| {
-													currentThreshold: number;
-													warningAt?: (number | null) | undefined;
-													blockedAt?: (number | null) | undefined;
-													blockGracePeriodStartedAt?: (number | null) | undefined;
-											  }
-											| undefined;
-										edgeConfigRead?:
-											| {
-													currentThreshold: number;
-													warningAt?: (number | null) | undefined;
-													blockedAt?: (number | null) | undefined;
-													blockGracePeriodStartedAt?: (number | null) | undefined;
-											  }
-											| undefined;
-										edgeConfigWrite?:
-											| {
-													currentThreshold: number;
-													warningAt?: (number | null) | undefined;
-													blockedAt?: (number | null) | undefined;
-													blockGracePeriodStartedAt?: (number | null) | undefined;
-											  }
-											| undefined;
-										edgeFunctionExecutionUnits?:
-											| {
-													currentThreshold: number;
-													warningAt?: (number | null) | undefined;
-													blockedAt?: (number | null) | undefined;
-													blockGracePeriodStartedAt?: (number | null) | undefined;
-											  }
-											| undefined;
-										edgeMiddlewareInvocations?:
-											| {
-													currentThreshold: number;
-													warningAt?: (number | null) | undefined;
-													blockedAt?: (number | null) | undefined;
-													blockGracePeriodStartedAt?: (number | null) | undefined;
-											  }
-											| undefined;
-										edgeRequestAdditionalCpuDuration?:
-											| {
-													currentThreshold: number;
-													warningAt?: (number | null) | undefined;
-													blockedAt?: (number | null) | undefined;
-													blockGracePeriodStartedAt?: (number | null) | undefined;
-											  }
-											| undefined;
-										edgeRequest?:
-											| {
-													currentThreshold: number;
-													warningAt?: (number | null) | undefined;
-													blockedAt?: (number | null) | undefined;
-													blockGracePeriodStartedAt?: (number | null) | undefined;
-											  }
-											| undefined;
-										elasticConcurrencyBuildSlots?:
-											| {
-													currentThreshold: number;
-													warningAt?: (number | null) | undefined;
-													blockedAt?: (number | null) | undefined;
-													blockGracePeriodStartedAt?: (number | null) | undefined;
-											  }
-											| undefined;
-										fastDataTransfer?:
-											| {
-													currentThreshold: number;
-													warningAt?: (number | null) | undefined;
-													blockedAt?: (number | null) | undefined;
-													blockGracePeriodStartedAt?: (number | null) | undefined;
-											  }
-											| undefined;
-										fastOriginTransfer?:
-											| {
-													currentThreshold: number;
-													warningAt?: (number | null) | undefined;
-													blockedAt?: (number | null) | undefined;
-													blockGracePeriodStartedAt?: (number | null) | undefined;
-											  }
-											| undefined;
-										fluidCpuDuration?:
-											| {
-													currentThreshold: number;
-													warningAt?: (number | null) | undefined;
-													blockedAt?: (number | null) | undefined;
-													blockGracePeriodStartedAt?: (number | null) | undefined;
-											  }
-											| undefined;
-										fluidDuration?:
-											| {
-													currentThreshold: number;
-													warningAt?: (number | null) | undefined;
-													blockedAt?: (number | null) | undefined;
-													blockGracePeriodStartedAt?: (number | null) | undefined;
-											  }
-											| undefined;
-										functionDuration?:
-											| {
-													currentThreshold: number;
-													warningAt?: (number | null) | undefined;
-													blockedAt?: (number | null) | undefined;
-													blockGracePeriodStartedAt?: (number | null) | undefined;
-											  }
-											| undefined;
-										functionInvocation?:
-											| {
-													currentThreshold: number;
-													warningAt?: (number | null) | undefined;
-													blockedAt?: (number | null) | undefined;
-													blockGracePeriodStartedAt?: (number | null) | undefined;
-											  }
-											| undefined;
-										imageOptimizationCacheRead?:
-											| {
-													currentThreshold: number;
-													warningAt?: (number | null) | undefined;
-													blockedAt?: (number | null) | undefined;
-													blockGracePeriodStartedAt?: (number | null) | undefined;
-											  }
-											| undefined;
-										imageOptimizationCacheWrite?:
-											| {
-													currentThreshold: number;
-													warningAt?: (number | null) | undefined;
-													blockedAt?: (number | null) | undefined;
-													blockGracePeriodStartedAt?: (number | null) | undefined;
-											  }
-											| undefined;
-										imageOptimizationTransformation?:
-											| {
-													currentThreshold: number;
-													warningAt?: (number | null) | undefined;
-													blockedAt?: (number | null) | undefined;
-													blockGracePeriodStartedAt?: (number | null) | undefined;
-											  }
-											| undefined;
-										logDrainsVolume?:
-											| {
-													currentThreshold: number;
-													warningAt?: (number | null) | undefined;
-													blockedAt?: (number | null) | undefined;
-													blockGracePeriodStartedAt?: (number | null) | undefined;
-											  }
-											| undefined;
-										monitoringMetric?:
-											| {
-													currentThreshold: number;
-													warningAt?: (number | null) | undefined;
-													blockedAt?: (number | null) | undefined;
-													blockGracePeriodStartedAt?: (number | null) | undefined;
-											  }
-											| undefined;
-										blobDataTransfer?:
-											| {
-													currentThreshold: number;
-													warningAt?: (number | null) | undefined;
-													blockedAt?: (number | null) | undefined;
-													blockGracePeriodStartedAt?: (number | null) | undefined;
-											  }
-											| undefined;
-										observabilityEvent?:
-											| {
-													currentThreshold: number;
-													warningAt?: (number | null) | undefined;
-													blockedAt?: (number | null) | undefined;
-													blockGracePeriodStartedAt?: (number | null) | undefined;
-											  }
-											| undefined;
-										onDemandConcurrencyMinutes?:
-											| {
-													currentThreshold: number;
-													warningAt?: (number | null) | undefined;
-													blockedAt?: (number | null) | undefined;
-													blockGracePeriodStartedAt?: (number | null) | undefined;
-											  }
-											| undefined;
-										runtimeCacheRead?:
-											| {
-													currentThreshold: number;
-													warningAt?: (number | null) | undefined;
-													blockedAt?: (number | null) | undefined;
-													blockGracePeriodStartedAt?: (number | null) | undefined;
-											  }
-											| undefined;
-										runtimeCacheWrite?:
-											| {
-													currentThreshold: number;
-													warningAt?: (number | null) | undefined;
-													blockedAt?: (number | null) | undefined;
-													blockGracePeriodStartedAt?: (number | null) | undefined;
-											  }
-											| undefined;
-										serverlessFunctionExecution?:
-											| {
-													currentThreshold: number;
-													warningAt?: (number | null) | undefined;
-													blockedAt?: (number | null) | undefined;
-													blockGracePeriodStartedAt?: (number | null) | undefined;
-											  }
-											| undefined;
-										sourceImages?:
-											| {
-													currentThreshold: number;
-													warningAt?: (number | null) | undefined;
-													blockedAt?: (number | null) | undefined;
-													blockGracePeriodStartedAt?: (number | null) | undefined;
-											  }
-											| undefined;
-										wafOwaspExcessBytes?:
-											| {
-													currentThreshold: number;
-													warningAt?: (number | null) | undefined;
-													blockedAt?: (number | null) | undefined;
-													blockGracePeriodStartedAt?: (number | null) | undefined;
-											  }
-											| undefined;
-										wafOwaspRequests?:
-											| {
-													currentThreshold: number;
-													warningAt?: (number | null) | undefined;
-													blockedAt?: (number | null) | undefined;
-													blockGracePeriodStartedAt?: (number | null) | undefined;
-											  }
-											| undefined;
-										wafRateLimitRequest?:
-											| {
-													currentThreshold: number;
-													warningAt?: (number | null) | undefined;
-													blockedAt?: (number | null) | undefined;
-													blockGracePeriodStartedAt?: (number | null) | undefined;
-											  }
-											| undefined;
-										webAnalyticsEvent?:
-											| {
-													currentThreshold: number;
-													warningAt?: (number | null) | undefined;
-													blockedAt?: (number | null) | undefined;
-													blockGracePeriodStartedAt?: (number | null) | undefined;
-											  }
-											| undefined;
-								  }
-								| undefined;
-							/**
-							 * @description Contains the timestamps for usage summary emails.
-							 * @type object | undefined
-							 */
-							overageMetadata?:
-								| {
-										/**
-										 * @description Tracks if the first time on-demand overage email has been sent.
-										 * @type number | undefined
-										 */
-										firstTimeOnDemandNotificationSentAt?: number | undefined;
-										/**
-										 * @description Tracks the last time we sent a daily summary email.
-										 * @type number | undefined
-										 */
-										dailyOverageSummaryEmailSentAt?: number | undefined;
-										/**
-										 * @description Tracks the last time we sent a weekly summary email.
-										 * @type number | undefined
-										 */
-										weeklyOverageSummaryEmailSentAt?: number | undefined;
-										/**
-										 * @description Tracks when the overage summary email will stop auto-sending. We currently lock the user into email for a month after the last on-demand usage.
-										 * @type number | undefined
-										 */
-										overageSummaryExpiresAt?: number | undefined;
-										/**
-										 * @description Tracks the last time we sent a increased on-demand email.
-										 * @type number | undefined
-										 */
-										increasedOnDemandEmailSentAt?: number | undefined;
-										/**
-										 * @description Tracks the last time we attempted to send an increased on-demand email. This check is to limit the number of attempts per day.
-										 * @type number | undefined
-										 */
-										increasedOnDemandEmailAttemptedAt?: number | undefined;
-								  }
 								| undefined;
 							/**
 							 * @description Tracks notifications sent for the team-wide Speed Insights free allocation. The allocation is measured over a rolling window (not a billing period), so deduplication is time-based rather than reset at period start.
@@ -11036,467 +11170,207 @@ export type UserEvent = {
 										notifiedAt: number;
 								  }
 								| undefined;
-							username: string;
+							stagingPrefix: string;
+							sysToken: string;
+							/**
+							 * @description A helper that allows to describe a relationship attribute. It receives the shape of a relationship plus the foreignKey name to make it mandatory in the resulting type.
+							 * @type array | undefined
+							 */
+							teams?:
+								| {
+										accessRequestedAt?: number | undefined;
+										confirmed: true;
+										confirmedAt: number;
+										created: number;
+										createdAt: number;
+										joinedFrom?:
+											| {
+													commitId?: string | undefined;
+													dsyncConnectedAt?: number | undefined;
+													dsyncUserId?: string | undefined;
+													gitUserId?: (string | number) | undefined;
+													gitUserLogin?: string | undefined;
+													idpUserId?: string | undefined;
+													origin: UserEventPayloadNewOwnerTeamsJoinedFromOriginEnumKey;
+													repoId?: string | undefined;
+													repoPath?: string | undefined;
+													ssoConnectedAt?: number | undefined;
+													ssoUserId?: string | undefined;
+											  }
+											| undefined;
+										role: UserEventPayloadNewOwnerTeamsRoleEnumKey;
+										teamId: string;
+										teamPermissions?:
+											| UserEventPayloadNewOwnerTeamsTeamPermissionsEnumKey[]
+											| undefined;
+										teamRoles?: UserEventPayloadNewOwnerTeamsTeamRolesEnumKey[] | undefined;
+								  }[]
+								| undefined;
+							testAccountExpiresAt?: number | undefined;
+							/**
+							 * @description Deprecated on 2022-04-12 in favor of trialTeamIds and using utils/api-teams/user-has-trial-available.ts.
+							 * @type string | undefined
+							 */
+							trialTeamId?: string | undefined;
+							/**
+							 * @description Introduced 2022-04-12 An array of teamIds (for trial teams created after 2022-04-01), created by the user in question. Used in determining whether the team has a trial available in utils/api-teams/user-has-trial-available.ts.
+							 * @type array | undefined
+							 */
+							trialTeamIds?: string[] | undefined;
+							type: "user";
 							updatedAt: number;
 							/**
-							 * @description Whether the Vercel Toolbar is enabled for preview deployments.
-							 * @type string | undefined
-							 */
-							enablePreviewFeedback?:
-								| UserEventPayloadNewOwnerEnablePreviewFeedbackEnumKey
-								| undefined;
-							/**
-							 * @description Information about which features are blocked for a user. Blocks can be either soft (the user can still access the feature, but with a warning, e.g. prompting an upgrade) or hard (the user cannot access the feature at all).
+							 * @description Contains the timestamps when a user was notified about their usage
 							 * @type object | undefined
 							 */
-							featureBlocks?:
-								| {
-										webAnalytics?:
-											| {
-													updatedAt: number;
-													blockedFrom?: number | undefined;
-													blockedUntil?: number | undefined;
-													blockReason: UserEventPayloadNewOwnerFeatureBlocksWebAnalyticsBlockReasonEnumKey;
-													graceEmailSentAt?: number | undefined;
-											  }
-											| undefined;
-										/**
-										 * @description A soft block indicates a temporary pause in data collection (ex limit exceeded for the current cycle) A hard block indicates a stoppage in data collection that requires manual intervention (ex upgrading a pro trial)
-										 * @type object | undefined
-										 */
-										monitoring?:
-											| {
-													updatedAt: number;
-													blockedFrom?: number | undefined;
-													blockedUntil?: number | undefined;
-													blockReason: UserEventPayloadNewOwnerFeatureBlocksMonitoringBlockReasonEnumKey;
-													blockType: UserEventPayloadNewOwnerFeatureBlocksMonitoringBlockTypeEnumKey;
-											  }
-											| undefined;
-										observabilityPlus?:
-											| {
-													updatedAt: number;
-													blockedFrom?: number | undefined;
-													blockedUntil?: number | undefined;
-													blockReason: UserEventPayloadNewOwnerFeatureBlocksObservabilityPlusBlockReasonEnumKey;
-													blockType: UserEventPayloadNewOwnerFeatureBlocksObservabilityPlusBlockTypeEnumKey;
-											  }
-											| undefined;
-										dataCache?:
-											| {
-													updatedAt: number;
-													blockedFrom?: number | undefined;
-													blockedUntil?: number | undefined;
-													blockReason: UserEventPayloadNewOwnerFeatureBlocksDataCacheBlockReasonEnumKey;
-											  }
-											| undefined;
-										imageOptimizationTransformation?:
-											| {
-													updatedAt: number;
-													blockedFrom?: number | undefined;
-													blockedUntil?: number | undefined;
-													blockReason: UserEventPayloadNewOwnerFeatureBlocksImageOptimizationTransformationBlockReasonEnumKey;
-											  }
-											| undefined;
-										sourceImages?:
-											| {
-													updatedAt: number;
-													blockedFrom?: number | undefined;
-													blockedUntil?: number | undefined;
-													blockReason: UserEventPayloadNewOwnerFeatureBlocksSourceImagesBlockReasonEnumKey;
-											  }
-											| undefined;
-										blob?:
-											| (
-													| {
-															updatedAt: number;
-															blockedFrom?: number | undefined;
-															blockedUntil?: number | undefined;
-															blockReason: "limits_exceeded";
-															overageReason: UserEventPayloadNewOwnerFeatureBlocksBlobOverageReasonEnumKey;
-													  }
-													| {
-															updatedAt: number;
-															blockedFrom?: number | undefined;
-															blockedUntil?: number | undefined;
-															blockReason: UserEventPayloadNewOwnerFeatureBlocksBlobBlockReasonEnumKey;
-													  }
-											  )
-											| undefined;
-										postgres?:
-											| (
-													| {
-															updatedAt: number;
-															blockedFrom?: number | undefined;
-															blockedUntil?: number | undefined;
-															blockReason: "limits_exceeded";
-															overageReason: UserEventPayloadNewOwnerFeatureBlocksPostgresOverageReasonEnumKey;
-													  }
-													| {
-															updatedAt: number;
-															blockedFrom?: number | undefined;
-															blockedUntil?: number | undefined;
-															blockReason: UserEventPayloadNewOwnerFeatureBlocksPostgresBlockReasonEnumKey;
-													  }
-											  )
-											| undefined;
-										redis?:
-											| (
-													| {
-															updatedAt: number;
-															blockedFrom?: number | undefined;
-															blockedUntil?: number | undefined;
-															blockReason: "limits_exceeded";
-															overageReason: UserEventPayloadNewOwnerFeatureBlocksRedisOverageReasonEnumKey;
-													  }
-													| {
-															updatedAt: number;
-															blockedFrom?: number | undefined;
-															blockedUntil?: number | undefined;
-															blockReason: UserEventPayloadNewOwnerFeatureBlocksRedisBlockReasonEnumKey;
-													  }
-											  )
-											| undefined;
-										microfrontendsRequest?:
-											| {
-													updatedAt: number;
-													blockedFrom?: number | undefined;
-													blockedUntil?: number | undefined;
-													blockReason: UserEventPayloadNewOwnerFeatureBlocksMicrofrontendsRequestBlockReasonEnumKey;
-											  }
-											| undefined;
-										workflowStorageWrite?:
-											| {
-													updatedAt: number;
-													blockedFrom?: number | undefined;
-													blockedUntil?: number | undefined;
-													blockReason: UserEventPayloadNewOwnerFeatureBlocksWorkflowStorageWriteBlockReasonEnumKey;
-											  }
-											| undefined;
-										workflowEvents?:
-											| {
-													updatedAt: number;
-													blockedFrom?: number | undefined;
-													blockedUntil?: number | undefined;
-													blockReason: UserEventPayloadNewOwnerFeatureBlocksWorkflowEventsBlockReasonEnumKey;
-											  }
-											| undefined;
-										connexForwardTriggers?:
-											| {
-													updatedAt: number;
-													blockedFrom?: number | undefined;
-													blockedUntil?: number | undefined;
-													blockReason: UserEventPayloadNewOwnerFeatureBlocksConnexForwardTriggersBlockReasonEnumKey;
-											  }
-											| undefined;
-										connexTokenRequests?:
-											| {
-													updatedAt: number;
-													blockedFrom?: number | undefined;
-													blockedUntil?: number | undefined;
-													blockReason: UserEventPayloadNewOwnerFeatureBlocksConnexTokenRequestsBlockReasonEnumKey;
-											  }
-											| undefined;
-										kmsOperations?:
-											| {
-													updatedAt: number;
-													blockedFrom?: number | undefined;
-													blockedUntil?: number | undefined;
-													blockReason: UserEventPayloadNewOwnerFeatureBlocksKmsOperationsBlockReasonEnumKey;
-											  }
-											| undefined;
-										tracing?:
-											| {
-													updatedAt: number;
-													blockedFrom?: number | undefined;
-													blockedUntil?: number | undefined;
-													blockReason: UserEventPayloadNewOwnerFeatureBlocksTracingBlockReasonEnumKey;
-											  }
-											| undefined;
-										sandboxStorage?:
-											| {
-													updatedAt: number;
-													blockedFrom?: number | undefined;
-													blockedUntil?: number | undefined;
-													blockReason: UserEventPayloadNewOwnerFeatureBlocksSandboxStorageBlockReasonEnumKey;
-											  }
-											| undefined;
-										vcr?:
-											| {
-													updatedAt: number;
-													blockedFrom?: number | undefined;
-													blockedUntil?: number | undefined;
-													blockReason: UserEventPayloadNewOwnerFeatureBlocksVcrBlockReasonEnumKey;
-											  }
-											| undefined;
-										/**
-										 * @description Pauses Speed Insights free data-point ingestion when the team-wide free allocation is exhausted. The block lasts at least 14 days and is extended while rolling usage stays above half of the allocation.
-										 * @type object | undefined
-										 */
-										speedInsightsFree?:
-											| {
-													updatedAt: number;
-													blockedFrom?: number | undefined;
-													blockedUntil?: number | undefined;
-													blockReason: UserEventPayloadNewOwnerFeatureBlocksSpeedInsightsFreeBlockReasonEnumKey;
-											  }
-											| undefined;
-								  }
+							usageAlerts?:
+								| ({
+										blockingAt?: (number | null) | undefined;
+										warningAt?: (number | null) | undefined;
+								  } | null)
 								| undefined;
-							defaultTeamId?: string | undefined;
+							username: string;
 							version: "northstar";
-							/**
-							 * @description Whether MFA is enforced for this user. Set to true when the user has a
-							 * @type boolean | undefined
-							 */
-							isMFAEnforced?: (false | true) | undefined;
-							/**
-							 * @description An archive of information about the Northstar migration, derived from the old (deprecated) property, `northstarMigrationEvents`.
-							 * @type object | undefined
-							 */
-							northstarMigration?:
-								| {
-										/**
-										 * @description The ID of the team we created for this user.
-										 * @type string
-										 */
-										teamId: string;
-										/**
-										 * @description The number of projects migrated for this user.
-										 * @type number
-										 */
-										projects: number;
-										/**
-										 * @description The number of stores migrated for this user.
-										 * @type number
-										 */
-										stores: number;
-										/**
-										 * @description The number of integration configurations migrated for this user.
-										 * @type number
-										 */
-										integrationConfigurations: number;
-										/**
-										 * @description The number of integration clients migrated for this user.
-										 * @type number
-										 */
-										integrationClients: number;
-										/**
-										 * @description The migration start time timestamp for this user.
-										 * @type number
-										 */
-										startTime: number;
-										/**
-										 * @description The migration end time timestamp for this user.
-										 * @type number
-										 */
-										endTime: number;
-								  }
-								| undefined;
-							/**
-							 * @description The salesforce opportunity ID that this user is linked to. This is used to automatically associate a team of the user\'s choosing with the opportunity.
-							 * @type string | undefined
-							 */
-							opportunityId?: string | undefined;
-							/**
-							 * @description MFA configuration. When enabled, the user will be required to provide a second factor of authentication when logging in.
-							 * @type object | undefined
-							 */
-							mfaConfiguration?:
-								| {
-										enabled: false | true;
-										enabledAt?: number | undefined;
-										recoveryCodes: string[];
-										totp?:
-											| {
-													secret: string;
-													createdAt: number;
-											  }
-											| undefined;
-										/**
-										 * @description History of MFA state changes (enabled/disabled events). Most recent events first.
-										 * @type array | undefined
-										 */
-										history?:
-											| {
-													/**
-													 * @description The action that occurred
-													 * @type string
-													 */
-													action: UserEventPayloadNewOwnerMfaConfigurationHistoryActionEnumKey;
-													/**
-													 * @description Unix timestamp (milliseconds) when the change occurred. May be null for events that occurred before history tracking was implemented.
-													 * @type number
-													 */
-													timestamp: number | null;
-													/**
-													 * @description Method used for the state change - \'totp\': User set up TOTP authenticator - \'passkey\': User registered a passkey - \'user_disabled\': User disabled their own MFA - \'admin_removal\': Admin removed MFA via backoffice - \'self_serve_recovery\': User disabled their own MFA through the self-serve MFA disable recovery flow (a \"Locked Out User\" with only a passkey) - \'unknown\': Method unknown (for pre-tracking events)
-													 * @type string
-													 */
-													method: UserEventPayloadNewOwnerMfaConfigurationHistoryMethodEnumKey;
-													/**
-													 * @description ID of the actor who made the change - For user actions: the user\'s own ID - For admin actions: the admin\'s user ID
-													 * @type string
-													 */
-													actorId: string;
-													/**
-													 * @description Type of actor
-													 * @type string
-													 */
-													actorType: UserEventPayloadNewOwnerMfaConfigurationHistoryActorTypeEnumKey;
-													/**
-													 * @description Optional: Additional context or reason e.g., \"Account recovery request - ticket #12345\"
-													 * @type string | undefined
-													 */
-													reason?: string | undefined;
-											  }[]
-											| undefined;
-								  }
-								| undefined;
-							/**
-							 * @description Indicates that the underlying user entity is a managed user for the enterprise it\'s associated with The intention is that this field is only set to true for users that are provisioned by the enterprise which means that the domain associated with the user\'s email is the same domain associated with the team Allowing us to query information about the user\'s team at login time through the domain verification service
-							 * @type boolean | undefined
-							 */
-							isEnterpriseManaged?: (false | true) | undefined;
 						} | null;
+						userId: string;
 				  }
 				| {
-						integrationId: string;
 						configurationId: string;
-						integrationSlug: string;
+						confirmedScopes: string[];
+						integrationId: string;
 						integrationName: string;
+						integrationSlug: string;
 						ownerId: string;
 						projectIds?: string[] | undefined;
-						confirmedScopes: string[];
 				  }
 				| {
 						integration: {
-							id: string;
-							slug: string;
-							name: string;
 							configurationId: string;
+							id: string;
+							name: string;
+							slug: string;
 						};
 						destinationTeamId: string;
 						destinationTeamName: string;
 				  }
 				| {
 						integration: {
-							id: string;
-							slug: string;
-							name: string;
 							configurationId: string;
+							id: string;
+							name: string;
+							slug: string;
 						};
 						originTeamId: string;
 						originTeamName: string;
 				  }
 				| {
 						configurations: {
-							integrationId: string;
 							configurationId: string;
-							integrationSlug: string;
+							integrationId: string;
 							integrationName?: string | undefined;
+							integrationSlug: string;
 						}[];
 						ownerId: string;
 				  }
 				| {
-						integrationId: string;
-						configurationId: string;
-						integrationSlug: string;
-						integrationName: string;
-						ownerId: string;
 						billingPlanId: string;
 						billingPlanName?: string | undefined;
+						configurationId: string;
+						integrationId: string;
+						integrationName: string;
+						integrationSlug: string;
+						ownerId: string;
 				  }
 				| {
-						integrationId: string;
 						configurationId: string;
-						integrationSlug: string;
+						integrationId: string;
 						integrationName: string;
+						integrationSlug: string;
 						ownerId: string;
 						projectIds?: (string[] | "all") | undefined;
 				  }
 				| {
-						resourceId: string;
-						integrationId: string;
-						integrationSlug: string;
-						integrationProductSlug: string;
 						configurationId: string;
 						databaseName: string;
-						queryType: UserEventPayloadQueryTypeEnumKey;
-						readonly: false | true;
-						rolledBack: false | true;
-						failedQueryIndex: number | null;
 						errorCode: string | null;
-						queryCount: number;
+						failedQueryIndex: number | null;
+						integrationId: string;
+						integrationProductSlug: string;
+						integrationSlug: string;
 						queries: {
 							command: string | null;
-							rowCount?: number | undefined;
-							tables?: string[] | undefined;
 							primaryKey?:
 								| {
 										column: string;
 										value: string | null;
 								  }[]
 								| undefined;
+							rowCount?: number | undefined;
+							tables?: string[] | undefined;
 						}[];
+						queryCount: number;
+						queryType: UserEventPayloadQueryTypeEnumKey;
+						readonly: false | true;
+						resourceId: string;
+						rolledBack: false | true;
 				  }
 				| {
-						resourceId: string;
-						integrationId: string;
-						integrationSlug: string;
-						integrationProductSlug: string;
 						configurationId: string;
 						errorCode?: string | undefined;
-						requestKind: "raw_commands";
-						readonly: false | true;
+						integrationId: string;
+						integrationProductSlug: string;
+						integrationSlug: string;
+						resourceId: string;
 						commands: {
 							command: string;
 							errorCode?: string | undefined;
 						}[];
 						errorIndex?: number | undefined;
+						readonly: false | true;
+						requestKind: "raw_commands";
 				  }
 				| {
-						resourceId: string;
-						integrationId: string;
-						integrationSlug: string;
-						integrationProductSlug: string;
 						configurationId: string;
 						errorCode?: string | undefined;
-						requestKind: "list_keys";
+						integrationId: string;
+						integrationProductSlug: string;
+						integrationSlug: string;
+						resourceId: string;
 						pattern?: string | undefined;
+						requestKind: "list_keys";
 						type?: string | undefined;
 				  }
 				| {
-						resourceId: string;
-						integrationId: string;
-						integrationSlug: string;
-						integrationProductSlug: string;
 						configurationId: string;
 						errorCode?: string | undefined;
-						requestKind: "get_keys_metadata";
+						integrationId: string;
+						integrationProductSlug: string;
+						integrationSlug: string;
+						resourceId: string;
 						keys: string[];
+						requestKind: "get_keys_metadata";
 				  }
 				| {
-						resourceId: string;
-						integrationId: string;
-						integrationSlug: string;
-						integrationProductSlug: string;
 						configurationId: string;
 						errorCode?: string | undefined;
-						requestKind: "get_key_data";
+						integrationId: string;
+						integrationProductSlug: string;
+						integrationSlug: string;
+						resourceId: string;
 						key: string;
+						requestKind: "get_key_data";
 				  }
 				| {
 						integrationId: string;
-						integrationSlug: string;
 						integrationName: string;
+						integrationSlug: string;
 				  }
 				| {
+						algorithm: string;
 						issuerId: string;
 						issuerName: string;
-						algorithm: string;
-						origin: string;
 						managedBy?: string | undefined;
+						origin: string;
 				  }
 				| {
 						issuerId: string;
@@ -11509,12 +11383,12 @@ export type UserEvent = {
 						keyId?: string | undefined;
 				  }
 				| {
+						clientId?: string | undefined;
+						environments?: string[] | undefined;
 						issuerId: string;
 						issuerName: string;
 						kind: string;
 						projectId?: string | undefined;
-						clientId?: string | undefined;
-						environments?: string[] | undefined;
 				  }
 				| {
 						issuerId: string;
@@ -11523,22 +11397,45 @@ export type UserEvent = {
 						policyKey: string;
 				  }
 				| {
+						integrationName?: string | undefined;
 						logDrainUrl: string | null;
-						integrationName?: string | undefined;
 				  }
 				| {
+						integrationName?: string | undefined;
 						logDrainUrl: string;
-						integrationName?: string | undefined;
 				  }
 				| {
-						provider: UserEventPayloadProviderEnumKey;
 						login: string;
+						provider: UserEventPayloadProviderEnumKey;
 				  }
 				| {
 						provider: UserEventPayloadProviderEnumKey;
 				  }
 				| {
-						userAgent?: string | undefined;
+						env?: string | undefined;
+						factors?:
+							| (
+									| {
+											legacy?: (false | true) | undefined;
+											origin: UserEventPayloadFactorsOriginEnumKey;
+											ssoType?: string | undefined;
+											teamId?: string | undefined;
+											username?: string | undefined;
+									  }[]
+									| (
+											| {
+													legacy?: (false | true) | undefined;
+													origin: UserEventPayloadFactorsOriginEnumKey;
+													ssoType?: string | undefined;
+													teamId?: string | undefined;
+													username?: string | undefined;
+											  }
+											| {
+													origin: UserEventPayloadFactorsOriginEnumKey;
+											  }
+									  )[]
+							  )
+							| undefined;
 						geolocation?:
 							| ({
 									city?:
@@ -11563,208 +11460,135 @@ export type UserEvent = {
 									regionName?: string | undefined;
 							  } | null)
 							| undefined;
-						env?: string | undefined;
-						os?: string | undefined;
 						/**
 						 * @description Browser login correlation ID. This is not an authentication credential.
 						 * @type string | undefined
 						 */
 						loginSessionId?: string | undefined;
-						username?: string | undefined;
+						os?: string | undefined;
 						ssoType?: string | undefined;
-						factors?:
-							| (
-									| {
-											origin: UserEventPayloadFactorsOriginEnumKey;
-											username?: string | undefined;
-											teamId?: string | undefined;
-											legacy?: (false | true) | undefined;
-											ssoType?: string | undefined;
-									  }[]
-									| (
-											| {
-													origin: UserEventPayloadFactorsOriginEnumKey;
-													username?: string | undefined;
-													teamId?: string | undefined;
-													legacy?: (false | true) | undefined;
-													ssoType?: string | undefined;
-											  }
-											| {
-													origin: UserEventPayloadFactorsOriginEnumKey;
-											  }
-									  )[]
-							  )
-							| undefined;
-						viaOTP?: (false | true) | undefined;
+						userAgent?: string | undefined;
+						username?: string | undefined;
+						viaApple?: (false | true) | undefined;
+						viaBitbucket?: (false | true) | undefined;
 						viaGithub?: (false | true) | undefined;
 						viaGitlab?: (false | true) | undefined;
-						viaBitbucket?: (false | true) | undefined;
 						viaGoogle?: (false | true) | undefined;
-						viaApple?: (false | true) | undefined;
-						viaSamlSso?: (false | true) | undefined;
+						viaOTP?: (false | true) | undefined;
 						viaPasskey?: (false | true) | undefined;
+						viaSamlSso?: (false | true) | undefined;
 				  }
 				| {
 						projectId: string;
-						toDeploymentId: string;
 						projectName: string;
+						toDeploymentId: string;
 				  }
 				| {
 						periods: {
-							periodNumber: number;
-							percent: string;
-							startDate: string;
 							endDate: string;
+							percent: string;
+							periodNumber: number;
+							startDate: string;
 						}[];
 				  }
 				| {
-						enabled: false | true;
 						allowedIntegrationCount?: number | undefined;
 						allowedIntegrationIds?: string[] | undefined;
+						enabled: false | true;
 				  }
 				| {
 						id: string;
-						slug: string;
 						name: string;
+						slug: string;
 				  }
 				| {
-						id: string;
-						slug?: string | undefined;
-						name?: string | undefined;
-						fallbackEnvironment?: string | undefined;
 						enablePolyrepoBranchRouting?: (false | true) | undefined;
+						fallbackEnvironment?: string | undefined;
+						id: string;
+						name?: string | undefined;
 						prev: {
+							enablePolyrepoBranchRouting?: (false | true) | undefined;
+							fallbackEnvironment: string;
 							name: string;
 							slug: string;
-							fallbackEnvironment: string;
-							enablePolyrepoBranchRouting?: (false | true) | undefined;
 						};
+						slug?: string | undefined;
 				  }
 				| {
-						project: {
-							id: string;
-							name: string;
-						};
 						group: {
 							id: string;
+							name: string;
 							slug: string;
+						};
+						project: {
+							id: string;
 							name: string;
 						};
 				  }
 				| {
-						project: {
+						group: {
 							id: string;
 							name: string;
-							microfrontends?:
-								| (
-										| {
-												isDefaultApp: true;
-												/**
-												 * @description Timestamp when the microfrontends settings were last updated.
-												 * @type number
-												 */
-												updatedAt: number;
-												/**
-												 * @description The group IDs of microfrontends that this project belongs to. Each microfrontend project must belong to a microfrontends group that is the set of microfrontends that are used together.
-												 * @type array
-												 */
-												groupIds: string[];
-												/**
-												 * @description Whether microfrontends are enabled for this project.
-												 * @type boolean
-												 */
-												enabled: true;
-												/**
-												 * @description A path that is used to take screenshots and as the default path in preview links when a domain for this microfrontend is shown in the UI. Includes the leading slash, e.g. `/docs`
-												 * @type string | undefined
-												 */
-												defaultRoute?: string | undefined;
-												/**
-												 * @description Whether the project was part of the legacy limits for hobby and pro-trial before billing was added. This field is only set when the team is upgraded to a paid plan and we are backfilling the subscription status. We cap the subscription to 2 projects and set this field for the 3rd project. When this field is set, the project is not charged for and we do not call any billing APIs for this project.
-												 * @type boolean | undefined
-												 */
-												freeProjectForLegacyLimits?: (false | true) | undefined;
-										  }
-										| {
-												isDefaultApp?: false | undefined;
-												/**
-												 * @description Whether observability data should be routed to this microfrontend project or a root project.
-												 * @type boolean | undefined
-												 */
-												routeObservabilityToThisProject?: (false | true) | undefined;
-												/**
-												 * @description Whether to add microfrontends routing to aliases. This means domains in this project will route as a microfrontend.
-												 * @type boolean | undefined
-												 */
-												doNotRouteWithMicrofrontendsRouting?: (false | true) | undefined;
-												/**
-												 * @description Timestamp when the microfrontends settings were last updated.
-												 * @type number
-												 */
-												updatedAt: number;
-												/**
-												 * @description The group IDs of microfrontends that this project belongs to. Each microfrontend project must belong to a microfrontends group that is the set of microfrontends that are used together.
-												 * @type array
-												 */
-												groupIds: string[];
-												/**
-												 * @description Whether microfrontends are enabled for this project.
-												 * @type boolean
-												 */
-												enabled: true;
-												/**
-												 * @description A path that is used to take screenshots and as the default path in preview links when a domain for this microfrontend is shown in the UI. Includes the leading slash, e.g. `/docs`
-												 * @type string | undefined
-												 */
-												defaultRoute?: string | undefined;
-												/**
-												 * @description Whether the project was part of the legacy limits for hobby and pro-trial before billing was added. This field is only set when the team is upgraded to a paid plan and we are backfilling the subscription status. We cap the subscription to 2 projects and set this field for the 3rd project. When this field is set, the project is not charged for and we do not call any billing APIs for this project.
-												 * @type boolean | undefined
-												 */
-												freeProjectForLegacyLimits?: (false | true) | undefined;
-										  }
-										| {
-												updatedAt: number;
-												groupIds: (string | string)[];
-												enabled: false;
-												freeProjectForLegacyLimits?: (false | true) | undefined;
-										  }
-								  )
-								| undefined;
+							slug: string;
 						};
 						prev: {
 							project: {
 								microfrontends?:
 									| (
 											| {
-													isDefaultApp: true;
-													/**
-													 * @description Timestamp when the microfrontends settings were last updated.
-													 * @type number
-													 */
-													updatedAt: number;
-													/**
-													 * @description The group IDs of microfrontends that this project belongs to. Each microfrontend project must belong to a microfrontends group that is the set of microfrontends that are used together.
-													 * @type array
-													 */
-													groupIds: string[];
-													/**
-													 * @description Whether microfrontends are enabled for this project.
-													 * @type boolean
-													 */
-													enabled: true;
 													/**
 													 * @description A path that is used to take screenshots and as the default path in preview links when a domain for this microfrontend is shown in the UI. Includes the leading slash, e.g. `/docs`
 													 * @type string | undefined
 													 */
 													defaultRoute?: string | undefined;
 													/**
+													 * @description Whether microfrontends are enabled for this project.
+													 * @type boolean
+													 */
+													enabled: true;
+													/**
 													 * @description Whether the project was part of the legacy limits for hobby and pro-trial before billing was added. This field is only set when the team is upgraded to a paid plan and we are backfilling the subscription status. We cap the subscription to 2 projects and set this field for the 3rd project. When this field is set, the project is not charged for and we do not call any billing APIs for this project.
 													 * @type boolean | undefined
 													 */
 													freeProjectForLegacyLimits?: (false | true) | undefined;
+													/**
+													 * @description The group IDs of microfrontends that this project belongs to. Each microfrontend project must belong to a microfrontends group that is the set of microfrontends that are used together.
+													 * @type array
+													 */
+													groupIds: string[];
+													isDefaultApp: true;
+													/**
+													 * @description Timestamp when the microfrontends settings were last updated.
+													 * @type number
+													 */
+													updatedAt: number;
 											  }
 											| {
+													/**
+													 * @description A path that is used to take screenshots and as the default path in preview links when a domain for this microfrontend is shown in the UI. Includes the leading slash, e.g. `/docs`
+													 * @type string | undefined
+													 */
+													defaultRoute?: string | undefined;
+													/**
+													 * @description Whether to add microfrontends routing to aliases. This means domains in this project will route as a microfrontend.
+													 * @type boolean | undefined
+													 */
+													doNotRouteWithMicrofrontendsRouting?: (false | true) | undefined;
+													/**
+													 * @description Whether microfrontends are enabled for this project.
+													 * @type boolean
+													 */
+													enabled: true;
+													/**
+													 * @description Whether the project was part of the legacy limits for hobby and pro-trial before billing was added. This field is only set when the team is upgraded to a paid plan and we are backfilling the subscription status. We cap the subscription to 2 projects and set this field for the 3rd project. When this field is set, the project is not charged for and we do not call any billing APIs for this project.
+													 * @type boolean | undefined
+													 */
+													freeProjectForLegacyLimits?: (false | true) | undefined;
+													/**
+													 * @description The group IDs of microfrontends that this project belongs to. Each microfrontend project must belong to a microfrontends group that is the set of microfrontends that are used together.
+													 * @type array
+													 */
+													groupIds: string[];
 													isDefaultApp?: false | undefined;
 													/**
 													 * @description Whether observability data should be routed to this microfrontend project or a root project.
@@ -11772,49 +11596,99 @@ export type UserEvent = {
 													 */
 													routeObservabilityToThisProject?: (false | true) | undefined;
 													/**
-													 * @description Whether to add microfrontends routing to aliases. This means domains in this project will route as a microfrontend.
-													 * @type boolean | undefined
-													 */
-													doNotRouteWithMicrofrontendsRouting?: (false | true) | undefined;
-													/**
 													 * @description Timestamp when the microfrontends settings were last updated.
 													 * @type number
 													 */
 													updatedAt: number;
-													/**
-													 * @description The group IDs of microfrontends that this project belongs to. Each microfrontend project must belong to a microfrontends group that is the set of microfrontends that are used together.
-													 * @type array
-													 */
-													groupIds: string[];
-													/**
-													 * @description Whether microfrontends are enabled for this project.
-													 * @type boolean
-													 */
-													enabled: true;
-													/**
-													 * @description A path that is used to take screenshots and as the default path in preview links when a domain for this microfrontend is shown in the UI. Includes the leading slash, e.g. `/docs`
-													 * @type string | undefined
-													 */
-													defaultRoute?: string | undefined;
-													/**
-													 * @description Whether the project was part of the legacy limits for hobby and pro-trial before billing was added. This field is only set when the team is upgraded to a paid plan and we are backfilling the subscription status. We cap the subscription to 2 projects and set this field for the 3rd project. When this field is set, the project is not charged for and we do not call any billing APIs for this project.
-													 * @type boolean | undefined
-													 */
-													freeProjectForLegacyLimits?: (false | true) | undefined;
 											  }
 											| {
-													updatedAt: number;
-													groupIds: (string | string)[];
 													enabled: false;
 													freeProjectForLegacyLimits?: (false | true) | undefined;
+													groupIds: (string | string)[];
+													updatedAt: number;
 											  }
 									  )
 									| undefined;
 							};
 						};
-						group: {
+						project: {
 							id: string;
-							slug: string;
+							microfrontends?:
+								| (
+										| {
+												/**
+												 * @description A path that is used to take screenshots and as the default path in preview links when a domain for this microfrontend is shown in the UI. Includes the leading slash, e.g. `/docs`
+												 * @type string | undefined
+												 */
+												defaultRoute?: string | undefined;
+												/**
+												 * @description Whether microfrontends are enabled for this project.
+												 * @type boolean
+												 */
+												enabled: true;
+												/**
+												 * @description Whether the project was part of the legacy limits for hobby and pro-trial before billing was added. This field is only set when the team is upgraded to a paid plan and we are backfilling the subscription status. We cap the subscription to 2 projects and set this field for the 3rd project. When this field is set, the project is not charged for and we do not call any billing APIs for this project.
+												 * @type boolean | undefined
+												 */
+												freeProjectForLegacyLimits?: (false | true) | undefined;
+												/**
+												 * @description The group IDs of microfrontends that this project belongs to. Each microfrontend project must belong to a microfrontends group that is the set of microfrontends that are used together.
+												 * @type array
+												 */
+												groupIds: string[];
+												isDefaultApp: true;
+												/**
+												 * @description Timestamp when the microfrontends settings were last updated.
+												 * @type number
+												 */
+												updatedAt: number;
+										  }
+										| {
+												/**
+												 * @description A path that is used to take screenshots and as the default path in preview links when a domain for this microfrontend is shown in the UI. Includes the leading slash, e.g. `/docs`
+												 * @type string | undefined
+												 */
+												defaultRoute?: string | undefined;
+												/**
+												 * @description Whether to add microfrontends routing to aliases. This means domains in this project will route as a microfrontend.
+												 * @type boolean | undefined
+												 */
+												doNotRouteWithMicrofrontendsRouting?: (false | true) | undefined;
+												/**
+												 * @description Whether microfrontends are enabled for this project.
+												 * @type boolean
+												 */
+												enabled: true;
+												/**
+												 * @description Whether the project was part of the legacy limits for hobby and pro-trial before billing was added. This field is only set when the team is upgraded to a paid plan and we are backfilling the subscription status. We cap the subscription to 2 projects and set this field for the 3rd project. When this field is set, the project is not charged for and we do not call any billing APIs for this project.
+												 * @type boolean | undefined
+												 */
+												freeProjectForLegacyLimits?: (false | true) | undefined;
+												/**
+												 * @description The group IDs of microfrontends that this project belongs to. Each microfrontend project must belong to a microfrontends group that is the set of microfrontends that are used together.
+												 * @type array
+												 */
+												groupIds: string[];
+												isDefaultApp?: false | undefined;
+												/**
+												 * @description Whether observability data should be routed to this microfrontend project or a root project.
+												 * @type boolean | undefined
+												 */
+												routeObservabilityToThisProject?: (false | true) | undefined;
+												/**
+												 * @description Timestamp when the microfrontends settings were last updated.
+												 * @type number
+												 */
+												updatedAt: number;
+										  }
+										| {
+												enabled: false;
+												freeProjectForLegacyLimits?: (false | true) | undefined;
+												groupIds: (string | string)[];
+												updatedAt: number;
+										  }
+								  )
+								| undefined;
 							name: string;
 						};
 				  }
@@ -11827,10 +11701,10 @@ export type UserEvent = {
 						projectName: string;
 				  }
 				| {
+						name: string;
 						organizationId: string;
 						rootTeamId: string;
 						slug: string;
-						name: string;
 				  }
 				| {
 						directoryGroupId: string;
@@ -11858,178 +11732,188 @@ export type UserEvent = {
 						organizationId: string;
 				  }
 				| {
-						organizationId: string;
-						previousEnabled: false | true;
 						enabled: false | true;
 						enforcedTeamIds: string[];
-						unenforcedTeamIds: string[];
+						organizationId: string;
+						previousEnabled: false | true;
 						trigger: UserEventPayloadTriggerEnumKey;
+						unenforcedTeamIds: string[];
 				  }
 				| {
 						organizationId: string;
 						slug: string;
 				  }
 				| {
+						billingPlan: UserEventPayloadBillingPlanEnumKey;
 						organizationId: string;
 						teamId: string;
-						billingPlan: UserEventPayloadBillingPlanEnumKey;
 				  }
 				| {
+						mode: UserEventPayloadModeEnumKey;
 						organizationId: string;
+						previousMode: UserEventPayloadPreviousModeEnumKey;
 						teamId: string;
 						teamName: string;
-						previousMode: UserEventPayloadPreviousModeEnumKey;
-						mode: UserEventPayloadModeEnumKey;
 				  }
 				| {
-						ownerId: string;
-						source: string;
-						cause: string;
 						blockReason?: string | undefined;
+						cause: string;
+						ownerId: string;
 						siftRoute?:
 							| {
 									name: string;
 							  }
 							| undefined;
+						source: string;
 				  }
 				| {
-						ownerId: string;
-						source: string;
 						cause: string;
+						ownerId: string;
 						reason?: (string | null) | undefined;
+						source: string;
 				  }
 				| {
-						ownerId: string;
-						source: string;
-						cause: string;
 						blockReason?: string | undefined;
-				  }
-				| {
+						cause: string;
 						ownerId: string;
 						source: string;
-						cause: string;
 				  }
 				| {
-						projectId: string;
-						previous: {
-							enabled: false | true;
-							mode: string;
-							enforcementScope?: UserEventPayloadPreviousEnforcementScopeEnumKey | undefined;
-							enforcePercentage: number;
-							newResourceBlockingPolicy: UserEventPayloadPreviousNewResourceBlockingPolicyEnumKey;
+						cause: string;
+						ownerId: string;
+						source: string;
+				  }
+				| {
+						next: {
 							allowUnsafeScriptSrcKeywords: false | true;
-							omitScriptNonce?: (false | true) | undefined;
-							connectSrcNotificationsEnabled?: (false | true) | undefined;
-							computedScriptSrc?: string | undefined;
-							computedScriptSrcPreview?: string | undefined;
 							computedConnectSrc?: string | undefined;
 							computedConnectSrcPreview?: string | undefined;
-						} | null;
-						next: {
+							computedScriptSrc?: string | undefined;
+							computedScriptSrcPreview?: string | undefined;
+							connectSrcNotificationsEnabled?: (false | true) | undefined;
 							enabled: false | true;
-							mode: string;
 							enforcementScope?: UserEventPayloadNextEnforcementScopeEnumKey | undefined;
 							enforcePercentage: number;
+							mode: string;
 							newResourceBlockingPolicy: UserEventPayloadNextNewResourceBlockingPolicyEnumKey;
-							allowUnsafeScriptSrcKeywords: false | true;
 							omitScriptNonce?: (false | true) | undefined;
-							connectSrcNotificationsEnabled?: (false | true) | undefined;
-							computedScriptSrc?: string | undefined;
-							computedScriptSrcPreview?: string | undefined;
+						};
+						previous: {
+							allowUnsafeScriptSrcKeywords: false | true;
 							computedConnectSrc?: string | undefined;
 							computedConnectSrcPreview?: string | undefined;
-						};
+							computedScriptSrc?: string | undefined;
+							computedScriptSrcPreview?: string | undefined;
+							connectSrcNotificationsEnabled?: (false | true) | undefined;
+							enabled: false | true;
+							enforcementScope?: UserEventPayloadPreviousEnforcementScopeEnumKey | undefined;
+							enforcePercentage: number;
+							mode: string;
+							newResourceBlockingPolicy: UserEventPayloadPreviousNewResourceBlockingPolicyEnumKey;
+							omitScriptNonce?: (false | true) | undefined;
+						} | null;
+						projectId: string;
 				  }
 				| {
-						projectId: string;
 						headerName: string;
-						previousStatus: string;
 						justification: string;
-				  }
-				| {
-						projectId: string;
-						headerName: string;
 						previousStatus: string;
-						justification: string | null;
+						projectId: string;
 				  }
 				| {
+						headerName: string;
+						justification: string | null;
+						previousStatus: string;
+						projectId: string;
+				  }
+				| {
+						connectSrcCount: number;
+						connectSrcNormalizationRulesCleared?: (false | true) | undefined;
+						connectSrcOriginCount: number;
+						connectSrcUserNormalizationRuleCount?: number | undefined;
+						deletedCount: number;
+						headerCount: number;
 						projectId: string;
 						projectName: string;
-						deletedCount: number;
 						scriptCount: number;
-						connectSrcCount: number;
-						connectSrcOriginCount: number;
-						headerCount: number;
-						connectSrcUserNormalizationRuleCount?: number | undefined;
-						connectSrcNormalizationRulesCleared?: (false | true) | undefined;
 				  }
 				| {
+						approvalScope?: UserEventPayloadApprovalScopeEnumKey | undefined;
+						justification: string;
+						kind?: UserEventPayloadKindEnumKey | undefined;
+						previousStatus: string;
 						projectId: string;
 						url: string;
-						previousStatus: string;
-						justification: string;
-						approvalScope?: UserEventPayloadApprovalScopeEnumKey | undefined;
-						kind?: UserEventPayloadKindEnumKey | undefined;
 				  }
 				| {
 						projectId: string;
-						type: "script";
 						resourceUrl: string;
+						type: "script";
 				  }
 				| {
+						headerName: string;
 						projectId: string;
 						type: "header";
-						headerName: string;
 				  }
 				| {
 						projectId: string;
-						type: "connectSrc";
 						resourceUrl: string;
+						type: "connectSrc";
 				  }
 				| {
-						projectId: string;
-						url?: string | undefined;
 						headerName?: string | undefined;
-						previousStatus: string;
 						justification: string | null;
 						kind?: UserEventPayloadKindEnumKey | undefined;
+						previousStatus: string;
+						projectId: string;
+						url?: string | undefined;
 				  }
 				| {
+						justification: string;
+						pattern: string;
 						projectId: string;
 						projectName: string;
-						pattern: string;
-						justification: string;
 						[key: string]: unknown;
 				  }
 				| {
-						oldName: string;
 						newName: string;
+						oldName: string;
 				  }
 				| {
-						projectId: string;
-						environment: string;
-						host: string;
 						connectorId: string;
-						connectorType: string;
 						connectorService: string;
+						connectorType: string;
+						emailVerified?: (false | true) | undefined;
+						environment: string;
 						externalIssuer: string;
 						externalSubject: string;
-						sessionId: string;
-						emailVerified?: (false | true) | undefined;
-						tenantId?: string | undefined;
+						host: string;
 						installationId?: string | undefined;
+						projectId: string;
+						sessionId: string;
+						tenantId?: string | undefined;
 				  }
 				| {
+						next: {
+							passport?:
+								| ({
+										connectorId: string;
+										deploymentType: UserEventPayloadNextPassportDeploymentTypeEnumKey;
+								  } | null)
+								| undefined;
+						};
+						previous: {
+							passport?:
+								| ({
+										connectorId: string;
+										deploymentType: UserEventPayloadPreviousPassportDeploymentTypeEnumKey;
+								  } | null)
+								| undefined;
+						};
 						projectId: string;
 						projectName: string;
-						previous: {
-							passport?:
-								| ({
-										connectorId: string;
-										deploymentType: UserEventPayloadPreviousPassportDeploymentTypeEnumKey;
-								  } | null)
-								| undefined;
-						};
+				  }
+				| {
 						next: {
 							passport?:
 								| ({
@@ -12038,8 +11922,6 @@ export type UserEvent = {
 								  } | null)
 								| undefined;
 						};
-				  }
-				| {
 						previous: {
 							passport?:
 								| ({
@@ -12048,252 +11930,244 @@ export type UserEvent = {
 								  } | null)
 								| undefined;
 						};
-						next: {
-							passport?:
-								| ({
-										connectorId: string;
-										deploymentType: UserEventPayloadNextPassportDeploymentTypeEnumKey;
-								  } | null)
-								| undefined;
-						};
 				  }
 				| {
-						plan: string;
-						removedUsers?:
-							| {
-									[key: string]: {
-										role: RoleEnumKey;
-										confirmed: false | true;
-										confirmedAt?: number | undefined;
-										joinedFrom?:
-											| {
-													origin: OriginEnumKey;
-													commitId?: string | undefined;
-													repoId?: string | undefined;
-													repoPath?: string | undefined;
-													gitUserId?: (string | number) | undefined;
-													gitUserLogin?: string | undefined;
-													ssoUserId?: string | undefined;
-													ssoConnectedAt?: number | undefined;
-													idpUserId?: string | undefined;
-													dsyncUserId?: string | undefined;
-													dsyncConnectedAt?: number | undefined;
-											  }
-											| undefined;
-									};
-							  }
-							| undefined;
-						prevPlan?: string | undefined;
-						priorPlan?: string | undefined;
-						isDowngrade?: (false | true) | undefined;
-						userAgent?: string | undefined;
-						isReactivate?: (false | true) | undefined;
-						isTrialUpgrade?: (false | true) | undefined;
 						/**
 						 * @description Whether the plan change was system-initiated rather than human-initiated.
 						 * @type boolean | undefined
 						 */
 						automated?: (false | true) | undefined;
+						isDowngrade?: (false | true) | undefined;
+						isReactivate?: (false | true) | undefined;
+						isTrialUpgrade?: (false | true) | undefined;
+						plan: string;
+						prevPlan?: string | undefined;
+						priorPlan?: string | undefined;
 						/**
 						 * @description Why the plan changed. For downgrades, this is a {@link DowngradeReason} from `@api/pubsub-types` (e.g. `user_downgrade`, `trial_expired`).
 						 * @type string | undefined
 						 */
 						reason?: string | undefined;
-						timestamp?: number | undefined;
 						removedMemberCount?: number | undefined;
-				  }
-				| {
-						plan: string;
 						removedUsers?:
 							| {
 									[key: string]: {
-										role: RoleEnumKey;
 										confirmed: false | true;
 										confirmedAt?: number | undefined;
 										joinedFrom?:
 											| {
-													origin: OriginEnumKey;
 													commitId?: string | undefined;
-													repoId?: string | undefined;
-													repoPath?: string | undefined;
+													dsyncConnectedAt?: number | undefined;
+													dsyncUserId?: string | undefined;
 													gitUserId?: (string | number) | undefined;
 													gitUserLogin?: string | undefined;
-													ssoUserId?: string | undefined;
-													ssoConnectedAt?: number | undefined;
 													idpUserId?: string | undefined;
-													dsyncUserId?: string | undefined;
-													dsyncConnectedAt?: number | undefined;
+													origin: OriginEnumKey;
+													repoId?: string | undefined;
+													repoPath?: string | undefined;
+													ssoConnectedAt?: number | undefined;
+													ssoUserId?: string | undefined;
 											  }
 											| undefined;
+										role: RoleEnumKey;
 									};
 							  }
 							| undefined;
-						prevPlan?: string | undefined;
-						priorPlan?: string | undefined;
-						isDowngrade?: (false | true) | undefined;
+						timestamp?: number | undefined;
 						userAgent?: string | undefined;
-						isReactivate?: (false | true) | undefined;
-						isTrialUpgrade?: (false | true) | undefined;
+				  }
+				| {
 						/**
 						 * @description Whether the plan change was system-initiated rather than human-initiated.
 						 * @type boolean | undefined
 						 */
 						automated?: (false | true) | undefined;
+						isDowngrade?: (false | true) | undefined;
+						isReactivate?: (false | true) | undefined;
+						isTrialUpgrade?: (false | true) | undefined;
+						plan: string;
+						prevPlan?: string | undefined;
+						priorPlan?: string | undefined;
 						/**
 						 * @description Why the plan changed. For downgrades, this is a {@link DowngradeReason} from `@api/pubsub-types` (e.g. `user_downgrade`, `trial_expired`).
 						 * @type string | undefined
 						 */
 						reason?: string | undefined;
-						timestamp?: number | undefined;
 						removedMemberCount?: number | undefined;
+						removedUsers?:
+							| {
+									[key: string]: {
+										confirmed: false | true;
+										confirmedAt?: number | undefined;
+										joinedFrom?:
+											| {
+													commitId?: string | undefined;
+													dsyncConnectedAt?: number | undefined;
+													dsyncUserId?: string | undefined;
+													gitUserId?: (string | number) | undefined;
+													gitUserLogin?: string | undefined;
+													idpUserId?: string | undefined;
+													origin: OriginEnumKey;
+													repoId?: string | undefined;
+													repoPath?: string | undefined;
+													ssoConnectedAt?: number | undefined;
+													ssoUserId?: string | undefined;
+											  }
+											| undefined;
+										role: RoleEnumKey;
+									};
+							  }
+							| undefined;
+						timestamp?: number | undefined;
+						userAgent?: string | undefined;
 						/**
 						 * @description Okta user id.
 						 * @type string
 						 */
 						actorId: string;
-						actorType: "admin";
 						actorName?: string | undefined;
+						actorType: "admin";
 				  }
 				| {
-						price?: number | undefined;
 						currency?: string | undefined;
 						enabled?: (false | true) | undefined;
+						price?: number | undefined;
 				  }
 				| {
 						previewDeploymentSuffix?: (string | null) | undefined;
 						previousPreviewDeploymentSuffix?: (string | null) | undefined;
 				  }
 				| {
-						projectName?: string | undefined;
 						endpoint: {
+							awsServiceName: string;
 							id: string;
 							name: string;
+							privateDnsNames?: string[] | undefined;
 							projectId: string;
 							vercelRegion: string;
-							awsServiceName: string;
-							privateDnsNames?: string[] | undefined;
 						};
+						projectName?: string | undefined;
 				  }
 				| {
-						projectName?: string | undefined;
 						privateLinkEndpoint: {
 							id: string;
 							name: string;
 						};
 						projectId: string;
+						projectName?: string | undefined;
 				  }
 				| {
-						projectName?: string | undefined;
-						prev: {
-							id: string;
-							name: string;
-							projectId: string;
-							vercelRegion: string;
-							awsServiceName: string;
-							privateDnsNames?: string[] | undefined;
-						};
 						current: {
+							awsServiceName: string;
 							id: string;
 							name: string;
+							privateDnsNames?: string[] | undefined;
 							projectId: string;
 							vercelRegion: string;
-							awsServiceName: string;
-							privateDnsNames?: string[] | undefined;
 						};
-				  }
-				| {
-						projectName?: string | undefined;
-						privateLinkEndpoint: {
+						prev: {
+							awsServiceName: string;
 							id: string;
 							name: string;
+							privateDnsNames?: string[] | undefined;
+							projectId: string;
+							vercelRegion: string;
+						};
+						projectName?: string | undefined;
+				  }
+				| {
+						previousEndpoint: {
 							environmentIds?: string[] | undefined;
+							name: string;
+							privateDnsNames?: string[] | undefined;
+						};
+						privateLinkEndpoint: {
+							id: string;
+							environmentIds?: string[] | undefined;
+							name: string;
 							privateDnsNames?: string[] | undefined;
 						};
 						projectId: string;
-						previousEndpoint: {
-							name: string;
-							environmentIds?: string[] | undefined;
-							privateDnsNames?: string[] | undefined;
-						};
+						projectName?: string | undefined;
 				  }
 				| {
+						branch: string;
 						projectId?: string | undefined;
 						projectName: string;
-						branch: string;
 				  }
 				| {
+						directoryListing: false | true;
 						projectId: string;
 						projectName: string;
-						directoryListing: false | true;
 				  }
 				| {
-						projectName?: string | undefined;
-						projectId: string;
-						projectAnalytics: {
-							id: string;
-							canceledAt?: (number | null) | undefined;
-							disabledAt: number;
-							enabledAt: number;
-							paidAt?: number | undefined;
-							sampleRatePercent?: (number | null) | undefined;
-							spendLimitInDollars?: (number | null) | undefined;
-						} | null;
 						prevProjectAnalytics: {
-							id: string;
 							canceledAt?: (number | null) | undefined;
 							disabledAt: number;
 							enabledAt: number;
+							id: string;
 							paidAt?: number | undefined;
 							sampleRatePercent?: (number | null) | undefined;
 							spendLimitInDollars?: (number | null) | undefined;
 						} | null;
+						projectAnalytics: {
+							canceledAt?: (number | null) | undefined;
+							disabledAt: number;
+							enabledAt: number;
+							id: string;
+							paidAt?: number | undefined;
+							sampleRatePercent?: (number | null) | undefined;
+							spendLimitInDollars?: (number | null) | undefined;
+						} | null;
+						projectId: string;
+						projectName?: string | undefined;
 				  }
 				| {
-						projectName?: string | undefined;
-						projectId: string;
-						projectAnalytics?:
-							| {
-									[key: string]: unknown;
-							  }
-							| undefined;
 						prevProjectAnalytics?:
 							| ({
 									[key: string]: unknown;
 							  } | null)
 							| undefined;
+						projectAnalytics?:
+							| {
+									[key: string]: unknown;
+							  }
+							| undefined;
+						projectId: string;
+						projectName?: string | undefined;
 				  }
 				| {
-						projectId: string;
-						projectName: string;
 						action: UserEventPayloadActionEnumKey;
 						isEnvVar?: (false | true) | undefined;
 						note?: string | undefined;
-				  }
-				| {
 						projectId: string;
 						projectName: string;
+				  }
+				| {
 						avatar?: (string | null) | undefined;
-				  }
-				| {
 						projectId: string;
 						projectName: string;
+				  }
+				| {
 						enableAffectedProjectsDeployments: false | true;
-				  }
-				| {
 						projectId: string;
 						projectName: string;
+				  }
+				| {
 						enableExternalRewriteCaching: false | true;
-				  }
-				| {
 						projectId: string;
 						projectName: string;
-						previous: object;
+				  }
+				| {
 						next: object;
-				  }
-				| {
+						previous: object;
 						projectId: string;
 						projectName: string;
+				  }
+				| {
 						productionDeploymentsFastLane: false | true;
+						projectId: string;
+						projectName: string;
 				  }
 				| {
 						projectId: string;
@@ -12301,18 +12175,18 @@ export type UserEvent = {
 						sourceFilesOutsideRootDirectory: false | true;
 				  }
 				| {
-						projectId?: string | undefined;
-						projectName: string;
 						/**
 						 * @description Deployment whose outcome caused a system-initiated elastic resize.
 						 * @type string | undefined
 						 */
 						deploymentId?: string | undefined;
-						previousBuildMachineType?: string | undefined;
+						isSystemInitiated?: (false | true) | undefined;
+						nextBuildMachineSelection: string;
 						nextBuildMachineType: string;
 						previousBuildMachineSelection: string;
-						nextBuildMachineSelection: string;
-						isSystemInitiated?: (false | true) | undefined;
+						previousBuildMachineType?: string | undefined;
+						projectId?: string | undefined;
+						projectName: string;
 						/**
 						 * @description For system-initiated (elastic) changes, why the build machine was upgraded/downgraded. Stored as the raw reason code (see `ElasticChangeReason` in `@api/build-machines-types`) and rendered as a human-readable clause in the activity/audit log.
 						 * @type string | undefined
@@ -12325,10 +12199,10 @@ export type UserEvent = {
 						widget: UserEventPayloadWidgetEnumKey | null;
 				  }
 				| {
-						projectId?: string | undefined;
-						projectName?: string | undefined;
 						certId?: string | undefined;
 						origin?: string | undefined;
+						projectId?: string | undefined;
+						projectName?: string | undefined;
 				  }
 				| {
 						projectId?: string | undefined;
@@ -12337,184 +12211,187 @@ export type UserEvent = {
 						updated?: (false | true) | undefined;
 				  }
 				| {
-						team: {
-							name: string;
-							id: string;
-						};
 						project: {
 							id: string;
 							name?: string | undefined;
-							oldConnectConfigurations:
+							newConnectConfigurations:
 								| {
-										envId: string;
-										connectConfigurationId: string;
-										dc?: string | undefined;
-										passive: false | true;
-										buildsEnabled: false | true;
 										aws?:
 											| {
-													subnetIds: string[];
 													securityGroupId?: string | undefined;
+													subnetIds: string[];
 											  }
 											| undefined;
+										buildsEnabled: false | true;
+										connectConfigurationId: string;
 										createdAt: number;
+										dc?: string | undefined;
+										envId: string;
+										passive: false | true;
 										updatedAt: number;
 								  }[]
 								| null;
-							newConnectConfigurations:
+							oldConnectConfigurations:
 								| {
-										envId: string;
-										connectConfigurationId: string;
-										dc?: string | undefined;
-										passive: false | true;
-										buildsEnabled: false | true;
 										aws?:
 											| {
-													subnetIds: string[];
 													securityGroupId?: string | undefined;
+													subnetIds: string[];
 											  }
 											| undefined;
+										buildsEnabled: false | true;
+										connectConfigurationId: string;
 										createdAt: number;
+										dc?: string | undefined;
+										envId: string;
+										passive: false | true;
 										updatedAt: number;
 								  }[]
 								| null;
 						};
+						team: {
+							id: string;
+							name: string;
+						};
 				  }
 				| {
-						projectName?: string | undefined;
 						projectId: string;
+						projectName?: string | undefined;
 				  }
 				| {
+						action: UserEventPayloadActionEnumKey;
 						projectId: string;
 						projectName: string;
-						action: UserEventPayloadActionEnumKey;
 				  }
 				| {
 						name: string;
 						ownerId: string;
 				  }
 				| {
-						projectId: string;
-						projectName: string;
-						elasticConcurrencyEnabled: false | true;
-						oldElasticConcurrencyEnabled: false | true;
 						buildQueueConfiguration?: UserEventPayloadBuildQueueConfigurationEnumKey | undefined;
+						elasticConcurrencyEnabled: false | true;
 						oldBuildQueueConfiguration?:
 							| UserEventPayloadOldBuildQueueConfigurationEnumKey
 							| undefined;
-				  }
-				| {
+						oldElasticConcurrencyEnabled: false | true;
 						projectId: string;
 						projectName: string;
+				  }
+				| {
 						autoAssignCustomDomains: false | true;
-				  }
-				| {
 						projectId: string;
 						projectName: string;
+				  }
+				| {
 						previewDeploymentsEnabled: false | true;
-				  }
-				| {
 						projectId: string;
 						projectName: string;
+				  }
+				| {
 						customEnvironmentId: string;
 						customEnvironmentSlug: string;
-						previous: {
+						next: {
 							branchMatcher?:
 								| {
-										/**
-										 * @description The type of matching to perform
-										 * @type string
-										 */
-										type: UserEventPayloadPreviousBranchMatcherTypeEnumKey;
 										/**
 										 * @description The pattern to match against branch names
 										 * @type string
 										 */
 										pattern: string;
-								  }
-								| undefined;
-						};
-						next: {
-							branchMatcher?:
-								| {
 										/**
 										 * @description The type of matching to perform
 										 * @type string
 										 */
 										type: UserEventPayloadNextBranchMatcherTypeEnumKey;
+								  }
+								| undefined;
+						};
+						previous: {
+							branchMatcher?:
+								| {
 										/**
 										 * @description The pattern to match against branch names
 										 * @type string
 										 */
 										pattern: string;
+										/**
+										 * @description The type of matching to perform
+										 * @type string
+										 */
+										type: UserEventPayloadPreviousBranchMatcherTypeEnumKey;
 								  }
 								| undefined;
 						};
-				  }
-				| {
 						projectId: string;
 						projectName: string;
+				  }
+				| {
 						customEnvironmentId: string;
 						customEnvironmentSlug: string;
-				  }
-				| {
-						projectName?: string | undefined;
-						projectId: string;
-						enableFunctionsBeta: false | true;
-				  }
-				| {
 						projectId: string;
 						projectName: string;
-						previous: {
-							functionDefaultTimeout: number | null;
-						};
+				  }
+				| {
+						enableFunctionsBeta: false | true;
+						projectId: string;
+						projectName?: string | undefined;
+				  }
+				| {
 						next: {
 							functionDefaultTimeout: number;
 						};
-				  }
-				| {
+						previous: {
+							functionDefaultTimeout: number | null;
+						};
 						projectId: string;
 						projectName: string;
-						previous: {
-							functionDefaultMemoryType: string | null;
-						};
+				  }
+				| {
 						next: {
 							functionDefaultMemoryType: string;
 						};
-				  }
-				| {
+						previous: {
+							functionDefaultMemoryType: string | null;
+						};
 						projectId: string;
 						projectName: string;
-						previous: {
-							functionDefaultRegions: string[] | null;
-						};
+				  }
+				| {
 						next: {
 							functionDefaultRegions: string[];
 						};
-				  }
-				| {
+						previous: {
+							functionDefaultRegions: string[] | null;
+						};
 						projectId: string;
 						projectName: string;
-						previous: {
-							functionZeroConfigFailover: (false | true) | null;
-						};
+				  }
+				| {
 						next: {
 							functionZeroConfigFailover: false | true;
 						};
-				  }
-				| {
+						previous: {
+							functionZeroConfigFailover: (false | true) | null;
+						};
 						projectId: string;
 						projectName: string;
+				  }
+				| {
 						previewDeploymentSuffix: string | null;
-				  }
-				| {
 						projectId: string;
 						projectName: string;
+				  }
+				| {
 						newProjectName: string;
-				  }
-				| {
 						projectId: string;
 						projectName: string;
+				  }
+				| {
+						next: {
+							gitProvider: UserEventPayloadNextGitProviderEnumKey;
+							gitRepoId: string;
+							gitRepositoryName: string;
+						};
 						previous?:
 							| {
 									gitProvider: UserEventPayloadPreviousGitProviderEnumKey;
@@ -12522,38 +12399,35 @@ export type UserEvent = {
 									gitRepositoryName: string;
 							  }
 							| undefined;
-						next: {
-							gitProvider: UserEventPayloadNextGitProviderEnumKey;
-							gitRepoId: string;
-							gitRepositoryName: string;
-						};
-				  }
-				| {
 						projectId: string;
 						projectName: string;
+				  }
+				| {
 						gitProvider: UserEventPayloadGitProviderEnumKey;
 						gitRepoId: string;
 						gitRepositoryName: string;
-				  }
-				| {
 						projectId: string;
 						projectName: string;
+				  }
+				| {
 						onPullRequest: false | true;
-				  }
-				| {
 						projectId: string;
 						projectName: string;
+				  }
+				| {
 						onCommit: false | true;
-				  }
-				| {
 						projectId: string;
 						projectName: string;
+				  }
+				| {
 						disableRepositoryDispatchEvents: false | true;
-				  }
-				| {
 						projectId: string;
 						projectName: string;
+				  }
+				| {
 						createDeployments: UserEventPayloadCreateDeploymentsEnumKey;
+						projectId: string;
+						projectName: string;
 				  }
 				| {
 						projectId: string;
@@ -12567,70 +12441,71 @@ export type UserEvent = {
 						disableRepositoryDispatchEvents: false | true;
 				  }
 				| {
-						projectId: string;
-						projectName: string;
 						gitCommitStatus: false | true;
-				  }
-				| {
 						projectId: string;
 						projectName: string;
+				  }
+				| {
 						gitLFS: false | true;
-				  }
-				| {
 						projectId: string;
 						projectName: string;
+				  }
+				| {
 						consolidatedGitCommitStatus: {
 							enabled: false | true;
 							propagateFailures: false | true;
 						} | null;
-				  }
-				| {
 						projectId: string;
 						projectName: string;
-						previous: {
-							commandForIgnoringBuildStep?: string | undefined;
-						};
+				  }
+				| {
 						next: {
 							commandForIgnoringBuildStep?: string | undefined;
 						};
-				  }
-				| {
+						previous: {
+							commandForIgnoringBuildStep?: string | undefined;
+						};
 						projectId: string;
 						projectName: string;
+				  }
+				| {
+						configuredBy?: string | undefined;
 						domain: string;
-						target: string;
+						gitBranch: string | null;
+						projectId: string;
+						projectName: string;
 						redirect: string | null;
 						redirectStatusCode: number | null;
-						gitBranch: string | null;
-						configuredBy?: string | undefined;
+						target: string;
 				  }
 				| {
+						domain: string;
 						projectId: string;
 						projectName: string;
-						domain: string;
-						target: string;
 						redirect?: (string | null) | undefined;
 						redirectStatusCode?: (number | null) | undefined;
+						target: string;
 				  }
 				| {
-						oldProjectId: string;
-						oldProjectName: string;
+						domain: string;
 						newProjectId: string;
 						newProjectName: string;
-						domain: string;
+						oldProjectId: string;
+						oldProjectName: string;
 				  }
 				| {
+						domain: string;
 						projectId: string;
 						projectName: string;
-						domain: string;
 						redirect?: (string | null) | undefined;
 						redirectStatusCode?: (number | null) | undefined;
 				  }
 				| {
+						directoryType?: string | undefined;
 						projects: {
+							membershipCreatedAt: number;
 							projectId: string;
 							role: UserEventPayloadProjectsRoleEnumKey;
-							membershipCreatedAt: number;
 						}[];
 						teamMembership?:
 							| {
@@ -12638,46 +12513,45 @@ export type UserEvent = {
 									username?: string | undefined;
 							  }
 							| undefined;
-						directoryType?: string | undefined;
 				  }
 				| {
+						configuredBy?: (string | null) | undefined;
+						domain: string;
+						prevConfiguredBy?: (string | null) | undefined;
 						projectId: string;
 						projectName: string;
 						target: string;
-						domain: string;
-						configuredBy?: (string | null) | undefined;
-						prevConfiguredBy?: (string | null) | undefined;
 				  }
 				| {
 						project: {
-							name: string;
 							id?: string | undefined;
+							name: string;
 						};
 						projectMembership: {
+							createdAt: number;
 							role: UserEventPayloadProjectMembershipRoleEnumKey;
 							uid: string;
-							createdAt: number;
 							username?: string | undefined;
 						} | null;
 				  }
 				| {
 						project: {
-							name: string;
-							role: UserEventPayloadProjectRoleEnumKey;
-							invitedUserName: string;
 							id?: string | undefined;
 							invitedUserId?: string | undefined;
+							invitedUserName: string;
+							name: string;
+							role: UserEventPayloadProjectRoleEnumKey;
 						};
 				  }
 				| {
 						project: {
-							name: string;
 							id?: string | undefined;
+							name: string;
 						};
 						removedMembership: {
+							createdAt: number;
 							role: UserEventPayloadRemovedMembershipRoleEnumKey;
 							uid: string;
-							createdAt: number;
 							username?: string | undefined;
 						};
 				  }
@@ -12687,58 +12561,49 @@ export type UserEvent = {
 							name: string;
 						};
 						projectMembership: {
+							createdAt?: number | undefined;
 							role?: UserEventPayloadProjectMembershipRoleEnumKey | undefined;
 							uid?: string | undefined;
-							createdAt?: number | undefined;
-							username?: string | undefined;
 							previousRole?: UserEventPayloadProjectMembershipPreviousRoleEnumKey | undefined;
+							username?: string | undefined;
 						};
 				  }
 				| {
-						previousProjectId?: string | undefined;
 						newProjectId?: string | undefined;
-						previousProjectName: string;
 						newProjectName: string;
 						originAccountName: string;
+						previousProjectId?: string | undefined;
+						previousProjectName: string;
 						transferId?: string | undefined;
 				  }
 				| {
-						previousProjectId?: string | undefined;
-						projectName: string;
 						destinationAccountName: string | null;
-						transferId?: string | undefined;
-				  }
-				| {
-						projectId: string;
-						projectName: string;
-						originAccountName: string;
-						destinationAccountName: string;
-						destinationAccountId: string;
-						transferId?: string | undefined;
-				  }
-				| {
 						previousProjectId?: string | undefined;
-						newProjectId?: string | undefined;
-						previousProjectName: string;
-						newProjectName: string;
-						destinationAccountName: string;
+						projectName: string;
 						transferId?: string | undefined;
 				  }
 				| {
-						source: string;
+						destinationAccountId: string;
+						destinationAccountName: string;
+						originAccountName: string;
 						projectId: string;
 						projectName: string;
+						transferId?: string | undefined;
+				  }
+				| {
+						destinationAccountName: string;
+						newProjectId?: string | undefined;
+						newProjectName: string;
+						previousProjectId?: string | undefined;
+						previousProjectName: string;
+						transferId?: string | undefined;
 				  }
 				| {
 						projectId: string;
 						projectName: string;
-						optionsAllowlist?:
-							| ({
-									paths: {
-										value: string;
-									}[];
-							  } | null)
-							| undefined;
+						source: string;
+				  }
+				| {
 						oldOptionsAllowlist?:
 							| ({
 									paths: {
@@ -12746,18 +12611,17 @@ export type UserEvent = {
 									}[];
 							  } | null)
 							| undefined;
+						optionsAllowlist?:
+							| ({
+									paths: {
+										value: string;
+									}[];
+							  } | null)
+							| undefined;
+						projectId: string;
+						projectName: string;
 				  }
 				| {
-						projectId?: string | undefined;
-						projectName?: string | undefined;
-						passwordProtection:
-							| (
-									| {
-											deploymentType: UserEventPayloadPasswordProtectionDeploymentTypeEnumKey;
-									  }
-									| UserEventPayloadPasswordProtectionKey
-							  )
-							| null;
 						oldPasswordProtection:
 							| (
 									| {
@@ -12767,13 +12631,23 @@ export type UserEvent = {
 							  )
 							| null;
 						passwordChanged?: (false | true) | undefined;
+						passwordProtection:
+							| (
+									| {
+											deploymentType: UserEventPayloadPasswordProtectionDeploymentTypeEnumKey;
+									  }
+									| UserEventPayloadPasswordProtectionKey
+							  )
+							| null;
+						projectId?: string | undefined;
+						projectName?: string | undefined;
 				  }
 				| {
 						projectId: string;
 				  }
 				| {
-						projectId: string;
 						expiresAt: number;
+						projectId: string;
 				  }
 				| {
 						projectId: string;
@@ -12785,21 +12659,31 @@ export type UserEvent = {
 						reasonCode?: UserEventPayloadReasonCodeEnumKey | undefined;
 				  }
 				| {
+						consent: UserEventPayloadConsentEnumKey;
 						projectId?: string | undefined;
 						projectName: string;
-						consent: UserEventPayloadConsentEnumKey;
 				  }
 				| {
+						deploymentId: string;
+						projectAccountId: string;
 						projectId: string;
 						projectName: string;
-						projectAccountId: string;
-						deploymentId: string;
 						/**
 						 * @description Description of why a project was rolled back, and by whom. Note that lastAliasRequest contains the from/to details of the rollback.
 						 * @type object | undefined
 						 */
 						rollbackDescription?:
 							| {
+									/**
+									 * @description Timestamp of when the rollback was requested.
+									 * @type number
+									 */
+									createdAt: number;
+									/**
+									 * @description User-supplied explanation of why they rolled back the project. Limited to 250 characters.
+									 * @type string
+									 */
+									description: string;
 									/**
 									 * @description The user who rolled back the project.
 									 * @type string
@@ -12810,16 +12694,6 @@ export type UserEvent = {
 									 * @type string
 									 */
 									username: string;
-									/**
-									 * @description User-supplied explanation of why they rolled back the project. Limited to 250 characters.
-									 * @type string
-									 */
-									description: string;
-									/**
-									 * @description Timestamp of when the rollback was requested.
-									 * @type number
-									 */
-									createdAt: number;
 							  }
 							| undefined;
 				  }
@@ -12841,42 +12715,42 @@ export type UserEvent = {
 						action?: string | undefined;
 				  }
 				| {
+						next: {
+							deploymentSources?: (string[] | null) | undefined;
+							gitSources?: (string[] | null) | undefined;
+						} | null;
+						previous: {
+							deploymentSources?: (string[] | null) | undefined;
+							gitSources?: (string[] | null) | undefined;
+						} | null;
 						projectId: string;
 						projectName: string;
-						previous: {
-							gitSources?: (string[] | null) | undefined;
-							deploymentSources?: (string[] | null) | undefined;
-						} | null;
-						next: {
-							gitSources?: (string[] | null) | undefined;
-							deploymentSources?: (string[] | null) | undefined;
-						} | null;
 				  }
 				| {
+						failoverRegions?: string[] | undefined;
 						projectId: string;
 						projectName: string;
 						region?: string | undefined;
-						failoverRegions?: string[] | undefined;
 				  }
 				| {
-						projectId: string;
-						projectName: string;
-						previous: {
-							issuerMode?: UserEventPayloadPreviousIssuerModeEnumKey | undefined;
-						};
 						next: {
 							issuerMode: UserEventPayloadNextIssuerModeEnumKey;
 						};
-				  }
-				| {
+						previous: {
+							issuerMode?: UserEventPayloadPreviousIssuerModeEnumKey | undefined;
+						};
 						projectId: string;
 						projectName: string;
+				  }
+				| {
 						customerSupportCodeVisibility: false | true;
-				  }
-				| {
 						projectId: string;
 						projectName: string;
+				  }
+				| {
 						gitForkProtection: false | true;
+						projectId: string;
+						projectName: string;
 				  }
 				| {
 						projectId: string;
@@ -12884,9 +12758,9 @@ export type UserEvent = {
 						protectedSourcemaps: false | true;
 				  }
 				| {
+						inheritDeploymentProtection: false | true;
 						projectId: string;
 						projectName: string;
-						inheritDeploymentProtection: false | true;
 				  }
 				| {
 						projectId: string;
@@ -12894,92 +12768,90 @@ export type UserEvent = {
 						publicSource: false | true;
 				  }
 				| {
-						projectId?: string | undefined;
-						projectName?: string | undefined;
-						previous: {
-							expiration?: string | undefined;
-							expirationProduction?: string | undefined;
-							expirationCanceled?: string | undefined;
-							expirationErrored?: string | undefined;
-						};
 						next: {
 							expiration?: string | undefined;
-							expirationProduction?: string | undefined;
 							expirationCanceled?: string | undefined;
 							expirationErrored?: string | undefined;
+							expirationProduction?: string | undefined;
 						};
+						previous: {
+							expiration?: string | undefined;
+							expirationCanceled?: string | undefined;
+							expirationErrored?: string | undefined;
+							expirationProduction?: string | undefined;
+						};
+						projectId?: string | undefined;
+						projectName?: string | undefined;
 				  }
 				| {
-						projectId: string;
-						projectName: string;
 						next: {
 							skewProtectionBoundaryAt: number;
 						};
 						previous: {
 							skewProtectionBoundaryAt?: number | undefined;
 						};
-				  }
-				| {
 						projectId: string;
 						projectName: string;
+				  }
+				| {
 						next: {
 							skewProtectionMaxAge: number;
 						};
 						previous: {
 							skewProtectionMaxAge?: number | undefined;
 						};
-				  }
-				| {
 						projectId: string;
 						projectName: string;
+				  }
+				| {
 						next: {
 							skewProtectionAllowedDomains: string[];
 						};
 						previous: {
 							skewProtectionAllowedDomains?: string[] | undefined;
 						};
+						projectId: string;
+						projectName: string;
 				  }
 				| {
+						oldSsoProtection:
+							| (
+									| {
+											april2026SecurityIncidentMigrationAppliedFrom?:
+												| (UserEventPayloadOldSsoProtectionApril2026SecurityIncidentMigrationAppliedFromEnumKey | null)
+												| undefined;
+											cve55182MigrationAppliedFrom?:
+												| (UserEventPayloadOldSsoProtectionCve55182MigrationAppliedFromEnumKey | null)
+												| undefined;
+											deploymentType: UserEventPayloadOldSsoProtectionDeploymentTypeEnumKey;
+									  }
+									| UserEventPayloadOldSsoProtectionKey
+							  )
+							| null;
 						projectId?: string | undefined;
 						projectName?: string | undefined;
 						ssoProtection:
 							| (
 									| {
-											deploymentType: UserEventPayloadSsoProtectionDeploymentTypeEnumKey;
-											cve55182MigrationAppliedFrom?:
-												| (UserEventPayloadSsoProtectionCve55182MigrationAppliedFromEnumKey | null)
-												| undefined;
 											april2026SecurityIncidentMigrationAppliedFrom?:
 												| (UserEventPayloadSsoProtectionApril2026SecurityIncidentMigrationAppliedFromEnumKey | null)
 												| undefined;
+											cve55182MigrationAppliedFrom?:
+												| (UserEventPayloadSsoProtectionCve55182MigrationAppliedFromEnumKey | null)
+												| undefined;
+											deploymentType: UserEventPayloadSsoProtectionDeploymentTypeEnumKey;
 									  }
 									| UserEventPayloadSsoProtectionKey
 							  )
 							| null;
-						oldSsoProtection:
-							| (
-									| {
-											deploymentType: UserEventPayloadOldSsoProtectionDeploymentTypeEnumKey;
-											cve55182MigrationAppliedFrom?:
-												| (UserEventPayloadOldSsoProtectionCve55182MigrationAppliedFromEnumKey | null)
-												| undefined;
-											april2026SecurityIncidentMigrationAppliedFrom?:
-												| (UserEventPayloadOldSsoProtectionApril2026SecurityIncidentMigrationAppliedFromEnumKey | null)
-												| undefined;
-									  }
-									| UserEventPayloadOldSsoProtectionKey
-							  )
-							| null;
 				  }
 				| {
-						projectId: string;
-						projectName: string;
 						next: {
 							project: {
 								id?: string | undefined;
 								staticIps: {
-									builds?: (false | true) | undefined;
 									buildRegion?: string | undefined;
+									builds?: (false | true) | undefined;
 									enabled: false | true;
 									regions?: string[] | undefined;
 								};
@@ -12989,35 +12861,37 @@ export type UserEvent = {
 							project: {
 								id?: string | undefined;
 								staticIps: {
-									builds?: (false | true) | undefined;
 									buildRegion?: string | undefined;
+									builds?: (false | true) | undefined;
 									enabled: false | true;
 									regions?: string[] | undefined;
 								};
 							};
 						};
-				  }
-				| {
 						projectId: string;
 						projectName: string;
-						trustedIps?: (UserEventPayloadTrustedIpsEnumKey | null) | undefined;
-						oldTrustedIps?: (UserEventPayloadOldTrustedIpsEnumKey | null) | undefined;
+				  }
+				| {
 						addedAddresses?: (string[] | null) | undefined;
-						removedAddresses?: (string[] | null) | undefined;
-				  }
-				| {
+						oldTrustedIps?: (UserEventPayloadOldTrustedIpsEnumKey | null) | undefined;
 						projectId: string;
 						projectName: string;
-						enableVercelCiSameRepository?: (false | true) | undefined;
+						removedAddresses?: (string[] | null) | undefined;
+						trustedIps?: (UserEventPayloadTrustedIpsEnumKey | null) | undefined;
+				  }
+				| {
 						addedProjects: {
 							id: string;
 							name: string;
 						}[];
+						addedProviders: string[];
+						enableVercelCiSameRepository?: (false | true) | undefined;
+						projectId: string;
+						projectName: string;
 						removedProjects: {
 							id: string;
 							name: string;
 						}[];
-						addedProviders: string[];
 						removedProviders: string[];
 				  }
 				| {
@@ -13030,25 +12904,25 @@ export type UserEvent = {
 						reasonCode?: UserEventPayloadReasonCodeEnumKey | undefined;
 				  }
 				| {
+						prevProjectWebAnalytics?:
+							| ({
+									canceledAt?: number | undefined;
+									disabledAt?: number | undefined;
+									enabledAt?: number | undefined;
+									hasData?: true | undefined;
+									id: string;
+							  } | null)
+							| undefined;
 						projectId: string;
 						projectName: string;
 						projectWebAnalytics?:
 							| {
-									id: string;
-									disabledAt?: number | undefined;
 									canceledAt?: number | undefined;
+									disabledAt?: number | undefined;
 									enabledAt?: number | undefined;
 									hasData?: true | undefined;
+									id: string;
 							  }
-							| undefined;
-						prevProjectWebAnalytics?:
-							| ({
-									id: string;
-									disabledAt?: number | undefined;
-									canceledAt?: number | undefined;
-									enabledAt?: number | undefined;
-									hasData?: true | undefined;
-							  } | null)
 							| undefined;
 				  }
 				| {
@@ -13062,9 +12936,9 @@ export type UserEvent = {
 				  }
 				| {
 						alias: string;
-						sandboxName: string;
-						sandboxId?: string | undefined;
 						projectId?: string | undefined;
+						sandboxId?: string | undefined;
+						sandboxName: string;
 				  }
 				| {
 						driveName: string;
@@ -13094,48 +12968,57 @@ export type UserEvent = {
 						 * @type string
 						 */
 						actorId: string;
-						actorType: "admin";
 						actorName?: string | undefined;
+						actorType: "admin";
 				  }
 				| {
 						email: string;
 				  }
 				| {
-						uid: string;
 						name:
 							| string
 							| {
 									name: string;
 							  };
+						uid: string;
 				  }
 				| {
-						oldName: string;
 						newName: string;
+						oldName: string;
 						uid?: string | undefined;
 				  }
 				| {
 						enabled: false | true;
-						updatedAt: number;
 						firstEnabledAt?: number | undefined;
 						projectId?: string | undefined;
 						projectName?: string | undefined;
+						updatedAt: number;
 				  }
 				| {
 						bio: string;
 				  }
 				| {
+						max: number;
+						min: number;
 						scalingRules: {
 							[key: string]: {
-								min: number;
 								max: number;
+								min: number;
 							};
 						};
-						min: number;
-						max: number;
 						url: string;
 				  }
 				| {
-						userAgent?: string | undefined;
+						env?: string | undefined;
+						factors?:
+							| {
+									legacy?: (false | true) | undefined;
+									origin: UserEventPayloadFactorsOriginEnumKey;
+									ssoType?: string | undefined;
+									teamId?: string | undefined;
+									username?: string | undefined;
+							  }[]
+							| undefined;
 						geolocation?:
 							| ({
 									city?:
@@ -13160,33 +13043,24 @@ export type UserEvent = {
 									regionName?: string | undefined;
 							  } | null)
 							| undefined;
-						env?: string | undefined;
 						os?: string | undefined;
-						username?: string | undefined;
 						ssoType?: string | undefined;
-						factors?:
-							| {
-									origin: UserEventPayloadFactorsOriginEnumKey;
-									username?: string | undefined;
-									teamId?: string | undefined;
-									legacy?: (false | true) | undefined;
-									ssoType?: string | undefined;
-							  }[]
-							| undefined;
-						viaOTP?: (false | true) | undefined;
+						userAgent?: string | undefined;
+						username?: string | undefined;
+						viaApple?: (false | true) | undefined;
+						viaBitbucket?: (false | true) | undefined;
 						viaGithub?: (false | true) | undefined;
 						viaGitlab?: (false | true) | undefined;
-						viaBitbucket?: (false | true) | undefined;
 						viaGoogle?: (false | true) | undefined;
-						viaApple?: (false | true) | undefined;
-						viaSamlSso?: (false | true) | undefined;
+						viaOTP?: (false | true) | undefined;
 						viaPasskey?: (false | true) | undefined;
+						viaSamlSso?: (false | true) | undefined;
 				  }
 				| {
-						email: string;
-						bitbucketLogin: string;
 						bitbucketEmail: string;
+						bitbucketLogin: string;
 						bitbucketName: string;
+						email: string;
 						zeitAccount: string;
 						zeitAccountType: string;
 				  }
@@ -13198,22 +13072,22 @@ export type UserEvent = {
 				  }
 				| {
 						email: string;
-						gitlabLogin: string;
 						gitlabEmail: string;
+						gitlabLogin: string;
 						gitlabName: string;
 						zeitAccount: string;
 						zeitAccountType: string;
 				  }
 				| {
-						projectId?: string | undefined;
-						projectName?: string | undefined;
 						analyticsId?: string | undefined;
-						sampleRatePercent: number | null;
-						spendLimitInDollars: number | null;
 						previous: {
 							sampleRatePercent: number | null;
 							spendLimitInDollars: number | null;
 						};
+						projectId?: string | undefined;
+						projectName?: string | undefined;
+						sampleRatePercent: number | null;
+						spendLimitInDollars: number | null;
 				  }
 				| {
 						budget: {
@@ -13223,55 +13097,40 @@ export type UserEvent = {
 							 */
 							budgetItem: {
 								/**
-								 * @description The budget type
-								 * @type string
+								 * @description Date time when budget is created
+								 * @type number
 								 */
-								type: "fixed";
+								createdAt: number;
 								/**
 								 * @description Budget amount (USD / dollars)
 								 * @type number
 								 */
 								fixedBudget: number;
 								/**
-								 * @description Array of the last 3 months of spend data
-								 * @type array
+								 * @description Sort key that needs to be unique per teamId
+								 * @type string
 								 */
-								previousSpend: number[];
-								/**
-								 * @description Array of 50, 75, 100 to keep track of notifications sent out
-								 * @type array
-								 */
-								notifiedAt: number[];
-								/**
-								 * @description Webhook id that corresponds to a webhook in Cosmos webhook collection
-								 * @type string | undefined
-								 */
-								webhookId?: string | undefined;
-								/**
-								 * @description Keep track if the webhook has been called for the month
-								 * @type boolean | undefined
-								 */
-								webhookNotified?: (false | true) | undefined;
-								/**
-								 * @description Date time when budget is created
-								 * @type number
-								 */
-								createdAt: number;
-								/**
-								 * @description Date time when budget is updated last
-								 * @type number | undefined
-								 */
-								updatedAt?: number | undefined;
+								id: string;
 								/**
 								 * @description Is the budget currently active for a customer
 								 * @type boolean
 								 */
 								isActive: false | true;
 								/**
+								 * @description Array of 50, 75, 100 to keep track of notifications sent out
+								 * @type array
+								 */
+								notifiedAt: number[];
+								/**
 								 * @description Should all projects be paused if budget is exceeded
 								 * @type boolean | undefined
 								 */
 								pauseProjects?: (false | true) | undefined;
+								/**
+								 * @description Array of the last 3 months of spend data
+								 * @type array
+								 */
+								previousSpend: number[];
 								/**
 								 * @description The acive pricing plan the team is billed with
 								 * @type string | undefined
@@ -13293,10 +13152,25 @@ export type UserEvent = {
 								 */
 								teamId: string;
 								/**
-								 * @description Sort key that needs to be unique per teamId
+								 * @description The budget type
 								 * @type string
 								 */
-								id: string;
+								type: "fixed";
+								/**
+								 * @description Date time when budget is updated last
+								 * @type number | undefined
+								 */
+								updatedAt?: number | undefined;
+								/**
+								 * @description Webhook id that corresponds to a webhook in Cosmos webhook collection
+								 * @type string | undefined
+								 */
+								webhookId?: string | undefined;
+								/**
+								 * @description Keep track if the webhook has been called for the month
+								 * @type boolean | undefined
+								 */
+								webhookNotified?: (false | true) | undefined;
 							};
 						};
 				  }
@@ -13307,55 +13181,40 @@ export type UserEvent = {
 						 */
 						budget: {
 							/**
-							 * @description The budget type
-							 * @type string
+							 * @description Date time when budget is created
+							 * @type number
 							 */
-							type: "fixed";
+							createdAt: number;
 							/**
 							 * @description Budget amount (USD / dollars)
 							 * @type number
 							 */
 							fixedBudget: number;
 							/**
-							 * @description Array of the last 3 months of spend data
-							 * @type array
+							 * @description Sort key that needs to be unique per teamId
+							 * @type string
 							 */
-							previousSpend: number[];
-							/**
-							 * @description Array of 50, 75, 100 to keep track of notifications sent out
-							 * @type array
-							 */
-							notifiedAt: number[];
-							/**
-							 * @description Webhook id that corresponds to a webhook in Cosmos webhook collection
-							 * @type string | undefined
-							 */
-							webhookId?: string | undefined;
-							/**
-							 * @description Keep track if the webhook has been called for the month
-							 * @type boolean | undefined
-							 */
-							webhookNotified?: (false | true) | undefined;
-							/**
-							 * @description Date time when budget is created
-							 * @type number
-							 */
-							createdAt: number;
-							/**
-							 * @description Date time when budget is updated last
-							 * @type number | undefined
-							 */
-							updatedAt?: number | undefined;
+							id: string;
 							/**
 							 * @description Is the budget currently active for a customer
 							 * @type boolean
 							 */
 							isActive: false | true;
 							/**
+							 * @description Array of 50, 75, 100 to keep track of notifications sent out
+							 * @type array
+							 */
+							notifiedAt: number[];
+							/**
 							 * @description Should all projects be paused if budget is exceeded
 							 * @type boolean | undefined
 							 */
 							pauseProjects?: (false | true) | undefined;
+							/**
+							 * @description Array of the last 3 months of spend data
+							 * @type array
+							 */
+							previousSpend: number[];
 							/**
 							 * @description The acive pricing plan the team is billed with
 							 * @type string | undefined
@@ -13377,10 +13236,25 @@ export type UserEvent = {
 							 */
 							teamId: string;
 							/**
-							 * @description Sort key that needs to be unique per teamId
+							 * @description The budget type
 							 * @type string
 							 */
-							id: string;
+							type: "fixed";
+							/**
+							 * @description Date time when budget is updated last
+							 * @type number | undefined
+							 */
+							updatedAt?: number | undefined;
+							/**
+							 * @description Webhook id that corresponds to a webhook in Cosmos webhook collection
+							 * @type string | undefined
+							 */
+							webhookId?: string | undefined;
+							/**
+							 * @description Keep track if the webhook has been called for the month
+							 * @type boolean | undefined
+							 */
+							webhookNotified?: (false | true) | undefined;
 						};
 				  }
 				| {
@@ -13390,55 +13264,40 @@ export type UserEvent = {
 						 */
 						budget: {
 							/**
-							 * @description The budget type
-							 * @type string
+							 * @description Date time when budget is created
+							 * @type number
 							 */
-							type: "fixed";
+							createdAt: number;
 							/**
 							 * @description Budget amount (USD / dollars)
 							 * @type number
 							 */
 							fixedBudget: number;
 							/**
-							 * @description Array of the last 3 months of spend data
-							 * @type array
+							 * @description Sort key that needs to be unique per teamId
+							 * @type string
 							 */
-							previousSpend: number[];
-							/**
-							 * @description Array of 50, 75, 100 to keep track of notifications sent out
-							 * @type array
-							 */
-							notifiedAt: number[];
-							/**
-							 * @description Webhook id that corresponds to a webhook in Cosmos webhook collection
-							 * @type string | undefined
-							 */
-							webhookId?: string | undefined;
-							/**
-							 * @description Keep track if the webhook has been called for the month
-							 * @type boolean | undefined
-							 */
-							webhookNotified?: (false | true) | undefined;
-							/**
-							 * @description Date time when budget is created
-							 * @type number
-							 */
-							createdAt: number;
-							/**
-							 * @description Date time when budget is updated last
-							 * @type number | undefined
-							 */
-							updatedAt?: number | undefined;
+							id: string;
 							/**
 							 * @description Is the budget currently active for a customer
 							 * @type boolean
 							 */
 							isActive: false | true;
 							/**
+							 * @description Array of 50, 75, 100 to keep track of notifications sent out
+							 * @type array
+							 */
+							notifiedAt: number[];
+							/**
 							 * @description Should all projects be paused if budget is exceeded
 							 * @type boolean | undefined
 							 */
 							pauseProjects?: (false | true) | undefined;
+							/**
+							 * @description Array of the last 3 months of spend data
+							 * @type array
+							 */
+							previousSpend: number[];
 							/**
 							 * @description The acive pricing plan the team is billed with
 							 * @type string | undefined
@@ -13460,10 +13319,25 @@ export type UserEvent = {
 							 */
 							teamId: string;
 							/**
-							 * @description Sort key that needs to be unique per teamId
+							 * @description The budget type
 							 * @type string
 							 */
-							id: string;
+							type: "fixed";
+							/**
+							 * @description Date time when budget is updated last
+							 * @type number | undefined
+							 */
+							updatedAt?: number | undefined;
+							/**
+							 * @description Webhook id that corresponds to a webhook in Cosmos webhook collection
+							 * @type string | undefined
+							 */
+							webhookId?: string | undefined;
+							/**
+							 * @description Keep track if the webhook has been called for the month
+							 * @type boolean | undefined
+							 */
+							webhookNotified?: (false | true) | undefined;
 						};
 						webhookUrl?: string | undefined;
 				  }
@@ -13474,55 +13348,40 @@ export type UserEvent = {
 						 */
 						budget: {
 							/**
-							 * @description The budget type
-							 * @type string
+							 * @description Date time when budget is created
+							 * @type number
 							 */
-							type: "fixed";
+							createdAt: number;
 							/**
 							 * @description Budget amount (USD / dollars)
 							 * @type number
 							 */
 							fixedBudget: number;
 							/**
-							 * @description Array of the last 3 months of spend data
-							 * @type array
+							 * @description Sort key that needs to be unique per teamId
+							 * @type string
 							 */
-							previousSpend: number[];
-							/**
-							 * @description Array of 50, 75, 100 to keep track of notifications sent out
-							 * @type array
-							 */
-							notifiedAt: number[];
-							/**
-							 * @description Webhook id that corresponds to a webhook in Cosmos webhook collection
-							 * @type string | undefined
-							 */
-							webhookId?: string | undefined;
-							/**
-							 * @description Keep track if the webhook has been called for the month
-							 * @type boolean | undefined
-							 */
-							webhookNotified?: (false | true) | undefined;
-							/**
-							 * @description Date time when budget is created
-							 * @type number
-							 */
-							createdAt: number;
-							/**
-							 * @description Date time when budget is updated last
-							 * @type number | undefined
-							 */
-							updatedAt?: number | undefined;
+							id: string;
 							/**
 							 * @description Is the budget currently active for a customer
 							 * @type boolean
 							 */
 							isActive: false | true;
 							/**
+							 * @description Array of 50, 75, 100 to keep track of notifications sent out
+							 * @type array
+							 */
+							notifiedAt: number[];
+							/**
 							 * @description Should all projects be paused if budget is exceeded
 							 * @type boolean | undefined
 							 */
 							pauseProjects?: (false | true) | undefined;
+							/**
+							 * @description Array of the last 3 months of spend data
+							 * @type array
+							 */
+							previousSpend: number[];
 							/**
 							 * @description The acive pricing plan the team is billed with
 							 * @type string | undefined
@@ -13544,10 +13403,25 @@ export type UserEvent = {
 							 */
 							teamId: string;
 							/**
-							 * @description Sort key that needs to be unique per teamId
+							 * @description The budget type
 							 * @type string
 							 */
-							id: string;
+							type: "fixed";
+							/**
+							 * @description Date time when budget is updated last
+							 * @type number | undefined
+							 */
+							updatedAt?: number | undefined;
+							/**
+							 * @description Webhook id that corresponds to a webhook in Cosmos webhook collection
+							 * @type string | undefined
+							 */
+							webhookId?: string | undefined;
+							/**
+							 * @description Keep track if the webhook has been called for the month
+							 * @type boolean | undefined
+							 */
+							webhookNotified?: (false | true) | undefined;
 						};
 						/**
 						 * @description Represents a budget for tracking and notifying teams on their spending.
@@ -13556,55 +13430,40 @@ export type UserEvent = {
 						prevBudget?:
 							| {
 									/**
-									 * @description The budget type
-									 * @type string
+									 * @description Date time when budget is created
+									 * @type number
 									 */
-									type: "fixed";
+									createdAt: number;
 									/**
 									 * @description Budget amount (USD / dollars)
 									 * @type number
 									 */
 									fixedBudget: number;
 									/**
-									 * @description Array of the last 3 months of spend data
-									 * @type array
+									 * @description Sort key that needs to be unique per teamId
+									 * @type string
 									 */
-									previousSpend: number[];
-									/**
-									 * @description Array of 50, 75, 100 to keep track of notifications sent out
-									 * @type array
-									 */
-									notifiedAt: number[];
-									/**
-									 * @description Webhook id that corresponds to a webhook in Cosmos webhook collection
-									 * @type string | undefined
-									 */
-									webhookId?: string | undefined;
-									/**
-									 * @description Keep track if the webhook has been called for the month
-									 * @type boolean | undefined
-									 */
-									webhookNotified?: (false | true) | undefined;
-									/**
-									 * @description Date time when budget is created
-									 * @type number
-									 */
-									createdAt: number;
-									/**
-									 * @description Date time when budget is updated last
-									 * @type number | undefined
-									 */
-									updatedAt?: number | undefined;
+									id: string;
 									/**
 									 * @description Is the budget currently active for a customer
 									 * @type boolean
 									 */
 									isActive: false | true;
 									/**
+									 * @description Array of 50, 75, 100 to keep track of notifications sent out
+									 * @type array
+									 */
+									notifiedAt: number[];
+									/**
 									 * @description Should all projects be paused if budget is exceeded
 									 * @type boolean | undefined
 									 */
 									pauseProjects?: (false | true) | undefined;
+									/**
+									 * @description Array of the last 3 months of spend data
+									 * @type array
+									 */
+									previousSpend: number[];
 									/**
 									 * @description The acive pricing plan the team is billed with
 									 * @type string | undefined
@@ -13626,14 +13485,29 @@ export type UserEvent = {
 									 */
 									teamId: string;
 									/**
-									 * @description Sort key that needs to be unique per teamId
+									 * @description The budget type
 									 * @type string
 									 */
-									id: string;
+									type: "fixed";
+									/**
+									 * @description Date time when budget is updated last
+									 * @type number | undefined
+									 */
+									updatedAt?: number | undefined;
+									/**
+									 * @description Webhook id that corresponds to a webhook in Cosmos webhook collection
+									 * @type string | undefined
+									 */
+									webhookId?: string | undefined;
+									/**
+									 * @description Keep track if the webhook has been called for the month
+									 * @type boolean | undefined
+									 */
+									webhookNotified?: (false | true) | undefined;
 							  }
 							| undefined;
-						webhookUrl?: string | undefined;
 						prevWebhookUrl?: string | undefined;
+						webhookUrl?: string | undefined;
 				  }
 				| {
 						webhookUrl?: string | undefined;
@@ -13642,70 +13516,96 @@ export type UserEvent = {
 						storeType: UserEventPayloadStoreTypeEnumKey;
 				  }
 				| {
-						transferRequestCode: string;
 						store: {
 							id: string;
 							name?: string | undefined;
 							type: UserEventPayloadStoreTypeEnumKey;
 						};
+						transferRequestCode: string;
 				  }
 				| {
-						transferRequestCode: string;
 						store: {
 							id: string;
 							name?: string | undefined;
 							type: UserEventPayloadStoreTypeEnumKey;
 						};
+						transferRequestCode: string;
 						destinationTeamId: string;
 						destinationTeamName: string;
 				  }
 				| {
-						transferRequestCode: string;
 						store: {
 							id: string;
 							name?: string | undefined;
 							type: UserEventPayloadStoreTypeEnumKey;
 						};
+						transferRequestCode: string;
 						originTeamId: string;
 						originTeamName: string;
 				  }
 				| {
-						id: string;
-						name?: string | undefined;
+						access?: UserEventPayloadAccessEnumKey | undefined;
 						computeUnitsMax?: number | undefined;
 						computeUnitsMin?: number | undefined;
+						id: string;
+						name?: string | undefined;
 						suspendTimeoutSeconds?: number | undefined;
 						type: UserEventPayloadTypeEnumKey;
-						access?: UserEventPayloadAccessEnumKey | undefined;
 				  }
 				| {
-						store: {
-							name: string;
-							id: string;
-						};
 						ownerId?: string | undefined;
+						store: {
+							id: string;
+							name: string;
+						};
 				  }
 				| {
-						id: string;
-						name?: string | undefined;
+						access?: UserEventPayloadAccessEnumKey | undefined;
 						computeUnitsMax?: number | undefined;
 						computeUnitsMin?: number | undefined;
+						id: string;
+						name?: string | undefined;
 						suspendTimeoutSeconds?: number | undefined;
 						type: UserEventPayloadTypeEnumKey;
-						access?: UserEventPayloadAccessEnumKey | undefined;
 						locked: false | true;
 				  }
 				| {
 						actorId?: string | undefined;
 						actorType?: UserEventPayloadActorTypeEnumKey | undefined;
-						reason?: string | undefined;
 						caseNumber?: string | undefined;
 						client?: string | undefined;
+						reason?: string | undefined;
 				  }
 				| {
 						slug: string;
 				  }
 				| {
+						/**
+						 * @description Automatic code review settings
+						 * @type object
+						 */
+						next: {
+							/**
+							 * @description Whether automatic code reviews are enabled
+							 * @type boolean
+							 */
+							enabled: false | true;
+							/**
+							 * @description Whether to include draft pull requests in automatic reviews
+							 * @type boolean
+							 */
+							includeDrafts: false | true;
+							/**
+							 * @description Which repository visibilities get automatic reviews
+							 * @type string
+							 */
+							scope: UserEventPayloadNextScopeEnumKey;
+							/**
+							 * @description GitHub repos to scope automatic reviews to. Format: \"owner/repo\" (lowercase). Only used when scope=\'selected_repos\'.
+							 * @type array | undefined
+							 */
+							selectedRepos?: (string[] | null) | undefined;
+						};
 						/**
 						 * @description Automatic code review settings
 						 * @type object | undefined
@@ -13718,15 +13618,15 @@ export type UserEvent = {
 									 */
 									enabled: false | true;
 									/**
-									 * @description Which repository visibilities get automatic reviews
-									 * @type string
-									 */
-									scope: UserEventPayloadPreviousScopeEnumKey;
-									/**
 									 * @description Whether to include draft pull requests in automatic reviews
 									 * @type boolean
 									 */
 									includeDrafts: false | true;
+									/**
+									 * @description Which repository visibilities get automatic reviews
+									 * @type string
+									 */
+									scope: UserEventPayloadPreviousScopeEnumKey;
 									/**
 									 * @description GitHub repos to scope automatic reviews to. Format: \"owner/repo\" (lowercase). Only used when scope=\'selected_repos\'.
 									 * @type array | undefined
@@ -13734,41 +13634,16 @@ export type UserEvent = {
 									selectedRepos?: (string[] | null) | undefined;
 							  }
 							| undefined;
-						/**
-						 * @description Automatic code review settings
-						 * @type object
-						 */
-						next: {
-							/**
-							 * @description Whether automatic code reviews are enabled
-							 * @type boolean
-							 */
-							enabled: false | true;
-							/**
-							 * @description Which repository visibilities get automatic reviews
-							 * @type string
-							 */
-							scope: UserEventPayloadNextScopeEnumKey;
-							/**
-							 * @description Whether to include draft pull requests in automatic reviews
-							 * @type boolean
-							 */
-							includeDrafts: false | true;
-							/**
-							 * @description GitHub repos to scope automatic reviews to. Format: \"owner/repo\" (lowercase). Only used when scope=\'selected_repos\'.
-							 * @type array | undefined
-							 */
-							selectedRepos?: (string[] | null) | undefined;
-						};
 				  }
 				| {
-						trialCreditsIssuedAt: number;
-						expiresAt: string;
 						amount: string;
 						currency: string;
+						expiresAt: string;
+						trialCreditsIssuedAt: number;
 				  }
 				| {
 						eventId: string;
+						occurredAt: number;
 						sessionId: string;
 						/**
 						 * @description Currently emitted session kinds: chat, investigation.
@@ -13780,10 +13655,10 @@ export type UserEvent = {
 						 * @type string
 						 */
 						surface: string;
-						occurredAt: number;
 				  }
 				| {
 						eventId: string;
+						occurredAt: number;
 						sessionId: string;
 						/**
 						 * @description Currently emitted session kinds: chat, investigation.
@@ -13795,90 +13670,89 @@ export type UserEvent = {
 						 * @type string
 						 */
 						surface: string;
-						occurredAt: number;
-						planId: string;
-						/**
-						 * @description Scopes requested by the model-authored plan.
-						 * @type array
-						 */
-						requestedScopes: string[];
+						elevatedScopeCount: number;
 						/**
 						 * @description Requested Vercel scopes that are not included in the baseline token.
 						 * @type array
 						 */
 						elevatedScopes: string[];
-						/**
-						 * @description Baseline plus elevated Vercel scopes used when minting scoped tokens.
-						 * @type array
-						 */
-						mergedScopes: string[];
+						githubScopeCount: number;
 						/**
 						 * @description External GitHub scopes requested by the plan; these are not Vercel token scopes.
 						 * @type array
 						 */
 						githubScopes: string[];
-						requestedScopeCount: number;
-						elevatedScopeCount: number;
 						mergedScopeCount: number;
-						githubScopeCount: number;
+						/**
+						 * @description Baseline plus elevated Vercel scopes used when minting scoped tokens.
+						 * @type array
+						 */
+						mergedScopes: string[];
+						planId: string;
+						requestedScopeCount: number;
+						/**
+						 * @description Scopes requested by the model-authored plan.
+						 * @type array
+						 */
+						requestedScopes: string[];
 				  }
 				| {
-						previous: UserEventPayloadPreviousEnumKey | null;
 						next: UserEventPayloadNextEnumKey | null;
+						previous: UserEventPayloadPreviousEnumKey | null;
 						teamSlug?: string | undefined;
 				  }
 				| {
-						previous?: UserEventPayloadPreviousEnumKey | undefined;
-						next?: UserEventPayloadNextEnumKey | undefined;
 						isSystemInitiated?: (false | true) | undefined;
+						next?: UserEventPayloadNextEnumKey | undefined;
+						previous?: UserEventPayloadPreviousEnumKey | undefined;
 						reason?: UserEventPayloadReasonEnumKey | undefined;
 				  }
 				| {
-						slug: string;
-						teamId: string;
 						by: string;
 						byUid?: string | undefined;
 						reasons?:
 							| {
-									slug: string;
 									description: string;
+									slug: string;
 							  }[]
 							| undefined;
+						removedMemberCount?: number | undefined;
 						removedUsers?:
 							| {
 									[key: string]: {
-										role: RoleEnumKey;
 										confirmed: false | true;
 										confirmedAt?: number | undefined;
+										role: RoleEnumKey;
 									};
 							  }
 							| undefined;
-						removedMemberCount?: number | undefined;
+						slug: string;
+						teamId: string;
 						timestamp?: number | undefined;
 				  }
 				| {
-						previous: {
-							gitSources?: (string[] | null) | undefined;
-							deploymentSources?: (string[] | null) | undefined;
-						} | null;
 						next: {
-							gitSources?: (string[] | null) | undefined;
 							deploymentSources?: (string[] | null) | undefined;
+							gitSources?: (string[] | null) | undefined;
+						} | null;
+						previous: {
+							deploymentSources?: (string[] | null) | undefined;
+							gitSources?: (string[] | null) | undefined;
 						} | null;
 				  }
 				| {
-						enabled: false | true;
 						domain?: string | undefined;
+						enabled: false | true;
 				  }
 				| {
-						projectId: string;
-						projectName: string;
 						enabled: (false | true) | null;
 						environment: UserEventPayloadEnvironmentEnumKey;
+						projectId: string;
+						projectName: string;
 				  }
 				| {
-						environment: UserEventPayloadEnvironmentEnumKey;
 						enabled: UserEventPayloadEnabledEnumKey;
+						environment: UserEventPayloadEnvironmentEnumKey;
 				  }
 				| {
 						emailDomain?: (string | null) | undefined;
@@ -13889,166 +13763,166 @@ export type UserEvent = {
 				  }
 				| {
 						directoryType?: string | undefined;
-						ssoType?: string | undefined;
+						entitlements?: string[] | undefined;
+						invitationRole?: string | undefined;
+						invitedEmail?: string | undefined;
+						invitedUid?: string | undefined;
 						invitedUser?:
 							| {
-									username: string;
 									email: string;
+									username: string;
 							  }
 							| undefined;
-						invitedEmail?: string | undefined;
-						invitationRole?: string | undefined;
-						entitlements?: string[] | undefined;
-						invitedUid?: string | undefined;
 						origin?: string | undefined;
+						ssoType?: string | undefined;
 						teamSlug?: string | undefined;
 				  }
 				| {
-						teamName: string;
-						username?: string | undefined;
+						bitbucketUsername?: (string | null) | undefined;
+						githubUsername?: (string | null) | undefined;
+						gitlabUsername?: (string | null) | undefined;
 						gitUsername?: string | undefined;
-						githubUsername?: (string | null) | undefined;
-						gitlabUsername?: (string | null) | undefined;
-						bitbucketUsername?: (string | null) | undefined;
-						updatedUid?: string | undefined;
 						teamId?: string | undefined;
+						teamName: string;
+						updatedUid?: string | undefined;
+						username?: string | undefined;
 				  }
 				| {
+						bitbucketUsername?: (string | null) | undefined;
+						githubUsername?: (string | null) | undefined;
+						gitlabUsername?: (string | null) | undefined;
+						gitUsername?: (string | null) | undefined;
 						teamName: string;
 						username?: string | undefined;
-						gitUsername?: (string | null) | undefined;
-						githubUsername?: (string | null) | undefined;
-						gitlabUsername?: (string | null) | undefined;
-						bitbucketUsername?: (string | null) | undefined;
 				  }
 				| {
-						deletedUser?:
-							| {
-									username: string;
-									email: string;
-							  }
-							| undefined;
-						deletedUid?: string | undefined;
-						githubUsername?: (string | null) | undefined;
-						gitlabUsername?: (string | null) | undefined;
-						bitbucketUsername?: (string | null) | undefined;
-						directoryType?: string | undefined;
-						role?: UserEventPayloadRoleEnumKey | undefined;
-						/**
-						 * @description Why the member was removed. When removed due to a plan downgrade, this is a {@link DowngradeReason} from `@api/pubsub-types` (e.g. `trial_expired`, `user_downgrade`).
-						 * @type string | undefined
-						 */
-						reason?: string | undefined;
-						previousPlan?: UserEventPayloadPreviousPlanEnumKey | undefined;
-						newPlan?: UserEventPayloadNewPlanEnumKey | undefined;
 						/**
 						 * @description Whether the removal was system-initiated rather than human-initiated.
 						 * @type boolean | undefined
 						 */
 						automated?: (false | true) | undefined;
-				  }
-				| {
-						entitlement: string;
-						user: {
-							id: string;
-							username: string;
-						};
-				  }
-				| {
-						entitlement: string;
-						user: {
-							id: string;
-							username: string;
-						};
-						previousCanceledAt?: string | undefined;
-				  }
-				| {
-						role?: string | undefined;
-						uid?: string | undefined;
-						updatedUid?: string | undefined;
-						updatedUser?:
+						bitbucketUsername?: (string | null) | undefined;
+						deletedUid?: string | undefined;
+						deletedUser?:
 							| {
-									username: string;
 									email: string;
+									username: string;
 							  }
 							| undefined;
-						origin?: string | undefined;
-						teamSlug?: string | undefined;
-						teamRoles?: string[] | undefined;
-						teamPermissions?: string[] | undefined;
+						directoryType?: string | undefined;
+						githubUsername?: (string | null) | undefined;
+						gitlabUsername?: (string | null) | undefined;
+						newPlan?: UserEventPayloadNewPlanEnumKey | undefined;
+						previousPlan?: UserEventPayloadPreviousPlanEnumKey | undefined;
+						/**
+						 * @description Why the member was removed. When removed due to a plan downgrade, this is a {@link DowngradeReason} from `@api/pubsub-types` (e.g. `trial_expired`, `user_downgrade`).
+						 * @type string | undefined
+						 */
+						reason?: string | undefined;
+						role?: UserEventPayloadRoleEnumKey | undefined;
+				  }
+				| {
+						entitlement: string;
+						user: {
+							id: string;
+							username: string;
+						};
+				  }
+				| {
+						entitlement: string;
+						previousCanceledAt?: string | undefined;
+						user: {
+							id: string;
+							username: string;
+						};
+				  }
+				| {
 						entitlements?: string[] | undefined;
 						invitedBy?:
 							| {
 									email: string;
-									userId?: string | undefined;
 									name?: string | undefined;
+									userId?: string | undefined;
+							  }
+							| undefined;
+						origin?: string | undefined;
+						role?: string | undefined;
+						teamPermissions?: string[] | undefined;
+						teamRoles?: string[] | undefined;
+						teamSlug?: string | undefined;
+						uid?: string | undefined;
+						updatedUid?: string | undefined;
+						updatedUser?:
+							| {
+									email: string;
+									username: string;
 							  }
 							| undefined;
 				  }
 				| {
+						bitbucketUsername?: string | undefined;
+						githubUsername?: string | undefined;
+						gitlabUsername?: string | undefined;
+						gitUsername?: string | undefined;
 						requestedTeamName: string;
 						requestedTeamSlug?: string | undefined;
 						requestedUserName?: string | undefined;
-						gitUsername?: string | undefined;
-						githubUsername?: string | undefined;
-						gitlabUsername?: string | undefined;
-						bitbucketUsername?: string | undefined;
 						source?: UserEventPayloadSourceEnumKey | undefined;
 				  }
 				| {
 						directoryType?: string | undefined;
+						origin?: string | undefined;
+						previousRole: string;
+						previousTeamPermissions?: UserEventPayloadPreviousTeamPermissionsEnumKey[] | undefined;
+						previousTeamRoles?: UserEventPayloadPreviousTeamRolesEnumKey[] | undefined;
+						role?: string | undefined;
 						ssoType?: string | undefined;
+						teamPermissions?: UserEventPayloadTeamPermissionsEnumKey[] | undefined;
+						teamRoles?: UserEventPayloadTeamRolesEnumKey[] | undefined;
+						teamSlug?: string | undefined;
+						updatedUid?: string | undefined;
 						updatedUser?:
 							| {
-									username: string;
 									email: string;
+									username: string;
 							  }
 							| undefined;
-						role?: string | undefined;
-						previousRole: string;
-						previousTeamRoles?: UserEventPayloadPreviousTeamRolesEnumKey[] | undefined;
-						teamRoles?: UserEventPayloadTeamRolesEnumKey[] | undefined;
-						previousTeamPermissions?: UserEventPayloadPreviousTeamPermissionsEnumKey[] | undefined;
-						teamPermissions?: UserEventPayloadTeamPermissionsEnumKey[] | undefined;
-						updatedUid?: string | undefined;
-						origin?: string | undefined;
-						teamSlug?: string | undefined;
 				  }
 				| {
-						email?: string | undefined;
 						authorized: false | true;
+						email?: string | undefined;
 						reason?: string | undefined;
 				  }
 				| {
 						enforced: false | true;
 				  }
 				| {
+						expiresAt: string;
+						maxUses: number;
+						name?: string | undefined;
 						publicId: string;
 						role: string;
-						maxUses: number;
-						expiresAt: string;
-						name?: string | undefined;
 				  }
 				| {
+						name?: string | undefined;
 						publicId: string;
-						name?: string | undefined;
 				  }
 				| {
-						previousConcurrentBuilds: number;
 						nextConcurrentBuilds: number;
+						previousConcurrentBuilds: number;
 				  }
 				| {
 						plan: UserEventPayloadPlanEnumKey;
 						trial?:
 							| ({
-									start: number;
 									end: number;
+									start: number;
 							  } | null)
 							| undefined;
 				  }
 				| {
-						invoiceId: string;
 						convertedFromTrial: false | true;
+						invoiceId: string;
 						plan: UserEventPayloadPlanEnumKey;
 				  }
 				| {
@@ -14064,8 +13938,8 @@ export type UserEvent = {
 						 * @type string
 						 */
 						actorId: string;
-						actorType: "admin";
 						actorName?: string | undefined;
+						actorType: "admin";
 				  }
 				| {
 						decision: UserEventPayloadDecisionEnumKey;
@@ -14096,7 +13970,7 @@ export type UserEvent = {
 						scope: UserEventPayloadScopeEnumKey;
 				  }
 				| {
-						previous?:
+						next?:
 							| {
 									[key: string]:
 										| {
@@ -14114,7 +13988,7 @@ export type UserEvent = {
 										  );
 							  }
 							| undefined;
-						next?:
+						previous?:
 							| {
 									[key: string]:
 										| {
@@ -14142,9 +14016,9 @@ export type UserEvent = {
 				  }
 				| {
 						exportId: string;
+						format: string;
 						from: number;
 						to: number;
-						format: string;
 				  }
 				| {
 						fileId: string;
@@ -14159,18 +14033,18 @@ export type UserEvent = {
 						 * @type string
 						 */
 						actorId: string;
-						actorType: "admin";
 						actorName?: string | undefined;
+						actorType: "admin";
 				  }
 				| {
 						projectId: string;
 						projectName: string;
 						sampling?:
 							| {
-									type: "head_sampling";
-									rate: number;
 									env?: UserEventPayloadSamplingEnvEnumKey | undefined;
+									rate: number;
 									requestPath?: string | undefined;
+									type: "head_sampling";
 							  }[]
 							| undefined;
 				  }
@@ -14181,16 +14055,16 @@ export type UserEvent = {
 						teamName?: string | undefined;
 				  }
 				| {
-						totp: false | true;
-						recoveryCodes: number;
 						actorId?: string | undefined;
-						actorType?: UserEventPayloadActorTypeEnumKey | undefined;
 						/**
 						 * @description Human-readable admin who performed the removal.
 						 * @type string | undefined
 						 */
 						actorName?: string | undefined;
+						actorType?: UserEventPayloadActorTypeEnumKey | undefined;
 						reason?: string | undefined;
+						recoveryCodes: number;
+						totp: false | true;
 				  }
 				| {
 						deletedAt?: (number | null) | undefined;
@@ -14204,8 +14078,8 @@ export type UserEvent = {
 						 * @type string
 						 */
 						actorId: string;
-						actorType: "admin";
 						actorName?: string | undefined;
+						actorType: "admin";
 				  }
 				| {
 						username: string;
@@ -14227,22 +14101,22 @@ export type UserEvent = {
 						actorType: "admin";
 				  }
 				| {
-						enabled: false | true;
 						actorId: string;
 						actorType: "admin";
+						enabled: false | true;
 				  }
 				| {
-						autoBlockPrevented: false | true;
-						preventUntil?: number | undefined;
 						actorId: string;
 						actorType: "admin";
+						autoBlockPrevented: false | true;
+						preventUntil?: number | undefined;
 						reason?: string | undefined;
 				  }
 				| {
-						method: UserEventPayloadMethodEnumKey;
-						reason: string;
 						flowId?: string | undefined;
 						loginSessionId?: string | undefined;
+						method: UserEventPayloadMethodEnumKey;
+						reason: string;
 				  }
 				| {
 						allowedMethods: UserEventPayloadAllowedMethodsEnumKey[];
@@ -14255,23 +14129,23 @@ export type UserEvent = {
 						reason: string;
 				  }
 				| {
-						previous: {
-							enabled: false | true;
-							totpVerified: false | true;
-						};
+						method?: UserEventPayloadMethodEnumKey | undefined;
 						next: {
 							enabled: false | true;
 							totpVerified: false | true;
 						};
-						method?: UserEventPayloadMethodEnumKey | undefined;
+						previous: {
+							enabled: false | true;
+							totpVerified: false | true;
+						};
 				  }
 				| {
-						remaining: number;
 						/**
 						 * @description Absent on events predating the field; those were all logins.
 						 * @type string | undefined
 						 */
 						context?: UserEventPayloadContextEnumKey | undefined;
+						remaining: number;
 				  }
 				| {
 						mfaEnabled: false | true;
@@ -14287,19 +14161,16 @@ export type UserEvent = {
 						totpVerified: false | true;
 				  }
 				| {
-						previous: {
+						next: {
 							enabled: false | true;
 							totpVerified: false | true;
 						};
-						next: {
+						previous: {
 							enabled: false | true;
 							totpVerified: false | true;
 						};
 				  }
 				| {
-						provider: "google";
-						providerSubjectId: string;
-						outcome: UserEventPayloadOutcomeEnumKey;
 						decision: {
 							authoritative: false | true;
 							basis: UserEventPayloadDecisionBasisEnumKey;
@@ -14308,6 +14179,9 @@ export type UserEvent = {
 							hostedDomainMatch: false | true;
 							mxOutcome: UserEventPayloadDecisionMxOutcomeEnumKey;
 						};
+						outcome: UserEventPayloadOutcomeEnumKey;
+						provider: "google";
+						providerSubjectId: string;
 				  }
 				| {
 						email: string;
@@ -14321,8 +14195,8 @@ export type UserEvent = {
 						 * @type string
 						 */
 						actorId: string;
-						actorType: "admin";
 						actorName?: string | undefined;
+						actorType: "admin";
 				  }
 				| {
 						username: string;
@@ -14331,8 +14205,8 @@ export type UserEvent = {
 						 * @type string
 						 */
 						actorId: string;
-						actorType: "admin";
 						actorName?: string | undefined;
+						actorType: "admin";
 				  }
 				| {
 						projectId: string;
@@ -14340,17 +14214,17 @@ export type UserEvent = {
 						repositoryName: string;
 				  }
 				| {
-						projectId: string;
-						projectName: string;
-						repositoryName: string;
-						reference: string;
 						digest: string;
+						projectId: string;
+						projectName: string;
+						reference: string;
+						repositoryName: string;
 				  }
 				| {
 						projectId: string;
 						projectName: string;
-						repositoryName: string;
 						reference: string;
+						repositoryName: string;
 				  }
 				| {
 						projectId: string;
@@ -14368,51 +14242,47 @@ export type UserEvent = {
 				| {
 						projectId: string;
 						projectName: string;
-						repositoryName: string;
 						public: false | true;
+						repositoryName: string;
 				  }
 				| {
 						projectId: string;
 						projectName: string;
-						repositoryName: string;
 						removedTeamIds: string[];
+						repositoryName: string;
 				  }
 				| {
 						ruleName: string;
 				  }
 				| {
-						previousProjectCount: number | null;
 						nextProjectCount: number | null;
+						previousProjectCount: number | null;
 				  }
 				| {
 						customAlertTitle: string;
 				  }
 				| {
-						vulnerabilities: string[];
-						protectionEnabled: false | true;
 						protectedProjectCount: number;
+						protectionEnabled: false | true;
+						vulnerabilities: string[];
 				  }
 				| {
-						team: {
-							name: string;
-							id: string;
-						};
 						configuration: {
 							id: string;
 							name?: string | undefined;
 						};
 						peering: {
-							id: string;
 							accountId: string;
+							id: string;
 							region: string;
 							vpcId: string;
 						};
+						team: {
+							id: string;
+							name: string;
+						};
 				  }
 				| {
-						team: {
-							name: string;
-							id: string;
-						};
 						configuration: {
 							id: string;
 							name?: string | undefined;
@@ -14421,21 +14291,25 @@ export type UserEvent = {
 							id: string;
 							name?: string | undefined;
 						};
+						team: {
+							id: string;
+							name: string;
+						};
 				  }
 				| {
-						team: {
-							name: string;
-							id: string;
-						};
 						configuration: {
-							id: string;
-							name?: string | undefined;
-						};
-						peering: {
 							id: string;
 							name?: string | undefined;
 						};
 						newName?: string | undefined;
+						peering: {
+							id: string;
+							name?: string | undefined;
+						};
+						team: {
+							id: string;
+							name: string;
+						};
 				  }
 				| {
 						tier: UserEventPayloadTierEnumKey;
@@ -14449,23 +14323,23 @@ export type UserEvent = {
 						chatTitle?: string | undefined;
 				  }
 				| {
-						model: string;
-						useCase: string;
 						chatId: string;
-						messageId: string;
-						inputTokens: number;
-						outputTokens: number;
-						timestamp: number;
 						events: {
-							eventId: string;
-							modelId: string;
-							inputTokens: number;
-							outputTokens: number;
-							totalTokens: number;
 							cacheCreationInputTokens: number;
 							cacheReadInputTokens: number;
+							eventId: string;
+							inputTokens: number;
+							modelId: string;
+							outputTokens: number;
 							timestamp: string;
+							totalTokens: number;
 						}[];
+						inputTokens: number;
+						messageId: string;
+						model: string;
+						outputTokens: number;
+						timestamp: number;
+						useCase: string;
 				  }
 				| {
 						chatId: string;
@@ -14479,7 +14353,24 @@ export type UserEvent = {
 						runId: string;
 				  }
 				| {
-						grantType: UserEventPayloadGrantTypeEnumKey;
+						/**
+						 * @description optional since entries prior to 2025-10-13 do not contain app information
+						 * @type object | undefined
+						 */
+						app?:
+							| {
+									clientAuthenticationUsed: {
+										method: UserEventPayloadAppClientAuthenticationUsedMethodEnumKey;
+										secretId?: string | undefined;
+									};
+									clientId: string;
+									/**
+									 * @description the app\'s name at the time the event was published (it could have changed since then)
+									 * @type string
+									 */
+									name: string;
+							  }
+							| undefined;
 						/**
 						 * @description the app\'s name at the time the event was published (it could have changed since then)
 						 * @type string
@@ -14490,76 +14381,7 @@ export type UserEvent = {
 						 * @type number
 						 */
 						atTTL: number;
-						/**
-						 * @description refresh_token TTL
-						 * @type number | undefined
-						 */
-						rtTTL?: number | undefined;
-						scope: string;
 						authMethod: UserEventPayloadAuthMethodEnumKey;
-						/**
-						 * @description optional since entries prior to 2025-10-13 do not contain app information
-						 * @type object | undefined
-						 */
-						app?:
-							| {
-									clientId: string;
-									/**
-									 * @description the app\'s name at the time the event was published (it could have changed since then)
-									 * @type string
-									 */
-									name: string;
-									clientAuthenticationUsed: {
-										method: UserEventPayloadAppClientAuthenticationUsedMethodEnumKey;
-										secretId?: string | undefined;
-									};
-							  }
-							| undefined;
-						/**
-						 * @description optional since entries prior to 2025-10-13 do not contain this field
-						 * @type boolean | undefined
-						 */
-						includesRefreshToken?: (false | true) | undefined;
-						/**
-						 * @description optional since entries prior to 2025-10-13 do not contain this field
-						 * @type string | undefined
-						 */
-						publicId?: string | undefined;
-						/**
-						 * @description optional since entries prior to 2026-04-23 do not contain this field
-						 * @type string | undefined
-						 */
-						tokenPrefix?: "vca_" | undefined;
-						/**
-						 * @description optional since entries prior to 2026-04-23 do not contain this field
-						 * @type string | undefined
-						 */
-						tokenSuffix?: string | undefined;
-						/**
-						 * @description optional; only present when a refresh token was issued (offline_access).
-						 * @type string | undefined
-						 */
-						refreshTokenPublicId?: string | undefined;
-						/**
-						 * @description optional; only present when a refresh token was issued (offline_access).
-						 * @type string | undefined
-						 */
-						refreshTokenPrefix?: "vcr_" | undefined;
-						/**
-						 * @description optional; only present when a refresh token was issued (offline_access).
-						 * @type string | undefined
-						 */
-						refreshTokenSuffix?: string | undefined;
-						/**
-						 * @description optional since entries prior to 2025-10-13 do not contain this field
-						 * @type string | undefined
-						 */
-						sessionId?: string | undefined;
-						/**
-						 * @description optional since entries prior to 2026-04-23 do not contain this field
-						 * @type string | undefined
-						 */
-						ip?: (string | null) | undefined;
 						/**
 						 * @description optional since entries prior to 2026-04-23 do not contain this field
 						 * @type object | undefined
@@ -14588,26 +14410,78 @@ export type UserEvent = {
 									regionName?: string | undefined;
 							  } | null)
 							| undefined;
+						grantType: UserEventPayloadGrantTypeEnumKey;
+						/**
+						 * @description optional since entries prior to 2025-10-13 do not contain this field
+						 * @type boolean | undefined
+						 */
+						includesRefreshToken?: (false | true) | undefined;
 						/**
 						 * @description optional since entries prior to 2026-04-23 do not contain this field
 						 * @type string | undefined
 						 */
-						userAgent?: string | undefined;
+						ip?: (string | null) | undefined;
 						/**
 						 * @description OIDC issuer (`iss`) of the token that authenticated the request. Present for OIDC-authenticated flows: the token-exchange grant, or `client_credentials` with the `oidc_token` client-authentication method.
 						 * @type string | undefined
 						 */
 						issuerUrl?: string | undefined;
 						/**
+						 * @description `sub` claim of the OIDC token. Present for OIDC-authenticated flows (see {@link issuerUrl}).
+						 * @type string | undefined
+						 */
+						oidcSubject?: string | undefined;
+						/**
 						 * @description ID of the OIDC-exchange policy that authorized a token-exchange grant. Absent for the `client_credentials` + `oidc_token` flow, which matches an app `oidcProviders` entry rather than a policy.
 						 * @type string | undefined
 						 */
 						policyId?: string | undefined;
 						/**
-						 * @description `sub` claim of the OIDC token. Present for OIDC-authenticated flows (see {@link issuerUrl}).
+						 * @description optional since entries prior to 2025-10-13 do not contain this field
 						 * @type string | undefined
 						 */
-						oidcSubject?: string | undefined;
+						publicId?: string | undefined;
+						/**
+						 * @description optional; only present when a refresh token was issued (offline_access).
+						 * @type string | undefined
+						 */
+						refreshTokenPrefix?: "vcr_" | undefined;
+						/**
+						 * @description optional; only present when a refresh token was issued (offline_access).
+						 * @type string | undefined
+						 */
+						refreshTokenPublicId?: string | undefined;
+						/**
+						 * @description optional; only present when a refresh token was issued (offline_access).
+						 * @type string | undefined
+						 */
+						refreshTokenSuffix?: string | undefined;
+						/**
+						 * @description refresh_token TTL
+						 * @type number | undefined
+						 */
+						rtTTL?: number | undefined;
+						scope: string;
+						/**
+						 * @description optional since entries prior to 2025-10-13 do not contain this field
+						 * @type string | undefined
+						 */
+						sessionId?: string | undefined;
+						/**
+						 * @description optional since entries prior to 2026-04-23 do not contain this field
+						 * @type string | undefined
+						 */
+						tokenPrefix?: "vca_" | undefined;
+						/**
+						 * @description optional since entries prior to 2026-04-23 do not contain this field
+						 * @type string | undefined
+						 */
+						tokenSuffix?: string | undefined;
+						/**
+						 * @description optional since entries prior to 2026-04-23 do not contain this field
+						 * @type string | undefined
+						 */
+						userAgent?: string | undefined;
 				  }
 				| {
 						/**
@@ -14615,15 +14489,6 @@ export type UserEvent = {
 						 * @type object
 						 */
 						policy: {
-							policyId: string;
-							clientId: string;
-							issuerUrl: string;
-							teamId: string;
-							/**
-							 * @description Human-readable policy name, or `null` when unnamed.
-							 * @type string
-							 */
-							name: string | null;
 							/**
 							 * @description Claim matchers an OIDC token must satisfy to use the policy.
 							 * @type array
@@ -14635,11 +14500,24 @@ export type UserEvent = {
 									wildcards: false | true;
 								}[];
 							}[];
+							clientId: string;
+							/**
+							 * @description Creation time (epoch ms).
+							 * @type number
+							 */
+							createdAt: number;
+							issuerUrl: string;
+							/**
+							 * @description Human-readable policy name, or `null` when unnamed.
+							 * @type string
+							 */
+							name: string | null;
 							/**
 							 * @description Permission boundary (`[\'*\']` = the app\'s full declared permissions).
 							 * @type array
 							 */
 							permissions: string[];
+							policyId: string;
 							/**
 							 * @description Resource boundary, or `null` when the policy has none.
 							 * @type object
@@ -14647,11 +14525,7 @@ export type UserEvent = {
 							resources: {
 								projectIds: string[];
 							} | null;
-							/**
-							 * @description Creation time (epoch ms).
-							 * @type number
-							 */
-							createdAt: number;
+							teamId: string;
 							/**
 							 * @description Last-update time (epoch ms).
 							 * @type number
@@ -14661,68 +14535,11 @@ export type UserEvent = {
 						appName?: string | undefined;
 				  }
 				| {
-						/**
-						 * @description A full point-in-time snapshot of an OIDC exchange policy, captured on every lifecycle event so the audit trail records exactly what the policy looked like. Mirrors the management endpoints\' public response shape.
-						 * @type object
-						 */
-						before: {
-							policyId: string;
-							clientId: string;
-							issuerUrl: string;
-							teamId: string;
-							/**
-							 * @description Human-readable policy name, or `null` when unnamed.
-							 * @type string
-							 */
-							name: string | null;
-							/**
-							 * @description Claim matchers an OIDC token must satisfy to use the policy.
-							 * @type array
-							 */
-							claims: {
-								name: string;
-								values: {
-									value: string;
-									wildcards: false | true;
-								}[];
-							}[];
-							/**
-							 * @description Permission boundary (`[\'*\']` = the app\'s full declared permissions).
-							 * @type array
-							 */
-							permissions: string[];
-							/**
-							 * @description Resource boundary, or `null` when the policy has none.
-							 * @type object
-							 */
-							resources: {
-								projectIds: string[];
-							} | null;
-							/**
-							 * @description Creation time (epoch ms).
-							 * @type number
-							 */
-							createdAt: number;
-							/**
-							 * @description Last-update time (epoch ms).
-							 * @type number
-							 */
-							updatedAt: number;
-						};
 						/**
 						 * @description A full point-in-time snapshot of an OIDC exchange policy, captured on every lifecycle event so the audit trail records exactly what the policy looked like. Mirrors the management endpoints\' public response shape.
 						 * @type object
 						 */
 						after: {
-							policyId: string;
-							clientId: string;
-							issuerUrl: string;
-							teamId: string;
-							/**
-							 * @description Human-readable policy name, or `null` when unnamed.
-							 * @type string
-							 */
-							name: string | null;
 							/**
 							 * @description Claim matchers an OIDC token must satisfy to use the policy.
 							 * @type array
@@ -14734,11 +14551,24 @@ export type UserEvent = {
 									wildcards: false | true;
 								}[];
 							}[];
+							clientId: string;
+							/**
+							 * @description Creation time (epoch ms).
+							 * @type number
+							 */
+							createdAt: number;
+							issuerUrl: string;
+							/**
+							 * @description Human-readable policy name, or `null` when unnamed.
+							 * @type string
+							 */
+							name: string | null;
 							/**
 							 * @description Permission boundary (`[\'*\']` = the app\'s full declared permissions).
 							 * @type array
 							 */
 							permissions: string[];
+							policyId: string;
 							/**
 							 * @description Resource boundary, or `null` when the policy has none.
 							 * @type object
@@ -14746,11 +14576,55 @@ export type UserEvent = {
 							resources: {
 								projectIds: string[];
 							} | null;
+							teamId: string;
+							/**
+							 * @description Last-update time (epoch ms).
+							 * @type number
+							 */
+							updatedAt: number;
+						};
+						/**
+						 * @description A full point-in-time snapshot of an OIDC exchange policy, captured on every lifecycle event so the audit trail records exactly what the policy looked like. Mirrors the management endpoints\' public response shape.
+						 * @type object
+						 */
+						before: {
+							/**
+							 * @description Claim matchers an OIDC token must satisfy to use the policy.
+							 * @type array
+							 */
+							claims: {
+								name: string;
+								values: {
+									value: string;
+									wildcards: false | true;
+								}[];
+							}[];
+							clientId: string;
 							/**
 							 * @description Creation time (epoch ms).
 							 * @type number
 							 */
 							createdAt: number;
+							issuerUrl: string;
+							/**
+							 * @description Human-readable policy name, or `null` when unnamed.
+							 * @type string
+							 */
+							name: string | null;
+							/**
+							 * @description Permission boundary (`[\'*\']` = the app\'s full declared permissions).
+							 * @type array
+							 */
+							permissions: string[];
+							policyId: string;
+							/**
+							 * @description Resource boundary, or `null` when the policy has none.
+							 * @type object
+							 */
+							resources: {
+								projectIds: string[];
+							} | null;
+							teamId: string;
 							/**
 							 * @description Last-update time (epoch ms).
 							 * @type number
@@ -14761,30 +14635,62 @@ export type UserEvent = {
 				  }
 				| {
 						/**
-						 * @description The token\'s public ID.
-						 * @type string
+						 * @description Unix epoch milliseconds. Absent when the token never expires.
+						 * @type number | undefined
 						 */
-						tokenId: string;
+						expiresAt?: number | undefined;
+						geolocation?:
+							| ({
+									city?:
+										| {
+												names: {
+													en: string;
+												};
+										  }
+										| undefined;
+									country: {
+										names: {
+											en: string;
+										};
+									};
+									mostSpecificSubdivision?:
+										| {
+												names: {
+													en: string;
+												};
+										  }
+										| undefined;
+									regionName?: string | undefined;
+							  } | null)
+							| undefined;
 						/**
-						 * @description The token prefix used when showing a safe checksum-style fingerprint.
-						 * @type string | undefined
+						 * @description Whether the token was issued with RFC 9396 authorization details.
+						 * @type boolean | undefined
 						 */
-						tokenPrefix?: "vcp_" | undefined;
-						/**
-						 * @description The token checksum suffix.
-						 * @type string | undefined
-						 */
-						tokenSuffix?: string | undefined;
-						/**
-						 * @description User-supplied name of the token.
-						 * @type string
-						 */
-						tokenName: string;
+						hasAuthorizationDetails?: (false | true) | undefined;
+						ip?: (string | null) | undefined;
 						/**
 						 * @description How the token was issued. Always `\'manual\'` for explicit PAT creation.
 						 * @type string
 						 */
 						origin: UserEventPayloadOriginEnumKey;
+						/**
+						 * @description Present when `scope` is `\'project\'`.
+						 * @type string | undefined
+						 */
+						projectId?: string | undefined;
+						/**
+						 * @description Present when `scope` is `\'project\'`.
+						 * @type string | undefined
+						 */
+						projectName?: string | undefined;
+						/**
+						 * @description Present when `scope` is `\'project\'`.
+						 * @type string | undefined
+						 */
+						projectScope?: UserEventPayloadProjectScopeEnumKey | undefined;
+						reqId?: string | undefined;
+						reqUrl?: string | undefined;
 						/**
 						 * @description Scope of the token: - `\'user\'`: full-account token (not tied to any team). - `\'team\'`: scoped to a single team. - `\'project\'`: scoped to a single project within a team.
 						 * @type string
@@ -14801,110 +14707,34 @@ export type UserEvent = {
 						 */
 						teamSlug?: string | undefined;
 						/**
-						 * @description Present when `scope` is `\'project\'`.
-						 * @type string | undefined
+						 * @description The token\'s public ID.
+						 * @type string
 						 */
-						projectId?: string | undefined;
-						/**
-						 * @description Present when `scope` is `\'project\'`.
-						 * @type string | undefined
-						 */
-						projectName?: string | undefined;
-						/**
-						 * @description Present when `scope` is `\'project\'`.
-						 * @type string | undefined
-						 */
-						projectScope?: UserEventPayloadProjectScopeEnumKey | undefined;
-						/**
-						 * @description Unix epoch milliseconds. Absent when the token never expires.
-						 * @type number | undefined
-						 */
-						expiresAt?: number | undefined;
-						/**
-						 * @description Whether the token was issued with RFC 9396 authorization details.
-						 * @type boolean | undefined
-						 */
-						hasAuthorizationDetails?: (false | true) | undefined;
-						ip?: (string | null) | undefined;
-						geolocation?:
-							| ({
-									city?:
-										| {
-												names: {
-													en: string;
-												};
-										  }
-										| undefined;
-									country: {
-										names: {
-											en: string;
-										};
-									};
-									mostSpecificSubdivision?:
-										| {
-												names: {
-													en: string;
-												};
-										  }
-										| undefined;
-									regionName?: string | undefined;
-							  } | null)
-							| undefined;
-						userAgent?: string | undefined;
-						reqId?: string | undefined;
-						reqUrl?: string | undefined;
-				  }
-				| {
 						tokenId: string;
-						tokenType: string;
+						/**
+						 * @description User-supplied name of the token.
+						 * @type string
+						 */
 						tokenName: string;
 						/**
-						 * @description The token\'s public ID.
-						 * @type string
+						 * @description The token prefix used when showing a safe checksum-style fingerprint.
+						 * @type string | undefined
 						 */
-						actorTokenId: string;
-						origin?: UserEventPayloadOriginEnumKey | undefined;
-						teamId?: string | undefined;
-						expired?: (false | true) | undefined;
-						leaked?: (false | true) | undefined;
-						revoked?: (false | true) | undefined;
-						ip?: (string | null) | undefined;
-						geolocation?:
-							| ({
-									city?:
-										| {
-												names: {
-													en: string;
-												};
-										  }
-										| undefined;
-									country: {
-										names: {
-											en: string;
-										};
-									};
-									mostSpecificSubdivision?:
-										| {
-												names: {
-													en: string;
-												};
-										  }
-										| undefined;
-									regionName?: string | undefined;
-							  } | null)
-							| undefined;
+						tokenPrefix?: "vcp_" | undefined;
+						/**
+						 * @description The token checksum suffix.
+						 * @type string | undefined
+						 */
+						tokenSuffix?: string | undefined;
 						userAgent?: string | undefined;
-						reqId?: string | undefined;
-						reqUrl?: string | undefined;
 				  }
 				| {
-						deletedCount: number;
 						/**
 						 * @description The token\'s public ID.
 						 * @type string
 						 */
 						actorTokenId: string;
-						ip?: (string | null) | undefined;
+						expired?: (false | true) | undefined;
 						geolocation?:
 							| ({
 									city?:
@@ -14929,13 +14759,212 @@ export type UserEvent = {
 									regionName?: string | undefined;
 							  } | null)
 							| undefined;
-						userAgent?: string | undefined;
+						ip?: (string | null) | undefined;
+						leaked?: (false | true) | undefined;
+						origin?: UserEventPayloadOriginEnumKey | undefined;
 						reqId?: string | undefined;
 						reqUrl?: string | undefined;
+						revoked?: (false | true) | undefined;
+						teamId?: string | undefined;
+						tokenId: string;
+						tokenName: string;
+						tokenType: string;
+						userAgent?: string | undefined;
+				  }
+				| {
+						/**
+						 * @description The token\'s public ID.
+						 * @type string
+						 */
+						actorTokenId: string;
+						deletedCount: number;
+						geolocation?:
+							| ({
+									city?:
+										| {
+												names: {
+													en: string;
+												};
+										  }
+										| undefined;
+									country: {
+										names: {
+											en: string;
+										};
+									};
+									mostSpecificSubdivision?:
+										| {
+												names: {
+													en: string;
+												};
+										  }
+										| undefined;
+									regionName?: string | undefined;
+							  } | null)
+							| undefined;
+						ip?: (string | null) | undefined;
+						reqId?: string | undefined;
+						reqUrl?: string | undefined;
+						userAgent?: string | undefined;
 				  }
 		  )
 		| undefined;
+	principal?:
+		| (
+				| {
+						avatar: string;
+						email: string;
+						slug?: string | undefined;
+						type?: "user" | undefined;
+						uid: string;
+						username: string;
+				  }
+				| {
+						/**
+						 * @description The OAuth 2.0 client ID, which may be a CIMD URL.
+						 * @type string
+						 */
+						clientId: string;
+						/**
+						 * @description The backing Vercel App ID. When absent, defaults to `clientId`.
+						 * @type string | undefined
+						 */
+						id?: string | undefined;
+						name: string;
+						type: "app";
+				  }
+				| {
+						email?: string | undefined;
+						id: string;
+						name: string;
+						type: "external";
+				  }
+				| {
+						type: "system";
+				  }
+		  )
+		| undefined;
+	/**
+	 * @description The ID of the principal who generated the event. The principal is typically a user, but it could also be an app, an integration, etc. The principal may have delegated its authority to an acting party, and so {@link viaIds} should be checked as well.
+	 * @type string
+	 */
+	principalId: string;
+	requestId?: string | undefined;
+	/**
+	 * @description The ID of the session that the principal\'s token belongs to, when it belongs to one.
+	 * @type string | undefined
+	 */
+	sessionId?: string | undefined;
+	/**
+	 * @description The human-readable text of the Event.
+	 * @example You logged in via GitHub
+	 * @type string
+	 */
+	text: string;
+	/**
+	 * @description The public ID of the token that the principal authenticated with, when the request behind this event carried one.
+	 * @type string | undefined
+	 */
+	tokenId?: string | undefined;
+	/**
+	 * @description The type of the event.
+	 * @example login
+	 * @type string | undefined
+	 */
+	type?: UserEventTypeEnumKey | undefined;
+	/**
+	 * @description Metadata for {@link userId}.
+	 * @type object | undefined
+	 */
+	user?:
+		| {
+				avatar: string;
+				email: string;
+				slug?: string | undefined;
+				uid: string;
+				username: string;
+		  }
+		| undefined;
+	/**
+	 * @description When the principal who generated the event is a user, this is their ID; otherwise, it is empty.
+	 * @example zTuNVUXEAvvnNN3IaqinkyMw
+	 * @type string | undefined
+	 */
+	userId?: string | undefined;
+	/**
+	 * @description Metadata for {@link viaIds}.
+	 * @type array | undefined
+	 */
+	via?:
+		| (
+				| {
+						avatar: string;
+						email: string;
+						slug?: string | undefined;
+						type?: "user" | undefined;
+						uid: string;
+						username: string;
+				  }
+				| {
+						/**
+						 * @description The OAuth 2.0 client ID, which may be a CIMD URL.
+						 * @type string
+						 */
+						clientId: string;
+						/**
+						 * @description The backing Vercel App ID. When absent, defaults to `clientId`.
+						 * @type string | undefined
+						 */
+						id?: string | undefined;
+						name: string;
+						type: "app";
+				  }
+				| {
+						email?: string | undefined;
+						id: string;
+						name: string;
+						type: "external";
+				  }
+				| {
+						type: "system";
+				  }
+		  )[]
+		| undefined;
+	/**
+	 * @description If the principal delegated its authority (for example, a user delegating to an app), then this array contains the ID of the current actor. For example, if `principalId` is \"user123\" and `viaIds` is `[\"app456\"]`, we can say the event was triggered by - \"app456 on behalf of user123\", or - \"user123 via app4556\". Both are equivalent. Arbitrarily long chains of delegation can be represented. For example, if `principalId` is \"user123\" and `viaIds` is `[\"service1\", \"service2\"]`, we can say the event was triggered by \"user123 via service1 via service2\".
+	 * @type array | undefined
+	 */
+	viaIds?: string[] | undefined;
 };
+
+export const listEventTypeCategoriesEnum = {
+	account: "account",
+	ai: "ai",
+	"ai-gateway": "ai-gateway",
+	billing: "billing",
+	connect: "connect",
+	deployment: "deployment",
+	domain: "domain",
+	edge: "edge",
+	"env-variable": "env-variable",
+	"feature-flags": "feature-flags",
+	firewall: "firewall",
+	integration: "integration",
+	microfrontends: "microfrontends",
+	network: "network",
+	observability: "observability",
+	other: "other",
+	project: "project",
+	security: "security",
+	storage: "storage",
+	team: "team",
+	v0: "v0",
+	"vercel-app": "vercel-app",
+	workflow: "workflow",
+} as const;
+
+export type ListEventTypeCategoriesEnumKey =
+	(typeof listEventTypeCategoriesEnum)[keyof typeof listEventTypeCategoriesEnum];
 
 export const listEventTypeNameEnum = {
 	"access-group-created": "access-group-created",
@@ -15634,35 +15663,6 @@ export const listEventTypeNameEnum = {
 
 export type ListEventTypeNameEnumKey =
 	(typeof listEventTypeNameEnum)[keyof typeof listEventTypeNameEnum];
-
-export const listEventTypeCategoriesEnum = {
-	account: "account",
-	ai: "ai",
-	"ai-gateway": "ai-gateway",
-	billing: "billing",
-	connect: "connect",
-	deployment: "deployment",
-	domain: "domain",
-	edge: "edge",
-	"env-variable": "env-variable",
-	"feature-flags": "feature-flags",
-	firewall: "firewall",
-	integration: "integration",
-	microfrontends: "microfrontends",
-	network: "network",
-	observability: "observability",
-	other: "other",
-	project: "project",
-	security: "security",
-	storage: "storage",
-	team: "team",
-	v0: "v0",
-	"vercel-app": "vercel-app",
-	workflow: "workflow",
-} as const;
-
-export type ListEventTypeCategoriesEnumKey =
-	(typeof listEventTypeCategoriesEnum)[keyof typeof listEventTypeCategoriesEnum];
 
 export const listEventTypeReplacedByEnum = {
 	"access-group-created": "access-group-created",
@@ -16368,17 +16368,6 @@ export type ListEventTypeReplacedByEnumKey =
  */
 export type ListEventType = {
 	/**
-	 * @description The name of the event type.
-	 * @example deployment-created
-	 * @type string
-	 */
-	name: ListEventTypeNameEnumKey;
-	/**
-	 * @description Description of the event, visible to users in the Activity dashboard and docs.
-	 * @type string
-	 */
-	description: string;
-	/**
 	 * @description Categories that group this event type with related event types.
 	 * @example ["deployment"]
 	 * @type array
@@ -16389,6 +16378,17 @@ export type ListEventType = {
 	 * @type boolean | undefined
 	 */
 	deprecated?: (false | true) | undefined;
+	/**
+	 * @description Description of the event, visible to users in the Activity dashboard and docs.
+	 * @type string
+	 */
+	description: string;
+	/**
+	 * @description The name of the event type.
+	 * @example deployment-created
+	 * @type string
+	 */
+	name: ListEventTypeNameEnumKey;
 	/**
 	 * @description Event type names that supersede this deprecated event type.
 	 * @type array | undefined
@@ -16430,26 +16430,12 @@ export type ListEventTypesResponseCategoriesNameEnumKey =
  * @type object
  */
 export type ListEventTypesResponse = {
-	types: unknown[];
 	categories: {
-		name: ListEventTypesResponseCategoriesNameEnumKey;
 		label: string;
+		name: ListEventTypesResponseCategoriesNameEnumKey;
 	}[];
+	types: unknown[];
 };
-
-export const flagVariantsValue = {
-	false: false,
-	true: true,
-} as const;
-
-export type FlagVariantsValueKey = (typeof flagVariantsValue)[keyof typeof flagVariantsValue];
-
-export const typeEnum = {
-	list: "list",
-	"list/inline": "list/inline",
-} as const;
-
-export type TypeEnumKey = (typeof typeEnum)[keyof typeof typeEnum];
 
 export const cmpEnum = {
 	after: "after",
@@ -16472,6 +16458,13 @@ export const cmpEnum = {
 
 export type CmpEnumKey = (typeof cmpEnum)[keyof typeof cmpEnum];
 
+export const typeEnum = {
+	list: "list",
+	"list/inline": "list/inline",
+} as const;
+
+export type TypeEnumKey = (typeof typeEnum)[keyof typeof typeEnum];
+
 export const flagKindEnum = {
 	boolean: "boolean",
 	json: "json",
@@ -16488,132 +16481,89 @@ export const flagStateEnum = {
 
 export type FlagStateEnumKey = (typeof flagStateEnum)[keyof typeof flagStateEnum];
 
+export const flagVariantsValue = {
+	false: false,
+	true: true,
+} as const;
+
+export type FlagVariantsValueKey = (typeof flagVariantsValue)[keyof typeof flagVariantsValue];
+
 export type Flag = {
+	createdAt: number;
+	createdBy: string;
 	description?: string | undefined;
-	variants: {
-		description?: string | undefined;
-		label?: string | undefined;
-		value:
-			| (
-					| string
-					| number
-					| {
-							[key: string]: unknown;
-					  }
-					| string[]
-					| FlagVariantsValueKey
-			  )
-			| null;
-		id: string;
-	}[];
-	id: string;
 	environments: {
 		[key: string]: {
-			reuse?:
-				| {
-						active: false | true;
-						environment: string;
-				  }
-				| undefined;
-			targets?:
-				| {
-						[key: string]: {
-							[key: string]: {
-								[key: string]: {
-									note?: string | undefined;
-									value: string;
-								}[];
-							};
-						};
-				  }
-				| undefined;
-			revision?: number | undefined;
-			pausedOutcome: {
-				type: "variant";
-				variantId: string;
-			};
+			active: false | true;
 			fallthrough:
 				| {
 						type: "variant";
 						variantId: string;
 				  }
 				| {
-						type: "split";
 						base: {
-							type: "entity";
-							kind: string;
 							attribute: string;
+							kind: string;
+							type: "entity";
 						};
+						defaultVariantId: string;
+						type: "split";
 						weights: {
 							[key: string]: number;
 						};
-						defaultVariantId: string;
 				  }
 				| {
-						type: "rollout";
 						base: {
-							type: "entity";
-							kind: string;
 							attribute: string;
+							kind: string;
+							type: "entity";
 						};
 						defaultVariantId: string;
-						startTimestamp: number;
 						rollFromVariantId: string;
 						rollToVariantId: string;
 						slots: {
-							promille: number;
 							durationMs: number;
+							promille: number;
 						}[];
+						startTimestamp: number;
+						type: "rollout";
 				  }
 				| {
 						type: "experiment";
 				  };
-			active: false | true;
+			pausedOutcome: {
+				type: "variant";
+				variantId: string;
+			};
+			reuse?:
+				| {
+						active: false | true;
+						environment: string;
+				  }
+				| undefined;
+			revision?: number | undefined;
 			rules: {
-				id: string;
-				outcome:
-					| {
-							type: "variant";
-							variantId: string;
-					  }
-					| {
-							type: "split";
-							base: {
-								type: "entity";
-								kind: string;
-								attribute: string;
-							};
-							weights: {
-								[key: string]: number;
-							};
-							defaultVariantId: string;
-					  }
-					| {
-							type: "rollout";
-							base: {
-								type: "entity";
-								kind: string;
-								attribute: string;
-							};
-							defaultVariantId: string;
-							startTimestamp: number;
-							rollFromVariantId: string;
-							rollToVariantId: string;
-							slots: {
-								promille: number;
-								durationMs: number;
-							}[];
-					  }
-					| {
-							type: "experiment";
-					  };
 				conditions: {
+					cmp: CmpEnumKey;
+					cmpOptions?:
+						| {
+								ignoreCase?: (false | true) | undefined;
+						  }
+						| undefined;
+					lhs:
+						| {
+								type: "segment";
+						  }
+						| {
+								attribute: string;
+								kind: string;
+								type: "entity";
+						  };
 					rhs?:
 						| (
 								| string
 								| number
 								| {
-										type: TypeEnumKey;
 										items: (
 											| {
 													label?: string | undefined;
@@ -16626,49 +16576,99 @@ export type Flag = {
 													value: string;
 											  }
 										)[];
+										type: TypeEnumKey;
 								  }
 								| {
-										type: "regex";
-										pattern: string;
 										flags: string;
+										pattern: string;
+										type: "regex";
 								  }
 								| (false | true)
 						  )
 						| undefined;
-					cmpOptions?:
-						| {
-								ignoreCase?: (false | true) | undefined;
-						  }
-						| undefined;
-					lhs:
-						| {
-								type: "segment";
-						  }
-						| {
-								type: "entity";
-								kind: string;
-								attribute: string;
-						  };
-					cmp: CmpEnumKey;
 				}[];
+				id: string;
+				outcome:
+					| {
+							type: "variant";
+							variantId: string;
+					  }
+					| {
+							base: {
+								attribute: string;
+								kind: string;
+								type: "entity";
+							};
+							defaultVariantId: string;
+							type: "split";
+							weights: {
+								[key: string]: number;
+							};
+					  }
+					| {
+							base: {
+								attribute: string;
+								kind: string;
+								type: "entity";
+							};
+							defaultVariantId: string;
+							rollFromVariantId: string;
+							rollToVariantId: string;
+							slots: {
+								durationMs: number;
+								promille: number;
+							}[];
+							startTimestamp: number;
+							type: "rollout";
+					  }
+					| {
+							type: "experiment";
+					  };
 			}[];
+			targets?:
+				| {
+						[key: string]: {
+							[key: string]: {
+								[key: string]: {
+									note?: string | undefined;
+									value: string;
+								}[];
+							};
+						};
+				  }
+				| undefined;
 		};
 	};
+	id: string;
 	kind: FlagKindEnumKey;
+	maintainerIds?: string[] | undefined;
+	ownerId: string;
+	permanent?: (false | true) | undefined;
+	projectId: string;
 	revision: number;
 	seed: number;
-	state: FlagStateEnumKey;
-	maintainerIds?: string[] | undefined;
-	permanent?: (false | true) | undefined;
-	tags?: string[] | undefined;
 	slug: string;
-	createdAt: number;
+	state: FlagStateEnumKey;
+	tags?: string[] | undefined;
+	typeName: "flag";
 	updatedAt: number;
 	updatedBy?: string | undefined;
-	createdBy: string;
-	ownerId: string;
-	projectId: string;
-	typeName: "flag";
+	variants: {
+		description?: string | undefined;
+		id: string;
+		label?: string | undefined;
+		value:
+			| (
+					| string
+					| number
+					| {
+							[key: string]: unknown;
+					  }
+					| string[]
+					| FlagVariantsValueKey
+			  )
+			| null;
+	}[];
 	metadata?:
 		| {
 				creator?:
@@ -16681,14 +16681,6 @@ export type Flag = {
 		| undefined;
 };
 
-export const marketplaceFlagStateEnum = {
-	active: "active",
-	archived: "archived",
-} as const;
-
-export type MarketplaceFlagStateEnumKey =
-	(typeof marketplaceFlagStateEnum)[keyof typeof marketplaceFlagStateEnum];
-
 export const marketplaceFlagCategoryEnum = {
 	experiment: "experiment",
 	flag: "flag",
@@ -16697,39 +16689,31 @@ export const marketplaceFlagCategoryEnum = {
 export type MarketplaceFlagCategoryEnumKey =
 	(typeof marketplaceFlagCategoryEnum)[keyof typeof marketplaceFlagCategoryEnum];
 
+export const marketplaceFlagStateEnum = {
+	active: "active",
+	archived: "archived",
+} as const;
+
+export type MarketplaceFlagStateEnumKey =
+	(typeof marketplaceFlagStateEnum)[keyof typeof marketplaceFlagStateEnum];
+
 export type MarketplaceFlag = {
-	typeName: "marketplaceFlag";
-	id: string;
+	category?: MarketplaceFlagCategoryEnumKey | undefined;
+	createdAt?: number | undefined;
+	description?: string | undefined;
 	externalId: string;
-	slug: string;
+	id: string;
+	integrationConfigurationId: string;
+	name?: string | undefined;
 	origin: string;
 	ownerId: string;
 	projectId: string;
 	resourceId: string;
-	integrationConfigurationId: string;
+	slug: string;
 	state: MarketplaceFlagStateEnumKey;
-	name?: string | undefined;
-	description?: string | undefined;
-	category?: MarketplaceFlagCategoryEnumKey | undefined;
-	createdAt?: number | undefined;
+	typeName: "marketplaceFlag";
 	updatedAt?: number | undefined;
 };
-
-export const segmentDataRulesConditionsRhsTypeEnum = {
-	list: "list",
-	"list/inline": "list/inline",
-} as const;
-
-export type SegmentDataRulesConditionsRhsTypeEnumKey =
-	(typeof segmentDataRulesConditionsRhsTypeEnum)[keyof typeof segmentDataRulesConditionsRhsTypeEnum];
-
-export const segmentDataRulesConditionsRhs = {
-	false: false,
-	true: true,
-} as const;
-
-export type SegmentDataRulesConditionsRhsKey =
-	(typeof segmentDataRulesConditionsRhs)[keyof typeof segmentDataRulesConditionsRhs];
 
 export const segmentDataRulesConditionsCmpEnum = {
 	after: "after",
@@ -16753,35 +16737,69 @@ export const segmentDataRulesConditionsCmpEnum = {
 export type SegmentDataRulesConditionsCmpEnumKey =
 	(typeof segmentDataRulesConditionsCmpEnum)[keyof typeof segmentDataRulesConditionsCmpEnum];
 
+export const segmentDataRulesConditionsRhsTypeEnum = {
+	list: "list",
+	"list/inline": "list/inline",
+} as const;
+
+export type SegmentDataRulesConditionsRhsTypeEnumKey =
+	(typeof segmentDataRulesConditionsRhsTypeEnum)[keyof typeof segmentDataRulesConditionsRhsTypeEnum];
+
+export const segmentDataRulesConditionsRhs = {
+	false: false,
+	true: true,
+} as const;
+
+export type SegmentDataRulesConditionsRhsKey =
+	(typeof segmentDataRulesConditionsRhs)[keyof typeof segmentDataRulesConditionsRhs];
+
 export type Segment = {
-	description?: string | undefined;
+	createdAt: number;
 	createdBy?: string | undefined;
-	usedByFlags?: string[] | undefined;
-	usedBySegments?: string[] | undefined;
 	data: {
+		exclude?:
+			| {
+					[key: string]: {
+						[key: string]: {
+							note?: string | undefined;
+							value: string;
+						}[];
+					};
+			  }
+			| undefined;
+		include?:
+			| {
+					[key: string]: {
+						[key: string]: {
+							note?: string | undefined;
+							value: string;
+						}[];
+					};
+			  }
+			| undefined;
 		rules?:
 			| {
-					id: string;
-					outcome:
-						| {
-								type: "all";
-						  }
-						| {
-								type: "split";
-								base: {
-									type: "entity";
-									kind: string;
-									attribute: string;
-								};
-								passPromille: number;
-						  };
 					conditions: {
+						cmp: SegmentDataRulesConditionsCmpEnumKey;
+						cmpOptions?:
+							| {
+									ignoreCase?: (false | true) | undefined;
+							  }
+							| undefined;
+						lhs:
+							| {
+									type: "segment";
+							  }
+							| {
+									attribute: string;
+									kind: string;
+									type: "entity";
+							  };
 						rhs?:
 							| (
 									| string
 									| number
 									| {
-											type: SegmentDataRulesConditionsRhsTypeEnumKey;
 											items: (
 												| {
 														label?: string | undefined;
@@ -16794,62 +16812,44 @@ export type Segment = {
 														value: string;
 												  }
 											)[];
+											type: SegmentDataRulesConditionsRhsTypeEnumKey;
 									  }
 									| {
-											type: "regex";
-											pattern: string;
 											flags: string;
+											pattern: string;
+											type: "regex";
 									  }
 									| SegmentDataRulesConditionsRhsKey
 							  )
 							| undefined;
-						cmpOptions?:
-							| {
-									ignoreCase?: (false | true) | undefined;
-							  }
-							| undefined;
-						lhs:
-							| {
-									type: "segment";
-							  }
-							| {
-									type: "entity";
-									kind: string;
-									attribute: string;
-							  };
-						cmp: SegmentDataRulesConditionsCmpEnumKey;
 					}[];
+					id: string;
+					outcome:
+						| {
+								type: "all";
+						  }
+						| {
+								base: {
+									attribute: string;
+									kind: string;
+									type: "entity";
+								};
+								passPromille: number;
+								type: "split";
+						  };
 			  }[]
 			| undefined;
-		include?:
-			| {
-					[key: string]: {
-						[key: string]: {
-							note?: string | undefined;
-							value: string;
-						}[];
-					};
-			  }
-			| undefined;
-		exclude?:
-			| {
-					[key: string]: {
-						[key: string]: {
-							note?: string | undefined;
-							value: string;
-						}[];
-					};
-			  }
-			| undefined;
 	};
+	description?: string | undefined;
+	hint: string;
 	id: string;
 	label: string;
-	slug: string;
-	createdAt: number;
-	updatedAt: number;
 	projectId: string;
+	slug: string;
 	typeName: "segment";
-	hint: string;
+	updatedAt: number;
+	usedByFlags?: string[] | undefined;
+	usedBySegments?: string[] | undefined;
 	metadata?:
 		| {
 				creator?:
@@ -16876,20 +16876,20 @@ export type FlagsSdkKeyWithSecretsTypeEnumKey =
  * @type object
  */
 export type FlagsSdkKeyWithSecrets = {
-	hashKey: string;
-	projectId: string;
-	type: FlagsSdkKeyWithSecretsTypeEnumKey;
-	environment: string;
-	createdBy: string;
 	createdAt: number;
-	updatedAt: number;
-	label?: string | undefined;
+	createdBy: string;
 	deletedAt?: number | undefined;
+	environment: string;
+	hashKey: string;
+	label?: string | undefined;
 	/**
 	 * @description Partially-masked representation of the SDK key value, safe to display in UIs. The value is the `vf_<type>_` prefix followed by the first 3 characters of the secret portion and a fixed 8-character `*` mask (e.g. `vf_server_abc********`).
 	 * @type string
 	 */
 	partialKeyValue: string;
+	projectId: string;
+	type: FlagsSdkKeyWithSecretsTypeEnumKey;
+	updatedAt: number;
 	/**
 	 * @description Cleartext value of the SDK key.
 	 * @type string
@@ -17066,15 +17066,6 @@ export const aCLAction = {
 
 export type ACLActionKey = (typeof aCLAction)[keyof typeof aCLAction];
 
-export const namedSandboxStatusEnum = {
-	running: "running",
-	stopped: "stopped",
-	stopping: "stopping",
-} as const;
-
-export type NamedSandboxStatusEnumKey =
-	(typeof namedSandboxStatusEnum)[keyof typeof namedSandboxStatusEnum];
-
 export const namedSandboxFailoverRegionsEnum = {
 	arn1: "arn1",
 	bom1: "bom1",
@@ -17100,6 +17091,14 @@ export const namedSandboxFailoverRegionsEnum = {
 export type NamedSandboxFailoverRegionsEnumKey =
 	(typeof namedSandboxFailoverRegionsEnum)[keyof typeof namedSandboxFailoverRegionsEnum];
 
+export const modeEnum = {
+	"read-only": "read-only",
+	"read-write": "read-write",
+	snapshot: "snapshot",
+} as const;
+
+export type ModeEnumKey = (typeof modeEnum)[keyof typeof modeEnum];
+
 export const namedSandboxNetworkPolicyModeEnum = {
 	"allow-all": "allow-all",
 	custom: "custom",
@@ -17111,13 +17110,14 @@ export const namedSandboxNetworkPolicyModeEnum = {
 export type NamedSandboxNetworkPolicyModeEnumKey =
 	(typeof namedSandboxNetworkPolicyModeEnum)[keyof typeof namedSandboxNetworkPolicyModeEnum];
 
-export const modeEnum = {
-	"read-only": "read-only",
-	"read-write": "read-write",
-	snapshot: "snapshot",
+export const namedSandboxStatusEnum = {
+	running: "running",
+	stopped: "stopped",
+	stopping: "stopping",
 } as const;
 
-export type ModeEnumKey = (typeof modeEnum)[keyof typeof modeEnum];
+export type NamedSandboxStatusEnumKey =
+	(typeof namedSandboxStatusEnum)[keyof typeof namedSandboxStatusEnum];
 
 /**
  * @description This object contains information related to a Vercel NamedSandbox.
@@ -17125,45 +17125,33 @@ export type ModeEnumKey = (typeof modeEnum)[keyof typeof modeEnum];
  */
 export type NamedSandbox = {
 	/**
-	 * @description The unique identifier of the sandbox.
-	 * @example my-sandbox
-	 * @type string
+	 * @description The time when the named sandbox was created, in milliseconds since the epoch.
+	 * @example 1750344501629
+	 * @type number
 	 */
-	name: string;
-	/**
-	 * @description Current snapshot ID that the named sandbox is pointing to.
-	 * @type string | undefined
-	 */
-	currentSnapshotId?: string | undefined;
+	createdAt: number;
 	/**
 	 * @description Current session ID the sandbox is pointing to.
 	 * @type string
 	 */
 	currentSessionId: string;
 	/**
-	 * @description The status of the current sandbox.
-	 * @example running
-	 * @type string
-	 */
-	status: NamedSandboxStatusEnumKey;
-	/**
-	 * @description The time when the sandbox status was last updated, in milliseconds since the epoch.
-	 * @example 1750344501629
-	 * @type number
-	 */
-	statusUpdatedAt: number;
-	/**
-	 * @description Whether the sandbox persists its state across restarts via automatic snapshots.
-	 * @example true
-	 * @type boolean
-	 */
-	persistent: false | true;
-	/**
-	 * @description The region the sandbox is pinned to: the region stored on the sandbox, otherwise the platform default. Where a running session actually landed is reported by `session.region`.
-	 * @example iad1
+	 * @description Current snapshot ID that the named sandbox is pointing to.
 	 * @type string | undefined
 	 */
-	region?: string | undefined;
+	currentSnapshotId?: string | undefined;
+	/**
+	 * @description The working directory of the sandbox.
+	 * @example /vercel/sandbox
+	 * @type string | undefined
+	 */
+	cwd?: string | undefined;
+	/**
+	 * @description The time at which the currently running sandbox will time out, in milliseconds since the epoch. Only present while a session is running.
+	 * @example 1750344801629
+	 * @type number | undefined
+	 */
+	expiresAt?: number | undefined;
 	/**
 	 * @description The regions the sandbox fails over to. Empty when it does not fail over.
 	 * @example ["cle1","sfo1"]
@@ -17171,41 +17159,11 @@ export type NamedSandbox = {
 	 */
 	failoverRegions?: NamedSandboxFailoverRegionsEnumKey[] | undefined;
 	/**
-	 * @description Number of virtual CPUs allocated.
-	 * @example 2
-	 * @type number | undefined
-	 */
-	vcpus?: number | undefined;
-	/**
-	 * @description Memory allocated in MB.
-	 * @example 1024
-	 * @type number | undefined
-	 */
-	memory?: number | undefined;
-	/**
-	 * @description Runtime identifier.
-	 * @example node22
-	 * @type string | undefined
-	 */
-	runtime?: string | undefined;
-	/**
 	 * @description Digest-pinned reference of the container image the sandbox was created from, when it was created from an image (\"{repository}@{manifestDigest}\").
 	 * @example my-repo@sha256:2c4e8f9a1b3d5e7f091a2b3c4d5e6f708192a3b4c5d6e7f8091a2b3c4d5e6f708
 	 * @type string | undefined
 	 */
 	image?: string | undefined;
-	/**
-	 * @description Timeout in milliseconds.
-	 * @example 300000
-	 * @type number | undefined
-	 */
-	timeout?: number | undefined;
-	/**
-	 * @description Default snapshot expiration time in milliseconds. 0 means no expiration.
-	 * @example 604800000
-	 * @type number | undefined
-	 */
-	snapshotExpiration?: number | undefined;
 	/**
 	 * @description Keep-last snapshot configuration.
 	 * @type object | undefined
@@ -17219,77 +17177,25 @@ export type NamedSandbox = {
 				 */
 				count: number;
 				/**
-				 * @description Expiration time in milliseconds for kept snapshots.
-				 * @example 604800000
-				 * @type number | undefined
-				 */
-				expiration?: number | undefined;
-				/**
 				 * @description Whether to immediately delete evicted snapshots.
 				 * @example true
 				 * @type boolean
 				 */
 				deleteEvicted: false | true;
+				/**
+				 * @description Expiration time in milliseconds for kept snapshots.
+				 * @example 604800000
+				 * @type number | undefined
+				 */
+				expiration?: number | undefined;
 		  }
 		| undefined;
 	/**
-	 * @description Network policy configuration.
-	 * @type object | undefined
-	 */
-	networkPolicy?:
-		| {
-				mode: NamedSandboxNetworkPolicyModeEnumKey;
-				allowedDomains?: string[] | undefined;
-				allowedCIDRs?: string[] | undefined;
-				deniedCIDRs?: string[] | undefined;
-				s3Key?: string | undefined;
-		  }
-		| undefined;
-	/**
-	 * @description The Connect network id for the target Secure Compute private network.
-	 * @type string | undefined
-	 */
-	networkId?: string | undefined;
-	/**
-	 * @description Cumulative egress bytes across all sandbox runs.
-	 * @example 4096
+	 * @description Memory allocated in MB.
+	 * @example 1024
 	 * @type number | undefined
 	 */
-	totalEgressBytes?: number | undefined;
-	/**
-	 * @description Cumulative ingress bytes across all sandbox runs.
-	 * @example 2048
-	 * @type number | undefined
-	 */
-	totalIngressBytes?: number | undefined;
-	/**
-	 * @description Cumulative active CPU duration in milliseconds across all sandbox runs.
-	 * @example 5000
-	 * @type number | undefined
-	 */
-	totalActiveCpuDurationMs?: number | undefined;
-	/**
-	 * @description Cumulative wall-clock duration in milliseconds across all sandbox runs.
-	 * @example 60000
-	 * @type number | undefined
-	 */
-	totalDurationMs?: number | undefined;
-	/**
-	 * @description The working directory of the sandbox.
-	 * @example /vercel/sandbox
-	 * @type string | undefined
-	 */
-	cwd?: string | undefined;
-	/**
-	 * @description Key-value tags attached to the named sandbox.
-	 * @example {"team":"hive","user":"bob"}
-	 * @type object | undefined
-	 */
-	tags?:
-		| {
-				[key: string]: string;
-		  }
-		| undefined;
+	memory?: number | undefined;
 	/**
 	 * @description Key-value pairs of mount path and drive.
 	 * @type object | undefined
@@ -17303,11 +17209,105 @@ export type NamedSandbox = {
 		  }
 		| undefined;
 	/**
-	 * @description The time when the named sandbox was created, in milliseconds since the epoch.
+	 * @description The unique identifier of the sandbox.
+	 * @example my-sandbox
+	 * @type string
+	 */
+	name: string;
+	/**
+	 * @description The Connect network id for the target Secure Compute private network.
+	 * @type string | undefined
+	 */
+	networkId?: string | undefined;
+	/**
+	 * @description Network policy configuration.
+	 * @type object | undefined
+	 */
+	networkPolicy?:
+		| {
+				allowedCIDRs?: string[] | undefined;
+				allowedDomains?: string[] | undefined;
+				deniedCIDRs?: string[] | undefined;
+				mode: NamedSandboxNetworkPolicyModeEnumKey;
+				s3Key?: string | undefined;
+		  }
+		| undefined;
+	/**
+	 * @description Whether the sandbox persists its state across restarts via automatic snapshots.
+	 * @example true
+	 * @type boolean
+	 */
+	persistent: false | true;
+	/**
+	 * @description The region the sandbox is pinned to: the region stored on the sandbox, otherwise the platform default. Where a running session actually landed is reported by `session.region`.
+	 * @example iad1
+	 * @type string | undefined
+	 */
+	region?: string | undefined;
+	/**
+	 * @description Runtime identifier.
+	 * @example node22
+	 * @type string | undefined
+	 */
+	runtime?: string | undefined;
+	/**
+	 * @description Default snapshot expiration time in milliseconds. 0 means no expiration.
+	 * @example 604800000
+	 * @type number | undefined
+	 */
+	snapshotExpiration?: number | undefined;
+	/**
+	 * @description The status of the current sandbox.
+	 * @example running
+	 * @type string
+	 */
+	status: NamedSandboxStatusEnumKey;
+	/**
+	 * @description The time when the sandbox status was last updated, in milliseconds since the epoch.
 	 * @example 1750344501629
 	 * @type number
 	 */
-	createdAt: number;
+	statusUpdatedAt: number;
+	/**
+	 * @description Key-value tags attached to the named sandbox.
+	 * @example {"team":"hive","user":"bob"}
+	 * @type object | undefined
+	 */
+	tags?:
+		| {
+				[key: string]: string;
+		  }
+		| undefined;
+	/**
+	 * @description Timeout in milliseconds.
+	 * @example 300000
+	 * @type number | undefined
+	 */
+	timeout?: number | undefined;
+	/**
+	 * @description Cumulative active CPU duration in milliseconds across all sandbox runs.
+	 * @example 5000
+	 * @type number | undefined
+	 */
+	totalActiveCpuDurationMs?: number | undefined;
+	/**
+	 * @description Cumulative wall-clock duration in milliseconds across all sandbox runs.
+	 * @example 60000
+	 * @type number | undefined
+	 */
+	totalDurationMs?: number | undefined;
+	/**
+	 * @description Cumulative egress bytes across all sandbox runs.
+	 * @example 4096
+	 * @type number | undefined
+	 */
+	totalEgressBytes?: number | undefined;
+	/**
+	 * @description Cumulative ingress bytes across all sandbox runs.
+	 * @example 2048
+	 * @type number | undefined
+	 */
+	totalIngressBytes?: number | undefined;
 	/**
 	 * @description The time when the named sandbox was last updated, in milliseconds since the epoch.
 	 * @example 1750344501629
@@ -17315,11 +17315,38 @@ export type NamedSandbox = {
 	 */
 	updatedAt: number;
 	/**
-	 * @description The time at which the currently running sandbox will time out, in milliseconds since the epoch. Only present while a session is running.
-	 * @example 1750344801629
+	 * @description Number of virtual CPUs allocated.
+	 * @example 2
 	 * @type number | undefined
 	 */
-	expiresAt?: number | undefined;
+	vcpus?: number | undefined;
+};
+
+/**
+ * @description This object represents a public route in a Vercel Sandbox.
+ * @type object
+ */
+export type SandboxPublicRoute = {
+	/**
+	 * @description The user port number that the route is mapped to.
+	 * @type number
+	 */
+	port: number;
+	/**
+	 * @description The subdomain assigned to this route.
+	 * @type string
+	 */
+	subdomain: string;
+	/**
+	 * @description Whether the route is reserved by the system (e.g. for internal use).
+	 * @type boolean | undefined
+	 */
+	system?: true | undefined;
+	/**
+	 * @description A public URL to access the corresponding port in the Sandbox.
+	 * @type string
+	 */
+	url: string;
 };
 
 /**
@@ -17356,23 +17383,17 @@ export type SandboxNetworkPolicyModeEnumKey =
  */
 export type SandboxNetworkPolicy = {
 	/**
-	 * @description The network policy mode. - \'allow-all\': All traffic is allowed. - \'deny-all\': All traffic is blocked. - \'custom\': Traffic is controlled by explicit allow/deny rules.
-	 * @example custom
-	 * @type string
+	 * @description List of IP address ranges (in CIDR notation) the sandbox is allowed to connect to.
+	 * @example ["10.0.0.0/8"]
+	 * @type array | undefined
 	 */
-	mode: SandboxNetworkPolicyModeEnumKey;
+	allowedCIDRs?: string[] | undefined;
 	/**
 	 * @description List of domain names the sandbox is allowed to connect to. Supports wildcard patterns (e.g., \"*.vercel.com\" matches all subdomains).
 	 * @example ["*.example.com","api.vercel.com"]
 	 * @type array | undefined
 	 */
 	allowedDomains?: string[] | undefined;
-	/**
-	 * @description List of IP address ranges (in CIDR notation) the sandbox is allowed to connect to.
-	 * @example ["10.0.0.0/8"]
-	 * @type array | undefined
-	 */
-	allowedCIDRs?: string[] | undefined;
 	/**
 	 * @description List of IP address ranges (in CIDR notation) the sandbox is blocked from connecting to. These rules take precedence over all allowed rules.
 	 * @example ["10.0.0.0/8"]
@@ -17384,6 +17405,12 @@ export type SandboxNetworkPolicy = {
 	 * @type array | undefined
 	 */
 	injectionRules?: unknown[] | undefined;
+	/**
+	 * @description The network policy mode. - \'allow-all\': All traffic is allowed. - \'deny-all\': All traffic is blocked. - \'custom\': Traffic is controlled by explicit allow/deny rules.
+	 * @example custom
+	 * @type string
+	 */
+	mode: SandboxNetworkPolicyModeEnumKey;
 };
 
 export const sessionStatusEnum = {
@@ -17404,17 +17431,35 @@ export type SessionStatusEnumKey = (typeof sessionStatusEnum)[keyof typeof sessi
  */
 export type Session = {
 	/**
-	 * @description The name of the source sandbox.
-	 * @example my-sandbox
-	 * @type string
+	 * @description The time when the sandbox was aborted, in milliseconds since the epoch.
+	 * @example 1750344501629
+	 * @type number | undefined
 	 */
-	sourceSandboxName: string;
+	abortedAt?: number | undefined;
 	/**
-	 * @description The unique identifier of the project associated with this session.
-	 * @example prj_123a6c5209bc3778245d011443644c8d27dc2c50
+	 * @description The amount of CPU time the sandbox consumed, if available, in milliseconds. This value is only available once the sandbox is stopped, and only if it stopped successfully.
+	 * @example 42
+	 * @type number | undefined
+	 */
+	activeCpuDurationMs?: number | undefined;
+	/**
+	 * @description The time when the sandbox was created, in milliseconds since the epoch.
+	 * @example 1750344501629
+	 * @type number
+	 */
+	createdAt: number;
+	/**
+	 * @description The working directory of the sandbox.
+	 * @example /vercel/sandbox
 	 * @type string
 	 */
-	projectId: string;
+	cwd: string;
+	/**
+	 * @description The duration of the sandbox in milliseconds.
+	 * @example 3600000
+	 * @type number | undefined
+	 */
+	duration?: number | undefined;
 	/**
 	 * @description The unique identifier of the sandbox.
 	 * @example sbx_123a6c5209bc3778245d011443644c8d27dc2c50
@@ -17427,109 +17472,7 @@ export type Session = {
 	 * @type number
 	 */
 	memory: number;
-	/**
-	 * @description Number of vCPUs allocated to this sandbox.
-	 * @example 2
-	 * @type number
-	 */
-	vcpus: number;
-	/**
-	 * @description The region where the sandbox is hosted.
-	 * @example iad1
-	 * @type string
-	 */
-	region: string;
-	/**
-	 * @description The runtime of the sandbox.
-	 * @example node22
-	 * @type string
-	 */
-	runtime: string;
-	/**
-	 * @description The maximum amount of time the sandbox will run for in milliseconds.
-	 * @example 3600000
-	 * @type number
-	 */
-	timeout: number;
-	/**
-	 * @description The status of the sandbox.
-	 * @example running
-	 * @type string
-	 */
-	status: SessionStatusEnumKey;
-	/**
-	 * @description The time when the sandbox was requested, in milliseconds since the epoch.
-	 * @example 1750344501629
-	 * @type number
-	 */
-	requestedAt: number;
-	/**
-	 * @description The time when the sandbox was started, in milliseconds since the epoch.
-	 * @example 1750344501629
-	 * @type number | undefined
-	 */
-	startedAt?: number | undefined;
-	/**
-	 * @description The working directory of the sandbox.
-	 * @example /vercel/sandbox
-	 * @type string
-	 */
-	cwd: string;
-	/**
-	 * @description The time when the sandbox was requested to stop, in milliseconds since the epoch.
-	 * @example 1750344501629
-	 * @type number | undefined
-	 */
-	requestedStopAt?: number | undefined;
-	/**
-	 * @description The time when the sandbox was stopped, in milliseconds since the epoch.
-	 * @example 1750344501629
-	 * @type number | undefined
-	 */
-	stoppedAt?: number | undefined;
-	/**
-	 * @description The time when the sandbox was aborted, in milliseconds since the epoch.
-	 * @example 1750344501629
-	 * @type number | undefined
-	 */
-	abortedAt?: number | undefined;
-	/**
-	 * @description The duration of the sandbox in milliseconds.
-	 * @example 3600000
-	 * @type number | undefined
-	 */
-	duration?: number | undefined;
-	/**
-	 * @description The unique identifier of the snapshot associated with this sandbox, if any.
-	 * @example snap_123a6c5209bc3778245d011443644c8d27dc2c50
-	 * @type string | undefined
-	 */
-	sourceSnapshotId?: string | undefined;
-	/**
-	 * @description The time when a snapshot was requested, in milliseconds since the epoch.
-	 * @example 1750344501629
-	 * @type number | undefined
-	 */
-	snapshottedAt?: number | undefined;
-	/**
-	 * @description The time when the sandbox was created, in milliseconds since the epoch.
-	 * @example 1750344501629
-	 * @type number
-	 */
-	createdAt: number;
-	/**
-	 * @description The last time the sandbox was updated, in milliseconds since the epoch.
-	 * @example 1750344501629
-	 * @type number
-	 */
-	updatedAt: number;
 	networkPolicy?: unknown | undefined;
-	/**
-	 * @description The amount of CPU time the sandbox consumed, if available, in milliseconds. This value is only available once the sandbox is stopped, and only if it stopped successfully.
-	 * @example 42
-	 * @type number | undefined
-	 */
-	activeCpuDurationMs?: number | undefined;
 	/**
 	 * @description The quantity of data transfered to and from the sandbox, in bytes. This value is only available once the sandbox is stopped, and only if it stopped successfully.
 	 * @example {"in":12543852,"out":15368}
@@ -17537,37 +17480,94 @@ export type Session = {
 	 */
 	networkTransfer?:
 		| {
-				ingress: number;
 				egress: number;
+				ingress: number;
 		  }
 		| undefined;
-};
-
-/**
- * @description This object represents a public route in a Vercel Sandbox.
- * @type object
- */
-export type SandboxPublicRoute = {
 	/**
-	 * @description A public URL to access the corresponding port in the Sandbox.
+	 * @description The unique identifier of the project associated with this session.
+	 * @example prj_123a6c5209bc3778245d011443644c8d27dc2c50
 	 * @type string
 	 */
-	url: string;
+	projectId: string;
 	/**
-	 * @description The user port number that the route is mapped to.
+	 * @description The region where the sandbox is hosted.
+	 * @example iad1
+	 * @type string
+	 */
+	region: string;
+	/**
+	 * @description The time when the sandbox was requested, in milliseconds since the epoch.
+	 * @example 1750344501629
 	 * @type number
 	 */
-	port: number;
+	requestedAt: number;
 	/**
-	 * @description The subdomain assigned to this route.
+	 * @description The time when the sandbox was requested to stop, in milliseconds since the epoch.
+	 * @example 1750344501629
+	 * @type number | undefined
+	 */
+	requestedStopAt?: number | undefined;
+	/**
+	 * @description The runtime of the sandbox.
+	 * @example node22
 	 * @type string
 	 */
-	subdomain: string;
+	runtime: string;
 	/**
-	 * @description Whether the route is reserved by the system (e.g. for internal use).
-	 * @type boolean | undefined
+	 * @description The time when a snapshot was requested, in milliseconds since the epoch.
+	 * @example 1750344501629
+	 * @type number | undefined
 	 */
-	system?: true | undefined;
+	snapshottedAt?: number | undefined;
+	/**
+	 * @description The name of the source sandbox.
+	 * @example my-sandbox
+	 * @type string
+	 */
+	sourceSandboxName: string;
+	/**
+	 * @description The unique identifier of the snapshot associated with this sandbox, if any.
+	 * @example snap_123a6c5209bc3778245d011443644c8d27dc2c50
+	 * @type string | undefined
+	 */
+	sourceSnapshotId?: string | undefined;
+	/**
+	 * @description The time when the sandbox was started, in milliseconds since the epoch.
+	 * @example 1750344501629
+	 * @type number | undefined
+	 */
+	startedAt?: number | undefined;
+	/**
+	 * @description The status of the sandbox.
+	 * @example running
+	 * @type string
+	 */
+	status: SessionStatusEnumKey;
+	/**
+	 * @description The time when the sandbox was stopped, in milliseconds since the epoch.
+	 * @example 1750344501629
+	 * @type number | undefined
+	 */
+	stoppedAt?: number | undefined;
+	/**
+	 * @description The maximum amount of time the sandbox will run for in milliseconds.
+	 * @example 3600000
+	 * @type number
+	 */
+	timeout: number;
+	/**
+	 * @description The last time the sandbox was updated, in milliseconds since the epoch.
+	 * @example 1750344501629
+	 * @type number
+	 */
+	updatedAt: number;
+	/**
+	 * @description Number of vCPUs allocated to this sandbox.
+	 * @example 2
+	 * @type number
+	 */
+	vcpus: number;
 };
 
 /**
@@ -17576,11 +17576,35 @@ export type SandboxPublicRoute = {
  */
 export type Drive = {
 	/**
+	 * @description The time when the drive was created, in milliseconds since the epoch.
+	 * @example 1750344501629
+	 * @type number
+	 */
+	createdAt: number;
+	/**
+	 * @description Current sandbox name the drive is attached to, if any.
+	 * @example my-sandbox
+	 * @type string | undefined
+	 */
+	currentSandboxName?: string | undefined;
+	/**
+	 * @description Current session ID the drive is attached to, if any.
+	 * @example sbx_123
+	 * @type string | undefined
+	 */
+	currentSessionId?: string | undefined;
+	/**
 	 * @description The unique drive ID.
 	 * @example drive_abc123
 	 * @type string
 	 */
 	id: string;
+	/**
+	 * @description The maximum drive size in bytes.
+	 * @example 1099511627776
+	 * @type number
+	 */
+	maxSizeBytes: number;
 	/**
 	 * @description The unique drive name within the project.
 	 * @example workspace
@@ -17594,35 +17618,11 @@ export type Drive = {
 	 */
 	projectId: string;
 	/**
-	 * @description The maximum drive size in bytes.
-	 * @example 1099511627776
-	 * @type number
-	 */
-	maxSizeBytes: number;
-	/**
 	 * @description The region where the drive is stored.
 	 * @example iad1
 	 * @type string
 	 */
 	region: string;
-	/**
-	 * @description Current session ID the drive is attached to, if any.
-	 * @example sbx_123
-	 * @type string | undefined
-	 */
-	currentSessionId?: string | undefined;
-	/**
-	 * @description Current sandbox name the drive is attached to, if any.
-	 * @example my-sandbox
-	 * @type string | undefined
-	 */
-	currentSandboxName?: string | undefined;
-	/**
-	 * @description The time when the drive was created, in milliseconds since the epoch.
-	 * @example 1750344501629
-	 * @type number
-	 */
-	createdAt: number;
 	/**
 	 * @description The last time the drive was updated, in milliseconds since the epoch.
 	 * @example 1750344501629
@@ -17630,14 +17630,6 @@ export type Drive = {
 	 */
 	updatedAt: number;
 };
-
-export const snapshotStatusEnum = {
-	created: "created",
-	deleted: "deleted",
-	failed: "failed",
-} as const;
-
-export type SnapshotStatusEnumKey = (typeof snapshotStatusEnum)[keyof typeof snapshotStatusEnum];
 
 export const snapshotCreationMethodEnum = {
 	automatic: "automatic",
@@ -17647,11 +17639,37 @@ export const snapshotCreationMethodEnum = {
 export type SnapshotCreationMethodEnumKey =
 	(typeof snapshotCreationMethodEnum)[keyof typeof snapshotCreationMethodEnum];
 
+export const snapshotStatusEnum = {
+	created: "created",
+	deleted: "deleted",
+	failed: "failed",
+} as const;
+
+export type SnapshotStatusEnumKey = (typeof snapshotStatusEnum)[keyof typeof snapshotStatusEnum];
+
 /**
  * @description This object contains information related to a Snapshot of a Vercel Sandbox session (v2 API).
  * @type object
  */
 export type Snapshot = {
+	/**
+	 * @description The time when the snapshot was created, in milliseconds since the epoch.
+	 * @example 1750344501629
+	 * @type number
+	 */
+	createdAt: number;
+	/**
+	 * @description The method used to create the snapshot.
+	 * @example manual
+	 * @type string | undefined
+	 */
+	creationMethod?: SnapshotCreationMethodEnumKey | undefined;
+	/**
+	 * @description The time when the snapshot will expire, in milliseconds since the epoch. If not set, the snapshot does not have any expiration.
+	 * @example 1750344501629
+	 * @type number | undefined
+	 */
+	expiresAt?: number | undefined;
 	/**
 	 * @description The unique identifier of the snapshot.
 	 * @example snap_123a6c5209bc3778245d011443644c8d27dc2c50
@@ -17659,11 +17677,17 @@ export type Snapshot = {
 	 */
 	id: string;
 	/**
-	 * @description The unique identifier of the session from which the snapshot was created.
-	 * @example sbx_123a6c5209bc3778245d011443644c8d27dc2c50
-	 * @type string
+	 * @description The last time the snapshot was used (e.g. to resume or create a sandbox), in milliseconds since the epoch. Falls back to `createdAt` for older snapshots that predate this field.
+	 * @example 1750344501629
+	 * @type number
 	 */
-	sourceSessionId: string;
+	lastUsedAt: number;
+	/**
+	 * @description The unique identifier of the parent snapshot, if this snapshot was created from another snapshot.
+	 * @example snap_parent123
+	 * @type string | undefined
+	 */
+	parentId?: string | undefined;
 	/**
 	 * @description The region where the snapshot is stored.
 	 * @example iad1
@@ -17677,53 +17701,29 @@ export type Snapshot = {
 	 */
 	regions?: string[] | undefined;
 	/**
-	 * @description The status of the snapshot.
-	 * @example created
-	 * @type string
-	 */
-	status: SnapshotStatusEnumKey;
-	/**
 	 * @description The size of the snapshot in bytes.
 	 * @example 104857600
 	 * @type number
 	 */
 	sizeBytes: number;
 	/**
-	 * @description The time when the snapshot will expire, in milliseconds since the epoch. If not set, the snapshot does not have any expiration.
-	 * @example 1750344501629
-	 * @type number | undefined
+	 * @description The unique identifier of the session from which the snapshot was created.
+	 * @example sbx_123a6c5209bc3778245d011443644c8d27dc2c50
+	 * @type string
 	 */
-	expiresAt?: number | undefined;
+	sourceSessionId: string;
 	/**
-	 * @description The time when the snapshot was created, in milliseconds since the epoch.
-	 * @example 1750344501629
-	 * @type number
+	 * @description The status of the snapshot.
+	 * @example created
+	 * @type string
 	 */
-	createdAt: number;
+	status: SnapshotStatusEnumKey;
 	/**
 	 * @description The last time the snapshot was updated, in milliseconds since the epoch.
 	 * @example 1750344501629
 	 * @type number
 	 */
 	updatedAt: number;
-	/**
-	 * @description The last time the snapshot was used (e.g. to resume or create a sandbox), in milliseconds since the epoch. Falls back to `createdAt` for older snapshots that predate this field.
-	 * @example 1750344501629
-	 * @type number
-	 */
-	lastUsedAt: number;
-	/**
-	 * @description The method used to create the snapshot.
-	 * @example manual
-	 * @type string | undefined
-	 */
-	creationMethod?: SnapshotCreationMethodEnumKey | undefined;
-	/**
-	 * @description The unique identifier of the parent snapshot, if this snapshot was created from another snapshot.
-	 * @example snap_parent123
-	 * @type string | undefined
-	 */
-	parentId?: string | undefined;
 };
 
 /**
@@ -17731,18 +17731,6 @@ export type Snapshot = {
  * @type object
  */
 export type SessionCommand = {
-	/**
-	 * @description The ID of the command.
-	 * @example cmd_123a6c5209bc3778245d011443644c8d27dc2c50
-	 * @type string
-	 */
-	id: string;
-	/**
-	 * @description The name of the command.
-	 * @example npm
-	 * @type string
-	 */
-	name: string;
 	/**
 	 * @description The arguments of the command.
 	 * @example ["build","run"]
@@ -17756,11 +17744,11 @@ export type SessionCommand = {
 	 */
 	cwd: string;
 	/**
-	 * @description The ID of the session associated with the command.
-	 * @example sbx_123a6c5209bc3778245d011443644c8d27dc2c50
-	 * @type string
+	 * @description Duration of the command execution in milliseconds.
+	 * @example 1234
+	 * @type number | undefined
 	 */
-	sessionId: string;
+	durationMs?: number | undefined;
 	/**
 	 * @description If the command did finish, the exit code.
 	 * @example 0
@@ -17768,17 +17756,29 @@ export type SessionCommand = {
 	 */
 	exitCode: number | null;
 	/**
+	 * @description The ID of the command.
+	 * @example cmd_123a6c5209bc3778245d011443644c8d27dc2c50
+	 * @type string
+	 */
+	id: string;
+	/**
+	 * @description The name of the command.
+	 * @example npm
+	 * @type string
+	 */
+	name: string;
+	/**
+	 * @description The ID of the session associated with the command.
+	 * @example sbx_123a6c5209bc3778245d011443644c8d27dc2c50
+	 * @type string
+	 */
+	sessionId: string;
+	/**
 	 * @description When the command was started, in milliseconds since the epoch.
 	 * @example 1673123456789
 	 * @type number
 	 */
 	startedAt: number;
-	/**
-	 * @description Duration of the command execution in milliseconds.
-	 * @example 1234
-	 * @type number | undefined
-	 */
-	durationMs?: number | undefined;
 };
 
 export const invitedTeamMemberRoleEnum = {
@@ -17794,20 +17794,6 @@ export const invitedTeamMemberRoleEnum = {
 
 export type InvitedTeamMemberRoleEnumKey =
 	(typeof invitedTeamMemberRoleEnum)[keyof typeof invitedTeamMemberRoleEnum];
-
-export const invitedTeamMemberTeamRolesEnum = {
-	BILLING: "BILLING",
-	CONTRIBUTOR: "CONTRIBUTOR",
-	DEVELOPER: "DEVELOPER",
-	MEMBER: "MEMBER",
-	OWNER: "OWNER",
-	SECURITY: "SECURITY",
-	VIEWER: "VIEWER",
-	VIEWER_FOR_PLUS: "VIEWER_FOR_PLUS",
-} as const;
-
-export type InvitedTeamMemberTeamRolesEnumKey =
-	(typeof invitedTeamMemberTeamRolesEnum)[keyof typeof invitedTeamMemberTeamRolesEnum];
 
 export const invitedTeamMemberTeamPermissionsEnum = {
 	AiGatewayApiKeyOwnedBySelf: "AiGatewayApiKeyOwnedBySelf",
@@ -17834,23 +17820,25 @@ export const invitedTeamMemberTeamPermissionsEnum = {
 export type InvitedTeamMemberTeamPermissionsEnumKey =
 	(typeof invitedTeamMemberTeamPermissionsEnum)[keyof typeof invitedTeamMemberTeamPermissionsEnum];
 
+export const invitedTeamMemberTeamRolesEnum = {
+	BILLING: "BILLING",
+	CONTRIBUTOR: "CONTRIBUTOR",
+	DEVELOPER: "DEVELOPER",
+	MEMBER: "MEMBER",
+	OWNER: "OWNER",
+	SECURITY: "SECURITY",
+	VIEWER: "VIEWER",
+	VIEWER_FOR_PLUS: "VIEWER_FOR_PLUS",
+} as const;
+
+export type InvitedTeamMemberTeamRolesEnumKey =
+	(typeof invitedTeamMemberTeamRolesEnum)[keyof typeof invitedTeamMemberTeamRolesEnum];
+
 /**
  * @description The member was successfully added to the team.
  * @type object
  */
 export type InvitedTeamMember = {
-	/**
-	 * @description The ID of the invited user
-	 * @example kr1PsOIzqEL5Xg6M4VZcZosf
-	 * @type string
-	 */
-	uid: string;
-	/**
-	 * @description The username of the invited user
-	 * @example john-doe
-	 * @type string
-	 */
-	username: string;
 	/**
 	 * @description The email of the invited user.
 	 * @example john@user.co
@@ -17864,43 +17852,30 @@ export type InvitedTeamMember = {
 	 */
 	role: InvitedTeamMemberRoleEnumKey;
 	/**
+	 * @description The team permissions of the user
+	 * @example ["CreateProject"]
+	 * @type array | undefined
+	 */
+	teamPermissions?: InvitedTeamMemberTeamPermissionsEnumKey[] | undefined;
+	/**
 	 * @description The team roles of the user
 	 * @example ["MEMBER"]
 	 * @type array | undefined
 	 */
 	teamRoles?: InvitedTeamMemberTeamRolesEnumKey[] | undefined;
 	/**
-	 * @description The team permissions of the user
-	 * @example ["CreateProject"]
-	 * @type array | undefined
+	 * @description The ID of the invited user
+	 * @example kr1PsOIzqEL5Xg6M4VZcZosf
+	 * @type string
 	 */
-	teamPermissions?: InvitedTeamMemberTeamPermissionsEnumKey[] | undefined;
+	uid: string;
+	/**
+	 * @description The username of the invited user
+	 * @example john-doe
+	 * @type string
+	 */
+	username: string;
 };
-
-export const teamSamlConnectionSyncStateEnum = {
-	ACTIVE: "ACTIVE",
-	SETUP: "SETUP",
-} as const;
-
-export type TeamSamlConnectionSyncStateEnumKey =
-	(typeof teamSamlConnectionSyncStateEnum)[keyof typeof teamSamlConnectionSyncStateEnum];
-
-export const teamSamlDirectorySyncStateEnum = {
-	ACTIVE: "ACTIVE",
-	SETUP: "SETUP",
-} as const;
-
-export type TeamSamlDirectorySyncStateEnumKey =
-	(typeof teamSamlDirectorySyncStateEnum)[keyof typeof teamSamlDirectorySyncStateEnum];
-
-export const teamSamlDefaultRedirectUriEnum = {
-	"v0.app": "v0.app",
-	"v0.dev": "v0.dev",
-	"vercel.com": "vercel.com",
-} as const;
-
-export type TeamSamlDefaultRedirectUriEnumKey =
-	(typeof teamSamlDefaultRedirectUriEnum)[keyof typeof teamSamlDefaultRedirectUriEnum];
 
 export const teamBillingPlanEnum = {
 	enterprise: "enterprise",
@@ -17910,19 +17885,15 @@ export const teamBillingPlanEnum = {
 
 export type TeamBillingPlanEnumKey = (typeof teamBillingPlanEnum)[keyof typeof teamBillingPlanEnum];
 
-export const teamDefaultRolesTeamRolesEnum = {
-	BILLING: "BILLING",
-	CONTRIBUTOR: "CONTRIBUTOR",
-	DEVELOPER: "DEVELOPER",
-	MEMBER: "MEMBER",
-	OWNER: "OWNER",
-	SECURITY: "SECURITY",
-	VIEWER: "VIEWER",
-	VIEWER_FOR_PLUS: "VIEWER_FOR_PLUS",
+export const teamDefaultPassportDeploymentTypeEnum = {
+	all: "all",
+	all_except_custom_domains: "all_except_custom_domains",
+	preview: "preview",
+	prod_deployment_urls_and_all_previews: "prod_deployment_urls_and_all_previews",
 } as const;
 
-export type TeamDefaultRolesTeamRolesEnumKey =
-	(typeof teamDefaultRolesTeamRolesEnum)[keyof typeof teamDefaultRolesTeamRolesEnum];
+export type TeamDefaultPassportDeploymentTypeEnumKey =
+	(typeof teamDefaultPassportDeploymentTypeEnum)[keyof typeof teamDefaultPassportDeploymentTypeEnum];
 
 export const teamDefaultRolesTeamPermissionsEnum = {
 	AiGatewayApiKeyOwnedBySelf: "AiGatewayApiKeyOwnedBySelf",
@@ -17949,16 +17920,55 @@ export const teamDefaultRolesTeamPermissionsEnum = {
 export type TeamDefaultRolesTeamPermissionsEnumKey =
 	(typeof teamDefaultRolesTeamPermissionsEnum)[keyof typeof teamDefaultRolesTeamPermissionsEnum];
 
-export const teamResourceConfigBuildMachineDefaultEnum = {
-	basic: "basic",
-	elastic: "elastic",
-	enhanced: "enhanced",
-	standard: "standard",
-	turbo: "turbo",
+export const teamDefaultRolesTeamRolesEnum = {
+	BILLING: "BILLING",
+	CONTRIBUTOR: "CONTRIBUTOR",
+	DEVELOPER: "DEVELOPER",
+	MEMBER: "MEMBER",
+	OWNER: "OWNER",
+	SECURITY: "SECURITY",
+	VIEWER: "VIEWER",
+	VIEWER_FOR_PLUS: "VIEWER_FOR_PLUS",
 } as const;
 
-export type TeamResourceConfigBuildMachineDefaultEnumKey =
-	(typeof teamResourceConfigBuildMachineDefaultEnum)[keyof typeof teamResourceConfigBuildMachineDefaultEnum];
+export type TeamDefaultRolesTeamRolesEnumKey =
+	(typeof teamDefaultRolesTeamRolesEnum)[keyof typeof teamDefaultRolesTeamRolesEnum];
+
+export const teamDeploymentPolicyDeploymentSourcesEnvironmentsTargetEnum = {
+	preview: "preview",
+	production: "production",
+} as const;
+
+export type TeamDeploymentPolicyDeploymentSourcesEnvironmentsTargetEnumKey =
+	(typeof teamDeploymentPolicyDeploymentSourcesEnvironmentsTargetEnum)[keyof typeof teamDeploymentPolicyDeploymentSourcesEnvironmentsTargetEnum];
+
+export const teamDeploymentPolicyDeploymentSourcesSourcesEnum = {
+	cli: "cli",
+	"deploy-hook": "deploy-hook",
+	git: "git",
+	integration: "integration",
+	"rest-api": "rest-api",
+	v0: "v0",
+} as const;
+
+export type TeamDeploymentPolicyDeploymentSourcesSourcesEnumKey =
+	(typeof teamDeploymentPolicyDeploymentSourcesSourcesEnum)[keyof typeof teamDeploymentPolicyDeploymentSourcesSourcesEnum];
+
+export const teamDeploymentPolicyGitSourcesEnvironmentsTargetEnum = {
+	preview: "preview",
+	production: "production",
+} as const;
+
+export type TeamDeploymentPolicyGitSourcesEnvironmentsTargetEnumKey =
+	(typeof teamDeploymentPolicyGitSourcesEnvironmentsTargetEnum)[keyof typeof teamDeploymentPolicyGitSourcesEnvironmentsTargetEnum];
+
+export const teamDeploymentPolicyGitSourcesSourcesProviderEnum = {
+	bitbucket: "bitbucket",
+	github: "github",
+} as const;
+
+export type TeamDeploymentPolicyGitSourcesSourcesProviderEnumKey =
+	(typeof teamDeploymentPolicyGitSourcesSourcesProviderEnum)[keyof typeof teamDeploymentPolicyGitSourcesSourcesProviderEnum];
 
 export const teamDisableHardAutoBlocks = {
 	false: false,
@@ -17968,15 +17978,23 @@ export const teamDisableHardAutoBlocks = {
 export type TeamDisableHardAutoBlocksKey =
 	(typeof teamDisableHardAutoBlocks)[keyof typeof teamDisableHardAutoBlocks];
 
-export const teamDefaultPassportDeploymentTypeEnum = {
-	all: "all",
-	all_except_custom_domains: "all_except_custom_domains",
-	preview: "preview",
-	prod_deployment_urls_and_all_previews: "prod_deployment_urls_and_all_previews",
+export const teamDisjunctiveProductionSecretPolicyEnum = {
+	default: "default",
+	off: "off",
+	on: "on",
 } as const;
 
-export type TeamDefaultPassportDeploymentTypeEnumKey =
-	(typeof teamDefaultPassportDeploymentTypeEnum)[keyof typeof teamDefaultPassportDeploymentTypeEnum];
+export type TeamDisjunctiveProductionSecretPolicyEnumKey =
+	(typeof teamDisjunctiveProductionSecretPolicyEnum)[keyof typeof teamDisjunctiveProductionSecretPolicyEnum];
+
+export const teamDpAccessRequestsModeEnum = {
+	all: "all",
+	"email-domain": "email-domain",
+	none: "none",
+} as const;
+
+export type TeamDpAccessRequestsModeEnumKey =
+	(typeof teamDpAccessRequestsModeEnum)[keyof typeof teamDpAccessRequestsModeEnum];
 
 export const teamEnablePreviewFeedbackEnum = {
 	default: "default",
@@ -18001,131 +18019,6 @@ export const teamEnableProductionFeedbackEnum = {
 
 export type TeamEnableProductionFeedbackEnumKey =
 	(typeof teamEnableProductionFeedbackEnum)[keyof typeof teamEnableProductionFeedbackEnum];
-
-export const teamSensitiveEnvironmentVariablePolicyEnum = {
-	default: "default",
-	off: "off",
-	on: "on",
-} as const;
-
-export type TeamSensitiveEnvironmentVariablePolicyEnumKey =
-	(typeof teamSensitiveEnvironmentVariablePolicyEnum)[keyof typeof teamSensitiveEnvironmentVariablePolicyEnum];
-
-export const teamDisjunctiveProductionSecretPolicyEnum = {
-	default: "default",
-	off: "off",
-	on: "on",
-} as const;
-
-export type TeamDisjunctiveProductionSecretPolicyEnumKey =
-	(typeof teamDisjunctiveProductionSecretPolicyEnum)[keyof typeof teamDisjunctiveProductionSecretPolicyEnum];
-
-export const teamDpAccessRequestsModeEnum = {
-	all: "all",
-	"email-domain": "email-domain",
-	none: "none",
-} as const;
-
-export type TeamDpAccessRequestsModeEnumKey =
-	(typeof teamDpAccessRequestsModeEnum)[keyof typeof teamDpAccessRequestsModeEnum];
-
-export const teamNsnbConfigPreferenceEnum = {
-	"auto-approval": "auto-approval",
-	block: "block",
-	"manual-approval": "manual-approval",
-} as const;
-
-export type TeamNsnbConfigPreferenceEnumKey =
-	(typeof teamNsnbConfigPreferenceEnum)[keyof typeof teamNsnbConfigPreferenceEnum];
-
-export const teamDeploymentPolicyGitSourcesSourcesProviderEnum = {
-	bitbucket: "bitbucket",
-	github: "github",
-} as const;
-
-export type TeamDeploymentPolicyGitSourcesSourcesProviderEnumKey =
-	(typeof teamDeploymentPolicyGitSourcesSourcesProviderEnum)[keyof typeof teamDeploymentPolicyGitSourcesSourcesProviderEnum];
-
-export const teamDeploymentPolicyGitSourcesEnvironmentsTargetEnum = {
-	preview: "preview",
-	production: "production",
-} as const;
-
-export type TeamDeploymentPolicyGitSourcesEnvironmentsTargetEnumKey =
-	(typeof teamDeploymentPolicyGitSourcesEnvironmentsTargetEnum)[keyof typeof teamDeploymentPolicyGitSourcesEnvironmentsTargetEnum];
-
-export const teamDeploymentPolicyDeploymentSourcesSourcesEnum = {
-	cli: "cli",
-	"deploy-hook": "deploy-hook",
-	git: "git",
-	integration: "integration",
-	"rest-api": "rest-api",
-	v0: "v0",
-} as const;
-
-export type TeamDeploymentPolicyDeploymentSourcesSourcesEnumKey =
-	(typeof teamDeploymentPolicyDeploymentSourcesSourcesEnum)[keyof typeof teamDeploymentPolicyDeploymentSourcesSourcesEnum];
-
-export const teamDeploymentPolicyDeploymentSourcesEnvironmentsTargetEnum = {
-	preview: "preview",
-	production: "production",
-} as const;
-
-export type TeamDeploymentPolicyDeploymentSourcesEnvironmentsTargetEnumKey =
-	(typeof teamDeploymentPolicyDeploymentSourcesEnvironmentsTargetEnum)[keyof typeof teamDeploymentPolicyDeploymentSourcesEnvironmentsTargetEnum];
-
-export const teamMembershipRoleEnum = {
-	BILLING: "BILLING",
-	CONTRIBUTOR: "CONTRIBUTOR",
-	DEVELOPER: "DEVELOPER",
-	MEMBER: "MEMBER",
-	OWNER: "OWNER",
-	SECURITY: "SECURITY",
-	VIEWER: "VIEWER",
-	VIEWER_FOR_PLUS: "VIEWER_FOR_PLUS",
-} as const;
-
-export type TeamMembershipRoleEnumKey =
-	(typeof teamMembershipRoleEnum)[keyof typeof teamMembershipRoleEnum];
-
-export const teamMembershipTeamRolesEnum = {
-	BILLING: "BILLING",
-	CONTRIBUTOR: "CONTRIBUTOR",
-	DEVELOPER: "DEVELOPER",
-	MEMBER: "MEMBER",
-	OWNER: "OWNER",
-	SECURITY: "SECURITY",
-	VIEWER: "VIEWER",
-	VIEWER_FOR_PLUS: "VIEWER_FOR_PLUS",
-} as const;
-
-export type TeamMembershipTeamRolesEnumKey =
-	(typeof teamMembershipTeamRolesEnum)[keyof typeof teamMembershipTeamRolesEnum];
-
-export const teamMembershipTeamPermissionsEnum = {
-	AiGatewayApiKeyOwnedBySelf: "AiGatewayApiKeyOwnedBySelf",
-	AiGatewayBudgetManager: "AiGatewayBudgetManager",
-	AiGatewayCredits: "AiGatewayCredits",
-	AiGatewaySettings: "AiGatewaySettings",
-	AiGatewayTranscriptsManager: "AiGatewayTranscriptsManager",
-	AiGatewayTranscriptsViewer: "AiGatewayTranscriptsViewer",
-	ConnectorManager: "ConnectorManager",
-	CreateProject: "CreateProject",
-	EnvVariableManager: "EnvVariableManager",
-	EnvironmentManager: "EnvironmentManager",
-	FullProductionDeployment: "FullProductionDeployment",
-	IntegrationManager: "IntegrationManager",
-	OrgAdmin: "OrgAdmin",
-	OrgViewer: "OrgViewer",
-	UsageViewer: "UsageViewer",
-	V0Builder: "V0Builder",
-	V0Chatter: "V0Chatter",
-	V0Viewer: "V0Viewer",
-	WorkflowDecryptor: "WorkflowDecryptor",
-} as const;
-
-export type TeamMembershipTeamPermissionsEnumKey =
-	(typeof teamMembershipTeamPermissionsEnum)[keyof typeof teamMembershipTeamPermissionsEnum];
 
 export const teamMembershipJoinedFromOriginEnum = {
 	"account-update": "account-update",
@@ -18152,16 +18045,152 @@ export const teamMembershipJoinedFromOriginEnum = {
 export type TeamMembershipJoinedFromOriginEnumKey =
 	(typeof teamMembershipJoinedFromOriginEnum)[keyof typeof teamMembershipJoinedFromOriginEnum];
 
+export const teamMembershipRoleEnum = {
+	BILLING: "BILLING",
+	CONTRIBUTOR: "CONTRIBUTOR",
+	DEVELOPER: "DEVELOPER",
+	MEMBER: "MEMBER",
+	OWNER: "OWNER",
+	SECURITY: "SECURITY",
+	VIEWER: "VIEWER",
+	VIEWER_FOR_PLUS: "VIEWER_FOR_PLUS",
+} as const;
+
+export type TeamMembershipRoleEnumKey =
+	(typeof teamMembershipRoleEnum)[keyof typeof teamMembershipRoleEnum];
+
+export const teamMembershipTeamPermissionsEnum = {
+	AiGatewayApiKeyOwnedBySelf: "AiGatewayApiKeyOwnedBySelf",
+	AiGatewayBudgetManager: "AiGatewayBudgetManager",
+	AiGatewayCredits: "AiGatewayCredits",
+	AiGatewaySettings: "AiGatewaySettings",
+	AiGatewayTranscriptsManager: "AiGatewayTranscriptsManager",
+	AiGatewayTranscriptsViewer: "AiGatewayTranscriptsViewer",
+	ConnectorManager: "ConnectorManager",
+	CreateProject: "CreateProject",
+	EnvVariableManager: "EnvVariableManager",
+	EnvironmentManager: "EnvironmentManager",
+	FullProductionDeployment: "FullProductionDeployment",
+	IntegrationManager: "IntegrationManager",
+	OrgAdmin: "OrgAdmin",
+	OrgViewer: "OrgViewer",
+	UsageViewer: "UsageViewer",
+	V0Builder: "V0Builder",
+	V0Chatter: "V0Chatter",
+	V0Viewer: "V0Viewer",
+	WorkflowDecryptor: "WorkflowDecryptor",
+} as const;
+
+export type TeamMembershipTeamPermissionsEnumKey =
+	(typeof teamMembershipTeamPermissionsEnum)[keyof typeof teamMembershipTeamPermissionsEnum];
+
+export const teamMembershipTeamRolesEnum = {
+	BILLING: "BILLING",
+	CONTRIBUTOR: "CONTRIBUTOR",
+	DEVELOPER: "DEVELOPER",
+	MEMBER: "MEMBER",
+	OWNER: "OWNER",
+	SECURITY: "SECURITY",
+	VIEWER: "VIEWER",
+	VIEWER_FOR_PLUS: "VIEWER_FOR_PLUS",
+} as const;
+
+export type TeamMembershipTeamRolesEnumKey =
+	(typeof teamMembershipTeamRolesEnum)[keyof typeof teamMembershipTeamRolesEnum];
+
+export const teamNsnbConfigPreferenceEnum = {
+	"auto-approval": "auto-approval",
+	block: "block",
+	"manual-approval": "manual-approval",
+} as const;
+
+export type TeamNsnbConfigPreferenceEnumKey =
+	(typeof teamNsnbConfigPreferenceEnum)[keyof typeof teamNsnbConfigPreferenceEnum];
+
+export const teamResourceConfigBuildMachineDefaultEnum = {
+	basic: "basic",
+	elastic: "elastic",
+	enhanced: "enhanced",
+	standard: "standard",
+	turbo: "turbo",
+} as const;
+
+export type TeamResourceConfigBuildMachineDefaultEnumKey =
+	(typeof teamResourceConfigBuildMachineDefaultEnum)[keyof typeof teamResourceConfigBuildMachineDefaultEnum];
+
+export const teamSamlConnectionSyncStateEnum = {
+	ACTIVE: "ACTIVE",
+	SETUP: "SETUP",
+} as const;
+
+export type TeamSamlConnectionSyncStateEnumKey =
+	(typeof teamSamlConnectionSyncStateEnum)[keyof typeof teamSamlConnectionSyncStateEnum];
+
+export const teamSamlDefaultRedirectUriEnum = {
+	"v0.app": "v0.app",
+	"v0.dev": "v0.dev",
+	"vercel.com": "vercel.com",
+} as const;
+
+export type TeamSamlDefaultRedirectUriEnumKey =
+	(typeof teamSamlDefaultRedirectUriEnum)[keyof typeof teamSamlDefaultRedirectUriEnum];
+
+export const teamSamlDirectorySyncStateEnum = {
+	ACTIVE: "ACTIVE",
+	SETUP: "SETUP",
+} as const;
+
+export type TeamSamlDirectorySyncStateEnumKey =
+	(typeof teamSamlDirectorySyncStateEnum)[keyof typeof teamSamlDirectorySyncStateEnum];
+
+export const teamSensitiveEnvironmentVariablePolicyEnum = {
+	default: "default",
+	off: "off",
+	on: "on",
+} as const;
+
+export type TeamSensitiveEnvironmentVariablePolicyEnumKey =
+	(typeof teamSensitiveEnvironmentVariablePolicyEnum)[keyof typeof teamSensitiveEnvironmentVariablePolicyEnum];
+
 /**
  * @description Data representing a Team.
  * @type object
  */
 export type Team = {
+	/**
+	 * @description Timestamp (ms) after which API keys created at or before this time are considered invalid for this team.
+	 * @type number | undefined
+	 */
+	apiKeysInvalidatedAt?: number | undefined;
+	/**
+	 * @description Timestamp (ms) after which Vercel App tokens created at or before this time are considered invalid for this team.
+	 * @type number | undefined
+	 */
+	appTokensInvalidatedAt?: number | undefined;
+	/**
+	 * @description The ID of the file used as avatar for this Team.
+	 * @example 6eb07268bcfadd309905ffb1579354084c24655c
+	 * @type string
+	 */
+	avatar: string | null;
+	/**
+	 * @description The team\'s billing plan.
+	 * @type object
+	 */
+	billing: {
+		plan: TeamBillingPlanEnumKey;
+	} | null;
 	connect?:
 		| {
 				enabled?: (false | true) | undefined;
 		  }
 		| undefined;
+	/**
+	 * @description UNIX timestamp (in milliseconds) when the Team was created.
+	 * @example 1630748523395
+	 * @type number
+	 */
+	createdAt: number;
 	/**
 	 * @description The ID of the user who created the Team.
 	 * @example R6efeCJQ2HKXywuasPDc0fOWB
@@ -18169,17 +18198,418 @@ export type Team = {
 	 */
 	creatorId: string;
 	/**
-	 * @description Timestamp (in milliseconds) of when the Team was last updated.
-	 * @example 1611796915677
-	 * @type number
+	 * @description Default deployment protection for this team null indicates protection is disabled
+	 * @type object | undefined
 	 */
-	updatedAt: number;
+	defaultDeploymentProtection?:
+		| {
+				passwordProtection?:
+					| ({
+							deploymentType: string;
+					  } | null)
+					| undefined;
+				ssoProtection?:
+					| ({
+							deploymentType: string;
+					  } | null)
+					| undefined;
+		  }
+		| undefined;
+	/**
+	 * @description Default deployment expiration settings for this team
+	 * @type object | undefined
+	 */
+	defaultExpirationSettings?:
+		| {
+				/**
+				 * @description Minimum number of production deployments to keep for this project, even if they are over the production expiration limit.
+				 * @type number | undefined
+				 */
+				deploymentsToKeep?: number | undefined;
+				/**
+				 * @description Number of days to keep non-production deployments (mostly preview deployments) before soft deletion.
+				 * @type number | undefined
+				 */
+				expirationDays?: number | undefined;
+				/**
+				 * @description Number of days to keep canceled deployments before soft deletion.
+				 * @type number | undefined
+				 */
+				expirationDaysCanceled?: number | undefined;
+				/**
+				 * @description Number of days to keep errored deployments before soft deletion.
+				 * @type number | undefined
+				 */
+				expirationDaysErrored?: number | undefined;
+				/**
+				 * @description Number of days to keep production deployments before soft deletion.
+				 * @type number | undefined
+				 */
+				expirationDaysProduction?: number | undefined;
+		  }
+		| undefined;
+	/**
+	 * @description Default Passport configuration for new projects in this team.
+	 * @type object | undefined
+	 */
+	defaultPassport?:
+		| ({
+				/**
+				 * @description Default Passport configuration for new projects in this team.
+				 * @type string
+				 */
+				connectorId: string;
+				/**
+				 * @description Default Passport configuration for new projects in this team.
+				 * @type string
+				 */
+				deploymentType: TeamDefaultPassportDeploymentTypeEnumKey;
+		  } | null)
+		| undefined;
+	/**
+	 * @description Default job configuration applied to new projects created in this team.
+	 * @type object | undefined
+	 */
+	defaultProjectJobs?:
+		| {
+				/**
+				 * @description Default job configuration applied to new projects created in this team.
+				 * @type object | undefined
+				 */
+				lint?:
+					| {
+							/**
+							 * @description Default job configuration applied to new projects created in this team.
+							 * @type array
+							 */
+							targets: string[];
+					  }
+					| undefined;
+				/**
+				 * @description Default job configuration applied to new projects created in this team.
+				 * @type object | undefined
+				 */
+				mfeConfigPresent?:
+					| {
+							/**
+							 * @description Default job configuration applied to new projects created in this team.
+							 * @type array
+							 */
+							targets: string[];
+					  }
+					| undefined;
+				/**
+				 * @description Default job configuration applied to new projects created in this team.
+				 * @type object | undefined
+				 */
+				typecheck?:
+					| {
+							/**
+							 * @description Default job configuration applied to new projects created in this team.
+							 * @type array
+							 */
+							targets: string[];
+					  }
+					| undefined;
+		  }
+		| undefined;
+	/**
+	 * @description Default roles for the team.
+	 * @type object | undefined
+	 */
+	defaultRoles?:
+		| {
+				teamPermissions?: TeamDefaultRolesTeamPermissionsEnumKey[] | undefined;
+				teamRoles?: TeamDefaultRolesTeamRolesEnumKey[] | undefined;
+		  }
+		| undefined;
+	/**
+	 * @description Composable deployment-time policy for the team. Used as the default for every project on the team, with optional per-project overrides on `project.deploymentPolicy`.
+	 * @type object | undefined
+	 */
+	deploymentPolicy?:
+		| {
+				deploymentSources?:
+					| {
+							enabled: false | true;
+							environments: (
+								| {
+										target: TeamDeploymentPolicyDeploymentSourcesEnvironmentsTargetEnumKey;
+										type: "system";
+								  }
+								| {
+										environmentId: string;
+										type: "custom";
+								  }
+							)[];
+							sources: TeamDeploymentPolicyDeploymentSourcesSourcesEnumKey[];
+					  }[]
+					| undefined;
+				gitSources?:
+					| {
+							enabled: false | true;
+							environments: (
+								| {
+										target: TeamDeploymentPolicyGitSourcesEnvironmentsTargetEnumKey;
+										type: "system";
+								  }
+								| {
+										environmentId: string;
+										type: "custom";
+								  }
+							)[];
+							sources: (
+								| {
+										org: string;
+										provider: TeamDeploymentPolicyGitSourcesSourcesProviderEnumKey;
+										repo?: string | undefined;
+								  }
+								| {
+										namespace: string;
+										project?: string | undefined;
+										provider: "gitlab";
+								  }
+							)[];
+					  }[]
+					| undefined;
+		  }
+		| undefined;
+	/**
+	 * @description A short description of the Team.
+	 * @example Our mission is to make cloud computing accessible to everyone.
+	 * @type string
+	 */
+	description: string | null;
+	disableHardAutoBlocks?: (number | TeamDisableHardAutoBlocksKey) | undefined;
+	/**
+	 * @description Default for projects in the team. When `true`, projects in this team will not emit GitHub repository-dispatch events on deployment events unless the project explicitly overrides this setting via `project.gitProviderOptions.disableRepositoryDispatchEvents`.
+	 * @type boolean | undefined
+	 */
+	disableRepositoryDispatchEvents?: (false | true) | undefined;
+	/**
+	 * @description Require production secrets to use a different value than preview or development.
+	 * @type string | undefined
+	 */
+	disjunctiveProductionSecretPolicy?:
+		| (TeamDisjunctiveProductionSecretPolicyEnumKey | null)
+		| undefined;
+	/**
+	 * @description Controls who can request access to protected deployments.
+	 * @type string | undefined
+	 */
+	dpAccessRequestsMode?: TeamDpAccessRequestsModeEnumKey | undefined;
 	/**
 	 * @description Hostname that\'ll be matched with emails on sign-up to automatically join the Team.
 	 * @example example.com
 	 * @type string | undefined
 	 */
 	emailDomain?: (string | null) | undefined;
+	/**
+	 * @description Whether toolbar is enabled on preview deployments
+	 * @type string | undefined
+	 */
+	enablePreviewFeedback?: (TeamEnablePreviewFeedbackEnumKey | null) | undefined;
+	/**
+	 * @description Whether toolbar is enabled on production deployments
+	 * @type string | undefined
+	 */
+	enableProductionFeedback?: (TeamEnableProductionFeedbackEnumKey | null) | undefined;
+	/**
+	 * @description Indicates if IP addresses should be accessible in observability (o11y) tooling
+	 * @type boolean | undefined
+	 */
+	hideIpAddresses?: ((false | true) | null) | undefined;
+	/**
+	 * @description Indicates if IP addresses should be accessible in log drains
+	 * @type boolean | undefined
+	 */
+	hideIpAddressesInLogDrains?: ((false | true) | null) | undefined;
+	/**
+	 * @description The Team\'s unique identifier.
+	 * @example team_nllPyCtREAqxxdyFKbbMDlxd
+	 * @type string
+	 */
+	id: string;
+	/**
+	 * @description Timestamp (ms) after which integration tokens created at or before this time are considered invalid for this team.
+	 * @type number | undefined
+	 */
+	integrationTokensInvalidatedAt?: number | undefined;
+	/**
+	 * @description Code that can be used to join this Team. Only visible to Team owners.
+	 * @example hasihf9e89
+	 * @type string | undefined
+	 */
+	inviteCode?: string | undefined;
+	ipBuckets?:
+		| {
+				bucket: string;
+				default?: (false | true) | undefined;
+				supportUntil?: number | undefined;
+		  }[]
+		| undefined;
+	/**
+	 * @description The membership of the authenticated User in relation to the Team.
+	 * @type object | undefined
+	 */
+	membership?:
+		| {
+				accessRequestedAt?: number | undefined;
+				confirmed: true;
+				created: number;
+				createdAt: number;
+				entitlements?:
+					| {
+							entitlement: string;
+					  }[]
+					| undefined;
+				joinedFrom?:
+					| {
+							commitId?: string | undefined;
+							dsyncConnectedAt?: number | undefined;
+							dsyncUserId?: string | undefined;
+							gitUserId?: (string | number) | undefined;
+							gitUserLogin?: string | undefined;
+							idpUserId?: string | undefined;
+							origin: TeamMembershipJoinedFromOriginEnumKey;
+							repoId?: string | undefined;
+							repoPath?: string | undefined;
+							ssoConnectedAt?: number | undefined;
+							ssoUserId?: string | undefined;
+					  }
+					| undefined;
+				role: TeamMembershipRoleEnumKey;
+				teamId?: string | undefined;
+				teamPermissions?: TeamMembershipTeamPermissionsEnumKey[] | undefined;
+				teamRoles?: TeamMembershipTeamRolesEnumKey[] | undefined;
+				uid?: string | undefined;
+		  }
+		| undefined;
+	/**
+	 * @description Name associated with the Team account, or `null` if none has been provided.
+	 * @example My Team
+	 * @type string
+	 */
+	name: string | null;
+	/**
+	 * @description NSNB configuration for the team.
+	 * @type object | undefined
+	 */
+	nsnbConfig?:
+		| {
+				preference: TeamNsnbConfigPreferenceEnumKey;
+		  }
+		| undefined;
+	/**
+	 * @description Best-effort ID of the organization’s root billing team. When present, compare `orgRootTeamId === id` to identify the root team. It may be omitted even when `parentId` is set if organization resolution fails or the referenced organization is missing. Always omitted for non-organization teams.
+	 * @example team_nllPyCtREAqxxdyFKbbMDlxd
+	 * @type string | undefined
+	 */
+	orgRootTeamId?: string | undefined;
+	/**
+	 * @description The organizationId for teams that belong to an organization (set on both the organization\'s root team and its child teams).
+	 * @example org_nllPyCtREAqxxdyFKbbMDlxd
+	 * @type string | undefined
+	 */
+	parentId?: string | undefined;
+	/**
+	 * @description Timestamp (ms) after which personal access tokens created at or before this time are considered invalid for this team.
+	 * @type number | undefined
+	 */
+	personalAccessTokensInvalidatedAt?: number | undefined;
+	/**
+	 * @description Whether the team is a platform team.
+	 * @example true
+	 * @type boolean | undefined
+	 */
+	platform?: (false | true) | undefined;
+	/**
+	 * @description The hostname that is current set as preview deployment suffix.
+	 * @example example.dev
+	 * @type string | undefined
+	 */
+	previewDeploymentSuffix?: (string | null) | undefined;
+	/**
+	 * @description Is remote caching enabled for this team
+	 * @type object | undefined
+	 */
+	remoteCaching?:
+		| {
+				enabled?: (false | true) | undefined;
+		  }
+		| undefined;
+	/**
+	 * @description When enabled, all projects in the team require commits to be signed and verified by the git provider before deployments will be created. Projects may override this via `project.gitProviderOptions.requireVerifiedCommits` (gated by `Project:Update`).
+	 * @type boolean | undefined
+	 */
+	requireVerifiedCommits?: (false | true) | undefined;
+	resourceConfig?:
+		| {
+				/**
+				 * @description The maximum number of blob stores an account can create.
+				 * @type number | undefined
+				 */
+				blobStores?: number | undefined;
+				buildEntitlements?:
+					| {
+							enhancedBuilds?: (false | true) | undefined;
+					  }
+					| undefined;
+				/**
+				 * @description Build machine configuration
+				 * @type object | undefined
+				 */
+				buildMachine?:
+					| {
+							/**
+							 * @description Default build machine type for new builds
+							 * @type string | undefined
+							 */
+							default?: TeamResourceConfigBuildMachineDefaultEnumKey | undefined;
+					  }
+					| undefined;
+				/**
+				 * @description The total amount of concurrent builds that can be used.
+				 * @type number | undefined
+				 */
+				concurrentBuilds?: number | undefined;
+				/**
+				 * @description The maximum number of custom environments allowed per project.
+				 * @type number | undefined
+				 */
+				customEnvironmentsPerProject?: number | undefined;
+				/**
+				 * @description The maximum number of edge configs an account can create.
+				 * @type number | undefined
+				 */
+				edgeConfigs?: number | undefined;
+				/**
+				 * @description The maximum size in kilobytes of an Edge Config. Only specified if a custom limit is set.
+				 * @type number | undefined
+				 */
+				edgeConfigSize?: number | undefined;
+				/**
+				 * @description Whether every build for this team / user has elastic concurrency enabled automatically.
+				 * @type boolean | undefined
+				 */
+				elasticConcurrencyEnabled?: (false | true) | undefined;
+				/**
+				 * @description The maximum number of kv databases an account can create.
+				 * @type number | undefined
+				 */
+				kvDatabases?: number | undefined;
+				/**
+				 * @description The maximum number of postgres databases an account can create.
+				 * @type number | undefined
+				 */
+				postgresDatabases?: number | undefined;
+				/**
+				 * @description The maximum memory size (in MB) for a serverless function. Only specified if a custom limit is set.
+				 * @type number | undefined
+				 */
+				serverlessFunctionMaxMemorySize?: number | undefined;
+		  }
+		| undefined;
 	/**
 	 * @description When \"Single Sign-On (SAML)\" is configured, this object contains information regarding the configuration of the Identity Provider (IdP).
 	 * @type object | undefined
@@ -18193,18 +18623,6 @@ export type Team = {
 				connection?:
 					| {
 							/**
-							 * @description The Identity Provider \"type\", for example Okta.
-							 * @example OktaSAML
-							 * @type string
-							 */
-							type: string;
-							/**
-							 * @description Current state of the connection.
-							 * @example active
-							 * @type string
-							 */
-							state: string;
-							/**
 							 * @description Timestamp (in milliseconds) of when the configuration was connected.
 							 * @example 1611796915677
 							 * @type number
@@ -18223,13 +18641,30 @@ export type Team = {
 							 */
 							lastSyncedAt?: number | undefined;
 							/**
+							 * @description Current state of the connection.
+							 * @example active
+							 * @type string
+							 */
+							state: string;
+							/**
 							 * @description Controls whether directory sync events are processed. - \'SETUP\': Directory connected but role mappings not yet configured. Events are acknowledged but not processed. - \'ACTIVE\': Fully configured. Events are processed normally. - undefined: Legacy directory (pre-feature), treat as \'ACTIVE\' for backwards compatibility.
 							 * @type string | undefined
 							 */
 							syncState?: TeamSamlConnectionSyncStateEnumKey | undefined;
+							/**
+							 * @description The Identity Provider \"type\", for example Okta.
+							 * @example OktaSAML
+							 * @type string
+							 */
+							type: string;
 							status: string;
 					  }
 					| undefined;
+				/**
+				 * @description The default redirect URI to use after successful SAML authentication.
+				 * @type string | undefined
+				 */
+				defaultRedirectUri?: TeamSamlDefaultRedirectUriEnumKey | undefined;
 				/**
 				 * @description Information for the Directory Sync configuration.
 				 * @type object | undefined
@@ -18237,18 +18672,6 @@ export type Team = {
 				directory?:
 					| {
 							/**
-							 * @description The Identity Provider \"type\", for example Okta.
-							 * @example OktaSAML
-							 * @type string
-							 */
-							type: string;
-							/**
-							 * @description Current state of the connection.
-							 * @example active
-							 * @type string
-							 */
-							state: string;
-							/**
 							 * @description Timestamp (in milliseconds) of when the configuration was connected.
 							 * @example 1611796915677
 							 * @type number
@@ -18267,10 +18690,22 @@ export type Team = {
 							 */
 							lastSyncedAt?: number | undefined;
 							/**
+							 * @description Current state of the connection.
+							 * @example active
+							 * @type string
+							 */
+							state: string;
+							/**
 							 * @description Controls whether directory sync events are processed. - \'SETUP\': Directory connected but role mappings not yet configured. Events are acknowledged but not processed. - \'ACTIVE\': Fully configured. Events are processed normally. - undefined: Legacy directory (pre-feature), treat as \'ACTIVE\' for backwards compatibility.
 							 * @type string | undefined
 							 */
 							syncState?: TeamSamlDirectorySyncStateEnumKey | undefined;
+							/**
+							 * @description The Identity Provider \"type\", for example Okta.
+							 * @example OktaSAML
+							 * @type string
+							 */
+							type: string;
 					  }
 					| undefined;
 				/**
@@ -18278,11 +18713,6 @@ export type Team = {
 				 * @type boolean
 				 */
 				enforced: false | true;
-				/**
-				 * @description The default redirect URI to use after successful SAML authentication.
-				 * @type string | undefined
-				 */
-				defaultRedirectUri?: TeamSamlDefaultRedirectUriEnumKey | undefined;
 				/**
 				 * @description When \"Directory Sync\" is configured, this object contains a mapping of which Directory Group (by ID) should be assigned to which Vercel Team \"role\".
 				 * @type object | undefined
@@ -18308,255 +18738,6 @@ export type Team = {
 		  }
 		| undefined;
 	/**
-	 * @description Code that can be used to join this Team. Only visible to Team owners.
-	 * @example hasihf9e89
-	 * @type string | undefined
-	 */
-	inviteCode?: string | undefined;
-	/**
-	 * @description The team\'s billing plan.
-	 * @type object
-	 */
-	billing: {
-		plan: TeamBillingPlanEnumKey;
-	} | null;
-	/**
-	 * @description A short description of the Team.
-	 * @example Our mission is to make cloud computing accessible to everyone.
-	 * @type string
-	 */
-	description: string | null;
-	/**
-	 * @description Default roles for the team.
-	 * @type object | undefined
-	 */
-	defaultRoles?:
-		| {
-				teamRoles?: TeamDefaultRolesTeamRolesEnumKey[] | undefined;
-				teamPermissions?: TeamDefaultRolesTeamPermissionsEnumKey[] | undefined;
-		  }
-		| undefined;
-	/**
-	 * @description The prefix that is prepended to automatic aliases.
-	 * @type string
-	 */
-	stagingPrefix: string;
-	resourceConfig?:
-		| {
-				/**
-				 * @description The total amount of concurrent builds that can be used.
-				 * @type number | undefined
-				 */
-				concurrentBuilds?: number | undefined;
-				/**
-				 * @description Whether every build for this team / user has elastic concurrency enabled automatically.
-				 * @type boolean | undefined
-				 */
-				elasticConcurrencyEnabled?: (false | true) | undefined;
-				/**
-				 * @description The maximum size in kilobytes of an Edge Config. Only specified if a custom limit is set.
-				 * @type number | undefined
-				 */
-				edgeConfigSize?: number | undefined;
-				/**
-				 * @description The maximum number of edge configs an account can create.
-				 * @type number | undefined
-				 */
-				edgeConfigs?: number | undefined;
-				/**
-				 * @description The maximum number of kv databases an account can create.
-				 * @type number | undefined
-				 */
-				kvDatabases?: number | undefined;
-				/**
-				 * @description The maximum number of blob stores an account can create.
-				 * @type number | undefined
-				 */
-				blobStores?: number | undefined;
-				/**
-				 * @description The maximum number of postgres databases an account can create.
-				 * @type number | undefined
-				 */
-				postgresDatabases?: number | undefined;
-				/**
-				 * @description The maximum number of custom environments allowed per project.
-				 * @type number | undefined
-				 */
-				customEnvironmentsPerProject?: number | undefined;
-				/**
-				 * @description The maximum memory size (in MB) for a serverless function. Only specified if a custom limit is set.
-				 * @type number | undefined
-				 */
-				serverlessFunctionMaxMemorySize?: number | undefined;
-				buildEntitlements?:
-					| {
-							enhancedBuilds?: (false | true) | undefined;
-					  }
-					| undefined;
-				/**
-				 * @description Build machine configuration
-				 * @type object | undefined
-				 */
-				buildMachine?:
-					| {
-							/**
-							 * @description Default build machine type for new builds
-							 * @type string | undefined
-							 */
-							default?: TeamResourceConfigBuildMachineDefaultEnumKey | undefined;
-					  }
-					| undefined;
-		  }
-		| undefined;
-	/**
-	 * @description The hostname that is current set as preview deployment suffix.
-	 * @example example.dev
-	 * @type string | undefined
-	 */
-	previewDeploymentSuffix?: (string | null) | undefined;
-	/**
-	 * @description Whether the team is a platform team.
-	 * @example true
-	 * @type boolean | undefined
-	 */
-	platform?: (false | true) | undefined;
-	disableHardAutoBlocks?: (number | TeamDisableHardAutoBlocksKey) | undefined;
-	/**
-	 * @description Is remote caching enabled for this team
-	 * @type object | undefined
-	 */
-	remoteCaching?:
-		| {
-				enabled?: (false | true) | undefined;
-		  }
-		| undefined;
-	/**
-	 * @description Default deployment protection for this team null indicates protection is disabled
-	 * @type object | undefined
-	 */
-	defaultDeploymentProtection?:
-		| {
-				passwordProtection?:
-					| ({
-							deploymentType: string;
-					  } | null)
-					| undefined;
-				ssoProtection?:
-					| ({
-							deploymentType: string;
-					  } | null)
-					| undefined;
-		  }
-		| undefined;
-	/**
-	 * @description Default Passport configuration for new projects in this team.
-	 * @type object | undefined
-	 */
-	defaultPassport?:
-		| ({
-				/**
-				 * @description Default Passport configuration for new projects in this team.
-				 * @type string
-				 */
-				connectorId: string;
-				/**
-				 * @description Default Passport configuration for new projects in this team.
-				 * @type string
-				 */
-				deploymentType: TeamDefaultPassportDeploymentTypeEnumKey;
-		  } | null)
-		| undefined;
-	/**
-	 * @description Default deployment expiration settings for this team
-	 * @type object | undefined
-	 */
-	defaultExpirationSettings?:
-		| {
-				/**
-				 * @description Number of days to keep non-production deployments (mostly preview deployments) before soft deletion.
-				 * @type number | undefined
-				 */
-				expirationDays?: number | undefined;
-				/**
-				 * @description Number of days to keep production deployments before soft deletion.
-				 * @type number | undefined
-				 */
-				expirationDaysProduction?: number | undefined;
-				/**
-				 * @description Number of days to keep canceled deployments before soft deletion.
-				 * @type number | undefined
-				 */
-				expirationDaysCanceled?: number | undefined;
-				/**
-				 * @description Number of days to keep errored deployments before soft deletion.
-				 * @type number | undefined
-				 */
-				expirationDaysErrored?: number | undefined;
-				/**
-				 * @description Minimum number of production deployments to keep for this project, even if they are over the production expiration limit.
-				 * @type number | undefined
-				 */
-				deploymentsToKeep?: number | undefined;
-		  }
-		| undefined;
-	/**
-	 * @description Default job configuration applied to new projects created in this team.
-	 * @type object | undefined
-	 */
-	defaultProjectJobs?:
-		| {
-				/**
-				 * @description Default job configuration applied to new projects created in this team.
-				 * @type object | undefined
-				 */
-				lint?:
-					| {
-							/**
-							 * @description Default job configuration applied to new projects created in this team.
-							 * @type array
-							 */
-							targets: string[];
-					  }
-					| undefined;
-				/**
-				 * @description Default job configuration applied to new projects created in this team.
-				 * @type object | undefined
-				 */
-				typecheck?:
-					| {
-							/**
-							 * @description Default job configuration applied to new projects created in this team.
-							 * @type array
-							 */
-							targets: string[];
-					  }
-					| undefined;
-				/**
-				 * @description Default job configuration applied to new projects created in this team.
-				 * @type object | undefined
-				 */
-				mfeConfigPresent?:
-					| {
-							/**
-							 * @description Default job configuration applied to new projects created in this team.
-							 * @type array
-							 */
-							targets: string[];
-					  }
-					| undefined;
-		  }
-		| undefined;
-	/**
-	 * @description Whether toolbar is enabled on preview deployments
-	 * @type string | undefined
-	 */
-	enablePreviewFeedback?: (TeamEnablePreviewFeedbackEnumKey | null) | undefined;
-	/**
-	 * @description Whether toolbar is enabled on production deployments
-	 * @type string | undefined
-	 */
-	enableProductionFeedback?: (TeamEnableProductionFeedbackEnumKey | null) | undefined;
-	/**
 	 * @description Sensitive environment variable policy for this team
 	 * @type string | undefined
 	 */
@@ -18564,59 +18745,31 @@ export type Team = {
 		| (TeamSensitiveEnvironmentVariablePolicyEnumKey | null)
 		| undefined;
 	/**
-	 * @description Require production secrets to use a different value than preview or development.
-	 * @type string | undefined
+	 * @description The Team\'s slug, which is unique across the Vercel platform.
+	 * @example my-team
+	 * @type string
 	 */
-	disjunctiveProductionSecretPolicy?:
-		| (TeamDisjunctiveProductionSecretPolicyEnumKey | null)
-		| undefined;
+	slug: string;
 	/**
-	 * @description Indicates if IP addresses should be accessible in observability (o11y) tooling
-	 * @type boolean | undefined
+	 * @description The prefix that is prepended to automatic aliases.
+	 * @type string
 	 */
-	hideIpAddresses?: ((false | true) | null) | undefined;
+	stagingPrefix: string;
 	/**
-	 * @description Indicates if IP addresses should be accessible in log drains
-	 * @type boolean | undefined
-	 */
-	hideIpAddressesInLogDrains?: ((false | true) | null) | undefined;
-	/**
-	 * @description Controls who can request access to protected deployments.
-	 * @type string | undefined
-	 */
-	dpAccessRequestsMode?: TeamDpAccessRequestsModeEnumKey | undefined;
-	ipBuckets?:
-		| {
-				bucket: string;
-				supportUntil?: number | undefined;
-				default?: (false | true) | undefined;
-		  }[]
-		| undefined;
-	/**
-	 * @description When enabled, all projects in the team require commits to be signed and verified by the git provider before deployments will be created. Projects may override this via `project.gitProviderOptions.requireVerifiedCommits` (gated by `Project:Update`).
-	 * @type boolean | undefined
-	 */
-	requireVerifiedCommits?: (false | true) | undefined;
-	/**
-	 * @description Default for projects in the team. When `true`, projects in this team will not emit GitHub repository-dispatch events on deployment events unless the project explicitly overrides this setting via `project.gitProviderOptions.disableRepositoryDispatchEvents`.
-	 * @type boolean | undefined
-	 */
-	disableRepositoryDispatchEvents?: (false | true) | undefined;
-	/**
-	 * @description When enabled, deployment protection settings require stricter permissions (owner-only).
+	 * @description When enabled, creating and managing connectors requires Owner role or the ConnectorManager permission.
 	 * @type object | undefined
 	 */
-	strictDeploymentProtectionSettings?:
+	strictConnectors?:
 		| {
 				enabled: false | true;
 				updatedAt: number;
 		  }
 		| undefined;
 	/**
-	 * @description When enabled, creating shareable links requires Owner role.
+	 * @description When enabled, deployment protection settings require stricter permissions (owner-only).
 	 * @type object | undefined
 	 */
-	strictShareableLinks?:
+	strictDeploymentProtectionSettings?:
 		| {
 				enabled: false | true;
 				updatedAt: number;
@@ -18633,174 +18786,21 @@ export type Team = {
 		  }
 		| undefined;
 	/**
-	 * @description When enabled, creating and managing connectors requires Owner role or the ConnectorManager permission.
+	 * @description When enabled, creating shareable links requires Owner role.
 	 * @type object | undefined
 	 */
-	strictConnectors?:
+	strictShareableLinks?:
 		| {
 				enabled: false | true;
 				updatedAt: number;
 		  }
 		| undefined;
 	/**
-	 * @description NSNB configuration for the team.
-	 * @type object | undefined
-	 */
-	nsnbConfig?:
-		| {
-				preference: TeamNsnbConfigPreferenceEnumKey;
-		  }
-		| undefined;
-	/**
-	 * @description Composable deployment-time policy for the team. Used as the default for every project on the team, with optional per-project overrides on `project.deploymentPolicy`.
-	 * @type object | undefined
-	 */
-	deploymentPolicy?:
-		| {
-				gitSources?:
-					| {
-							sources: (
-								| {
-										provider: TeamDeploymentPolicyGitSourcesSourcesProviderEnumKey;
-										org: string;
-										repo?: string | undefined;
-								  }
-								| {
-										provider: "gitlab";
-										namespace: string;
-										project?: string | undefined;
-								  }
-							)[];
-							enabled: false | true;
-							environments: (
-								| {
-										type: "system";
-										target: TeamDeploymentPolicyGitSourcesEnvironmentsTargetEnumKey;
-								  }
-								| {
-										type: "custom";
-										environmentId: string;
-								  }
-							)[];
-					  }[]
-					| undefined;
-				deploymentSources?:
-					| {
-							sources: TeamDeploymentPolicyDeploymentSourcesSourcesEnumKey[];
-							enabled: false | true;
-							environments: (
-								| {
-										type: "system";
-										target: TeamDeploymentPolicyDeploymentSourcesEnvironmentsTargetEnumKey;
-								  }
-								| {
-										type: "custom";
-										environmentId: string;
-								  }
-							)[];
-					  }[]
-					| undefined;
-		  }
-		| undefined;
-	/**
-	 * @description Timestamp (ms) after which personal access tokens created at or before this time are considered invalid for this team.
-	 * @type number | undefined
-	 */
-	personalAccessTokensInvalidatedAt?: number | undefined;
-	/**
-	 * @description Timestamp (ms) after which Vercel App tokens created at or before this time are considered invalid for this team.
-	 * @type number | undefined
-	 */
-	appTokensInvalidatedAt?: number | undefined;
-	/**
-	 * @description Timestamp (ms) after which API keys created at or before this time are considered invalid for this team.
-	 * @type number | undefined
-	 */
-	apiKeysInvalidatedAt?: number | undefined;
-	/**
-	 * @description Timestamp (ms) after which integration tokens created at or before this time are considered invalid for this team.
-	 * @type number | undefined
-	 */
-	integrationTokensInvalidatedAt?: number | undefined;
-	/**
-	 * @description The Team\'s unique identifier.
-	 * @example team_nllPyCtREAqxxdyFKbbMDlxd
-	 * @type string
-	 */
-	id: string;
-	/**
-	 * @description The Team\'s slug, which is unique across the Vercel platform.
-	 * @example my-team
-	 * @type string
-	 */
-	slug: string;
-	/**
-	 * @description Name associated with the Team account, or `null` if none has been provided.
-	 * @example My Team
-	 * @type string
-	 */
-	name: string | null;
-	/**
-	 * @description The ID of the file used as avatar for this Team.
-	 * @example 6eb07268bcfadd309905ffb1579354084c24655c
-	 * @type string
-	 */
-	avatar: string | null;
-	/**
-	 * @description The membership of the authenticated User in relation to the Team.
-	 * @type object | undefined
-	 */
-	membership?:
-		| {
-				uid?: string | undefined;
-				entitlements?:
-					| {
-							entitlement: string;
-					  }[]
-					| undefined;
-				teamId?: string | undefined;
-				confirmed: true;
-				accessRequestedAt?: number | undefined;
-				role: TeamMembershipRoleEnumKey;
-				teamRoles?: TeamMembershipTeamRolesEnumKey[] | undefined;
-				teamPermissions?: TeamMembershipTeamPermissionsEnumKey[] | undefined;
-				createdAt: number;
-				created: number;
-				joinedFrom?:
-					| {
-							origin: TeamMembershipJoinedFromOriginEnumKey;
-							commitId?: string | undefined;
-							repoId?: string | undefined;
-							repoPath?: string | undefined;
-							gitUserId?: (string | number) | undefined;
-							gitUserLogin?: string | undefined;
-							ssoUserId?: string | undefined;
-							ssoConnectedAt?: number | undefined;
-							idpUserId?: string | undefined;
-							dsyncUserId?: string | undefined;
-							dsyncConnectedAt?: number | undefined;
-					  }
-					| undefined;
-		  }
-		| undefined;
-	/**
-	 * @description UNIX timestamp (in milliseconds) when the Team was created.
-	 * @example 1630748523395
+	 * @description Timestamp (in milliseconds) of when the Team was last updated.
+	 * @example 1611796915677
 	 * @type number
 	 */
-	createdAt: number;
-	/**
-	 * @description The organizationId for teams that belong to an organization (set on both the organization\'s root team and its child teams).
-	 * @example org_nllPyCtREAqxxdyFKbbMDlxd
-	 * @type string | undefined
-	 */
-	parentId?: string | undefined;
-	/**
-	 * @description Best-effort ID of the organization’s root billing team. When present, compare `orgRootTeamId === id` to identify the root team. It may be omitted even when `parentId` is set if organization resolution fails or the referenced organization is missing. Always omitted for non-organization teams.
-	 * @example team_nllPyCtREAqxxdyFKbbMDlxd
-	 * @type string | undefined
-	 */
-	orgRootTeamId?: string | undefined;
+	updatedAt: number;
 	[key: string]: unknown;
 };
 
@@ -18812,75 +18812,6 @@ export const teamLimitedLimitedByEnum = {
 
 export type TeamLimitedLimitedByEnumKey =
 	(typeof teamLimitedLimitedByEnum)[keyof typeof teamLimitedLimitedByEnum];
-
-export const teamLimitedSamlConnectionSyncStateEnum = {
-	ACTIVE: "ACTIVE",
-	SETUP: "SETUP",
-} as const;
-
-export type TeamLimitedSamlConnectionSyncStateEnumKey =
-	(typeof teamLimitedSamlConnectionSyncStateEnum)[keyof typeof teamLimitedSamlConnectionSyncStateEnum];
-
-export const teamLimitedSamlDirectorySyncStateEnum = {
-	ACTIVE: "ACTIVE",
-	SETUP: "SETUP",
-} as const;
-
-export type TeamLimitedSamlDirectorySyncStateEnumKey =
-	(typeof teamLimitedSamlDirectorySyncStateEnum)[keyof typeof teamLimitedSamlDirectorySyncStateEnum];
-
-export const teamLimitedMembershipRoleEnum = {
-	BILLING: "BILLING",
-	CONTRIBUTOR: "CONTRIBUTOR",
-	DEVELOPER: "DEVELOPER",
-	MEMBER: "MEMBER",
-	OWNER: "OWNER",
-	SECURITY: "SECURITY",
-	VIEWER: "VIEWER",
-	VIEWER_FOR_PLUS: "VIEWER_FOR_PLUS",
-} as const;
-
-export type TeamLimitedMembershipRoleEnumKey =
-	(typeof teamLimitedMembershipRoleEnum)[keyof typeof teamLimitedMembershipRoleEnum];
-
-export const teamLimitedMembershipTeamRolesEnum = {
-	BILLING: "BILLING",
-	CONTRIBUTOR: "CONTRIBUTOR",
-	DEVELOPER: "DEVELOPER",
-	MEMBER: "MEMBER",
-	OWNER: "OWNER",
-	SECURITY: "SECURITY",
-	VIEWER: "VIEWER",
-	VIEWER_FOR_PLUS: "VIEWER_FOR_PLUS",
-} as const;
-
-export type TeamLimitedMembershipTeamRolesEnumKey =
-	(typeof teamLimitedMembershipTeamRolesEnum)[keyof typeof teamLimitedMembershipTeamRolesEnum];
-
-export const teamLimitedMembershipTeamPermissionsEnum = {
-	AiGatewayApiKeyOwnedBySelf: "AiGatewayApiKeyOwnedBySelf",
-	AiGatewayBudgetManager: "AiGatewayBudgetManager",
-	AiGatewayCredits: "AiGatewayCredits",
-	AiGatewaySettings: "AiGatewaySettings",
-	AiGatewayTranscriptsManager: "AiGatewayTranscriptsManager",
-	AiGatewayTranscriptsViewer: "AiGatewayTranscriptsViewer",
-	ConnectorManager: "ConnectorManager",
-	CreateProject: "CreateProject",
-	EnvVariableManager: "EnvVariableManager",
-	EnvironmentManager: "EnvironmentManager",
-	FullProductionDeployment: "FullProductionDeployment",
-	IntegrationManager: "IntegrationManager",
-	OrgAdmin: "OrgAdmin",
-	OrgViewer: "OrgViewer",
-	UsageViewer: "UsageViewer",
-	V0Builder: "V0Builder",
-	V0Chatter: "V0Chatter",
-	V0Viewer: "V0Viewer",
-	WorkflowDecryptor: "WorkflowDecryptor",
-} as const;
-
-export type TeamLimitedMembershipTeamPermissionsEnumKey =
-	(typeof teamLimitedMembershipTeamPermissionsEnum)[keyof typeof teamLimitedMembershipTeamPermissionsEnum];
 
 export const teamLimitedMembershipJoinedFromOriginEnum = {
 	"account-update": "account-update",
@@ -18907,17 +18838,159 @@ export const teamLimitedMembershipJoinedFromOriginEnum = {
 export type TeamLimitedMembershipJoinedFromOriginEnumKey =
 	(typeof teamLimitedMembershipJoinedFromOriginEnum)[keyof typeof teamLimitedMembershipJoinedFromOriginEnum];
 
+export const teamLimitedMembershipRoleEnum = {
+	BILLING: "BILLING",
+	CONTRIBUTOR: "CONTRIBUTOR",
+	DEVELOPER: "DEVELOPER",
+	MEMBER: "MEMBER",
+	OWNER: "OWNER",
+	SECURITY: "SECURITY",
+	VIEWER: "VIEWER",
+	VIEWER_FOR_PLUS: "VIEWER_FOR_PLUS",
+} as const;
+
+export type TeamLimitedMembershipRoleEnumKey =
+	(typeof teamLimitedMembershipRoleEnum)[keyof typeof teamLimitedMembershipRoleEnum];
+
+export const teamLimitedMembershipTeamPermissionsEnum = {
+	AiGatewayApiKeyOwnedBySelf: "AiGatewayApiKeyOwnedBySelf",
+	AiGatewayBudgetManager: "AiGatewayBudgetManager",
+	AiGatewayCredits: "AiGatewayCredits",
+	AiGatewaySettings: "AiGatewaySettings",
+	AiGatewayTranscriptsManager: "AiGatewayTranscriptsManager",
+	AiGatewayTranscriptsViewer: "AiGatewayTranscriptsViewer",
+	ConnectorManager: "ConnectorManager",
+	CreateProject: "CreateProject",
+	EnvVariableManager: "EnvVariableManager",
+	EnvironmentManager: "EnvironmentManager",
+	FullProductionDeployment: "FullProductionDeployment",
+	IntegrationManager: "IntegrationManager",
+	OrgAdmin: "OrgAdmin",
+	OrgViewer: "OrgViewer",
+	UsageViewer: "UsageViewer",
+	V0Builder: "V0Builder",
+	V0Chatter: "V0Chatter",
+	V0Viewer: "V0Viewer",
+	WorkflowDecryptor: "WorkflowDecryptor",
+} as const;
+
+export type TeamLimitedMembershipTeamPermissionsEnumKey =
+	(typeof teamLimitedMembershipTeamPermissionsEnum)[keyof typeof teamLimitedMembershipTeamPermissionsEnum];
+
+export const teamLimitedMembershipTeamRolesEnum = {
+	BILLING: "BILLING",
+	CONTRIBUTOR: "CONTRIBUTOR",
+	DEVELOPER: "DEVELOPER",
+	MEMBER: "MEMBER",
+	OWNER: "OWNER",
+	SECURITY: "SECURITY",
+	VIEWER: "VIEWER",
+	VIEWER_FOR_PLUS: "VIEWER_FOR_PLUS",
+} as const;
+
+export type TeamLimitedMembershipTeamRolesEnumKey =
+	(typeof teamLimitedMembershipTeamRolesEnum)[keyof typeof teamLimitedMembershipTeamRolesEnum];
+
+export const teamLimitedSamlConnectionSyncStateEnum = {
+	ACTIVE: "ACTIVE",
+	SETUP: "SETUP",
+} as const;
+
+export type TeamLimitedSamlConnectionSyncStateEnumKey =
+	(typeof teamLimitedSamlConnectionSyncStateEnum)[keyof typeof teamLimitedSamlConnectionSyncStateEnum];
+
+export const teamLimitedSamlDirectorySyncStateEnum = {
+	ACTIVE: "ACTIVE",
+	SETUP: "SETUP",
+} as const;
+
+export type TeamLimitedSamlDirectorySyncStateEnumKey =
+	(typeof teamLimitedSamlDirectorySyncStateEnum)[keyof typeof teamLimitedSamlDirectorySyncStateEnum];
+
 /**
  * @description A limited form of data representing a Team, due to the authentication token missing privileges to read the full Team data.
  * @type object
  */
 export type TeamLimited = {
 	/**
+	 * @description The ID of the file used as avatar for this Team.
+	 * @example 6eb07268bcfadd309905ffb1579354084c24655c
+	 * @type string
+	 */
+	avatar: string | null;
+	/**
+	 * @description UNIX timestamp (in milliseconds) when the Team was created.
+	 * @example 1630748523395
+	 * @type number
+	 */
+	createdAt: number;
+	/**
+	 * @description The Team\'s unique identifier.
+	 * @example team_nllPyCtREAqxxdyFKbbMDlxd
+	 * @type string
+	 */
+	id: string;
+	/**
 	 * @description Property indicating that this Team data contains only limited information, due to the authentication token missing privileges to read the full Team data or due to team having MFA enforced and the user not having MFA enabled. Re-login with the Team\'s configured SAML Single Sign-On provider in order to upgrade the authentication token with the necessary privileges.
 	 * @type boolean
 	 */
 	limited: true;
 	limitedBy: TeamLimitedLimitedByEnumKey[];
+	/**
+	 * @description The membership of the authenticated User in relation to the Team.
+	 * @type object | undefined
+	 */
+	membership?:
+		| {
+				accessRequestedAt?: number | undefined;
+				confirmed: true;
+				created: number;
+				createdAt: number;
+				entitlements?:
+					| {
+							entitlement: string;
+					  }[]
+					| undefined;
+				joinedFrom?:
+					| {
+							commitId?: string | undefined;
+							dsyncConnectedAt?: number | undefined;
+							dsyncUserId?: string | undefined;
+							gitUserId?: (string | number) | undefined;
+							gitUserLogin?: string | undefined;
+							idpUserId?: string | undefined;
+							origin: TeamLimitedMembershipJoinedFromOriginEnumKey;
+							repoId?: string | undefined;
+							repoPath?: string | undefined;
+							ssoConnectedAt?: number | undefined;
+							ssoUserId?: string | undefined;
+					  }
+					| undefined;
+				role: TeamLimitedMembershipRoleEnumKey;
+				teamId?: string | undefined;
+				teamPermissions?: TeamLimitedMembershipTeamPermissionsEnumKey[] | undefined;
+				teamRoles?: TeamLimitedMembershipTeamRolesEnumKey[] | undefined;
+				uid?: string | undefined;
+		  }
+		| undefined;
+	/**
+	 * @description Name associated with the Team account, or `null` if none has been provided.
+	 * @example My Team
+	 * @type string
+	 */
+	name: string | null;
+	/**
+	 * @description Best-effort ID of the organization’s root billing team. When present, compare `orgRootTeamId === id` to identify the root team. It may be omitted even when `parentId` is set if organization resolution fails or the referenced organization is missing. Always omitted for non-organization teams.
+	 * @example team_nllPyCtREAqxxdyFKbbMDlxd
+	 * @type string | undefined
+	 */
+	orgRootTeamId?: string | undefined;
+	/**
+	 * @description The organizationId for teams that belong to an organization (set on both the organization\'s root team and its child teams).
+	 * @example org_nllPyCtREAqxxdyFKbbMDlxd
+	 * @type string | undefined
+	 */
+	parentId?: string | undefined;
 	/**
 	 * @description When \"Single Sign-On (SAML)\" is configured, this object contains information that allows the client-side to identify whether or not this Team has SAML enforced.
 	 * @type object | undefined
@@ -18931,18 +19004,6 @@ export type TeamLimited = {
 				connection?:
 					| {
 							/**
-							 * @description The Identity Provider \"type\", for example Okta.
-							 * @example OktaSAML
-							 * @type string
-							 */
-							type: string;
-							/**
-							 * @description Current state of the connection.
-							 * @example active
-							 * @type string
-							 */
-							state: string;
-							/**
 							 * @description Timestamp (in milliseconds) of when the configuration was connected.
 							 * @example 1611796915677
 							 * @type number
@@ -18961,10 +19022,22 @@ export type TeamLimited = {
 							 */
 							lastSyncedAt?: number | undefined;
 							/**
+							 * @description Current state of the connection.
+							 * @example active
+							 * @type string
+							 */
+							state: string;
+							/**
 							 * @description Controls whether directory sync events are processed. - \'SETUP\': Directory connected but role mappings not yet configured. Events are acknowledged but not processed. - \'ACTIVE\': Fully configured. Events are processed normally. - undefined: Legacy directory (pre-feature), treat as \'ACTIVE\' for backwards compatibility.
 							 * @type string | undefined
 							 */
 							syncState?: TeamLimitedSamlConnectionSyncStateEnumKey | undefined;
+							/**
+							 * @description The Identity Provider \"type\", for example Okta.
+							 * @example OktaSAML
+							 * @type string
+							 */
+							type: string;
 							status: string;
 					  }
 					| undefined;
@@ -18975,18 +19048,6 @@ export type TeamLimited = {
 				directory?:
 					| {
 							/**
-							 * @description The Identity Provider \"type\", for example Okta.
-							 * @example OktaSAML
-							 * @type string
-							 */
-							type: string;
-							/**
-							 * @description Current state of the connection.
-							 * @example active
-							 * @type string
-							 */
-							state: string;
-							/**
 							 * @description Timestamp (in milliseconds) of when the configuration was connected.
 							 * @example 1611796915677
 							 * @type number
@@ -19005,10 +19066,22 @@ export type TeamLimited = {
 							 */
 							lastSyncedAt?: number | undefined;
 							/**
+							 * @description Current state of the connection.
+							 * @example active
+							 * @type string
+							 */
+							state: string;
+							/**
 							 * @description Controls whether directory sync events are processed. - \'SETUP\': Directory connected but role mappings not yet configured. Events are acknowledged but not processed. - \'ACTIVE\': Fully configured. Events are processed normally. - undefined: Legacy directory (pre-feature), treat as \'ACTIVE\' for backwards compatibility.
 							 * @type string | undefined
 							 */
 							syncState?: TeamLimitedSamlDirectorySyncStateEnumKey | undefined;
+							/**
+							 * @description The Identity Provider \"type\", for example Okta.
+							 * @example OktaSAML
+							 * @type string
+							 */
+							type: string;
 					  }
 					| undefined;
 				/**
@@ -19019,96 +19092,12 @@ export type TeamLimited = {
 		  }
 		| undefined;
 	/**
-	 * @description The Team\'s unique identifier.
-	 * @example team_nllPyCtREAqxxdyFKbbMDlxd
-	 * @type string
-	 */
-	id: string;
-	/**
 	 * @description The Team\'s slug, which is unique across the Vercel platform.
 	 * @example my-team
 	 * @type string
 	 */
 	slug: string;
-	/**
-	 * @description Name associated with the Team account, or `null` if none has been provided.
-	 * @example My Team
-	 * @type string
-	 */
-	name: string | null;
-	/**
-	 * @description The ID of the file used as avatar for this Team.
-	 * @example 6eb07268bcfadd309905ffb1579354084c24655c
-	 * @type string
-	 */
-	avatar: string | null;
-	/**
-	 * @description The membership of the authenticated User in relation to the Team.
-	 * @type object | undefined
-	 */
-	membership?:
-		| {
-				uid?: string | undefined;
-				entitlements?:
-					| {
-							entitlement: string;
-					  }[]
-					| undefined;
-				teamId?: string | undefined;
-				confirmed: true;
-				accessRequestedAt?: number | undefined;
-				role: TeamLimitedMembershipRoleEnumKey;
-				teamRoles?: TeamLimitedMembershipTeamRolesEnumKey[] | undefined;
-				teamPermissions?: TeamLimitedMembershipTeamPermissionsEnumKey[] | undefined;
-				createdAt: number;
-				created: number;
-				joinedFrom?:
-					| {
-							origin: TeamLimitedMembershipJoinedFromOriginEnumKey;
-							commitId?: string | undefined;
-							repoId?: string | undefined;
-							repoPath?: string | undefined;
-							gitUserId?: (string | number) | undefined;
-							gitUserLogin?: string | undefined;
-							ssoUserId?: string | undefined;
-							ssoConnectedAt?: number | undefined;
-							idpUserId?: string | undefined;
-							dsyncUserId?: string | undefined;
-							dsyncConnectedAt?: number | undefined;
-					  }
-					| undefined;
-		  }
-		| undefined;
-	/**
-	 * @description UNIX timestamp (in milliseconds) when the Team was created.
-	 * @example 1630748523395
-	 * @type number
-	 */
-	createdAt: number;
-	/**
-	 * @description The organizationId for teams that belong to an organization (set on both the organization\'s root team and its child teams).
-	 * @example org_nllPyCtREAqxxdyFKbbMDlxd
-	 * @type string | undefined
-	 */
-	parentId?: string | undefined;
-	/**
-	 * @description Best-effort ID of the organization’s root billing team. When present, compare `orgRootTeamId === id` to identify the root team. It may be omitted even when `parentId` is set if organization resolution fails or the referenced organization is missing. Always omitted for non-organization teams.
-	 * @example team_nllPyCtREAqxxdyFKbbMDlxd
-	 * @type string | undefined
-	 */
-	orgRootTeamId?: string | undefined;
 };
-
-export const authTokenScopesSudoOriginEnum = {
-	"email-otp": "email-otp",
-	otp: "otp",
-	"recovery-code": "recovery-code",
-	totp: "totp",
-	webauthn: "webauthn",
-} as const;
-
-export type AuthTokenScopesSudoOriginEnumKey =
-	(typeof authTokenScopesSudoOriginEnum)[keyof typeof authTokenScopesSudoOriginEnum];
 
 export const authTokenScopesOriginEnum = {
 	app: "app",
@@ -19133,84 +19122,22 @@ export const authTokenScopesOriginEnum = {
 export type AuthTokenScopesOriginEnumKey =
 	(typeof authTokenScopesOriginEnum)[keyof typeof authTokenScopesOriginEnum];
 
+export const authTokenScopesSudoOriginEnum = {
+	"email-otp": "email-otp",
+	otp: "otp",
+	"recovery-code": "recovery-code",
+	totp: "totp",
+	webauthn: "webauthn",
+} as const;
+
+export type AuthTokenScopesSudoOriginEnumKey =
+	(typeof authTokenScopesSudoOriginEnum)[keyof typeof authTokenScopesSudoOriginEnum];
+
 /**
  * @description Authentication token metadata.
  * @type object
  */
 export type AuthToken = {
-	/**
-	 * @description The unique identifier of the token.
-	 * @example 5d9f2ebd38ddca62e5d51e9c1704c72530bdc8bfdd41e782a6687c48399e8391
-	 * @type string
-	 */
-	id: string;
-	/**
-	 * @description The human-readable name of the token.
-	 * @type string
-	 */
-	name: string;
-	/**
-	 * @description The type of the token.
-	 * @example oauth2-token
-	 * @type string
-	 */
-	type: string;
-	/**
-	 * @description The token\'s prefix, for identification purposes.
-	 * @example vcp_
-	 * @type string | undefined
-	 */
-	prefix?: string | undefined;
-	/**
-	 * @description The last few characters of the token, for identification purposes.
-	 * @example abc123
-	 * @type string | undefined
-	 */
-	suffix?: string | undefined;
-	/**
-	 * @description The origin of how the token was created.
-	 * @example github
-	 * @type string | undefined
-	 */
-	origin?: string | undefined;
-	/**
-	 * @description The access scopes granted to the token.
-	 * @type array | undefined
-	 */
-	scopes?:
-		| (
-				| {
-						type: "user";
-						sudo?:
-							| {
-									/**
-									 * @description Possible step-up auth origins
-									 * @type string
-									 */
-									origin: AuthTokenScopesSudoOriginEnumKey;
-									verifiedAt?: number | undefined;
-									expiresAt: number;
-							  }
-							| undefined;
-						origin?: AuthTokenScopesOriginEnumKey | undefined;
-						createdAt: number;
-						expiresAt?: number | undefined;
-				  }
-				| {
-						type: "team";
-						teamId: string;
-						origin?: AuthTokenScopesOriginEnumKey | undefined;
-						createdAt: number;
-						expiresAt?: number | undefined;
-				  }
-		  )[]
-		| undefined;
-	/**
-	 * @description Timestamp (in milliseconds) of when the token was created.
-	 * @example 1632816536002
-	 * @type number
-	 */
-	createdAt: number;
 	/**
 	 * @description Timestamp (in milliseconds) of when the token was most recently used.
 	 * @example 1632816536002
@@ -19218,17 +19145,23 @@ export type AuthToken = {
 	 */
 	activeAt: number;
 	/**
+	 * @description Timestamp (in milliseconds) of when the token was created.
+	 * @example 1632816536002
+	 * @type number
+	 */
+	createdAt: number;
+	/**
 	 * @description Timestamp (in milliseconds) of when the token expires.
 	 * @example 1632816536002
 	 * @type number | undefined
 	 */
 	expiresAt?: number | undefined;
 	/**
-	 * @description Timestamp (in milliseconds) of when the token was revoked.
-	 * @example 1632816536002
-	 * @type number | undefined
+	 * @description The unique identifier of the token.
+	 * @example 5d9f2ebd38ddca62e5d51e9c1704c72530bdc8bfdd41e782a6687c48399e8391
+	 * @type string
 	 */
-	revokedAt?: number | undefined;
+	id: string;
 	/**
 	 * @description Timestamp (in milliseconds) of when the token was marked as leaked.
 	 * @example 1632816536002
@@ -19240,22 +19173,128 @@ export type AuthToken = {
 	 * @type string | undefined
 	 */
 	leakedUrl?: string | undefined;
+	/**
+	 * @description The human-readable name of the token.
+	 * @type string
+	 */
+	name: string;
+	/**
+	 * @description The origin of how the token was created.
+	 * @example github
+	 * @type string | undefined
+	 */
+	origin?: string | undefined;
+	/**
+	 * @description The token\'s prefix, for identification purposes.
+	 * @example vcp_
+	 * @type string | undefined
+	 */
+	prefix?: string | undefined;
+	/**
+	 * @description Timestamp (in milliseconds) of when the token was revoked.
+	 * @example 1632816536002
+	 * @type number | undefined
+	 */
+	revokedAt?: number | undefined;
+	/**
+	 * @description The access scopes granted to the token.
+	 * @type array | undefined
+	 */
+	scopes?:
+		| (
+				| {
+						createdAt: number;
+						expiresAt?: number | undefined;
+						origin?: AuthTokenScopesOriginEnumKey | undefined;
+						sudo?:
+							| {
+									expiresAt: number;
+									/**
+									 * @description Possible step-up auth origins
+									 * @type string
+									 */
+									origin: AuthTokenScopesSudoOriginEnumKey;
+									verifiedAt?: number | undefined;
+							  }
+							| undefined;
+						type: "user";
+				  }
+				| {
+						createdAt: number;
+						expiresAt?: number | undefined;
+						origin?: AuthTokenScopesOriginEnumKey | undefined;
+						teamId: string;
+						type: "team";
+				  }
+		  )[]
+		| undefined;
+	/**
+	 * @description The last few characters of the token, for identification purposes.
+	 * @example abc123
+	 * @type string | undefined
+	 */
+	suffix?: string | undefined;
+	/**
+	 * @description The type of the token.
+	 * @example oauth2-token
+	 * @type string
+	 */
+	type: string;
 };
 
-export const authUserSoftBlockReasonEnum = {
-	BLOCKED_FOR_PLATFORM_ABUSE: "BLOCKED_FOR_PLATFORM_ABUSE",
-	DOMAIN_OWNER_DELETION_REQUEST: "DOMAIN_OWNER_DELETION_REQUEST",
-	ENTERPRISE_TRIAL_ENDED: "ENTERPRISE_TRIAL_ENDED",
-	ENTERPRISE_UNPAID_INVOICE: "ENTERPRISE_UNPAID_INVOICE",
-	EXPOSURE_CAP_EXCEEDED: "EXPOSURE_CAP_EXCEEDED",
-	FAIR_USE_LIMITS_EXCEEDED: "FAIR_USE_LIMITS_EXCEEDED",
-	SUBSCRIPTION_CANCELED: "SUBSCRIPTION_CANCELED",
-	SUBSCRIPTION_EXPIRED: "SUBSCRIPTION_EXPIRED",
-	UNPAID_INVOICE: "UNPAID_INVOICE",
+export const authUserActiveDashboardViewsFavoritesViewPreferenceEnum = {
+	closed: "closed",
+	open: "open",
 } as const;
 
-export type AuthUserSoftBlockReasonEnumKey =
-	(typeof authUserSoftBlockReasonEnum)[keyof typeof authUserSoftBlockReasonEnum];
+export type AuthUserActiveDashboardViewsFavoritesViewPreferenceEnumKey =
+	(typeof authUserActiveDashboardViewsFavoritesViewPreferenceEnum)[keyof typeof authUserActiveDashboardViewsFavoritesViewPreferenceEnum];
+
+export const authUserActiveDashboardViewsRecentsViewPreferenceEnum = {
+	closed: "closed",
+	open: "open",
+} as const;
+
+export type AuthUserActiveDashboardViewsRecentsViewPreferenceEnumKey =
+	(typeof authUserActiveDashboardViewsRecentsViewPreferenceEnum)[keyof typeof authUserActiveDashboardViewsRecentsViewPreferenceEnum];
+
+export const authUserActiveDashboardViewsViewPreferenceEnum = {
+	cards: "cards",
+	list: "list",
+} as const;
+
+export type AuthUserActiveDashboardViewsViewPreferenceEnumKey =
+	(typeof authUserActiveDashboardViewsViewPreferenceEnum)[keyof typeof authUserActiveDashboardViewsViewPreferenceEnum];
+
+export const authUserFeatureBlocksSpeedInsightsFreeBlockReasonEnum = {
+	admin_override: "admin_override",
+	hard_blocked: "hard_blocked",
+	limits_exceeded: "limits_exceeded",
+} as const;
+
+export type AuthUserFeatureBlocksSpeedInsightsFreeBlockReasonEnumKey =
+	(typeof authUserFeatureBlocksSpeedInsightsFreeBlockReasonEnum)[keyof typeof authUserFeatureBlocksSpeedInsightsFreeBlockReasonEnum];
+
+export const authUserImportFlowGitProviderEnum = {
+	bitbucket: "bitbucket",
+	"cursor-origin": "cursor-origin",
+	github: "github",
+	"github-custom-host": "github-custom-host",
+	"github-limited": "github-limited",
+	gitlab: "gitlab",
+	vercel: "vercel",
+} as const;
+
+export type AuthUserImportFlowGitProviderEnumKey =
+	(typeof authUserImportFlowGitProviderEnum)[keyof typeof authUserImportFlowGitProviderEnum];
+
+export const authUserResourceConfigBuildQueueConfigurationEnum = {
+	SKIP_NAMESPACE_QUEUE: "SKIP_NAMESPACE_QUEUE",
+	WAIT_FOR_NAMESPACE_QUEUE: "WAIT_FOR_NAMESPACE_QUEUE",
+} as const;
+
+export type AuthUserResourceConfigBuildQueueConfigurationEnumKey =
+	(typeof authUserResourceConfigBuildQueueConfigurationEnum)[keyof typeof authUserResourceConfigBuildQueueConfigurationEnum];
 
 export const authUserSoftBlockBlockedDueToOverageTypeEnum = {
 	analyticsUsage: "analyticsUsage",
@@ -19302,59 +19341,20 @@ export const authUserSoftBlockBlockedDueToOverageTypeEnum = {
 export type AuthUserSoftBlockBlockedDueToOverageTypeEnumKey =
 	(typeof authUserSoftBlockBlockedDueToOverageTypeEnum)[keyof typeof authUserSoftBlockBlockedDueToOverageTypeEnum];
 
-export const authUserResourceConfigBuildQueueConfigurationEnum = {
-	SKIP_NAMESPACE_QUEUE: "SKIP_NAMESPACE_QUEUE",
-	WAIT_FOR_NAMESPACE_QUEUE: "WAIT_FOR_NAMESPACE_QUEUE",
+export const authUserSoftBlockReasonEnum = {
+	BLOCKED_FOR_PLATFORM_ABUSE: "BLOCKED_FOR_PLATFORM_ABUSE",
+	DOMAIN_OWNER_DELETION_REQUEST: "DOMAIN_OWNER_DELETION_REQUEST",
+	ENTERPRISE_TRIAL_ENDED: "ENTERPRISE_TRIAL_ENDED",
+	ENTERPRISE_UNPAID_INVOICE: "ENTERPRISE_UNPAID_INVOICE",
+	EXPOSURE_CAP_EXCEEDED: "EXPOSURE_CAP_EXCEEDED",
+	FAIR_USE_LIMITS_EXCEEDED: "FAIR_USE_LIMITS_EXCEEDED",
+	SUBSCRIPTION_CANCELED: "SUBSCRIPTION_CANCELED",
+	SUBSCRIPTION_EXPIRED: "SUBSCRIPTION_EXPIRED",
+	UNPAID_INVOICE: "UNPAID_INVOICE",
 } as const;
 
-export type AuthUserResourceConfigBuildQueueConfigurationEnumKey =
-	(typeof authUserResourceConfigBuildQueueConfigurationEnum)[keyof typeof authUserResourceConfigBuildQueueConfigurationEnum];
-
-export const authUserActiveDashboardViewsViewPreferenceEnum = {
-	cards: "cards",
-	list: "list",
-} as const;
-
-export type AuthUserActiveDashboardViewsViewPreferenceEnumKey =
-	(typeof authUserActiveDashboardViewsViewPreferenceEnum)[keyof typeof authUserActiveDashboardViewsViewPreferenceEnum];
-
-export const authUserActiveDashboardViewsFavoritesViewPreferenceEnum = {
-	closed: "closed",
-	open: "open",
-} as const;
-
-export type AuthUserActiveDashboardViewsFavoritesViewPreferenceEnumKey =
-	(typeof authUserActiveDashboardViewsFavoritesViewPreferenceEnum)[keyof typeof authUserActiveDashboardViewsFavoritesViewPreferenceEnum];
-
-export const authUserActiveDashboardViewsRecentsViewPreferenceEnum = {
-	closed: "closed",
-	open: "open",
-} as const;
-
-export type AuthUserActiveDashboardViewsRecentsViewPreferenceEnumKey =
-	(typeof authUserActiveDashboardViewsRecentsViewPreferenceEnum)[keyof typeof authUserActiveDashboardViewsRecentsViewPreferenceEnum];
-
-export const authUserImportFlowGitProviderEnum = {
-	bitbucket: "bitbucket",
-	"cursor-origin": "cursor-origin",
-	github: "github",
-	"github-custom-host": "github-custom-host",
-	"github-limited": "github-limited",
-	gitlab: "gitlab",
-	vercel: "vercel",
-} as const;
-
-export type AuthUserImportFlowGitProviderEnumKey =
-	(typeof authUserImportFlowGitProviderEnum)[keyof typeof authUserImportFlowGitProviderEnum];
-
-export const authUserFeatureBlocksSpeedInsightsFreeBlockReasonEnum = {
-	admin_override: "admin_override",
-	hard_blocked: "hard_blocked",
-	limits_exceeded: "limits_exceeded",
-} as const;
-
-export type AuthUserFeatureBlocksSpeedInsightsFreeBlockReasonEnumKey =
-	(typeof authUserFeatureBlocksSpeedInsightsFreeBlockReasonEnum)[keyof typeof authUserFeatureBlocksSpeedInsightsFreeBlockReasonEnum];
+export type AuthUserSoftBlockReasonEnumKey =
+	(typeof authUserSoftBlockReasonEnum)[keyof typeof authUserSoftBlockReasonEnum];
 
 /**
  * @description Data for the currently authenticated User.
@@ -19362,30 +19362,181 @@ export type AuthUserFeatureBlocksSpeedInsightsFreeBlockReasonEnumKey =
  */
 export type AuthUser = {
 	/**
+	 * @description Context for the Update Account screen. Present only when `isAccountUpdateRequired` is true. `managedTeams` is empty for orphan mode (user matches an EMU domain but is not on the team).
+	 * @type object | undefined
+	 */
+	accountUpdateContext?:
+		| {
+				/**
+				 * @description Whether this user can cancel their optional Account Update flow.
+				 * @type boolean
+				 */
+				canOptOut: false | true;
+				managedTeams: {
+					avatar: string | null;
+					name: string;
+					slug: string;
+					teamId: string;
+					workEmail: string;
+				}[];
+				organization?:
+					| {
+							id: string;
+							name: string;
+							slug: string;
+					  }
+					| undefined;
+				verifiedEmuDomains: string[];
+		  }
+		| undefined;
+	/**
+	 * @description set of dashboard view preferences (cards or list) per scopeId
+	 * @type array | undefined
+	 */
+	activeDashboardViews?:
+		| {
+				favoritesViewPreference?:
+					| (AuthUserActiveDashboardViewsFavoritesViewPreferenceEnumKey | null)
+					| undefined;
+				recentsViewPreference?:
+					| (AuthUserActiveDashboardViewsRecentsViewPreferenceEnumKey | null)
+					| undefined;
+				scopeId: string;
+				viewPreference?: (AuthUserActiveDashboardViewsViewPreferenceEnumKey | null) | undefined;
+		  }[]
+		| undefined;
+	/**
+	 * @description SHA1 hash of the avatar for the User account. Can be used in conjuction with the ... endpoint to retrieve the avatar image.
+	 * @example 22cb30c85ff45ac4c72de8981500006b28114aa1
+	 * @type string
+	 */
+	avatar: string | null;
+	/**
+	 * @description An object containing billing infomation associated with the User account.
+	 * @type object
+	 */
+	billing: object | null;
+	/**
 	 * @description UNIX timestamp (in milliseconds) when the User account was created.
 	 * @example 1630748523395
 	 * @type number
 	 */
 	createdAt: number;
 	/**
-	 * @description When the User account has been \"soft blocked\", this property will contain the date when the restriction was enacted, and the identifier for why.
-	 * @type object
+	 * @description data cache settings
+	 * @type object | undefined
 	 */
-	softBlock: {
-		blockedAt: number;
-		reason: AuthUserSoftBlockReasonEnumKey;
-		blockedDueToOverageType?: AuthUserSoftBlockBlockedDueToOverageTypeEnumKey | undefined;
-		/**
-		 * @description Since September 2026. Set only by `billing-usage-alerts` for usage plans with a `blockDurationMs`; its presence marks a pause that expires on its own.
-		 * @type number | undefined
-		 */
-		unpauseAt?: number | undefined;
-	} | null;
+	dataCache?:
+		| {
+				excessBillingEnabled?: (false | true) | undefined;
+		  }
+		| undefined;
 	/**
-	 * @description An object containing billing infomation associated with the User account.
-	 * @type object
+	 * @description The user\'s default team.
+	 * @type string
 	 */
-	billing: object | null;
+	defaultTeamId: string | null;
+	/**
+	 * @description A record of when, under a certain scopeId, a toast was dismissed
+	 * @type array | undefined
+	 */
+	dismissedToasts?:
+		| {
+				dismissals: {
+					createdAt: number;
+					scopeId: string;
+				}[];
+				name: string;
+		  }[]
+		| undefined;
+	/**
+	 * @description Email address associated with the User account.
+	 * @example me@example.com
+	 * @type string
+	 */
+	email: string;
+	/**
+	 * @description A list of projects and spaces across teams that a user has marked as a favorite.
+	 * @type array | undefined
+	 */
+	favoriteProjectsAndSpaces?:
+		| {
+				projectId: string;
+				teamId: string;
+		  }[]
+		| undefined;
+	/**
+	 * @description Feature blocks for the user
+	 * @type object | undefined
+	 */
+	featureBlocks?:
+		| {
+				/**
+				 * @description Client-facing view of the `speedInsightsFree` ingestion block. The dashboard needs `blockReason` to tell usage pauses apart from admin blocks.
+				 * @type object | undefined
+				 */
+				speedInsightsFree?:
+					| {
+							blockedFrom?: number | undefined;
+							blockedUntil?: number | undefined;
+							blockReason: AuthUserFeatureBlocksSpeedInsightsFreeBlockReasonEnumKey;
+							isCurrentlyBlocked: false | true;
+					  }
+					| undefined;
+				webAnalytics?:
+					| {
+							blockedFrom?: number | undefined;
+							blockedUntil?: number | undefined;
+							isCurrentlyBlocked: false | true;
+					  }
+					| undefined;
+		  }
+		| undefined;
+	/**
+	 * @description Whether the user has a trial available for a paid plan subscription.
+	 * @type boolean
+	 */
+	hasTrialAvailable: false | true;
+	/**
+	 * @description The User\'s unique identifier.
+	 * @example AEIIDYVk59zbFF2Sxfyxxmua
+	 * @type string
+	 */
+	id: string;
+	importFlowGitNamespace?: ((string | number) | null) | undefined;
+	importFlowGitNamespaceId?: ((string | number) | null) | undefined;
+	importFlowGitProvider?: (AuthUserImportFlowGitProviderEnumKey | null) | undefined;
+	/**
+	 * @description When `true`, the user must complete the EMU Update Account flow before they can use the dashboard.
+	 * @type boolean | undefined
+	 */
+	isAccountUpdateRequired?: (false | true) | undefined;
+	/**
+	 * @description Indicates whether the user is managed by an enterprise.
+	 * @type boolean | undefined
+	 */
+	isEnterpriseManaged?: (false | true) | undefined;
+	/**
+	 * @description Name associated with the User account, or `null` if none has been provided.
+	 * @example John Doe
+	 * @type string
+	 */
+	name: string | null;
+	preferredScopesAndGitNamespaces?:
+		| {
+				gitNamespaceId: (string | number) | null;
+				scopeId: string;
+		  }[]
+		| undefined;
+	/**
+	 * @description remote caching settings
+	 * @type object | undefined
+	 */
+	remoteCaching?:
+		| {
+				enabled?: (false | true) | undefined;
+		  }
+		| undefined;
 	/**
 	 * @description An object containing infomation related to the amount of platform resources may be allocated to the User account.
 	 * @type object
@@ -19393,19 +19544,19 @@ export type AuthUser = {
 	resourceConfig: {
 		/**
 		 * @description An object containing infomation related to the amount of platform resources may be allocated to the User account.
-		 * @type number | undefined
+		 * @type array | undefined
 		 */
-		concurrentBuilds?: number | undefined;
+		awsAccountIds?: string[] | undefined;
 		/**
 		 * @description An object containing infomation related to the amount of platform resources may be allocated to the User account.
 		 * @type string | undefined
 		 */
-		nodeType?: string | undefined;
+		awsAccountType?: string | undefined;
 		/**
 		 * @description An object containing infomation related to the amount of platform resources may be allocated to the User account.
-		 * @type boolean | undefined
+		 * @type number | undefined
 		 */
-		elasticConcurrencyEnabled?: (false | true) | undefined;
+		blobStores?: number | undefined;
 		/**
 		 * @description An object containing infomation related to the amount of platform resources may be allocated to the User account.
 		 * @type object | undefined
@@ -19434,14 +19585,9 @@ export type AuthUser = {
 			| undefined;
 		/**
 		 * @description An object containing infomation related to the amount of platform resources may be allocated to the User account.
-		 * @type string | undefined
+		 * @type number | undefined
 		 */
-		awsAccountType?: string | undefined;
-		/**
-		 * @description An object containing infomation related to the amount of platform resources may be allocated to the User account.
-		 * @type array | undefined
-		 */
-		awsAccountIds?: string[] | undefined;
+		bulkRedirectsFreeLimitOverride?: number | undefined;
 		/**
 		 * @description An object containing infomation related to the amount of platform resources may be allocated to the User account.
 		 * @type string | undefined
@@ -19449,9 +19595,19 @@ export type AuthUser = {
 		cfZoneName?: string | undefined;
 		/**
 		 * @description An object containing infomation related to the amount of platform resources may be allocated to the User account.
-		 * @type string | undefined
+		 * @type number | undefined
 		 */
-		imageOptimizationType?: string | undefined;
+		concurrentBuilds?: number | undefined;
+		/**
+		 * @description An object containing infomation related to the amount of platform resources may be allocated to the User account.
+		 * @type number | undefined
+		 */
+		cronJobsPerProject?: number | undefined;
+		/**
+		 * @description An object containing infomation related to the amount of platform resources may be allocated to the User account.
+		 * @type number | undefined
+		 */
+		customEnvironmentsPerProject?: number | undefined;
 		/**
 		 * @description An object containing infomation related to the amount of platform resources may be allocated to the User account.
 		 * @type number | undefined
@@ -19466,57 +19622,17 @@ export type AuthUser = {
 		 * @description An object containing infomation related to the amount of platform resources may be allocated to the User account.
 		 * @type number | undefined
 		 */
-		edgeFunctionMaxSizeBytes?: number | undefined;
-		/**
-		 * @description An object containing infomation related to the amount of platform resources may be allocated to the User account.
-		 * @type number | undefined
-		 */
 		edgeFunctionExecutionTimeoutMs?: number | undefined;
 		/**
 		 * @description An object containing infomation related to the amount of platform resources may be allocated to the User account.
 		 * @type number | undefined
 		 */
-		serverlessFunctionMaxDuration?: number | undefined;
+		edgeFunctionMaxSizeBytes?: number | undefined;
 		/**
 		 * @description An object containing infomation related to the amount of platform resources may be allocated to the User account.
-		 * @type number | undefined
+		 * @type boolean | undefined
 		 */
-		serverlessFunctionMaxMemorySize?: number | undefined;
-		/**
-		 * @description An object containing infomation related to the amount of platform resources may be allocated to the User account.
-		 * @type number | undefined
-		 */
-		kvDatabases?: number | undefined;
-		/**
-		 * @description An object containing infomation related to the amount of platform resources may be allocated to the User account.
-		 * @type number | undefined
-		 */
-		postgresDatabases?: number | undefined;
-		/**
-		 * @description An object containing infomation related to the amount of platform resources may be allocated to the User account.
-		 * @type number | undefined
-		 */
-		blobStores?: number | undefined;
-		/**
-		 * @description An object containing infomation related to the amount of platform resources may be allocated to the User account.
-		 * @type number | undefined
-		 */
-		integrationStores?: number | undefined;
-		/**
-		 * @description An object containing infomation related to the amount of platform resources may be allocated to the User account.
-		 * @type number | undefined
-		 */
-		cronJobsPerProject?: number | undefined;
-		/**
-		 * @description An object containing infomation related to the amount of platform resources may be allocated to the User account.
-		 * @type number | undefined
-		 */
-		microfrontendGroupsPerTeam?: number | undefined;
-		/**
-		 * @description An object containing infomation related to the amount of platform resources may be allocated to the User account.
-		 * @type number | undefined
-		 */
-		microfrontendProjectsPerGroup?: number | undefined;
+		elasticConcurrencyEnabled?: (false | true) | undefined;
 		/**
 		 * @description An object containing infomation related to the amount of platform resources may be allocated to the User account.
 		 * @type number | undefined
@@ -19529,20 +19645,45 @@ export type AuthUser = {
 		flagsExplorerUnlimitedOverrides?: (false | true) | undefined;
 		/**
 		 * @description An object containing infomation related to the amount of platform resources may be allocated to the User account.
+		 * @type string | undefined
+		 */
+		imageOptimizationType?: string | undefined;
+		/**
+		 * @description An object containing infomation related to the amount of platform resources may be allocated to the User account.
 		 * @type number | undefined
 		 */
-		customEnvironmentsPerProject?: number | undefined;
+		integrationStores?: number | undefined;
+		/**
+		 * @description An object containing infomation related to the amount of platform resources may be allocated to the User account.
+		 * @type number | undefined
+		 */
+		kvDatabases?: number | undefined;
+		/**
+		 * @description An object containing infomation related to the amount of platform resources may be allocated to the User account.
+		 * @type number | undefined
+		 */
+		microfrontendGroupsPerTeam?: number | undefined;
+		/**
+		 * @description An object containing infomation related to the amount of platform resources may be allocated to the User account.
+		 * @type number | undefined
+		 */
+		microfrontendProjectsPerGroup?: number | undefined;
+		/**
+		 * @description An object containing infomation related to the amount of platform resources may be allocated to the User account.
+		 * @type string | undefined
+		 */
+		nodeType?: string | undefined;
+		/**
+		 * @description An object containing infomation related to the amount of platform resources may be allocated to the User account.
+		 * @type number | undefined
+		 */
+		postgresDatabases?: number | undefined;
 		/**
 		 * @description An object containing infomation related to the amount of platform resources may be allocated to the User account.
 		 * @type object | undefined
 		 */
 		security?:
 			| {
-					/**
-					 * @description An object containing infomation related to the amount of platform resources may be allocated to the User account.
-					 * @type number | undefined
-					 */
-					rateLimit?: number | undefined;
 					/**
 					 * @description An object containing infomation related to the amount of platform resources may be allocated to the User account.
 					 * @type number | undefined
@@ -19558,195 +19699,54 @@ export type AuthUser = {
 					 * @type number | undefined
 					 */
 					ipBypass?: number | undefined;
+					/**
+					 * @description An object containing infomation related to the amount of platform resources may be allocated to the User account.
+					 * @type number | undefined
+					 */
+					rateLimit?: number | undefined;
 			  }
 			| undefined;
 		/**
 		 * @description An object containing infomation related to the amount of platform resources may be allocated to the User account.
 		 * @type number | undefined
 		 */
-		bulkRedirectsFreeLimitOverride?: number | undefined;
+		serverlessFunctionMaxDuration?: number | undefined;
+		/**
+		 * @description An object containing infomation related to the amount of platform resources may be allocated to the User account.
+		 * @type number | undefined
+		 */
+		serverlessFunctionMaxMemorySize?: number | undefined;
 	};
+	/**
+	 * @description Whether the Enterprise Managed User joined the current team through the Update Account flow and should see its welcome experience.
+	 * @type boolean | undefined
+	 */
+	shouldShowEnterpriseManagedWelcome?: (false | true) | undefined;
+	/**
+	 * @description When the User account has been \"soft blocked\", this property will contain the date when the restriction was enacted, and the identifier for why.
+	 * @type object
+	 */
+	softBlock: {
+		blockedAt: number;
+		blockedDueToOverageType?: AuthUserSoftBlockBlockedDueToOverageTypeEnumKey | undefined;
+		reason: AuthUserSoftBlockReasonEnumKey;
+		/**
+		 * @description Since September 2026. Set only by `billing-usage-alerts` for usage plans with a `blockDurationMs`; its presence marks a pause that expires on its own.
+		 * @type number | undefined
+		 */
+		unpauseAt?: number | undefined;
+	} | null;
 	/**
 	 * @description Prefix that will be used in the URL of \"Preview\" deployments created by the User account.
 	 * @type string
 	 */
 	stagingPrefix: string;
 	/**
-	 * @description set of dashboard view preferences (cards or list) per scopeId
-	 * @type array | undefined
-	 */
-	activeDashboardViews?:
-		| {
-				scopeId: string;
-				viewPreference?: (AuthUserActiveDashboardViewsViewPreferenceEnumKey | null) | undefined;
-				favoritesViewPreference?:
-					| (AuthUserActiveDashboardViewsFavoritesViewPreferenceEnumKey | null)
-					| undefined;
-				recentsViewPreference?:
-					| (AuthUserActiveDashboardViewsRecentsViewPreferenceEnumKey | null)
-					| undefined;
-		  }[]
-		| undefined;
-	importFlowGitNamespace?: ((string | number) | null) | undefined;
-	importFlowGitNamespaceId?: ((string | number) | null) | undefined;
-	importFlowGitProvider?: (AuthUserImportFlowGitProviderEnumKey | null) | undefined;
-	preferredScopesAndGitNamespaces?:
-		| {
-				scopeId: string;
-				gitNamespaceId: (string | number) | null;
-		  }[]
-		| undefined;
-	/**
-	 * @description A record of when, under a certain scopeId, a toast was dismissed
-	 * @type array | undefined
-	 */
-	dismissedToasts?:
-		| {
-				name: string;
-				dismissals: {
-					scopeId: string;
-					createdAt: number;
-				}[];
-		  }[]
-		| undefined;
-	/**
-	 * @description A list of projects and spaces across teams that a user has marked as a favorite.
-	 * @type array | undefined
-	 */
-	favoriteProjectsAndSpaces?:
-		| {
-				teamId: string;
-				projectId: string;
-		  }[]
-		| undefined;
-	/**
-	 * @description Whether the user has a trial available for a paid plan subscription.
-	 * @type boolean
-	 */
-	hasTrialAvailable: false | true;
-	/**
-	 * @description remote caching settings
-	 * @type object | undefined
-	 */
-	remoteCaching?:
-		| {
-				enabled?: (false | true) | undefined;
-		  }
-		| undefined;
-	/**
-	 * @description data cache settings
-	 * @type object | undefined
-	 */
-	dataCache?:
-		| {
-				excessBillingEnabled?: (false | true) | undefined;
-		  }
-		| undefined;
-	/**
-	 * @description Feature blocks for the user
-	 * @type object | undefined
-	 */
-	featureBlocks?:
-		| {
-				webAnalytics?:
-					| {
-							blockedFrom?: number | undefined;
-							blockedUntil?: number | undefined;
-							isCurrentlyBlocked: false | true;
-					  }
-					| undefined;
-				/**
-				 * @description Client-facing view of the `speedInsightsFree` ingestion block. The dashboard needs `blockReason` to tell usage pauses apart from admin blocks.
-				 * @type object | undefined
-				 */
-				speedInsightsFree?:
-					| {
-							blockedFrom?: number | undefined;
-							blockedUntil?: number | undefined;
-							blockReason: AuthUserFeatureBlocksSpeedInsightsFreeBlockReasonEnumKey;
-							isCurrentlyBlocked: false | true;
-					  }
-					| undefined;
-		  }
-		| undefined;
-	/**
-	 * @description When `true`, the user must complete the EMU Update Account flow before they can use the dashboard.
-	 * @type boolean | undefined
-	 */
-	isAccountUpdateRequired?: (false | true) | undefined;
-	/**
-	 * @description Context for the Update Account screen. Present only when `isAccountUpdateRequired` is true. `managedTeams` is empty for orphan mode (user matches an EMU domain but is not on the team).
-	 * @type object | undefined
-	 */
-	accountUpdateContext?:
-		| {
-				/**
-				 * @description Whether this user can cancel their optional Account Update flow.
-				 * @type boolean
-				 */
-				canOptOut: false | true;
-				organization?:
-					| {
-							id: string;
-							name: string;
-							slug: string;
-					  }
-					| undefined;
-				managedTeams: {
-					teamId: string;
-					slug: string;
-					name: string;
-					avatar: string | null;
-					workEmail: string;
-				}[];
-				verifiedEmuDomains: string[];
-		  }
-		| undefined;
-	/**
-	 * @description The User\'s unique identifier.
-	 * @example AEIIDYVk59zbFF2Sxfyxxmua
-	 * @type string
-	 */
-	id: string;
-	/**
-	 * @description Email address associated with the User account.
-	 * @example me@example.com
-	 * @type string
-	 */
-	email: string;
-	/**
-	 * @description Name associated with the User account, or `null` if none has been provided.
-	 * @example John Doe
-	 * @type string
-	 */
-	name: string | null;
-	/**
 	 * @description Unique username associated with the User account.
 	 * @example jdoe
 	 * @type string
 	 */
 	username: string;
-	/**
-	 * @description SHA1 hash of the avatar for the User account. Can be used in conjuction with the ... endpoint to retrieve the avatar image.
-	 * @example 22cb30c85ff45ac4c72de8981500006b28114aa1
-	 * @type string
-	 */
-	avatar: string | null;
-	/**
-	 * @description The user\'s default team.
-	 * @type string
-	 */
-	defaultTeamId: string | null;
-	/**
-	 * @description Indicates whether the user is managed by an enterprise.
-	 * @type boolean | undefined
-	 */
-	isEnterpriseManaged?: (false | true) | undefined;
-	/**
-	 * @description Whether the Enterprise Managed User joined the current team through the Update Account flow and should see its welcome experience.
-	 * @type boolean | undefined
-	 */
-	shouldShowEnterpriseManagedWelcome?: (false | true) | undefined;
 };
 
 /**
@@ -19755,35 +19755,6 @@ export type AuthUser = {
  */
 export type AuthUserLimited = {
 	/**
-	 * @description Property indicating that this User data contains only limited information, due to the authentication token missing privileges to read the full User data. Re-login with email, GitHub, GitLab or Bitbucket in order to upgrade the authentication token with the necessary privileges.
-	 * @type boolean
-	 */
-	limited: true;
-	/**
-	 * @description The User\'s unique identifier.
-	 * @example AEIIDYVk59zbFF2Sxfyxxmua
-	 * @type string
-	 */
-	id: string;
-	/**
-	 * @description Email address associated with the User account.
-	 * @example me@example.com
-	 * @type string
-	 */
-	email: string;
-	/**
-	 * @description Name associated with the User account, or `null` if none has been provided.
-	 * @example John Doe
-	 * @type string
-	 */
-	name: string | null;
-	/**
-	 * @description Unique username associated with the User account.
-	 * @example jdoe
-	 * @type string
-	 */
-	username: string;
-	/**
 	 * @description SHA1 hash of the avatar for the User account. Can be used in conjuction with the ... endpoint to retrieve the avatar image.
 	 * @example 22cb30c85ff45ac4c72de8981500006b28114aa1
 	 * @type string
@@ -19795,15 +19766,44 @@ export type AuthUserLimited = {
 	 */
 	defaultTeamId: string | null;
 	/**
+	 * @description Email address associated with the User account.
+	 * @example me@example.com
+	 * @type string
+	 */
+	email: string;
+	/**
+	 * @description The User\'s unique identifier.
+	 * @example AEIIDYVk59zbFF2Sxfyxxmua
+	 * @type string
+	 */
+	id: string;
+	/**
 	 * @description Indicates whether the user is managed by an enterprise.
 	 * @type boolean | undefined
 	 */
 	isEnterpriseManaged?: (false | true) | undefined;
 	/**
+	 * @description Property indicating that this User data contains only limited information, due to the authentication token missing privileges to read the full User data. Re-login with email, GitHub, GitLab or Bitbucket in order to upgrade the authentication token with the necessary privileges.
+	 * @type boolean
+	 */
+	limited: true;
+	/**
+	 * @description Name associated with the User account, or `null` if none has been provided.
+	 * @example John Doe
+	 * @type string
+	 */
+	name: string | null;
+	/**
 	 * @description Whether the Enterprise Managed User joined the current team through the Update Account flow and should see its welcome experience.
 	 * @type boolean | undefined
 	 */
 	shouldShowEnterpriseManagedWelcome?: (false | true) | undefined;
+	/**
+	 * @description Unique username associated with the User account.
+	 * @example jdoe
+	 * @type string
+	 */
+	username: string;
 };
 
 /**
@@ -19812,17 +19812,17 @@ export type AuthUserLimited = {
  */
 export type VcrRepository = {
 	/**
+	 * @description ISO 8601 timestamp of when the repository was created.
+	 * @example 2026-06-30T10:00:00.000Z
+	 * @type string
+	 */
+	createdAt: string;
+	/**
 	 * @description Unique identifier of the repository.
 	 * @example repo_a1b2c3d4e5f6
 	 * @type string
 	 */
 	id: string;
-	/**
-	 * @description Identifier of the project the repository belongs to.
-	 * @example prj_a1b2c3d4e5f6
-	 * @type string
-	 */
-	projectId: string;
 	/**
 	 * @description Name of the repository.
 	 * @example my-app
@@ -19830,17 +19830,17 @@ export type VcrRepository = {
 	 */
 	name: string;
 	/**
+	 * @description Identifier of the project the repository belongs to.
+	 * @example prj_a1b2c3d4e5f6
+	 * @type string
+	 */
+	projectId: string;
+	/**
 	 * @description Whether the repository is public. Images in public repositories can be pulled by anyone. Defaults to `false` (private).
 	 * @example false
 	 * @type boolean
 	 */
 	public: false | true;
-	/**
-	 * @description ISO 8601 timestamp of when the repository was created.
-	 * @example 2026-06-30T10:00:00.000Z
-	 * @type string
-	 */
-	createdAt: string;
 	/**
 	 * @description ISO 8601 timestamp of when the repository was last updated.
 	 * @example 2026-06-30T10:00:00.000Z
@@ -19854,12 +19854,12 @@ export type VcrRepository = {
  * @type object
  */
 export type VcrRepositoryList = {
-	repositories: unknown[];
 	/**
 	 * @description Cursor to fetch the next page of results, when more are available.
 	 * @type string | undefined
 	 */
 	nextCursor?: string | undefined;
+	repositories: unknown[];
 };
 
 export const vcrImageListItemKindEnum = {
@@ -19886,10 +19886,17 @@ export type VcrImageListItemStatusEnumKey =
  */
 export type VcrImageListItem = {
 	/**
-	 * @description Tags pointing at this image\'s manifest.
-	 * @type array
+	 * @description CPU architecture the manifest targets. Only present for single-platform manifests.
+	 * @example amd64
+	 * @type string | undefined
 	 */
-	tags: string[];
+	arch?: string | undefined;
+	/**
+	 * @description ISO 8601 timestamp of when the image was created.
+	 * @example 2026-06-30T10:00:00.000Z
+	 * @type string
+	 */
+	createdAt: string;
 	/**
 	 * @description Internal identifier of the image.
 	 * @example img_a1b2c3d4e5f6
@@ -19897,11 +19904,10 @@ export type VcrImageListItem = {
 	 */
 	id: string;
 	/**
-	 * @description Identifier of the repository the image belongs to.
-	 * @example repo_a1b2c3d4e5f6
+	 * @description Whether the manifest is a multi-platform image index, a single-platform image manifest or an attestation.
 	 * @type string
 	 */
-	repositoryId: string;
+	kind: VcrImageListItemKindEnumKey;
 	/**
 	 * @description SHA-256 digest of the image manifest.
 	 * @example sha256:2c4e8f3a1b9d0e5c7a6f4b2d8e1c9a0b3d5f7e9c1a2b4d6f8e0c2a4b6d8f0e2c
@@ -19909,27 +19915,22 @@ export type VcrImageListItem = {
 	 */
 	manifestDigest: string;
 	/**
-	 * @description Whether the manifest is a multi-platform image index, a single-platform image manifest or an attestation.
-	 * @type string
-	 */
-	kind: VcrImageListItemKindEnumKey;
-	/**
 	 * @description Operating system the manifest targets. Only present for single-platform manifests.
 	 * @example linux
 	 * @type string | undefined
 	 */
 	platform?: string | undefined;
 	/**
-	 * @description CPU architecture the manifest targets. Only present for single-platform manifests.
-	 * @example amd64
-	 * @type string | undefined
-	 */
-	arch?: string | undefined;
-	/**
 	 * @description Identifier of the actor that pushed the image.
 	 * @type string | undefined
 	 */
 	pushedBy?: string | undefined;
+	/**
+	 * @description Identifier of the repository the image belongs to.
+	 * @example repo_a1b2c3d4e5f6
+	 * @type string
+	 */
+	repositoryId: string;
 	/**
 	 * @description Total size in bytes of the image\'s resources (manifest, config and layer blobs) stored by the registry.
 	 * @type number
@@ -19941,11 +19942,10 @@ export type VcrImageListItem = {
 	 */
 	status: VcrImageListItemStatusEnumKey | null;
 	/**
-	 * @description ISO 8601 timestamp of when the image was created.
-	 * @example 2026-06-30T10:00:00.000Z
-	 * @type string
+	 * @description Tags pointing at this image\'s manifest.
+	 * @type array
 	 */
-	createdAt: string;
+	tags: string[];
 };
 
 /**
@@ -19967,6 +19967,12 @@ export type VcrImageList = {
  */
 export type VcrRepositoryPermission = {
 	/**
+	 * @description ISO 8601 timestamp of when the permission was created.
+	 * @example 2026-06-30T10:00:00.000Z
+	 * @type string
+	 */
+	createdAt: string;
+	/**
 	 * @description Identifier of the repository the permission grants access to.
 	 * @example repo_a1b2c3d4e5f6
 	 * @type string
@@ -19984,12 +19990,6 @@ export type VcrRepositoryPermission = {
 	 * @type string
 	 */
 	teamSlug: string;
-	/**
-	 * @description ISO 8601 timestamp of when the permission was created.
-	 * @example 2026-06-30T10:00:00.000Z
-	 * @type string
-	 */
-	createdAt: string;
 };
 
 export const vcrTagKindEnum = {
@@ -20014,17 +20014,17 @@ export type VcrTagStatusEnumKey = (typeof vcrTagStatusEnum)[keyof typeof vcrTagS
  */
 export type VcrTag = {
 	/**
-	 * @description The tag name.
-	 * @example latest
-	 * @type string
+	 * @description CPU architecture the manifest targets. Only present for single-platform manifests.
+	 * @example amd64
+	 * @type string | undefined
 	 */
-	tag: string;
+	arch?: string | undefined;
 	/**
-	 * @description SHA-256 digest of the image manifest the tag points at.
-	 * @example sha256:2c4e8f3a1b9d0e5c7a6f4b2d8e1c9a0b3d5f7e9c1a2b4d6f8e0c2a4b6d8f0e2c
+	 * @description ISO 8601 timestamp of when the tag was created.
+	 * @example 2026-06-30T10:00:00.000Z
 	 * @type string
 	 */
-	manifestDigest: string;
+	createdAt: string;
 	/**
 	 * @description Internal identifier of the image the tag points at.
 	 * @example img_a1b2c3d4e5f6
@@ -20037,38 +20037,38 @@ export type VcrTag = {
 	 */
 	kind: VcrTagKindEnumKey;
 	/**
+	 * @description SHA-256 digest of the image manifest the tag points at.
+	 * @example sha256:2c4e8f3a1b9d0e5c7a6f4b2d8e1c9a0b3d5f7e9c1a2b4d6f8e0c2a4b6d8f0e2c
+	 * @type string
+	 */
+	manifestDigest: string;
+	/**
 	 * @description Operating system the manifest targets. Only present for single-platform manifests.
 	 * @example linux
 	 * @type string | undefined
 	 */
 	platform?: string | undefined;
 	/**
-	 * @description CPU architecture the manifest targets. Only present for single-platform manifests.
-	 * @example amd64
-	 * @type string | undefined
-	 */
-	arch?: string | undefined;
-	/**
 	 * @description Identifier of the actor that pushed the image.
 	 * @type string | undefined
 	 */
 	pushedBy?: string | undefined;
-	/**
-	 * @description VHS-readiness status, or `null` for a multi-platform index.
-	 * @type string
-	 */
-	status: VcrTagStatusEnumKey | null;
 	/**
 	 * @description Total size in bytes of the image\'s resources (manifest, config and layer blobs) stored by the registry.
 	 * @type number
 	 */
 	sizeInBytes: number;
 	/**
-	 * @description ISO 8601 timestamp of when the tag was created.
-	 * @example 2026-06-30T10:00:00.000Z
+	 * @description VHS-readiness status, or `null` for a multi-platform index.
 	 * @type string
 	 */
-	createdAt: string;
+	status: VcrTagStatusEnumKey | null;
+	/**
+	 * @description The tag name.
+	 * @example latest
+	 * @type string
+	 */
+	tag: string;
 	/**
 	 * @description ISO 8601 timestamp of when the tag was last updated.
 	 * @example 2026-06-30T10:00:00.000Z
@@ -20132,10 +20132,10 @@ export type VcrImageLayer =
 			 */
 			operation: VcrImageLayerOperationEnumKey;
 			sizeBytes: number | null;
-			type: "FROM";
 			baseImage: string | null;
 			collapsedDigests: string[];
 			collapsedLayerCount: number;
+			type: "FROM";
 	  }
 	| {
 			createdBy: string | null;
@@ -20146,8 +20146,8 @@ export type VcrImageLayer =
 			 */
 			operation: VcrImageLayerOperationEnumKey;
 			sizeBytes: number | null;
-			type: "RUN";
 			command: string | null;
+			type: "RUN";
 	  }
 	| {
 			createdBy: string | null;
@@ -20158,8 +20158,8 @@ export type VcrImageLayer =
 			 */
 			operation: VcrImageLayerOperationEnumKey;
 			sizeBytes: number | null;
-			type: "ENV";
 			env: string | null;
+			type: "ENV";
 	  }
 	| {
 			createdBy: string | null;
@@ -20197,41 +20197,6 @@ export type VcrImageDetailStatusEnumKey =
  * @type object
  */
 export type VcrImageDetail = {
-	layers: unknown[];
-	/**
-	 * @description Tags pointing at this image\'s manifest.
-	 * @type array
-	 */
-	tags: string[];
-	/**
-	 * @description Internal identifier of the image.
-	 * @example img_a1b2c3d4e5f6
-	 * @type string
-	 */
-	id: string;
-	/**
-	 * @description Identifier of the repository the image belongs to.
-	 * @example repo_a1b2c3d4e5f6
-	 * @type string
-	 */
-	repositoryId: string;
-	/**
-	 * @description SHA-256 digest of the image manifest.
-	 * @example sha256:2c4e8f3a1b9d0e5c7a6f4b2d8e1c9a0b3d5f7e9c1a2b4d6f8e0c2a4b6d8f0e2c
-	 * @type string
-	 */
-	manifestDigest: string;
-	/**
-	 * @description Whether the manifest is a multi-platform image index, a single-platform image manifest or an attestation.
-	 * @type string
-	 */
-	kind: VcrImageDetailKindEnumKey;
-	/**
-	 * @description Operating system the manifest targets. Only present for single-platform manifests.
-	 * @example linux
-	 * @type string | undefined
-	 */
-	platform?: string | undefined;
 	/**
 	 * @description CPU architecture the manifest targets. Only present for single-platform manifests.
 	 * @example amd64
@@ -20239,10 +20204,46 @@ export type VcrImageDetail = {
 	 */
 	arch?: string | undefined;
 	/**
+	 * @description ISO 8601 timestamp of when the image was created.
+	 * @example 2026-06-30T10:00:00.000Z
+	 * @type string
+	 */
+	createdAt: string;
+	/**
+	 * @description Internal identifier of the image.
+	 * @example img_a1b2c3d4e5f6
+	 * @type string
+	 */
+	id: string;
+	/**
+	 * @description Whether the manifest is a multi-platform image index, a single-platform image manifest or an attestation.
+	 * @type string
+	 */
+	kind: VcrImageDetailKindEnumKey;
+	layers: unknown[];
+	/**
+	 * @description SHA-256 digest of the image manifest.
+	 * @example sha256:2c4e8f3a1b9d0e5c7a6f4b2d8e1c9a0b3d5f7e9c1a2b4d6f8e0c2a4b6d8f0e2c
+	 * @type string
+	 */
+	manifestDigest: string;
+	/**
+	 * @description Operating system the manifest targets. Only present for single-platform manifests.
+	 * @example linux
+	 * @type string | undefined
+	 */
+	platform?: string | undefined;
+	/**
 	 * @description Identifier of the actor that pushed the image.
 	 * @type string | undefined
 	 */
 	pushedBy?: string | undefined;
+	/**
+	 * @description Identifier of the repository the image belongs to.
+	 * @example repo_a1b2c3d4e5f6
+	 * @type string
+	 */
+	repositoryId: string;
 	/**
 	 * @description Total size in bytes of the image\'s resources (manifest, config and layer blobs) stored by the registry.
 	 * @type number
@@ -20254,11 +20255,10 @@ export type VcrImageDetail = {
 	 */
 	status: VcrImageDetailStatusEnumKey | null;
 	/**
-	 * @description ISO 8601 timestamp of when the image was created.
-	 * @example 2026-06-30T10:00:00.000Z
-	 * @type string
+	 * @description Tags pointing at this image\'s manifest.
+	 * @type array
 	 */
-	createdAt: string;
+	tags: string[];
 };
 
 /**
@@ -20266,12 +20266,12 @@ export type VcrImageDetail = {
  * @type object
  */
 export type VcrRepositoryPermissionList = {
-	permissions: unknown[];
 	/**
 	 * @description Cursor to fetch the next page of results, when more are available.
 	 * @type string | undefined
 	 */
 	nextCursor?: string | undefined;
+	permissions: unknown[];
 };
 
 export const fileTreeTypeEnum = {
@@ -20291,6 +20291,22 @@ export type FileTreeTypeEnumKey = (typeof fileTreeTypeEnum)[keyof typeof fileTre
  */
 export type FileTree = {
 	/**
+	 * @description The list of children files of the directory (only valid for the `directory` type)
+	 * @type array | undefined
+	 */
+	children?: unknown[] | undefined;
+	/**
+	 * @description The content-type of the file (only valid for the `file` type)
+	 * @example application/json
+	 * @type string | undefined
+	 */
+	contentType?: string | undefined;
+	/**
+	 * @description The file \"mode\" indicating file type and permissions.
+	 * @type number
+	 */
+	mode: number;
+	/**
 	 * @description The name of the file tree entry
 	 * @example my-file.json
 	 * @type string
@@ -20308,22 +20324,6 @@ export type FileTree = {
 	 * @type string | undefined
 	 */
 	uid?: string | undefined;
-	/**
-	 * @description The list of children files of the directory (only valid for the `directory` type)
-	 * @type array | undefined
-	 */
-	children?: unknown[] | undefined;
-	/**
-	 * @description The content-type of the file (only valid for the `file` type)
-	 * @example application/json
-	 * @type string | undefined
-	 */
-	contentType?: string | undefined;
-	/**
-	 * @description The file \"mode\" indicating file type and permissions.
-	 * @type number
-	 */
-	mode: number;
 };
 
 export type VercelBaseError = {
