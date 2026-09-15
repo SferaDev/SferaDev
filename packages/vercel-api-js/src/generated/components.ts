@@ -1049,6 +1049,12 @@ import type {
 	GetBulkAvailabilityStatus403,
 	GetBulkAvailabilityStatus429,
 	GetBulkAvailabilityStatus500,
+	GetBulkPriceResponse,
+	GetBulkPriceStatus400,
+	GetBulkPriceStatus401,
+	GetBulkPriceStatus403,
+	GetBulkPriceStatus429,
+	GetBulkPriceStatus500,
 	GetBypassIpResponse,
 	GetBypassIpStatus400,
 	GetBypassIpStatus401,
@@ -2304,6 +2310,12 @@ import type {
 	RunSessionCommandStatus422,
 	RunSessionCommandStatus429,
 	RunSessionCommandStatus500,
+	SearchDomainsResponse,
+	SearchDomainsStatus400,
+	SearchDomainsStatus401,
+	SearchDomainsStatus403,
+	SearchDomainsStatus429,
+	SearchDomainsStatus500,
 	SearchRepoResponse,
 	SearchRepoStatus400,
 	SearchRepoStatus401,
@@ -7111,6 +7123,46 @@ export async function getDomainPrice(
 }
 
 /**
+ * @summary Get price data for multiple domains
+ * @description Get price data for multiple domains in a single request.
+ * @link /v1/registrar/domains/price
+ */
+export async function getBulkPrice(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { teamId?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	const data = await request<
+		GetBulkPriceResponse,
+		ErrorWrapper<
+			| GetBulkPriceStatus400
+			| GetBulkPriceStatus401
+			| GetBulkPriceStatus403
+			| GetBulkPriceStatus429
+			| GetBulkPriceStatus500
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string },
+		Record<string, string>
+	>({
+		method: "POST",
+		url: `/v1/registrar/domains/price`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
  * @summary Get availability for multiple domains
  * @description Get availability for multiple domains. If the domains are available, they can be purchased using the [Buy a domain](https://vercel.com/docs/rest-api/reference/endpoints/domains-registrar/buy-a-domain) endpoint or the [Buy multiple domains](https://vercel.com/docs/rest-api/reference/endpoints/domains-registrar/buy-multiple-domains) endpoint.
  * @link /v1/registrar/domains/availability
@@ -7142,6 +7194,91 @@ export async function getBulkAvailability(
 	>({
 		method: "POST",
 		url: `/v1/registrar/domains/availability`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Check domain availability and pricing
+ * @description Check registration availability for 1–200 exact domain names, such as `example.com`. Returns results in input order, with registration and renewal prices in USD for available domains. No authentication required.
+ * @link /v1/registrar/domains/search
+ */
+export async function searchDomains(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { teamId?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	const data = await request<
+		SearchDomainsResponse,
+		ErrorWrapper<
+			| SearchDomainsStatus400
+			| SearchDomainsStatus401
+			| SearchDomainsStatus403
+			| SearchDomainsStatus429
+			| SearchDomainsStatus500
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string },
+		Record<string, string>
+	>({
+		method: "POST",
+		url: `/v1/registrar/domains/search`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Get contact info schema
+ * @description Some TLDs require additional contact information. Use this endpoint to get the schema for the tld-specific contact information for a domain.
+ * @link /v1/registrar/domains/{domain}/contact-info/schema
+ */
+export async function getContactInfoSchema(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { domain: unknown };
+		queryParams?: { teamId?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.domain) {
+		throw new Error(`Missing required path parameter: domain`);
+	}
+	const data = await request<
+		GetContactInfoSchemaResponse,
+		ErrorWrapper<
+			| GetContactInfoSchemaStatus400
+			| GetContactInfoSchemaStatus401
+			| GetContactInfoSchemaStatus403
+			| GetContactInfoSchemaStatus429
+			| GetContactInfoSchemaStatus500
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string },
+		{ domain: unknown }
+	>({
+		method: "GET",
+		url: `/v1/registrar/domains/${pathParams.domain}/contact-info/schema`,
 		queryParams,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
@@ -7549,51 +7686,6 @@ export async function getDomainContactVerification(
 	>({
 		method: "GET",
 		url: `/v1/registrar/domains/${pathParams.domain}/contact-verification`,
-		queryParams,
-		...requestConfig,
-		headers: { ...requestConfig.headers },
-	});
-
-	return data;
-}
-
-/**
- * @summary Get contact info schema
- * @description Some TLDs require additional contact information. Use this endpoint to get the schema for the tld-specific contact information for a domain.
- * @link /v1/registrar/domains/{domain}/contact-info/schema
- */
-export async function getContactInfoSchema(
-	{
-		pathParams,
-		queryParams,
-		config,
-	}: {
-		pathParams: { domain: unknown };
-		queryParams?: { teamId?: string };
-		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-	} = {} as any,
-) {
-	const { client: request = defaultClient, ...requestConfig } = config ?? {};
-
-	if (!pathParams.domain) {
-		throw new Error(`Missing required path parameter: domain`);
-	}
-	const data = await request<
-		GetContactInfoSchemaResponse,
-		ErrorWrapper<
-			| GetContactInfoSchemaStatus400
-			| GetContactInfoSchemaStatus401
-			| GetContactInfoSchemaStatus403
-			| GetContactInfoSchemaStatus429
-			| GetContactInfoSchemaStatus500
-		>,
-		null,
-		Record<string, string>,
-		{ teamId?: string },
-		{ domain: unknown }
-	>({
-		method: "GET",
-		url: `/v1/registrar/domains/${pathParams.domain}/contact-info/schema`,
 		queryParams,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
@@ -12527,7 +12619,7 @@ export async function createKmsIssuer(
 
 /**
  * @summary Sign a message
- * @description Sign a raw message with a KMS issuer's active signing key. Authenticate the request with a Vercel OIDC token in the `Authorization: Bearer` header; the issuer's policies decide which workloads are allowed to sign.
+ * @description Sign a raw message with a KMS issuer's active signing key. Authenticate the request with a Vercel OIDC token in the `Authorization: Bearer` header; the issuer's policies decide which workloads are allowed to sign. The response `signature` is standard-base64 of the raw signature over the decoded message bytes. `keyId` and `algorithm` identify the signing key in the issuer's JWKS.
  * @link /v1/kms/issuers/{issuerId}/sign/message
  */
 export async function signKmsMessage(
@@ -22327,7 +22419,10 @@ export const operationsByPath = {
 	"GET /v1/registrar/tlds/{tld}/price": getTldPrice,
 	"GET /v1/registrar/domains/{domain}/availability": getDomainAvailability,
 	"GET /v1/registrar/domains/{domain}/price": getDomainPrice,
+	"POST /v1/registrar/domains/price": getBulkPrice,
 	"POST /v1/registrar/domains/availability": getBulkAvailability,
+	"POST /v1/registrar/domains/search": searchDomains,
+	"GET /v1/registrar/domains/{domain}/contact-info/schema": getContactInfoSchema,
 	"GET /v1/registrar/domains/{domain}/auth-code": getDomainAuthCode,
 	"POST /v1/registrar/domains/{domain}/buy": buySingleDomain,
 	"POST /v1/registrar/domains/buy": buyDomains,
@@ -22337,7 +22432,6 @@ export const operationsByPath = {
 	"PATCH /v1/registrar/domains/{domain}/auto-renew": updateDomainAutoRenew,
 	"PATCH /v1/registrar/domains/{domain}/nameservers": updateDomainNameservers,
 	"GET /v1/registrar/domains/{domain}/contact-verification": getDomainContactVerification,
-	"GET /v1/registrar/domains/{domain}/contact-info/schema": getContactInfoSchema,
 	"GET /v1/registrar/orders/{orderId}": getOrder,
 	"GET /v6/domains/{domain}/config": getDomainConfig,
 	"GET /v9/domains/{domain}/verification": getDomainVerificationRecord,
@@ -22820,7 +22914,10 @@ export const operationsByTag = {
 		getTldPrice,
 		getDomainAvailability,
 		getDomainPrice,
+		getBulkPrice,
 		getBulkAvailability,
+		searchDomains,
+		getContactInfoSchema,
 		getDomainAuthCode,
 		buySingleDomain,
 		buyDomains,
@@ -22830,7 +22927,6 @@ export const operationsByTag = {
 		updateDomainAutoRenew,
 		updateDomainNameservers,
 		getDomainContactVerification,
-		getContactInfoSchema,
 		getOrder,
 	},
 	domains: {
@@ -23304,14 +23400,16 @@ export const tagDictionary = {
 			"getTldPrice",
 			"getDomainAvailability",
 			"getDomainPrice",
+			"getContactInfoSchema",
 			"getDomainAuthCode",
 			"getDomainTransferIn",
 			"getDomainContactVerification",
-			"getContactInfoSchema",
 			"getOrder",
 		],
 		POST: [
+			"getBulkPrice",
 			"getBulkAvailability",
+			"searchDomains",
 			"buySingleDomain",
 			"buyDomains",
 			"transferInDomain",

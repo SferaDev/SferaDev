@@ -663,6 +663,11 @@ export type ConnectConnector = {
 	 */
 	reinstallAt?: number | undefined;
 	/**
+	 * @description Whether the connector is known to have been edited since the app package it publishes to the provider was last built, so that package no longer matches it. Absent when it was not computed, or when the connector type publishes no such package. Derived on every read rather than marked at edit time, so reverting an edit clears it. Only reported by connector types that publish a package a user has to re-publish by hand — Microsoft Teams today.
+	 * @type boolean | undefined
+	 */
+	knownStale?: (false | true) | undefined;
+	/**
 	 * @description Principal that created the connector.
 	 */
 	createdBy?:
@@ -1056,6 +1061,11 @@ export type ConnectConnectorCreateResult = {
 	 * @type number | undefined
 	 */
 	reinstallAt?: number | undefined;
+	/**
+	 * @description Whether the connector is known to have been edited since the app package it publishes to the provider was last built, so that package no longer matches it. Absent when it was not computed, or when the connector type publishes no such package. Derived on every read rather than marked at edit time, so reverting an edit clears it. Only reported by connector types that publish a package a user has to re-publish by hand — Microsoft Teams today.
+	 * @type boolean | undefined
+	 */
+	knownStale?: (false | true) | undefined;
 	/**
 	 * @description Principal that created the connector.
 	 */
@@ -3932,18 +3942,100 @@ export type BadRequest = {
 };
 
 /**
+ * @description Schema definition for registrant fields.
+ */
+export type RegistrantField =
+	| {
+			description: string;
+			required: boolean;
+			label?: string | undefined;
+			validation?: string | undefined;
+			requiredWhen?:
+				| (
+						| string
+						| {
+								valueIn?: string[] | undefined;
+						  }
+				  )
+				| undefined;
+			type: "string";
+			options?:
+				| {
+						value: string;
+						label: string;
+						fields?: object | undefined;
+				  }[]
+				| undefined;
+			fields?: object | undefined;
+	  }
+	| {
+			description: string;
+			required: boolean;
+			label?: string | undefined;
+			validation?: string | undefined;
+			requiredWhen?:
+				| (
+						| string
+						| {
+								valueIn?: string[] | undefined;
+						  }
+				  )
+				| undefined;
+			type: "enum";
+			options: {
+				value: string;
+				label: string;
+				fields?: object | undefined;
+			}[];
+			fields?: object | undefined;
+	  }
+	| {
+			description: string;
+			required: boolean;
+			label?: string | undefined;
+			validation?: string | undefined;
+			requiredWhen?:
+				| (
+						| string
+						| {
+								valueIn?: string[] | undefined;
+						  }
+				  )
+				| undefined;
+			type: "acknowledgement";
+			value?: string | undefined;
+	  }
+	| {
+			description: string;
+			required: boolean;
+			label?: string | undefined;
+			validation?: string | undefined;
+			requiredWhen?:
+				| (
+						| string
+						| {
+								valueIn?: string[] | undefined;
+						  }
+				  )
+				| undefined;
+			type: "notice";
+	  };
+
+/**
+ * @description a non empty string
+ * @minLength 1
+ * @pattern ^\S[\s\S]*\S$|^\S$|^$
+ * @type string
+ */
+export type NonEmptyTrimmedString = string;
+
+/**
  * @description The domain is not registered with Vercel.
  * @type object
  */
 export type DomainNotRegistered = {
 	status: 400;
 	code: "domain_not_registered";
-	message: string;
-};
-
-export type Forbidden = {
-	status: 403;
-	code: "forbidden";
 	message: string;
 };
 
@@ -3967,13 +4059,11 @@ export type DomainCannotBeTransferedOutUntil = {
 	message: string;
 };
 
-/**
- * @description a non empty string
- * @minLength 1
- * @pattern ^\S[\s\S]*\S$|^\S$|^$
- * @type string
- */
-export type NonEmptyTrimmedString = string;
+export type Forbidden = {
+	status: 403;
+	code: "forbidden";
+	message: string;
+};
 
 /**
  * @description A valid RFC 5322 email address
@@ -4009,6 +4099,16 @@ export type OrderId = string;
 export type LanguageCodeRequired = {
 	status: 400;
 	code: "language_code_required";
+	message: string;
+};
+
+/**
+ * @description The TLD does not support emoji domain names.
+ * @type object
+ */
+export type EmojiTldNotSupported = {
+	status: 400;
+	code: "emoji_tld_not_supported";
 	message: string;
 };
 
@@ -4161,86 +4261,6 @@ export type BoughtTooRecently = {
 	code: "bought_too_recently";
 	message: string;
 };
-
-/**
- * @description Schema definition for registrant fields.
- */
-export type RegistrantField =
-	| {
-			description: string;
-			required: boolean;
-			label?: string | undefined;
-			validation?: string | undefined;
-			requiredWhen?:
-				| (
-						| string
-						| {
-								valueIn?: string[] | undefined;
-						  }
-				  )
-				| undefined;
-			type: "string";
-			options?:
-				| {
-						value: string;
-						label: string;
-						fields?: object | undefined;
-				  }[]
-				| undefined;
-			fields?: object | undefined;
-	  }
-	| {
-			description: string;
-			required: boolean;
-			label?: string | undefined;
-			validation?: string | undefined;
-			requiredWhen?:
-				| (
-						| string
-						| {
-								valueIn?: string[] | undefined;
-						  }
-				  )
-				| undefined;
-			type: "enum";
-			options: {
-				value: string;
-				label: string;
-				fields?: object | undefined;
-			}[];
-			fields?: object | undefined;
-	  }
-	| {
-			description: string;
-			required: boolean;
-			label?: string | undefined;
-			validation?: string | undefined;
-			requiredWhen?:
-				| (
-						| string
-						| {
-								valueIn?: string[] | undefined;
-						  }
-				  )
-				| undefined;
-			type: "acknowledgement";
-			value?: string | undefined;
-	  }
-	| {
-			description: string;
-			required: boolean;
-			label?: string | undefined;
-			validation?: string | undefined;
-			requiredWhen?:
-				| (
-						| string
-						| {
-								valueIn?: string[] | undefined;
-						  }
-				  )
-				| undefined;
-			type: "notice";
-	  };
 
 export const globalConfigItemValue = {
 	false: false,
@@ -12746,6 +12766,7 @@ export type UserEvent = {
 									| UserEventPayloadOldPasswordProtectionKey
 							  )
 							| null;
+						passwordChanged?: (false | true) | undefined;
 				  }
 				| {
 						projectId: string;
@@ -26435,6 +26456,53 @@ export type GetDomainPriceResponse =
 	| GetDomainPriceStatus429
 	| GetDomainPriceStatus500;
 
+export type GetBulkPriceQuery = {
+	/**
+	 * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+};
+
+export type GetBulkPriceStatus200 = unknown;
+
+export type GetBulkPriceStatus400 = unknown;
+
+export type GetBulkPriceStatus401 = unknown;
+
+export type GetBulkPriceStatus403 = unknown;
+
+export type GetBulkPriceStatus429 = unknown;
+
+export type GetBulkPriceStatus500 = unknown;
+
+export type GetBulkPriceOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query?: GetBulkPriceQuery | undefined;
+	headers?: never | undefined;
+};
+
+export type GetBulkPriceResponses = {
+	"200": GetBulkPriceStatus200;
+	"400": GetBulkPriceStatus400;
+	"401": GetBulkPriceStatus401;
+	"403": GetBulkPriceStatus403;
+	"429": GetBulkPriceStatus429;
+	"500": GetBulkPriceStatus500;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetBulkPriceResponse =
+	| GetBulkPriceStatus200
+	| GetBulkPriceStatus400
+	| GetBulkPriceStatus401
+	| GetBulkPriceStatus403
+	| GetBulkPriceStatus429
+	| GetBulkPriceStatus500;
+
 export type GetBulkAvailabilityQuery = {
 	/**
 	 * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
@@ -26481,6 +26549,104 @@ export type GetBulkAvailabilityResponse =
 	| GetBulkAvailabilityStatus403
 	| GetBulkAvailabilityStatus429
 	| GetBulkAvailabilityStatus500;
+
+export type SearchDomainsQuery = {
+	/**
+	 * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+};
+
+export type SearchDomainsStatus200 = unknown;
+
+export type SearchDomainsStatus400 = unknown;
+
+export type SearchDomainsStatus401 = unknown;
+
+export type SearchDomainsStatus403 = unknown;
+
+export type SearchDomainsStatus429 = unknown;
+
+export type SearchDomainsStatus500 = unknown;
+
+export type SearchDomainsOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query?: SearchDomainsQuery | undefined;
+	headers?: never | undefined;
+};
+
+export type SearchDomainsResponses = {
+	"200": SearchDomainsStatus200;
+	"400": SearchDomainsStatus400;
+	"401": SearchDomainsStatus401;
+	"403": SearchDomainsStatus403;
+	"429": SearchDomainsStatus429;
+	"500": SearchDomainsStatus500;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type SearchDomainsResponse =
+	| SearchDomainsStatus200
+	| SearchDomainsStatus400
+	| SearchDomainsStatus401
+	| SearchDomainsStatus403
+	| SearchDomainsStatus429
+	| SearchDomainsStatus500;
+
+export type GetContactInfoSchemaPath = {
+	domain: unknown;
+};
+
+export type GetContactInfoSchemaQuery = {
+	/**
+	 * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+};
+
+export type GetContactInfoSchemaStatus200 = unknown;
+
+export type GetContactInfoSchemaStatus400 = unknown;
+
+export type GetContactInfoSchemaStatus401 = unknown;
+
+export type GetContactInfoSchemaStatus403 = unknown;
+
+export type GetContactInfoSchemaStatus429 = unknown;
+
+export type GetContactInfoSchemaStatus500 = unknown;
+
+export type GetContactInfoSchemaOptions = {
+	body?: never | undefined;
+	path: GetContactInfoSchemaPath;
+	query?: GetContactInfoSchemaQuery | undefined;
+	headers?: never | undefined;
+};
+
+export type GetContactInfoSchemaResponses = {
+	"200": GetContactInfoSchemaStatus200;
+	"400": GetContactInfoSchemaStatus400;
+	"401": GetContactInfoSchemaStatus401;
+	"403": GetContactInfoSchemaStatus403;
+	"429": GetContactInfoSchemaStatus429;
+	"500": GetContactInfoSchemaStatus500;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetContactInfoSchemaResponse =
+	| GetContactInfoSchemaStatus200
+	| GetContactInfoSchemaStatus400
+	| GetContactInfoSchemaStatus401
+	| GetContactInfoSchemaStatus403
+	| GetContactInfoSchemaStatus429
+	| GetContactInfoSchemaStatus500;
 
 export type GetDomainAuthCodePath = {
 	domain: unknown;
@@ -26964,57 +27130,6 @@ export type GetDomainContactVerificationResponse =
 	| GetDomainContactVerificationStatus404
 	| GetDomainContactVerificationStatus429
 	| GetDomainContactVerificationStatus500;
-
-export type GetContactInfoSchemaPath = {
-	domain: unknown;
-};
-
-export type GetContactInfoSchemaQuery = {
-	/**
-	 * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
-	 * @type string | undefined
-	 */
-	teamId?: string | undefined;
-};
-
-export type GetContactInfoSchemaStatus200 = unknown;
-
-export type GetContactInfoSchemaStatus400 = unknown;
-
-export type GetContactInfoSchemaStatus401 = unknown;
-
-export type GetContactInfoSchemaStatus403 = unknown;
-
-export type GetContactInfoSchemaStatus429 = unknown;
-
-export type GetContactInfoSchemaStatus500 = unknown;
-
-export type GetContactInfoSchemaOptions = {
-	body?: never | undefined;
-	path: GetContactInfoSchemaPath;
-	query?: GetContactInfoSchemaQuery | undefined;
-	headers?: never | undefined;
-};
-
-export type GetContactInfoSchemaResponses = {
-	"200": GetContactInfoSchemaStatus200;
-	"400": GetContactInfoSchemaStatus400;
-	"401": GetContactInfoSchemaStatus401;
-	"403": GetContactInfoSchemaStatus403;
-	"429": GetContactInfoSchemaStatus429;
-	"500": GetContactInfoSchemaStatus500;
-};
-
-/**
- * @description Union of all possible responses
- */
-export type GetContactInfoSchemaResponse =
-	| GetContactInfoSchemaStatus200
-	| GetContactInfoSchemaStatus400
-	| GetContactInfoSchemaStatus401
-	| GetContactInfoSchemaStatus403
-	| GetContactInfoSchemaStatus429
-	| GetContactInfoSchemaStatus500;
 
 export type GetOrderPath = {
 	orderId: unknown;

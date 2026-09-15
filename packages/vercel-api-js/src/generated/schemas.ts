@@ -375,6 +375,12 @@ export const connectConnectorSchema = z
 			.describe(
 				"Time when this connector started requiring reinstallation because an installation-affecting app-token grant changed.",
 			),
+		knownStale: z
+			.union([z.literal(false), z.literal(true)])
+			.optional()
+			.describe(
+				"Whether the connector is known to have been edited since the app package it publishes to the provider was last built, so that package no longer matches it. Absent when it was not computed, or when the connector type publishes no such package. Derived on every read rather than marked at edit time, so reverting an edit clears it. Only reported by connector types that publish a package a user has to re-publish by hand — Microsoft Teams today.",
+			),
 		createdBy: z
 			.discriminatedUnion("type", [
 				z
@@ -626,6 +632,12 @@ export const connectConnectorCreateResultSchema = z
 			.optional()
 			.describe(
 				"Time when this connector started requiring reinstallation because an installation-affecting app-token grant changed.",
+			),
+		knownStale: z
+			.union([z.literal(false), z.literal(true)])
+			.optional()
+			.describe(
+				"Whether the connector is known to have been edited since the app package it publishes to the provider was last built, so that package no longer matches it. Absent when it was not computed, or when the connector type publishes no such package. Derived on every read rather than marked at edit time, so reverting an edit clears it. Only reported by connector types that publish a package a user has to re-publish by hand — Microsoft Teams today.",
 			),
 		createdBy: z
 			.discriminatedUnion("type", [
@@ -2539,6 +2551,116 @@ export const badRequestSchema = z
 	})
 	.strict();
 
+export const registrantFieldSchema = z
+	.discriminatedUnion("type", [
+		z
+			.object({
+				description: z.string(),
+				required: z.boolean(),
+				label: z.string().optional(),
+				validation: z.string().optional(),
+				requiredWhen: z
+					.union([
+						z.string(),
+						z
+							.object({
+								valueIn: z.array(z.string()).optional(),
+							})
+							.strict(),
+					])
+					.optional(),
+				type: z.enum(["string"]),
+				options: z
+					.array(
+						z
+							.object({
+								value: z.string(),
+								label: z.string(),
+								fields: z.object({}).optional(),
+							})
+							.strict(),
+					)
+					.optional(),
+				fields: z.object({}).optional(),
+			})
+			.strict(),
+		z
+			.object({
+				description: z.string(),
+				required: z.boolean(),
+				label: z.string().optional(),
+				validation: z.string().optional(),
+				requiredWhen: z
+					.union([
+						z.string(),
+						z
+							.object({
+								valueIn: z.array(z.string()).optional(),
+							})
+							.strict(),
+					])
+					.optional(),
+				type: z.enum(["enum"]),
+				options: z.array(
+					z
+						.object({
+							value: z.string(),
+							label: z.string(),
+							fields: z.object({}).optional(),
+						})
+						.strict(),
+				),
+				fields: z.object({}).optional(),
+			})
+			.strict(),
+		z
+			.object({
+				description: z.string(),
+				required: z.boolean(),
+				label: z.string().optional(),
+				validation: z.string().optional(),
+				requiredWhen: z
+					.union([
+						z.string(),
+						z
+							.object({
+								valueIn: z.array(z.string()).optional(),
+							})
+							.strict(),
+					])
+					.optional(),
+				type: z.enum(["acknowledgement"]),
+				value: z.string().optional(),
+			})
+			.strict(),
+		z
+			.object({
+				description: z.string(),
+				required: z.boolean(),
+				label: z.string().optional(),
+				validation: z.string().optional(),
+				requiredWhen: z
+					.union([
+						z.string(),
+						z
+							.object({
+								valueIn: z.array(z.string()).optional(),
+							})
+							.strict(),
+					])
+					.optional(),
+				type: z.enum(["notice"]),
+			})
+			.strict(),
+	])
+	.describe("Schema definition for registrant fields.");
+
+export const nonEmptyTrimmedStringSchema = z
+	.string()
+	.min(1)
+	.regex(/^\S[\s\S]*\S$|^\S$|^$/)
+	.describe("a non empty string");
+
 export const domainNotRegisteredSchema = z
 	.object({
 		status: z.literal(400),
@@ -2547,14 +2669,6 @@ export const domainNotRegisteredSchema = z
 	})
 	.strict()
 	.describe("The domain is not registered with Vercel.");
-
-export const forbiddenSchema = z
-	.object({
-		status: z.literal(403),
-		code: z.enum(["forbidden"]),
-		message: z.string(),
-	})
-	.strict();
 
 export const domainNotFoundSchema = z
 	.object({
@@ -2574,11 +2688,13 @@ export const domainCannotBeTransferedOutUntilSchema = z
 	.strict()
 	.describe("The domain cannot be transfered out until the specified date.");
 
-export const nonEmptyTrimmedStringSchema = z
-	.string()
-	.min(1)
-	.regex(/^\S[\s\S]*\S$|^\S$|^$/)
-	.describe("a non empty string");
+export const forbiddenSchema = z
+	.object({
+		status: z.literal(403),
+		code: z.enum(["forbidden"]),
+		message: z.string(),
+	})
+	.strict();
 
 export const emailAddressSchema = z.string().min(1).describe("A valid RFC 5322 email address");
 
@@ -2600,6 +2716,15 @@ export const languageCodeRequiredSchema = z
 	})
 	.strict()
 	.describe("A language code is required for punycode domains.");
+
+export const emojiTldNotSupportedSchema = z
+	.object({
+		status: z.literal(400),
+		code: z.enum(["emoji_tld_not_supported"]),
+		message: z.string(),
+	})
+	.strict()
+	.describe("The TLD does not support emoji domain names.");
 
 export const domainNotAvailableSchema = z
 	.object({
@@ -2730,110 +2855,6 @@ export const boughtTooRecentlySchema = z
 	})
 	.strict()
 	.describe("The domain was bought too recently to determine verification status.");
-
-export const registrantFieldSchema = z
-	.discriminatedUnion("type", [
-		z
-			.object({
-				description: z.string(),
-				required: z.boolean(),
-				label: z.string().optional(),
-				validation: z.string().optional(),
-				requiredWhen: z
-					.union([
-						z.string(),
-						z
-							.object({
-								valueIn: z.array(z.string()).optional(),
-							})
-							.strict(),
-					])
-					.optional(),
-				type: z.enum(["string"]),
-				options: z
-					.array(
-						z
-							.object({
-								value: z.string(),
-								label: z.string(),
-								fields: z.object({}).optional(),
-							})
-							.strict(),
-					)
-					.optional(),
-				fields: z.object({}).optional(),
-			})
-			.strict(),
-		z
-			.object({
-				description: z.string(),
-				required: z.boolean(),
-				label: z.string().optional(),
-				validation: z.string().optional(),
-				requiredWhen: z
-					.union([
-						z.string(),
-						z
-							.object({
-								valueIn: z.array(z.string()).optional(),
-							})
-							.strict(),
-					])
-					.optional(),
-				type: z.enum(["enum"]),
-				options: z.array(
-					z
-						.object({
-							value: z.string(),
-							label: z.string(),
-							fields: z.object({}).optional(),
-						})
-						.strict(),
-				),
-				fields: z.object({}).optional(),
-			})
-			.strict(),
-		z
-			.object({
-				description: z.string(),
-				required: z.boolean(),
-				label: z.string().optional(),
-				validation: z.string().optional(),
-				requiredWhen: z
-					.union([
-						z.string(),
-						z
-							.object({
-								valueIn: z.array(z.string()).optional(),
-							})
-							.strict(),
-					])
-					.optional(),
-				type: z.enum(["acknowledgement"]),
-				value: z.string().optional(),
-			})
-			.strict(),
-		z
-			.object({
-				description: z.string(),
-				required: z.boolean(),
-				label: z.string().optional(),
-				validation: z.string().optional(),
-				requiredWhen: z
-					.union([
-						z.string(),
-						z
-							.object({
-								valueIn: z.array(z.string()).optional(),
-							})
-							.strict(),
-					])
-					.optional(),
-				type: z.enum(["notice"]),
-			})
-			.strict(),
-	])
-	.describe("Schema definition for registrant fields.");
 
 export const globalConfigItemValueSchema = z
 	.union([
@@ -10502,6 +10523,7 @@ export const userEventSchema = z
 								]),
 							])
 							.nullable(),
+						passwordChanged: z.union([z.literal(false), z.literal(true)]).optional(),
 					})
 					.strict(),
 				z
@@ -21589,6 +21611,33 @@ export const getDomainPriceErrorSchema = z.union([
 	getDomainPriceStatus500Schema,
 ]);
 
+export const getBulkPriceQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.meta({ examples: ["team_1a2b3c4d5e6f7g8h9i0j1k2l"] });
+
+export const getBulkPriceStatus200Schema = z.unknown();
+
+export const getBulkPriceStatus400Schema = z.unknown();
+
+export const getBulkPriceStatus401Schema = z.unknown();
+
+export const getBulkPriceStatus403Schema = z.unknown();
+
+export const getBulkPriceStatus429Schema = z.unknown();
+
+export const getBulkPriceStatus500Schema = z.unknown();
+
+export const getBulkPriceResponseSchema = getBulkPriceStatus200Schema;
+
+export const getBulkPriceErrorSchema = z.union([
+	getBulkPriceStatus400Schema,
+	getBulkPriceStatus401Schema,
+	getBulkPriceStatus403Schema,
+	getBulkPriceStatus429Schema,
+	getBulkPriceStatus500Schema,
+]);
+
 export const getBulkAvailabilityQueryTeamIdSchema = z
 	.string()
 	.optional()
@@ -21614,6 +21663,62 @@ export const getBulkAvailabilityErrorSchema = z.union([
 	getBulkAvailabilityStatus403Schema,
 	getBulkAvailabilityStatus429Schema,
 	getBulkAvailabilityStatus500Schema,
+]);
+
+export const searchDomainsQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.meta({ examples: ["team_1a2b3c4d5e6f7g8h9i0j1k2l"] });
+
+export const searchDomainsStatus200Schema = z.unknown();
+
+export const searchDomainsStatus400Schema = z.unknown();
+
+export const searchDomainsStatus401Schema = z.unknown();
+
+export const searchDomainsStatus403Schema = z.unknown();
+
+export const searchDomainsStatus429Schema = z.unknown();
+
+export const searchDomainsStatus500Schema = z.unknown();
+
+export const searchDomainsResponseSchema = searchDomainsStatus200Schema;
+
+export const searchDomainsErrorSchema = z.union([
+	searchDomainsStatus400Schema,
+	searchDomainsStatus401Schema,
+	searchDomainsStatus403Schema,
+	searchDomainsStatus429Schema,
+	searchDomainsStatus500Schema,
+]);
+
+export const getContactInfoSchemaPathDomainSchema = z.unknown();
+
+export const getContactInfoSchemaQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.meta({ examples: ["team_1a2b3c4d5e6f7g8h9i0j1k2l"] });
+
+export const getContactInfoSchemaStatus200Schema = z.unknown();
+
+export const getContactInfoSchemaStatus400Schema = z.unknown();
+
+export const getContactInfoSchemaStatus401Schema = z.unknown();
+
+export const getContactInfoSchemaStatus403Schema = z.unknown();
+
+export const getContactInfoSchemaStatus429Schema = z.unknown();
+
+export const getContactInfoSchemaStatus500Schema = z.unknown();
+
+export const getContactInfoSchemaResponseSchema = getContactInfoSchemaStatus200Schema;
+
+export const getContactInfoSchemaErrorSchema = z.union([
+	getContactInfoSchemaStatus400Schema,
+	getContactInfoSchemaStatus401Schema,
+	getContactInfoSchemaStatus403Schema,
+	getContactInfoSchemaStatus429Schema,
+	getContactInfoSchemaStatus500Schema,
 ]);
 
 export const getDomainAuthCodePathDomainSchema = z.unknown();
@@ -21895,35 +22000,6 @@ export const getDomainContactVerificationErrorSchema = z.union([
 	getDomainContactVerificationStatus404Schema,
 	getDomainContactVerificationStatus429Schema,
 	getDomainContactVerificationStatus500Schema,
-]);
-
-export const getContactInfoSchemaPathDomainSchema = z.unknown();
-
-export const getContactInfoSchemaQueryTeamIdSchema = z
-	.string()
-	.optional()
-	.meta({ examples: ["team_1a2b3c4d5e6f7g8h9i0j1k2l"] });
-
-export const getContactInfoSchemaStatus200Schema = z.unknown();
-
-export const getContactInfoSchemaStatus400Schema = z.unknown();
-
-export const getContactInfoSchemaStatus401Schema = z.unknown();
-
-export const getContactInfoSchemaStatus403Schema = z.unknown();
-
-export const getContactInfoSchemaStatus429Schema = z.unknown();
-
-export const getContactInfoSchemaStatus500Schema = z.unknown();
-
-export const getContactInfoSchemaResponseSchema = getContactInfoSchemaStatus200Schema;
-
-export const getContactInfoSchemaErrorSchema = z.union([
-	getContactInfoSchemaStatus400Schema,
-	getContactInfoSchemaStatus401Schema,
-	getContactInfoSchemaStatus403Schema,
-	getContactInfoSchemaStatus429Schema,
-	getContactInfoSchemaStatus500Schema,
 ]);
 
 export const getOrderPathOrderIdSchema = z.unknown();
