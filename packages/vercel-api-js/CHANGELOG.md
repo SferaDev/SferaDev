@@ -1,5 +1,15 @@
 # vercel-api-js
 
+## 1.17.1
+
+### Patch Changes
+
+- 91b3fc9: Reordered properties in ConnectConnector, ConnectConnectorCreateResult, and related types to match schema output and documentation.
+- 91b3fc9: Reordered and refactored properties in aiGatewayVirtualModelConfigSchema for improved clarity and consistency.
+- 91b3fc9: Updated types for ConnectTriggerDestination and ConnectTriggerConfiguration to match schema changes and improve clarity.
+- 91b3fc9: Reordered and refactored properties in types for AiGatewayVirtualModelConfig and PrivateLinkEndpoint for better documentation alignment.
+- 91b3fc9: Reordered and clarified properties in user event, team, auth, and related types for better generated documentation consistency.
+
 ## 1.17.0
 
 ### Minor Changes
