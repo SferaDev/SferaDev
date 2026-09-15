@@ -1,5 +1,18 @@
 # vercel-api-js
 
+## 1.17.0
+
+### Minor Changes
+
+- 47e4c0b: Added getBulkPrice API endpoint to retrieve price data for multiple domains in a single request.
+- 47e4c0b: Added searchDomains API endpoint to check domain availability and pricing for multiple domain names.
+
+### Patch Changes
+
+- 47e4c0b: Added emojiTldNotSupported error schema to indicate when emoji domains are not supported for a TLD.
+- 47e4c0b: Added a knownStale property to ConnectConnector and ConnectConnectorCreateResult types indicating whether the connector package is outdated.
+- 47e4c0b: Reintroduced getContactInfoSchema API endpoint for retrieving TLD-specific contact info schema and updated its registration in API paths.
+
 ## 1.16.1
 
 ### Patch Changes
