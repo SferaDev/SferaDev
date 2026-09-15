@@ -1,5 +1,15 @@
 # zoom-api-js
 
+## 1.2.0
+
+### Minor Changes
+
+- 342740f: Added occurrence_id field to PastMeetingsStatus200 and PastWebinarsStatus200 schemas and types.
+
+### Patch Changes
+
+- 342740f: Improved description for uuid field in PastMeetingsStatus200 and PastWebinarsStatus200 schemas and types.
+
 ## 1.1.2
 
 ### Patch Changes
