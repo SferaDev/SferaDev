@@ -10176,6 +10176,14 @@ export const userEventSchema = z
 					.strict(),
 				z
 					.object({
+						email: z.string(),
+						name: z.string(),
+						projectId: z.string(),
+						sandboxId: z.string(),
+					})
+					.strict(),
+				z
+					.object({
 						instances: z.number(),
 						url: z.string(),
 					})
@@ -12768,6 +12776,7 @@ export const userEventSchema = z
 				"sandbox-alias-delete",
 				"sandbox-drive-created",
 				"sandbox-drive-deleted",
+				"sandbox-signed-commit-identity-configured",
 				"sandbox-snapshot-regions-updated",
 				"scale",
 				"scale-auto",
@@ -13561,6 +13570,7 @@ export const listEventTypeSchema = z
 				"sandbox-alias-delete",
 				"sandbox-drive-created",
 				"sandbox-drive-deleted",
+				"sandbox-signed-commit-identity-configured",
 				"sandbox-snapshot-regions-updated",
 				"scale",
 				"scale-auto",
@@ -14248,6 +14258,7 @@ export const listEventTypeSchema = z
 					"sandbox-alias-delete",
 					"sandbox-drive-created",
 					"sandbox-drive-deleted",
+					"sandbox-signed-commit-identity-configured",
 					"sandbox-snapshot-regions-updated",
 					"scale",
 					"scale-auto",
@@ -29971,6 +29982,8 @@ export const createSandboxesV2Status429Schema = z.unknown();
 
 export const createSandboxesV2Status500Schema = z.unknown();
 
+export const createSandboxesV2Status502Schema = z.unknown();
+
 export const createSandboxesV2ResponseSchema = createSandboxesV2Status200Schema;
 
 export const createSandboxesV2ErrorSchema = z.union([
@@ -29984,6 +29997,7 @@ export const createSandboxesV2ErrorSchema = z.union([
 	createSandboxesV2Status422Schema,
 	createSandboxesV2Status429Schema,
 	createSandboxesV2Status500Schema,
+	createSandboxesV2Status502Schema,
 ]);
 
 export const listDrivesQueryProjectIdSchema = z
@@ -30513,6 +30527,8 @@ export const getNamedSandboxStatus429Schema = z.unknown();
 
 export const getNamedSandboxStatus500Schema = z.unknown();
 
+export const getNamedSandboxStatus502Schema = z.unknown();
+
 export const getNamedSandboxResponseSchema = getNamedSandboxStatus200Schema;
 
 export const getNamedSandboxErrorSchema = z.union([
@@ -30525,6 +30541,7 @@ export const getNamedSandboxErrorSchema = z.union([
 	getNamedSandboxStatus410Schema,
 	getNamedSandboxStatus429Schema,
 	getNamedSandboxStatus500Schema,
+	getNamedSandboxStatus502Schema,
 ]);
 
 export const updateSandboxPathNameSchema = z
@@ -30584,6 +30601,8 @@ export const updateSandboxStatus429Schema = z.unknown();
 
 export const updateSandboxStatus500Schema = z.unknown();
 
+export const updateSandboxStatus502Schema = z.unknown();
+
 export const updateSandboxResponseSchema = updateSandboxStatus200Schema;
 
 export const updateSandboxErrorSchema = z.union([
@@ -30597,6 +30616,7 @@ export const updateSandboxErrorSchema = z.union([
 	updateSandboxStatus422Schema,
 	updateSandboxStatus429Schema,
 	updateSandboxStatus500Schema,
+	updateSandboxStatus502Schema,
 ]);
 
 export const deleteSandboxPathNameSchema = z
@@ -31317,6 +31337,8 @@ export const createSandboxesByNameForkV2Status429Schema = z.unknown();
 
 export const createSandboxesByNameForkV2Status500Schema = z.unknown();
 
+export const createSandboxesByNameForkV2Status502Schema = z.unknown();
+
 export const createSandboxesByNameForkV2ResponseSchema = createSandboxesByNameForkV2Status200Schema;
 
 export const createSandboxesByNameForkV2ErrorSchema = z.union([
@@ -31330,6 +31352,7 @@ export const createSandboxesByNameForkV2ErrorSchema = z.union([
 	createSandboxesByNameForkV2Status422Schema,
 	createSandboxesByNameForkV2Status429Schema,
 	createSandboxesByNameForkV2Status500Schema,
+	createSandboxesByNameForkV2Status502Schema,
 ]);
 
 export const createSandboxesV3QueryTeamIdSchema = z
@@ -31366,6 +31389,8 @@ export const createSandboxesV3Status429Schema = z.unknown();
 
 export const createSandboxesV3Status500Schema = z.unknown();
 
+export const createSandboxesV3Status502Schema = z.unknown();
+
 export const createSandboxesV3ResponseSchema = createSandboxesV3Status200Schema;
 
 export const createSandboxesV3ErrorSchema = z.union([
@@ -31379,6 +31404,7 @@ export const createSandboxesV3ErrorSchema = z.union([
 	createSandboxesV3Status422Schema,
 	createSandboxesV3Status429Schema,
 	createSandboxesV3Status500Schema,
+	createSandboxesV3Status502Schema,
 ]);
 
 export const createSandboxesSessionsBySessionIdSnapshotV3PathSessionIdSchema = z
@@ -31481,6 +31507,8 @@ export const createSandboxesByNameForkV3Status429Schema = z.unknown();
 
 export const createSandboxesByNameForkV3Status500Schema = z.unknown();
 
+export const createSandboxesByNameForkV3Status502Schema = z.unknown();
+
 export const createSandboxesByNameForkV3ResponseSchema = createSandboxesByNameForkV3Status200Schema;
 
 export const createSandboxesByNameForkV3ErrorSchema = z.union([
@@ -31494,6 +31522,7 @@ export const createSandboxesByNameForkV3ErrorSchema = z.union([
 	createSandboxesByNameForkV3Status422Schema,
 	createSandboxesByNameForkV3Status429Schema,
 	createSandboxesByNameForkV3Status500Schema,
+	createSandboxesByNameForkV3Status502Schema,
 ]);
 
 export const createSandboxesV4QueryTeamIdSchema = z
@@ -31530,6 +31559,8 @@ export const createSandboxesV4Status429Schema = z.unknown();
 
 export const createSandboxesV4Status500Schema = z.unknown();
 
+export const createSandboxesV4Status502Schema = z.unknown();
+
 export const createSandboxesV4ResponseSchema = createSandboxesV4Status200Schema;
 
 export const createSandboxesV4ErrorSchema = z.union([
@@ -31543,6 +31574,7 @@ export const createSandboxesV4ErrorSchema = z.union([
 	createSandboxesV4Status422Schema,
 	createSandboxesV4Status429Schema,
 	createSandboxesV4Status500Schema,
+	createSandboxesV4Status502Schema,
 ]);
 
 export const updateAttackChallengeModeQueryTeamIdSchema = z
