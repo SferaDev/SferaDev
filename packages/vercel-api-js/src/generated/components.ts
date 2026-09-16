@@ -444,6 +444,7 @@ import type {
 	CreateSandboxesByNameForkV2Status422,
 	CreateSandboxesByNameForkV2Status429,
 	CreateSandboxesByNameForkV2Status500,
+	CreateSandboxesByNameForkV2Status502,
 	CreateSandboxesByNameForkV3Response,
 	CreateSandboxesByNameForkV3Status400,
 	CreateSandboxesByNameForkV3Status401,
@@ -455,6 +456,7 @@ import type {
 	CreateSandboxesByNameForkV3Status422,
 	CreateSandboxesByNameForkV3Status429,
 	CreateSandboxesByNameForkV3Status500,
+	CreateSandboxesByNameForkV3Status502,
 	CreateSandboxesSessionsBySessionIdSnapshotV2Response,
 	CreateSandboxesSessionsBySessionIdSnapshotV2Status400,
 	CreateSandboxesSessionsBySessionIdSnapshotV2Status401,
@@ -486,6 +488,7 @@ import type {
 	CreateSandboxesV2Status422,
 	CreateSandboxesV2Status429,
 	CreateSandboxesV2Status500,
+	CreateSandboxesV2Status502,
 	CreateSandboxesV3Response,
 	CreateSandboxesV3Status400,
 	CreateSandboxesV3Status401,
@@ -497,6 +500,7 @@ import type {
 	CreateSandboxesV3Status422,
 	CreateSandboxesV3Status429,
 	CreateSandboxesV3Status500,
+	CreateSandboxesV3Status502,
 	CreateSandboxesV4Response,
 	CreateSandboxesV4Status400,
 	CreateSandboxesV4Status401,
@@ -508,6 +512,7 @@ import type {
 	CreateSandboxesV4Status422,
 	CreateSandboxesV4Status429,
 	CreateSandboxesV4Status500,
+	CreateSandboxesV4Status502,
 	CreateSdkKeyResponse,
 	CreateSdkKeyStatus400,
 	CreateSdkKeyStatus401,
@@ -1443,6 +1448,7 @@ import type {
 	GetNamedSandboxStatus410,
 	GetNamedSandboxStatus429,
 	GetNamedSandboxStatus500,
+	GetNamedSandboxStatus502,
 	GetObservabilityConfigurationProjectsResponse,
 	GetObservabilityConfigurationProjectsStatus400,
 	GetObservabilityConfigurationProjectsStatus401,
@@ -2713,6 +2719,7 @@ import type {
 	UpdateSandboxStatus422,
 	UpdateSandboxStatus429,
 	UpdateSandboxStatus500,
+	UpdateSandboxStatus502,
 	UpdateSessionNetworkPolicyResponse,
 	UpdateSessionNetworkPolicyStatus400,
 	UpdateSessionNetworkPolicyStatus401,
@@ -16675,6 +16682,7 @@ export async function createSandboxesV2(
 			| CreateSandboxesV2Status422
 			| CreateSandboxesV2Status429
 			| CreateSandboxesV2Status500
+			| CreateSandboxesV2Status502
 		>,
 		null,
 		Record<string, string>,
@@ -17132,6 +17140,7 @@ export async function getNamedSandbox(
 			| GetNamedSandboxStatus410
 			| GetNamedSandboxStatus429
 			| GetNamedSandboxStatus500
+			| GetNamedSandboxStatus502
 		>,
 		null,
 		Record<string, string>,
@@ -17182,6 +17191,7 @@ export async function updateSandbox(
 			| UpdateSandboxStatus422
 			| UpdateSandboxStatus429
 			| UpdateSandboxStatus500
+			| UpdateSandboxStatus502
 		>,
 		null,
 		Record<string, string>,
@@ -17872,6 +17882,7 @@ export async function createSandboxesByNameForkV2(
 			| CreateSandboxesByNameForkV2Status422
 			| CreateSandboxesByNameForkV2Status429
 			| CreateSandboxesByNameForkV2Status500
+			| CreateSandboxesByNameForkV2Status502
 		>,
 		null,
 		Record<string, string>,
@@ -17917,6 +17928,7 @@ export async function createSandboxesV3(
 			| CreateSandboxesV3Status422
 			| CreateSandboxesV3Status429
 			| CreateSandboxesV3Status500
+			| CreateSandboxesV3Status502
 		>,
 		null,
 		Record<string, string>,
@@ -18016,6 +18028,7 @@ export async function createSandboxesByNameForkV3(
 			| CreateSandboxesByNameForkV3Status422
 			| CreateSandboxesByNameForkV3Status429
 			| CreateSandboxesByNameForkV3Status500
+			| CreateSandboxesByNameForkV3Status502
 		>,
 		null,
 		Record<string, string>,
@@ -18061,6 +18074,7 @@ export async function createSandboxesV4(
 			| CreateSandboxesV4Status422
 			| CreateSandboxesV4Status429
 			| CreateSandboxesV4Status500
+			| CreateSandboxesV4Status502
 		>,
 		null,
 		Record<string, string>,

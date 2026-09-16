@@ -7128,6 +7128,7 @@ export const userEventTypeEnum = {
 	"sandbox-alias-delete": "sandbox-alias-delete",
 	"sandbox-drive-created": "sandbox-drive-created",
 	"sandbox-drive-deleted": "sandbox-drive-deleted",
+	"sandbox-signed-commit-identity-configured": "sandbox-signed-commit-identity-configured",
 	"sandbox-snapshot-regions-updated": "sandbox-snapshot-regions-updated",
 	scale: "scale",
 	"scale-auto": "scale-auto",
@@ -12976,6 +12977,12 @@ export type UserEvent = {
 						targetRegions: string[];
 				  }
 				| {
+						email: string;
+						name: string;
+						projectId: string;
+						sandboxId: string;
+				  }
+				| {
 						instances: number;
 						url: string;
 				  }
@@ -15505,6 +15512,7 @@ export const listEventTypeNameEnum = {
 	"sandbox-alias-delete": "sandbox-alias-delete",
 	"sandbox-drive-created": "sandbox-drive-created",
 	"sandbox-drive-deleted": "sandbox-drive-deleted",
+	"sandbox-signed-commit-identity-configured": "sandbox-signed-commit-identity-configured",
 	"sandbox-snapshot-regions-updated": "sandbox-snapshot-regions-updated",
 	scale: "scale",
 	"scale-auto": "scale-auto",
@@ -16206,6 +16214,7 @@ export const listEventTypeReplacedByEnum = {
 	"sandbox-alias-delete": "sandbox-alias-delete",
 	"sandbox-drive-created": "sandbox-drive-created",
 	"sandbox-drive-deleted": "sandbox-drive-deleted",
+	"sandbox-signed-commit-identity-configured": "sandbox-signed-commit-identity-configured",
 	"sandbox-snapshot-regions-updated": "sandbox-snapshot-regions-updated",
 	scale: "scale",
 	"scale-auto": "scale-auto",
@@ -39591,6 +39600,8 @@ export type CreateSandboxesV2Status429 = unknown;
 
 export type CreateSandboxesV2Status500 = unknown;
 
+export type CreateSandboxesV2Status502 = unknown;
+
 export type CreateSandboxesV2Options = {
 	body?: never | undefined;
 	path?: never | undefined;
@@ -39610,6 +39621,7 @@ export type CreateSandboxesV2Responses = {
 	"422": CreateSandboxesV2Status422;
 	"429": CreateSandboxesV2Status429;
 	"500": CreateSandboxesV2Status500;
+	"502": CreateSandboxesV2Status502;
 };
 
 /**
@@ -39626,7 +39638,8 @@ export type CreateSandboxesV2Response =
 	| CreateSandboxesV2Status410
 	| CreateSandboxesV2Status422
 	| CreateSandboxesV2Status429
-	| CreateSandboxesV2Status500;
+	| CreateSandboxesV2Status500
+	| CreateSandboxesV2Status502;
 
 export const listDrivesSortBy = {
 	createdAt: "createdAt",
@@ -40369,6 +40382,8 @@ export type GetNamedSandboxStatus429 = unknown;
 
 export type GetNamedSandboxStatus500 = unknown;
 
+export type GetNamedSandboxStatus502 = unknown;
+
 export type GetNamedSandboxOptions = {
 	body?: never | undefined;
 	path: GetNamedSandboxPath;
@@ -40387,6 +40402,7 @@ export type GetNamedSandboxResponses = {
 	"410": GetNamedSandboxStatus410;
 	"429": GetNamedSandboxStatus429;
 	"500": GetNamedSandboxStatus500;
+	"502": GetNamedSandboxStatus502;
 };
 
 /**
@@ -40402,7 +40418,8 @@ export type GetNamedSandboxResponse =
 	| GetNamedSandboxStatus409
 	| GetNamedSandboxStatus410
 	| GetNamedSandboxStatus429
-	| GetNamedSandboxStatus500;
+	| GetNamedSandboxStatus500
+	| GetNamedSandboxStatus502;
 
 export type UpdateSandboxPath = {
 	/**
@@ -40464,6 +40481,8 @@ export type UpdateSandboxStatus429 = unknown;
 
 export type UpdateSandboxStatus500 = unknown;
 
+export type UpdateSandboxStatus502 = unknown;
+
 export type UpdateSandboxOptions = {
 	body?: never | undefined;
 	path: UpdateSandboxPath;
@@ -40483,6 +40502,7 @@ export type UpdateSandboxResponses = {
 	"422": UpdateSandboxStatus422;
 	"429": UpdateSandboxStatus429;
 	"500": UpdateSandboxStatus500;
+	"502": UpdateSandboxStatus502;
 };
 
 /**
@@ -40499,7 +40519,8 @@ export type UpdateSandboxResponse =
 	| UpdateSandboxStatus410
 	| UpdateSandboxStatus422
 	| UpdateSandboxStatus429
-	| UpdateSandboxStatus500;
+	| UpdateSandboxStatus500
+	| UpdateSandboxStatus502;
 
 export type DeleteSandboxPath = {
 	/**
@@ -41578,6 +41599,8 @@ export type CreateSandboxesByNameForkV2Status429 = unknown;
 
 export type CreateSandboxesByNameForkV2Status500 = unknown;
 
+export type CreateSandboxesByNameForkV2Status502 = unknown;
+
 export type CreateSandboxesByNameForkV2Options = {
 	body?: never | undefined;
 	path: CreateSandboxesByNameForkV2Path;
@@ -41597,6 +41620,7 @@ export type CreateSandboxesByNameForkV2Responses = {
 	"422": CreateSandboxesByNameForkV2Status422;
 	"429": CreateSandboxesByNameForkV2Status429;
 	"500": CreateSandboxesByNameForkV2Status500;
+	"502": CreateSandboxesByNameForkV2Status502;
 };
 
 /**
@@ -41613,7 +41637,8 @@ export type CreateSandboxesByNameForkV2Response =
 	| CreateSandboxesByNameForkV2Status410
 	| CreateSandboxesByNameForkV2Status422
 	| CreateSandboxesByNameForkV2Status429
-	| CreateSandboxesByNameForkV2Status500;
+	| CreateSandboxesByNameForkV2Status500
+	| CreateSandboxesByNameForkV2Status502;
 
 export type CreateSandboxesV3Query = {
 	/**
@@ -41652,6 +41677,8 @@ export type CreateSandboxesV3Status429 = unknown;
 
 export type CreateSandboxesV3Status500 = unknown;
 
+export type CreateSandboxesV3Status502 = unknown;
+
 export type CreateSandboxesV3Options = {
 	body?: never | undefined;
 	path?: never | undefined;
@@ -41671,6 +41698,7 @@ export type CreateSandboxesV3Responses = {
 	"422": CreateSandboxesV3Status422;
 	"429": CreateSandboxesV3Status429;
 	"500": CreateSandboxesV3Status500;
+	"502": CreateSandboxesV3Status502;
 };
 
 /**
@@ -41687,7 +41715,8 @@ export type CreateSandboxesV3Response =
 	| CreateSandboxesV3Status410
 	| CreateSandboxesV3Status422
 	| CreateSandboxesV3Status429
-	| CreateSandboxesV3Status500;
+	| CreateSandboxesV3Status500
+	| CreateSandboxesV3Status502;
 
 export type CreateSandboxesSessionsBySessionIdSnapshotV3Path = {
 	/**
@@ -41821,6 +41850,8 @@ export type CreateSandboxesByNameForkV3Status429 = unknown;
 
 export type CreateSandboxesByNameForkV3Status500 = unknown;
 
+export type CreateSandboxesByNameForkV3Status502 = unknown;
+
 export type CreateSandboxesByNameForkV3Options = {
 	body?: never | undefined;
 	path: CreateSandboxesByNameForkV3Path;
@@ -41840,6 +41871,7 @@ export type CreateSandboxesByNameForkV3Responses = {
 	"422": CreateSandboxesByNameForkV3Status422;
 	"429": CreateSandboxesByNameForkV3Status429;
 	"500": CreateSandboxesByNameForkV3Status500;
+	"502": CreateSandboxesByNameForkV3Status502;
 };
 
 /**
@@ -41856,7 +41888,8 @@ export type CreateSandboxesByNameForkV3Response =
 	| CreateSandboxesByNameForkV3Status410
 	| CreateSandboxesByNameForkV3Status422
 	| CreateSandboxesByNameForkV3Status429
-	| CreateSandboxesByNameForkV3Status500;
+	| CreateSandboxesByNameForkV3Status500
+	| CreateSandboxesByNameForkV3Status502;
 
 export type CreateSandboxesV4Query = {
 	/**
@@ -41895,6 +41928,8 @@ export type CreateSandboxesV4Status429 = unknown;
 
 export type CreateSandboxesV4Status500 = unknown;
 
+export type CreateSandboxesV4Status502 = unknown;
+
 export type CreateSandboxesV4Options = {
 	body?: never | undefined;
 	path?: never | undefined;
@@ -41914,6 +41949,7 @@ export type CreateSandboxesV4Responses = {
 	"422": CreateSandboxesV4Status422;
 	"429": CreateSandboxesV4Status429;
 	"500": CreateSandboxesV4Status500;
+	"502": CreateSandboxesV4Status502;
 };
 
 /**
@@ -41930,7 +41966,8 @@ export type CreateSandboxesV4Response =
 	| CreateSandboxesV4Status410
 	| CreateSandboxesV4Status422
 	| CreateSandboxesV4Status429
-	| CreateSandboxesV4Status500;
+	| CreateSandboxesV4Status500
+	| CreateSandboxesV4Status502;
 
 export type UpdateAttackChallengeModeQuery = {
 	/**
