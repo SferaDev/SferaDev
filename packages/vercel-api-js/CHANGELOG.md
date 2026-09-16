@@ -1,5 +1,15 @@
 # vercel-api-js
 
+## 1.18.0
+
+### Minor Changes
+
+- 3bcb19b: Added new event type 'project-custom-environment-schedules-default-updated' to event schemas and types.
+
+### Patch Changes
+
+- 3bcb19b: Extended user event schema to support enableSchedulesByDefault for project custom environments.
+
 ## 1.17.1
 
 ### Patch Changes
