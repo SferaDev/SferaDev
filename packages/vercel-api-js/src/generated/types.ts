@@ -6950,6 +6950,7 @@ export const userEventTypeEnum = {
 	"organization-delete": "organization-delete",
 	"organization-dsync-group-delete": "organization-dsync-group-delete",
 	"organization-dsync-group-upsert": "organization-dsync-group-upsert",
+	"organization-emu-team-updated": "organization-emu-team-updated",
 	"organization-emu-updated": "organization-emu-updated",
 	"organization-slug-update": "organization-slug-update",
 	"organization-team-add": "organization-team-add",
@@ -11742,6 +11743,12 @@ export type UserEvent = {
 						unenforcedTeamIds: string[];
 				  }
 				| {
+						enabled: false | true;
+						organizationId: string;
+						teamId: string;
+						teamSlug: string;
+				  }
+				| {
 						organizationId: string;
 						slug: string;
 				  }
@@ -15320,6 +15327,7 @@ export const listEventTypeNameEnum = {
 	"organization-delete": "organization-delete",
 	"organization-dsync-group-delete": "organization-dsync-group-delete",
 	"organization-dsync-group-upsert": "organization-dsync-group-upsert",
+	"organization-emu-team-updated": "organization-emu-team-updated",
 	"organization-emu-updated": "organization-emu-updated",
 	"organization-slug-update": "organization-slug-update",
 	"organization-team-add": "organization-team-add",
@@ -16020,6 +16028,7 @@ export const listEventTypeReplacedByEnum = {
 	"organization-delete": "organization-delete",
 	"organization-dsync-group-delete": "organization-dsync-group-delete",
 	"organization-dsync-group-upsert": "organization-dsync-group-upsert",
+	"organization-emu-team-updated": "organization-emu-team-updated",
 	"organization-emu-updated": "organization-emu-updated",
 	"organization-slug-update": "organization-slug-update",
 	"organization-team-add": "organization-team-add",

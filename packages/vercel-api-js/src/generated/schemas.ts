@@ -8475,6 +8475,14 @@ export const userEventSchema = z
 					.strict(),
 				z
 					.object({
+						enabled: z.union([z.literal(false), z.literal(true)]),
+						organizationId: z.string(),
+						teamId: z.string(),
+						teamSlug: z.string(),
+					})
+					.strict(),
+				z
+					.object({
 						organizationId: z.string(),
 						slug: z.string(),
 					})
@@ -12592,6 +12600,7 @@ export const userEventSchema = z
 				"organization-delete",
 				"organization-dsync-group-delete",
 				"organization-dsync-group-upsert",
+				"organization-emu-team-updated",
 				"organization-emu-updated",
 				"organization-slug-update",
 				"organization-team-add",
@@ -13384,6 +13393,7 @@ export const listEventTypeSchema = z
 				"organization-delete",
 				"organization-dsync-group-delete",
 				"organization-dsync-group-upsert",
+				"organization-emu-team-updated",
 				"organization-emu-updated",
 				"organization-slug-update",
 				"organization-team-add",
@@ -14070,6 +14080,7 @@ export const listEventTypeSchema = z
 					"organization-delete",
 					"organization-dsync-group-delete",
 					"organization-dsync-group-upsert",
+					"organization-emu-team-updated",
 					"organization-emu-updated",
 					"organization-slug-update",
 					"organization-team-add",
