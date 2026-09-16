@@ -1,5 +1,12 @@
 # vercel-api-js
 
+## 1.18.1
+
+### Patch Changes
+
+- aac170b: Add a new user event payload variant for organization EMU team updates with enabled, organizationId, teamId, and teamSlug fields.
+- aac170b: Add support for 'organization-emu-team-updated' event type to user, list, and replaced-by event schemas and enums.
+
 ## 1.18.0
 
 ### Minor Changes
