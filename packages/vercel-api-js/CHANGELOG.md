@@ -1,5 +1,16 @@
 # vercel-api-js
 
+## 1.19.0
+
+### Minor Changes
+
+- 6d8b5e7: Added a new user event type 'sandbox-signed-commit-identity-configured'.
+
+### Patch Changes
+
+- 6d8b5e7: Extended the UserEvent type with new fields for the 'sandbox-signed-commit-identity-configured' event.
+- 6d8b5e7: Added 502 status response types to multiple sandbox-related endpoints (V2, V3, V4, ByNameFork, update, getNamedSandbox).
+
 ## 1.18.1
 
 ### Patch Changes
