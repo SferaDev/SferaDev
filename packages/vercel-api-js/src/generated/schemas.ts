@@ -9263,6 +9263,24 @@ export const userEventSchema = z
 					.object({
 						customEnvironmentId: z.string(),
 						customEnvironmentSlug: z.string(),
+						enableSchedulesByDefault: z.union([z.literal(false), z.literal(true)]),
+						projectId: z.string(),
+						projectName: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						customEnvironmentId: z.string(),
+						customEnvironmentSlug: z.string(),
+						enableSchedulesByDefault: z.union([z.literal(false), z.literal(true)]).optional(),
+						projectId: z.string(),
+						projectName: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						customEnvironmentId: z.string(),
+						customEnvironmentSlug: z.string(),
 						projectId: z.string(),
 						projectName: z.string(),
 					})
@@ -12631,6 +12649,7 @@ export const userEventSchema = z
 				"project-cron-jobs-toggled",
 				"project-custom-environment-created",
 				"project-custom-environment-deleted",
+				"project-custom-environment-schedules-default-updated",
 				"project-custom-environment-updated",
 				"project-customer-success-code-visibility-updated",
 				"project-delete",
@@ -13422,6 +13441,7 @@ export const listEventTypeSchema = z
 				"project-cron-jobs-toggled",
 				"project-custom-environment-created",
 				"project-custom-environment-deleted",
+				"project-custom-environment-schedules-default-updated",
 				"project-custom-environment-updated",
 				"project-customer-success-code-visibility-updated",
 				"project-delete",
@@ -14107,6 +14127,7 @@ export const listEventTypeSchema = z
 					"project-cron-jobs-toggled",
 					"project-custom-environment-created",
 					"project-custom-environment-deleted",
+					"project-custom-environment-schedules-default-updated",
 					"project-custom-environment-updated",
 					"project-customer-success-code-visibility-updated",
 					"project-delete",

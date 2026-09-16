@@ -7010,6 +7010,8 @@ export const userEventTypeEnum = {
 	"project-cron-jobs-toggled": "project-cron-jobs-toggled",
 	"project-custom-environment-created": "project-custom-environment-created",
 	"project-custom-environment-deleted": "project-custom-environment-deleted",
+	"project-custom-environment-schedules-default-updated":
+		"project-custom-environment-schedules-default-updated",
 	"project-custom-environment-updated": "project-custom-environment-updated",
 	"project-customer-success-code-visibility-updated":
 		"project-customer-success-code-visibility-updated",
@@ -12328,6 +12330,20 @@ export type UserEvent = {
 				| {
 						customEnvironmentId: string;
 						customEnvironmentSlug: string;
+						enableSchedulesByDefault: false | true;
+						projectId: string;
+						projectName: string;
+				  }
+				| {
+						customEnvironmentId: string;
+						customEnvironmentSlug: string;
+						enableSchedulesByDefault?: (false | true) | undefined;
+						projectId: string;
+						projectName: string;
+				  }
+				| {
+						customEnvironmentId: string;
+						customEnvironmentSlug: string;
 						projectId: string;
 						projectName: string;
 				  }
@@ -15364,6 +15380,8 @@ export const listEventTypeNameEnum = {
 	"project-cron-jobs-toggled": "project-cron-jobs-toggled",
 	"project-custom-environment-created": "project-custom-environment-created",
 	"project-custom-environment-deleted": "project-custom-environment-deleted",
+	"project-custom-environment-schedules-default-updated":
+		"project-custom-environment-schedules-default-updated",
 	"project-custom-environment-updated": "project-custom-environment-updated",
 	"project-customer-success-code-visibility-updated":
 		"project-customer-success-code-visibility-updated",
@@ -16062,6 +16080,8 @@ export const listEventTypeReplacedByEnum = {
 	"project-cron-jobs-toggled": "project-cron-jobs-toggled",
 	"project-custom-environment-created": "project-custom-environment-created",
 	"project-custom-environment-deleted": "project-custom-environment-deleted",
+	"project-custom-environment-schedules-default-updated":
+		"project-custom-environment-schedules-default-updated",
 	"project-custom-environment-updated": "project-custom-environment-updated",
 	"project-customer-success-code-visibility-updated":
 		"project-customer-success-code-visibility-updated",
