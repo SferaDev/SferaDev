@@ -1,5 +1,14 @@
 # vercel-api-js
 
+## 1.19.3
+
+### Patch Changes
+
+- b7a96b5: Added new event types: organization-sso-enforced, organization-update-account-flow-dismissed, and organization-update-account-flow-triggered to user and event type enums.
+- b7a96b5: Added optional createdBy field to AiGatewayVirtualModelConfig to indicate the user or app that created the VMC.
+- b7a96b5: Expanded the description of updatedBy in AiGatewayVirtualModelConfig to include app IDs as well as user IDs.
+- b7a96b5: Added new user event schemas and types related to organization SSO enforcement and organization account flow triggers and dismissals.
+
 ## 1.19.2
 
 ### Patch Changes
