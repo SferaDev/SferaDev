@@ -3442,6 +3442,46 @@ export const userEventSchema = z
 					.strict(),
 				z
 					.object({
+						changedFields: z
+							.array(
+								z.enum([
+									"allowFallbackFromFast",
+									"baseUrl",
+									"byokCredentialIds",
+									"caching",
+									"description",
+									"disallowPromptTraining",
+									"displayName",
+									"has",
+									"hipaaCompliant",
+									"inferenceRegion",
+									"modelSlug",
+									"models",
+									"observabilityTags",
+									"providerOnly",
+									"providerOptions",
+									"providerOrder",
+									"providerTimeouts",
+									"requires",
+									"selector",
+									"serviceTier",
+									"sort",
+									"speed",
+									"status",
+									"visibility",
+									"zeroDataRetention",
+								]),
+							)
+							.optional(),
+						virtualModelConfig: z.object({
+							displayName: z.string().optional(),
+							id: z.string(),
+							modelSlug: z.string().optional(),
+						}),
+					})
+					.strict(),
+				z
+					.object({
 						accessGroup: z.object({
 							id: z.string(),
 							name: z.string(),
