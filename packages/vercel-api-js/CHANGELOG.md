@@ -1,5 +1,11 @@
 # vercel-api-js
 
+## 1.20.0
+
+### Minor Changes
+
+- 695a9e3: Add support for user event objects representing changes to virtual model configuration with a changedFields array and virtualModelConfig object.
+
 ## 1.19.3
 
 ### Patch Changes
