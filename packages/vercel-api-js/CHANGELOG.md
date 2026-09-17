@@ -1,5 +1,11 @@
 # vercel-api-js
 
+## 1.19.2
+
+### Patch Changes
+
+- 99d9175: Removed the 'AiGatewayApiKeyOwnedBySelf' team permission and added a new 'AiGatewayUser' team permission to relevant schema and types.
+
 ## 1.19.1
 
 ### Patch Changes
