@@ -1,5 +1,11 @@
 # vercel-api-js
 
+## 1.19.1
+
+### Patch Changes
+
+- 61d28f5: Added 'read-write:schedule' and 'read:schedule' permissions to user event schemas and types.
+
 ## 1.19.0
 
 ### Minor Changes
