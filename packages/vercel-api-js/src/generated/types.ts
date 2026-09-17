@@ -4472,6 +4472,18 @@ export const userEventPayloadRetentionDefaultModeEnum = {
 export type UserEventPayloadRetentionDefaultModeEnumKey =
 	(typeof userEventPayloadRetentionDefaultModeEnum)[keyof typeof userEventPayloadRetentionDefaultModeEnum];
 
+export const userEventPayloadChangedFieldsEnum = {
+	address: "address",
+	email: "email",
+	language: "language",
+	name: "name",
+	purchaseOrder: "purchaseOrder",
+	tax: "tax",
+} as const;
+
+export type UserEventPayloadChangedFieldsEnumKey =
+	(typeof userEventPayloadChangedFieldsEnum)[keyof typeof userEventPayloadChangedFieldsEnum];
+
 export const userEventPayloadNextRoleEnum = {
 	ADMIN: "ADMIN",
 	PROJECT_DEVELOPER: "PROJECT_DEVELOPER",
@@ -4813,18 +4825,6 @@ export const userEventPayloadSettlementMethodEnum = {
 
 export type UserEventPayloadSettlementMethodEnumKey =
 	(typeof userEventPayloadSettlementMethodEnum)[keyof typeof userEventPayloadSettlementMethodEnum];
-
-export const userEventPayloadChangedFieldsEnum = {
-	address: "address",
-	email: "email",
-	language: "language",
-	name: "name",
-	purchaseOrder: "purchaseOrder",
-	tax: "tax",
-} as const;
-
-export type UserEventPayloadChangedFieldsEnumKey =
-	(typeof userEventPayloadChangedFieldsEnum)[keyof typeof userEventPayloadChangedFieldsEnum];
 
 export const userEventPayloadDataPlanSlugEnum = {
 	v0_business: "v0_business",
@@ -7804,6 +7804,14 @@ export type UserEvent = {
 						};
 				  }
 				| {
+						virtualModelConfig: {
+							displayName?: string | undefined;
+							id: string;
+							modelSlug?: string | undefined;
+						};
+				  }
+				| {
+						changedFields?: UserEventPayloadChangedFieldsEnumKey[] | undefined;
 						virtualModelConfig: {
 							displayName?: string | undefined;
 							id: string;
