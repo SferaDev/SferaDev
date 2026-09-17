@@ -98,6 +98,11 @@ export type AiGatewayVirtualModelConfig = {
 	 */
 	createdAt: number;
 	/**
+	 * @description User or app id that created this VMC.
+	 * @type string | undefined
+	 */
+	createdBy?: string | undefined;
+	/**
 	 * @description Whether this VMC is soft-deleted.
 	 * @type boolean
 	 */
@@ -273,7 +278,7 @@ export type AiGatewayVirtualModelConfig = {
 	 */
 	updatedAt: number;
 	/**
-	 * @description User id that last updated this VMC.
+	 * @description User or app id that last updated this VMC.
 	 * @type string | undefined
 	 */
 	updatedBy?: string | undefined;
@@ -6961,10 +6966,13 @@ export const userEventTypeEnum = {
 	"organization-emu-team-updated": "organization-emu-team-updated",
 	"organization-emu-updated": "organization-emu-updated",
 	"organization-slug-update": "organization-slug-update",
+	"organization-sso-enforced": "organization-sso-enforced",
 	"organization-team-add": "organization-team-add",
 	"organization-team-create": "organization-team-create",
 	"organization-team-delete": "organization-team-delete",
 	"organization-team-sso-update": "organization-team-sso-update",
+	"organization-update-account-flow-dismissed": "organization-update-account-flow-dismissed",
+	"organization-update-account-flow-triggered": "organization-update-account-flow-triggered",
 	"owner-blocked": "owner-blocked",
 	"owner-soft-blocked": "owner-soft-blocked",
 	"owner-soft-unblocked": "owner-soft-unblocked",
@@ -11767,6 +11775,12 @@ export type UserEvent = {
 						teamId: string;
 				  }
 				| {
+						enforced: false | true;
+						organizationId: string;
+						organizationSlug: string;
+						previousEnforced: false | true;
+				  }
+				| {
 						mode: UserEventPayloadModeEnumKey;
 						organizationId: string;
 						previousMode: UserEventPayloadPreviousModeEnumKey;
@@ -14090,6 +14104,13 @@ export type UserEvent = {
 						reason: "limits-exceeded";
 				  }
 				| {
+						organizationId: string;
+				  }
+				| {
+						organizationId: string;
+						teamIds: string[];
+				  }
+				| {
 						teamName?: string | undefined;
 				  }
 				| {
@@ -15345,10 +15366,13 @@ export const listEventTypeNameEnum = {
 	"organization-emu-team-updated": "organization-emu-team-updated",
 	"organization-emu-updated": "organization-emu-updated",
 	"organization-slug-update": "organization-slug-update",
+	"organization-sso-enforced": "organization-sso-enforced",
 	"organization-team-add": "organization-team-add",
 	"organization-team-create": "organization-team-create",
 	"organization-team-delete": "organization-team-delete",
 	"organization-team-sso-update": "organization-team-sso-update",
+	"organization-update-account-flow-dismissed": "organization-update-account-flow-dismissed",
+	"organization-update-account-flow-triggered": "organization-update-account-flow-triggered",
 	"owner-blocked": "owner-blocked",
 	"owner-soft-blocked": "owner-soft-blocked",
 	"owner-soft-unblocked": "owner-soft-unblocked",
@@ -16047,10 +16071,13 @@ export const listEventTypeReplacedByEnum = {
 	"organization-emu-team-updated": "organization-emu-team-updated",
 	"organization-emu-updated": "organization-emu-updated",
 	"organization-slug-update": "organization-slug-update",
+	"organization-sso-enforced": "organization-sso-enforced",
 	"organization-team-add": "organization-team-add",
 	"organization-team-create": "organization-team-create",
 	"organization-team-delete": "organization-team-delete",
 	"organization-team-sso-update": "organization-team-sso-update",
+	"organization-update-account-flow-dismissed": "organization-update-account-flow-dismissed",
+	"organization-update-account-flow-triggered": "organization-update-account-flow-triggered",
 	"owner-blocked": "owner-blocked",
 	"owner-soft-blocked": "owner-soft-blocked",
 	"owner-soft-unblocked": "owner-soft-unblocked",
