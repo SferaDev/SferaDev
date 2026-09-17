@@ -23,6 +23,7 @@ export const aiGatewayVirtualModelConfigSchema = z
 			.describe("BYOK credential IDs allowed for this VMC."),
 		caching: z.enum(["auto"]).optional().describe("Use caching if available."),
 		createdAt: z.number().describe("Creation timestamp (epoch ms)."),
+		createdBy: z.string().optional().describe("User or app id that created this VMC."),
 		deleted: z
 			.union([z.literal(false), z.literal(true)])
 			.describe("Whether this VMC is soft-deleted."),
@@ -132,7 +133,7 @@ export const aiGatewayVirtualModelConfigSchema = z
 		speed: z.enum(["fast"]).optional().describe("Only use fastest providers with short timeouts."),
 		status: z.string().describe("UI lifecycle status: draft, active, or archived."),
 		updatedAt: z.number().describe("Last update timestamp (epoch ms)."),
-		updatedBy: z.string().optional().describe("User id that last updated this VMC."),
+		updatedBy: z.string().optional().describe("User or app id that last updated this VMC."),
 		virtualModelSlug: z
 			.string()
 			.describe("Client-facing alias used as the model slug in Gateway calls."),
@@ -8506,6 +8507,14 @@ export const userEventSchema = z
 					.strict(),
 				z
 					.object({
+						enforced: z.union([z.literal(false), z.literal(true)]),
+						organizationId: z.string(),
+						organizationSlug: z.string(),
+						previousEnforced: z.union([z.literal(false), z.literal(true)]),
+					})
+					.strict(),
+				z
+					.object({
 						mode: z.enum(["organization", "team"]),
 						organizationId: z.string(),
 						previousMode: z.enum(["organization", "team"]),
@@ -11389,6 +11398,17 @@ export const userEventSchema = z
 					.strict(),
 				z
 					.object({
+						organizationId: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						organizationId: z.string(),
+						teamIds: z.array(z.string()),
+					})
+					.strict(),
+				z
+					.object({
 						teamName: z.string().optional(),
 					})
 					.strict(),
@@ -12621,10 +12641,13 @@ export const userEventSchema = z
 				"organization-emu-team-updated",
 				"organization-emu-updated",
 				"organization-slug-update",
+				"organization-sso-enforced",
 				"organization-team-add",
 				"organization-team-create",
 				"organization-team-delete",
 				"organization-team-sso-update",
+				"organization-update-account-flow-dismissed",
+				"organization-update-account-flow-triggered",
 				"owner-blocked",
 				"owner-soft-blocked",
 				"owner-soft-unblocked",
@@ -13415,10 +13438,13 @@ export const listEventTypeSchema = z
 				"organization-emu-team-updated",
 				"organization-emu-updated",
 				"organization-slug-update",
+				"organization-sso-enforced",
 				"organization-team-add",
 				"organization-team-create",
 				"organization-team-delete",
 				"organization-team-sso-update",
+				"organization-update-account-flow-dismissed",
+				"organization-update-account-flow-triggered",
 				"owner-blocked",
 				"owner-soft-blocked",
 				"owner-soft-unblocked",
@@ -14103,10 +14129,13 @@ export const listEventTypeSchema = z
 					"organization-emu-team-updated",
 					"organization-emu-updated",
 					"organization-slug-update",
+					"organization-sso-enforced",
 					"organization-team-add",
 					"organization-team-create",
 					"organization-team-delete",
 					"organization-team-sso-update",
+					"organization-update-account-flow-dismissed",
+					"organization-update-account-flow-triggered",
 					"owner-blocked",
 					"owner-soft-blocked",
 					"owner-soft-unblocked",
