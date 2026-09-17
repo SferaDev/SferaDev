@@ -5633,12 +5633,12 @@ export type UserEventPayloadNewOwnerTeamsRoleEnumKey =
 	(typeof userEventPayloadNewOwnerTeamsRoleEnum)[keyof typeof userEventPayloadNewOwnerTeamsRoleEnum];
 
 export const userEventPayloadNewOwnerTeamsTeamPermissionsEnum = {
-	AiGatewayApiKeyOwnedBySelf: "AiGatewayApiKeyOwnedBySelf",
 	AiGatewayBudgetManager: "AiGatewayBudgetManager",
 	AiGatewayCredits: "AiGatewayCredits",
 	AiGatewaySettings: "AiGatewaySettings",
 	AiGatewayTranscriptsManager: "AiGatewayTranscriptsManager",
 	AiGatewayTranscriptsViewer: "AiGatewayTranscriptsViewer",
+	AiGatewayUser: "AiGatewayUser",
 	ConnectorManager: "ConnectorManager",
 	CreateProject: "CreateProject",
 	EnvVariableManager: "EnvVariableManager",
@@ -6379,12 +6379,12 @@ export type UserEventPayloadRoleEnumKey =
 	(typeof userEventPayloadRoleEnum)[keyof typeof userEventPayloadRoleEnum];
 
 export const userEventPayloadPreviousTeamPermissionsEnum = {
-	AiGatewayApiKeyOwnedBySelf: "AiGatewayApiKeyOwnedBySelf",
 	AiGatewayBudgetManager: "AiGatewayBudgetManager",
 	AiGatewayCredits: "AiGatewayCredits",
 	AiGatewaySettings: "AiGatewaySettings",
 	AiGatewayTranscriptsManager: "AiGatewayTranscriptsManager",
 	AiGatewayTranscriptsViewer: "AiGatewayTranscriptsViewer",
+	AiGatewayUser: "AiGatewayUser",
 	ConnectorManager: "ConnectorManager",
 	CreateProject: "CreateProject",
 	EnvVariableManager: "EnvVariableManager",
@@ -6418,12 +6418,12 @@ export type UserEventPayloadPreviousTeamRolesEnumKey =
 	(typeof userEventPayloadPreviousTeamRolesEnum)[keyof typeof userEventPayloadPreviousTeamRolesEnum];
 
 export const userEventPayloadTeamPermissionsEnum = {
-	AiGatewayApiKeyOwnedBySelf: "AiGatewayApiKeyOwnedBySelf",
 	AiGatewayBudgetManager: "AiGatewayBudgetManager",
 	AiGatewayCredits: "AiGatewayCredits",
 	AiGatewaySettings: "AiGatewaySettings",
 	AiGatewayTranscriptsManager: "AiGatewayTranscriptsManager",
 	AiGatewayTranscriptsViewer: "AiGatewayTranscriptsViewer",
+	AiGatewayUser: "AiGatewayUser",
 	ConnectorManager: "ConnectorManager",
 	CreateProject: "CreateProject",
 	EnvVariableManager: "EnvVariableManager",
@@ -17842,12 +17842,12 @@ export type InvitedTeamMemberRoleEnumKey =
 	(typeof invitedTeamMemberRoleEnum)[keyof typeof invitedTeamMemberRoleEnum];
 
 export const invitedTeamMemberTeamPermissionsEnum = {
-	AiGatewayApiKeyOwnedBySelf: "AiGatewayApiKeyOwnedBySelf",
 	AiGatewayBudgetManager: "AiGatewayBudgetManager",
 	AiGatewayCredits: "AiGatewayCredits",
 	AiGatewaySettings: "AiGatewaySettings",
 	AiGatewayTranscriptsManager: "AiGatewayTranscriptsManager",
 	AiGatewayTranscriptsViewer: "AiGatewayTranscriptsViewer",
+	AiGatewayUser: "AiGatewayUser",
 	ConnectorManager: "ConnectorManager",
 	CreateProject: "CreateProject",
 	EnvVariableManager: "EnvVariableManager",
@@ -17942,12 +17942,12 @@ export type TeamDefaultPassportDeploymentTypeEnumKey =
 	(typeof teamDefaultPassportDeploymentTypeEnum)[keyof typeof teamDefaultPassportDeploymentTypeEnum];
 
 export const teamDefaultRolesTeamPermissionsEnum = {
-	AiGatewayApiKeyOwnedBySelf: "AiGatewayApiKeyOwnedBySelf",
 	AiGatewayBudgetManager: "AiGatewayBudgetManager",
 	AiGatewayCredits: "AiGatewayCredits",
 	AiGatewaySettings: "AiGatewaySettings",
 	AiGatewayTranscriptsManager: "AiGatewayTranscriptsManager",
 	AiGatewayTranscriptsViewer: "AiGatewayTranscriptsViewer",
+	AiGatewayUser: "AiGatewayUser",
 	ConnectorManager: "ConnectorManager",
 	CreateProject: "CreateProject",
 	EnvVariableManager: "EnvVariableManager",
@@ -18106,12 +18106,12 @@ export type TeamMembershipRoleEnumKey =
 	(typeof teamMembershipRoleEnum)[keyof typeof teamMembershipRoleEnum];
 
 export const teamMembershipTeamPermissionsEnum = {
-	AiGatewayApiKeyOwnedBySelf: "AiGatewayApiKeyOwnedBySelf",
 	AiGatewayBudgetManager: "AiGatewayBudgetManager",
 	AiGatewayCredits: "AiGatewayCredits",
 	AiGatewaySettings: "AiGatewaySettings",
 	AiGatewayTranscriptsManager: "AiGatewayTranscriptsManager",
 	AiGatewayTranscriptsViewer: "AiGatewayTranscriptsViewer",
+	AiGatewayUser: "AiGatewayUser",
 	ConnectorManager: "ConnectorManager",
 	CreateProject: "CreateProject",
 	EnvVariableManager: "EnvVariableManager",
@@ -18899,12 +18899,12 @@ export type TeamLimitedMembershipRoleEnumKey =
 	(typeof teamLimitedMembershipRoleEnum)[keyof typeof teamLimitedMembershipRoleEnum];
 
 export const teamLimitedMembershipTeamPermissionsEnum = {
-	AiGatewayApiKeyOwnedBySelf: "AiGatewayApiKeyOwnedBySelf",
 	AiGatewayBudgetManager: "AiGatewayBudgetManager",
 	AiGatewayCredits: "AiGatewayCredits",
 	AiGatewaySettings: "AiGatewaySettings",
 	AiGatewayTranscriptsManager: "AiGatewayTranscriptsManager",
 	AiGatewayTranscriptsViewer: "AiGatewayTranscriptsViewer",
+	AiGatewayUser: "AiGatewayUser",
 	ConnectorManager: "ConnectorManager",
 	CreateProject: "CreateProject",
 	EnvVariableManager: "EnvVariableManager",

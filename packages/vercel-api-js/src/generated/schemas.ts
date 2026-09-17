@@ -7714,12 +7714,12 @@ export const userEventSchema = z
 											teamPermissions: z
 												.array(
 													z.enum([
-														"AiGatewayApiKeyOwnedBySelf",
 														"AiGatewayBudgetManager",
 														"AiGatewayCredits",
 														"AiGatewaySettings",
 														"AiGatewayTranscriptsManager",
 														"AiGatewayTranscriptsViewer",
+														"AiGatewayUser",
 														"ConnectorManager",
 														"CreateProject",
 														"EnvVariableManager",
@@ -11088,12 +11088,12 @@ export const userEventSchema = z
 						previousTeamPermissions: z
 							.array(
 								z.enum([
-									"AiGatewayApiKeyOwnedBySelf",
 									"AiGatewayBudgetManager",
 									"AiGatewayCredits",
 									"AiGatewaySettings",
 									"AiGatewayTranscriptsManager",
 									"AiGatewayTranscriptsViewer",
+									"AiGatewayUser",
 									"ConnectorManager",
 									"CreateProject",
 									"EnvVariableManager",
@@ -11129,12 +11129,12 @@ export const userEventSchema = z
 						teamPermissions: z
 							.array(
 								z.enum([
-									"AiGatewayApiKeyOwnedBySelf",
 									"AiGatewayBudgetManager",
 									"AiGatewayCredits",
 									"AiGatewaySettings",
 									"AiGatewayTranscriptsManager",
 									"AiGatewayTranscriptsViewer",
+									"AiGatewayUser",
 									"ConnectorManager",
 									"CreateProject",
 									"EnvVariableManager",
@@ -15579,12 +15579,12 @@ export const invitedTeamMemberSchema = z
 		teamPermissions: z
 			.array(
 				z.enum([
-					"AiGatewayApiKeyOwnedBySelf",
 					"AiGatewayBudgetManager",
 					"AiGatewayCredits",
 					"AiGatewaySettings",
 					"AiGatewayTranscriptsManager",
 					"AiGatewayTranscriptsViewer",
+					"AiGatewayUser",
 					"ConnectorManager",
 					"CreateProject",
 					"EnvVariableManager",
@@ -15764,12 +15764,12 @@ export const teamSchema = z
 				teamPermissions: z
 					.array(
 						z.enum([
-							"AiGatewayApiKeyOwnedBySelf",
 							"AiGatewayBudgetManager",
 							"AiGatewayCredits",
 							"AiGatewaySettings",
 							"AiGatewayTranscriptsManager",
 							"AiGatewayTranscriptsViewer",
+							"AiGatewayUser",
 							"ConnectorManager",
 							"CreateProject",
 							"EnvVariableManager",
@@ -16008,12 +16008,12 @@ export const teamSchema = z
 				teamPermissions: z
 					.array(
 						z.enum([
-							"AiGatewayApiKeyOwnedBySelf",
 							"AiGatewayBudgetManager",
 							"AiGatewayCredits",
 							"AiGatewaySettings",
 							"AiGatewayTranscriptsManager",
 							"AiGatewayTranscriptsViewer",
+							"AiGatewayUser",
 							"ConnectorManager",
 							"CreateProject",
 							"EnvVariableManager",
@@ -16411,12 +16411,12 @@ export const teamLimitedSchema = z
 				teamPermissions: z
 					.array(
 						z.enum([
-							"AiGatewayApiKeyOwnedBySelf",
 							"AiGatewayBudgetManager",
 							"AiGatewayCredits",
 							"AiGatewaySettings",
 							"AiGatewayTranscriptsManager",
 							"AiGatewayTranscriptsViewer",
+							"AiGatewayUser",
 							"ConnectorManager",
 							"CreateProject",
 							"EnvVariableManager",
