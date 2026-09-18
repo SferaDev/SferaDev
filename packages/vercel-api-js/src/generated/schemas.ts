@@ -114,14 +114,10 @@ export const aiGatewayVirtualModelConfigSchema = z
 			.describe(
 				"Per-request provider timeouts in ms, keyed by provider slug for BYOK credentials.",
 			),
-		requires: z
-			.array(z.string())
-			.optional()
-			.describe("For kind=router: capability tags a candidate must have."),
 		selector: z
-			.enum(["cost", "priority", "tps", "ttft"])
+			.enum(["cost", "tps", "ttft"])
 			.optional()
-			.describe("For kind=router: how to order candidates."),
+			.describe("For kind=router: how to order candidates. Absent means declared order."),
 		serviceTier: z
 			.enum(["fast", "flex", "priority"])
 			.optional()
@@ -3475,7 +3471,6 @@ export const userEventSchema = z
 									"providerOptions",
 									"providerOrder",
 									"providerTimeouts",
-									"requires",
 									"selector",
 									"serviceTier",
 									"sort",
@@ -8527,6 +8522,16 @@ export const userEventSchema = z
 					.strict(),
 				z
 					.object({
+						copiedDomains: z.array(z.string()),
+						enabledOrganizationEmu: z.union([z.literal(false), z.literal(true)]),
+						enabledTeamIds: z.array(z.string()),
+						organizationId: z.string(),
+						teamId: z.string(),
+						teamSlug: z.string(),
+					})
+					.strict(),
+				z
+					.object({
 						enabled: z.union([z.literal(false), z.literal(true)]),
 						enforcedTeamIds: z.array(z.string()),
 						organizationId: z.string(),
@@ -12698,6 +12703,7 @@ export const userEventSchema = z
 				"organization-delete",
 				"organization-dsync-group-delete",
 				"organization-dsync-group-upsert",
+				"organization-emu-domains-merged",
 				"organization-emu-team-updated",
 				"organization-emu-updated",
 				"organization-slug-update",
@@ -13496,6 +13502,7 @@ export const listEventTypeSchema = z
 				"organization-delete",
 				"organization-dsync-group-delete",
 				"organization-dsync-group-upsert",
+				"organization-emu-domains-merged",
 				"organization-emu-team-updated",
 				"organization-emu-updated",
 				"organization-slug-update",
@@ -14188,6 +14195,7 @@ export const listEventTypeSchema = z
 					"organization-delete",
 					"organization-dsync-group-delete",
 					"organization-dsync-group-upsert",
+					"organization-emu-domains-merged",
 					"organization-emu-team-updated",
 					"organization-emu-updated",
 					"organization-slug-update",
@@ -18321,6 +18329,8 @@ export const updateAiGatewayVirtualModelConfigStatus404Schema = z.unknown();
 
 export const updateAiGatewayVirtualModelConfigStatus410Schema = z.unknown();
 
+export const updateAiGatewayVirtualModelConfigStatus429Schema = z.unknown();
+
 export const updateAiGatewayVirtualModelConfigStatus500Schema = z.unknown();
 
 export const updateAiGatewayVirtualModelConfigResponseSchema =
@@ -18332,6 +18342,7 @@ export const updateAiGatewayVirtualModelConfigErrorSchema = z.union([
 	updateAiGatewayVirtualModelConfigStatus403Schema,
 	updateAiGatewayVirtualModelConfigStatus404Schema,
 	updateAiGatewayVirtualModelConfigStatus410Schema,
+	updateAiGatewayVirtualModelConfigStatus429Schema,
 	updateAiGatewayVirtualModelConfigStatus500Schema,
 ]);
 
@@ -18492,6 +18503,8 @@ export const updateAiGatewayVirtualModelConfigBySlugStatus404Schema = z.unknown(
 
 export const updateAiGatewayVirtualModelConfigBySlugStatus410Schema = z.unknown();
 
+export const updateAiGatewayVirtualModelConfigBySlugStatus429Schema = z.unknown();
+
 export const updateAiGatewayVirtualModelConfigBySlugStatus500Schema = z.unknown();
 
 export const updateAiGatewayVirtualModelConfigBySlugResponseSchema =
@@ -18503,6 +18516,7 @@ export const updateAiGatewayVirtualModelConfigBySlugErrorSchema = z.union([
 	updateAiGatewayVirtualModelConfigBySlugStatus403Schema,
 	updateAiGatewayVirtualModelConfigBySlugStatus404Schema,
 	updateAiGatewayVirtualModelConfigBySlugStatus410Schema,
+	updateAiGatewayVirtualModelConfigBySlugStatus429Schema,
 	updateAiGatewayVirtualModelConfigBySlugStatus500Schema,
 ]);
 
@@ -32718,6 +32732,8 @@ export const patchTeamStatus402Schema = z.unknown();
 
 export const patchTeamStatus403Schema = z.unknown();
 
+export const patchTeamStatus409Schema = z.unknown();
+
 export const patchTeamStatus410Schema = z.unknown();
 
 export const patchTeamStatus428Schema = z.unknown();
@@ -32729,6 +32745,7 @@ export const patchTeamErrorSchema = z.union([
 	patchTeamStatus401Schema,
 	patchTeamStatus402Schema,
 	patchTeamStatus403Schema,
+	patchTeamStatus409Schema,
 	patchTeamStatus410Schema,
 	patchTeamStatus428Schema,
 ]);

@@ -38,7 +38,6 @@ export type AiGatewayVirtualModelConfigInferenceRegionScopeEnumKey =
 
 export const aiGatewayVirtualModelConfigSelectorEnum = {
 	cost: "cost",
-	priority: "priority",
 	tps: "tps",
 	ttft: "ttft",
 } as const;
@@ -243,12 +242,7 @@ export type AiGatewayVirtualModelConfig = {
 		  }
 		| undefined;
 	/**
-	 * @description For kind=router: capability tags a candidate must have.
-	 * @type array | undefined
-	 */
-	requires?: string[] | undefined;
-	/**
-	 * @description For kind=router: how to order candidates.
+	 * @description For kind=router: how to order candidates. Absent means declared order.
 	 * @type string | undefined
 	 */
 	selector?: AiGatewayVirtualModelConfigSelectorEnumKey | undefined;
@@ -6978,6 +6972,7 @@ export const userEventTypeEnum = {
 	"organization-delete": "organization-delete",
 	"organization-dsync-group-delete": "organization-dsync-group-delete",
 	"organization-dsync-group-upsert": "organization-dsync-group-upsert",
+	"organization-emu-domains-merged": "organization-emu-domains-merged",
 	"organization-emu-team-updated": "organization-emu-team-updated",
 	"organization-emu-updated": "organization-emu-updated",
 	"organization-slug-update": "organization-slug-update",
@@ -11779,6 +11774,14 @@ export type UserEvent = {
 						organizationId: string;
 				  }
 				| {
+						copiedDomains: string[];
+						enabledOrganizationEmu: false | true;
+						enabledTeamIds: string[];
+						organizationId: string;
+						teamId: string;
+						teamSlug: string;
+				  }
+				| {
 						enabled: false | true;
 						enforcedTeamIds: string[];
 						organizationId: string;
@@ -15391,6 +15394,7 @@ export const listEventTypeNameEnum = {
 	"organization-delete": "organization-delete",
 	"organization-dsync-group-delete": "organization-dsync-group-delete",
 	"organization-dsync-group-upsert": "organization-dsync-group-upsert",
+	"organization-emu-domains-merged": "organization-emu-domains-merged",
 	"organization-emu-team-updated": "organization-emu-team-updated",
 	"organization-emu-updated": "organization-emu-updated",
 	"organization-slug-update": "organization-slug-update",
@@ -16097,6 +16101,7 @@ export const listEventTypeReplacedByEnum = {
 	"organization-delete": "organization-delete",
 	"organization-dsync-group-delete": "organization-dsync-group-delete",
 	"organization-dsync-group-upsert": "organization-dsync-group-upsert",
+	"organization-emu-domains-merged": "organization-emu-domains-merged",
 	"organization-emu-team-updated": "organization-emu-team-updated",
 	"organization-emu-updated": "organization-emu-updated",
 	"organization-slug-update": "organization-slug-update",
@@ -21348,6 +21353,8 @@ export type UpdateAiGatewayVirtualModelConfigStatus404 = unknown;
 
 export type UpdateAiGatewayVirtualModelConfigStatus410 = unknown;
 
+export type UpdateAiGatewayVirtualModelConfigStatus429 = unknown;
+
 export type UpdateAiGatewayVirtualModelConfigStatus500 = unknown;
 
 export type UpdateAiGatewayVirtualModelConfigOptions = {
@@ -21364,6 +21371,7 @@ export type UpdateAiGatewayVirtualModelConfigResponses = {
 	"403": UpdateAiGatewayVirtualModelConfigStatus403;
 	"404": UpdateAiGatewayVirtualModelConfigStatus404;
 	"410": UpdateAiGatewayVirtualModelConfigStatus410;
+	"429": UpdateAiGatewayVirtualModelConfigStatus429;
 	"500": UpdateAiGatewayVirtualModelConfigStatus500;
 };
 
@@ -21377,6 +21385,7 @@ export type UpdateAiGatewayVirtualModelConfigResponse =
 	| UpdateAiGatewayVirtualModelConfigStatus403
 	| UpdateAiGatewayVirtualModelConfigStatus404
 	| UpdateAiGatewayVirtualModelConfigStatus410
+	| UpdateAiGatewayVirtualModelConfigStatus429
 	| UpdateAiGatewayVirtualModelConfigStatus500;
 
 export type DeleteAiGatewayVirtualModelConfigQuery = {
@@ -21597,6 +21606,8 @@ export type UpdateAiGatewayVirtualModelConfigBySlugStatus404 = unknown;
 
 export type UpdateAiGatewayVirtualModelConfigBySlugStatus410 = unknown;
 
+export type UpdateAiGatewayVirtualModelConfigBySlugStatus429 = unknown;
+
 export type UpdateAiGatewayVirtualModelConfigBySlugStatus500 = unknown;
 
 export type UpdateAiGatewayVirtualModelConfigBySlugOptions = {
@@ -21613,6 +21624,7 @@ export type UpdateAiGatewayVirtualModelConfigBySlugResponses = {
 	"403": UpdateAiGatewayVirtualModelConfigBySlugStatus403;
 	"404": UpdateAiGatewayVirtualModelConfigBySlugStatus404;
 	"410": UpdateAiGatewayVirtualModelConfigBySlugStatus410;
+	"429": UpdateAiGatewayVirtualModelConfigBySlugStatus429;
 	"500": UpdateAiGatewayVirtualModelConfigBySlugStatus500;
 };
 
@@ -21626,6 +21638,7 @@ export type UpdateAiGatewayVirtualModelConfigBySlugResponse =
 	| UpdateAiGatewayVirtualModelConfigBySlugStatus403
 	| UpdateAiGatewayVirtualModelConfigBySlugStatus404
 	| UpdateAiGatewayVirtualModelConfigBySlugStatus410
+	| UpdateAiGatewayVirtualModelConfigBySlugStatus429
 	| UpdateAiGatewayVirtualModelConfigBySlugStatus500;
 
 export type DeleteAiGatewayVirtualModelConfigBySlugPath = {
@@ -43672,6 +43685,8 @@ export type PatchTeamStatus402 = unknown;
 
 export type PatchTeamStatus403 = unknown;
 
+export type PatchTeamStatus409 = unknown;
+
 export type PatchTeamStatus410 = unknown;
 
 export type PatchTeamStatus428 = unknown;
@@ -43689,6 +43704,7 @@ export type PatchTeamResponses = {
 	"401": PatchTeamStatus401;
 	"402": PatchTeamStatus402;
 	"403": PatchTeamStatus403;
+	"409": PatchTeamStatus409;
 	"410": PatchTeamStatus410;
 	"428": PatchTeamStatus428;
 };
@@ -43702,6 +43718,7 @@ export type PatchTeamResponse =
 	| PatchTeamStatus401
 	| PatchTeamStatus402
 	| PatchTeamStatus403
+	| PatchTeamStatus409
 	| PatchTeamStatus410
 	| PatchTeamStatus428;
 
