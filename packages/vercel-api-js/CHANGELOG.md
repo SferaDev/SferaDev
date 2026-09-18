@@ -1,5 +1,15 @@
 # vercel-api-js
 
+## 1.20.2
+
+### Patch Changes
+
+- 731016c: Added HTTP 409 conflict response type to PatchTeam endpoint.
+- 731016c: Added new user event type 'organization-emu-domains-merged'.
+- 731016c: Added new event shape to UserEvent for organization emu domain merges.
+- 731016c: [BREAKING] Removed 'requires' field from AiGatewayVirtualModelConfig and removed 'priority' as an option for 'selector'.
+- 731016c: Added HTTP 429 rate limit response type to UpdateAiGatewayVirtualModelConfig and UpdateAiGatewayVirtualModelConfigBySlug endpoints.
+
 ## 1.20.1
 
 ### Patch Changes
