@@ -1517,6 +1517,19 @@ export const connectCreateConnectorRequestSchema = z
 				.boolean()
 				.optional()
 				.describe("Whether the triggers are enabled for this connector."),
+			triggerType: z
+				.string()
+				.optional()
+				.describe(
+					"Trigger driver type. Resolved automatically from the service or known service registry when not provided. Only set when using the newly decoupled triggers resolution flow.",
+				),
+			triggerData: z
+				.object({})
+				.catchall(z.unknown())
+				.optional()
+				.describe(
+					"Trigger-specific credentials (e.g. webhook signing secret). Validated and encrypted against the trigger type definition.",
+				),
 			triggerDestination: z
 				.union([
 					z
@@ -8457,6 +8470,12 @@ export const userEventSchema = z
 					.strict(),
 				z
 					.object({
+						avatar: z.string().nullable(),
+						organizationId: z.string(),
+					})
+					.strict(),
+				z
+					.object({
 						name: z.string(),
 						organizationId: z.string(),
 						rootTeamId: z.string(),
@@ -12674,6 +12693,7 @@ export const userEventSchema = z
 				"oidc-policy-deleted",
 				"oidc-policy-updated",
 				"oidc-policy-used-to-obtain-app-token",
+				"organization-avatar-update",
 				"organization-create",
 				"organization-delete",
 				"organization-dsync-group-delete",
@@ -13471,6 +13491,7 @@ export const listEventTypeSchema = z
 				"oidc-policy-deleted",
 				"oidc-policy-updated",
 				"oidc-policy-used-to-obtain-app-token",
+				"organization-avatar-update",
 				"organization-create",
 				"organization-delete",
 				"organization-dsync-group-delete",
@@ -14162,6 +14183,7 @@ export const listEventTypeSchema = z
 					"oidc-policy-deleted",
 					"oidc-policy-updated",
 					"oidc-policy-used-to-obtain-app-token",
+					"organization-avatar-update",
 					"organization-create",
 					"organization-delete",
 					"organization-dsync-group-delete",
@@ -15114,6 +15136,10 @@ export const aCLActionSchema = z
 
 export const namedSandboxSchema = z
 	.object({
+		architecture: z
+			.enum(["amd64", "arm64"])
+			.optional()
+			.describe("CPU architecture of the sandbox. This value does not change."),
 		createdAt: z
 			.number()
 			.describe("The time when the named sandbox was created, in milliseconds since the epoch.")
@@ -15380,6 +15406,10 @@ export const sessionSchema = z
 				"The amount of CPU time the sandbox consumed, if available, in milliseconds. This value is only available once the sandbox is stopped, and only if it stopped successfully.",
 			)
 			.meta({ examples: [42] }),
+		architecture: z
+			.enum(["amd64", "arm64"])
+			.optional()
+			.describe("CPU architecture of the sandbox."),
 		createdAt: z
 			.number()
 			.describe("The time when the sandbox was created, in milliseconds since the epoch.")
@@ -15523,6 +15553,10 @@ export const driveSchema = z
 
 export const snapshotSchema = z
 	.object({
+		architecture: z
+			.enum(["amd64", "arm64"])
+			.optional()
+			.describe("CPU architecture required to restore the snapshot."),
 		createdAt: z
 			.number()
 			.describe("The time when the snapshot was created, in milliseconds since the epoch.")
