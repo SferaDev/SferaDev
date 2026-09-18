@@ -1,5 +1,13 @@
 # vercel-api-js
 
+## 1.20.1
+
+### Patch Changes
+
+- 12929b7: Added triggerType and triggerData fields to ConnectCreateConnectorRequest for more detailed trigger configuration.
+- 12929b7: Added architecture field to NamedSandbox, Session, and Snapshot types to specify CPU architecture.
+- 12929b7: Added organization-avatar-update as a supported user event type.
+
 ## 1.20.0
 
 ### Minor Changes
