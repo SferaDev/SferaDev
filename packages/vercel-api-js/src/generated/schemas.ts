@@ -5589,6 +5589,19 @@ export const userEventSchema = z
 					.strict(),
 				z
 					.object({
+						mode: z.enum(["none"]).nullable(),
+						previousMode: z.enum(["none"]).nullable(),
+						scope: z.enum(["organization"]),
+					})
+					.strict(),
+				z
+					.object({
+						mode: z.enum(["all", "email-domain", "none"]),
+						previousMode: z.enum(["all", "email-domain", "none"]),
+					})
+					.strict(),
+				z
+					.object({
 						deploymentId: z.string(),
 						deploymentName: z.string().nullable(),
 						deploymentUrl: z.string().nullable(),
@@ -10071,6 +10084,7 @@ export const userEventSchema = z
 							.nullable(),
 						projectId: z.string().optional(),
 						projectName: z.string().optional(),
+						scope: z.enum(["organization"]).optional(),
 						ssoProtection: z
 							.union([
 								z
@@ -10947,6 +10961,12 @@ export const userEventSchema = z
 						slug: z.string(),
 						teamId: z.string(),
 						timestamp: z.number().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						enabled: z.union([z.literal(false), z.literal(true)]),
+						scope: z.enum(["organization"]).optional(),
 					})
 					.strict(),
 				z
@@ -12523,6 +12543,7 @@ export const userEventSchema = z
 				"deployment-creation-blocked",
 				"deployment-delete",
 				"deployment-policy-blocked",
+				"deployment-protection-access-requests",
 				"deployment-undeleted",
 				"disabled-integration-installation-removed",
 				"disconnect-bitbucket-app",
@@ -13322,6 +13343,7 @@ export const listEventTypeSchema = z
 				"deployment-creation-blocked",
 				"deployment-delete",
 				"deployment-policy-blocked",
+				"deployment-protection-access-requests",
 				"deployment-undeleted",
 				"disabled-integration-installation-removed",
 				"disconnect-bitbucket-app",
@@ -14015,6 +14037,7 @@ export const listEventTypeSchema = z
 					"deployment-creation-blocked",
 					"deployment-delete",
 					"deployment-policy-blocked",
+					"deployment-protection-access-requests",
 					"deployment-undeleted",
 					"disabled-integration-installation-removed",
 					"disconnect-bitbucket-app",

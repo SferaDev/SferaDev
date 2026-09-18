@@ -4893,6 +4893,22 @@ export const userEventPayloadRuleProvenanceEnum = {
 export type UserEventPayloadRuleProvenanceEnumKey =
 	(typeof userEventPayloadRuleProvenanceEnum)[keyof typeof userEventPayloadRuleProvenanceEnum];
 
+export const userEventPayloadModeEnum = {
+	organization: "organization",
+	team: "team",
+} as const;
+
+export type UserEventPayloadModeEnumKey =
+	(typeof userEventPayloadModeEnum)[keyof typeof userEventPayloadModeEnum];
+
+export const userEventPayloadPreviousModeEnum = {
+	organization: "organization",
+	team: "team",
+} as const;
+
+export type UserEventPayloadPreviousModeEnumKey =
+	(typeof userEventPayloadPreviousModeEnum)[keyof typeof userEventPayloadPreviousModeEnum];
+
 export const userEventPayloadInitiatorEnum = {
 	system: "system",
 	user: "user",
@@ -5743,22 +5759,6 @@ export const userEventPayloadBillingPlanEnum = {
 
 export type UserEventPayloadBillingPlanEnumKey =
 	(typeof userEventPayloadBillingPlanEnum)[keyof typeof userEventPayloadBillingPlanEnum];
-
-export const userEventPayloadModeEnum = {
-	organization: "organization",
-	team: "team",
-} as const;
-
-export type UserEventPayloadModeEnumKey =
-	(typeof userEventPayloadModeEnum)[keyof typeof userEventPayloadModeEnum];
-
-export const userEventPayloadPreviousModeEnum = {
-	organization: "organization",
-	team: "team",
-} as const;
-
-export type UserEventPayloadPreviousModeEnumKey =
-	(typeof userEventPayloadPreviousModeEnum)[keyof typeof userEventPayloadPreviousModeEnum];
 
 export const userEventPayloadNextEnforcementScopeEnum = {
 	all: "all",
@@ -6789,6 +6789,7 @@ export const userEventTypeEnum = {
 	"deployment-creation-blocked": "deployment-creation-blocked",
 	"deployment-delete": "deployment-delete",
 	"deployment-policy-blocked": "deployment-policy-blocked",
+	"deployment-protection-access-requests": "deployment-protection-access-requests",
 	"deployment-undeleted": "deployment-undeleted",
 	"disabled-integration-installation-removed": "disabled-integration-installation-removed",
 	"disconnect-bitbucket-app": "disconnect-bitbucket-app",
@@ -9359,6 +9360,15 @@ export type UserEvent = {
 						 * @type string
 						 */
 						source: string;
+				  }
+				| {
+						mode: "none" | null;
+						previousMode: "none" | null;
+						scope: "organization";
+				  }
+				| {
+						mode: UserEventPayloadModeEnumKey;
+						previousMode: UserEventPayloadPreviousModeEnumKey;
 				  }
 				| {
 						deploymentId: string;
@@ -12906,6 +12916,7 @@ export type UserEvent = {
 							| null;
 						projectId?: string | undefined;
 						projectName?: string | undefined;
+						scope?: "organization" | undefined;
 						ssoProtection:
 							| (
 									| {
@@ -13811,6 +13822,10 @@ export type UserEvent = {
 						slug: string;
 						teamId: string;
 						timestamp?: number | undefined;
+				  }
+				| {
+						enabled: false | true;
+						scope?: "organization" | undefined;
 				  }
 				| {
 						next: {
@@ -15211,6 +15226,7 @@ export const listEventTypeNameEnum = {
 	"deployment-creation-blocked": "deployment-creation-blocked",
 	"deployment-delete": "deployment-delete",
 	"deployment-policy-blocked": "deployment-policy-blocked",
+	"deployment-protection-access-requests": "deployment-protection-access-requests",
 	"deployment-undeleted": "deployment-undeleted",
 	"disabled-integration-installation-removed": "disabled-integration-installation-removed",
 	"disconnect-bitbucket-app": "disconnect-bitbucket-app",
@@ -15918,6 +15934,7 @@ export const listEventTypeReplacedByEnum = {
 	"deployment-creation-blocked": "deployment-creation-blocked",
 	"deployment-delete": "deployment-delete",
 	"deployment-policy-blocked": "deployment-policy-blocked",
+	"deployment-protection-access-requests": "deployment-protection-access-requests",
 	"deployment-undeleted": "deployment-undeleted",
 	"disabled-integration-installation-removed": "disabled-integration-installation-removed",
 	"disconnect-bitbucket-app": "disconnect-bitbucket-app",
