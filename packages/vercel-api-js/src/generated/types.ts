@@ -2421,6 +2421,20 @@ export type ConnectCreateConnectorRequest = (unknown | unknown) & {
 	 */
 	triggers?: boolean | undefined;
 	/**
+	 * @description Trigger driver type. Resolved automatically from the service or known service registry when not provided. Only set when using the newly decoupled triggers resolution flow.
+	 * @type string | undefined
+	 */
+	triggerType?: string | undefined;
+	/**
+	 * @description Trigger-specific credentials (e.g. webhook signing secret). Validated and encrypted against the trigger type definition.
+	 * @type object | undefined
+	 */
+	triggerData?:
+		| {
+				[key: string]: unknown;
+		  }
+		| undefined;
+	/**
 	 * @description Initial trigger destination. Requires triggers to be enabled and a projectId here or at the top level. Connector responses expose the resulting set as triggerDestinations. Replace the complete set with PATCH /v1/connect/connectors/{connector}/trigger-destinations.
 	 */
 	triggerDestination?:
@@ -6959,6 +6973,7 @@ export const userEventTypeEnum = {
 	"oidc-policy-deleted": "oidc-policy-deleted",
 	"oidc-policy-updated": "oidc-policy-updated",
 	"oidc-policy-used-to-obtain-app-token": "oidc-policy-used-to-obtain-app-token",
+	"organization-avatar-update": "organization-avatar-update",
 	"organization-create": "organization-create",
 	"organization-delete": "organization-delete",
 	"organization-dsync-group-delete": "organization-dsync-group-delete",
@@ -11729,6 +11744,10 @@ export type UserEvent = {
 						projectName: string;
 				  }
 				| {
+						avatar: string | null;
+						organizationId: string;
+				  }
+				| {
 						name: string;
 						organizationId: string;
 						rootTeamId: string;
@@ -15367,6 +15386,7 @@ export const listEventTypeNameEnum = {
 	"oidc-policy-deleted": "oidc-policy-deleted",
 	"oidc-policy-updated": "oidc-policy-updated",
 	"oidc-policy-used-to-obtain-app-token": "oidc-policy-used-to-obtain-app-token",
+	"organization-avatar-update": "organization-avatar-update",
 	"organization-create": "organization-create",
 	"organization-delete": "organization-delete",
 	"organization-dsync-group-delete": "organization-dsync-group-delete",
@@ -16072,6 +16092,7 @@ export const listEventTypeReplacedByEnum = {
 	"oidc-policy-deleted": "oidc-policy-deleted",
 	"oidc-policy-updated": "oidc-policy-updated",
 	"oidc-policy-used-to-obtain-app-token": "oidc-policy-used-to-obtain-app-token",
+	"organization-avatar-update": "organization-avatar-update",
 	"organization-create": "organization-create",
 	"organization-delete": "organization-delete",
 	"organization-dsync-group-delete": "organization-dsync-group-delete",
@@ -17147,6 +17168,14 @@ export const aCLAction = {
 
 export type ACLActionKey = (typeof aCLAction)[keyof typeof aCLAction];
 
+export const namedSandboxArchitectureEnum = {
+	amd64: "amd64",
+	arm64: "arm64",
+} as const;
+
+export type NamedSandboxArchitectureEnumKey =
+	(typeof namedSandboxArchitectureEnum)[keyof typeof namedSandboxArchitectureEnum];
+
 export const namedSandboxFailoverRegionsEnum = {
 	arn1: "arn1",
 	bom1: "bom1",
@@ -17205,6 +17234,11 @@ export type NamedSandboxStatusEnumKey =
  * @type object
  */
 export type NamedSandbox = {
+	/**
+	 * @description CPU architecture of the sandbox. This value does not change.
+	 * @type string | undefined
+	 */
+	architecture?: NamedSandboxArchitectureEnumKey | undefined;
 	/**
 	 * @description The time when the named sandbox was created, in milliseconds since the epoch.
 	 * @example 1750344501629
@@ -17494,6 +17528,14 @@ export type SandboxNetworkPolicy = {
 	mode: SandboxNetworkPolicyModeEnumKey;
 };
 
+export const sessionArchitectureEnum = {
+	amd64: "amd64",
+	arm64: "arm64",
+} as const;
+
+export type SessionArchitectureEnumKey =
+	(typeof sessionArchitectureEnum)[keyof typeof sessionArchitectureEnum];
+
 export const sessionStatusEnum = {
 	aborted: "aborted",
 	failed: "failed",
@@ -17523,6 +17565,11 @@ export type Session = {
 	 * @type number | undefined
 	 */
 	activeCpuDurationMs?: number | undefined;
+	/**
+	 * @description CPU architecture of the sandbox.
+	 * @type string | undefined
+	 */
+	architecture?: SessionArchitectureEnumKey | undefined;
 	/**
 	 * @description The time when the sandbox was created, in milliseconds since the epoch.
 	 * @example 1750344501629
@@ -17712,6 +17759,14 @@ export type Drive = {
 	updatedAt: number;
 };
 
+export const snapshotArchitectureEnum = {
+	amd64: "amd64",
+	arm64: "arm64",
+} as const;
+
+export type SnapshotArchitectureEnumKey =
+	(typeof snapshotArchitectureEnum)[keyof typeof snapshotArchitectureEnum];
+
 export const snapshotCreationMethodEnum = {
 	automatic: "automatic",
 	manual: "manual",
@@ -17733,6 +17788,11 @@ export type SnapshotStatusEnumKey = (typeof snapshotStatusEnum)[keyof typeof sna
  * @type object
  */
 export type Snapshot = {
+	/**
+	 * @description CPU architecture required to restore the snapshot.
+	 * @type string | undefined
+	 */
+	architecture?: SnapshotArchitectureEnumKey | undefined;
 	/**
 	 * @description The time when the snapshot was created, in milliseconds since the epoch.
 	 * @example 1750344501629
