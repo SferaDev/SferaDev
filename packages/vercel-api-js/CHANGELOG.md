@@ -1,5 +1,16 @@
 # vercel-api-js
 
+## 1.22.0
+
+### Minor Changes
+
+- 9522f1c: Added the deploymentStorageRollout property to the Team schema with associated enums and related fields for Phase 2 Pro deployment-storage pricing rollout.
+
+### Patch Changes
+
+- 9522f1c: Escaped quotes in the getProjectsQueryBuildMachineTypesSchema and GetProjectsQuery description for clarity.
+- 9522f1c: Updated the description for the ACL action enum for improved clarity regarding checkPermissions and legacy includePermissions.
+
 ## 1.21.0
 
 ### Minor Changes
