@@ -18133,6 +18133,24 @@ export const teamDeploymentPolicyGitSourcesSourcesProviderEnum = {
 export type TeamDeploymentPolicyGitSourcesSourcesProviderEnumKey =
 	(typeof teamDeploymentPolicyGitSourcesSourcesProviderEnum)[keyof typeof teamDeploymentPolicyGitSourcesSourcesProviderEnum];
 
+export const teamDeploymentStorageRolloutCohortEnum = {
+	high: "high",
+	low: "low",
+	medium: "medium",
+} as const;
+
+export type TeamDeploymentStorageRolloutCohortEnumKey =
+	(typeof teamDeploymentStorageRolloutCohortEnum)[keyof typeof teamDeploymentStorageRolloutCohortEnum];
+
+export const teamDeploymentStorageRolloutMeterReasonEnum = {
+	high_retention_opt_in: "high_retention_opt_in",
+	low_scheduled: "low_scheduled",
+	medium_scheduled: "medium_scheduled",
+} as const;
+
+export type TeamDeploymentStorageRolloutMeterReasonEnumKey =
+	(typeof teamDeploymentStorageRolloutMeterReasonEnum)[keyof typeof teamDeploymentStorageRolloutMeterReasonEnum];
+
 export const teamDisableHardAutoBlocks = {
 	false: false,
 	true: true,
@@ -18535,6 +18553,31 @@ export type Team = {
 							)[];
 					  }[]
 					| undefined;
+		  }
+		| undefined;
+	/**
+	 * @description Phase 2 Pro deployment-storage pricing rollout cohort and milestones. Absent when the team is not in a Phase 2 Pro cohort.
+	 * @type object | undefined
+	 */
+	deploymentStorageRollout?:
+		| {
+				cohort: TeamDeploymentStorageRolloutCohortEnumKey;
+				/**
+				 * @description When team-wide metering was recorded for this rollout.
+				 * @type number | undefined
+				 */
+				meteredAt?: number | undefined;
+				meterReason?: TeamDeploymentStorageRolloutMeterReasonEnumKey | undefined;
+				/**
+				 * @description When the calendar retention-reduce migration applied 30d retention.
+				 * @type number | undefined
+				 */
+				retentionAppliedAt?: number | undefined;
+				/**
+				 * @description When the customer chose \"keep my retention\" before reduce day.
+				 * @type number | undefined
+				 */
+				retentionOptOutAt?: number | undefined;
 		  }
 		| undefined;
 	/**
@@ -36356,7 +36399,7 @@ export type GetProjectsQuery = {
 	 */
 	staticIpsEnabled?: string | undefined;
 	/**
-	 * @description Filter results by effective build machine types. Accepts comma-separated values. Use \"elastic\" for projects with elastic selection and \"default\" for projects without a build machine type set.
+	 * @description Filter results by effective build machine types. Accepts comma-separated values. Use \\\"elastic\\\" for projects with elastic selection and \\\"default\\\" for projects without a build machine type set.
 	 * @example default,enhanced
 	 * @type string | undefined
 	 */
