@@ -1,5 +1,11 @@
 # zoom-api-js
 
+## 1.2.1
+
+### Patch Changes
+
+- 0675ced: Moved 'getMeetingTranscript' operation from 'recording' tag to new 'meetingTranscript' tag in the OpenAPI components.
+
 ## 1.2.0
 
 ### Minor Changes
