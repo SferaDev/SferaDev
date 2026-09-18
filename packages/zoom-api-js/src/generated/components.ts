@@ -9859,10 +9859,12 @@ export const operationsByTag = {
 		recordingSettingsUpdate,
 		recordingDeleteOne,
 		recordingStatusUpdateOne,
-		getMeetingTranscript,
 		deleteMeetingTranscript,
 		recordingStatusUpdate,
 		recordingsList,
+	},
+	meetingTranscript: {
+		getMeetingTranscript,
 	},
 	devices: {
 		listDevices,
@@ -10082,13 +10084,15 @@ export const tagDictionary = {
 			"meetingRecordingRegistrants",
 			"recordingRegistrantsQuestionsGet",
 			"recordingSettingUpdate",
-			"getMeetingTranscript",
 			"recordingsList",
 		],
 		DELETE: ["recordingDelete", "recordingDeleteOne", "deleteMeetingTranscript"],
 		POST: ["meetingRecordingRegistrantCreate"],
 		PATCH: ["recordingRegistrantQuestionUpdate", "recordingSettingsUpdate"],
 		PUT: ["meetingRecordingRegistrantStatus", "recordingStatusUpdateOne", "recordingStatusUpdate"],
+	},
+	meetingTranscript: {
+		GET: ["getMeetingTranscript"],
 	},
 	devices: {
 		GET: [
