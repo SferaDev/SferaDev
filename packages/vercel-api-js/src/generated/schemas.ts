@@ -15162,7 +15162,7 @@ export const aPIKeyQuotaSchema = z
 export const aCLActionSchema = z
 	.enum(["create", "delete", "list", "read", "update"])
 	.describe(
-		"Enum containing the actions that can be performed against a resource. Group operations are included.",
+		"Requested and authorized operations when `checkPermissions` is used. Legacy `includePermissions` responses contain a broader, non-authoritative permission summary.",
 	);
 
 export const namedSandboxSchema = z
@@ -16010,6 +16010,29 @@ export const teamSchema = z
 			.optional()
 			.describe(
 				"Composable deployment-time policy for the team. Used as the default for every project on the team, with optional per-project overrides on `project.deploymentPolicy`.",
+			),
+		deploymentStorageRollout: z
+			.object({
+				cohort: z.enum(["high", "low", "medium"]),
+				meteredAt: z
+					.number()
+					.optional()
+					.describe("When team-wide metering was recorded for this rollout."),
+				meterReason: z
+					.enum(["high_retention_opt_in", "low_scheduled", "medium_scheduled"])
+					.optional(),
+				retentionAppliedAt: z
+					.number()
+					.optional()
+					.describe("When the calendar retention-reduce migration applied 30d retention."),
+				retentionOptOutAt: z
+					.number()
+					.optional()
+					.describe('When the customer chose "keep my retention" before reduce day.'),
+			})
+			.optional()
+			.describe(
+				"Phase 2 Pro deployment-storage pricing rollout cohort and milestones. Absent when the team is not in a Phase 2 Pro cohort.",
 			),
 		description: z
 			.string()
@@ -27954,7 +27977,7 @@ export const getProjectsQueryBuildMachineTypesSchema = z
 	.string()
 	.optional()
 	.describe(
-		'Filter results by effective build machine types. Accepts comma-separated values. Use "elastic" for projects with elastic selection and "default" for projects without a build machine type set.',
+		'Filter results by effective build machine types. Accepts comma-separated values. Use \\"elastic\\" for projects with elastic selection and \\"default\\" for projects without a build machine type set.',
 	)
 	.meta({ examples: ["default,enhanced"] });
 
