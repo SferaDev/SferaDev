@@ -2067,6 +2067,7 @@ import type {
 	PatchTeamStatus401,
 	PatchTeamStatus402,
 	PatchTeamStatus403,
+	PatchTeamStatus409,
 	PatchTeamStatus410,
 	PatchTeamStatus428,
 	PatchUrlProtectionBypassResponse,
@@ -2444,6 +2445,7 @@ import type {
 	UpdateAiGatewayVirtualModelConfigBySlugStatus403,
 	UpdateAiGatewayVirtualModelConfigBySlugStatus404,
 	UpdateAiGatewayVirtualModelConfigBySlugStatus410,
+	UpdateAiGatewayVirtualModelConfigBySlugStatus429,
 	UpdateAiGatewayVirtualModelConfigBySlugStatus500,
 	UpdateAiGatewayVirtualModelConfigResponse,
 	UpdateAiGatewayVirtualModelConfigStatus400,
@@ -2451,6 +2453,7 @@ import type {
 	UpdateAiGatewayVirtualModelConfigStatus403,
 	UpdateAiGatewayVirtualModelConfigStatus404,
 	UpdateAiGatewayVirtualModelConfigStatus410,
+	UpdateAiGatewayVirtualModelConfigStatus429,
 	UpdateAiGatewayVirtualModelConfigStatus500,
 	UpdateAttackChallengeModeResponse,
 	UpdateAttackChallengeModeStatus400,
@@ -3438,6 +3441,7 @@ export async function updateAiGatewayVirtualModelConfig(
 			| UpdateAiGatewayVirtualModelConfigStatus403
 			| UpdateAiGatewayVirtualModelConfigStatus404
 			| UpdateAiGatewayVirtualModelConfigStatus410
+			| UpdateAiGatewayVirtualModelConfigStatus429
 			| UpdateAiGatewayVirtualModelConfigStatus500
 		>,
 		null,
@@ -3633,6 +3637,7 @@ export async function updateAiGatewayVirtualModelConfigBySlug(
 			| UpdateAiGatewayVirtualModelConfigBySlugStatus403
 			| UpdateAiGatewayVirtualModelConfigBySlugStatus404
 			| UpdateAiGatewayVirtualModelConfigBySlugStatus410
+			| UpdateAiGatewayVirtualModelConfigBySlugStatus429
 			| UpdateAiGatewayVirtualModelConfigBySlugStatus500
 		>,
 		null,
@@ -19290,6 +19295,7 @@ export async function patchTeam(
 			| PatchTeamStatus401
 			| PatchTeamStatus402
 			| PatchTeamStatus403
+			| PatchTeamStatus409
 			| PatchTeamStatus410
 			| PatchTeamStatus428
 		>,
