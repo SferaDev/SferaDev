@@ -1,5 +1,16 @@
 # vercel-api-js
 
+## 1.21.0
+
+### Minor Changes
+
+- 918e849: Added deployment-protection-access-requests as a new event type in userEventType and listEventType enums.
+
+### Patch Changes
+
+- 918e849: Added optional scope: 'organization' to certain event payloads in userEventSchema and UserEvent types.
+- 918e849: Added new shapes to userEventSchema to support additional ssoProtection payload variants.
+
 ## 1.20.2
 
 ### Patch Changes
