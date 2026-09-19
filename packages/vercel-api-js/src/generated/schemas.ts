@@ -34,7 +34,7 @@ export const aiGatewayVirtualModelConfigSchema = z
 			.describe("Only use providers that will not train on your prompts."),
 		displayName: z.string().optional().describe("Human-readable name for UI."),
 		has: z
-			.array(z.enum(["implicit-caching", "vision"]))
+			.array(z.enum(["implicit-caching", "reasoning", "tool-use", "vision"]))
 			.optional()
 			.describe("Limit providers to those with these features."),
 		hipaaCompliant: z

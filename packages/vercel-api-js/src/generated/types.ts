@@ -13,6 +13,8 @@ export type AiGatewayProviderOptionBag = {
 
 export const aiGatewayVirtualModelConfigHasEnum = {
 	"implicit-caching": "implicit-caching",
+	reasoning: "reasoning",
+	"tool-use": "tool-use",
 	vision: "vision",
 } as const;
 
