@@ -1,5 +1,11 @@
 # vercel-api-js
 
+## 1.22.1
+
+### Patch Changes
+
+- 1e8f769: Added 'reasoning' and 'tool-use' to supported features in aiGatewayVirtualModelConfig's 'has' property.
+
 ## 1.22.0
 
 ### Minor Changes
