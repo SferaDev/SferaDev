@@ -1070,7 +1070,7 @@ export const deployFilesSchema = z
 			.optional()
 			.describe("A hash mapping file paths to SHA1 digests of the file contents."),
 		zip: z
-			.instanceof(File)
+			.unknown()
 			.optional()
 			.describe(
 				"A zip file containing the site files to deploy. Alternative to 'files'.\nTo use this field, set Content-Type to 'application/json' and include the zip content here.\nAlternatively, you can set Content-Type to 'application/zip' and send the zip as the raw request body (not as JSON).\n",
@@ -4517,7 +4517,7 @@ export const createSiteDeployBodySchema = z
 			.optional()
 			.describe("A hash mapping file paths to SHA1 digests of the file contents."),
 		zip: z
-			.instanceof(File)
+			.unknown()
 			.optional()
 			.describe(
 				"A zip file containing the site files to deploy. Alternative to 'files'.\nTo use this field, set Content-Type to 'application/json' and include the zip content here.\nAlternatively, you can set Content-Type to 'application/zip' and send the zip as the raw request body (not as JSON).\n",
@@ -4794,7 +4794,7 @@ export const updateSiteDeployBodySchema = z
 			.optional()
 			.describe("A hash mapping file paths to SHA1 digests of the file contents."),
 		zip: z
-			.instanceof(File)
+			.unknown()
 			.optional()
 			.describe(
 				"A zip file containing the site files to deploy. Alternative to 'files'.\nTo use this field, set Content-Type to 'application/json' and include the zip content here.\nAlternatively, you can set Content-Type to 'application/zip' and send the zip as the raw request body (not as JSON).\n",

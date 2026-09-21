@@ -1766,9 +1766,9 @@ export type DeployFiles = {
 	files?: object | undefined;
 	/**
 	 * @description A zip file containing the site files to deploy. Alternative to \'files\'.\nTo use this field, set Content-Type to \'application/json\' and include the zip content here.\nAlternatively, you can set Content-Type to \'application/zip\' and send the zip as the raw request body (not as JSON).\n
-	 * @type string | undefined
+	 * @type unknown | undefined
 	 */
-	zip?: Blob | undefined;
+	zip?: unknown | undefined;
 	draft?: boolean | undefined;
 	async?: boolean | undefined;
 	functions?: object | undefined;
@@ -7272,9 +7272,9 @@ export type CreateSiteDeployBody = {
 	files?: object | undefined;
 	/**
 	 * @description A zip file containing the site files to deploy. Alternative to \'files\'.\nTo use this field, set Content-Type to \'application/json\' and include the zip content here.\nAlternatively, you can set Content-Type to \'application/zip\' and send the zip as the raw request body (not as JSON).\n
-	 * @type string | undefined
+	 * @type unknown | undefined
 	 */
-	zip?: Blob | undefined;
+	zip?: unknown | undefined;
 	draft?: boolean | undefined;
 	async?: boolean | undefined;
 	functions?: object | undefined;
@@ -7614,9 +7614,9 @@ export type UpdateSiteDeployBody = {
 	files?: object | undefined;
 	/**
 	 * @description A zip file containing the site files to deploy. Alternative to \'files\'.\nTo use this field, set Content-Type to \'application/json\' and include the zip content here.\nAlternatively, you can set Content-Type to \'application/zip\' and send the zip as the raw request body (not as JSON).\n
-	 * @type string | undefined
+	 * @type unknown | undefined
 	 */
-	zip?: Blob | undefined;
+	zip?: unknown | undefined;
 	draft?: boolean | undefined;
 	async?: boolean | undefined;
 	functions?: object | undefined;
