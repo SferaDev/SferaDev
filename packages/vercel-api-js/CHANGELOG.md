@@ -1,5 +1,12 @@
 # vercel-api-js
 
+## 1.22.4
+
+### Patch Changes
+
+- 6c835ec: Reorganized and fixed the duplicate definition of the searchDomains endpoint for checking domain availability and pricing; no API behavior change.
+- 6c835ec: Added support for HTTP 409 and 501 status codes to several connector-related API functions and types.
+
 ## 1.22.3
 
 ### Patch Changes
