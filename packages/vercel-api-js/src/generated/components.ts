@@ -228,6 +228,7 @@ import type {
 	CreateConnectorAuthorizationRequestStatus403,
 	CreateConnectorAuthorizationRequestStatus404,
 	CreateConnectorAuthorizationRequestStatus410,
+	CreateConnectorAuthorizationRequestStatus501,
 	CreateConnectorResponse,
 	CreateConnectorStatus400,
 	CreateConnectorStatus401,
@@ -1149,6 +1150,7 @@ import type {
 	GetConnectorStatus401,
 	GetConnectorStatus403,
 	GetConnectorStatus404,
+	GetConnectorStatus409,
 	GetConnectorStatus410,
 	GetConnectorStatus422,
 	GetConnectorTokenResponse,
@@ -1159,6 +1161,7 @@ import type {
 	GetConnectorTokenStatus410,
 	GetConnectorTokenStatus422,
 	GetConnectorTokenStatus429,
+	GetConnectorTokenStatus501,
 	GetContactInfoSchemaResponse,
 	GetContactInfoSchemaStatus400,
 	GetContactInfoSchemaStatus401,
@@ -1847,12 +1850,14 @@ import type {
 	ListConnectorProjectConnectionsStatus401,
 	ListConnectorProjectConnectionsStatus403,
 	ListConnectorProjectConnectionsStatus404,
+	ListConnectorProjectConnectionsStatus409,
 	ListConnectorProjectConnectionsStatus410,
 	ListConnectorProjectConnectionsStatus422,
 	ListConnectorsResponse,
 	ListConnectorsStatus400,
 	ListConnectorsStatus401,
 	ListConnectorsStatus403,
+	ListConnectorsStatus409,
 	ListConnectorsStatus410,
 	ListConnectorsStatus422,
 	ListContractCommitmentsResponse,
@@ -2219,6 +2224,7 @@ import type {
 	ReplaceConnectorTriggerDestinationsStatus401,
 	ReplaceConnectorTriggerDestinationsStatus403,
 	ReplaceConnectorTriggerDestinationsStatus404,
+	ReplaceConnectorTriggerDestinationsStatus409,
 	ReplaceConnectorTriggerDestinationsStatus410,
 	ReplaceConnectorTriggerDestinationsStatus422,
 	ReplaceDomainsByDomainRecordsResponse,
@@ -5790,6 +5796,7 @@ export async function listConnectors(
 			| ListConnectorsStatus400
 			| ListConnectorsStatus401
 			| ListConnectorsStatus403
+			| ListConnectorsStatus409
 			| ListConnectorsStatus410
 			| ListConnectorsStatus422
 		>,
@@ -5846,6 +5853,7 @@ export async function getConnector(
 			| GetConnectorStatus401
 			| GetConnectorStatus403
 			| GetConnectorStatus404
+			| GetConnectorStatus409
 			| GetConnectorStatus410
 			| GetConnectorStatus422
 		>,
@@ -6032,6 +6040,7 @@ export async function replaceConnectorTriggerDestinations(
 			| ReplaceConnectorTriggerDestinationsStatus401
 			| ReplaceConnectorTriggerDestinationsStatus403
 			| ReplaceConnectorTriggerDestinationsStatus404
+			| ReplaceConnectorTriggerDestinationsStatus409
 			| ReplaceConnectorTriggerDestinationsStatus410
 			| ReplaceConnectorTriggerDestinationsStatus422
 		>,
@@ -6078,6 +6087,7 @@ export async function listConnectorProjectConnections(
 			| ListConnectorProjectConnectionsStatus401
 			| ListConnectorProjectConnectionsStatus403
 			| ListConnectorProjectConnectionsStatus404
+			| ListConnectorProjectConnectionsStatus409
 			| ListConnectorProjectConnectionsStatus410
 			| ListConnectorProjectConnectionsStatus422
 		>,
@@ -6317,6 +6327,7 @@ export async function getConnectorToken(
 			| GetConnectorTokenStatus410
 			| GetConnectorTokenStatus422
 			| GetConnectorTokenStatus429
+			| GetConnectorTokenStatus501
 		>,
 		null,
 		Record<string, string>,
@@ -6359,6 +6370,7 @@ export async function createConnectorAuthorizationRequest(
 			| CreateConnectorAuthorizationRequestStatus403
 			| CreateConnectorAuthorizationRequestStatus404
 			| CreateConnectorAuthorizationRequestStatus410
+			| CreateConnectorAuthorizationRequestStatus501
 		>,
 		null,
 		Record<string, string>,
@@ -6919,6 +6931,46 @@ export async function removeRecord(
 }
 
 /**
+ * @summary Get Domain Availability and Pricing
+ * @description Start domain research here. Get registration availability and pricing for 1–200 exact domain names. Returns results in input order, with registration and renewal prices in USD for available domains. No authentication required.
+ * @link /v1/registrar/domains/search
+ */
+export async function searchDomains(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { teamId?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	const data = await request<
+		SearchDomainsResponse,
+		ErrorWrapper<
+			| SearchDomainsStatus400
+			| SearchDomainsStatus401
+			| SearchDomainsStatus403
+			| SearchDomainsStatus429
+			| SearchDomainsStatus500
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string },
+		Record<string, string>
+	>({
+		method: "POST",
+		url: `/v1/registrar/domains/search`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
  * @summary Get supported TLDs
  * @description Get a list of TLDs supported by Vercel
  * @link /v1/registrar/tlds/supported
@@ -7207,46 +7259,6 @@ export async function getBulkAvailability(
 	>({
 		method: "POST",
 		url: `/v1/registrar/domains/availability`,
-		queryParams,
-		...requestConfig,
-		headers: { ...requestConfig.headers },
-	});
-
-	return data;
-}
-
-/**
- * @summary Check domain availability and pricing
- * @description Check registration availability for 1–200 exact domain names, such as `example.com`. Returns results in input order, with registration and renewal prices in USD for available domains. No authentication required.
- * @link /v1/registrar/domains/search
- */
-export async function searchDomains(
-	{
-		queryParams,
-		config,
-	}: {
-		queryParams?: { teamId?: string };
-		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-	} = {} as any,
-) {
-	const { client: request = defaultClient, ...requestConfig } = config ?? {};
-
-	const data = await request<
-		SearchDomainsResponse,
-		ErrorWrapper<
-			| SearchDomainsStatus400
-			| SearchDomainsStatus401
-			| SearchDomainsStatus403
-			| SearchDomainsStatus429
-			| SearchDomainsStatus500
-		>,
-		null,
-		Record<string, string>,
-		{ teamId?: string },
-		Record<string, string>
-	>({
-		method: "POST",
-		url: `/v1/registrar/domains/search`,
 		queryParams,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
@@ -22436,6 +22448,7 @@ export const operationsByPath = {
 	"PUT /domains/{domain}/records": replaceDomainsByDomainRecords,
 	"GET /domains/records/{recordId}": getDomainsRecordsByRecordId,
 	"DELETE /v2/domains/{domain}/records/{recordId}": removeRecord,
+	"POST /v1/registrar/domains/search": searchDomains,
 	"GET /v1/registrar/tlds/supported": getSupportedTlds,
 	"GET /v1/registrar/tlds/{tld}": getTld,
 	"GET /v1/registrar/tlds/{tld}/price": getTldPrice,
@@ -22443,7 +22456,6 @@ export const operationsByPath = {
 	"GET /v1/registrar/domains/{domain}/price": getDomainPrice,
 	"POST /v1/registrar/domains/price": getBulkPrice,
 	"POST /v1/registrar/domains/availability": getBulkAvailability,
-	"POST /v1/registrar/domains/search": searchDomains,
 	"GET /v1/registrar/domains/{domain}/contact-info/schema": getContactInfoSchema,
 	"GET /v1/registrar/domains/{domain}/auth-code": getDomainAuthCode,
 	"POST /v1/registrar/domains/{domain}/buy": buySingleDomain,
@@ -22931,6 +22943,7 @@ export const operationsByTag = {
 		removeRecord,
 	},
 	domainsRegistrar: {
+		searchDomains,
 		getSupportedTlds,
 		getTld,
 		getTldPrice,
@@ -22938,7 +22951,6 @@ export const operationsByTag = {
 		getDomainPrice,
 		getBulkPrice,
 		getBulkAvailability,
-		searchDomains,
 		getContactInfoSchema,
 		getDomainAuthCode,
 		buySingleDomain,
@@ -23416,6 +23428,15 @@ export const tagDictionary = {
 		DELETE: ["removeRecord"],
 	},
 	domainsRegistrar: {
+		POST: [
+			"searchDomains",
+			"getBulkPrice",
+			"getBulkAvailability",
+			"buySingleDomain",
+			"buyDomains",
+			"transferInDomain",
+			"renewDomain",
+		],
 		GET: [
 			"getSupportedTlds",
 			"getTld",
@@ -23427,15 +23448,6 @@ export const tagDictionary = {
 			"getDomainTransferIn",
 			"getDomainContactVerification",
 			"getOrder",
-		],
-		POST: [
-			"getBulkPrice",
-			"getBulkAvailability",
-			"searchDomains",
-			"buySingleDomain",
-			"buyDomains",
-			"transferInDomain",
-			"renewDomain",
 		],
 		PATCH: ["updateDomainAutoRenew", "updateDomainNameservers"],
 	},

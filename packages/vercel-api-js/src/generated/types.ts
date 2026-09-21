@@ -24804,6 +24804,8 @@ export type ListConnectorsStatus401 = unknown;
 
 export type ListConnectorsStatus403 = unknown;
 
+export type ListConnectorsStatus409 = unknown;
+
 export type ListConnectorsStatus410 = unknown;
 
 export type ListConnectorsStatus422 = unknown;
@@ -24820,6 +24822,7 @@ export type ListConnectorsResponses = {
 	"400": ListConnectorsStatus400;
 	"401": ListConnectorsStatus401;
 	"403": ListConnectorsStatus403;
+	"409": ListConnectorsStatus409;
 	"410": ListConnectorsStatus410;
 	"422": ListConnectorsStatus422;
 };
@@ -24832,6 +24835,7 @@ export type ListConnectorsResponse =
 	| ListConnectorsStatus400
 	| ListConnectorsStatus401
 	| ListConnectorsStatus403
+	| ListConnectorsStatus409
 	| ListConnectorsStatus410
 	| ListConnectorsStatus422;
 
@@ -24868,6 +24872,8 @@ export type GetConnectorStatus403 = unknown;
 
 export type GetConnectorStatus404 = unknown;
 
+export type GetConnectorStatus409 = unknown;
+
 export type GetConnectorStatus410 = unknown;
 
 export type GetConnectorStatus422 = unknown;
@@ -24885,6 +24891,7 @@ export type GetConnectorResponses = {
 	"401": GetConnectorStatus401;
 	"403": GetConnectorStatus403;
 	"404": GetConnectorStatus404;
+	"409": GetConnectorStatus409;
 	"410": GetConnectorStatus410;
 	"422": GetConnectorStatus422;
 };
@@ -24898,6 +24905,7 @@ export type GetConnectorResponse =
 	| GetConnectorStatus401
 	| GetConnectorStatus403
 	| GetConnectorStatus404
+	| GetConnectorStatus409
 	| GetConnectorStatus410
 	| GetConnectorStatus422;
 
@@ -25152,6 +25160,8 @@ export type ReplaceConnectorTriggerDestinationsStatus403 = unknown;
 
 export type ReplaceConnectorTriggerDestinationsStatus404 = unknown;
 
+export type ReplaceConnectorTriggerDestinationsStatus409 = unknown;
+
 export type ReplaceConnectorTriggerDestinationsStatus410 = unknown;
 
 export type ReplaceConnectorTriggerDestinationsStatus422 = unknown;
@@ -25169,6 +25179,7 @@ export type ReplaceConnectorTriggerDestinationsResponses = {
 	"401": ReplaceConnectorTriggerDestinationsStatus401;
 	"403": ReplaceConnectorTriggerDestinationsStatus403;
 	"404": ReplaceConnectorTriggerDestinationsStatus404;
+	"409": ReplaceConnectorTriggerDestinationsStatus409;
 	"410": ReplaceConnectorTriggerDestinationsStatus410;
 	"422": ReplaceConnectorTriggerDestinationsStatus422;
 };
@@ -25182,6 +25193,7 @@ export type ReplaceConnectorTriggerDestinationsResponse =
 	| ReplaceConnectorTriggerDestinationsStatus401
 	| ReplaceConnectorTriggerDestinationsStatus403
 	| ReplaceConnectorTriggerDestinationsStatus404
+	| ReplaceConnectorTriggerDestinationsStatus409
 	| ReplaceConnectorTriggerDestinationsStatus410
 	| ReplaceConnectorTriggerDestinationsStatus422;
 
@@ -25230,6 +25242,8 @@ export type ListConnectorProjectConnectionsStatus403 = unknown;
 
 export type ListConnectorProjectConnectionsStatus404 = unknown;
 
+export type ListConnectorProjectConnectionsStatus409 = unknown;
+
 export type ListConnectorProjectConnectionsStatus410 = unknown;
 
 export type ListConnectorProjectConnectionsStatus422 = unknown;
@@ -25247,6 +25261,7 @@ export type ListConnectorProjectConnectionsResponses = {
 	"401": ListConnectorProjectConnectionsStatus401;
 	"403": ListConnectorProjectConnectionsStatus403;
 	"404": ListConnectorProjectConnectionsStatus404;
+	"409": ListConnectorProjectConnectionsStatus409;
 	"410": ListConnectorProjectConnectionsStatus410;
 	"422": ListConnectorProjectConnectionsStatus422;
 };
@@ -25260,6 +25275,7 @@ export type ListConnectorProjectConnectionsResponse =
 	| ListConnectorProjectConnectionsStatus401
 	| ListConnectorProjectConnectionsStatus403
 	| ListConnectorProjectConnectionsStatus404
+	| ListConnectorProjectConnectionsStatus409
 	| ListConnectorProjectConnectionsStatus410
 	| ListConnectorProjectConnectionsStatus422;
 
@@ -25558,6 +25574,8 @@ export type GetConnectorTokenStatus422 = unknown;
 
 export type GetConnectorTokenStatus429 = unknown;
 
+export type GetConnectorTokenStatus501 = unknown;
+
 export type GetConnectorTokenOptions = {
 	body?: never | undefined;
 	path: GetConnectorTokenPath;
@@ -25574,6 +25592,7 @@ export type GetConnectorTokenResponses = {
 	"410": GetConnectorTokenStatus410;
 	"422": GetConnectorTokenStatus422;
 	"429": GetConnectorTokenStatus429;
+	"501": GetConnectorTokenStatus501;
 };
 
 /**
@@ -25587,7 +25606,8 @@ export type GetConnectorTokenResponse =
 	| GetConnectorTokenStatus404
 	| GetConnectorTokenStatus410
 	| GetConnectorTokenStatus422
-	| GetConnectorTokenStatus429;
+	| GetConnectorTokenStatus429
+	| GetConnectorTokenStatus501;
 
 export type CreateConnectorAuthorizationRequestPath = {
 	connector: string;
@@ -25605,6 +25625,8 @@ export type CreateConnectorAuthorizationRequestStatus404 = unknown;
 
 export type CreateConnectorAuthorizationRequestStatus410 = unknown;
 
+export type CreateConnectorAuthorizationRequestStatus501 = unknown;
+
 export type CreateConnectorAuthorizationRequestOptions = {
 	body?: never | undefined;
 	path: CreateConnectorAuthorizationRequestPath;
@@ -25619,6 +25641,7 @@ export type CreateConnectorAuthorizationRequestResponses = {
 	"403": CreateConnectorAuthorizationRequestStatus403;
 	"404": CreateConnectorAuthorizationRequestStatus404;
 	"410": CreateConnectorAuthorizationRequestStatus410;
+	"501": CreateConnectorAuthorizationRequestStatus501;
 };
 
 /**
@@ -25630,7 +25653,8 @@ export type CreateConnectorAuthorizationRequestResponse =
 	| CreateConnectorAuthorizationRequestStatus401
 	| CreateConnectorAuthorizationRequestStatus403
 	| CreateConnectorAuthorizationRequestStatus404
-	| CreateConnectorAuthorizationRequestStatus410;
+	| CreateConnectorAuthorizationRequestStatus410
+	| CreateConnectorAuthorizationRequestStatus501;
 
 export type GetDeploymentEventsPath = {
 	/**
@@ -26433,6 +26457,53 @@ export type RemoveRecordResponse =
 	| RemoveRecordStatus404
 	| RemoveRecordStatus410;
 
+export type SearchDomainsQuery = {
+	/**
+	 * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+};
+
+export type SearchDomainsStatus200 = unknown;
+
+export type SearchDomainsStatus400 = unknown;
+
+export type SearchDomainsStatus401 = unknown;
+
+export type SearchDomainsStatus403 = unknown;
+
+export type SearchDomainsStatus429 = unknown;
+
+export type SearchDomainsStatus500 = unknown;
+
+export type SearchDomainsOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query?: SearchDomainsQuery | undefined;
+	headers?: never | undefined;
+};
+
+export type SearchDomainsResponses = {
+	"200": SearchDomainsStatus200;
+	"400": SearchDomainsStatus400;
+	"401": SearchDomainsStatus401;
+	"403": SearchDomainsStatus403;
+	"429": SearchDomainsStatus429;
+	"500": SearchDomainsStatus500;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type SearchDomainsResponse =
+	| SearchDomainsStatus200
+	| SearchDomainsStatus400
+	| SearchDomainsStatus401
+	| SearchDomainsStatus403
+	| SearchDomainsStatus429
+	| SearchDomainsStatus500;
+
 export type GetSupportedTldsQuery = {
 	/**
 	 * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
@@ -26791,53 +26862,6 @@ export type GetBulkAvailabilityResponse =
 	| GetBulkAvailabilityStatus403
 	| GetBulkAvailabilityStatus429
 	| GetBulkAvailabilityStatus500;
-
-export type SearchDomainsQuery = {
-	/**
-	 * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
-	 * @type string | undefined
-	 */
-	teamId?: string | undefined;
-};
-
-export type SearchDomainsStatus200 = unknown;
-
-export type SearchDomainsStatus400 = unknown;
-
-export type SearchDomainsStatus401 = unknown;
-
-export type SearchDomainsStatus403 = unknown;
-
-export type SearchDomainsStatus429 = unknown;
-
-export type SearchDomainsStatus500 = unknown;
-
-export type SearchDomainsOptions = {
-	body?: never | undefined;
-	path?: never | undefined;
-	query?: SearchDomainsQuery | undefined;
-	headers?: never | undefined;
-};
-
-export type SearchDomainsResponses = {
-	"200": SearchDomainsStatus200;
-	"400": SearchDomainsStatus400;
-	"401": SearchDomainsStatus401;
-	"403": SearchDomainsStatus403;
-	"429": SearchDomainsStatus429;
-	"500": SearchDomainsStatus500;
-};
-
-/**
- * @description Union of all possible responses
- */
-export type SearchDomainsResponse =
-	| SearchDomainsStatus200
-	| SearchDomainsStatus400
-	| SearchDomainsStatus401
-	| SearchDomainsStatus403
-	| SearchDomainsStatus429
-	| SearchDomainsStatus500;
 
 export type GetContactInfoSchemaPath = {
 	domain: unknown;

@@ -20594,6 +20594,8 @@ export const listConnectorsStatus401Schema = z.unknown();
 
 export const listConnectorsStatus403Schema = z.unknown();
 
+export const listConnectorsStatus409Schema = z.unknown();
+
 export const listConnectorsStatus410Schema = z.unknown();
 
 export const listConnectorsStatus422Schema = z.unknown();
@@ -20604,6 +20606,7 @@ export const listConnectorsErrorSchema = z.union([
 	listConnectorsStatus400Schema,
 	listConnectorsStatus401Schema,
 	listConnectorsStatus403Schema,
+	listConnectorsStatus409Schema,
 	listConnectorsStatus410Schema,
 	listConnectorsStatus422Schema,
 ]);
@@ -20640,6 +20643,8 @@ export const getConnectorStatus403Schema = z.unknown();
 
 export const getConnectorStatus404Schema = z.unknown();
 
+export const getConnectorStatus409Schema = z.unknown();
+
 export const getConnectorStatus410Schema = z.unknown();
 
 export const getConnectorStatus422Schema = z.unknown();
@@ -20651,6 +20656,7 @@ export const getConnectorErrorSchema = z.union([
 	getConnectorStatus401Schema,
 	getConnectorStatus403Schema,
 	getConnectorStatus404Schema,
+	getConnectorStatus409Schema,
 	getConnectorStatus410Schema,
 	getConnectorStatus422Schema,
 ]);
@@ -20843,6 +20849,8 @@ export const replaceConnectorTriggerDestinationsStatus403Schema = z.unknown();
 
 export const replaceConnectorTriggerDestinationsStatus404Schema = z.unknown();
 
+export const replaceConnectorTriggerDestinationsStatus409Schema = z.unknown();
+
 export const replaceConnectorTriggerDestinationsStatus410Schema = z.unknown();
 
 export const replaceConnectorTriggerDestinationsStatus422Schema = z.unknown();
@@ -20855,6 +20863,7 @@ export const replaceConnectorTriggerDestinationsErrorSchema = z.union([
 	replaceConnectorTriggerDestinationsStatus401Schema,
 	replaceConnectorTriggerDestinationsStatus403Schema,
 	replaceConnectorTriggerDestinationsStatus404Schema,
+	replaceConnectorTriggerDestinationsStatus409Schema,
 	replaceConnectorTriggerDestinationsStatus410Schema,
 	replaceConnectorTriggerDestinationsStatus422Schema,
 ]);
@@ -20903,6 +20912,8 @@ export const listConnectorProjectConnectionsStatus403Schema = z.unknown();
 
 export const listConnectorProjectConnectionsStatus404Schema = z.unknown();
 
+export const listConnectorProjectConnectionsStatus409Schema = z.unknown();
+
 export const listConnectorProjectConnectionsStatus410Schema = z.unknown();
 
 export const listConnectorProjectConnectionsStatus422Schema = z.unknown();
@@ -20915,6 +20926,7 @@ export const listConnectorProjectConnectionsErrorSchema = z.union([
 	listConnectorProjectConnectionsStatus401Schema,
 	listConnectorProjectConnectionsStatus403Schema,
 	listConnectorProjectConnectionsStatus404Schema,
+	listConnectorProjectConnectionsStatus409Schema,
 	listConnectorProjectConnectionsStatus410Schema,
 	listConnectorProjectConnectionsStatus422Schema,
 ]);
@@ -21139,6 +21151,8 @@ export const getConnectorTokenStatus422Schema = z.unknown();
 
 export const getConnectorTokenStatus429Schema = z.unknown();
 
+export const getConnectorTokenStatus501Schema = z.unknown();
+
 export const getConnectorTokenResponseSchema = getConnectorTokenStatus200Schema;
 
 export const getConnectorTokenErrorSchema = z.union([
@@ -21149,6 +21163,7 @@ export const getConnectorTokenErrorSchema = z.union([
 	getConnectorTokenStatus410Schema,
 	getConnectorTokenStatus422Schema,
 	getConnectorTokenStatus429Schema,
+	getConnectorTokenStatus501Schema,
 ]);
 
 export const createConnectorAuthorizationRequestPathConnectorSchema = z.string();
@@ -21165,6 +21180,8 @@ export const createConnectorAuthorizationRequestStatus404Schema = z.unknown();
 
 export const createConnectorAuthorizationRequestStatus410Schema = z.unknown();
 
+export const createConnectorAuthorizationRequestStatus501Schema = z.unknown();
+
 export const createConnectorAuthorizationRequestResponseSchema =
 	createConnectorAuthorizationRequestStatus200Schema;
 
@@ -21174,6 +21191,7 @@ export const createConnectorAuthorizationRequestErrorSchema = z.union([
 	createConnectorAuthorizationRequestStatus403Schema,
 	createConnectorAuthorizationRequestStatus404Schema,
 	createConnectorAuthorizationRequestStatus410Schema,
+	createConnectorAuthorizationRequestStatus501Schema,
 ]);
 
 export const getDeploymentEventsPathIdOrUrlSchema = z
@@ -21692,6 +21710,33 @@ export const removeRecordErrorSchema = z.union([
 	removeRecordStatus410Schema,
 ]);
 
+export const searchDomainsQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.meta({ examples: ["team_1a2b3c4d5e6f7g8h9i0j1k2l"] });
+
+export const searchDomainsStatus200Schema = z.unknown();
+
+export const searchDomainsStatus400Schema = z.unknown();
+
+export const searchDomainsStatus401Schema = z.unknown();
+
+export const searchDomainsStatus403Schema = z.unknown();
+
+export const searchDomainsStatus429Schema = z.unknown();
+
+export const searchDomainsStatus500Schema = z.unknown();
+
+export const searchDomainsResponseSchema = searchDomainsStatus200Schema;
+
+export const searchDomainsErrorSchema = z.union([
+	searchDomainsStatus400Schema,
+	searchDomainsStatus401Schema,
+	searchDomainsStatus403Schema,
+	searchDomainsStatus429Schema,
+	searchDomainsStatus500Schema,
+]);
+
 export const getSupportedTldsQueryTeamIdSchema = z
 	.string()
 	.optional()
@@ -21904,33 +21949,6 @@ export const getBulkAvailabilityErrorSchema = z.union([
 	getBulkAvailabilityStatus403Schema,
 	getBulkAvailabilityStatus429Schema,
 	getBulkAvailabilityStatus500Schema,
-]);
-
-export const searchDomainsQueryTeamIdSchema = z
-	.string()
-	.optional()
-	.meta({ examples: ["team_1a2b3c4d5e6f7g8h9i0j1k2l"] });
-
-export const searchDomainsStatus200Schema = z.unknown();
-
-export const searchDomainsStatus400Schema = z.unknown();
-
-export const searchDomainsStatus401Schema = z.unknown();
-
-export const searchDomainsStatus403Schema = z.unknown();
-
-export const searchDomainsStatus429Schema = z.unknown();
-
-export const searchDomainsStatus500Schema = z.unknown();
-
-export const searchDomainsResponseSchema = searchDomainsStatus200Schema;
-
-export const searchDomainsErrorSchema = z.union([
-	searchDomainsStatus400Schema,
-	searchDomainsStatus401Schema,
-	searchDomainsStatus403Schema,
-	searchDomainsStatus429Schema,
-	searchDomainsStatus500Schema,
 ]);
 
 export const getContactInfoSchemaPathDomainSchema = z.unknown();
