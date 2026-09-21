@@ -9073,6 +9073,21 @@ export type UserEvent = {
 									 * @type object
 									 */
 									headInfo: {
+										commitMetadata?:
+											| {
+													author: {
+														date: string;
+														email: string;
+														name: string;
+													};
+													committer: {
+														date: string;
+														email: string;
+														name: string;
+													};
+													message: string;
+											  }
+											| undefined;
 										org: string;
 										ref: string;
 										repo: string;
