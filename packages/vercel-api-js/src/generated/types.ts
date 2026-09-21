@@ -10232,6 +10232,17 @@ export type UserEvent = {
 											  }[]
 											| undefined;
 										/**
+										 * @description Since September 2026. The git SHA a non-cascading hard block of this owner auto-registered in the lineage blocklist, so unblocking can disable the row that block created. Lives on the owner rather than a project block because this registration path runs only when the block did not cascade, leaving the owner\'s single project unblocked and with no block record to carry it. Absent means the block registered nothing, which includes the case where registration was skipped because the SHA already belonged to an earlier block. Unblock must clear only what is named here.
+										 * @type object | undefined
+										 */
+										registeredShaBlock?:
+											| {
+													createdAt: string;
+													createdBy: string;
+													sha: string;
+											  }
+											| undefined;
+										/**
 										 * @description Since November 2021. Guides the abuse scanner in build container.
 										 * @type string | undefined
 										 */
@@ -40571,6 +40582,8 @@ export type GetNamedSandboxStatus409 = unknown;
 
 export type GetNamedSandboxStatus410 = unknown;
 
+export type GetNamedSandboxStatus422 = unknown;
+
 export type GetNamedSandboxStatus429 = unknown;
 
 export type GetNamedSandboxStatus500 = unknown;
@@ -40593,6 +40606,7 @@ export type GetNamedSandboxResponses = {
 	"404": GetNamedSandboxStatus404;
 	"409": GetNamedSandboxStatus409;
 	"410": GetNamedSandboxStatus410;
+	"422": GetNamedSandboxStatus422;
 	"429": GetNamedSandboxStatus429;
 	"500": GetNamedSandboxStatus500;
 	"502": GetNamedSandboxStatus502;
@@ -40610,6 +40624,7 @@ export type GetNamedSandboxResponse =
 	| GetNamedSandboxStatus404
 	| GetNamedSandboxStatus409
 	| GetNamedSandboxStatus410
+	| GetNamedSandboxStatus422
 	| GetNamedSandboxStatus429
 	| GetNamedSandboxStatus500
 	| GetNamedSandboxStatus502;
