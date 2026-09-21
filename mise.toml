@@ -10,7 +10,7 @@
 # with `allowBuilds`, and made ignored build scripts fail the install rather than warn.
 # Cross the next major by hand, with the security overrides re-verified afterwards.
 [tools]
-node = "26.8.2"
+node = "26.9.0"
 pnpm = "11"
 yq = "4.53.6"
 "aqua:suzuki-shunsuke/pinact" = "5.0.0"
