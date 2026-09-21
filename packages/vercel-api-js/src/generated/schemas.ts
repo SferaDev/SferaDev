@@ -5298,6 +5298,21 @@ export const userEventSchema = z
 										),
 									headInfo: z
 										.object({
+											commitMetadata: z
+												.object({
+													author: z.object({
+														date: z.string(),
+														email: z.string(),
+														name: z.string(),
+													}),
+													committer: z.object({
+														date: z.string(),
+														email: z.string(),
+														name: z.string(),
+													}),
+													message: z.string(),
+												})
+												.optional(),
 											org: z.string(),
 											ref: z.string(),
 											repo: z.string(),
