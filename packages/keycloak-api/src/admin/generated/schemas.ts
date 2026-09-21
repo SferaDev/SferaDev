@@ -1594,7 +1594,7 @@ export const pOSTAdminRealmsErrorSchema = z.union([
 	pOSTAdminRealmsStatus500Schema,
 ]);
 
-export const pOSTAdminRealmsBodySchema = z.instanceof(File).optional();
+export const pOSTAdminRealmsBodySchema = z.unknown().optional();
 
 export const gETAdminRealmsRealmPathRealmSchema = z.string().describe("realm name (not id!)");
 
@@ -3699,7 +3699,7 @@ export const pOSTAdminRealmsRealmPartialImportErrorSchema = z.union([
 	pOSTAdminRealmsRealmPartialImportStatus409Schema,
 ]);
 
-export const pOSTAdminRealmsRealmPartialImportBodySchema = z.instanceof(File).optional();
+export const pOSTAdminRealmsRealmPartialImportBodySchema = z.unknown().optional();
 
 export const pOSTAdminRealmsRealmPushRevocationPathRealmSchema = z
 	.string()
