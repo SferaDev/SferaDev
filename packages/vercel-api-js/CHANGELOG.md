@@ -1,5 +1,11 @@
 # vercel-api-js
 
+## 1.22.2
+
+### Patch Changes
+
+- a41c648: Added optional commitMetadata field to headInfo in userEvent schema and type definitions.
+
 ## 1.22.1
 
 ### Patch Changes
