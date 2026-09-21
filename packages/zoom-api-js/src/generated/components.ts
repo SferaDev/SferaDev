@@ -273,6 +273,7 @@ import type {
 	ListWebinarTemplatesStatus400,
 	ListWebinarTemplatesStatus404,
 	ListWebinarTemplatesStatus429,
+	MeetingAppAddBody,
 	MeetingAppAddResponse,
 	MeetingAppAddStatus400,
 	MeetingAppAddStatus404,
@@ -1882,6 +1883,8 @@ export async function recordingsList(
 			to?: string;
 			trash_type?: string;
 			meeting_id?: number;
+			zra_status?: "all" | "added" | "not_added" | "processing";
+			recording_source_type?: "cloud_recording_only" | "my_notes_recording_only";
 		};
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
@@ -1905,6 +1908,8 @@ export async function recordingsList(
 			to?: string;
 			trash_type?: string;
 			meeting_id?: number;
+			zra_status?: "all" | "added" | "not_added" | "processing";
+			recording_source_type?: "cloud_recording_only" | "my_notes_recording_only";
 		},
 		{ userId: string }
 	>({
@@ -2658,9 +2663,11 @@ export async function deviceUpdate(
 export async function meetingAppAdd(
 	{
 		pathParams,
+		body,
 		config,
 	}: {
 		pathParams: { meetingId: bigint };
+		body?: MeetingAppAddBody;
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
 ) {
@@ -2672,13 +2679,14 @@ export async function meetingAppAdd(
 	const data = await request<
 		MeetingAppAddResponse,
 		ErrorWrapper<MeetingAppAddStatus400 | MeetingAppAddStatus404 | MeetingAppAddStatus429>,
-		null,
+		MeetingAppAddBody,
 		Record<string, string>,
 		Record<string, string>,
 		{ meetingId: bigint }
 	>({
 		method: "POST",
 		url: `/meetings/${pathParams.meetingId}/open_apps`,
+		body: body,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
 	});
@@ -2832,13 +2840,13 @@ export async function updateMeetingChatMessageById(
 
 /**
  * @summary In-meeting controls
- * @description [In-meeting](https://support.zoom.us/hc/en-us/articles/360021921032-In-Meeting-Controls) controls include starting, stopping, pausing, and resuming a recording; inviting participants; updating the waiting room with a custom message; and starting, stopping, or disabling the AI Companion.
+ * @description [In-meeting](https://support.zoom.us/hc/en-us/articles/360021921032-In-Meeting-Controls) controls include starting, stopping, pausing, and resuming a recording; inviting participants; updating the waiting room with a custom message; and starting, stopping, or disabling Zoom AI.
  * **Note:** This API's recording control only works for cloud recordings, **not** for local recordings.
  * **Prerequisites:**
  * * The user calling this API must be the host or an alternative meeting host.
  * * The meeting must be a live meeting, except when inviting participants to the meeting through [call out (phone)](https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0062038)/[call out (room system)](https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0065721).
  * * The [Cloud recording](https://support.zoom.us/hc/en-us/articles/360060231472-Enabling-cloud-recording) control must be enabled.
- * * The [AI Companion](https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0057623) control must be enabled.
+ * * The [Zoom AI](https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0057623) control must be enabled.
  * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:write`,`meeting:write:admin`,`meeting:master`
  * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `meeting:update:in_meeting_controls`,`meeting:update:in_meeting_controls:admin`
  * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `MEDIUM`
