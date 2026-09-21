@@ -1,6 +1,6 @@
 {
 	"name": "keycloak-api",
-	"version": "1.1.1",
+	"version": "1.1.2",
 	"description": "Keycloak auto-generated type-safe API client",
 	"type": "module",
 	"author": "SferaDev",

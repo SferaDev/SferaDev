@@ -1,5 +1,11 @@
 # keycloak-api
 
+## 1.1.2
+
+### Patch Changes
+
+- 6e2c2ec: Changed POSTAdminRealmsBody and POSTAdminRealmsRealmPartialImportBody schema types from File/Blob to unknown for improved flexibility.
+
 ## 1.1.1
 
 ### Patch Changes

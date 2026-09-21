@@ -1,5 +1,11 @@
 # netlify-api
 
+## 1.3.1
+
+### Patch Changes
+
+- 3a6a5c6: Relaxed type of 'zip' field in DeployFiles, CreateSiteDeployBody, and UpdateSiteDeployBody schemas and types from File/Blob to unknown.
+
 ## 1.3.0
 
 ### Minor Changes
