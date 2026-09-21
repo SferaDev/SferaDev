@@ -6528,6 +6528,16 @@ export const userEventSchema = z
 											)
 											.optional()
 											.describe("(scanner history). Since November 2021. First element is newest."),
+										registeredShaBlock: z
+											.object({
+												createdAt: z.string(),
+												createdBy: z.string(),
+												sha: z.string(),
+											})
+											.optional()
+											.describe(
+												"Since September 2026. The git SHA a non-cascading hard block of this owner auto-registered in the lineage blocklist, so unblocking can disable the row that block created. Lives on the owner rather than a project block because this registration path runs only when the block did not cascade, leaving the owner's single project unblocked and with no block record to carry it. Absent means the block registered nothing, which includes the case where registration was skipped because the SHA already belonged to an earlier block. Unblock must clear only what is named here.",
+											),
 										scanner: z
 											.string()
 											.optional()
@@ -30711,6 +30721,8 @@ export const getNamedSandboxStatus409Schema = z.unknown();
 
 export const getNamedSandboxStatus410Schema = z.unknown();
 
+export const getNamedSandboxStatus422Schema = z.unknown();
+
 export const getNamedSandboxStatus429Schema = z.unknown();
 
 export const getNamedSandboxStatus500Schema = z.unknown();
@@ -30727,6 +30739,7 @@ export const getNamedSandboxErrorSchema = z.union([
 	getNamedSandboxStatus404Schema,
 	getNamedSandboxStatus409Schema,
 	getNamedSandboxStatus410Schema,
+	getNamedSandboxStatus422Schema,
 	getNamedSandboxStatus429Schema,
 	getNamedSandboxStatus500Schema,
 	getNamedSandboxStatus502Schema,

@@ -1446,6 +1446,7 @@ import type {
 	GetNamedSandboxStatus404,
 	GetNamedSandboxStatus409,
 	GetNamedSandboxStatus410,
+	GetNamedSandboxStatus422,
 	GetNamedSandboxStatus429,
 	GetNamedSandboxStatus500,
 	GetNamedSandboxStatus502,
@@ -17143,6 +17144,7 @@ export async function getNamedSandbox(
 			| GetNamedSandboxStatus404
 			| GetNamedSandboxStatus409
 			| GetNamedSandboxStatus410
+			| GetNamedSandboxStatus422
 			| GetNamedSandboxStatus429
 			| GetNamedSandboxStatus500
 			| GetNamedSandboxStatus502
