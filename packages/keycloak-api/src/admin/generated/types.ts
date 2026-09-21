@@ -2469,7 +2469,7 @@ export type POSTAdminRealmsStatus409 = unknown;
 
 export type POSTAdminRealmsStatus500 = unknown;
 
-export type POSTAdminRealmsBody = Blob | undefined;
+export type POSTAdminRealmsBody = unknown | undefined;
 
 export type POSTAdminRealmsOptions = {
 	body: POSTAdminRealmsBody;
@@ -6696,7 +6696,7 @@ export type POSTAdminRealmsRealmPartialImportStatus403 = unknown;
 
 export type POSTAdminRealmsRealmPartialImportStatus409 = unknown;
 
-export type POSTAdminRealmsRealmPartialImportBody = Blob | undefined;
+export type POSTAdminRealmsRealmPartialImportBody = unknown | undefined;
 
 export type POSTAdminRealmsRealmPartialImportOptions = {
 	body: POSTAdminRealmsRealmPartialImportBody;
