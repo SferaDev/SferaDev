@@ -1,5 +1,12 @@
 # vercel-api-js
 
+## 1.22.3
+
+### Patch Changes
+
+- 8d6599e: Added registeredShaBlock field to UserEvent schema and type definition.
+- 8d6599e: Added support for 422 Unprocessable Entity response to the getNamedSandbox endpoint and related types.
+
 ## 1.22.2
 
 ### Patch Changes
