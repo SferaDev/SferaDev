@@ -1917,6 +1917,7 @@ import type {
 	ListFlagsV2Status403,
 	ListFlagsV2Status404,
 	ListFlagsV2Status410,
+	ListFlagsV2Status503,
 	ListFlagVersionsResponse,
 	ListFlagVersionsStatus400,
 	ListFlagVersionsStatus401,
@@ -2032,6 +2033,7 @@ import type {
 	ListTeamFlagsV2Status401,
 	ListTeamFlagsV2Status403,
 	ListTeamFlagsV2Status410,
+	ListTeamFlagsV2Status503,
 	ListUserEventsResponse,
 	ListUserEventsStatus400,
 	ListUserEventsStatus401,
@@ -10033,6 +10035,7 @@ export async function listFlagsV2(
 			| ListFlagsV2Status403
 			| ListFlagsV2Status404
 			| ListFlagsV2Status410
+			| ListFlagsV2Status503
 		>,
 		null,
 		Record<string, string>,
@@ -10563,6 +10566,7 @@ export async function listTeamFlagsV2(
 			| ListTeamFlagsV2Status401
 			| ListTeamFlagsV2Status403
 			| ListTeamFlagsV2Status410
+			| ListTeamFlagsV2Status503
 		>,
 		null,
 		Record<string, string>,
@@ -12564,85 +12568,6 @@ export async function createApiKeys(
 }
 
 /**
- * @summary List issuers
- * @description Retrieve the list of KMS issuers that belong to the authenticated team. The results are paginated.
- * @link /v1/kms/issuers
- */
-export async function listKmsIssuers(
-	{
-		queryParams,
-		config,
-	}: {
-		queryParams?: { limit?: number; next?: string; teamId?: string; slug?: string };
-		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-	} = {} as any,
-) {
-	const { client: request = defaultClient, ...requestConfig } = config ?? {};
-
-	const data = await request<
-		ListKmsIssuersResponse,
-		ErrorWrapper<
-			| ListKmsIssuersStatus400
-			| ListKmsIssuersStatus401
-			| ListKmsIssuersStatus403
-			| ListKmsIssuersStatus410
-		>,
-		null,
-		Record<string, string>,
-		{ limit?: number; next?: string; teamId?: string; slug?: string },
-		Record<string, string>
-	>({
-		method: "GET",
-		url: `/v1/kms/issuers`,
-		queryParams,
-		...requestConfig,
-		headers: { ...requestConfig.headers },
-	});
-
-	return data;
-}
-
-/**
- * @summary Create an issuer
- * @description Create a new KMS issuer for the authenticated team. An issuer owns the asymmetric signing keys that are used to sign tokens and messages.
- * @link /v1/kms/issuers
- */
-export async function createKmsIssuer(
-	{
-		queryParams,
-		config,
-	}: {
-		queryParams?: { teamId?: string; slug?: string };
-		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-	} = {} as any,
-) {
-	const { client: request = defaultClient, ...requestConfig } = config ?? {};
-
-	const data = await request<
-		CreateKmsIssuerResponse,
-		ErrorWrapper<
-			| CreateKmsIssuerStatus400
-			| CreateKmsIssuerStatus401
-			| CreateKmsIssuerStatus403
-			| CreateKmsIssuerStatus404
-			| CreateKmsIssuerStatus410
-		>,
-		null,
-		Record<string, string>,
-		{ teamId?: string; slug?: string },
-		Record<string, string>
-	>({
-		method: "POST",
-		url: `/v1/kms/issuers`,
-		queryParams,
-		...requestConfig,
-		headers: { ...requestConfig.headers },
-	});
-
-	return data;
-}
-
-/**
  * @summary Sign a message
  * @description Sign a raw message with a KMS issuer's active signing key. Authenticate the request with a Vercel OIDC token in the `Authorization: Bearer` header; the issuer's policies decide which workloads are allowed to sign. The response `signature` is standard-base64 of the raw signature over the decoded message bytes. `keyId` and `algorithm` identify the signing key in the issuer's JWKS.
  * @link /v1/kms/issuers/{issuerId}/sign/message
@@ -12719,6 +12644,85 @@ export async function signKmsToken(
 	>({
 		method: "POST",
 		url: `/v1/kms/issuers/${pathParams.issuerId}/sign/token`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary List issuers
+ * @description Retrieve the list of KMS issuers that belong to the authenticated team. The results are paginated.
+ * @link /v1/kms/issuers
+ */
+export async function listKmsIssuers(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { limit?: number; next?: string; teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	const data = await request<
+		ListKmsIssuersResponse,
+		ErrorWrapper<
+			| ListKmsIssuersStatus400
+			| ListKmsIssuersStatus401
+			| ListKmsIssuersStatus403
+			| ListKmsIssuersStatus410
+		>,
+		null,
+		Record<string, string>,
+		{ limit?: number; next?: string; teamId?: string; slug?: string },
+		Record<string, string>
+	>({
+		method: "GET",
+		url: `/v1/kms/issuers`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Create an issuer
+ * @description Create a new KMS issuer for the authenticated team. An issuer owns the asymmetric signing keys that are used to sign tokens and messages.
+ * @link /v1/kms/issuers
+ */
+export async function createKmsIssuer(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	const data = await request<
+		CreateKmsIssuerResponse,
+		ErrorWrapper<
+			| CreateKmsIssuerStatus400
+			| CreateKmsIssuerStatus401
+			| CreateKmsIssuerStatus403
+			| CreateKmsIssuerStatus404
+			| CreateKmsIssuerStatus410
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
+		Record<string, string>
+	>({
+		method: "POST",
+		url: `/v1/kms/issuers`,
+		queryParams,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
 	});
@@ -22582,10 +22586,10 @@ export const operationsByPath = {
 	"POST /v2/integrations/log-drains": createLogDrain,
 	"DELETE /v1/integrations/log-drains/{id}": deleteIntegrationLogDrain,
 	"POST /api-keys": createApiKeys,
-	"GET /v1/kms/issuers": listKmsIssuers,
-	"POST /v1/kms/issuers": createKmsIssuer,
 	"POST /v1/kms/issuers/{issuerId}/sign/message": signKmsMessage,
 	"POST /v1/kms/issuers/{issuerId}/sign/token": signKmsToken,
+	"GET /v1/kms/issuers": listKmsIssuers,
+	"POST /v1/kms/issuers": createKmsIssuer,
 	"POST /v1/kms/issuers/{issuerId}/keys": createKmsSigningKey,
 	"POST /v1/kms/issuers/{issuerId}/keys/{keyId}/activate": activateKmsSigningKey,
 	"POST /v1/kms/issuers/{issuerId}/keys/{keyId}/revoke": revokeKmsSigningKey,
@@ -23094,10 +23098,10 @@ export const operationsByTag = {
 		deleteAuthToken,
 	},
 	kms: {
-		listKmsIssuers,
-		createKmsIssuer,
 		signKmsMessage,
 		signKmsToken,
+		listKmsIssuers,
+		createKmsIssuer,
 		createKmsSigningKey,
 		activateKmsSigningKey,
 		revokeKmsSigningKey,
@@ -23581,16 +23585,16 @@ export const tagDictionary = {
 		DELETE: ["deleteAuthToken"],
 	},
 	kms: {
-		GET: ["listKmsIssuers", "getKmsIssuer"],
 		POST: [
-			"createKmsIssuer",
 			"signKmsMessage",
 			"signKmsToken",
+			"createKmsIssuer",
 			"createKmsSigningKey",
 			"activateKmsSigningKey",
 			"revokeKmsSigningKey",
 			"createKmsIssuerPolicy",
 		],
+		GET: ["listKmsIssuers", "getKmsIssuer"],
 		PATCH: ["updateKmsIssuer", "updateKmsIssuerPolicy"],
 		DELETE: ["deleteKmsIssuer", "deleteKmsIssuerPolicy"],
 	},

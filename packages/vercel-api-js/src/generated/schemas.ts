@@ -24347,6 +24347,8 @@ export const listFlagsV2Status404Schema = z.unknown();
 
 export const listFlagsV2Status410Schema = z.unknown();
 
+export const listFlagsV2Status503Schema = z.unknown();
+
 export const listFlagsV2ResponseSchema = listFlagsV2Status200Schema;
 
 export const listFlagsV2ErrorSchema = z.union([
@@ -24356,6 +24358,7 @@ export const listFlagsV2ErrorSchema = z.union([
 	listFlagsV2Status403Schema,
 	listFlagsV2Status404Schema,
 	listFlagsV2Status410Schema,
+	listFlagsV2Status503Schema,
 ]);
 
 export const listFlagsPathProjectIdOrNameSchema = z.string().describe("The project id or name");
@@ -24913,6 +24916,8 @@ export const listTeamFlagsV2Status403Schema = z.unknown();
 
 export const listTeamFlagsV2Status410Schema = z.unknown();
 
+export const listTeamFlagsV2Status503Schema = z.unknown();
+
 export const listTeamFlagsV2ResponseSchema = listTeamFlagsV2Status200Schema;
 
 export const listTeamFlagsV2ErrorSchema = z.union([
@@ -24920,6 +24925,7 @@ export const listTeamFlagsV2ErrorSchema = z.union([
 	listTeamFlagsV2Status401Schema,
 	listTeamFlagsV2Status403Schema,
 	listTeamFlagsV2Status410Schema,
+	listTeamFlagsV2Status503Schema,
 ]);
 
 export const listTeamFlagsQueryStateSchema = z
@@ -26423,6 +26429,54 @@ export const createApiKeysErrorSchema = z.union([
 	createApiKeysStatus500Schema,
 ]);
 
+export const signKmsMessagePathIssuerIdSchema = z.string().describe("The ID of the issuer.");
+
+export const signKmsMessageStatus200Schema = z.unknown();
+
+export const signKmsMessageStatus400Schema = z.unknown();
+
+export const signKmsMessageStatus401Schema = z.unknown();
+
+export const signKmsMessageStatus403Schema = z.unknown();
+
+export const signKmsMessageStatus404Schema = z.unknown();
+
+export const signKmsMessageStatus429Schema = z.unknown();
+
+export const signKmsMessageResponseSchema = signKmsMessageStatus200Schema;
+
+export const signKmsMessageErrorSchema = z.union([
+	signKmsMessageStatus400Schema,
+	signKmsMessageStatus401Schema,
+	signKmsMessageStatus403Schema,
+	signKmsMessageStatus404Schema,
+	signKmsMessageStatus429Schema,
+]);
+
+export const signKmsTokenPathIssuerIdSchema = z.string().describe("The ID of the issuer.");
+
+export const signKmsTokenStatus200Schema = z.unknown();
+
+export const signKmsTokenStatus400Schema = z.unknown();
+
+export const signKmsTokenStatus401Schema = z.unknown();
+
+export const signKmsTokenStatus403Schema = z.unknown();
+
+export const signKmsTokenStatus404Schema = z.unknown();
+
+export const signKmsTokenStatus429Schema = z.unknown();
+
+export const signKmsTokenResponseSchema = signKmsTokenStatus200Schema;
+
+export const signKmsTokenErrorSchema = z.union([
+	signKmsTokenStatus400Schema,
+	signKmsTokenStatus401Schema,
+	signKmsTokenStatus403Schema,
+	signKmsTokenStatus404Schema,
+	signKmsTokenStatus429Schema,
+]);
+
 export const listKmsIssuersQueryLimitSchema = z
 	.int()
 	.min(1)
@@ -26500,54 +26554,6 @@ export const createKmsIssuerErrorSchema = z.union([
 	createKmsIssuerStatus403Schema,
 	createKmsIssuerStatus404Schema,
 	createKmsIssuerStatus410Schema,
-]);
-
-export const signKmsMessagePathIssuerIdSchema = z.string().describe("The ID of the issuer.");
-
-export const signKmsMessageStatus200Schema = z.unknown();
-
-export const signKmsMessageStatus400Schema = z.unknown();
-
-export const signKmsMessageStatus401Schema = z.unknown();
-
-export const signKmsMessageStatus403Schema = z.unknown();
-
-export const signKmsMessageStatus404Schema = z.unknown();
-
-export const signKmsMessageStatus429Schema = z.unknown();
-
-export const signKmsMessageResponseSchema = signKmsMessageStatus200Schema;
-
-export const signKmsMessageErrorSchema = z.union([
-	signKmsMessageStatus400Schema,
-	signKmsMessageStatus401Schema,
-	signKmsMessageStatus403Schema,
-	signKmsMessageStatus404Schema,
-	signKmsMessageStatus429Schema,
-]);
-
-export const signKmsTokenPathIssuerIdSchema = z.string().describe("The ID of the issuer.");
-
-export const signKmsTokenStatus200Schema = z.unknown();
-
-export const signKmsTokenStatus400Schema = z.unknown();
-
-export const signKmsTokenStatus401Schema = z.unknown();
-
-export const signKmsTokenStatus403Schema = z.unknown();
-
-export const signKmsTokenStatus404Schema = z.unknown();
-
-export const signKmsTokenStatus429Schema = z.unknown();
-
-export const signKmsTokenResponseSchema = signKmsTokenStatus200Schema;
-
-export const signKmsTokenErrorSchema = z.union([
-	signKmsTokenStatus400Schema,
-	signKmsTokenStatus401Schema,
-	signKmsTokenStatus403Schema,
-	signKmsTokenStatus404Schema,
-	signKmsTokenStatus429Schema,
 ]);
 
 export const createKmsSigningKeyPathIssuerIdSchema = z.string().describe("The ID of the issuer.");
