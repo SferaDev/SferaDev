@@ -1,5 +1,16 @@
 # vercel-api-js
 
+## 1.23.0
+
+### Minor Changes
+
+- 731814b: Added new user event types: marketplace-auto-card-collection-updated and marketplace-billing-collection-updated.
+
+### Patch Changes
+
+- 731814b: Removed UpdateProjectStatus429 type and related schema from updateProject API error responses.
+- 731814b: Added new user event payload field: invoiceCollection to user event schema.
+
 ## 1.22.5
 
 ### Patch Changes
