@@ -1,5 +1,12 @@
 # vercel-api-js
 
+## 1.22.5
+
+### Patch Changes
+
+- 846cfce: Added support for 503 error responses to the listFlagsV2 and listTeamFlagsV2 API endpoints.
+- 846cfce: Refactored KMS issuer API: swapped method signatures and documentation for signKmsMessage, signKmsToken, listKmsIssuers, and createKmsIssuer to correctly match their endpoints and parameters.
+
 ## 1.22.4
 
 ### Patch Changes
