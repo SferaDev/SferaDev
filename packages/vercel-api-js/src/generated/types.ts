@@ -30611,6 +30611,8 @@ export type ListFlagsV2Status404 = unknown;
 
 export type ListFlagsV2Status410 = unknown;
 
+export type ListFlagsV2Status503 = unknown;
+
 export type ListFlagsV2Options = {
 	body?: never | undefined;
 	path: ListFlagsV2Path;
@@ -30626,6 +30628,7 @@ export type ListFlagsV2Responses = {
 	"403": ListFlagsV2Status403;
 	"404": ListFlagsV2Status404;
 	"410": ListFlagsV2Status410;
+	"503": ListFlagsV2Status503;
 };
 
 /**
@@ -30638,7 +30641,8 @@ export type ListFlagsV2Response =
 	| ListFlagsV2Status402
 	| ListFlagsV2Status403
 	| ListFlagsV2Status404
-	| ListFlagsV2Status410;
+	| ListFlagsV2Status410
+	| ListFlagsV2Status503;
 
 export type ListFlagsPath = {
 	/**
@@ -31471,6 +31475,8 @@ export type ListTeamFlagsV2Status403 = unknown;
 
 export type ListTeamFlagsV2Status410 = unknown;
 
+export type ListTeamFlagsV2Status503 = unknown;
+
 export type ListTeamFlagsV2Options = {
 	body?: never | undefined;
 	path: ListTeamFlagsV2Path;
@@ -31484,6 +31490,7 @@ export type ListTeamFlagsV2Responses = {
 	"401": ListTeamFlagsV2Status401;
 	"403": ListTeamFlagsV2Status403;
 	"410": ListTeamFlagsV2Status410;
+	"503": ListTeamFlagsV2Status503;
 };
 
 /**
@@ -31494,7 +31501,8 @@ export type ListTeamFlagsV2Response =
 	| ListTeamFlagsV2Status400
 	| ListTeamFlagsV2Status401
 	| ListTeamFlagsV2Status403
-	| ListTeamFlagsV2Status410;
+	| ListTeamFlagsV2Status410
+	| ListTeamFlagsV2Status503;
 
 export type ListTeamFlagsPath = {
 	/**
@@ -33949,6 +33957,100 @@ export type CreateApiKeysResponse =
 	| CreateApiKeysStatus429
 	| CreateApiKeysStatus500;
 
+export type SignKmsMessagePath = {
+	/**
+	 * @description The ID of the issuer.
+	 * @type string
+	 */
+	issuerId: string;
+};
+
+export type SignKmsMessageStatus200 = unknown;
+
+export type SignKmsMessageStatus400 = unknown;
+
+export type SignKmsMessageStatus401 = unknown;
+
+export type SignKmsMessageStatus403 = unknown;
+
+export type SignKmsMessageStatus404 = unknown;
+
+export type SignKmsMessageStatus429 = unknown;
+
+export type SignKmsMessageOptions = {
+	body?: never | undefined;
+	path: SignKmsMessagePath;
+	query?: never | undefined;
+	headers?: never | undefined;
+};
+
+export type SignKmsMessageResponses = {
+	"200": SignKmsMessageStatus200;
+	"400": SignKmsMessageStatus400;
+	"401": SignKmsMessageStatus401;
+	"403": SignKmsMessageStatus403;
+	"404": SignKmsMessageStatus404;
+	"429": SignKmsMessageStatus429;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type SignKmsMessageResponse =
+	| SignKmsMessageStatus200
+	| SignKmsMessageStatus400
+	| SignKmsMessageStatus401
+	| SignKmsMessageStatus403
+	| SignKmsMessageStatus404
+	| SignKmsMessageStatus429;
+
+export type SignKmsTokenPath = {
+	/**
+	 * @description The ID of the issuer.
+	 * @type string
+	 */
+	issuerId: string;
+};
+
+export type SignKmsTokenStatus200 = unknown;
+
+export type SignKmsTokenStatus400 = unknown;
+
+export type SignKmsTokenStatus401 = unknown;
+
+export type SignKmsTokenStatus403 = unknown;
+
+export type SignKmsTokenStatus404 = unknown;
+
+export type SignKmsTokenStatus429 = unknown;
+
+export type SignKmsTokenOptions = {
+	body?: never | undefined;
+	path: SignKmsTokenPath;
+	query?: never | undefined;
+	headers?: never | undefined;
+};
+
+export type SignKmsTokenResponses = {
+	"200": SignKmsTokenStatus200;
+	"400": SignKmsTokenStatus400;
+	"401": SignKmsTokenStatus401;
+	"403": SignKmsTokenStatus403;
+	"404": SignKmsTokenStatus404;
+	"429": SignKmsTokenStatus429;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type SignKmsTokenResponse =
+	| SignKmsTokenStatus200
+	| SignKmsTokenStatus400
+	| SignKmsTokenStatus401
+	| SignKmsTokenStatus403
+	| SignKmsTokenStatus404
+	| SignKmsTokenStatus429;
+
 export type ListKmsIssuersQuery = {
 	/**
 	 * @description Maximum number of issuers to return.
@@ -34066,100 +34168,6 @@ export type CreateKmsIssuerResponse =
 	| CreateKmsIssuerStatus403
 	| CreateKmsIssuerStatus404
 	| CreateKmsIssuerStatus410;
-
-export type SignKmsMessagePath = {
-	/**
-	 * @description The ID of the issuer.
-	 * @type string
-	 */
-	issuerId: string;
-};
-
-export type SignKmsMessageStatus200 = unknown;
-
-export type SignKmsMessageStatus400 = unknown;
-
-export type SignKmsMessageStatus401 = unknown;
-
-export type SignKmsMessageStatus403 = unknown;
-
-export type SignKmsMessageStatus404 = unknown;
-
-export type SignKmsMessageStatus429 = unknown;
-
-export type SignKmsMessageOptions = {
-	body?: never | undefined;
-	path: SignKmsMessagePath;
-	query?: never | undefined;
-	headers?: never | undefined;
-};
-
-export type SignKmsMessageResponses = {
-	"200": SignKmsMessageStatus200;
-	"400": SignKmsMessageStatus400;
-	"401": SignKmsMessageStatus401;
-	"403": SignKmsMessageStatus403;
-	"404": SignKmsMessageStatus404;
-	"429": SignKmsMessageStatus429;
-};
-
-/**
- * @description Union of all possible responses
- */
-export type SignKmsMessageResponse =
-	| SignKmsMessageStatus200
-	| SignKmsMessageStatus400
-	| SignKmsMessageStatus401
-	| SignKmsMessageStatus403
-	| SignKmsMessageStatus404
-	| SignKmsMessageStatus429;
-
-export type SignKmsTokenPath = {
-	/**
-	 * @description The ID of the issuer.
-	 * @type string
-	 */
-	issuerId: string;
-};
-
-export type SignKmsTokenStatus200 = unknown;
-
-export type SignKmsTokenStatus400 = unknown;
-
-export type SignKmsTokenStatus401 = unknown;
-
-export type SignKmsTokenStatus403 = unknown;
-
-export type SignKmsTokenStatus404 = unknown;
-
-export type SignKmsTokenStatus429 = unknown;
-
-export type SignKmsTokenOptions = {
-	body?: never | undefined;
-	path: SignKmsTokenPath;
-	query?: never | undefined;
-	headers?: never | undefined;
-};
-
-export type SignKmsTokenResponses = {
-	"200": SignKmsTokenStatus200;
-	"400": SignKmsTokenStatus400;
-	"401": SignKmsTokenStatus401;
-	"403": SignKmsTokenStatus403;
-	"404": SignKmsTokenStatus404;
-	"429": SignKmsTokenStatus429;
-};
-
-/**
- * @description Union of all possible responses
- */
-export type SignKmsTokenResponse =
-	| SignKmsTokenStatus200
-	| SignKmsTokenStatus400
-	| SignKmsTokenStatus401
-	| SignKmsTokenStatus403
-	| SignKmsTokenStatus404
-	| SignKmsTokenStatus429;
 
 export type CreateKmsSigningKeyPath = {
 	/**
