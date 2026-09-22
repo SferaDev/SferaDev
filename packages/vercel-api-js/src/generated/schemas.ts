@@ -8242,6 +8242,11 @@ export const userEventSchema = z
 					.strict(),
 				z
 					.object({
+						invoiceCollection: z.union([z.literal(false), z.literal(true)]),
+					})
+					.strict(),
+				z
+					.object({
 						periods: z.array(
 							z.object({
 								endDate: z.string(),
@@ -12716,6 +12721,8 @@ export const userEventSchema = z
 				"login-connection-linked",
 				"login-connection-unlinked",
 				"manual-deployment-promotion-created",
+				"marketplace-auto-card-collection-updated",
+				"marketplace-billing-collection-updated",
 				"marketplace-flex-commit-opt-in",
 				"marketplace-integration-allowlist-updated",
 				"microfrontend-group-added",
@@ -13516,6 +13523,8 @@ export const listEventTypeSchema = z
 				"login-connection-linked",
 				"login-connection-unlinked",
 				"manual-deployment-promotion-created",
+				"marketplace-auto-card-collection-updated",
+				"marketplace-billing-collection-updated",
 				"marketplace-flex-commit-opt-in",
 				"marketplace-integration-allowlist-updated",
 				"microfrontend-group-added",
@@ -14210,6 +14219,8 @@ export const listEventTypeSchema = z
 					"login-connection-linked",
 					"login-connection-unlinked",
 					"manual-deployment-promotion-created",
+					"marketplace-auto-card-collection-updated",
+					"marketplace-billing-collection-updated",
 					"marketplace-flex-commit-opt-in",
 					"marketplace-integration-allowlist-updated",
 					"microfrontend-group-added",
@@ -28309,8 +28320,6 @@ export const updateProjectStatus410Schema = z.unknown();
 
 export const updateProjectStatus428Schema = z.unknown();
 
-export const updateProjectStatus429Schema = z.unknown();
-
 export const updateProjectResponseSchema = updateProjectStatus200Schema;
 
 export const updateProjectErrorSchema = z.union([
@@ -28322,7 +28331,6 @@ export const updateProjectErrorSchema = z.union([
 	updateProjectStatus409Schema,
 	updateProjectStatus410Schema,
 	updateProjectStatus428Schema,
-	updateProjectStatus429Schema,
 ]);
 
 export const deleteProjectPathIdOrNameSchema = z

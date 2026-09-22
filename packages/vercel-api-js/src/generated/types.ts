@@ -6942,6 +6942,8 @@ export const userEventTypeEnum = {
 	"login-connection-linked": "login-connection-linked",
 	"login-connection-unlinked": "login-connection-unlinked",
 	"manual-deployment-promotion-created": "manual-deployment-promotion-created",
+	"marketplace-auto-card-collection-updated": "marketplace-auto-card-collection-updated",
+	"marketplace-billing-collection-updated": "marketplace-billing-collection-updated",
 	"marketplace-flex-commit-opt-in": "marketplace-flex-commit-opt-in",
 	"marketplace-integration-allowlist-updated": "marketplace-integration-allowlist-updated",
 	"microfrontend-group-added": "microfrontend-group-added",
@@ -11560,6 +11562,9 @@ export type UserEvent = {
 						toDeploymentId: string;
 				  }
 				| {
+						invoiceCollection: false | true;
+				  }
+				| {
 						periods: {
 							endDate: string;
 							percent: string;
@@ -15405,6 +15410,8 @@ export const listEventTypeNameEnum = {
 	"login-connection-linked": "login-connection-linked",
 	"login-connection-unlinked": "login-connection-unlinked",
 	"manual-deployment-promotion-created": "manual-deployment-promotion-created",
+	"marketplace-auto-card-collection-updated": "marketplace-auto-card-collection-updated",
+	"marketplace-billing-collection-updated": "marketplace-billing-collection-updated",
 	"marketplace-flex-commit-opt-in": "marketplace-flex-commit-opt-in",
 	"marketplace-integration-allowlist-updated": "marketplace-integration-allowlist-updated",
 	"microfrontend-group-added": "microfrontend-group-added",
@@ -16113,6 +16120,8 @@ export const listEventTypeReplacedByEnum = {
 	"login-connection-linked": "login-connection-linked",
 	"login-connection-unlinked": "login-connection-unlinked",
 	"manual-deployment-promotion-created": "manual-deployment-promotion-created",
+	"marketplace-auto-card-collection-updated": "marketplace-auto-card-collection-updated",
+	"marketplace-billing-collection-updated": "marketplace-billing-collection-updated",
 	"marketplace-flex-commit-opt-in": "marketplace-flex-commit-opt-in",
 	"marketplace-integration-allowlist-updated": "marketplace-integration-allowlist-updated",
 	"microfrontend-group-added": "microfrontend-group-added",
@@ -36880,8 +36889,6 @@ export type UpdateProjectStatus410 = unknown;
 
 export type UpdateProjectStatus428 = unknown;
 
-export type UpdateProjectStatus429 = unknown;
-
 export type UpdateProjectOptions = {
 	body?: never | undefined;
 	path: UpdateProjectPath;
@@ -36899,7 +36906,6 @@ export type UpdateProjectResponses = {
 	"409": UpdateProjectStatus409;
 	"410": UpdateProjectStatus410;
 	"428": UpdateProjectStatus428;
-	"429": UpdateProjectStatus429;
 };
 
 /**
@@ -36914,8 +36920,7 @@ export type UpdateProjectResponse =
 	| UpdateProjectStatus404
 	| UpdateProjectStatus409
 	| UpdateProjectStatus410
-	| UpdateProjectStatus428
-	| UpdateProjectStatus429;
+	| UpdateProjectStatus428;
 
 export type DeleteProjectPath = {
 	/**
