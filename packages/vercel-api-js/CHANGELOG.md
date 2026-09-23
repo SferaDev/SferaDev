@@ -1,5 +1,13 @@
 # vercel-api-js
 
+## 1.24.2
+
+### Patch Changes
+
+- 84327d6: Added optional 'triggerData' field to ConnectUpdateConnectorRequest schema for trigger configuration.
+- 84327d6: Updated description for 'triggerData' to clarify it is now validated and encrypted by the trigger driver, with defaults applied for empty objects.
+- 84327d6: Added optional 'projectId' and 'projectName' fields in user event schema for project budget tracking across multiple event shapes.
+
 ## 1.24.1
 
 ### Patch Changes
