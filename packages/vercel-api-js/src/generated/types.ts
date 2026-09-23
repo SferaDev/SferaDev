@@ -9788,6 +9788,23 @@ export type UserEvent = {
 						 * @type string | undefined
 						 */
 						lastEditedByDisplayName?: string | undefined;
+						lastEditedByPrincipal?:
+							| (
+									| {
+											avatar?: string | undefined;
+											id: string;
+											name?: (string | null) | undefined;
+											type: "user";
+											username: string;
+									  }
+									| {
+											avatar?: string | undefined;
+											id: string;
+											name: string;
+											type: "app";
+									  }
+							  )
+							| undefined;
 						/**
 						 * @description The unique identifier of the owner (team) the Shared Env Var was created for.
 						 * @example team_LLHUOMOoDlqOp8wPE4kFo9pE
@@ -9912,6 +9929,23 @@ export type UserEvent = {
 									 * @type string | undefined
 									 */
 									lastEditedByDisplayName?: string | undefined;
+									lastEditedByPrincipal?:
+										| (
+												| {
+														avatar?: string | undefined;
+														id: string;
+														name?: (string | null) | undefined;
+														type: "user";
+														username: string;
+												  }
+												| {
+														avatar?: string | undefined;
+														id: string;
+														name: string;
+														type: "app";
+												  }
+										  )
+										| undefined;
 									/**
 									 * @description The unique identifier of the owner (team) the Shared Env Var was created for.
 									 * @example team_LLHUOMOoDlqOp8wPE4kFo9pE
@@ -10026,6 +10060,23 @@ export type UserEvent = {
 									 * @type string | undefined
 									 */
 									lastEditedByDisplayName?: string | undefined;
+									lastEditedByPrincipal?:
+										| (
+												| {
+														avatar?: string | undefined;
+														id: string;
+														name?: (string | null) | undefined;
+														type: "user";
+														username: string;
+												  }
+												| {
+														avatar?: string | undefined;
+														id: string;
+														name: string;
+														type: "app";
+												  }
+										  )
+										| undefined;
 									/**
 									 * @description The unique identifier of the owner (team) the Shared Env Var was created for.
 									 * @example team_LLHUOMOoDlqOp8wPE4kFo9pE
