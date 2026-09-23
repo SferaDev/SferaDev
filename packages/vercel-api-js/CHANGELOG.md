@@ -1,5 +1,11 @@
 # vercel-api-js
 
+## 1.23.1
+
+### Patch Changes
+
+- 7f0b42d: Removed private beta registration note from descriptions of drive-related API methods.
+
 ## 1.23.0
 
 ### Minor Changes
