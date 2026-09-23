@@ -1524,7 +1524,7 @@ export const connectCreateConnectorRequestSchema = z
 				.catchall(z.unknown())
 				.optional()
 				.describe(
-					"Trigger-specific credentials (e.g. webhook signing secret). Validated and encrypted against the trigger type definition.",
+					"Trigger configuration, validated and encrypted by the trigger driver. An empty object applies driver defaults.",
 				),
 			triggerDestination: z
 				.union([
@@ -2250,6 +2250,13 @@ export const connectUpdateConnectorRequestSchema = z
 			.boolean()
 			.optional()
 			.describe("Whether the triggers are enabled for this connector."),
+		triggerData: z
+			.object({})
+			.catchall(z.unknown())
+			.optional()
+			.describe(
+				"Trigger configuration, validated and encrypted by the trigger driver. An empty object applies driver defaults.",
+			),
 		events: z.array(z.string()).optional().describe("Default trigger events for this connector."),
 		data: z.unknown().optional().describe("Provider configuration fields to update."),
 		icon: z
@@ -10689,6 +10696,11 @@ export const userEventSchema = z
 									"Represents a budget for tracking and notifying teams on their spending.",
 								),
 						}),
+						projectId: z
+							.string()
+							.optional()
+							.describe("Stored for project budgets. Same value as `budget.scopeId`."),
+						projectName: z.string().optional(),
 					})
 					.strict(),
 				z
@@ -10737,55 +10749,65 @@ export const userEventSchema = z
 									.describe("Keep track if the webhook has been called for the month"),
 							})
 							.describe("Represents a budget for tracking and notifying teams on their spending."),
-					})
-					.strict(),
-				z
-					.object({
-						budget: z
-							.object({
-								createdAt: z.number().describe("Date time when budget is created"),
-								fixedBudget: z.number().describe("Budget amount (USD / dollars)"),
-								id: z.string().describe("Sort key that needs to be unique per teamId"),
-								isActive: z
-									.union([z.literal(false), z.literal(true)])
-									.describe("Is the budget currently active for a customer"),
-								notifiedAt: z
-									.array(z.number())
-									.describe("Array of 50, 75, 100 to keep track of notifications sent out"),
-								pauseProjects: z
-									.union([z.literal(false), z.literal(true)])
-									.optional()
-									.describe("Should all projects be paused if budget is exceeded"),
-								previousSpend: z
-									.array(z.number())
-									.describe("Array of the last 3 months of spend data"),
-								pricingPlan: z
-									.enum(["flex", "legacy", "platform", "plus", "unbundled"])
-									.optional()
-									.describe("The acive pricing plan the team is billed with"),
-								scope: z
-									.enum(["organization", "project", "team"])
-									.optional()
-									.describe(
-										"Which budget this is. Matches Copper SDK `BudgetScope`. Omitted on events published before team/org/project scopes existed (treat as team).",
-									),
-								scopeId: z.string().optional().describe("Project id when `scope` is `project`."),
-								teamId: z.string().describe("Partition key"),
-								type: z.enum(["fixed"]).describe("The budget type"),
-								updatedAt: z.number().optional().describe("Date time when budget is updated last"),
-								webhookId: z
-									.string()
-									.optional()
-									.describe(
-										"Webhook id that corresponds to a webhook in Cosmos webhook collection",
-									),
-								webhookNotified: z
-									.union([z.literal(false), z.literal(true)])
-									.optional()
-									.describe("Keep track if the webhook has been called for the month"),
-							})
-							.describe("Represents a budget for tracking and notifying teams on their spending."),
+						projectId: z
+							.string()
+							.optional()
+							.describe("Stored for project budgets. Same value as `budget.scopeId`."),
+						projectName: z.string().optional(),
 						webhookUrl: z.string().optional(),
+					})
+					.strict(),
+				z
+					.object({
+						budget: z
+							.object({
+								createdAt: z.number().describe("Date time when budget is created"),
+								fixedBudget: z.number().describe("Budget amount (USD / dollars)"),
+								id: z.string().describe("Sort key that needs to be unique per teamId"),
+								isActive: z
+									.union([z.literal(false), z.literal(true)])
+									.describe("Is the budget currently active for a customer"),
+								notifiedAt: z
+									.array(z.number())
+									.describe("Array of 50, 75, 100 to keep track of notifications sent out"),
+								pauseProjects: z
+									.union([z.literal(false), z.literal(true)])
+									.optional()
+									.describe("Should all projects be paused if budget is exceeded"),
+								previousSpend: z
+									.array(z.number())
+									.describe("Array of the last 3 months of spend data"),
+								pricingPlan: z
+									.enum(["flex", "legacy", "platform", "plus", "unbundled"])
+									.optional()
+									.describe("The acive pricing plan the team is billed with"),
+								scope: z
+									.enum(["organization", "project", "team"])
+									.optional()
+									.describe(
+										"Which budget this is. Matches Copper SDK `BudgetScope`. Omitted on events published before team/org/project scopes existed (treat as team).",
+									),
+								scopeId: z.string().optional().describe("Project id when `scope` is `project`."),
+								teamId: z.string().describe("Partition key"),
+								type: z.enum(["fixed"]).describe("The budget type"),
+								updatedAt: z.number().optional().describe("Date time when budget is updated last"),
+								webhookId: z
+									.string()
+									.optional()
+									.describe(
+										"Webhook id that corresponds to a webhook in Cosmos webhook collection",
+									),
+								webhookNotified: z
+									.union([z.literal(false), z.literal(true)])
+									.optional()
+									.describe("Keep track if the webhook has been called for the month"),
+							})
+							.describe("Represents a budget for tracking and notifying teams on their spending."),
+						projectId: z
+							.string()
+							.optional()
+							.describe("Stored for project budgets. Same value as `budget.scopeId`."),
+						projectName: z.string().optional(),
 					})
 					.strict(),
 				z
@@ -10880,11 +10902,21 @@ export const userEventSchema = z
 							.optional()
 							.describe("Represents a budget for tracking and notifying teams on their spending."),
 						prevWebhookUrl: z.string().optional(),
+						projectId: z
+							.string()
+							.optional()
+							.describe("Stored for project budgets. Same value as `budget.scopeId`."),
+						projectName: z
+							.string()
+							.optional()
+							.describe("Injected at read time from `payload.projectId`."),
 						webhookUrl: z.string().optional(),
 					})
 					.strict(),
 				z
 					.object({
+						projectId: z.string().optional(),
+						projectName: z.string().optional(),
 						webhookUrl: z.string().optional(),
 					})
 					.strict(),
