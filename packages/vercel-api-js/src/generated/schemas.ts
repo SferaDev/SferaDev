@@ -6131,6 +6131,27 @@ export const userEventSchema = z
 							.string()
 							.optional()
 							.describe("The last editor full name or username."),
+						lastEditedByPrincipal: z
+							.discriminatedUnion("type", [
+								z
+									.object({
+										avatar: z.string().optional(),
+										id: z.string(),
+										name: z.string().nullish(),
+										type: z.enum(["user"]),
+										username: z.string(),
+									})
+									.strict(),
+								z
+									.object({
+										avatar: z.string().optional(),
+										id: z.string(),
+										name: z.string(),
+										type: z.enum(["app"]),
+									})
+									.strict(),
+							])
+							.optional(),
 						ownerId: z
 							.string()
 							.nullish()
@@ -6243,6 +6264,27 @@ export const userEventSchema = z
 									.string()
 									.optional()
 									.describe("The last editor full name or username."),
+								lastEditedByPrincipal: z
+									.discriminatedUnion("type", [
+										z
+											.object({
+												avatar: z.string().optional(),
+												id: z.string(),
+												name: z.string().nullish(),
+												type: z.enum(["user"]),
+												username: z.string(),
+											})
+											.strict(),
+										z
+											.object({
+												avatar: z.string().optional(),
+												id: z.string(),
+												name: z.string(),
+												type: z.enum(["app"]),
+											})
+											.strict(),
+									])
+									.optional(),
 								ownerId: z
 									.string()
 									.nullish()
@@ -6343,6 +6385,27 @@ export const userEventSchema = z
 									.string()
 									.optional()
 									.describe("The last editor full name or username."),
+								lastEditedByPrincipal: z
+									.discriminatedUnion("type", [
+										z
+											.object({
+												avatar: z.string().optional(),
+												id: z.string(),
+												name: z.string().nullish(),
+												type: z.enum(["user"]),
+												username: z.string(),
+											})
+											.strict(),
+										z
+											.object({
+												avatar: z.string().optional(),
+												id: z.string(),
+												name: z.string(),
+												type: z.enum(["app"]),
+											})
+											.strict(),
+									])
+									.optional(),
 								ownerId: z
 									.string()
 									.nullish()
