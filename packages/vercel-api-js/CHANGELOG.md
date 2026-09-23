@@ -1,5 +1,18 @@
 # vercel-api-js
 
+## 1.24.0
+
+### Minor Changes
+
+- a3dcb65: Added organization_deleted and team_removed triggers to userEventPayloadTriggerEnum.
+- a3dcb65: Extended userEventPayload types to support password protection and SSO protection enum cases for team and organization scopes.
+- a3dcb65: Added "errored" as a possible status value to vcrImageListItemStatusEnum, vcrTagStatusEnum, and vcrImageDetailStatusEnum.
+- a3dcb65: Added new events: default-password-protection and default-sso-protection to the event type enums and schemas.
+
+### Patch Changes
+
+- a3dcb65: Removed CreateTeamStatus409 response, schema, and type from the createTeam endpoint types.
+
 ## 1.23.1
 
 ### Patch Changes
