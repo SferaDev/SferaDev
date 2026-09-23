@@ -2422,7 +2422,7 @@ export type ConnectCreateConnectorRequest = (unknown | unknown) & {
 	 */
 	triggerType?: string | undefined;
 	/**
-	 * @description Trigger-specific credentials (e.g. webhook signing secret). Validated and encrypted against the trigger type definition.
+	 * @description Trigger configuration, validated and encrypted by the trigger driver. An empty object applies driver defaults.
 	 * @type object | undefined
 	 */
 	triggerData?:
@@ -3559,6 +3559,15 @@ export type ConnectUpdateConnectorRequest = {
 	 * @type boolean | undefined
 	 */
 	triggers?: boolean | undefined;
+	/**
+	 * @description Trigger configuration, validated and encrypted by the trigger driver. An empty object applies driver defaults.
+	 * @type object | undefined
+	 */
+	triggerData?:
+		| {
+				[key: string]: unknown;
+		  }
+		| undefined;
 	/**
 	 * @description Default trigger events for this connector.
 	 * @type array | undefined
@@ -13384,6 +13393,12 @@ export type UserEvent = {
 								webhookNotified?: (false | true) | undefined;
 							};
 						};
+						/**
+						 * @description Stored for project budgets. Same value as `budget.scopeId`.
+						 * @type string | undefined
+						 */
+						projectId?: string | undefined;
+						projectName?: string | undefined;
 				  }
 				| {
 						/**
@@ -13467,90 +13482,102 @@ export type UserEvent = {
 							 */
 							webhookNotified?: (false | true) | undefined;
 						};
-				  }
-				| {
 						/**
-						 * @description Represents a budget for tracking and notifying teams on their spending.
-						 * @type object
+						 * @description Stored for project budgets. Same value as `budget.scopeId`.
+						 * @type string | undefined
 						 */
-						budget: {
-							/**
-							 * @description Date time when budget is created
-							 * @type number
-							 */
-							createdAt: number;
-							/**
-							 * @description Budget amount (USD / dollars)
-							 * @type number
-							 */
-							fixedBudget: number;
-							/**
-							 * @description Sort key that needs to be unique per teamId
-							 * @type string
-							 */
-							id: string;
-							/**
-							 * @description Is the budget currently active for a customer
-							 * @type boolean
-							 */
-							isActive: false | true;
-							/**
-							 * @description Array of 50, 75, 100 to keep track of notifications sent out
-							 * @type array
-							 */
-							notifiedAt: number[];
-							/**
-							 * @description Should all projects be paused if budget is exceeded
-							 * @type boolean | undefined
-							 */
-							pauseProjects?: (false | true) | undefined;
-							/**
-							 * @description Array of the last 3 months of spend data
-							 * @type array
-							 */
-							previousSpend: number[];
-							/**
-							 * @description The acive pricing plan the team is billed with
-							 * @type string | undefined
-							 */
-							pricingPlan?: UserEventPayloadBudgetPricingPlanEnumKey | undefined;
-							/**
-							 * @description Which budget this is. Matches Copper SDK `BudgetScope`. Omitted on events published before team/org/project scopes existed (treat as team).
-							 * @type string | undefined
-							 */
-							scope?: UserEventPayloadBudgetScopeEnumKey | undefined;
-							/**
-							 * @description Project id when `scope` is `project`.
-							 * @type string | undefined
-							 */
-							scopeId?: string | undefined;
-							/**
-							 * @description Partition key
-							 * @type string
-							 */
-							teamId: string;
-							/**
-							 * @description The budget type
-							 * @type string
-							 */
-							type: "fixed";
-							/**
-							 * @description Date time when budget is updated last
-							 * @type number | undefined
-							 */
-							updatedAt?: number | undefined;
-							/**
-							 * @description Webhook id that corresponds to a webhook in Cosmos webhook collection
-							 * @type string | undefined
-							 */
-							webhookId?: string | undefined;
-							/**
-							 * @description Keep track if the webhook has been called for the month
-							 * @type boolean | undefined
-							 */
-							webhookNotified?: (false | true) | undefined;
-						};
+						projectId?: string | undefined;
+						projectName?: string | undefined;
 						webhookUrl?: string | undefined;
+				  }
+				| {
+						/**
+						 * @description Represents a budget for tracking and notifying teams on their spending.
+						 * @type object
+						 */
+						budget: {
+							/**
+							 * @description Date time when budget is created
+							 * @type number
+							 */
+							createdAt: number;
+							/**
+							 * @description Budget amount (USD / dollars)
+							 * @type number
+							 */
+							fixedBudget: number;
+							/**
+							 * @description Sort key that needs to be unique per teamId
+							 * @type string
+							 */
+							id: string;
+							/**
+							 * @description Is the budget currently active for a customer
+							 * @type boolean
+							 */
+							isActive: false | true;
+							/**
+							 * @description Array of 50, 75, 100 to keep track of notifications sent out
+							 * @type array
+							 */
+							notifiedAt: number[];
+							/**
+							 * @description Should all projects be paused if budget is exceeded
+							 * @type boolean | undefined
+							 */
+							pauseProjects?: (false | true) | undefined;
+							/**
+							 * @description Array of the last 3 months of spend data
+							 * @type array
+							 */
+							previousSpend: number[];
+							/**
+							 * @description The acive pricing plan the team is billed with
+							 * @type string | undefined
+							 */
+							pricingPlan?: UserEventPayloadBudgetPricingPlanEnumKey | undefined;
+							/**
+							 * @description Which budget this is. Matches Copper SDK `BudgetScope`. Omitted on events published before team/org/project scopes existed (treat as team).
+							 * @type string | undefined
+							 */
+							scope?: UserEventPayloadBudgetScopeEnumKey | undefined;
+							/**
+							 * @description Project id when `scope` is `project`.
+							 * @type string | undefined
+							 */
+							scopeId?: string | undefined;
+							/**
+							 * @description Partition key
+							 * @type string
+							 */
+							teamId: string;
+							/**
+							 * @description The budget type
+							 * @type string
+							 */
+							type: "fixed";
+							/**
+							 * @description Date time when budget is updated last
+							 * @type number | undefined
+							 */
+							updatedAt?: number | undefined;
+							/**
+							 * @description Webhook id that corresponds to a webhook in Cosmos webhook collection
+							 * @type string | undefined
+							 */
+							webhookId?: string | undefined;
+							/**
+							 * @description Keep track if the webhook has been called for the month
+							 * @type boolean | undefined
+							 */
+							webhookNotified?: (false | true) | undefined;
+						};
+						/**
+						 * @description Stored for project budgets. Same value as `budget.scopeId`.
+						 * @type string | undefined
+						 */
+						projectId?: string | undefined;
+						projectName?: string | undefined;
 				  }
 				| {
 						/**
@@ -13718,9 +13745,21 @@ export type UserEvent = {
 							  }
 							| undefined;
 						prevWebhookUrl?: string | undefined;
+						/**
+						 * @description Stored for project budgets. Same value as `budget.scopeId`.
+						 * @type string | undefined
+						 */
+						projectId?: string | undefined;
+						/**
+						 * @description Injected at read time from `payload.projectId`.
+						 * @type string | undefined
+						 */
+						projectName?: string | undefined;
 						webhookUrl?: string | undefined;
 				  }
 				| {
+						projectId?: string | undefined;
+						projectName?: string | undefined;
 						webhookUrl?: string | undefined;
 				  }
 				| {
