@@ -16721,7 +16721,7 @@ export async function createSandboxesV2(
 
 /**
  * @summary List drives
- * @description Retrieves a paginated list of drives belonging to a specific project. Drives are in private beta. Register your interest to get access: https://vercel.com/changelog/drives-for-vercel-sandbox-in-private-beta
+ * @description Retrieves a paginated list of drives belonging to a specific project.
  * @link /v2/sandboxes/drives
  */
 export async function listDrives(
@@ -16780,7 +16780,7 @@ export async function listDrives(
 
 /**
  * @summary Get or create a drive
- * @description Gets an existing drive by project and name, or creates it when it does not exist. Drives are in private beta. Register your interest to get access: https://vercel.com/changelog/drives-for-vercel-sandbox-in-private-beta
+ * @description Gets an existing drive by project and name, or creates it when it does not exist.
  * @link /v2/sandboxes/drives/{name}
  */
 export async function getOrCreateDrive(
@@ -16828,7 +16828,7 @@ export async function getOrCreateDrive(
 
 /**
  * @summary Delete a drive
- * @description Deletes a drive by project and name. Attached drives cannot be deleted. Stop or replace the session currently using the drive before retrying deletion. Drives are in private beta. Register your interest to get access: https://vercel.com/changelog/drives-for-vercel-sandbox-in-private-beta
+ * @description Deletes a drive by project and name. Attached drives cannot be deleted. Stop or replace the session currently using the drive before retrying deletion.
  * @link /v2/sandboxes/drives/{name}
  */
 export async function deleteDrive(
