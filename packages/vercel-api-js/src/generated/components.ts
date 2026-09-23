@@ -565,7 +565,6 @@ import type {
 	CreateTeamStatus401,
 	CreateTeamStatus403,
 	CreateTeamStatus404,
-	CreateTeamStatus409,
 	CreateTeamStatus410,
 	CreateTraceSessionResponse,
 	CreateTraceSessionStatus400,
@@ -19387,7 +19386,6 @@ export async function createTeam(
 			| CreateTeamStatus401
 			| CreateTeamStatus403
 			| CreateTeamStatus404
-			| CreateTeamStatus409
 			| CreateTeamStatus410
 		>,
 		null,

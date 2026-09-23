@@ -4852,6 +4852,95 @@ export const userEventPayloadSubjectTypeEnum = {
 export type UserEventPayloadSubjectTypeEnumKey =
 	(typeof userEventPayloadSubjectTypeEnum)[keyof typeof userEventPayloadSubjectTypeEnum];
 
+export const userEventPayloadOldPasswordProtectionDeploymentTypeEnum = {
+	all: "all",
+	all_except_custom_domains: "all_except_custom_domains",
+	preview: "preview",
+	prod_deployment_urls_and_all_previews: "prod_deployment_urls_and_all_previews",
+} as const;
+
+export type UserEventPayloadOldPasswordProtectionDeploymentTypeEnumKey =
+	(typeof userEventPayloadOldPasswordProtectionDeploymentTypeEnum)[keyof typeof userEventPayloadOldPasswordProtectionDeploymentTypeEnum];
+
+export const userEventPayloadPasswordProtectionDeploymentTypeEnum = {
+	all: "all",
+	all_except_custom_domains: "all_except_custom_domains",
+	preview: "preview",
+	prod_deployment_urls_and_all_previews: "prod_deployment_urls_and_all_previews",
+} as const;
+
+export type UserEventPayloadPasswordProtectionDeploymentTypeEnumKey =
+	(typeof userEventPayloadPasswordProtectionDeploymentTypeEnum)[keyof typeof userEventPayloadPasswordProtectionDeploymentTypeEnum];
+
+export const userEventPayloadOldSsoProtectionApril2026SecurityIncidentMigrationAppliedFromEnum = {
+	all: "all",
+	all_except_custom_domains: "all_except_custom_domains",
+	preview: "preview",
+	prod_deployment_urls_and_all_previews: "prod_deployment_urls_and_all_previews",
+} as const;
+
+export type UserEventPayloadOldSsoProtectionApril2026SecurityIncidentMigrationAppliedFromEnumKey =
+	(typeof userEventPayloadOldSsoProtectionApril2026SecurityIncidentMigrationAppliedFromEnum)[keyof typeof userEventPayloadOldSsoProtectionApril2026SecurityIncidentMigrationAppliedFromEnum];
+
+export const userEventPayloadOldSsoProtectionCve55182MigrationAppliedFromEnum = {
+	all: "all",
+	all_except_custom_domains: "all_except_custom_domains",
+	preview: "preview",
+	prod_deployment_urls_and_all_previews: "prod_deployment_urls_and_all_previews",
+} as const;
+
+export type UserEventPayloadOldSsoProtectionCve55182MigrationAppliedFromEnumKey =
+	(typeof userEventPayloadOldSsoProtectionCve55182MigrationAppliedFromEnum)[keyof typeof userEventPayloadOldSsoProtectionCve55182MigrationAppliedFromEnum];
+
+export const userEventPayloadOldSsoProtectionDeploymentTypeEnum = {
+	all: "all",
+	all_except_custom_domains: "all_except_custom_domains",
+	preview: "preview",
+	prod_deployment_urls_and_all_previews: "prod_deployment_urls_and_all_previews",
+} as const;
+
+export type UserEventPayloadOldSsoProtectionDeploymentTypeEnumKey =
+	(typeof userEventPayloadOldSsoProtectionDeploymentTypeEnum)[keyof typeof userEventPayloadOldSsoProtectionDeploymentTypeEnum];
+
+export const userEventPayloadScopeEnum = {
+	project: "project",
+	team: "team",
+	user: "user",
+} as const;
+
+export type UserEventPayloadScopeEnumKey =
+	(typeof userEventPayloadScopeEnum)[keyof typeof userEventPayloadScopeEnum];
+
+export const userEventPayloadSsoProtectionApril2026SecurityIncidentMigrationAppliedFromEnum = {
+	all: "all",
+	all_except_custom_domains: "all_except_custom_domains",
+	preview: "preview",
+	prod_deployment_urls_and_all_previews: "prod_deployment_urls_and_all_previews",
+} as const;
+
+export type UserEventPayloadSsoProtectionApril2026SecurityIncidentMigrationAppliedFromEnumKey =
+	(typeof userEventPayloadSsoProtectionApril2026SecurityIncidentMigrationAppliedFromEnum)[keyof typeof userEventPayloadSsoProtectionApril2026SecurityIncidentMigrationAppliedFromEnum];
+
+export const userEventPayloadSsoProtectionCve55182MigrationAppliedFromEnum = {
+	all: "all",
+	all_except_custom_domains: "all_except_custom_domains",
+	preview: "preview",
+	prod_deployment_urls_and_all_previews: "prod_deployment_urls_and_all_previews",
+} as const;
+
+export type UserEventPayloadSsoProtectionCve55182MigrationAppliedFromEnumKey =
+	(typeof userEventPayloadSsoProtectionCve55182MigrationAppliedFromEnum)[keyof typeof userEventPayloadSsoProtectionCve55182MigrationAppliedFromEnum];
+
+export const userEventPayloadSsoProtectionDeploymentTypeEnum = {
+	all: "all",
+	all_except_custom_domains: "all_except_custom_domains",
+	preview: "preview",
+	prod_deployment_urls_and_all_previews: "prod_deployment_urls_and_all_previews",
+} as const;
+
+export type UserEventPayloadSsoProtectionDeploymentTypeEnumKey =
+	(typeof userEventPayloadSsoProtectionDeploymentTypeEnum)[keyof typeof userEventPayloadSsoProtectionDeploymentTypeEnum];
+
 export const userEventPayloadJobCommitVerificationEnum = {
 	unknown: "unknown",
 	unverified: "unverified",
@@ -5745,9 +5834,11 @@ export const userEventPayloadTriggerEnum = {
 	directory_sync_updated: "directory_sync_updated",
 	domain_deleted: "domain_deleted",
 	domain_verified: "domain_verified",
+	organization_deleted: "organization_deleted",
 	saml_updated: "saml_updated",
 	team_attached: "team_attached",
 	team_participation_updated: "team_participation_updated",
+	team_removed: "team_removed",
 	toggle: "toggle",
 } as const;
 
@@ -6023,16 +6114,6 @@ export const userEventPayloadProjectMembershipPreviousRoleEnum = {
 export type UserEventPayloadProjectMembershipPreviousRoleEnumKey =
 	(typeof userEventPayloadProjectMembershipPreviousRoleEnum)[keyof typeof userEventPayloadProjectMembershipPreviousRoleEnum];
 
-export const userEventPayloadOldPasswordProtectionDeploymentTypeEnum = {
-	all: "all",
-	all_except_custom_domains: "all_except_custom_domains",
-	preview: "preview",
-	prod_deployment_urls_and_all_previews: "prod_deployment_urls_and_all_previews",
-} as const;
-
-export type UserEventPayloadOldPasswordProtectionDeploymentTypeEnumKey =
-	(typeof userEventPayloadOldPasswordProtectionDeploymentTypeEnum)[keyof typeof userEventPayloadOldPasswordProtectionDeploymentTypeEnum];
-
 export const userEventPayloadOldPasswordProtection = {
 	all: "all",
 	all_except_custom_domains: "all_except_custom_domains",
@@ -6042,16 +6123,6 @@ export const userEventPayloadOldPasswordProtection = {
 
 export type UserEventPayloadOldPasswordProtectionKey =
 	(typeof userEventPayloadOldPasswordProtection)[keyof typeof userEventPayloadOldPasswordProtection];
-
-export const userEventPayloadPasswordProtectionDeploymentTypeEnum = {
-	all: "all",
-	all_except_custom_domains: "all_except_custom_domains",
-	preview: "preview",
-	prod_deployment_urls_and_all_previews: "prod_deployment_urls_and_all_previews",
-} as const;
-
-export type UserEventPayloadPasswordProtectionDeploymentTypeEnumKey =
-	(typeof userEventPayloadPasswordProtectionDeploymentTypeEnum)[keyof typeof userEventPayloadPasswordProtectionDeploymentTypeEnum];
 
 export const userEventPayloadPasswordProtection = {
 	all: "all",
@@ -6095,36 +6166,6 @@ export const userEventPayloadPreviousIssuerModeEnum = {
 export type UserEventPayloadPreviousIssuerModeEnumKey =
 	(typeof userEventPayloadPreviousIssuerModeEnum)[keyof typeof userEventPayloadPreviousIssuerModeEnum];
 
-export const userEventPayloadOldSsoProtectionApril2026SecurityIncidentMigrationAppliedFromEnum = {
-	all: "all",
-	all_except_custom_domains: "all_except_custom_domains",
-	preview: "preview",
-	prod_deployment_urls_and_all_previews: "prod_deployment_urls_and_all_previews",
-} as const;
-
-export type UserEventPayloadOldSsoProtectionApril2026SecurityIncidentMigrationAppliedFromEnumKey =
-	(typeof userEventPayloadOldSsoProtectionApril2026SecurityIncidentMigrationAppliedFromEnum)[keyof typeof userEventPayloadOldSsoProtectionApril2026SecurityIncidentMigrationAppliedFromEnum];
-
-export const userEventPayloadOldSsoProtectionCve55182MigrationAppliedFromEnum = {
-	all: "all",
-	all_except_custom_domains: "all_except_custom_domains",
-	preview: "preview",
-	prod_deployment_urls_and_all_previews: "prod_deployment_urls_and_all_previews",
-} as const;
-
-export type UserEventPayloadOldSsoProtectionCve55182MigrationAppliedFromEnumKey =
-	(typeof userEventPayloadOldSsoProtectionCve55182MigrationAppliedFromEnum)[keyof typeof userEventPayloadOldSsoProtectionCve55182MigrationAppliedFromEnum];
-
-export const userEventPayloadOldSsoProtectionDeploymentTypeEnum = {
-	all: "all",
-	all_except_custom_domains: "all_except_custom_domains",
-	preview: "preview",
-	prod_deployment_urls_and_all_previews: "prod_deployment_urls_and_all_previews",
-} as const;
-
-export type UserEventPayloadOldSsoProtectionDeploymentTypeEnumKey =
-	(typeof userEventPayloadOldSsoProtectionDeploymentTypeEnum)[keyof typeof userEventPayloadOldSsoProtectionDeploymentTypeEnum];
-
 export const userEventPayloadOldSsoProtection = {
 	all: "all",
 	all_except_custom_domains: "all_except_custom_domains",
@@ -6134,36 +6175,6 @@ export const userEventPayloadOldSsoProtection = {
 
 export type UserEventPayloadOldSsoProtectionKey =
 	(typeof userEventPayloadOldSsoProtection)[keyof typeof userEventPayloadOldSsoProtection];
-
-export const userEventPayloadSsoProtectionApril2026SecurityIncidentMigrationAppliedFromEnum = {
-	all: "all",
-	all_except_custom_domains: "all_except_custom_domains",
-	preview: "preview",
-	prod_deployment_urls_and_all_previews: "prod_deployment_urls_and_all_previews",
-} as const;
-
-export type UserEventPayloadSsoProtectionApril2026SecurityIncidentMigrationAppliedFromEnumKey =
-	(typeof userEventPayloadSsoProtectionApril2026SecurityIncidentMigrationAppliedFromEnum)[keyof typeof userEventPayloadSsoProtectionApril2026SecurityIncidentMigrationAppliedFromEnum];
-
-export const userEventPayloadSsoProtectionCve55182MigrationAppliedFromEnum = {
-	all: "all",
-	all_except_custom_domains: "all_except_custom_domains",
-	preview: "preview",
-	prod_deployment_urls_and_all_previews: "prod_deployment_urls_and_all_previews",
-} as const;
-
-export type UserEventPayloadSsoProtectionCve55182MigrationAppliedFromEnumKey =
-	(typeof userEventPayloadSsoProtectionCve55182MigrationAppliedFromEnum)[keyof typeof userEventPayloadSsoProtectionCve55182MigrationAppliedFromEnum];
-
-export const userEventPayloadSsoProtectionDeploymentTypeEnum = {
-	all: "all",
-	all_except_custom_domains: "all_except_custom_domains",
-	preview: "preview",
-	prod_deployment_urls_and_all_previews: "prod_deployment_urls_and_all_previews",
-} as const;
-
-export type UserEventPayloadSsoProtectionDeploymentTypeEnumKey =
-	(typeof userEventPayloadSsoProtectionDeploymentTypeEnum)[keyof typeof userEventPayloadSsoProtectionDeploymentTypeEnum];
 
 export const userEventPayloadSsoProtection = {
 	all: "all",
@@ -6488,15 +6499,6 @@ export const userEventPayloadDecisionEnum = {
 export type UserEventPayloadDecisionEnumKey =
 	(typeof userEventPayloadDecisionEnum)[keyof typeof userEventPayloadDecisionEnum];
 
-export const userEventPayloadScopeEnum = {
-	project: "project",
-	team: "team",
-	user: "user",
-} as const;
-
-export type UserEventPayloadScopeEnumKey =
-	(typeof userEventPayloadScopeEnum)[keyof typeof userEventPayloadScopeEnum];
-
 export const userEventPayloadSamplingEnvEnum = {
 	preview: "preview",
 	production: "production",
@@ -6779,6 +6781,8 @@ export const userEventTypeEnum = {
 	"custom-suffix-enable": "custom-suffix-enable",
 	"custom-suffix-pending": "custom-suffix-pending",
 	"custom-suffix-ready": "custom-suffix-ready",
+	"default-password-protection": "default-password-protection",
+	"default-sso-protection": "default-sso-protection",
 	"deploy-hook-created": "deploy-hook-created",
 	"deploy-hook-deduped": "deploy-hook-deduped",
 	"deploy-hook-deleted": "deploy-hook-deleted",
@@ -8403,6 +8407,37 @@ export type UserEvent = {
 				  }
 				| {
 						suffix: string;
+				  }
+				| {
+						oldPasswordProtection: {
+							deploymentType: UserEventPayloadOldPasswordProtectionDeploymentTypeEnumKey;
+						} | null;
+						passwordChanged?: (false | true) | undefined;
+						passwordProtection: {
+							deploymentType: UserEventPayloadPasswordProtectionDeploymentTypeEnumKey;
+						} | null;
+						scope: "team";
+				  }
+				| {
+						oldSsoProtection: {
+							april2026SecurityIncidentMigrationAppliedFrom?:
+								| (UserEventPayloadOldSsoProtectionApril2026SecurityIncidentMigrationAppliedFromEnumKey | null)
+								| undefined;
+							cve55182MigrationAppliedFrom?:
+								| (UserEventPayloadOldSsoProtectionCve55182MigrationAppliedFromEnumKey | null)
+								| undefined;
+							deploymentType: UserEventPayloadOldSsoProtectionDeploymentTypeEnumKey;
+						} | null;
+						scope: UserEventPayloadScopeEnumKey;
+						ssoProtection: {
+							april2026SecurityIncidentMigrationAppliedFrom?:
+								| (UserEventPayloadSsoProtectionApril2026SecurityIncidentMigrationAppliedFromEnumKey | null)
+								| undefined;
+							cve55182MigrationAppliedFrom?:
+								| (UserEventPayloadSsoProtectionCve55182MigrationAppliedFromEnumKey | null)
+								| undefined;
+							deploymentType: UserEventPayloadSsoProtectionDeploymentTypeEnumKey;
+						} | null;
 				  }
 				| {
 						hookName: string;
@@ -12949,7 +12984,6 @@ export type UserEvent = {
 							| null;
 						projectId?: string | undefined;
 						projectName?: string | undefined;
-						scope?: "organization" | undefined;
 						ssoProtection:
 							| (
 									| {
@@ -15247,6 +15281,8 @@ export const listEventTypeNameEnum = {
 	"custom-suffix-enable": "custom-suffix-enable",
 	"custom-suffix-pending": "custom-suffix-pending",
 	"custom-suffix-ready": "custom-suffix-ready",
+	"default-password-protection": "default-password-protection",
+	"default-sso-protection": "default-sso-protection",
 	"deploy-hook-created": "deploy-hook-created",
 	"deploy-hook-deduped": "deploy-hook-deduped",
 	"deploy-hook-deleted": "deploy-hook-deleted",
@@ -15957,6 +15993,8 @@ export const listEventTypeReplacedByEnum = {
 	"custom-suffix-enable": "custom-suffix-enable",
 	"custom-suffix-pending": "custom-suffix-pending",
 	"custom-suffix-ready": "custom-suffix-ready",
+	"default-password-protection": "default-password-protection",
+	"default-sso-protection": "default-sso-protection",
 	"deploy-hook-created": "deploy-hook-created",
 	"deploy-hook-deduped": "deploy-hook-deduped",
 	"deploy-hook-deleted": "deploy-hook-deleted",
@@ -20115,6 +20153,7 @@ export type VcrImageListItemKindEnumKey =
 	(typeof vcrImageListItemKindEnum)[keyof typeof vcrImageListItemKindEnum];
 
 export const vcrImageListItemStatusEnum = {
+	errored: "errored",
 	preparing: "preparing",
 	ready: "ready",
 	unoptimized: "unoptimized",
@@ -20244,6 +20283,7 @@ export const vcrTagKindEnum = {
 export type VcrTagKindEnumKey = (typeof vcrTagKindEnum)[keyof typeof vcrTagKindEnum];
 
 export const vcrTagStatusEnum = {
+	errored: "errored",
 	preparing: "preparing",
 	ready: "ready",
 	unoptimized: "unoptimized",
@@ -20427,6 +20467,7 @@ export type VcrImageDetailKindEnumKey =
 	(typeof vcrImageDetailKindEnum)[keyof typeof vcrImageDetailKindEnum];
 
 export const vcrImageDetailStatusEnum = {
+	errored: "errored",
 	preparing: "preparing",
 	ready: "ready",
 	unoptimized: "unoptimized",
@@ -43921,8 +43962,6 @@ export type CreateTeamStatus403 = unknown;
 
 export type CreateTeamStatus404 = unknown;
 
-export type CreateTeamStatus409 = unknown;
-
 export type CreateTeamStatus410 = unknown;
 
 export type CreateTeamOptions = {
@@ -43938,7 +43977,6 @@ export type CreateTeamResponses = {
 	"401": CreateTeamStatus401;
 	"403": CreateTeamStatus403;
 	"404": CreateTeamStatus404;
-	"409": CreateTeamStatus409;
 	"410": CreateTeamStatus410;
 };
 
@@ -43951,7 +43989,6 @@ export type CreateTeamResponse =
 	| CreateTeamStatus401
 	| CreateTeamStatus403
 	| CreateTeamStatus404
-	| CreateTeamStatus409
 	| CreateTeamStatus410;
 
 export type PostTeamDsyncRolesPath = {
