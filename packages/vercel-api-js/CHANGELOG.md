@@ -1,5 +1,11 @@
 # vercel-api-js
 
+## 1.24.1
+
+### Patch Changes
+
+- fc542f3: Added optional lastEditedByPrincipal property to userEventSchema and related types to support editor principal details.
+
 ## 1.24.0
 
 ### Minor Changes
