@@ -4545,6 +4545,89 @@ export const userEventSchema = z
 					.strict(),
 				z
 					.object({
+						oldPasswordProtection: z
+							.object({
+								deploymentType: z.enum([
+									"all",
+									"all_except_custom_domains",
+									"preview",
+									"prod_deployment_urls_and_all_previews",
+								]),
+							})
+							.nullable(),
+						passwordChanged: z.union([z.literal(false), z.literal(true)]).optional(),
+						passwordProtection: z
+							.object({
+								deploymentType: z.enum([
+									"all",
+									"all_except_custom_domains",
+									"preview",
+									"prod_deployment_urls_and_all_previews",
+								]),
+							})
+							.nullable(),
+						scope: z.enum(["team"]),
+					})
+					.strict(),
+				z
+					.object({
+						oldSsoProtection: z
+							.object({
+								april2026SecurityIncidentMigrationAppliedFrom: z
+									.enum([
+										"all",
+										"all_except_custom_domains",
+										"preview",
+										"prod_deployment_urls_and_all_previews",
+									])
+									.nullish(),
+								cve55182MigrationAppliedFrom: z
+									.enum([
+										"all",
+										"all_except_custom_domains",
+										"preview",
+										"prod_deployment_urls_and_all_previews",
+									])
+									.nullish(),
+								deploymentType: z.enum([
+									"all",
+									"all_except_custom_domains",
+									"preview",
+									"prod_deployment_urls_and_all_previews",
+								]),
+							})
+							.nullable(),
+						scope: z.enum(["organization", "team"]),
+						ssoProtection: z
+							.object({
+								april2026SecurityIncidentMigrationAppliedFrom: z
+									.enum([
+										"all",
+										"all_except_custom_domains",
+										"preview",
+										"prod_deployment_urls_and_all_previews",
+									])
+									.nullish(),
+								cve55182MigrationAppliedFrom: z
+									.enum([
+										"all",
+										"all_except_custom_domains",
+										"preview",
+										"prod_deployment_urls_and_all_previews",
+									])
+									.nullish(),
+								deploymentType: z.enum([
+									"all",
+									"all_except_custom_domains",
+									"preview",
+									"prod_deployment_urls_and_all_previews",
+								]),
+							})
+							.nullable(),
+					})
+					.strict(),
+				z
+					.object({
 						hookName: z.string(),
 						projectId: z.string(),
 						projectName: z.string(),
@@ -8583,9 +8666,11 @@ export const userEventSchema = z
 							"directory_sync_updated",
 							"domain_deleted",
 							"domain_verified",
+							"organization_deleted",
 							"saml_updated",
 							"team_attached",
 							"team_participation_updated",
+							"team_removed",
 							"toggle",
 						]),
 						unenforcedTeamIds: z.array(z.string()),
@@ -10114,7 +10199,6 @@ export const userEventSchema = z
 							.nullable(),
 						projectId: z.string().optional(),
 						projectName: z.string().optional(),
-						scope: z.enum(["organization"]).optional(),
 						ssoProtection: z
 							.union([
 								z
@@ -12561,6 +12645,8 @@ export const userEventSchema = z
 				"custom-suffix-enable",
 				"custom-suffix-pending",
 				"custom-suffix-ready",
+				"default-password-protection",
+				"default-sso-protection",
 				"deploy-hook-created",
 				"deploy-hook-deduped",
 				"deploy-hook-deleted",
@@ -13363,6 +13449,8 @@ export const listEventTypeSchema = z
 				"custom-suffix-enable",
 				"custom-suffix-pending",
 				"custom-suffix-ready",
+				"default-password-protection",
+				"default-sso-protection",
 				"deploy-hook-created",
 				"deploy-hook-deduped",
 				"deploy-hook-deleted",
@@ -14059,6 +14147,8 @@ export const listEventTypeSchema = z
 					"custom-suffix-enable",
 					"custom-suffix-pending",
 					"custom-suffix-ready",
+					"default-password-protection",
+					"default-sso-protection",
 					"deploy-hook-created",
 					"deploy-hook-deduped",
 					"deploy-hook-deleted",
@@ -17473,7 +17563,7 @@ export const vcrImageListItemSchema = z
 				"Total size in bytes of the image's resources (manifest, config and layer blobs) stored by the registry.",
 			),
 		status: z
-			.enum(["preparing", "ready", "unoptimized"])
+			.enum(["errored", "preparing", "ready", "unoptimized"])
 			.nullable()
 			.describe("VHS-readiness status, or `null` for a multi-platform index."),
 		tags: z.array(z.string()).describe("Tags pointing at this image's manifest."),
@@ -17555,7 +17645,7 @@ export const vcrTagSchema = z
 				"Total size in bytes of the image's resources (manifest, config and layer blobs) stored by the registry.",
 			),
 		status: z
-			.enum(["preparing", "ready", "unoptimized"])
+			.enum(["errored", "preparing", "ready", "unoptimized"])
 			.nullable()
 			.describe("VHS-readiness status, or `null` for a multi-platform index."),
 		tag: z
@@ -17763,7 +17853,7 @@ export const vcrImageDetailSchema = z
 				"Total size in bytes of the image's resources (manifest, config and layer blobs) stored by the registry.",
 			),
 		status: z
-			.enum(["preparing", "ready", "unoptimized"])
+			.enum(["errored", "preparing", "ready", "unoptimized"])
 			.nullable()
 			.describe("VHS-readiness status, or `null` for a multi-platform index."),
 		tags: z.array(z.string()).describe("Tags pointing at this image's manifest."),
@@ -32906,8 +32996,6 @@ export const createTeamStatus403Schema = z.unknown();
 
 export const createTeamStatus404Schema = z.unknown();
 
-export const createTeamStatus409Schema = z.unknown();
-
 export const createTeamStatus410Schema = z.unknown();
 
 export const createTeamResponseSchema = createTeamStatus200Schema;
@@ -32917,7 +33005,6 @@ export const createTeamErrorSchema = z.union([
 	createTeamStatus401Schema,
 	createTeamStatus403Schema,
 	createTeamStatus404Schema,
-	createTeamStatus409Schema,
 	createTeamStatus410Schema,
 ]);
 
