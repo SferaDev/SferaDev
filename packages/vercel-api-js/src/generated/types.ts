@@ -6686,6 +6686,8 @@ export const userEventTypeEnum = {
 	"ai-gateway-inference-regions-updated": "ai-gateway-inference-regions-updated",
 	"ai-gateway-model-allowlist-models-updated": "ai-gateway-model-allowlist-models-updated",
 	"ai-gateway-model-allowlist-toggled": "ai-gateway-model-allowlist-toggled",
+	"ai-gateway-model-catalog-alert-settings-updated":
+		"ai-gateway-model-catalog-alert-settings-updated",
 	"ai-gateway-private-model-created": "ai-gateway-private-model-created",
 	"ai-gateway-private-model-deleted": "ai-gateway-private-model-deleted",
 	"ai-gateway-private-model-updated": "ai-gateway-private-model-updated",
@@ -7407,6 +7409,10 @@ export type UserEvent = {
 	payload?:
 		| (
 				| object
+				| {
+						enabled: false | true;
+						slackConfigured: false | true;
+				  }
 				| {
 						action: UserEventPayloadActionEnumKey;
 						id: string;
@@ -15268,6 +15274,8 @@ export const listEventTypeNameEnum = {
 	"ai-gateway-inference-regions-updated": "ai-gateway-inference-regions-updated",
 	"ai-gateway-model-allowlist-models-updated": "ai-gateway-model-allowlist-models-updated",
 	"ai-gateway-model-allowlist-toggled": "ai-gateway-model-allowlist-toggled",
+	"ai-gateway-model-catalog-alert-settings-updated":
+		"ai-gateway-model-catalog-alert-settings-updated",
 	"ai-gateway-private-model-created": "ai-gateway-private-model-created",
 	"ai-gateway-private-model-deleted": "ai-gateway-private-model-deleted",
 	"ai-gateway-private-model-updated": "ai-gateway-private-model-updated",
@@ -15980,6 +15988,8 @@ export const listEventTypeReplacedByEnum = {
 	"ai-gateway-inference-regions-updated": "ai-gateway-inference-regions-updated",
 	"ai-gateway-model-allowlist-models-updated": "ai-gateway-model-allowlist-models-updated",
 	"ai-gateway-model-allowlist-toggled": "ai-gateway-model-allowlist-toggled",
+	"ai-gateway-model-catalog-alert-settings-updated":
+		"ai-gateway-model-catalog-alert-settings-updated",
 	"ai-gateway-private-model-created": "ai-gateway-private-model-created",
 	"ai-gateway-private-model-deleted": "ai-gateway-private-model-deleted",
 	"ai-gateway-private-model-updated": "ai-gateway-private-model-updated",

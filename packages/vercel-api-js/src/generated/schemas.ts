@@ -3008,6 +3008,12 @@ export const userEventSchema = z
 				z.object({}).strict(),
 				z
 					.object({
+						enabled: z.union([z.literal(false), z.literal(true)]),
+						slackConfigured: z.union([z.literal(false), z.literal(true)]),
+					})
+					.strict(),
+				z
+					.object({
 						action: z.enum(["archived", "created", "deleted", "unarchived", "updated"]),
 						id: z.string(),
 						projectId: z.string(),
@@ -12638,6 +12644,7 @@ export const userEventSchema = z
 				"ai-gateway-inference-regions-updated",
 				"ai-gateway-model-allowlist-models-updated",
 				"ai-gateway-model-allowlist-toggled",
+				"ai-gateway-model-catalog-alert-settings-updated",
 				"ai-gateway-private-model-created",
 				"ai-gateway-private-model-deleted",
 				"ai-gateway-private-model-updated",
@@ -13442,6 +13449,7 @@ export const listEventTypeSchema = z
 				"ai-gateway-inference-regions-updated",
 				"ai-gateway-model-allowlist-models-updated",
 				"ai-gateway-model-allowlist-toggled",
+				"ai-gateway-model-catalog-alert-settings-updated",
 				"ai-gateway-private-model-created",
 				"ai-gateway-private-model-deleted",
 				"ai-gateway-private-model-updated",
@@ -14140,6 +14148,7 @@ export const listEventTypeSchema = z
 					"ai-gateway-inference-regions-updated",
 					"ai-gateway-model-allowlist-models-updated",
 					"ai-gateway-model-allowlist-toggled",
+					"ai-gateway-model-catalog-alert-settings-updated",
 					"ai-gateway-private-model-created",
 					"ai-gateway-private-model-deleted",
 					"ai-gateway-private-model-updated",
