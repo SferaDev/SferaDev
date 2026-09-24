@@ -1,5 +1,11 @@
 # vercel-api-js
 
+## 1.24.4
+
+### Patch Changes
+
+- 71c3c7b: Updated API documentation for signKmsMessage and signKmsToken to include 'fingerprint' as an identifier of the signing key in the issuer's JWKS.
+
 ## 1.24.3
 
 ### Patch Changes
