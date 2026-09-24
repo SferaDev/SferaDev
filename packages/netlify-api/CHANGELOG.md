@@ -1,5 +1,16 @@
 # netlify-api
 
+## 1.4.0
+
+### Minor Changes
+
+- 20182f1: Add uploadDeployServer endpoint for uploading Netlify Server bundles for deploys.
+
+### Patch Changes
+
+- 20182f1: Add required_server field to various deploy and site schemas and types to track Netlify Server bundle state.
+- 20182f1: Add server object to deploy files and deploy body types to represent Netlify Server bundle metadata.
+
 ## 1.3.1
 
 ### Patch Changes
