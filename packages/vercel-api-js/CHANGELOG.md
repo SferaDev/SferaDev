@@ -1,5 +1,11 @@
 # vercel-api-js
 
+## 1.24.5
+
+### Patch Changes
+
+- a843903: Added the 'repoId' property to the repo object in user event schemas and types.
+
 ## 1.24.4
 
 ### Patch Changes
