@@ -272,6 +272,7 @@ import type {
 	UploadDeployEdgeFunctionResponse,
 	UploadDeployFileResponse,
 	UploadDeployFunctionResponse,
+	UploadDeployServerResponse,
 } from "./types";
 
 /**
@@ -2961,6 +2962,51 @@ export async function uploadDeployFunction(
 	>({
 		method: "PUT",
 		url: `/deploys/${pathParams.deploy_id}/functions/${pathParams.name}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...headers, ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @description Uploads the deploy's Netlify Server bundle, addressed by the digest the deploy
+ * declared in its `server` property.
+ * @link /deploys/{deploy_id}/server/{code_sha}
+ */
+export async function uploadDeployServer(
+	{
+		pathParams,
+		queryParams,
+		headers,
+		config,
+	}: {
+		pathParams: { deploy_id: string; code_sha: string };
+		queryParams?: { size?: number };
+		headers?: { "X-Nf-Retry-Count"?: number };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.deploy_id) {
+		throw new Error(`Missing required path parameter: deploy_id`);
+	}
+
+	if (!pathParams.code_sha) {
+		throw new Error(`Missing required path parameter: code_sha`);
+	}
+	const data = await request<
+		UploadDeployServerResponse,
+		ErrorWrapper<Error>,
+		null,
+		{ "X-Nf-Retry-Count"?: number },
+		{ size?: number },
+		{ deploy_id: string; code_sha: string }
+	>({
+		method: "PUT",
+		url: `/deploys/${pathParams.deploy_id}/server/${pathParams.code_sha}`,
 		queryParams,
 		...requestConfig,
 		headers: { ...headers, ...requestConfig.headers },
@@ -7143,6 +7189,7 @@ export const operationsByPath = {
 	"POST /deploys/{deploy_id}/unlock": unlockDeploy,
 	"PUT /deploys/{deploy_id}/files/{path}": uploadDeployFile,
 	"PUT /deploys/{deploy_id}/functions/{name}": uploadDeployFunction,
+	"PUT /deploys/{deploy_id}/server/{code_sha}": uploadDeployServer,
 	"PUT /deploys/{deploy_id}/edge_functions/{code_sha}": uploadDeployEdgeFunction,
 	"GET /sites/{site_id}/plugin_runs/latest": getLatestPluginRuns,
 	"POST /deploys/{deploy_id}/plugin_runs": createPluginRun,
@@ -7352,6 +7399,7 @@ export const operationsByTag = {
 		updateDeployValidations,
 		lockDeploy,
 		unlockDeploy,
+		uploadDeployServer,
 	},
 	build: {
 		listSiteBuilds,
@@ -7597,7 +7645,7 @@ export const tagDictionary = {
 			"lockDeploy",
 			"unlockDeploy",
 		],
-		PUT: ["updateSiteDeploy", "rollbackSiteDeploy"],
+		PUT: ["updateSiteDeploy", "rollbackSiteDeploy", "uploadDeployServer"],
 		DELETE: ["deleteSiteDeploy", "deleteDeploy"],
 		PATCH: ["updateDeployValidations"],
 	},

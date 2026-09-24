@@ -997,6 +997,11 @@ export type Site = {
 				 * @type array | undefined
 				 */
 				required_edge_functions?: string[] | undefined;
+				/**
+				 * @description The SHA256 digest of the deploy\'s Netlify Server bundle, when it still needs to\nbe uploaded to complete the deploy. A deploy has at most one server, so this\nholds either nothing or a single digest.\n
+				 * @type array | undefined
+				 */
+				required_server?: string[] | undefined;
 				error_message?: string | undefined;
 				branch?: string | undefined;
 				commit_ref?: string | undefined;
@@ -1175,6 +1180,11 @@ export type SiteSetup = {
 				 * @type array | undefined
 				 */
 				required_edge_functions?: string[] | undefined;
+				/**
+				 * @description The SHA256 digest of the deploy\'s Netlify Server bundle, when it still needs to\nbe uploaded to complete the deploy. A deploy has at most one server, so this\nholds either nothing or a single digest.\n
+				 * @type array | undefined
+				 */
+				required_server?: string[] | undefined;
 				error_message?: string | undefined;
 				branch?: string | undefined;
 				commit_ref?: string | undefined;
@@ -1668,6 +1678,11 @@ export type Deploy = {
 	 * @type array | undefined
 	 */
 	required_edge_functions?: string[] | undefined;
+	/**
+	 * @description The SHA256 digest of the deploy\'s Netlify Server bundle, when it still needs to\nbe uploaded to complete the deploy. A deploy has at most one server, so this\nholds either nothing or a single digest.\n
+	 * @type array | undefined
+	 */
+	required_server?: string[] | undefined;
 	error_message?: string | undefined;
 	branch?: string | undefined;
 	commit_ref?: string | undefined;
@@ -1777,6 +1792,24 @@ export type DeployFiles = {
 	 * @type object | undefined
 	 */
 	edge_functions?: object | undefined;
+	/**
+	 * @description The deploy\'s Netlify Server. A deploy has at most one. The response\'s\nrequired_server says whether it still needs to be uploaded.\n
+	 * @type object | undefined
+	 */
+	server?:
+		| {
+				/**
+				 * @description The SHA256 digest of the server bundle.
+				 * @type string
+				 */
+				sha: string;
+				/**
+				 * @description Where the server runs. Defaults to the region configured at the site level\nwhen absent.\n
+				 * @type string | undefined
+				 */
+				region?: string | undefined;
+		  }
+		| undefined;
 	function_schedules?:
 		| {
 				name?: string | undefined;
@@ -3134,6 +3167,11 @@ export type ListSitesStatus200 = {
 				 * @type array | undefined
 				 */
 				required_edge_functions?: string[] | undefined;
+				/**
+				 * @description The SHA256 digest of the deploy\'s Netlify Server bundle, when it still needs to\nbe uploaded to complete the deploy. A deploy has at most one server, so this\nholds either nothing or a single digest.\n
+				 * @type array | undefined
+				 */
+				required_server?: string[] | undefined;
 				error_message?: string | undefined;
 				branch?: string | undefined;
 				commit_ref?: string | undefined;
@@ -3343,6 +3381,11 @@ export type CreateSiteStatus201 = {
 				 * @type array | undefined
 				 */
 				required_edge_functions?: string[] | undefined;
+				/**
+				 * @description The SHA256 digest of the deploy\'s Netlify Server bundle, when it still needs to\nbe uploaded to complete the deploy. A deploy has at most one server, so this\nholds either nothing or a single digest.\n
+				 * @type array | undefined
+				 */
+				required_server?: string[] | undefined;
 				error_message?: string | undefined;
 				branch?: string | undefined;
 				commit_ref?: string | undefined;
@@ -3531,6 +3574,11 @@ export type CreateSiteBody = {
 				 * @type array | undefined
 				 */
 				required_edge_functions?: string[] | undefined;
+				/**
+				 * @description The SHA256 digest of the deploy\'s Netlify Server bundle, when it still needs to\nbe uploaded to complete the deploy. A deploy has at most one server, so this\nholds either nothing or a single digest.\n
+				 * @type array | undefined
+				 */
+				required_server?: string[] | undefined;
 				error_message?: string | undefined;
 				branch?: string | undefined;
 				commit_ref?: string | undefined;
@@ -3770,6 +3818,11 @@ export type GetSiteStatus200 = {
 				 * @type array | undefined
 				 */
 				required_edge_functions?: string[] | undefined;
+				/**
+				 * @description The SHA256 digest of the deploy\'s Netlify Server bundle, when it still needs to\nbe uploaded to complete the deploy. A deploy has at most one server, so this\nholds either nothing or a single digest.\n
+				 * @type array | undefined
+				 */
+				required_server?: string[] | undefined;
 				error_message?: string | undefined;
 				branch?: string | undefined;
 				commit_ref?: string | undefined;
@@ -3979,6 +4032,11 @@ export type UpdateSiteStatus200 = {
 				 * @type array | undefined
 				 */
 				required_edge_functions?: string[] | undefined;
+				/**
+				 * @description The SHA256 digest of the deploy\'s Netlify Server bundle, when it still needs to\nbe uploaded to complete the deploy. A deploy has at most one server, so this\nholds either nothing or a single digest.\n
+				 * @type array | undefined
+				 */
+				required_server?: string[] | undefined;
 				error_message?: string | undefined;
 				branch?: string | undefined;
 				commit_ref?: string | undefined;
@@ -4167,6 +4225,11 @@ export type UpdateSiteBody = {
 				 * @type array | undefined
 				 */
 				required_edge_functions?: string[] | undefined;
+				/**
+				 * @description The SHA256 digest of the deploy\'s Netlify Server bundle, when it still needs to\nbe uploaded to complete the deploy. A deploy has at most one server, so this\nholds either nothing or a single digest.\n
+				 * @type array | undefined
+				 */
+				required_server?: string[] | undefined;
 				error_message?: string | undefined;
 				branch?: string | undefined;
 				commit_ref?: string | undefined;
@@ -7053,6 +7116,11 @@ export type ListSiteDeploysStatus200 = {
 	 * @type array | undefined
 	 */
 	required_edge_functions?: string[] | undefined;
+	/**
+	 * @description The SHA256 digest of the deploy\'s Netlify Server bundle, when it still needs to\nbe uploaded to complete the deploy. A deploy has at most one server, so this\nholds either nothing or a single digest.\n
+	 * @type array | undefined
+	 */
+	required_server?: string[] | undefined;
 	error_message?: string | undefined;
 	branch?: string | undefined;
 	commit_ref?: string | undefined;
@@ -7188,6 +7256,11 @@ export type CreateSiteDeployStatus200 = {
 	 * @type array | undefined
 	 */
 	required_edge_functions?: string[] | undefined;
+	/**
+	 * @description The SHA256 digest of the deploy\'s Netlify Server bundle, when it still needs to\nbe uploaded to complete the deploy. A deploy has at most one server, so this\nholds either nothing or a single digest.\n
+	 * @type array | undefined
+	 */
+	required_server?: string[] | undefined;
 	error_message?: string | undefined;
 	branch?: string | undefined;
 	commit_ref?: string | undefined;
@@ -7283,6 +7356,24 @@ export type CreateSiteDeployBody = {
 	 * @type object | undefined
 	 */
 	edge_functions?: object | undefined;
+	/**
+	 * @description The deploy\'s Netlify Server. A deploy has at most one. The response\'s\nrequired_server says whether it still needs to be uploaded.\n
+	 * @type object | undefined
+	 */
+	server?:
+		| {
+				/**
+				 * @description The SHA256 digest of the server bundle.
+				 * @type string
+				 */
+				sha: string;
+				/**
+				 * @description Where the server runs. Defaults to the region configured at the site level\nwhen absent.\n
+				 * @type string | undefined
+				 */
+				region?: string | undefined;
+		  }
+		| undefined;
 	function_schedules?:
 		| {
 				name?: string | undefined;
@@ -7420,6 +7511,11 @@ export type GetSiteDeployStatus200 = {
 	 * @type array | undefined
 	 */
 	required_edge_functions?: string[] | undefined;
+	/**
+	 * @description The SHA256 digest of the deploy\'s Netlify Server bundle, when it still needs to\nbe uploaded to complete the deploy. A deploy has at most one server, so this\nholds either nothing or a single digest.\n
+	 * @type array | undefined
+	 */
+	required_server?: string[] | undefined;
 	error_message?: string | undefined;
 	branch?: string | undefined;
 	commit_ref?: string | undefined;
@@ -7530,6 +7626,11 @@ export type UpdateSiteDeployStatus200 = {
 	 * @type array | undefined
 	 */
 	required_edge_functions?: string[] | undefined;
+	/**
+	 * @description The SHA256 digest of the deploy\'s Netlify Server bundle, when it still needs to\nbe uploaded to complete the deploy. A deploy has at most one server, so this\nholds either nothing or a single digest.\n
+	 * @type array | undefined
+	 */
+	required_server?: string[] | undefined;
 	error_message?: string | undefined;
 	branch?: string | undefined;
 	commit_ref?: string | undefined;
@@ -7625,6 +7726,24 @@ export type UpdateSiteDeployBody = {
 	 * @type object | undefined
 	 */
 	edge_functions?: object | undefined;
+	/**
+	 * @description The deploy\'s Netlify Server. A deploy has at most one. The response\'s\nrequired_server says whether it still needs to be uploaded.\n
+	 * @type object | undefined
+	 */
+	server?:
+		| {
+				/**
+				 * @description The SHA256 digest of the server bundle.
+				 * @type string
+				 */
+				sha: string;
+				/**
+				 * @description Where the server runs. Defaults to the region configured at the site level\nwhen absent.\n
+				 * @type string | undefined
+				 */
+				region?: string | undefined;
+		  }
+		| undefined;
 	function_schedules?:
 		| {
 				name?: string | undefined;
@@ -7795,6 +7914,11 @@ export type CancelSiteDeployStatus201 = {
 	 * @type array | undefined
 	 */
 	required_edge_functions?: string[] | undefined;
+	/**
+	 * @description The SHA256 digest of the deploy\'s Netlify Server bundle, when it still needs to\nbe uploaded to complete the deploy. A deploy has at most one server, so this\nholds either nothing or a single digest.\n
+	 * @type array | undefined
+	 */
+	required_server?: string[] | undefined;
 	error_message?: string | undefined;
 	branch?: string | undefined;
 	commit_ref?: string | undefined;
@@ -7901,6 +8025,11 @@ export type RestoreSiteDeployStatus201 = {
 	 * @type array | undefined
 	 */
 	required_edge_functions?: string[] | undefined;
+	/**
+	 * @description The SHA256 digest of the deploy\'s Netlify Server bundle, when it still needs to\nbe uploaded to complete the deploy. A deploy has at most one server, so this\nholds either nothing or a single digest.\n
+	 * @type array | undefined
+	 */
+	required_server?: string[] | undefined;
 	error_message?: string | undefined;
 	branch?: string | undefined;
 	commit_ref?: string | undefined;
@@ -8229,6 +8358,11 @@ export type UnlinkSiteRepoStatus200 = {
 				 * @type array | undefined
 				 */
 				required_edge_functions?: string[] | undefined;
+				/**
+				 * @description The SHA256 digest of the deploy\'s Netlify Server bundle, when it still needs to\nbe uploaded to complete the deploy. A deploy has at most one server, so this\nholds either nothing or a single digest.\n
+				 * @type array | undefined
+				 */
+				required_server?: string[] | undefined;
 				error_message?: string | undefined;
 				branch?: string | undefined;
 				commit_ref?: string | undefined;
@@ -8892,6 +9026,11 @@ export type GetDeployStatus200 = {
 	 * @type array | undefined
 	 */
 	required_edge_functions?: string[] | undefined;
+	/**
+	 * @description The SHA256 digest of the deploy\'s Netlify Server bundle, when it still needs to\nbe uploaded to complete the deploy. A deploy has at most one server, so this\nholds either nothing or a single digest.\n
+	 * @type array | undefined
+	 */
+	required_server?: string[] | undefined;
 	error_message?: string | undefined;
 	branch?: string | undefined;
 	commit_ref?: string | undefined;
@@ -9085,6 +9224,11 @@ export type LockDeployStatus200 = {
 	 * @type array | undefined
 	 */
 	required_edge_functions?: string[] | undefined;
+	/**
+	 * @description The SHA256 digest of the deploy\'s Netlify Server bundle, when it still needs to\nbe uploaded to complete the deploy. A deploy has at most one server, so this\nholds either nothing or a single digest.\n
+	 * @type array | undefined
+	 */
+	required_server?: string[] | undefined;
 	error_message?: string | undefined;
 	branch?: string | undefined;
 	commit_ref?: string | undefined;
@@ -9190,6 +9334,11 @@ export type UnlockDeployStatus200 = {
 	 * @type array | undefined
 	 */
 	required_edge_functions?: string[] | undefined;
+	/**
+	 * @description The SHA256 digest of the deploy\'s Netlify Server bundle, when it still needs to\nbe uploaded to complete the deploy. A deploy has at most one server, so this\nholds either nothing or a single digest.\n
+	 * @type array | undefined
+	 */
+	required_server?: string[] | undefined;
 	error_message?: string | undefined;
 	branch?: string | undefined;
 	commit_ref?: string | undefined;
@@ -9369,6 +9518,50 @@ export type UploadDeployFunctionResponses = {
 export type UploadDeployFunctionResponse =
 	| UploadDeployFunctionStatus200
 	| UploadDeployFunctionStatusDefault;
+
+export type UploadDeployServerPath = {
+	deploy_id: string;
+	code_sha: string;
+};
+
+export type UploadDeployServerQuery = {
+	size?: number | undefined;
+};
+
+export type UploadDeployServerHeaders = {
+	"X-Nf-Retry-Count"?: number | undefined;
+};
+
+export type UploadDeployServerStatus200 = unknown;
+
+export type UploadDeployServerStatusDefault = {
+	/**
+	 * @description
+	 * Format: `int64`
+	 * @type integer | undefined
+	 */
+	code?: bigint | undefined;
+	message: string;
+};
+
+export type UploadDeployServerOptions = {
+	body?: never | undefined;
+	path: UploadDeployServerPath;
+	query?: UploadDeployServerQuery | undefined;
+	headers?: UploadDeployServerHeaders | undefined;
+};
+
+export type UploadDeployServerResponses = {
+	"200": UploadDeployServerStatus200;
+	default: UploadDeployServerStatusDefault;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type UploadDeployServerResponse =
+	| UploadDeployServerStatus200
+	| UploadDeployServerStatusDefault;
 
 export type UploadDeployEdgeFunctionPath = {
 	deploy_id: string;
@@ -10324,6 +10517,11 @@ export type CreateSiteInTeamStatus201 = {
 				 * @type array | undefined
 				 */
 				required_edge_functions?: string[] | undefined;
+				/**
+				 * @description The SHA256 digest of the deploy\'s Netlify Server bundle, when it still needs to\nbe uploaded to complete the deploy. A deploy has at most one server, so this\nholds either nothing or a single digest.\n
+				 * @type array | undefined
+				 */
+				required_server?: string[] | undefined;
 				error_message?: string | undefined;
 				branch?: string | undefined;
 				commit_ref?: string | undefined;
@@ -10513,6 +10711,11 @@ export type CreateSiteInTeamBody =
 						 * @type array | undefined
 						 */
 						required_edge_functions?: string[] | undefined;
+						/**
+						 * @description The SHA256 digest of the deploy\'s Netlify Server bundle, when it still needs to\nbe uploaded to complete the deploy. A deploy has at most one server, so this\nholds either nothing or a single digest.\n
+						 * @type array | undefined
+						 */
+						required_server?: string[] | undefined;
 						error_message?: string | undefined;
 						branch?: string | undefined;
 						commit_ref?: string | undefined;
@@ -10765,6 +10968,11 @@ export type ListSitesForAccountStatus200 = {
 				 * @type array | undefined
 				 */
 				required_edge_functions?: string[] | undefined;
+				/**
+				 * @description The SHA256 digest of the deploy\'s Netlify Server bundle, when it still needs to\nbe uploaded to complete the deploy. A deploy has at most one server, so this\nholds either nothing or a single digest.\n
+				 * @type array | undefined
+				 */
+				required_server?: string[] | undefined;
 				error_message?: string | undefined;
 				branch?: string | undefined;
 				commit_ref?: string | undefined;
