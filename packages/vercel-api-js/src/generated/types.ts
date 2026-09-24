@@ -25958,6 +25958,8 @@ export type UpdateIntegrationDeploymentActionStatus401 = unknown;
 
 export type UpdateIntegrationDeploymentActionStatus403 = unknown;
 
+export type UpdateIntegrationDeploymentActionStatus404 = unknown;
+
 export type UpdateIntegrationDeploymentActionStatus410 = unknown;
 
 export type UpdateIntegrationDeploymentActionOptions = {
@@ -25972,6 +25974,7 @@ export type UpdateIntegrationDeploymentActionResponses = {
 	"400": UpdateIntegrationDeploymentActionStatus400;
 	"401": UpdateIntegrationDeploymentActionStatus401;
 	"403": UpdateIntegrationDeploymentActionStatus403;
+	"404": UpdateIntegrationDeploymentActionStatus404;
 	"410": UpdateIntegrationDeploymentActionStatus410;
 };
 
@@ -25983,6 +25986,7 @@ export type UpdateIntegrationDeploymentActionResponse =
 	| UpdateIntegrationDeploymentActionStatus400
 	| UpdateIntegrationDeploymentActionStatus401
 	| UpdateIntegrationDeploymentActionStatus403
+	| UpdateIntegrationDeploymentActionStatus404
 	| UpdateIntegrationDeploymentActionStatus410;
 
 export type GetDeploymentPath = {
@@ -32493,7 +32497,7 @@ export type SearchRepoProviderKey = (typeof searchRepoProvider)[keyof typeof sea
 
 export type SearchRepoQuery = {
 	query?: string | undefined;
-	namespaceId?: ((string | number) | null) | undefined;
+	namespaceId?: ((string | number | string | number) | null) | undefined;
 	provider?: SearchRepoProviderKey | undefined;
 	installationId?: string | undefined;
 	/**

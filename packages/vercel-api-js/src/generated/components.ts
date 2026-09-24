@@ -2584,6 +2584,7 @@ import type {
 	UpdateIntegrationDeploymentActionStatus400,
 	UpdateIntegrationDeploymentActionStatus401,
 	UpdateIntegrationDeploymentActionStatus403,
+	UpdateIntegrationDeploymentActionStatus404,
 	UpdateIntegrationDeploymentActionStatus410,
 	UpdateInvoiceResponse,
 	UpdateInvoiceStatus400,
@@ -6497,6 +6498,7 @@ export async function updateIntegrationDeploymentAction(
 			| UpdateIntegrationDeploymentActionStatus400
 			| UpdateIntegrationDeploymentActionStatus401
 			| UpdateIntegrationDeploymentActionStatus403
+			| UpdateIntegrationDeploymentActionStatus404
 			| UpdateIntegrationDeploymentActionStatus410
 		>,
 		null,

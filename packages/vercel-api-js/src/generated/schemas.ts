@@ -21498,6 +21498,8 @@ export const updateIntegrationDeploymentActionStatus401Schema = z.unknown();
 
 export const updateIntegrationDeploymentActionStatus403Schema = z.unknown();
 
+export const updateIntegrationDeploymentActionStatus404Schema = z.unknown();
+
 export const updateIntegrationDeploymentActionStatus410Schema = z.unknown();
 
 export const updateIntegrationDeploymentActionResponseSchema =
@@ -21507,6 +21509,7 @@ export const updateIntegrationDeploymentActionErrorSchema = z.union([
 	updateIntegrationDeploymentActionStatus400Schema,
 	updateIntegrationDeploymentActionStatus401Schema,
 	updateIntegrationDeploymentActionStatus403Schema,
+	updateIntegrationDeploymentActionStatus404Schema,
 	updateIntegrationDeploymentActionStatus410Schema,
 ]);
 
@@ -25648,7 +25651,9 @@ export const gitNamespacesErrorSchema = z.union([
 
 export const searchRepoQueryQuerySchema = z.string().optional();
 
-export const searchRepoQueryNamespaceIdSchema = z.union([z.string(), z.number()]).nullish();
+export const searchRepoQueryNamespaceIdSchema = z
+	.union([z.string(), z.number(), z.string(), z.number()])
+	.nullish();
 
 export const searchRepoQueryProviderSchema = z
 	.enum(["github", "github-limited", "github-custom-host", "gitlab", "bitbucket", "cursor-origin"])
