@@ -1,5 +1,12 @@
 # vercel-api-js
 
+## 1.24.3
+
+### Patch Changes
+
+- 52cab77: Add 404 status type and schema to updateIntegrationDeploymentAction API responses.
+- 52cab77: Allow searchRepoQueryNamespaceIdSchema to accept duplicate string and number types.
+
 ## 1.24.2
 
 ### Patch Changes
