@@ -5454,6 +5454,7 @@ export const userEventSchema = z
 									provider: z.enum(["vercel"]),
 									ref: z.string(),
 									repo: z.string(),
+									repoId: z.string(),
 									repoPushedAt: z.number().nullish(),
 									sha: z.string(),
 									skippedJobPairs: z
