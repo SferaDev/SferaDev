@@ -9176,6 +9176,7 @@ export type UserEvent = {
 									provider: "vercel";
 									ref: string;
 									repo: string;
+									repoId: string;
 									repoPushedAt?: (number | null) | undefined;
 									sha: string;
 									/**
