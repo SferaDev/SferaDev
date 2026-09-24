@@ -515,6 +515,12 @@ export const siteSchema = z.object({
 				.describe(
 					"An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n",
 				),
+			required_server: z
+				.array(z.string())
+				.optional()
+				.describe(
+					"The SHA256 digest of the deploy's Netlify Server bundle, when it still needs to\nbe uploaded to complete the deploy. A deploy has at most one server, so this\nholds either nothing or a single digest.\n",
+				),
 			error_message: z.string().optional(),
 			branch: z.string().optional(),
 			commit_ref: z.string().optional(),
@@ -662,6 +668,12 @@ export const siteSetupSchema = z
 					.optional()
 					.describe(
 						"An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n",
+					),
+				required_server: z
+					.array(z.string())
+					.optional()
+					.describe(
+						"The SHA256 digest of the deploy's Netlify Server bundle, when it still needs to\nbe uploaded to complete the deploy. A deploy has at most one server, so this\nholds either nothing or a single digest.\n",
 					),
 				error_message: z.string().optional(),
 				branch: z.string().optional(),
@@ -1017,6 +1029,12 @@ export const deploySchema = z.object({
 		.describe(
 			"An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n",
 		),
+	required_server: z
+		.array(z.string())
+		.optional()
+		.describe(
+			"The SHA256 digest of the deploy's Netlify Server bundle, when it still needs to\nbe uploaded to complete the deploy. A deploy has at most one server, so this\nholds either nothing or a single digest.\n",
+		),
 	error_message: z.string().optional(),
 	branch: z.string().optional(),
 	commit_ref: z.string().optional(),
@@ -1083,6 +1101,20 @@ export const deployFilesSchema = z
 			.optional()
 			.describe(
 				"A hash mapping edge-function bundle formats to the code_sha of each bundle. The\nresponse's required_edge_functions lists which of these still need to be uploaded.\n",
+			),
+		server: z
+			.object({
+				sha: z.string().describe("The SHA256 digest of the server bundle."),
+				region: z
+					.string()
+					.optional()
+					.describe(
+						"Where the server runs. Defaults to the region configured at the site level\nwhen absent.\n",
+					),
+			})
+			.optional()
+			.describe(
+				"The deploy's Netlify Server. A deploy has at most one. The response's\nrequired_server says whether it still needs to be uploaded.\n",
 			),
 		function_schedules: z
 			.array(
@@ -2008,6 +2040,12 @@ export const listSitesStatus200Schema = z.array(
 					.describe(
 						"An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n",
 					),
+				required_server: z
+					.array(z.string())
+					.optional()
+					.describe(
+						"The SHA256 digest of the deploy's Netlify Server bundle, when it still needs to\nbe uploaded to complete the deploy. A deploy has at most one server, so this\nholds either nothing or a single digest.\n",
+					),
 				error_message: z.string().optional(),
 				branch: z.string().optional(),
 				commit_ref: z.string().optional(),
@@ -2167,6 +2205,12 @@ export const createSiteStatus201Schema = z.object({
 				.describe(
 					"An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n",
 				),
+			required_server: z
+				.array(z.string())
+				.optional()
+				.describe(
+					"The SHA256 digest of the deploy's Netlify Server bundle, when it still needs to\nbe uploaded to complete the deploy. A deploy has at most one server, so this\nholds either nothing or a single digest.\n",
+				),
 			error_message: z.string().optional(),
 			branch: z.string().optional(),
 			commit_ref: z.string().optional(),
@@ -2323,6 +2367,12 @@ export const createSiteBodySchema = z
 					.optional()
 					.describe(
 						"An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n",
+					),
+				required_server: z
+					.array(z.string())
+					.optional()
+					.describe(
+						"The SHA256 digest of the deploy's Netlify Server bundle, when it still needs to\nbe uploaded to complete the deploy. A deploy has at most one server, so this\nholds either nothing or a single digest.\n",
 					),
 				error_message: z.string().optional(),
 				branch: z.string().optional(),
@@ -2511,6 +2561,12 @@ export const getSiteStatus200Schema = z.object({
 				.describe(
 					"An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n",
 				),
+			required_server: z
+				.array(z.string())
+				.optional()
+				.describe(
+					"The SHA256 digest of the deploy's Netlify Server bundle, when it still needs to\nbe uploaded to complete the deploy. A deploy has at most one server, so this\nholds either nothing or a single digest.\n",
+				),
 			error_message: z.string().optional(),
 			branch: z.string().optional(),
 			commit_ref: z.string().optional(),
@@ -2669,6 +2725,12 @@ export const updateSiteStatus200Schema = z.object({
 				.describe(
 					"An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n",
 				),
+			required_server: z
+				.array(z.string())
+				.optional()
+				.describe(
+					"The SHA256 digest of the deploy's Netlify Server bundle, when it still needs to\nbe uploaded to complete the deploy. A deploy has at most one server, so this\nholds either nothing or a single digest.\n",
+				),
 			error_message: z.string().optional(),
 			branch: z.string().optional(),
 			commit_ref: z.string().optional(),
@@ -2825,6 +2887,12 @@ export const updateSiteBodySchema = z
 					.optional()
 					.describe(
 						"An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n",
+					),
+				required_server: z
+					.array(z.string())
+					.optional()
+					.describe(
+						"The SHA256 digest of the deploy's Netlify Server bundle, when it still needs to\nbe uploaded to complete the deploy. A deploy has at most one server, so this\nholds either nothing or a single digest.\n",
 					),
 				error_message: z.string().optional(),
 				branch: z.string().optional(),
@@ -4358,6 +4426,12 @@ export const listSiteDeploysStatus200Schema = z.array(
 			.describe(
 				"An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n",
 			),
+		required_server: z
+			.array(z.string())
+			.optional()
+			.describe(
+				"The SHA256 digest of the deploy's Netlify Server bundle, when it still needs to\nbe uploaded to complete the deploy. A deploy has at most one server, so this\nholds either nothing or a single digest.\n",
+			),
 		error_message: z.string().optional(),
 		branch: z.string().optional(),
 		commit_ref: z.string().optional(),
@@ -4462,6 +4536,12 @@ export const createSiteDeployStatus200Schema = z.object({
 		.describe(
 			"An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n",
 		),
+	required_server: z
+		.array(z.string())
+		.optional()
+		.describe(
+			"The SHA256 digest of the deploy's Netlify Server bundle, when it still needs to\nbe uploaded to complete the deploy. A deploy has at most one server, so this\nholds either nothing or a single digest.\n",
+		),
 	error_message: z.string().optional(),
 	branch: z.string().optional(),
 	commit_ref: z.string().optional(),
@@ -4530,6 +4610,20 @@ export const createSiteDeployBodySchema = z
 			.optional()
 			.describe(
 				"A hash mapping edge-function bundle formats to the code_sha of each bundle. The\nresponse's required_edge_functions lists which of these still need to be uploaded.\n",
+			),
+		server: z
+			.object({
+				sha: z.string().describe("The SHA256 digest of the server bundle."),
+				region: z
+					.string()
+					.optional()
+					.describe(
+						"Where the server runs. Defaults to the region configured at the site level\nwhen absent.\n",
+					),
+			})
+			.optional()
+			.describe(
+				"The deploy's Netlify Server. A deploy has at most one. The response's\nrequired_server says whether it still needs to be uploaded.\n",
 			),
 		function_schedules: z
 			.array(
@@ -4662,6 +4756,12 @@ export const getSiteDeployStatus200Schema = z.object({
 		.describe(
 			"An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n",
 		),
+	required_server: z
+		.array(z.string())
+		.optional()
+		.describe(
+			"The SHA256 digest of the deploy's Netlify Server bundle, when it still needs to\nbe uploaded to complete the deploy. A deploy has at most one server, so this\nholds either nothing or a single digest.\n",
+		),
 	error_message: z.string().optional(),
 	branch: z.string().optional(),
 	commit_ref: z.string().optional(),
@@ -4739,6 +4839,12 @@ export const updateSiteDeployStatus200Schema = z.object({
 		.describe(
 			"An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n",
 		),
+	required_server: z
+		.array(z.string())
+		.optional()
+		.describe(
+			"The SHA256 digest of the deploy's Netlify Server bundle, when it still needs to\nbe uploaded to complete the deploy. A deploy has at most one server, so this\nholds either nothing or a single digest.\n",
+		),
 	error_message: z.string().optional(),
 	branch: z.string().optional(),
 	commit_ref: z.string().optional(),
@@ -4807,6 +4913,20 @@ export const updateSiteDeployBodySchema = z
 			.optional()
 			.describe(
 				"A hash mapping edge-function bundle formats to the code_sha of each bundle. The\nresponse's required_edge_functions lists which of these still need to be uploaded.\n",
+			),
+		server: z
+			.object({
+				sha: z.string().describe("The SHA256 digest of the server bundle."),
+				region: z
+					.string()
+					.optional()
+					.describe(
+						"Where the server runs. Defaults to the region configured at the site level\nwhen absent.\n",
+					),
+			})
+			.optional()
+			.describe(
+				"The deploy's Netlify Server. A deploy has at most one. The response's\nrequired_server says whether it still needs to be uploaded.\n",
 			),
 		function_schedules: z
 			.array(
@@ -4952,6 +5072,12 @@ export const cancelSiteDeployStatus201Schema = z.object({
 		.describe(
 			"An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n",
 		),
+	required_server: z
+		.array(z.string())
+		.optional()
+		.describe(
+			"The SHA256 digest of the deploy's Netlify Server bundle, when it still needs to\nbe uploaded to complete the deploy. A deploy has at most one server, so this\nholds either nothing or a single digest.\n",
+		),
 	error_message: z.string().optional(),
 	branch: z.string().optional(),
 	commit_ref: z.string().optional(),
@@ -5026,6 +5152,12 @@ export const restoreSiteDeployStatus201Schema = z.object({
 		.optional()
 		.describe(
 			"An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n",
+		),
+	required_server: z
+		.array(z.string())
+		.optional()
+		.describe(
+			"The SHA256 digest of the deploy's Netlify Server bundle, when it still needs to\nbe uploaded to complete the deploy. A deploy has at most one server, so this\nholds either nothing or a single digest.\n",
 		),
 	error_message: z.string().optional(),
 	branch: z.string().optional(),
@@ -5229,6 +5361,12 @@ export const unlinkSiteRepoStatus200Schema = z.object({
 				.optional()
 				.describe(
 					"An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n",
+				),
+			required_server: z
+				.array(z.string())
+				.optional()
+				.describe(
+					"The SHA256 digest of the deploy's Netlify Server bundle, when it still needs to\nbe uploaded to complete the deploy. A deploy has at most one server, so this\nholds either nothing or a single digest.\n",
 				),
 			error_message: z.string().optional(),
 			branch: z.string().optional(),
@@ -5598,6 +5736,12 @@ export const getDeployStatus200Schema = z.object({
 		.describe(
 			"An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n",
 		),
+	required_server: z
+		.array(z.string())
+		.optional()
+		.describe(
+			"The SHA256 digest of the deploy's Netlify Server bundle, when it still needs to\nbe uploaded to complete the deploy. A deploy has at most one server, so this\nholds either nothing or a single digest.\n",
+		),
 	error_message: z.string().optional(),
 	branch: z.string().optional(),
 	commit_ref: z.string().optional(),
@@ -5708,6 +5852,12 @@ export const lockDeployStatus200Schema = z.object({
 		.describe(
 			"An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n",
 		),
+	required_server: z
+		.array(z.string())
+		.optional()
+		.describe(
+			"The SHA256 digest of the deploy's Netlify Server bundle, when it still needs to\nbe uploaded to complete the deploy. A deploy has at most one server, so this\nholds either nothing or a single digest.\n",
+		),
 	error_message: z.string().optional(),
 	branch: z.string().optional(),
 	commit_ref: z.string().optional(),
@@ -5780,6 +5930,12 @@ export const unlockDeployStatus200Schema = z.object({
 		.optional()
 		.describe(
 			"An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n",
+		),
+	required_server: z
+		.array(z.string())
+		.optional()
+		.describe(
+			"The SHA256 digest of the deploy's Netlify Server bundle, when it still needs to\nbe uploaded to complete the deploy. A deploy has at most one server, so this\nholds either nothing or a single digest.\n",
 		),
 	error_message: z.string().optional(),
 	branch: z.string().optional(),
@@ -5881,6 +6037,25 @@ export const uploadDeployFunctionStatusDefaultSchema = z.object({
 export const uploadDeployFunctionResponseSchema = uploadDeployFunctionStatus200Schema;
 
 export const uploadDeployFunctionErrorSchema = uploadDeployFunctionStatusDefaultSchema;
+
+export const uploadDeployServerPathDeployIdSchema = z.string();
+
+export const uploadDeployServerPathCodeShaSchema = z.string();
+
+export const uploadDeployServerQuerySizeSchema = z.int().optional();
+
+export const uploadDeployServerHeaderXNfRetryCountSchema = z.int().optional();
+
+export const uploadDeployServerStatus200Schema = z.unknown();
+
+export const uploadDeployServerStatusDefaultSchema = z.object({
+	code: z.coerce.bigint().optional(),
+	message: z.string(),
+});
+
+export const uploadDeployServerResponseSchema = uploadDeployServerStatus200Schema;
+
+export const uploadDeployServerErrorSchema = uploadDeployServerStatusDefaultSchema;
 
 export const uploadDeployEdgeFunctionPathDeployIdSchema = z.string();
 
@@ -6344,6 +6519,12 @@ export const createSiteInTeamStatus201Schema = z.object({
 				.describe(
 					"An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n",
 				),
+			required_server: z
+				.array(z.string())
+				.optional()
+				.describe(
+					"The SHA256 digest of the deploy's Netlify Server bundle, when it still needs to\nbe uploaded to complete the deploy. A deploy has at most one server, so this\nholds either nothing or a single digest.\n",
+				),
 			error_message: z.string().optional(),
 			branch: z.string().optional(),
 			commit_ref: z.string().optional(),
@@ -6500,6 +6681,12 @@ export const createSiteInTeamBodySchema = z
 					.optional()
 					.describe(
 						"An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n",
+					),
+				required_server: z
+					.array(z.string())
+					.optional()
+					.describe(
+						"The SHA256 digest of the deploy's Netlify Server bundle, when it still needs to\nbe uploaded to complete the deploy. A deploy has at most one server, so this\nholds either nothing or a single digest.\n",
 					),
 				error_message: z.string().optional(),
 				branch: z.string().optional(),
@@ -6693,6 +6880,12 @@ export const listSitesForAccountStatus200Schema = z.array(
 					.optional()
 					.describe(
 						"An array of code_shas for the edge-function bundles that need to be uploaded to\ncomplete the deploy.\n",
+					),
+				required_server: z
+					.array(z.string())
+					.optional()
+					.describe(
+						"The SHA256 digest of the deploy's Netlify Server bundle, when it still needs to\nbe uploaded to complete the deploy. A deploy has at most one server, so this\nholds either nothing or a single digest.\n",
 					),
 				error_message: z.string().optional(),
 				branch: z.string().optional(),
