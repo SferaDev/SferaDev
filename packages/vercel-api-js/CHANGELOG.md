@@ -1,5 +1,12 @@
 # vercel-api-js
 
+## 1.24.6
+
+### Patch Changes
+
+- 0ebf89a: Added support for the 'ai-gateway-model-catalog-alert-settings-updated' event type in schemas and types.
+- 0ebf89a: Extended UserEvent payload schema to allow objects with 'enabled' and 'slackConfigured' boolean fields.
+
 ## 1.24.5
 
 ### Patch Changes
