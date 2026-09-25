@@ -3,6 +3,28 @@
  * Do not edit manually.
  */
 
+export type AiGatewayEvaluationFallbackCondition =
+	| {
+			confidenceBelow: number;
+			question: string;
+	  }
+	| {
+			probabilityBetween: number[];
+			question: string;
+	  }
+	| {
+			any: unknown[];
+	  }
+	| {
+			all: unknown[];
+	  }
+	| {
+			atLeast: {
+				conditions: unknown[];
+				count: number;
+			};
+	  };
+
 /**
  * @description Arbitrary per-provider AI SDK options, keyed by gateway provider slug.
  * @type object
@@ -200,7 +222,7 @@ export type AiGatewayVirtualModelConfig = {
 	 */
 	kind: string;
 	/**
-	 * @description For kind=router: ordered candidates (slugs or references, bare or with member attributes). Otherwise: fallback models.
+	 * @description For kind=router: ordered candidates, bare slugs/references or `{ slug, ...attributes }`. For kind=alias: ordered fallback model slugs, optionally led by one conditional `{ model, when }` entry, used when the primary model\'s answers match `when`.
 	 * @type array | undefined
 	 */
 	models?:
@@ -213,6 +235,10 @@ export type AiGatewayVirtualModelConfig = {
 						 */
 						capability?: number | undefined;
 						slug: string;
+				  }
+				| {
+						model: string;
+						when: unknown;
 				  }
 		  )[]
 		| undefined;
@@ -847,6 +873,11 @@ export type ConnectConnector = {
 	 */
 	service: string;
 	/**
+	 * @description Provider logo from the known-service registry, matched by `service`. Often an SVG data URL. Absent when the service is not in the registry.
+	 * @type string | undefined
+	 */
+	serviceIcon?: string | undefined;
+	/**
 	 * @description Token subject types supported by the connector.
 	 * @type array
 	 */
@@ -1246,6 +1277,11 @@ export type ConnectConnectorCreateResult = {
 	 * @type string
 	 */
 	service: string;
+	/**
+	 * @description Provider logo from the known-service registry, matched by `service`. Often an SVG data URL. Absent when the service is not in the registry.
+	 * @type string | undefined
+	 */
+	serviceIcon?: string | undefined;
 	/**
 	 * @description Token subject types supported by the connector.
 	 * @type array
@@ -8612,7 +8648,7 @@ export type UserEvent = {
 									 * @description Since December 2022 Pairs of projects and owner ids to build for this build request.
 									 * @type array | undefined
 									 */
-									jobPairs?: (string | string)[][] | undefined;
+									jobPairs?: string[][] | undefined;
 									/**
 									 * @description Since December 2022 All project ids associated to this job. Think monorepo. This job will be for one of these project.
 									 * @type array | undefined
@@ -8648,7 +8684,7 @@ export type UserEvent = {
 									 * @description Since June 2024 Pairs of projects and owner ids to immediately finish (without building) because we want to create them in a skipped state.
 									 * @type array | undefined
 									 */
-									skippedJobPairs?: (string | string)[][] | undefined;
+									skippedJobPairs?: string[][] | undefined;
 									slug: string;
 									target?: (string | null) | undefined;
 									type: "bitbucket-push";
@@ -8763,7 +8799,7 @@ export type UserEvent = {
 									 * @description Since December 2022 Pairs of projects and owner ids to build for this build request.
 									 * @type array | undefined
 									 */
-									jobPairs?: (string | string)[][] | undefined;
+									jobPairs?: string[][] | undefined;
 									/**
 									 * @description Since December 2022 All project ids associated to this job. Think monorepo. This job will be for one of these project.
 									 * @type array | undefined
@@ -8795,7 +8831,7 @@ export type UserEvent = {
 									 * @description Since June 2024 Pairs of projects and owner ids to immediately finish (without building) because we want to create them in a skipped state.
 									 * @type array | undefined
 									 */
-									skippedJobPairs?: (string | string)[][] | undefined;
+									skippedJobPairs?: string[][] | undefined;
 									target?: (string | null) | undefined;
 									type: "pr";
 									url?: string | undefined;
@@ -8885,7 +8921,7 @@ export type UserEvent = {
 									 * @description Since December 2022 Pairs of projects and owner ids to build for this build request.
 									 * @type array | undefined
 									 */
-									jobPairs?: (string | string)[][] | undefined;
+									jobPairs?: string[][] | undefined;
 									/**
 									 * @description Since December 2022 All project ids associated to this job. Think monorepo. This job will be for one of these project.
 									 * @type array | undefined
@@ -8918,7 +8954,7 @@ export type UserEvent = {
 									 * @description Since June 2024 Pairs of projects and owner ids to immediately finish (without building) because we want to create them in a skipped state.
 									 * @type array | undefined
 									 */
-									skippedJobPairs?: (string | string)[][] | undefined;
+									skippedJobPairs?: string[][] | undefined;
 									target?: (string | null) | undefined;
 									type: "push";
 									url?: string | undefined;
@@ -9034,7 +9070,7 @@ export type UserEvent = {
 									 * @description Since December 2022 Pairs of projects and owner ids to build for this build request.
 									 * @type array | undefined
 									 */
-									jobPairs?: (string | string)[][] | undefined;
+									jobPairs?: string[][] | undefined;
 									/**
 									 * @description Since December 2022 All project ids associated to this job. Think monorepo. This job will be for one of these project.
 									 * @type array | undefined
@@ -9075,7 +9111,7 @@ export type UserEvent = {
 									 * @description Since June 2024 Pairs of projects and owner ids to immediately finish (without building) because we want to create them in a skipped state.
 									 * @type array | undefined
 									 */
-									skippedJobPairs?: (string | string)[][] | undefined;
+									skippedJobPairs?: string[][] | undefined;
 									target?: (string | null) | undefined;
 									type: "gitlab-push";
 									url?: string | undefined;
@@ -9195,7 +9231,7 @@ export type UserEvent = {
 									 * @description Since December 2022 Pairs of projects and owner ids to build for this build request.
 									 * @type array | undefined
 									 */
-									jobPairs?: (string | string)[][] | undefined;
+									jobPairs?: string[][] | undefined;
 									/**
 									 * @description Since December 2022 All project ids associated to this job. Think monorepo. This job will be for one of these project.
 									 * @type array | undefined
@@ -9230,7 +9266,7 @@ export type UserEvent = {
 									 * @description Since June 2024 Pairs of projects and owner ids to immediately finish (without building) because we want to create them in a skipped state.
 									 * @type array | undefined
 									 */
-									skippedJobPairs?: (string | string)[][] | undefined;
+									skippedJobPairs?: string[][] | undefined;
 									target?: (string | null) | undefined;
 									type: "vercel-push";
 									url?: string | undefined;
@@ -9321,7 +9357,7 @@ export type UserEvent = {
 									 * @description Since December 2022 Pairs of projects and owner ids to build for this build request.
 									 * @type array | undefined
 									 */
-									jobPairs?: (string | string)[][] | undefined;
+									jobPairs?: string[][] | undefined;
 									/**
 									 * @description Since December 2022 All project ids associated to this job. Think monorepo. This job will be for one of these project.
 									 * @type array | undefined
@@ -9356,7 +9392,7 @@ export type UserEvent = {
 									 * @description Since June 2024 Pairs of projects and owner ids to immediately finish (without building) because we want to create them in a skipped state.
 									 * @type array | undefined
 									 */
-									skippedJobPairs?: (string | string)[][] | undefined;
+									skippedJobPairs?: string[][] | undefined;
 									target?: (string | null) | undefined;
 									type: "cursor-origin-push";
 									url?: string | undefined;

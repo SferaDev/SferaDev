@@ -2,6 +2,39 @@
 
 import * as z from "zod";
 
+export const aiGatewayEvaluationFallbackConditionSchema = z.union([
+	z
+		.object({
+			confidenceBelow: z.number(),
+			question: z.string(),
+		})
+		.strict(),
+	z
+		.object({
+			probabilityBetween: z.array(z.number()).min(2).max(2),
+			question: z.string(),
+		})
+		.strict(),
+	z
+		.object({
+			any: z.array(z.unknown()),
+		})
+		.strict(),
+	z
+		.object({
+			all: z.array(z.unknown()),
+		})
+		.strict(),
+	z
+		.object({
+			atLeast: z.object({
+				conditions: z.array(z.unknown()),
+				count: z.number(),
+			}),
+		})
+		.strict(),
+]);
+
 export const aiGatewayProviderOptionBagSchema = z
 	.object({})
 	.catchall(z.unknown())
@@ -98,11 +131,17 @@ export const aiGatewayVirtualModelConfigSchema = z
 							slug: z.string(),
 						})
 						.strict(),
+					z
+						.object({
+							model: z.string(),
+							when: z.unknown(),
+						})
+						.strict(),
 				]),
 			)
 			.optional()
 			.describe(
-				"For kind=router: ordered candidates (slugs or references, bare or with member attributes). Otherwise: fallback models.",
+				"For kind=router: ordered candidates, bare slugs/references or `{ slug, ...attributes }`. For kind=alias: ordered fallback model slugs, optionally led by one conditional `{ model, when }` entry, used when the primary model's answers match `when`.",
 			),
 		modelSlug: z
 			.string()
@@ -522,6 +561,12 @@ export const connectConnectorSchema = z
 			.describe(
 				"Best-effort identifier of the third-party service this connector represents, independent of `type`. Examples: `'slack'`, `'mcp.linear.app'`, and `'auth.example.com'`. Always present in API responses.",
 			),
+		serviceIcon: z
+			.string()
+			.optional()
+			.describe(
+				"Provider logo from the known-service registry, matched by `service`. Often an SVG data URL. Absent when the service is not in the registry.",
+			),
 		supportedSubjectTypes: z
 			.array(z.string())
 			.describe("Token subject types supported by the connector."),
@@ -780,6 +825,12 @@ export const connectConnectorCreateResultSchema = z
 			.string()
 			.describe(
 				"Best-effort identifier of the third-party service this connector represents, independent of `type`. Examples: `'slack'`, `'mcp.linear.app'`, and `'auth.example.com'`. Always present in API responses.",
+			),
+		serviceIcon: z
+			.string()
+			.optional()
+			.describe(
+				"Provider logo from the known-service registry, matched by `service`. Often an SVG data URL. Absent when the service is not in the registry.",
 			),
 		supportedSubjectTypes: z
 			.array(z.string())
@@ -4814,12 +4865,7 @@ export const userEventSchema = z
 											"Since 28 Feb 2024 If set to true, identifies that the git job was created for a manual git deployment",
 										),
 									jobPairs: z
-										.array(
-											z
-												.array(z.union([z.string(), z.string()]))
-												.min(2)
-												.max(2),
-										)
+										.array(z.array(z.string()).min(2).max(2))
 										.optional()
 										.describe(
 											"Since December 2022 Pairs of projects and owner ids to build for this build request.",
@@ -4857,12 +4903,7 @@ export const userEventSchema = z
 									sha: z.string(),
 									silent: z.union([z.literal(false), z.literal(true)]).optional(),
 									skippedJobPairs: z
-										.array(
-											z
-												.array(z.union([z.string(), z.string()]))
-												.min(2)
-												.max(2),
-										)
+										.array(z.array(z.string()).min(2).max(2))
 										.optional()
 										.describe(
 											"Since June 2024 Pairs of projects and owner ids to immediately finish (without building) because we want to create them in a skipped state.",
@@ -4985,12 +5026,7 @@ export const userEventSchema = z
 										),
 									isPrivate: z.union([z.literal(false), z.literal(true)]),
 									jobPairs: z
-										.array(
-											z
-												.array(z.union([z.string(), z.string()]))
-												.min(2)
-												.max(2),
-										)
+										.array(z.array(z.string()).min(2).max(2))
 										.optional()
 										.describe(
 											"Since December 2022 Pairs of projects and owner ids to build for this build request.",
@@ -5024,12 +5060,7 @@ export const userEventSchema = z
 									repo: z.string(),
 									repoId: z.number(),
 									skippedJobPairs: z
-										.array(
-											z
-												.array(z.union([z.string(), z.string()]))
-												.min(2)
-												.max(2),
-										)
+										.array(z.array(z.string()).min(2).max(2))
 										.optional()
 										.describe(
 											"Since June 2024 Pairs of projects and owner ids to immediately finish (without building) because we want to create them in a skipped state.",
@@ -5125,12 +5156,7 @@ export const userEventSchema = z
 										),
 									isPrivate: z.union([z.literal(false), z.literal(true)]),
 									jobPairs: z
-										.array(
-											z
-												.array(z.union([z.string(), z.string()]))
-												.min(2)
-												.max(2),
-										)
+										.array(z.array(z.string()).min(2).max(2))
 										.optional()
 										.describe(
 											"Since December 2022 Pairs of projects and owner ids to build for this build request.",
@@ -5165,12 +5191,7 @@ export const userEventSchema = z
 									repoId: z.number(),
 									repoPushedAt: z.number().nullable(),
 									skippedJobPairs: z
-										.array(
-											z
-												.array(z.union([z.string(), z.string()]))
-												.min(2)
-												.max(2),
-										)
+										.array(z.array(z.string()).min(2).max(2))
 										.optional()
 										.describe(
 											"Since June 2024 Pairs of projects and owner ids to immediately finish (without building) because we want to create them in a skipped state.",
@@ -5290,12 +5311,7 @@ export const userEventSchema = z
 											"Since 28 Feb 2024 If set to true, identifies that the git job was created for a manual git deployment",
 										),
 									jobPairs: z
-										.array(
-											z
-												.array(z.union([z.string(), z.string()]))
-												.min(2)
-												.max(2),
-										)
+										.array(z.array(z.string()).min(2).max(2))
 										.optional()
 										.describe(
 											"Since December 2022 Pairs of projects and owner ids to build for this build request.",
@@ -5338,12 +5354,7 @@ export const userEventSchema = z
 									sha: z.string(),
 									silent: z.union([z.literal(false), z.literal(true)]).optional(),
 									skippedJobPairs: z
-										.array(
-											z
-												.array(z.union([z.string(), z.string()]))
-												.min(2)
-												.max(2),
-										)
+										.array(z.array(z.string()).min(2).max(2))
 										.optional()
 										.describe(
 											"Since June 2024 Pairs of projects and owner ids to immediately finish (without building) because we want to create them in a skipped state.",
@@ -5467,12 +5478,7 @@ export const userEventSchema = z
 											"Since 28 Feb 2024 If set to true, identifies that the git job was created for a manual git deployment",
 										),
 									jobPairs: z
-										.array(
-											z
-												.array(z.union([z.string(), z.string()]))
-												.min(2)
-												.max(2),
-										)
+										.array(z.array(z.string()).min(2).max(2))
 										.optional()
 										.describe(
 											"Since December 2022 Pairs of projects and owner ids to build for this build request.",
@@ -5509,12 +5515,7 @@ export const userEventSchema = z
 									repoPushedAt: z.number().nullish(),
 									sha: z.string(),
 									skippedJobPairs: z
-										.array(
-											z
-												.array(z.union([z.string(), z.string()]))
-												.min(2)
-												.max(2),
-										)
+										.array(z.array(z.string()).min(2).max(2))
 										.optional()
 										.describe(
 											"Since June 2024 Pairs of projects and owner ids to immediately finish (without building) because we want to create them in a skipped state.",
@@ -5591,12 +5592,7 @@ export const userEventSchema = z
 											"Since 28 Feb 2024 If set to true, identifies that the git job was created for a manual git deployment",
 										),
 									jobPairs: z
-										.array(
-											z
-												.array(z.union([z.string(), z.string()]))
-												.min(2)
-												.max(2),
-										)
+										.array(z.array(z.string()).min(2).max(2))
 										.optional()
 										.describe(
 											"Since December 2022 Pairs of projects and owner ids to build for this build request.",
@@ -5633,12 +5629,7 @@ export const userEventSchema = z
 									repoPushedAt: z.number().nullish(),
 									sha: z.string(),
 									skippedJobPairs: z
-										.array(
-											z
-												.array(z.union([z.string(), z.string()]))
-												.min(2)
-												.max(2),
-										)
+										.array(z.array(z.string()).min(2).max(2))
 										.optional()
 										.describe(
 											"Since June 2024 Pairs of projects and owner ids to immediately finish (without building) because we want to create them in a skipped state.",
@@ -8331,30 +8322,28 @@ export const userEventSchema = z
 							.union([
 								z
 									.array(
-										z
-											.object({
-												legacy: z.union([z.literal(false), z.literal(true)]).optional(),
-												origin: z.enum([
-													"apple",
-													"bitbucket",
-													"chatgpt",
-													"email",
-													"emu-recovery",
-													"github",
-													"gitlab",
-													"google",
-													"invite",
-													"magic-link",
-													"otp",
-													"otp-link",
-													"saml",
-													"webauthn",
-												]),
-												ssoType: z.string().optional(),
-												teamId: z.string().optional(),
-												username: z.string().optional(),
-											})
-											.strict(),
+										z.object({
+											legacy: z.union([z.literal(false), z.literal(true)]).optional(),
+											origin: z.enum([
+												"apple",
+												"bitbucket",
+												"chatgpt",
+												"email",
+												"emu-recovery",
+												"github",
+												"gitlab",
+												"google",
+												"invite",
+												"magic-link",
+												"otp",
+												"otp-link",
+												"saml",
+												"webauthn",
+											]),
+											ssoType: z.string().optional(),
+											teamId: z.string().optional(),
+											username: z.string().optional(),
+										}),
 									)
 									.min(1)
 									.max(1),
@@ -10593,25 +10582,23 @@ export const userEventSchema = z
 						env: z.string().optional(),
 						factors: z
 							.array(
-								z
-									.object({
-										legacy: z.union([z.literal(false), z.literal(true)]).optional(),
-										origin: z.enum([
-											"apple",
-											"bitbucket",
-											"chatgpt",
-											"email",
-											"github",
-											"gitlab",
-											"google",
-											"otp",
-											"saml",
-										]),
-										ssoType: z.string().optional(),
-										teamId: z.string().optional(),
-										username: z.string().optional(),
-									})
-									.strict(),
+								z.object({
+									legacy: z.union([z.literal(false), z.literal(true)]).optional(),
+									origin: z.enum([
+										"apple",
+										"bitbucket",
+										"chatgpt",
+										"email",
+										"github",
+										"gitlab",
+										"google",
+										"otp",
+										"saml",
+									]),
+									ssoType: z.string().optional(),
+									teamId: z.string().optional(),
+									username: z.string().optional(),
+								}),
 							)
 							.min(1)
 							.max(1)
