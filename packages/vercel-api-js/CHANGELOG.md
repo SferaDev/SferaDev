@@ -1,5 +1,11 @@
 # vercel-api-js
 
+## 1.26.1
+
+### Patch Changes
+
+- 30318c4: Added 'read:messageboard' and 'read-write:messageboard' permissions to user event schema and types.
+
 ## 1.26.0
 
 ### Minor Changes
