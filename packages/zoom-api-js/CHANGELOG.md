@@ -1,5 +1,11 @@
 # zoom-api-js
 
+## 1.3.1
+
+### Patch Changes
+
+- a9cd323: Fixed location of getMeetingTranscript and deleteMeetingTranscript endpoint definitions in the codebase, but no functional change to API.
+
 ## 1.3.0
 
 ### Minor Changes

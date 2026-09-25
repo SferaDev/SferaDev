@@ -1,5 +1,17 @@
 # vercel-api-js
 
+## 1.27.0
+
+### Minor Changes
+
+- 44ea432: Added optional serviceIcon field to ConnectConnector and ConnectConnectorCreateResult types.
+- 44ea432: Added aiGatewayEvaluationFallbackConditionSchema to define fallback AI evaluation conditions.
+- 44ea432: Added support for conditional model entries in aiGatewayVirtualModelConfigSchema.
+
+### Patch Changes
+
+- 44ea432: Simplified jobPairs and skippedJobPairs to be arrays of string arrays in UserEvent types.
+
 ## 1.26.1
 
 ### Patch Changes
