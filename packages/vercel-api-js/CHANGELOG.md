@@ -1,5 +1,16 @@
 # vercel-api-js
 
+## 1.25.0
+
+### Minor Changes
+
+- 0c34883: Added new Vercel CI API endpoints for listing invocations, attempts, job/task definitions, job/task runs, and retrieving logs for invocations, jobs, and tasks.
+
+### Patch Changes
+
+- 0c34883: Registered new Vercel CI endpoints in the operations and tag dictionaries.
+- 0c34883: Introduced types and query/response schemas for new Vercel CI endpoints.
+
 ## 1.24.6
 
 ### Patch Changes
