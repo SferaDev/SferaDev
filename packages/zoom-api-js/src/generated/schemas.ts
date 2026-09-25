@@ -2458,120 +2458,6 @@ export const recordingStatusUpdateOneBodySchema = z
 	})
 	.optional();
 
-export const getMeetingTranscriptPathMeetingIdSchema = z
-	.string()
-	.describe(
-		"To get a meeting's transcript, provide the meeting ID or meeting UUID. If the meeting ID is provided instead of UUID, the response will be for the latest meeting instance. \n\nTo get a webinar's transcript, provide the webinar ID or the webinar UUID. If the webinar ID is provided instead of UUID, the response will be for the latest webinar instance. \n\nIf a UUID starts with `/` or contains `//`, like `/ajXp112QmuoKj4854875==`, you must **double encode** the UUID before making an API request. ",
-	)
-	.meta({ examples: ["atsXxhSEQWit9t+U02HXNQ=="] });
-
-export const getMeetingTranscriptStatus200Schema = z.object({
-	meeting_id: z
-		.string()
-		.optional()
-		.describe("The meeting ID")
-		.meta({ examples: ["uaFkQyFCSwya8iNYtkAw3A=="] }),
-	account_id: z
-		.string()
-		.optional()
-		.describe("The user account's unique identifier.")
-		.meta({ examples: ["Cx3wERazSgup7ZWRHQM8-w"] }),
-	meeting_topic: z
-		.string()
-		.optional()
-		.describe("The meeting topic.")
-		.meta({ examples: ["My Personal Meeting"] }),
-	host_id: z
-		.string()
-		.optional()
-		.describe("ID of the user set as the host of the meeting.")
-		.meta({ examples: ["_0ctZtY0REqWalTmwvrdIw"] }),
-	transcript_created_time: z
-		.string()
-		.optional()
-		.describe("The date and time that the meeting's transcript was created.")
-		.meta({ examples: ["2025-06-27T13:48:24Z"] }),
-	can_download: z
-		.boolean()
-		.optional()
-		.describe(
-			"Whether the meeting transcript is available for download.\n`true`: The transcript is ready and `download_url` will be returned.\n`false`: The transcript cannot be downloaded. and the `download_restriction_reason` field will be returned instead with the explanation.\n\nOnly when `can_download` is `true`, the transcript file can be accessed.",
-		)
-		.meta({ examples: [true] }),
-	auto_delete: z
-		.boolean()
-		.optional()
-		.describe(
-			"Auto-delete status of a meeting's transcript\n\nPrerequisite: To get the auto-delete status, the host of the recording must have the recording setting **Delete cloud recordings after a specified number of days** enabled. ",
-		)
-		.meta({ examples: [true] }),
-	auto_delete_date: z
-		.string()
-		.optional()
-		.describe(
-			"The date when the recording will be auto-deleted when `auto_delete` is true. Otherwise, no date will be returned.",
-		)
-		.meta({ examples: ["2052-11-07"] }),
-	download_url: z
-		.string()
-		.nullish()
-		.describe(
-			"The URL to download the transcript. \n\nThis field is only present when `can_download` is `true`. If present, `download_restriction_reason` will not be included.\"\n\n\nIf a user has authorized and installed your OAuth app that contains recording scopes, use  the user's [OAuth access token](https://developers.zoom.us/docs/integrations/oauth/) to download the file. Set the `access_token` as a Bearer token in the Authorization header. For example: \n\n`curl -H 'Authorization: Bearer <ACCESS_TOKEN>' https://{{base-domain}}/rec/archive/download/xyz`.",
-		)
-		.meta({
-			examples: [
-				"https://example.com/rec/meeting/transcript/download/YDztop0PYLrAQat616a1q1H86RM4jf1Bf3p42a4Ap1jV3bWAJAE.jjixtQU52SEwrsuJ",
-			],
-		}),
-	download_restriction_reason: z
-		.enum(["DELETED_OR_TRASHED", "UNSUPPORTED", "NO_TRANSCRIPT_DATA", "NOT_READY"])
-		.nullish()
-		.describe(
-			'If `can_download` is false, this field provides the reason why the transcript cannot be downloaded.\n\nThis field is only present when `can_download` is `false`. If present, `download_url` will not be included."\n\n| Value                | Description                                                                                  |\n| -------------------- | -------------------------------------------------------------------------------------------- |\n| `DELETED_OR_TRASHED` | The transcript has been deleted or moved to trash and is no longer available.                |\n| `UNSUPPORTED`        | The transcript format is not supported for download. |\n| `NO_TRANSCRIPT_DATA` | No transcript data exists for the meeting.                                                   |\n| `NOT_READY`          | The transcript is still being processed and not yet ready for download.                      |\n',
-		)
-		.meta({ examples: ["NOT_READY"] }),
-});
-
-export const getMeetingTranscriptStatus403Schema = z.unknown();
-
-export const getMeetingTranscriptStatus404Schema = z.unknown();
-
-export const getMeetingTranscriptStatus429Schema = z.unknown();
-
-export const getMeetingTranscriptResponseSchema = getMeetingTranscriptStatus200Schema;
-
-export const getMeetingTranscriptErrorSchema = z.union([
-	getMeetingTranscriptStatus403Schema,
-	getMeetingTranscriptStatus404Schema,
-	getMeetingTranscriptStatus429Schema,
-]);
-
-export const deleteMeetingTranscriptPathMeetingIdSchema = z
-	.string()
-	.describe(
-		"To delete a meeting's transcript, provide the meeting ID or meeting's unique universal identifier (UUID). If the meeting ID is provided instead of UUID, the response will be for the latest meeting instance. \n\nTo delete a webinar's transcript, provide the webinar ID or the webinar's UUID. If the webinar ID is provided instead of UUID, the response will be for the latest webinar instance. \n\nIf a UUID starts with `/` or contains `//`, like `/ajXp112QmuoKj4854875==`, you must **double encode** the UUID before making an API request. ",
-	)
-	.meta({ examples: ["atsXxhSEQWit9t+U02HXNQ=="] });
-
-export const deleteMeetingTranscriptStatus204Schema = z.unknown();
-
-export const deleteMeetingTranscriptStatus400Schema = z.unknown();
-
-export const deleteMeetingTranscriptStatus403Schema = z.unknown();
-
-export const deleteMeetingTranscriptStatus404Schema = z.unknown();
-
-export const deleteMeetingTranscriptStatus429Schema = z.unknown();
-
-export const deleteMeetingTranscriptResponseSchema = deleteMeetingTranscriptStatus204Schema;
-
-export const deleteMeetingTranscriptErrorSchema = z.union([
-	deleteMeetingTranscriptStatus400Schema,
-	deleteMeetingTranscriptStatus403Schema,
-	deleteMeetingTranscriptStatus404Schema,
-	deleteMeetingTranscriptStatus429Schema,
-]);
-
 export const recordingStatusUpdatePathMeetingUUIDSchema = z
 	.string()
 	.describe(
@@ -6138,6 +6024,120 @@ export const meetingLiveStreamStatusUpdateBodySchema = z
 	})
 	.optional()
 	.describe("Meeting");
+
+export const getMeetingTranscriptPathMeetingIdSchema = z
+	.string()
+	.describe(
+		"To get a meeting's transcript, provide the meeting ID or meeting UUID. If the meeting ID is provided instead of UUID, the response will be for the latest meeting instance. \n\nTo get a webinar's transcript, provide the webinar ID or the webinar UUID. If the webinar ID is provided instead of UUID, the response will be for the latest webinar instance. \n\nIf a UUID starts with `/` or contains `//`, like `/ajXp112QmuoKj4854875==`, you must **double encode** the UUID before making an API request. ",
+	)
+	.meta({ examples: ["atsXxhSEQWit9t+U02HXNQ=="] });
+
+export const getMeetingTranscriptStatus200Schema = z.object({
+	meeting_id: z
+		.string()
+		.optional()
+		.describe("The meeting ID")
+		.meta({ examples: ["uaFkQyFCSwya8iNYtkAw3A=="] }),
+	account_id: z
+		.string()
+		.optional()
+		.describe("The user account's unique identifier.")
+		.meta({ examples: ["Cx3wERazSgup7ZWRHQM8-w"] }),
+	meeting_topic: z
+		.string()
+		.optional()
+		.describe("The meeting topic.")
+		.meta({ examples: ["My Personal Meeting"] }),
+	host_id: z
+		.string()
+		.optional()
+		.describe("ID of the user set as the host of the meeting.")
+		.meta({ examples: ["_0ctZtY0REqWalTmwvrdIw"] }),
+	transcript_created_time: z
+		.string()
+		.optional()
+		.describe("The date and time that the meeting's transcript was created.")
+		.meta({ examples: ["2025-06-27T13:48:24Z"] }),
+	can_download: z
+		.boolean()
+		.optional()
+		.describe(
+			"Whether the meeting transcript is available for download.\n`true`: The transcript is ready and `download_url` will be returned.\n`false`: The transcript cannot be downloaded. and the `download_restriction_reason` field will be returned instead with the explanation.\n\nOnly when `can_download` is `true`, the transcript file can be accessed.",
+		)
+		.meta({ examples: [true] }),
+	auto_delete: z
+		.boolean()
+		.optional()
+		.describe(
+			"Auto-delete status of a meeting's transcript\n\nPrerequisite: To get the auto-delete status, the host of the recording must have the recording setting **Delete cloud recordings after a specified number of days** enabled. ",
+		)
+		.meta({ examples: [true] }),
+	auto_delete_date: z
+		.string()
+		.optional()
+		.describe(
+			"The date when the recording will be auto-deleted when `auto_delete` is true. Otherwise, no date will be returned.",
+		)
+		.meta({ examples: ["2052-11-07"] }),
+	download_url: z
+		.string()
+		.nullish()
+		.describe(
+			"The URL to download the transcript. \n\nThis field is only present when `can_download` is `true`. If present, `download_restriction_reason` will not be included.\"\n\n\nIf a user has authorized and installed your OAuth app that contains recording scopes, use  the user's [OAuth access token](https://developers.zoom.us/docs/integrations/oauth/) to download the file. Set the `access_token` as a Bearer token in the Authorization header. For example: \n\n`curl -H 'Authorization: Bearer <ACCESS_TOKEN>' https://{{base-domain}}/rec/archive/download/xyz`.",
+		)
+		.meta({
+			examples: [
+				"https://example.com/rec/meeting/transcript/download/YDztop0PYLrAQat616a1q1H86RM4jf1Bf3p42a4Ap1jV3bWAJAE.jjixtQU52SEwrsuJ",
+			],
+		}),
+	download_restriction_reason: z
+		.enum(["DELETED_OR_TRASHED", "UNSUPPORTED", "NO_TRANSCRIPT_DATA", "NOT_READY"])
+		.nullish()
+		.describe(
+			'If `can_download` is false, this field provides the reason why the transcript cannot be downloaded.\n\nThis field is only present when `can_download` is `false`. If present, `download_url` will not be included."\n\n| Value                | Description                                                                                  |\n| -------------------- | -------------------------------------------------------------------------------------------- |\n| `DELETED_OR_TRASHED` | The transcript has been deleted or moved to trash and is no longer available.                |\n| `UNSUPPORTED`        | The transcript format is not supported for download. |\n| `NO_TRANSCRIPT_DATA` | No transcript data exists for the meeting.                                                   |\n| `NOT_READY`          | The transcript is still being processed and not yet ready for download.                      |\n',
+		)
+		.meta({ examples: ["NOT_READY"] }),
+});
+
+export const getMeetingTranscriptStatus403Schema = z.unknown();
+
+export const getMeetingTranscriptStatus404Schema = z.unknown();
+
+export const getMeetingTranscriptStatus429Schema = z.unknown();
+
+export const getMeetingTranscriptResponseSchema = getMeetingTranscriptStatus200Schema;
+
+export const getMeetingTranscriptErrorSchema = z.union([
+	getMeetingTranscriptStatus403Schema,
+	getMeetingTranscriptStatus404Schema,
+	getMeetingTranscriptStatus429Schema,
+]);
+
+export const deleteMeetingTranscriptPathMeetingIdSchema = z
+	.string()
+	.describe(
+		"To delete a meeting's transcript, provide the meeting ID or meeting's unique universal identifier (UUID). If the meeting ID is provided instead of UUID, the response will be for the latest meeting instance. \n\nTo delete a webinar's transcript, provide the webinar ID or the webinar's UUID. If the webinar ID is provided instead of UUID, the response will be for the latest webinar instance. \n\nIf a UUID starts with `/` or contains `//`, like `/ajXp112QmuoKj4854875==`, you must **double encode** the UUID before making an API request. ",
+	)
+	.meta({ examples: ["atsXxhSEQWit9t+U02HXNQ=="] });
+
+export const deleteMeetingTranscriptStatus204Schema = z.unknown();
+
+export const deleteMeetingTranscriptStatus400Schema = z.unknown();
+
+export const deleteMeetingTranscriptStatus403Schema = z.unknown();
+
+export const deleteMeetingTranscriptStatus404Schema = z.unknown();
+
+export const deleteMeetingTranscriptStatus429Schema = z.unknown();
+
+export const deleteMeetingTranscriptResponseSchema = deleteMeetingTranscriptStatus204Schema;
+
+export const deleteMeetingTranscriptErrorSchema = z.union([
+	deleteMeetingTranscriptStatus400Schema,
+	deleteMeetingTranscriptStatus403Schema,
+	deleteMeetingTranscriptStatus404Schema,
+	deleteMeetingTranscriptStatus429Schema,
+]);
 
 export const meetingRTMSStatusUpdatePathMeetingIdSchema = z.coerce
 	.bigint()

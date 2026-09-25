@@ -3489,163 +3489,6 @@ export type RecordingStatusUpdateOneResponse =
 	| RecordingStatusUpdateOneStatus404
 	| RecordingStatusUpdateOneStatus429;
 
-export type GetMeetingTranscriptPath = {
-	/**
-	 * @description To get a meeting\'s transcript, provide the meeting ID or meeting UUID. If the meeting ID is provided instead of UUID, the response will be for the latest meeting instance. \n\nTo get a webinar\'s transcript, provide the webinar ID or the webinar UUID. If the webinar ID is provided instead of UUID, the response will be for the latest webinar instance. \n\nIf a UUID starts with `/` or contains `//`, like `/ajXp112QmuoKj4854875==`, you must **double encode** the UUID before making an API request.
-	 * @example atsXxhSEQWit9t+U02HXNQ==
-	 * @type string
-	 */
-	meetingId: string;
-};
-
-export const getMeetingTranscriptStatus200DownloadRestrictionReasonEnum = {
-	DELETED_OR_TRASHED: "DELETED_OR_TRASHED",
-	UNSUPPORTED: "UNSUPPORTED",
-	NO_TRANSCRIPT_DATA: "NO_TRANSCRIPT_DATA",
-	NOT_READY: "NOT_READY",
-} as const;
-
-export type GetMeetingTranscriptStatus200DownloadRestrictionReasonEnumKey =
-	(typeof getMeetingTranscriptStatus200DownloadRestrictionReasonEnum)[keyof typeof getMeetingTranscriptStatus200DownloadRestrictionReasonEnum];
-
-export type GetMeetingTranscriptStatus200 = {
-	/**
-	 * @description The meeting ID
-	 * @example uaFkQyFCSwya8iNYtkAw3A==
-	 * @type string | undefined
-	 */
-	meeting_id?: string | undefined;
-	/**
-	 * @description The user account\'s unique identifier.
-	 * @example Cx3wERazSgup7ZWRHQM8-w
-	 * @type string | undefined
-	 */
-	account_id?: string | undefined;
-	/**
-	 * @description The meeting topic.
-	 * @example My Personal Meeting
-	 * @type string | undefined
-	 */
-	meeting_topic?: string | undefined;
-	/**
-	 * @description ID of the user set as the host of the meeting.
-	 * @example _0ctZtY0REqWalTmwvrdIw
-	 * @type string | undefined
-	 */
-	host_id?: string | undefined;
-	/**
-	 * @description The date and time that the meeting\'s transcript was created.
-	 * @example 2025-06-27T13:48:24Z
-	 * @type string | undefined
-	 */
-	transcript_created_time?: string | undefined;
-	/**
-	 * @description Whether the meeting transcript is available for download.\n`true`: The transcript is ready and `download_url` will be returned.\n`false`: The transcript cannot be downloaded. and the `download_restriction_reason` field will be returned instead with the explanation.\n\nOnly when `can_download` is `true`, the transcript file can be accessed.
-	 * @example true
-	 * @type boolean | undefined
-	 */
-	can_download?: boolean | undefined;
-	/**
-	 * @description Auto-delete status of a meeting\'s transcript\n\nPrerequisite: To get the auto-delete status, the host of the recording must have the recording setting **Delete cloud recordings after a specified number of days** enabled.
-	 * @example true
-	 * @type boolean | undefined
-	 */
-	auto_delete?: boolean | undefined;
-	/**
-	 * @description The date when the recording will be auto-deleted when `auto_delete` is true. Otherwise, no date will be returned.
-	 * @example 2052-11-07
-	 * @type string | undefined
-	 */
-	auto_delete_date?: string | undefined;
-	/**
-	 * @description The URL to download the transcript. \n\nThis field is only present when `can_download` is `true`. If present, `download_restriction_reason` will not be included.\"\n\n\nIf a user has authorized and installed your OAuth app that contains recording scopes, use  the user\'s [OAuth access token](https://developers.zoom.us/docs/integrations/oauth/) to download the file. Set the `access_token` as a Bearer token in the Authorization header. For example: \n\n`curl -H \'Authorization: Bearer <ACCESS_TOKEN>\' https://{{base-domain}}/rec/archive/download/xyz`.
-	 * @example https://example.com/rec/meeting/transcript/download/YDztop0PYLrAQat616a1q1H86RM4jf1Bf3p42a4Ap1jV3bWAJAE.jjixtQU52SEwrsuJ
-	 * @type string | undefined
-	 */
-	download_url?: (string | null) | undefined;
-	/**
-	 * @description If `can_download` is false, this field provides the reason why the transcript cannot be downloaded.\n\nThis field is only present when `can_download` is `false`. If present, `download_url` will not be included.\"\n\n| Value                | Description                                                                                  |\n| -------------------- | -------------------------------------------------------------------------------------------- |\n| `DELETED_OR_TRASHED` | The transcript has been deleted or moved to trash and is no longer available.                |\n| `UNSUPPORTED`        | The transcript format is not supported for download. |\n| `NO_TRANSCRIPT_DATA` | No transcript data exists for the meeting.                                                   |\n| `NOT_READY`          | The transcript is still being processed and not yet ready for download.                      |\n
-	 * @example NOT_READY
-	 * @type string | undefined
-	 */
-	download_restriction_reason?:
-		| (GetMeetingTranscriptStatus200DownloadRestrictionReasonEnumKey | null)
-		| undefined;
-};
-
-export type GetMeetingTranscriptStatus403 = unknown;
-
-export type GetMeetingTranscriptStatus404 = unknown;
-
-export type GetMeetingTranscriptStatus429 = unknown;
-
-export type GetMeetingTranscriptOptions = {
-	body?: never | undefined;
-	path: GetMeetingTranscriptPath;
-	query?: never | undefined;
-	headers?: never | undefined;
-};
-
-export type GetMeetingTranscriptResponses = {
-	"200": GetMeetingTranscriptStatus200;
-	"403": GetMeetingTranscriptStatus403;
-	"404": GetMeetingTranscriptStatus404;
-	"429": GetMeetingTranscriptStatus429;
-};
-
-/**
- * @description Union of all possible responses
- */
-export type GetMeetingTranscriptResponse =
-	| GetMeetingTranscriptStatus200
-	| GetMeetingTranscriptStatus403
-	| GetMeetingTranscriptStatus404
-	| GetMeetingTranscriptStatus429;
-
-export type DeleteMeetingTranscriptPath = {
-	/**
-	 * @description To delete a meeting\'s transcript, provide the meeting ID or meeting\'s unique universal identifier (UUID). If the meeting ID is provided instead of UUID, the response will be for the latest meeting instance. \n\nTo delete a webinar\'s transcript, provide the webinar ID or the webinar\'s UUID. If the webinar ID is provided instead of UUID, the response will be for the latest webinar instance. \n\nIf a UUID starts with `/` or contains `//`, like `/ajXp112QmuoKj4854875==`, you must **double encode** the UUID before making an API request.
-	 * @example atsXxhSEQWit9t+U02HXNQ==
-	 * @type string
-	 */
-	meetingId: string;
-};
-
-export type DeleteMeetingTranscriptStatus204 = unknown;
-
-export type DeleteMeetingTranscriptStatus400 = unknown;
-
-export type DeleteMeetingTranscriptStatus403 = unknown;
-
-export type DeleteMeetingTranscriptStatus404 = unknown;
-
-export type DeleteMeetingTranscriptStatus429 = unknown;
-
-export type DeleteMeetingTranscriptOptions = {
-	body?: never | undefined;
-	path: DeleteMeetingTranscriptPath;
-	query?: never | undefined;
-	headers?: never | undefined;
-};
-
-export type DeleteMeetingTranscriptResponses = {
-	"204": DeleteMeetingTranscriptStatus204;
-	"400": DeleteMeetingTranscriptStatus400;
-	"403": DeleteMeetingTranscriptStatus403;
-	"404": DeleteMeetingTranscriptStatus404;
-	"429": DeleteMeetingTranscriptStatus429;
-};
-
-/**
- * @description Union of all possible responses
- */
-export type DeleteMeetingTranscriptResponse =
-	| DeleteMeetingTranscriptStatus204
-	| DeleteMeetingTranscriptStatus400
-	| DeleteMeetingTranscriptStatus403
-	| DeleteMeetingTranscriptStatus404
-	| DeleteMeetingTranscriptStatus429;
-
 export type RecordingStatusUpdatePath = {
 	/**
 	 * @description The meeting\'s universally unique identifier (UUID). Each meeting instance generates a UUID. For example, after a meeting ends, a new UUID is generated for the next meeting instance.\n\nIf the meeting UUID begins with a `/` character or contains a `//` character, you **must** double-encode the meeting UUID when using the meeting UUID for other API calls.
@@ -8686,6 +8529,163 @@ export type MeetingLiveStreamStatusUpdateResponse =
 	| MeetingLiveStreamStatusUpdateStatus400
 	| MeetingLiveStreamStatusUpdateStatus404
 	| MeetingLiveStreamStatusUpdateStatus429;
+
+export type GetMeetingTranscriptPath = {
+	/**
+	 * @description To get a meeting\'s transcript, provide the meeting ID or meeting UUID. If the meeting ID is provided instead of UUID, the response will be for the latest meeting instance. \n\nTo get a webinar\'s transcript, provide the webinar ID or the webinar UUID. If the webinar ID is provided instead of UUID, the response will be for the latest webinar instance. \n\nIf a UUID starts with `/` or contains `//`, like `/ajXp112QmuoKj4854875==`, you must **double encode** the UUID before making an API request.
+	 * @example atsXxhSEQWit9t+U02HXNQ==
+	 * @type string
+	 */
+	meetingId: string;
+};
+
+export const getMeetingTranscriptStatus200DownloadRestrictionReasonEnum = {
+	DELETED_OR_TRASHED: "DELETED_OR_TRASHED",
+	UNSUPPORTED: "UNSUPPORTED",
+	NO_TRANSCRIPT_DATA: "NO_TRANSCRIPT_DATA",
+	NOT_READY: "NOT_READY",
+} as const;
+
+export type GetMeetingTranscriptStatus200DownloadRestrictionReasonEnumKey =
+	(typeof getMeetingTranscriptStatus200DownloadRestrictionReasonEnum)[keyof typeof getMeetingTranscriptStatus200DownloadRestrictionReasonEnum];
+
+export type GetMeetingTranscriptStatus200 = {
+	/**
+	 * @description The meeting ID
+	 * @example uaFkQyFCSwya8iNYtkAw3A==
+	 * @type string | undefined
+	 */
+	meeting_id?: string | undefined;
+	/**
+	 * @description The user account\'s unique identifier.
+	 * @example Cx3wERazSgup7ZWRHQM8-w
+	 * @type string | undefined
+	 */
+	account_id?: string | undefined;
+	/**
+	 * @description The meeting topic.
+	 * @example My Personal Meeting
+	 * @type string | undefined
+	 */
+	meeting_topic?: string | undefined;
+	/**
+	 * @description ID of the user set as the host of the meeting.
+	 * @example _0ctZtY0REqWalTmwvrdIw
+	 * @type string | undefined
+	 */
+	host_id?: string | undefined;
+	/**
+	 * @description The date and time that the meeting\'s transcript was created.
+	 * @example 2025-06-27T13:48:24Z
+	 * @type string | undefined
+	 */
+	transcript_created_time?: string | undefined;
+	/**
+	 * @description Whether the meeting transcript is available for download.\n`true`: The transcript is ready and `download_url` will be returned.\n`false`: The transcript cannot be downloaded. and the `download_restriction_reason` field will be returned instead with the explanation.\n\nOnly when `can_download` is `true`, the transcript file can be accessed.
+	 * @example true
+	 * @type boolean | undefined
+	 */
+	can_download?: boolean | undefined;
+	/**
+	 * @description Auto-delete status of a meeting\'s transcript\n\nPrerequisite: To get the auto-delete status, the host of the recording must have the recording setting **Delete cloud recordings after a specified number of days** enabled.
+	 * @example true
+	 * @type boolean | undefined
+	 */
+	auto_delete?: boolean | undefined;
+	/**
+	 * @description The date when the recording will be auto-deleted when `auto_delete` is true. Otherwise, no date will be returned.
+	 * @example 2052-11-07
+	 * @type string | undefined
+	 */
+	auto_delete_date?: string | undefined;
+	/**
+	 * @description The URL to download the transcript. \n\nThis field is only present when `can_download` is `true`. If present, `download_restriction_reason` will not be included.\"\n\n\nIf a user has authorized and installed your OAuth app that contains recording scopes, use  the user\'s [OAuth access token](https://developers.zoom.us/docs/integrations/oauth/) to download the file. Set the `access_token` as a Bearer token in the Authorization header. For example: \n\n`curl -H \'Authorization: Bearer <ACCESS_TOKEN>\' https://{{base-domain}}/rec/archive/download/xyz`.
+	 * @example https://example.com/rec/meeting/transcript/download/YDztop0PYLrAQat616a1q1H86RM4jf1Bf3p42a4Ap1jV3bWAJAE.jjixtQU52SEwrsuJ
+	 * @type string | undefined
+	 */
+	download_url?: (string | null) | undefined;
+	/**
+	 * @description If `can_download` is false, this field provides the reason why the transcript cannot be downloaded.\n\nThis field is only present when `can_download` is `false`. If present, `download_url` will not be included.\"\n\n| Value                | Description                                                                                  |\n| -------------------- | -------------------------------------------------------------------------------------------- |\n| `DELETED_OR_TRASHED` | The transcript has been deleted or moved to trash and is no longer available.                |\n| `UNSUPPORTED`        | The transcript format is not supported for download. |\n| `NO_TRANSCRIPT_DATA` | No transcript data exists for the meeting.                                                   |\n| `NOT_READY`          | The transcript is still being processed and not yet ready for download.                      |\n
+	 * @example NOT_READY
+	 * @type string | undefined
+	 */
+	download_restriction_reason?:
+		| (GetMeetingTranscriptStatus200DownloadRestrictionReasonEnumKey | null)
+		| undefined;
+};
+
+export type GetMeetingTranscriptStatus403 = unknown;
+
+export type GetMeetingTranscriptStatus404 = unknown;
+
+export type GetMeetingTranscriptStatus429 = unknown;
+
+export type GetMeetingTranscriptOptions = {
+	body?: never | undefined;
+	path: GetMeetingTranscriptPath;
+	query?: never | undefined;
+	headers?: never | undefined;
+};
+
+export type GetMeetingTranscriptResponses = {
+	"200": GetMeetingTranscriptStatus200;
+	"403": GetMeetingTranscriptStatus403;
+	"404": GetMeetingTranscriptStatus404;
+	"429": GetMeetingTranscriptStatus429;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetMeetingTranscriptResponse =
+	| GetMeetingTranscriptStatus200
+	| GetMeetingTranscriptStatus403
+	| GetMeetingTranscriptStatus404
+	| GetMeetingTranscriptStatus429;
+
+export type DeleteMeetingTranscriptPath = {
+	/**
+	 * @description To delete a meeting\'s transcript, provide the meeting ID or meeting\'s unique universal identifier (UUID). If the meeting ID is provided instead of UUID, the response will be for the latest meeting instance. \n\nTo delete a webinar\'s transcript, provide the webinar ID or the webinar\'s UUID. If the webinar ID is provided instead of UUID, the response will be for the latest webinar instance. \n\nIf a UUID starts with `/` or contains `//`, like `/ajXp112QmuoKj4854875==`, you must **double encode** the UUID before making an API request.
+	 * @example atsXxhSEQWit9t+U02HXNQ==
+	 * @type string
+	 */
+	meetingId: string;
+};
+
+export type DeleteMeetingTranscriptStatus204 = unknown;
+
+export type DeleteMeetingTranscriptStatus400 = unknown;
+
+export type DeleteMeetingTranscriptStatus403 = unknown;
+
+export type DeleteMeetingTranscriptStatus404 = unknown;
+
+export type DeleteMeetingTranscriptStatus429 = unknown;
+
+export type DeleteMeetingTranscriptOptions = {
+	body?: never | undefined;
+	path: DeleteMeetingTranscriptPath;
+	query?: never | undefined;
+	headers?: never | undefined;
+};
+
+export type DeleteMeetingTranscriptResponses = {
+	"204": DeleteMeetingTranscriptStatus204;
+	"400": DeleteMeetingTranscriptStatus400;
+	"403": DeleteMeetingTranscriptStatus403;
+	"404": DeleteMeetingTranscriptStatus404;
+	"429": DeleteMeetingTranscriptStatus429;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type DeleteMeetingTranscriptResponse =
+	| DeleteMeetingTranscriptStatus204
+	| DeleteMeetingTranscriptStatus400
+	| DeleteMeetingTranscriptStatus403
+	| DeleteMeetingTranscriptStatus404
+	| DeleteMeetingTranscriptStatus429;
 
 export type MeetingRTMSStatusUpdatePath = {
 	/**
