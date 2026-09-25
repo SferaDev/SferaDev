@@ -1,5 +1,20 @@
 # vercel-api-js
 
+## 1.26.0
+
+### Minor Changes
+
+- 156fe97: Added 'search' param to getVercelCiTaskLogs for filtering log lines containing specific text.
+- 156fe97: Added searchVercelCiLogs endpoint to search task logs of multiple Vercel CI invocations at once.
+- 156fe97: Enhanced AiGatewayVirtualModelConfig to support object entries with member attributes and selectorOptions for routers.
+- 156fe97: Added support for the 'google-dpop' connector type in Connector schema and types.
+
+### Patch Changes
+
+- 156fe97: Fixed description of edgeConfigSize property on Team to reflect it being about Global Config size.
+- 156fe97: Removed unused 409 and 422 error states from listConnectorProjectConnections endpoint.
+- 156fe97: Added new errors (501, 504) for several Connector APIs including create, update, delete, get, list, and replace trigger destinations.
+
 ## 1.25.0
 
 ### Minor Changes
