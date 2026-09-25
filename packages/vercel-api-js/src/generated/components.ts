@@ -238,7 +238,9 @@ import type {
 	CreateConnectorStatus410,
 	CreateConnectorStatus422,
 	CreateConnectorStatus500,
+	CreateConnectorStatus501,
 	CreateConnectorStatus502,
+	CreateConnectorStatus504,
 	CreateCustomEnvironmentResponse,
 	CreateCustomEnvironmentStatus400,
 	CreateCustomEnvironmentStatus401,
@@ -691,6 +693,7 @@ import type {
 	DeleteConnectorStatus409,
 	DeleteConnectorStatus410,
 	DeleteConnectorStatus422,
+	DeleteConnectorStatus501,
 	DeleteConnectorStatus502,
 	DeleteDeploymentResponse,
 	DeleteDeploymentStatus400,
@@ -1152,6 +1155,7 @@ import type {
 	GetConnectorStatus409,
 	GetConnectorStatus410,
 	GetConnectorStatus422,
+	GetConnectorStatus501,
 	GetConnectorTokenResponse,
 	GetConnectorTokenStatus400,
 	GetConnectorTokenStatus401,
@@ -1913,16 +1917,16 @@ import type {
 	ListConnectorProjectConnectionsStatus401,
 	ListConnectorProjectConnectionsStatus403,
 	ListConnectorProjectConnectionsStatus404,
-	ListConnectorProjectConnectionsStatus409,
 	ListConnectorProjectConnectionsStatus410,
-	ListConnectorProjectConnectionsStatus422,
 	ListConnectorsResponse,
 	ListConnectorsStatus400,
 	ListConnectorsStatus401,
 	ListConnectorsStatus403,
+	ListConnectorsStatus404,
 	ListConnectorsStatus409,
 	ListConnectorsStatus410,
 	ListConnectorsStatus422,
+	ListConnectorsStatus501,
 	ListContractCommitmentsResponse,
 	ListContractCommitmentsStatus400,
 	ListContractCommitmentsStatus401,
@@ -2340,6 +2344,7 @@ import type {
 	ReplaceConnectorTriggerDestinationsStatus409,
 	ReplaceConnectorTriggerDestinationsStatus410,
 	ReplaceConnectorTriggerDestinationsStatus422,
+	ReplaceConnectorTriggerDestinationsStatus501,
 	ReplaceDomainsByDomainRecordsResponse,
 	ReplaceDomainsByDomainRecordsStatus400,
 	ReplaceDomainsByDomainRecordsStatus401,
@@ -2461,6 +2466,13 @@ import type {
 	SearchRepoStatus429,
 	SearchRepoStatus500,
 	SearchRepoStatus502,
+	SearchVercelCiLogsResponse,
+	SearchVercelCiLogsStatus400,
+	SearchVercelCiLogsStatus401,
+	SearchVercelCiLogsStatus403,
+	SearchVercelCiLogsStatus410,
+	SearchVercelCiLogsStatus429,
+	SearchVercelCiLogsStatus500,
 	SignKmsMessageResponse,
 	SignKmsMessageStatus400,
 	SignKmsMessageStatus401,
@@ -2613,6 +2625,7 @@ import type {
 	UpdateConnectorStatus409,
 	UpdateConnectorStatus410,
 	UpdateConnectorStatus422,
+	UpdateConnectorStatus501,
 	UpdateConnectorStatus502,
 	UpdateCustomEnvironmentResponse,
 	UpdateCustomEnvironmentStatus400,
@@ -5918,9 +5931,11 @@ export async function listConnectors(
 			| ListConnectorsStatus400
 			| ListConnectorsStatus401
 			| ListConnectorsStatus403
+			| ListConnectorsStatus404
 			| ListConnectorsStatus409
 			| ListConnectorsStatus410
 			| ListConnectorsStatus422
+			| ListConnectorsStatus501
 		>,
 		null,
 		Record<string, string>,
@@ -5978,6 +5993,7 @@ export async function getConnector(
 			| GetConnectorStatus409
 			| GetConnectorStatus410
 			| GetConnectorStatus422
+			| GetConnectorStatus501
 		>,
 		null,
 		Record<string, string>,
@@ -6025,6 +6041,7 @@ export async function deleteConnector(
 			| DeleteConnectorStatus409
 			| DeleteConnectorStatus410
 			| DeleteConnectorStatus422
+			| DeleteConnectorStatus501
 			| DeleteConnectorStatus502
 		>,
 		null,
@@ -6069,7 +6086,9 @@ export async function createConnector(
 			| CreateConnectorStatus410
 			| CreateConnectorStatus422
 			| CreateConnectorStatus500
+			| CreateConnectorStatus501
 			| CreateConnectorStatus502
+			| CreateConnectorStatus504
 		>,
 		null,
 		Record<string, string>,
@@ -6117,6 +6136,7 @@ export async function updateConnector(
 			| UpdateConnectorStatus409
 			| UpdateConnectorStatus410
 			| UpdateConnectorStatus422
+			| UpdateConnectorStatus501
 			| UpdateConnectorStatus502
 		>,
 		null,
@@ -6165,6 +6185,7 @@ export async function replaceConnectorTriggerDestinations(
 			| ReplaceConnectorTriggerDestinationsStatus409
 			| ReplaceConnectorTriggerDestinationsStatus410
 			| ReplaceConnectorTriggerDestinationsStatus422
+			| ReplaceConnectorTriggerDestinationsStatus501
 		>,
 		null,
 		Record<string, string>,
@@ -6209,9 +6230,7 @@ export async function listConnectorProjectConnections(
 			| ListConnectorProjectConnectionsStatus401
 			| ListConnectorProjectConnectionsStatus403
 			| ListConnectorProjectConnectionsStatus404
-			| ListConnectorProjectConnectionsStatus409
 			| ListConnectorProjectConnectionsStatus410
-			| ListConnectorProjectConnectionsStatus422
 		>,
 		null,
 		Record<string, string>,
@@ -22041,7 +22060,7 @@ export async function getVercelCiInvocationLogs(
 
 /**
  * @summary Get log lines for the tasks of an invocation attempt
- * @description Returns log lines for the tasks of an invocation attempt in a single request, grouped by task. Tasks can be narrowed by name and by conclusion, for example `conclusion=failed` to fetch only the logs of failed tasks.
+ * @description Returns log lines for the tasks of an invocation attempt in a single request, grouped by task. Tasks can be narrowed by name and by conclusion, for example `conclusion=failed` to fetch only the logs of failed tasks. With `search`, every matching task is searched at once and only tasks with matching lines are returned.
  * @link /v1/vercel-ci/invocations/{invocationId}/attempts/{attempt}/task-logs
  */
 export async function getVercelCiTaskLogs(
@@ -22057,6 +22076,7 @@ export async function getVercelCiTaskLogs(
 			level?: Array<
 				"trace" | "debug" | "command" | "info" | "warn" | "error" | "systemError" | "fatal"
 			>;
+			search?: string;
 			limit?: number;
 			teamId?: string;
 			slug?: string;
@@ -22092,6 +22112,7 @@ export async function getVercelCiTaskLogs(
 			level?: Array<
 				"trace" | "debug" | "command" | "info" | "warn" | "error" | "systemError" | "fatal"
 			>;
+			search?: string;
 			limit?: number;
 			teamId?: string;
 			slug?: string;
@@ -22100,6 +22121,63 @@ export async function getVercelCiTaskLogs(
 	>({
 		method: "GET",
 		url: `/v1/vercel-ci/invocations/${pathParams.invocationId}/attempts/${pathParams.attempt}/task-logs`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Search the task logs of several invocation attempts
+ * @description Searches the task logs of up to 50 invocation attempts at once, for example the most recent runs of a branch from `GET /v2/vercel-ci/invocations`. Only invocations and tasks with matching lines are returned. When more than 1000 lines match, the newest are kept.
+ * @link /v1/vercel-ci/log-search
+ */
+export async function searchVercelCiLogs(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: {
+			invocation?: Array<string>;
+			search?: string;
+			level?: Array<
+				"trace" | "debug" | "command" | "info" | "warn" | "error" | "systemError" | "fatal"
+			>;
+			teamId?: string;
+			slug?: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	const data = await request<
+		SearchVercelCiLogsResponse,
+		ErrorWrapper<
+			| SearchVercelCiLogsStatus400
+			| SearchVercelCiLogsStatus401
+			| SearchVercelCiLogsStatus403
+			| SearchVercelCiLogsStatus410
+			| SearchVercelCiLogsStatus429
+			| SearchVercelCiLogsStatus500
+		>,
+		null,
+		Record<string, string>,
+		{
+			invocation?: Array<string>;
+			search?: string;
+			level?: Array<
+				"trace" | "debug" | "command" | "info" | "warn" | "error" | "systemError" | "fatal"
+			>;
+			teamId?: string;
+			slug?: string;
+		},
+		Record<string, string>
+	>({
+		method: "GET",
+		url: `/v1/vercel-ci/log-search`,
 		queryParams,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
@@ -23888,6 +23966,7 @@ export const operationsByPath = {
 		listVercelCiTaskRuns,
 	"GET /v1/vercel-ci/invocations/{invocationId}/attempts/{attempt}/logs": getVercelCiInvocationLogs,
 	"GET /v1/vercel-ci/invocations/{invocationId}/attempts/{attempt}/task-logs": getVercelCiTaskLogs,
+	"GET /v1/vercel-ci/log-search": searchVercelCiLogs,
 	"GET /v1/vercel-ci/invocations/{invocationId}/attempts/{attempt}/job-definitions/{jobDefinitionId}/runs/{runAttempt}/logs":
 		getVercelCiJobRunLogs,
 	"GET /v1/vercel-ci/invocations/{invocationId}/attempts/{attempt}/job-definitions/{jobDefinitionId}/runs/{runAttempt}/task-definitions/{taskDefinitionId}/runs/{taskRunAttempt}/logs":
@@ -24400,6 +24479,7 @@ export const operationsByTag = {
 		listVercelCiTaskRuns,
 		getVercelCiInvocationLogs,
 		getVercelCiTaskLogs,
+		searchVercelCiLogs,
 		getVercelCiJobRunLogs,
 		getVercelCiTaskRunLogs,
 	},
@@ -24908,6 +24988,7 @@ export const tagDictionary = {
 			"listVercelCiTaskRuns",
 			"getVercelCiInvocationLogs",
 			"getVercelCiTaskLogs",
+			"searchVercelCiLogs",
 			"getVercelCiJobRunLogs",
 			"getVercelCiTaskRunLogs",
 		],

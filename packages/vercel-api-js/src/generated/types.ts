@@ -11,6 +11,14 @@ export type AiGatewayProviderOptionBag = {
 	[key: string]: unknown;
 };
 
+/**
+ * @description For kind=router: option slices keyed by selector name; each selector owns its slice\'s shape.
+ * @type object
+ */
+export type AiGatewayRouterSelectorOptionBag = {
+	[key: string]: unknown;
+};
+
 export const aiGatewayVirtualModelConfigHasEnum = {
 	"implicit-caching": "implicit-caching",
 	reasoning: "reasoning",
@@ -192,10 +200,22 @@ export type AiGatewayVirtualModelConfig = {
 	 */
 	kind: string;
 	/**
-	 * @description For kind=router: ordered candidates, model slugs or router references. Otherwise: fallback models.
+	 * @description For kind=router: ordered candidates (slugs or references, bare or with member attributes). Otherwise: fallback models.
 	 * @type array | undefined
 	 */
-	models?: string[] | undefined;
+	models?:
+		| (
+				| string
+				| {
+						/**
+						 * @description Highest task level the member handles, in [0, 1]. Read by the capability selector.
+						 * @type number | undefined
+						 */
+						capability?: number | undefined;
+						slug: string;
+				  }
+		  )[]
+		| undefined;
 	/**
 	 * @description Canonical model slug this VMC maps to (e.g. \"creator/model\"). Not used by kind=router.
 	 * @type string | undefined
@@ -248,6 +268,17 @@ export type AiGatewayVirtualModelConfig = {
 	 * @type string | undefined
 	 */
 	selector?: AiGatewayVirtualModelConfigSelectorEnumKey | undefined;
+	/**
+	 * @description For kind=router: option slices keyed by selector name; each selector owns its slice\'s shape.
+	 * @type object | undefined
+	 */
+	selectorOptions?:
+		| {
+				cost?: unknown | undefined;
+				tps?: unknown | undefined;
+				ttft?: unknown | undefined;
+		  }
+		| undefined;
 	/**
 	 * @description Service tier for providers that support it.
 	 * @type string | undefined
@@ -612,6 +643,7 @@ export const connectConnectorTypeEnum = {
 	custom: "custom",
 	discord: "discord",
 	github: "github",
+	"google-dpop": "google-dpop",
 	linear: "linear",
 	linq: "linq",
 	"microsoft-entra": "microsoft-entra",
@@ -1011,6 +1043,7 @@ export const connectConnectorCreateResultTypeEnum = {
 	custom: "custom",
 	discord: "discord",
 	github: "github",
+	"google-dpop": "google-dpop",
 	linear: "linear",
 	linq: "linq",
 	"microsoft-entra": "microsoft-entra",
@@ -18966,7 +18999,7 @@ export type Team = {
 				 */
 				edgeConfigs?: number | undefined;
 				/**
-				 * @description The maximum size in kilobytes of an Edge Config. Only specified if a custom limit is set.
+				 * @description The maximum size in kilobytes of a Global Config. Only specified if a custom limit is set.
 				 * @type number | undefined
 				 */
 				edgeConfigSize?: number | undefined;
@@ -24955,11 +24988,15 @@ export type ListConnectorsStatus401 = unknown;
 
 export type ListConnectorsStatus403 = unknown;
 
+export type ListConnectorsStatus404 = unknown;
+
 export type ListConnectorsStatus409 = unknown;
 
 export type ListConnectorsStatus410 = unknown;
 
 export type ListConnectorsStatus422 = unknown;
+
+export type ListConnectorsStatus501 = unknown;
 
 export type ListConnectorsOptions = {
 	body?: never | undefined;
@@ -24973,9 +25010,11 @@ export type ListConnectorsResponses = {
 	"400": ListConnectorsStatus400;
 	"401": ListConnectorsStatus401;
 	"403": ListConnectorsStatus403;
+	"404": ListConnectorsStatus404;
 	"409": ListConnectorsStatus409;
 	"410": ListConnectorsStatus410;
 	"422": ListConnectorsStatus422;
+	"501": ListConnectorsStatus501;
 };
 
 /**
@@ -24986,9 +25025,11 @@ export type ListConnectorsResponse =
 	| ListConnectorsStatus400
 	| ListConnectorsStatus401
 	| ListConnectorsStatus403
+	| ListConnectorsStatus404
 	| ListConnectorsStatus409
 	| ListConnectorsStatus410
-	| ListConnectorsStatus422;
+	| ListConnectorsStatus422
+	| ListConnectorsStatus501;
 
 export type GetConnectorPath = {
 	/**
@@ -25029,6 +25070,8 @@ export type GetConnectorStatus410 = unknown;
 
 export type GetConnectorStatus422 = unknown;
 
+export type GetConnectorStatus501 = unknown;
+
 export type GetConnectorOptions = {
 	body?: never | undefined;
 	path: GetConnectorPath;
@@ -25045,6 +25088,7 @@ export type GetConnectorResponses = {
 	"409": GetConnectorStatus409;
 	"410": GetConnectorStatus410;
 	"422": GetConnectorStatus422;
+	"501": GetConnectorStatus501;
 };
 
 /**
@@ -25058,7 +25102,8 @@ export type GetConnectorResponse =
 	| GetConnectorStatus404
 	| GetConnectorStatus409
 	| GetConnectorStatus410
-	| GetConnectorStatus422;
+	| GetConnectorStatus422
+	| GetConnectorStatus501;
 
 export type DeleteConnectorPath = {
 	/**
@@ -25099,6 +25144,8 @@ export type DeleteConnectorStatus410 = unknown;
 
 export type DeleteConnectorStatus422 = unknown;
 
+export type DeleteConnectorStatus501 = unknown;
+
 export type DeleteConnectorStatus502 = unknown;
 
 export type DeleteConnectorOptions = {
@@ -25117,6 +25164,7 @@ export type DeleteConnectorResponses = {
 	"409": DeleteConnectorStatus409;
 	"410": DeleteConnectorStatus410;
 	"422": DeleteConnectorStatus422;
+	"501": DeleteConnectorStatus501;
 	"502": DeleteConnectorStatus502;
 };
 
@@ -25132,6 +25180,7 @@ export type DeleteConnectorResponse =
 	| DeleteConnectorStatus409
 	| DeleteConnectorStatus410
 	| DeleteConnectorStatus422
+	| DeleteConnectorStatus501
 	| DeleteConnectorStatus502;
 
 export type CreateConnectorQuery = {
@@ -25167,7 +25216,11 @@ export type CreateConnectorStatus422 = unknown;
 
 export type CreateConnectorStatus500 = unknown;
 
+export type CreateConnectorStatus501 = unknown;
+
 export type CreateConnectorStatus502 = unknown;
+
+export type CreateConnectorStatus504 = unknown;
 
 export type CreateConnectorOptions = {
 	body?: never | undefined;
@@ -25186,7 +25239,9 @@ export type CreateConnectorResponses = {
 	"410": CreateConnectorStatus410;
 	"422": CreateConnectorStatus422;
 	"500": CreateConnectorStatus500;
+	"501": CreateConnectorStatus501;
 	"502": CreateConnectorStatus502;
+	"504": CreateConnectorStatus504;
 };
 
 /**
@@ -25202,7 +25257,9 @@ export type CreateConnectorResponse =
 	| CreateConnectorStatus410
 	| CreateConnectorStatus422
 	| CreateConnectorStatus500
-	| CreateConnectorStatus502;
+	| CreateConnectorStatus501
+	| CreateConnectorStatus502
+	| CreateConnectorStatus504;
 
 export type UpdateConnectorPath = {
 	/**
@@ -25243,6 +25300,8 @@ export type UpdateConnectorStatus410 = unknown;
 
 export type UpdateConnectorStatus422 = unknown;
 
+export type UpdateConnectorStatus501 = unknown;
+
 export type UpdateConnectorStatus502 = unknown;
 
 export type UpdateConnectorOptions = {
@@ -25261,6 +25320,7 @@ export type UpdateConnectorResponses = {
 	"409": UpdateConnectorStatus409;
 	"410": UpdateConnectorStatus410;
 	"422": UpdateConnectorStatus422;
+	"501": UpdateConnectorStatus501;
 	"502": UpdateConnectorStatus502;
 };
 
@@ -25276,6 +25336,7 @@ export type UpdateConnectorResponse =
 	| UpdateConnectorStatus409
 	| UpdateConnectorStatus410
 	| UpdateConnectorStatus422
+	| UpdateConnectorStatus501
 	| UpdateConnectorStatus502;
 
 export type ReplaceConnectorTriggerDestinationsPath = {
@@ -25317,6 +25378,8 @@ export type ReplaceConnectorTriggerDestinationsStatus410 = unknown;
 
 export type ReplaceConnectorTriggerDestinationsStatus422 = unknown;
 
+export type ReplaceConnectorTriggerDestinationsStatus501 = unknown;
+
 export type ReplaceConnectorTriggerDestinationsOptions = {
 	body?: never | undefined;
 	path: ReplaceConnectorTriggerDestinationsPath;
@@ -25333,6 +25396,7 @@ export type ReplaceConnectorTriggerDestinationsResponses = {
 	"409": ReplaceConnectorTriggerDestinationsStatus409;
 	"410": ReplaceConnectorTriggerDestinationsStatus410;
 	"422": ReplaceConnectorTriggerDestinationsStatus422;
+	"501": ReplaceConnectorTriggerDestinationsStatus501;
 };
 
 /**
@@ -25346,7 +25410,8 @@ export type ReplaceConnectorTriggerDestinationsResponse =
 	| ReplaceConnectorTriggerDestinationsStatus404
 	| ReplaceConnectorTriggerDestinationsStatus409
 	| ReplaceConnectorTriggerDestinationsStatus410
-	| ReplaceConnectorTriggerDestinationsStatus422;
+	| ReplaceConnectorTriggerDestinationsStatus422
+	| ReplaceConnectorTriggerDestinationsStatus501;
 
 export type ListConnectorProjectConnectionsPath = {
 	/**
@@ -25393,11 +25458,7 @@ export type ListConnectorProjectConnectionsStatus403 = unknown;
 
 export type ListConnectorProjectConnectionsStatus404 = unknown;
 
-export type ListConnectorProjectConnectionsStatus409 = unknown;
-
 export type ListConnectorProjectConnectionsStatus410 = unknown;
-
-export type ListConnectorProjectConnectionsStatus422 = unknown;
 
 export type ListConnectorProjectConnectionsOptions = {
 	body?: never | undefined;
@@ -25412,9 +25473,7 @@ export type ListConnectorProjectConnectionsResponses = {
 	"401": ListConnectorProjectConnectionsStatus401;
 	"403": ListConnectorProjectConnectionsStatus403;
 	"404": ListConnectorProjectConnectionsStatus404;
-	"409": ListConnectorProjectConnectionsStatus409;
 	"410": ListConnectorProjectConnectionsStatus410;
-	"422": ListConnectorProjectConnectionsStatus422;
 };
 
 /**
@@ -25426,9 +25485,7 @@ export type ListConnectorProjectConnectionsResponse =
 	| ListConnectorProjectConnectionsStatus401
 	| ListConnectorProjectConnectionsStatus403
 	| ListConnectorProjectConnectionsStatus404
-	| ListConnectorProjectConnectionsStatus409
-	| ListConnectorProjectConnectionsStatus410
-	| ListConnectorProjectConnectionsStatus422;
+	| ListConnectorProjectConnectionsStatus410;
 
 export type GetConnectorProjectConnectionPath = {
 	/**
@@ -47609,6 +47666,12 @@ export type GetVercelCiTaskLogsQuery = {
 	 */
 	level?: GetVercelCiTaskLogsLevelEnumKey[] | undefined;
 	/**
+	 * @description Only return log lines containing this text, ignoring case. Tasks without matching lines are left out, `limit` is ignored, and at most 1000 lines are returned.
+	 * @maxLength 256
+	 * @type string | undefined
+	 */
+	search?: string | undefined;
+	/**
 	 * @description Maximum number of tasks to return (default: 10, max: 25).
 	 * @type number | undefined
 	 */
@@ -47673,6 +47736,94 @@ export type GetVercelCiTaskLogsResponse =
 	| GetVercelCiTaskLogsStatus410
 	| GetVercelCiTaskLogsStatus429
 	| GetVercelCiTaskLogsStatus500;
+
+export const searchVercelCiLogsLevelEnum = {
+	trace: "trace",
+	debug: "debug",
+	command: "command",
+	info: "info",
+	warn: "warn",
+	error: "error",
+	systemError: "systemError",
+	fatal: "fatal",
+} as const;
+
+export type SearchVercelCiLogsLevelEnumKey =
+	(typeof searchVercelCiLogsLevelEnum)[keyof typeof searchVercelCiLogsLevelEnum];
+
+export type SearchVercelCiLogsQuery = {
+	/**
+	 * @description Invocation attempts to search, as \\\"<invocationId>:<attempt>\\\" (at most 50).
+	 * @type array
+	 */
+	invocation: string[];
+	/**
+	 * @description Only return log lines containing this text, ignoring case.
+	 * @maxLength 256
+	 * @type string
+	 */
+	search: string;
+	/**
+	 * @description Only return log lines with one of these levels.
+	 * @type array | undefined
+	 */
+	level?: SearchVercelCiLogsLevelEnumKey[] | undefined;
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @example my-team-url-slug
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type SearchVercelCiLogsStatus200 = unknown;
+
+export type SearchVercelCiLogsStatus400 = unknown;
+
+export type SearchVercelCiLogsStatus401 = unknown;
+
+export type SearchVercelCiLogsStatus403 = unknown;
+
+export type SearchVercelCiLogsStatus410 = unknown;
+
+export type SearchVercelCiLogsStatus429 = unknown;
+
+export type SearchVercelCiLogsStatus500 = unknown;
+
+export type SearchVercelCiLogsOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query: SearchVercelCiLogsQuery;
+	headers?: never | undefined;
+};
+
+export type SearchVercelCiLogsResponses = {
+	"200": SearchVercelCiLogsStatus200;
+	"400": SearchVercelCiLogsStatus400;
+	"401": SearchVercelCiLogsStatus401;
+	"403": SearchVercelCiLogsStatus403;
+	"410": SearchVercelCiLogsStatus410;
+	"429": SearchVercelCiLogsStatus429;
+	"500": SearchVercelCiLogsStatus500;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type SearchVercelCiLogsResponse =
+	| SearchVercelCiLogsStatus200
+	| SearchVercelCiLogsStatus400
+	| SearchVercelCiLogsStatus401
+	| SearchVercelCiLogsStatus403
+	| SearchVercelCiLogsStatus410
+	| SearchVercelCiLogsStatus429
+	| SearchVercelCiLogsStatus500;
 
 export type GetVercelCiJobRunLogsPath = {
 	invocationId: string;

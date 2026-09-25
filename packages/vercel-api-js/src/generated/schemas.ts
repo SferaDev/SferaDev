@@ -7,6 +7,13 @@ export const aiGatewayProviderOptionBagSchema = z
 	.catchall(z.unknown())
 	.describe("Arbitrary per-provider AI SDK options, keyed by gateway provider slug.");
 
+export const aiGatewayRouterSelectorOptionBagSchema = z
+	.object({})
+	.catchall(z.unknown())
+	.describe(
+		"For kind=router: option slices keyed by selector name; each selector owns its slice's shape.",
+	);
+
 export const aiGatewayVirtualModelConfigSchema = z
 	.object({
 		allowFallbackFromFast: z
@@ -77,10 +84,25 @@ export const aiGatewayVirtualModelConfigSchema = z
 			.describe("The concrete model-provider instance this VMC resolves to."),
 		kind: z.string().describe("VMC kind: alias, relay, or router."),
 		models: z
-			.array(z.string())
+			.array(
+				z.union([
+					z.string(),
+					z
+						.object({
+							capability: z
+								.number()
+								.optional()
+								.describe(
+									"Highest task level the member handles, in [0, 1]. Read by the capability selector.",
+								),
+							slug: z.string(),
+						})
+						.strict(),
+				]),
+			)
 			.optional()
 			.describe(
-				"For kind=router: ordered candidates, model slugs or router references. Otherwise: fallback models.",
+				"For kind=router: ordered candidates (slugs or references, bare or with member attributes). Otherwise: fallback models.",
 			),
 		modelSlug: z
 			.string()
@@ -118,6 +140,16 @@ export const aiGatewayVirtualModelConfigSchema = z
 			.enum(["cost", "tps", "ttft"])
 			.optional()
 			.describe("For kind=router: how to order candidates. Absent means declared order."),
+		selectorOptions: z
+			.object({
+				cost: z.unknown().optional(),
+				tps: z.unknown().optional(),
+				ttft: z.unknown().optional(),
+			})
+			.optional()
+			.describe(
+				"For kind=router: option slices keyed by selector name; each selector owns its slice's shape.",
+			),
 		serviceTier: z
 			.enum(["fast", "flex", "priority"])
 			.optional()
@@ -525,6 +557,7 @@ export const connectConnectorSchema = z
 				"custom",
 				"discord",
 				"github",
+				"google-dpop",
 				"linear",
 				"linq",
 				"microsoft-entra",
@@ -783,6 +816,7 @@ export const connectConnectorCreateResultSchema = z
 				"custom",
 				"discord",
 				"github",
+				"google-dpop",
 				"linear",
 				"linq",
 				"microsoft-entra",
@@ -3485,6 +3519,7 @@ export const userEventSchema = z
 									"providerOrder",
 									"providerTimeouts",
 									"selector",
+									"selectorOptions",
 									"serviceTier",
 									"sort",
 									"speed",
@@ -16525,7 +16560,7 @@ export const teamSchema = z
 					.number()
 					.optional()
 					.describe(
-						"The maximum size in kilobytes of an Edge Config. Only specified if a custom limit is set.",
+						"The maximum size in kilobytes of a Global Config. Only specified if a custom limit is set.",
 					),
 				elasticConcurrencyEnabled: z
 					.union([z.literal(false), z.literal(true)])
@@ -20800,11 +20835,15 @@ export const listConnectorsStatus401Schema = z.unknown();
 
 export const listConnectorsStatus403Schema = z.unknown();
 
+export const listConnectorsStatus404Schema = z.unknown();
+
 export const listConnectorsStatus409Schema = z.unknown();
 
 export const listConnectorsStatus410Schema = z.unknown();
 
 export const listConnectorsStatus422Schema = z.unknown();
+
+export const listConnectorsStatus501Schema = z.unknown();
 
 export const listConnectorsResponseSchema = listConnectorsStatus200Schema;
 
@@ -20812,9 +20851,11 @@ export const listConnectorsErrorSchema = z.union([
 	listConnectorsStatus400Schema,
 	listConnectorsStatus401Schema,
 	listConnectorsStatus403Schema,
+	listConnectorsStatus404Schema,
 	listConnectorsStatus409Schema,
 	listConnectorsStatus410Schema,
 	listConnectorsStatus422Schema,
+	listConnectorsStatus501Schema,
 ]);
 
 export const getConnectorPathConnectorSchema = z
@@ -20855,6 +20896,8 @@ export const getConnectorStatus410Schema = z.unknown();
 
 export const getConnectorStatus422Schema = z.unknown();
 
+export const getConnectorStatus501Schema = z.unknown();
+
 export const getConnectorResponseSchema = getConnectorStatus200Schema;
 
 export const getConnectorErrorSchema = z.union([
@@ -20865,6 +20908,7 @@ export const getConnectorErrorSchema = z.union([
 	getConnectorStatus409Schema,
 	getConnectorStatus410Schema,
 	getConnectorStatus422Schema,
+	getConnectorStatus501Schema,
 ]);
 
 export const deleteConnectorPathConnectorSchema = z
@@ -20905,6 +20949,8 @@ export const deleteConnectorStatus410Schema = z.unknown();
 
 export const deleteConnectorStatus422Schema = z.unknown();
 
+export const deleteConnectorStatus501Schema = z.unknown();
+
 export const deleteConnectorStatus502Schema = z.unknown();
 
 export const deleteConnectorResponseSchema = deleteConnectorStatus204Schema;
@@ -20917,6 +20963,7 @@ export const deleteConnectorErrorSchema = z.union([
 	deleteConnectorStatus409Schema,
 	deleteConnectorStatus410Schema,
 	deleteConnectorStatus422Schema,
+	deleteConnectorStatus501Schema,
 	deleteConnectorStatus502Schema,
 ]);
 
@@ -20954,7 +21001,11 @@ export const createConnectorStatus422Schema = z.unknown();
 
 export const createConnectorStatus500Schema = z.unknown();
 
+export const createConnectorStatus501Schema = z.unknown();
+
 export const createConnectorStatus502Schema = z.unknown();
+
+export const createConnectorStatus504Schema = z.unknown();
 
 export const createConnectorResponseSchema = createConnectorStatus201Schema;
 
@@ -20967,7 +21018,9 @@ export const createConnectorErrorSchema = z.union([
 	createConnectorStatus410Schema,
 	createConnectorStatus422Schema,
 	createConnectorStatus500Schema,
+	createConnectorStatus501Schema,
 	createConnectorStatus502Schema,
+	createConnectorStatus504Schema,
 ]);
 
 export const updateConnectorPathConnectorSchema = z
@@ -21008,6 +21061,8 @@ export const updateConnectorStatus410Schema = z.unknown();
 
 export const updateConnectorStatus422Schema = z.unknown();
 
+export const updateConnectorStatus501Schema = z.unknown();
+
 export const updateConnectorStatus502Schema = z.unknown();
 
 export const updateConnectorResponseSchema = updateConnectorStatus200Schema;
@@ -21020,6 +21075,7 @@ export const updateConnectorErrorSchema = z.union([
 	updateConnectorStatus409Schema,
 	updateConnectorStatus410Schema,
 	updateConnectorStatus422Schema,
+	updateConnectorStatus501Schema,
 	updateConnectorStatus502Schema,
 ]);
 
@@ -21061,6 +21117,8 @@ export const replaceConnectorTriggerDestinationsStatus410Schema = z.unknown();
 
 export const replaceConnectorTriggerDestinationsStatus422Schema = z.unknown();
 
+export const replaceConnectorTriggerDestinationsStatus501Schema = z.unknown();
+
 export const replaceConnectorTriggerDestinationsResponseSchema =
 	replaceConnectorTriggerDestinationsStatus200Schema;
 
@@ -21072,6 +21130,7 @@ export const replaceConnectorTriggerDestinationsErrorSchema = z.union([
 	replaceConnectorTriggerDestinationsStatus409Schema,
 	replaceConnectorTriggerDestinationsStatus410Schema,
 	replaceConnectorTriggerDestinationsStatus422Schema,
+	replaceConnectorTriggerDestinationsStatus501Schema,
 ]);
 
 export const listConnectorProjectConnectionsPathConnectorSchema = z
@@ -21118,11 +21177,7 @@ export const listConnectorProjectConnectionsStatus403Schema = z.unknown();
 
 export const listConnectorProjectConnectionsStatus404Schema = z.unknown();
 
-export const listConnectorProjectConnectionsStatus409Schema = z.unknown();
-
 export const listConnectorProjectConnectionsStatus410Schema = z.unknown();
-
-export const listConnectorProjectConnectionsStatus422Schema = z.unknown();
 
 export const listConnectorProjectConnectionsResponseSchema =
 	listConnectorProjectConnectionsStatus200Schema;
@@ -21132,9 +21187,7 @@ export const listConnectorProjectConnectionsErrorSchema = z.union([
 	listConnectorProjectConnectionsStatus401Schema,
 	listConnectorProjectConnectionsStatus403Schema,
 	listConnectorProjectConnectionsStatus404Schema,
-	listConnectorProjectConnectionsStatus409Schema,
 	listConnectorProjectConnectionsStatus410Schema,
-	listConnectorProjectConnectionsStatus422Schema,
 ]);
 
 export const getConnectorProjectConnectionPathConnectorSchema = z
@@ -35497,6 +35550,14 @@ export const getVercelCiTaskLogsQueryLevelSchema = z
 	.optional()
 	.describe("Only return log lines with one of these levels.");
 
+export const getVercelCiTaskLogsQuerySearchSchema = z
+	.string()
+	.max(256)
+	.optional()
+	.describe(
+		"Only return log lines containing this text, ignoring case. Tasks without matching lines are left out, `limit` is ignored, and at most 1000 lines are returned.",
+	);
+
 export const getVercelCiTaskLogsQueryLimitSchema = z
 	.number()
 	.optional()
@@ -35540,6 +35601,66 @@ export const getVercelCiTaskLogsErrorSchema = z.union([
 	getVercelCiTaskLogsStatus410Schema,
 	getVercelCiTaskLogsStatus429Schema,
 	getVercelCiTaskLogsStatus500Schema,
+]);
+
+export const searchVercelCiLogsQueryInvocationSchema = z
+	.array(z.string().regex(/^invo1_[A-Za-z0-9_-]+:[1-9][0-9]*$/))
+	.min(1)
+	.max(50)
+	.refine((items) => new Set(items).size === items.length, {
+		message: "Array entries must be unique",
+	})
+	.describe('Invocation attempts to search, as \\"<invocationId>:<attempt>\\" (at most 50).');
+
+export const searchVercelCiLogsQuerySearchSchema = z
+	.string()
+	.max(256)
+	.describe("Only return log lines containing this text, ignoring case.");
+
+export const searchVercelCiLogsQueryLevelSchema = z
+	.array(z.enum(["trace", "debug", "command", "info", "warn", "error", "systemError", "fatal"]))
+	.min(1)
+	.refine((items) => new Set(items).size === items.length, {
+		message: "Array entries must be unique",
+	})
+	.optional()
+	.describe("Only return log lines with one of these levels.");
+
+export const searchVercelCiLogsQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe("The Team identifier to perform the request on behalf of.")
+	.meta({ examples: ["team_1a2b3c4d5e6f7g8h9i0j1k2l"] });
+
+export const searchVercelCiLogsQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.")
+	.meta({ examples: ["my-team-url-slug"] });
+
+export const searchVercelCiLogsStatus200Schema = z.unknown();
+
+export const searchVercelCiLogsStatus400Schema = z.unknown();
+
+export const searchVercelCiLogsStatus401Schema = z.unknown();
+
+export const searchVercelCiLogsStatus403Schema = z.unknown();
+
+export const searchVercelCiLogsStatus410Schema = z.unknown();
+
+export const searchVercelCiLogsStatus429Schema = z.unknown();
+
+export const searchVercelCiLogsStatus500Schema = z.unknown();
+
+export const searchVercelCiLogsResponseSchema = searchVercelCiLogsStatus200Schema;
+
+export const searchVercelCiLogsErrorSchema = z.union([
+	searchVercelCiLogsStatus400Schema,
+	searchVercelCiLogsStatus401Schema,
+	searchVercelCiLogsStatus403Schema,
+	searchVercelCiLogsStatus410Schema,
+	searchVercelCiLogsStatus429Schema,
+	searchVercelCiLogsStatus500Schema,
 ]);
 
 export const getVercelCiJobRunLogsPathInvocationIdSchema = z.string();
