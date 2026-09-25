@@ -1719,93 +1719,6 @@ export async function recordingStatusUpdateOne(
 }
 
 /**
- * @summary Get a meeting transcript
- * @description Return a meeting's [transcript](https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0076632) information. Use the `download_url` property listed in the response to download the transcript content.
- * To download the trancript, send the user's [OAuth access token](/docs/integrations/oauth/) as a Bearer token in the Authorization header.
- *  `curl -H 'Authorization: Bearer <ACCESS_TOKEN>' https://{{base-domain}}//rec/meeting/transcript/download/xyz`
- * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `recording:read`,`recording:write`,`recording:read:admin`,`recording:write:admin`
- * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `cloud_recording:read:meeting_transcript`,`cloud_recording:read:meeting_transcript:admin`
- * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `MEDIUM`
- * @link /meetings/{meetingId}/transcript
- */
-export async function getMeetingTranscript(
-	{
-		pathParams,
-		config,
-	}: {
-		pathParams: { meetingId: string };
-		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-	} = {} as any,
-) {
-	const { client: request = defaultClient, ...requestConfig } = config ?? {};
-
-	if (!pathParams.meetingId) {
-		throw new Error(`Missing required path parameter: meetingId`);
-	}
-	const data = await request<
-		GetMeetingTranscriptResponse,
-		ErrorWrapper<
-			GetMeetingTranscriptStatus403 | GetMeetingTranscriptStatus404 | GetMeetingTranscriptStatus429
-		>,
-		null,
-		Record<string, string>,
-		Record<string, string>,
-		{ meetingId: string }
-	>({
-		method: "GET",
-		url: `/meetings/${pathParams.meetingId}/transcript`,
-		...requestConfig,
-		headers: { ...requestConfig.headers },
-	});
-
-	return data;
-}
-
-/**
- * @summary Delete a meeting or webinar transcript
- * @description Delete a transcript for a meeting or webinar.
- * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `recording:write`,`recording:write:admin`
- * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `cloud_recording:delete:meeting_transcript`,`cloud_recording:delete:meeting_transcript:admin`
- * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `MEDIUM`
- * @link /meetings/{meetingId}/transcript
- */
-export async function deleteMeetingTranscript(
-	{
-		pathParams,
-		config,
-	}: {
-		pathParams: { meetingId: string };
-		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
-	} = {} as any,
-) {
-	const { client: request = defaultClient, ...requestConfig } = config ?? {};
-
-	if (!pathParams.meetingId) {
-		throw new Error(`Missing required path parameter: meetingId`);
-	}
-	const data = await request<
-		DeleteMeetingTranscriptResponse,
-		ErrorWrapper<
-			| DeleteMeetingTranscriptStatus400
-			| DeleteMeetingTranscriptStatus403
-			| DeleteMeetingTranscriptStatus404
-			| DeleteMeetingTranscriptStatus429
-		>,
-		null,
-		Record<string, string>,
-		Record<string, string>,
-		{ meetingId: string }
-	>({
-		method: "DELETE",
-		url: `/meetings/${pathParams.meetingId}/transcript`,
-		...requestConfig,
-		headers: { ...requestConfig.headers },
-	});
-
-	return data;
-}
-
-/**
  * @summary Recover meeting recordings
  * @description Recover all deleted [cloud recordings](https://support.zoom.us/hc/en-us/articles/203741855-Cloud-Recording) of a specific meeting.
  * Zoom lets users recover recordings from trash for up to 30 days from the deletion date.
@@ -3664,6 +3577,93 @@ export async function meetingLiveStreamStatusUpdate(
 		method: "PATCH",
 		url: `/meetings/${pathParams.meetingId}/livestream/status`,
 		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Get a meeting transcript
+ * @description Return a meeting's [transcript](https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0076632) information. Use the `download_url` property listed in the response to download the transcript content.
+ * To download the trancript, send the user's [OAuth access token](/docs/integrations/oauth/) as a Bearer token in the Authorization header.
+ *  `curl -H 'Authorization: Bearer <ACCESS_TOKEN>' https://{{base-domain}}//rec/meeting/transcript/download/xyz`
+ * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `recording:read`,`recording:write`,`recording:read:admin`,`recording:write:admin`
+ * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `cloud_recording:read:meeting_transcript`,`cloud_recording:read:meeting_transcript:admin`
+ * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `MEDIUM`
+ * @link /meetings/{meetingId}/transcript
+ */
+export async function getMeetingTranscript(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { meetingId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.meetingId) {
+		throw new Error(`Missing required path parameter: meetingId`);
+	}
+	const data = await request<
+		GetMeetingTranscriptResponse,
+		ErrorWrapper<
+			GetMeetingTranscriptStatus403 | GetMeetingTranscriptStatus404 | GetMeetingTranscriptStatus429
+		>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		{ meetingId: string }
+	>({
+		method: "GET",
+		url: `/meetings/${pathParams.meetingId}/transcript`,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Delete a meeting or webinar transcript
+ * @description Delete a transcript for a meeting or webinar.
+ * **[Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `recording:write`,`recording:write:admin`
+ * **[Granular Scopes](https://developers.zoom.us/docs/integrations/oauth-scopes-overview/):** `cloud_recording:delete:meeting_transcript`,`cloud_recording:delete:meeting_transcript:admin`
+ * **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `MEDIUM`
+ * @link /meetings/{meetingId}/transcript
+ */
+export async function deleteMeetingTranscript(
+	{
+		pathParams,
+		config,
+	}: {
+		pathParams: { meetingId: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.meetingId) {
+		throw new Error(`Missing required path parameter: meetingId`);
+	}
+	const data = await request<
+		DeleteMeetingTranscriptResponse,
+		ErrorWrapper<
+			| DeleteMeetingTranscriptStatus400
+			| DeleteMeetingTranscriptStatus403
+			| DeleteMeetingTranscriptStatus404
+			| DeleteMeetingTranscriptStatus429
+		>,
+		null,
+		Record<string, string>,
+		Record<string, string>,
+		{ meetingId: string }
+	>({
+		method: "DELETE",
+		url: `/meetings/${pathParams.meetingId}/transcript`,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
 	});
@@ -9674,8 +9674,6 @@ export const operationsByPath = {
 	"PATCH /meetings/{meetingId}/recordings/settings": recordingSettingsUpdate,
 	"DELETE /meetings/{meetingId}/recordings/{recordingId}": recordingDeleteOne,
 	"PUT /meetings/{meetingId}/recordings/{recordingId}/status": recordingStatusUpdateOne,
-	"GET /meetings/{meetingId}/transcript": getMeetingTranscript,
-	"DELETE /meetings/{meetingId}/transcript": deleteMeetingTranscript,
 	"PUT /meetings/{meetingUUID}/recordings/status": recordingStatusUpdate,
 	"GET /users/{userId}/recordings": recordingsList,
 	"GET /devices": listDevices,
@@ -9717,6 +9715,8 @@ export const operationsByPath = {
 	"GET /meetings/{meetingId}/livestream": getMeetingLiveStreamDetails,
 	"PATCH /meetings/{meetingId}/livestream": meetingLiveStreamUpdate,
 	"PATCH /meetings/{meetingId}/livestream/status": meetingLiveStreamStatusUpdate,
+	"GET /meetings/{meetingId}/transcript": getMeetingTranscript,
+	"DELETE /meetings/{meetingId}/transcript": deleteMeetingTranscript,
 	"PATCH /live_meetings/{meetingId}/rtms_app/status": meetingRTMSStatusUpdate,
 	"GET /meetings/{meetingId}": meeting,
 	"DELETE /meetings/{meetingId}": meetingDelete,
@@ -9867,12 +9867,8 @@ export const operationsByTag = {
 		recordingSettingsUpdate,
 		recordingDeleteOne,
 		recordingStatusUpdateOne,
-		deleteMeetingTranscript,
 		recordingStatusUpdate,
 		recordingsList,
-	},
-	meetingTranscript: {
-		getMeetingTranscript,
 	},
 	devices: {
 		listDevices,
@@ -9923,6 +9919,10 @@ export const operationsByTag = {
 		getMeetingLiveStreamDetails,
 		meetingLiveStreamUpdate,
 		meetingLiveStreamStatusUpdate,
+	},
+	meetingTranscript: {
+		getMeetingTranscript,
+		deleteMeetingTranscript,
 	},
 	meetings: {
 		meetingRTMSStatusUpdate,
@@ -10094,13 +10094,10 @@ export const tagDictionary = {
 			"recordingSettingUpdate",
 			"recordingsList",
 		],
-		DELETE: ["recordingDelete", "recordingDeleteOne", "deleteMeetingTranscript"],
+		DELETE: ["recordingDelete", "recordingDeleteOne"],
 		POST: ["meetingRecordingRegistrantCreate"],
 		PATCH: ["recordingRegistrantQuestionUpdate", "recordingSettingsUpdate"],
 		PUT: ["meetingRecordingRegistrantStatus", "recordingStatusUpdateOne", "recordingStatusUpdate"],
-	},
-	meetingTranscript: {
-		GET: ["getMeetingTranscript"],
 	},
 	devices: {
 		GET: [
@@ -10144,6 +10141,10 @@ export const tagDictionary = {
 	liveStreaming: {
 		GET: ["meetingLiveStreamingJoinToken", "getMeetingLiveStreamDetails"],
 		PATCH: ["meetingLiveStreamUpdate", "meetingLiveStreamStatusUpdate"],
+	},
+	meetingTranscript: {
+		GET: ["getMeetingTranscript"],
+		DELETE: ["deleteMeetingTranscript"],
 	},
 	meetings: {
 		PATCH: ["meetingRTMSStatusUpdate", "meetingUpdate"],
