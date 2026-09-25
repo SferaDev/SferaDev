@@ -34833,6 +34833,846 @@ export const getByTeamSlugByProjectSlugByRepositoryNameTagsListErrorSchema = z.u
 	getByTeamSlugByProjectSlugByRepositoryNameTagsListStatus410Schema,
 ]);
 
+export const listVercelCiInvocationsQueryProviderSchema = z
+	.enum(["github", "gitlab", "bitbucket", "vercel"])
+	.optional()
+	.describe('Repository provider (e.g., \\"github\\").');
+
+export const listVercelCiInvocationsQueryRepositorySchema = z
+	.string()
+	.optional()
+	.describe('Repository slug (e.g., \\"vercel/next.js\\").');
+
+export const listVercelCiInvocationsQueryBranchNameSchema = z
+	.string()
+	.optional()
+	.describe('Branch name (e.g., \\"main\\").');
+
+export const listVercelCiInvocationsQuerySnapshotSchema = z
+	.string()
+	.optional()
+	.describe("Snapshot/commit hash.");
+
+export const listVercelCiInvocationsQueryStatusSchema = z
+	.array(
+		z.enum([
+			"new",
+			"skipped",
+			"bootstrapping",
+			"bootstrapping_failed",
+			"snapshotted",
+			"sandbox_named",
+			"jobs_on_hive_clone_dispatched",
+			"jobs_on_hive_dispatched",
+			"jobs_on_hive_completed",
+			"jobs_on_hive_failed",
+			"awaiting_jobs",
+			"completed",
+		]),
+	)
+	.min(1)
+	.optional();
+
+export const listVercelCiInvocationsQueryConclusionSchema = z
+	.array(z.enum(["succeeded", "failed", "skipped"]))
+	.min(1)
+	.optional();
+
+export const listVercelCiInvocationsQuerySourceSchema = z
+	.array(z.enum(["vercel-ci", "vercel-native-checks"]))
+	.min(1)
+	.optional();
+
+export const listVercelCiInvocationsQueryAuthorGitHubIdSchema = z.string().optional();
+
+export const listVercelCiInvocationsQueryAuthorSchema = z
+	.string()
+	.optional()
+	.describe("GitHub author login.");
+
+export const listVercelCiInvocationsQueryCreatedAfterSchema = z.number().optional();
+
+export const listVercelCiInvocationsQueryCreatedBeforeSchema = z.number().optional();
+
+export const listVercelCiInvocationsQueryLimitSchema = z
+	.number()
+	.optional()
+	.describe("Number of results per page (default: 20, max: 100).");
+
+export const listVercelCiInvocationsQueryCursorSchema = z
+	.string()
+	.optional()
+	.describe("Pagination cursor from a previous response.");
+
+export const listVercelCiInvocationsQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe("The Team identifier to perform the request on behalf of.")
+	.meta({ examples: ["team_1a2b3c4d5e6f7g8h9i0j1k2l"] });
+
+export const listVercelCiInvocationsQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.")
+	.meta({ examples: ["my-team-url-slug"] });
+
+export const listVercelCiInvocationsStatus200Schema = z.unknown();
+
+export const listVercelCiInvocationsStatus400Schema = z.unknown();
+
+export const listVercelCiInvocationsStatus401Schema = z.unknown();
+
+export const listVercelCiInvocationsStatus403Schema = z.unknown();
+
+export const listVercelCiInvocationsStatus410Schema = z.unknown();
+
+export const listVercelCiInvocationsStatus429Schema = z.unknown();
+
+export const listVercelCiInvocationsStatus500Schema = z.unknown();
+
+export const listVercelCiInvocationsStatus503Schema = z.unknown();
+
+export const listVercelCiInvocationsResponseSchema = listVercelCiInvocationsStatus200Schema;
+
+export const listVercelCiInvocationsErrorSchema = z.union([
+	listVercelCiInvocationsStatus400Schema,
+	listVercelCiInvocationsStatus401Schema,
+	listVercelCiInvocationsStatus403Schema,
+	listVercelCiInvocationsStatus410Schema,
+	listVercelCiInvocationsStatus429Schema,
+	listVercelCiInvocationsStatus500Schema,
+	listVercelCiInvocationsStatus503Schema,
+]);
+
+export const listVercelCiInvocationAttemptsPathInvocationIdSchema = z.string();
+
+export const listVercelCiInvocationAttemptsQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe("The Team identifier to perform the request on behalf of.")
+	.meta({ examples: ["team_1a2b3c4d5e6f7g8h9i0j1k2l"] });
+
+export const listVercelCiInvocationAttemptsQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.")
+	.meta({ examples: ["my-team-url-slug"] });
+
+export const listVercelCiInvocationAttemptsStatus200Schema = z.unknown();
+
+export const listVercelCiInvocationAttemptsStatus400Schema = z.unknown();
+
+export const listVercelCiInvocationAttemptsStatus401Schema = z.unknown();
+
+export const listVercelCiInvocationAttemptsStatus403Schema = z.unknown();
+
+export const listVercelCiInvocationAttemptsStatus404Schema = z.unknown();
+
+export const listVercelCiInvocationAttemptsStatus410Schema = z.unknown();
+
+export const listVercelCiInvocationAttemptsStatus429Schema = z.unknown();
+
+export const listVercelCiInvocationAttemptsStatus500Schema = z.unknown();
+
+export const listVercelCiInvocationAttemptsResponseSchema =
+	listVercelCiInvocationAttemptsStatus200Schema;
+
+export const listVercelCiInvocationAttemptsErrorSchema = z.union([
+	listVercelCiInvocationAttemptsStatus400Schema,
+	listVercelCiInvocationAttemptsStatus401Schema,
+	listVercelCiInvocationAttemptsStatus403Schema,
+	listVercelCiInvocationAttemptsStatus404Schema,
+	listVercelCiInvocationAttemptsStatus410Schema,
+	listVercelCiInvocationAttemptsStatus429Schema,
+	listVercelCiInvocationAttemptsStatus500Schema,
+]);
+
+export const getVercelCiInvocationTreePathInvocationIdSchema = z.string();
+
+export const getVercelCiInvocationTreeQueryAttemptSchema = z
+	.string()
+	.regex(/^[1-9][0-9]*$/)
+	.optional()
+	.describe("Invocation attempt to return. Defaults to the latest attempt.");
+
+export const getVercelCiInvocationTreeQueryFollowSchema = z
+	.union([z.literal(0), z.literal(1)])
+	.optional()
+	.describe("When 1, stream the tree as newline-delimited JSON until the attempt finishes.");
+
+export const getVercelCiInvocationTreeQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe("The Team identifier to perform the request on behalf of.")
+	.meta({ examples: ["team_1a2b3c4d5e6f7g8h9i0j1k2l"] });
+
+export const getVercelCiInvocationTreeQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.")
+	.meta({ examples: ["my-team-url-slug"] });
+
+export const getVercelCiInvocationTreeStatus200Schema = z.unknown();
+
+export const getVercelCiInvocationTreeStatus400Schema = z.unknown();
+
+export const getVercelCiInvocationTreeStatus401Schema = z.unknown();
+
+export const getVercelCiInvocationTreeStatus403Schema = z.unknown();
+
+export const getVercelCiInvocationTreeStatus404Schema = z.unknown();
+
+export const getVercelCiInvocationTreeStatus410Schema = z.unknown();
+
+export const getVercelCiInvocationTreeStatus429Schema = z.unknown();
+
+export const getVercelCiInvocationTreeStatus500Schema = z.unknown();
+
+export const getVercelCiInvocationTreeResponseSchema = getVercelCiInvocationTreeStatus200Schema;
+
+export const getVercelCiInvocationTreeErrorSchema = z.union([
+	getVercelCiInvocationTreeStatus400Schema,
+	getVercelCiInvocationTreeStatus401Schema,
+	getVercelCiInvocationTreeStatus403Schema,
+	getVercelCiInvocationTreeStatus404Schema,
+	getVercelCiInvocationTreeStatus410Schema,
+	getVercelCiInvocationTreeStatus429Schema,
+	getVercelCiInvocationTreeStatus500Schema,
+]);
+
+export const getVercelCiInvocationPathInvocationIdSchema = z.string();
+
+export const getVercelCiInvocationPathAttemptSchema = z.string();
+
+export const getVercelCiInvocationQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe("The Team identifier to perform the request on behalf of.")
+	.meta({ examples: ["team_1a2b3c4d5e6f7g8h9i0j1k2l"] });
+
+export const getVercelCiInvocationQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.")
+	.meta({ examples: ["my-team-url-slug"] });
+
+export const getVercelCiInvocationStatus200Schema = z.unknown();
+
+export const getVercelCiInvocationStatus400Schema = z.unknown();
+
+export const getVercelCiInvocationStatus401Schema = z.unknown();
+
+export const getVercelCiInvocationStatus403Schema = z.unknown();
+
+export const getVercelCiInvocationStatus404Schema = z.unknown();
+
+export const getVercelCiInvocationStatus410Schema = z.unknown();
+
+export const getVercelCiInvocationStatus429Schema = z.unknown();
+
+export const getVercelCiInvocationStatus500Schema = z.unknown();
+
+export const getVercelCiInvocationResponseSchema = getVercelCiInvocationStatus200Schema;
+
+export const getVercelCiInvocationErrorSchema = z.union([
+	getVercelCiInvocationStatus400Schema,
+	getVercelCiInvocationStatus401Schema,
+	getVercelCiInvocationStatus403Schema,
+	getVercelCiInvocationStatus404Schema,
+	getVercelCiInvocationStatus410Schema,
+	getVercelCiInvocationStatus429Schema,
+	getVercelCiInvocationStatus500Schema,
+]);
+
+export const retryVercelCiInvocationPathInvocationIdSchema = z.string();
+
+export const retryVercelCiInvocationPathAttemptSchema = z.string();
+
+export const retryVercelCiInvocationQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe("The Team identifier to perform the request on behalf of.")
+	.meta({ examples: ["team_1a2b3c4d5e6f7g8h9i0j1k2l"] });
+
+export const retryVercelCiInvocationQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.")
+	.meta({ examples: ["my-team-url-slug"] });
+
+export const retryVercelCiInvocationStatus200Schema = z.unknown();
+
+export const retryVercelCiInvocationStatus400Schema = z.unknown();
+
+export const retryVercelCiInvocationStatus401Schema = z.unknown();
+
+export const retryVercelCiInvocationStatus403Schema = z.unknown();
+
+export const retryVercelCiInvocationStatus404Schema = z.unknown();
+
+export const retryVercelCiInvocationStatus409Schema = z.unknown();
+
+export const retryVercelCiInvocationStatus410Schema = z.unknown();
+
+export const retryVercelCiInvocationStatus429Schema = z.unknown();
+
+export const retryVercelCiInvocationStatus500Schema = z.unknown();
+
+export const retryVercelCiInvocationResponseSchema = retryVercelCiInvocationStatus200Schema;
+
+export const retryVercelCiInvocationErrorSchema = z.union([
+	retryVercelCiInvocationStatus400Schema,
+	retryVercelCiInvocationStatus401Schema,
+	retryVercelCiInvocationStatus403Schema,
+	retryVercelCiInvocationStatus404Schema,
+	retryVercelCiInvocationStatus409Schema,
+	retryVercelCiInvocationStatus410Schema,
+	retryVercelCiInvocationStatus429Schema,
+	retryVercelCiInvocationStatus500Schema,
+]);
+
+export const listVercelCiJobDefinitionsPathInvocationIdSchema = z.string();
+
+export const listVercelCiJobDefinitionsPathAttemptSchema = z.string();
+
+export const listVercelCiJobDefinitionsQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe("The Team identifier to perform the request on behalf of.")
+	.meta({ examples: ["team_1a2b3c4d5e6f7g8h9i0j1k2l"] });
+
+export const listVercelCiJobDefinitionsQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.")
+	.meta({ examples: ["my-team-url-slug"] });
+
+export const listVercelCiJobDefinitionsStatus200Schema = z.unknown();
+
+export const listVercelCiJobDefinitionsStatus400Schema = z.unknown();
+
+export const listVercelCiJobDefinitionsStatus401Schema = z.unknown();
+
+export const listVercelCiJobDefinitionsStatus403Schema = z.unknown();
+
+export const listVercelCiJobDefinitionsStatus404Schema = z.unknown();
+
+export const listVercelCiJobDefinitionsStatus410Schema = z.unknown();
+
+export const listVercelCiJobDefinitionsStatus429Schema = z.unknown();
+
+export const listVercelCiJobDefinitionsStatus500Schema = z.unknown();
+
+export const listVercelCiJobDefinitionsResponseSchema = listVercelCiJobDefinitionsStatus200Schema;
+
+export const listVercelCiJobDefinitionsErrorSchema = z.union([
+	listVercelCiJobDefinitionsStatus400Schema,
+	listVercelCiJobDefinitionsStatus401Schema,
+	listVercelCiJobDefinitionsStatus403Schema,
+	listVercelCiJobDefinitionsStatus404Schema,
+	listVercelCiJobDefinitionsStatus410Schema,
+	listVercelCiJobDefinitionsStatus429Schema,
+	listVercelCiJobDefinitionsStatus500Schema,
+]);
+
+export const getVercelCiJobDefinitionPathInvocationIdSchema = z.string();
+
+export const getVercelCiJobDefinitionPathAttemptSchema = z.string();
+
+export const getVercelCiJobDefinitionPathJobDefinitionIdSchema = z.string();
+
+export const getVercelCiJobDefinitionQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe("The Team identifier to perform the request on behalf of.")
+	.meta({ examples: ["team_1a2b3c4d5e6f7g8h9i0j1k2l"] });
+
+export const getVercelCiJobDefinitionQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.")
+	.meta({ examples: ["my-team-url-slug"] });
+
+export const getVercelCiJobDefinitionStatus200Schema = z.unknown();
+
+export const getVercelCiJobDefinitionStatus400Schema = z.unknown();
+
+export const getVercelCiJobDefinitionStatus401Schema = z.unknown();
+
+export const getVercelCiJobDefinitionStatus403Schema = z.unknown();
+
+export const getVercelCiJobDefinitionStatus404Schema = z.unknown();
+
+export const getVercelCiJobDefinitionStatus410Schema = z.unknown();
+
+export const getVercelCiJobDefinitionStatus429Schema = z.unknown();
+
+export const getVercelCiJobDefinitionStatus500Schema = z.unknown();
+
+export const getVercelCiJobDefinitionResponseSchema = getVercelCiJobDefinitionStatus200Schema;
+
+export const getVercelCiJobDefinitionErrorSchema = z.union([
+	getVercelCiJobDefinitionStatus400Schema,
+	getVercelCiJobDefinitionStatus401Schema,
+	getVercelCiJobDefinitionStatus403Schema,
+	getVercelCiJobDefinitionStatus404Schema,
+	getVercelCiJobDefinitionStatus410Schema,
+	getVercelCiJobDefinitionStatus429Schema,
+	getVercelCiJobDefinitionStatus500Schema,
+]);
+
+export const listVercelCiJobRunsPathInvocationIdSchema = z.string();
+
+export const listVercelCiJobRunsPathAttemptSchema = z.string();
+
+export const listVercelCiJobRunsPathJobDefinitionIdSchema = z.string();
+
+export const listVercelCiJobRunsQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe("The Team identifier to perform the request on behalf of.")
+	.meta({ examples: ["team_1a2b3c4d5e6f7g8h9i0j1k2l"] });
+
+export const listVercelCiJobRunsQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.")
+	.meta({ examples: ["my-team-url-slug"] });
+
+export const listVercelCiJobRunsStatus200Schema = z.unknown();
+
+export const listVercelCiJobRunsStatus400Schema = z.unknown();
+
+export const listVercelCiJobRunsStatus401Schema = z.unknown();
+
+export const listVercelCiJobRunsStatus403Schema = z.unknown();
+
+export const listVercelCiJobRunsStatus404Schema = z.unknown();
+
+export const listVercelCiJobRunsStatus410Schema = z.unknown();
+
+export const listVercelCiJobRunsStatus429Schema = z.unknown();
+
+export const listVercelCiJobRunsStatus500Schema = z.unknown();
+
+export const listVercelCiJobRunsResponseSchema = listVercelCiJobRunsStatus200Schema;
+
+export const listVercelCiJobRunsErrorSchema = z.union([
+	listVercelCiJobRunsStatus400Schema,
+	listVercelCiJobRunsStatus401Schema,
+	listVercelCiJobRunsStatus403Schema,
+	listVercelCiJobRunsStatus404Schema,
+	listVercelCiJobRunsStatus410Schema,
+	listVercelCiJobRunsStatus429Schema,
+	listVercelCiJobRunsStatus500Schema,
+]);
+
+export const getVercelCiJobRunPathInvocationIdSchema = z.string();
+
+export const getVercelCiJobRunPathAttemptSchema = z.string();
+
+export const getVercelCiJobRunPathJobDefinitionIdSchema = z.string();
+
+export const getVercelCiJobRunPathRunAttemptSchema = z.string();
+
+export const getVercelCiJobRunQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe("The Team identifier to perform the request on behalf of.")
+	.meta({ examples: ["team_1a2b3c4d5e6f7g8h9i0j1k2l"] });
+
+export const getVercelCiJobRunQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.")
+	.meta({ examples: ["my-team-url-slug"] });
+
+export const getVercelCiJobRunStatus200Schema = z.unknown();
+
+export const getVercelCiJobRunStatus400Schema = z.unknown();
+
+export const getVercelCiJobRunStatus401Schema = z.unknown();
+
+export const getVercelCiJobRunStatus403Schema = z.unknown();
+
+export const getVercelCiJobRunStatus404Schema = z.unknown();
+
+export const getVercelCiJobRunStatus410Schema = z.unknown();
+
+export const getVercelCiJobRunStatus429Schema = z.unknown();
+
+export const getVercelCiJobRunStatus500Schema = z.unknown();
+
+export const getVercelCiJobRunResponseSchema = getVercelCiJobRunStatus200Schema;
+
+export const getVercelCiJobRunErrorSchema = z.union([
+	getVercelCiJobRunStatus400Schema,
+	getVercelCiJobRunStatus401Schema,
+	getVercelCiJobRunStatus403Schema,
+	getVercelCiJobRunStatus404Schema,
+	getVercelCiJobRunStatus410Schema,
+	getVercelCiJobRunStatus429Schema,
+	getVercelCiJobRunStatus500Schema,
+]);
+
+export const listVercelCiTaskDefinitionsPathInvocationIdSchema = z.string();
+
+export const listVercelCiTaskDefinitionsPathAttemptSchema = z.string();
+
+export const listVercelCiTaskDefinitionsPathJobDefinitionIdSchema = z.string();
+
+export const listVercelCiTaskDefinitionsPathRunAttemptSchema = z.string();
+
+export const listVercelCiTaskDefinitionsQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe("The Team identifier to perform the request on behalf of.")
+	.meta({ examples: ["team_1a2b3c4d5e6f7g8h9i0j1k2l"] });
+
+export const listVercelCiTaskDefinitionsQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.")
+	.meta({ examples: ["my-team-url-slug"] });
+
+export const listVercelCiTaskDefinitionsStatus200Schema = z.unknown();
+
+export const listVercelCiTaskDefinitionsStatus400Schema = z.unknown();
+
+export const listVercelCiTaskDefinitionsStatus401Schema = z.unknown();
+
+export const listVercelCiTaskDefinitionsStatus403Schema = z.unknown();
+
+export const listVercelCiTaskDefinitionsStatus404Schema = z.unknown();
+
+export const listVercelCiTaskDefinitionsStatus410Schema = z.unknown();
+
+export const listVercelCiTaskDefinitionsStatus429Schema = z.unknown();
+
+export const listVercelCiTaskDefinitionsStatus500Schema = z.unknown();
+
+export const listVercelCiTaskDefinitionsResponseSchema = listVercelCiTaskDefinitionsStatus200Schema;
+
+export const listVercelCiTaskDefinitionsErrorSchema = z.union([
+	listVercelCiTaskDefinitionsStatus400Schema,
+	listVercelCiTaskDefinitionsStatus401Schema,
+	listVercelCiTaskDefinitionsStatus403Schema,
+	listVercelCiTaskDefinitionsStatus404Schema,
+	listVercelCiTaskDefinitionsStatus410Schema,
+	listVercelCiTaskDefinitionsStatus429Schema,
+	listVercelCiTaskDefinitionsStatus500Schema,
+]);
+
+export const listVercelCiTaskRunsPathInvocationIdSchema = z.string();
+
+export const listVercelCiTaskRunsPathAttemptSchema = z.string();
+
+export const listVercelCiTaskRunsPathJobDefinitionIdSchema = z.string();
+
+export const listVercelCiTaskRunsPathRunAttemptSchema = z.string();
+
+export const listVercelCiTaskRunsQueryTaskRunAttemptSchema = z.string().optional();
+
+export const listVercelCiTaskRunsQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe("The Team identifier to perform the request on behalf of.")
+	.meta({ examples: ["team_1a2b3c4d5e6f7g8h9i0j1k2l"] });
+
+export const listVercelCiTaskRunsQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.")
+	.meta({ examples: ["my-team-url-slug"] });
+
+export const listVercelCiTaskRunsStatus200Schema = z.unknown();
+
+export const listVercelCiTaskRunsStatus400Schema = z.unknown();
+
+export const listVercelCiTaskRunsStatus401Schema = z.unknown();
+
+export const listVercelCiTaskRunsStatus403Schema = z.unknown();
+
+export const listVercelCiTaskRunsStatus404Schema = z.unknown();
+
+export const listVercelCiTaskRunsStatus410Schema = z.unknown();
+
+export const listVercelCiTaskRunsStatus429Schema = z.unknown();
+
+export const listVercelCiTaskRunsStatus500Schema = z.unknown();
+
+export const listVercelCiTaskRunsResponseSchema = listVercelCiTaskRunsStatus200Schema;
+
+export const listVercelCiTaskRunsErrorSchema = z.union([
+	listVercelCiTaskRunsStatus400Schema,
+	listVercelCiTaskRunsStatus401Schema,
+	listVercelCiTaskRunsStatus403Schema,
+	listVercelCiTaskRunsStatus404Schema,
+	listVercelCiTaskRunsStatus410Schema,
+	listVercelCiTaskRunsStatus429Schema,
+	listVercelCiTaskRunsStatus500Schema,
+]);
+
+export const getVercelCiInvocationLogsPathInvocationIdSchema = z.string();
+
+export const getVercelCiInvocationLogsPathAttemptSchema = z.string();
+
+export const getVercelCiInvocationLogsQueryLevelSchema = z
+	.array(z.enum(["trace", "debug", "command", "info", "warn", "error", "systemError", "fatal"]))
+	.min(1)
+	.refine((items) => new Set(items).size === items.length, {
+		message: "Array entries must be unique",
+	})
+	.optional()
+	.describe("Only return log lines with one of these levels.");
+
+export const getVercelCiInvocationLogsQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe("The Team identifier to perform the request on behalf of.")
+	.meta({ examples: ["team_1a2b3c4d5e6f7g8h9i0j1k2l"] });
+
+export const getVercelCiInvocationLogsQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.")
+	.meta({ examples: ["my-team-url-slug"] });
+
+export const getVercelCiInvocationLogsStatus200Schema = z.unknown();
+
+export const getVercelCiInvocationLogsStatus400Schema = z.unknown();
+
+export const getVercelCiInvocationLogsStatus401Schema = z.unknown();
+
+export const getVercelCiInvocationLogsStatus403Schema = z.unknown();
+
+export const getVercelCiInvocationLogsStatus404Schema = z.unknown();
+
+export const getVercelCiInvocationLogsStatus410Schema = z.unknown();
+
+export const getVercelCiInvocationLogsStatus429Schema = z.unknown();
+
+export const getVercelCiInvocationLogsStatus500Schema = z.unknown();
+
+export const getVercelCiInvocationLogsResponseSchema = getVercelCiInvocationLogsStatus200Schema;
+
+export const getVercelCiInvocationLogsErrorSchema = z.union([
+	getVercelCiInvocationLogsStatus400Schema,
+	getVercelCiInvocationLogsStatus401Schema,
+	getVercelCiInvocationLogsStatus403Schema,
+	getVercelCiInvocationLogsStatus404Schema,
+	getVercelCiInvocationLogsStatus410Schema,
+	getVercelCiInvocationLogsStatus429Schema,
+	getVercelCiInvocationLogsStatus500Schema,
+]);
+
+export const getVercelCiTaskLogsPathInvocationIdSchema = z.string();
+
+export const getVercelCiTaskLogsPathAttemptSchema = z.string();
+
+export const getVercelCiTaskLogsQueryTaskSchema = z
+	.array(z.string())
+	.min(1)
+	.refine((items) => new Set(items).size === items.length, {
+		message: "Array entries must be unique",
+	})
+	.optional()
+	.describe('Only return tasks with one of these names (e.g., \\"web#test\\").');
+
+export const getVercelCiTaskLogsQueryConclusionSchema = z
+	.array(z.enum(["succeeded", "cached", "failed", "skipped"]))
+	.min(1)
+	.refine((items) => new Set(items).size === items.length, {
+		message: "Array entries must be unique",
+	})
+	.optional()
+	.describe("Only return completed tasks with one of these conclusions.");
+
+export const getVercelCiTaskLogsQueryLevelSchema = z
+	.array(z.enum(["trace", "debug", "command", "info", "warn", "error", "systemError", "fatal"]))
+	.min(1)
+	.refine((items) => new Set(items).size === items.length, {
+		message: "Array entries must be unique",
+	})
+	.optional()
+	.describe("Only return log lines with one of these levels.");
+
+export const getVercelCiTaskLogsQueryLimitSchema = z
+	.number()
+	.optional()
+	.describe("Maximum number of tasks to return (default: 10, max: 25).");
+
+export const getVercelCiTaskLogsQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe("The Team identifier to perform the request on behalf of.")
+	.meta({ examples: ["team_1a2b3c4d5e6f7g8h9i0j1k2l"] });
+
+export const getVercelCiTaskLogsQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.")
+	.meta({ examples: ["my-team-url-slug"] });
+
+export const getVercelCiTaskLogsStatus200Schema = z.unknown();
+
+export const getVercelCiTaskLogsStatus400Schema = z.unknown();
+
+export const getVercelCiTaskLogsStatus401Schema = z.unknown();
+
+export const getVercelCiTaskLogsStatus403Schema = z.unknown();
+
+export const getVercelCiTaskLogsStatus404Schema = z.unknown();
+
+export const getVercelCiTaskLogsStatus410Schema = z.unknown();
+
+export const getVercelCiTaskLogsStatus429Schema = z.unknown();
+
+export const getVercelCiTaskLogsStatus500Schema = z.unknown();
+
+export const getVercelCiTaskLogsResponseSchema = getVercelCiTaskLogsStatus200Schema;
+
+export const getVercelCiTaskLogsErrorSchema = z.union([
+	getVercelCiTaskLogsStatus400Schema,
+	getVercelCiTaskLogsStatus401Schema,
+	getVercelCiTaskLogsStatus403Schema,
+	getVercelCiTaskLogsStatus404Schema,
+	getVercelCiTaskLogsStatus410Schema,
+	getVercelCiTaskLogsStatus429Schema,
+	getVercelCiTaskLogsStatus500Schema,
+]);
+
+export const getVercelCiJobRunLogsPathInvocationIdSchema = z.string();
+
+export const getVercelCiJobRunLogsPathAttemptSchema = z.string();
+
+export const getVercelCiJobRunLogsPathJobDefinitionIdSchema = z.string();
+
+export const getVercelCiJobRunLogsPathRunAttemptSchema = z.string();
+
+export const getVercelCiJobRunLogsQueryFollowSchema = z
+	.union([z.literal(0), z.literal(1)])
+	.optional();
+
+export const getVercelCiJobRunLogsQuerySinceSchema = z.number().optional();
+
+export const getVercelCiJobRunLogsQueryLevelSchema = z
+	.array(z.enum(["trace", "debug", "command", "info", "warn", "error", "systemError", "fatal"]))
+	.min(1)
+	.refine((items) => new Set(items).size === items.length, {
+		message: "Array entries must be unique",
+	})
+	.optional()
+	.describe("Only return log lines with one of these levels.");
+
+export const getVercelCiJobRunLogsQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe("The Team identifier to perform the request on behalf of.")
+	.meta({ examples: ["team_1a2b3c4d5e6f7g8h9i0j1k2l"] });
+
+export const getVercelCiJobRunLogsQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.")
+	.meta({ examples: ["my-team-url-slug"] });
+
+export const getVercelCiJobRunLogsStatus200Schema = z.unknown();
+
+export const getVercelCiJobRunLogsStatus400Schema = z.unknown();
+
+export const getVercelCiJobRunLogsStatus401Schema = z.unknown();
+
+export const getVercelCiJobRunLogsStatus403Schema = z.unknown();
+
+export const getVercelCiJobRunLogsStatus404Schema = z.unknown();
+
+export const getVercelCiJobRunLogsStatus410Schema = z.unknown();
+
+export const getVercelCiJobRunLogsStatus429Schema = z.unknown();
+
+export const getVercelCiJobRunLogsStatus500Schema = z.unknown();
+
+export const getVercelCiJobRunLogsResponseSchema = getVercelCiJobRunLogsStatus200Schema;
+
+export const getVercelCiJobRunLogsErrorSchema = z.union([
+	getVercelCiJobRunLogsStatus400Schema,
+	getVercelCiJobRunLogsStatus401Schema,
+	getVercelCiJobRunLogsStatus403Schema,
+	getVercelCiJobRunLogsStatus404Schema,
+	getVercelCiJobRunLogsStatus410Schema,
+	getVercelCiJobRunLogsStatus429Schema,
+	getVercelCiJobRunLogsStatus500Schema,
+]);
+
+export const getVercelCiTaskRunLogsPathInvocationIdSchema = z.string();
+
+export const getVercelCiTaskRunLogsPathAttemptSchema = z.string();
+
+export const getVercelCiTaskRunLogsPathJobDefinitionIdSchema = z.string();
+
+export const getVercelCiTaskRunLogsPathRunAttemptSchema = z.string();
+
+export const getVercelCiTaskRunLogsPathTaskDefinitionIdSchema = z.string();
+
+export const getVercelCiTaskRunLogsPathTaskRunAttemptSchema = z.string();
+
+export const getVercelCiTaskRunLogsQueryFollowSchema = z
+	.union([z.literal(0), z.literal(1)])
+	.optional()
+	.describe("When 1, stream log lines as newline-delimited JSON until the task run finishes.");
+
+export const getVercelCiTaskRunLogsQuerySinceSchema = z.number().optional();
+
+export const getVercelCiTaskRunLogsQueryLevelSchema = z
+	.array(z.enum(["trace", "debug", "command", "info", "warn", "error", "systemError", "fatal"]))
+	.min(1)
+	.refine((items) => new Set(items).size === items.length, {
+		message: "Array entries must be unique",
+	})
+	.optional()
+	.describe("Only return log lines with one of these levels.");
+
+export const getVercelCiTaskRunLogsQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe("The Team identifier to perform the request on behalf of.")
+	.meta({ examples: ["team_1a2b3c4d5e6f7g8h9i0j1k2l"] });
+
+export const getVercelCiTaskRunLogsQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.")
+	.meta({ examples: ["my-team-url-slug"] });
+
+export const getVercelCiTaskRunLogsStatus200Schema = z.unknown();
+
+export const getVercelCiTaskRunLogsStatus400Schema = z.unknown();
+
+export const getVercelCiTaskRunLogsStatus401Schema = z.unknown();
+
+export const getVercelCiTaskRunLogsStatus403Schema = z.unknown();
+
+export const getVercelCiTaskRunLogsStatus404Schema = z.unknown();
+
+export const getVercelCiTaskRunLogsStatus410Schema = z.unknown();
+
+export const getVercelCiTaskRunLogsStatus429Schema = z.unknown();
+
+export const getVercelCiTaskRunLogsStatus500Schema = z.unknown();
+
+export const getVercelCiTaskRunLogsResponseSchema = getVercelCiTaskRunLogsStatus200Schema;
+
+export const getVercelCiTaskRunLogsErrorSchema = z.union([
+	getVercelCiTaskRunLogsStatus400Schema,
+	getVercelCiTaskRunLogsStatus401Schema,
+	getVercelCiTaskRunLogsStatus403Schema,
+	getVercelCiTaskRunLogsStatus404Schema,
+	getVercelCiTaskRunLogsStatus410Schema,
+	getVercelCiTaskRunLogsStatus429Schema,
+	getVercelCiTaskRunLogsStatus500Schema,
+]);
+
 export const createWebInsightsToggleQueryProjectIdSchema = z.string();
 
 export const createWebInsightsToggleStatus200Schema = z.unknown();

@@ -46629,6 +46629,1253 @@ export type GetByTeamSlugByProjectSlugByRepositoryNameTagsListResponse =
 	| GetByTeamSlugByProjectSlugByRepositoryNameTagsListStatus404
 	| GetByTeamSlugByProjectSlugByRepositoryNameTagsListStatus410;
 
+export const listVercelCiInvocationsProvider = {
+	github: "github",
+	gitlab: "gitlab",
+	bitbucket: "bitbucket",
+	vercel: "vercel",
+} as const;
+
+export type ListVercelCiInvocationsProviderKey =
+	(typeof listVercelCiInvocationsProvider)[keyof typeof listVercelCiInvocationsProvider];
+
+export const listVercelCiInvocationsStatusEnum = {
+	new: "new",
+	skipped: "skipped",
+	bootstrapping: "bootstrapping",
+	bootstrapping_failed: "bootstrapping_failed",
+	snapshotted: "snapshotted",
+	sandbox_named: "sandbox_named",
+	jobs_on_hive_clone_dispatched: "jobs_on_hive_clone_dispatched",
+	jobs_on_hive_dispatched: "jobs_on_hive_dispatched",
+	jobs_on_hive_completed: "jobs_on_hive_completed",
+	jobs_on_hive_failed: "jobs_on_hive_failed",
+	awaiting_jobs: "awaiting_jobs",
+	completed: "completed",
+} as const;
+
+export type ListVercelCiInvocationsStatusEnumKey =
+	(typeof listVercelCiInvocationsStatusEnum)[keyof typeof listVercelCiInvocationsStatusEnum];
+
+export const listVercelCiInvocationsConclusionEnum = {
+	succeeded: "succeeded",
+	failed: "failed",
+	skipped: "skipped",
+} as const;
+
+export type ListVercelCiInvocationsConclusionEnumKey =
+	(typeof listVercelCiInvocationsConclusionEnum)[keyof typeof listVercelCiInvocationsConclusionEnum];
+
+export const listVercelCiInvocationsSourceEnum = {
+	"vercel-ci": "vercel-ci",
+	"vercel-native-checks": "vercel-native-checks",
+} as const;
+
+export type ListVercelCiInvocationsSourceEnumKey =
+	(typeof listVercelCiInvocationsSourceEnum)[keyof typeof listVercelCiInvocationsSourceEnum];
+
+export type ListVercelCiInvocationsQuery = {
+	/**
+	 * @description Repository provider (e.g., \\\"github\\\").
+	 * @type string | undefined
+	 */
+	provider?: ListVercelCiInvocationsProviderKey | undefined;
+	/**
+	 * @description Repository slug (e.g., \\\"vercel/next.js\\\").
+	 * @type string | undefined
+	 */
+	repository?: string | undefined;
+	/**
+	 * @description Branch name (e.g., \\\"main\\\").
+	 * @type string | undefined
+	 */
+	branchName?: string | undefined;
+	/**
+	 * @description Snapshot/commit hash.
+	 * @type string | undefined
+	 */
+	snapshot?: string | undefined;
+	status?: ListVercelCiInvocationsStatusEnumKey[] | undefined;
+	conclusion?: ListVercelCiInvocationsConclusionEnumKey[] | undefined;
+	source?: ListVercelCiInvocationsSourceEnumKey[] | undefined;
+	authorGitHubId?: string | undefined;
+	/**
+	 * @description GitHub author login.
+	 * @type string | undefined
+	 */
+	author?: string | undefined;
+	createdAfter?: number | undefined;
+	createdBefore?: number | undefined;
+	/**
+	 * @description Number of results per page (default: 20, max: 100).
+	 * @type number | undefined
+	 */
+	limit?: number | undefined;
+	/**
+	 * @description Pagination cursor from a previous response.
+	 * @type string | undefined
+	 */
+	cursor?: string | undefined;
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @example my-team-url-slug
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type ListVercelCiInvocationsStatus200 = unknown;
+
+export type ListVercelCiInvocationsStatus400 = unknown;
+
+export type ListVercelCiInvocationsStatus401 = unknown;
+
+export type ListVercelCiInvocationsStatus403 = unknown;
+
+export type ListVercelCiInvocationsStatus410 = unknown;
+
+export type ListVercelCiInvocationsStatus429 = unknown;
+
+export type ListVercelCiInvocationsStatus500 = unknown;
+
+export type ListVercelCiInvocationsStatus503 = unknown;
+
+export type ListVercelCiInvocationsOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query?: ListVercelCiInvocationsQuery | undefined;
+	headers?: never | undefined;
+};
+
+export type ListVercelCiInvocationsResponses = {
+	"200": ListVercelCiInvocationsStatus200;
+	"400": ListVercelCiInvocationsStatus400;
+	"401": ListVercelCiInvocationsStatus401;
+	"403": ListVercelCiInvocationsStatus403;
+	"410": ListVercelCiInvocationsStatus410;
+	"429": ListVercelCiInvocationsStatus429;
+	"500": ListVercelCiInvocationsStatus500;
+	"503": ListVercelCiInvocationsStatus503;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type ListVercelCiInvocationsResponse =
+	| ListVercelCiInvocationsStatus200
+	| ListVercelCiInvocationsStatus400
+	| ListVercelCiInvocationsStatus401
+	| ListVercelCiInvocationsStatus403
+	| ListVercelCiInvocationsStatus410
+	| ListVercelCiInvocationsStatus429
+	| ListVercelCiInvocationsStatus500
+	| ListVercelCiInvocationsStatus503;
+
+export type ListVercelCiInvocationAttemptsPath = {
+	invocationId: string;
+};
+
+export type ListVercelCiInvocationAttemptsQuery = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @example my-team-url-slug
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type ListVercelCiInvocationAttemptsStatus200 = unknown;
+
+export type ListVercelCiInvocationAttemptsStatus400 = unknown;
+
+export type ListVercelCiInvocationAttemptsStatus401 = unknown;
+
+export type ListVercelCiInvocationAttemptsStatus403 = unknown;
+
+export type ListVercelCiInvocationAttemptsStatus404 = unknown;
+
+export type ListVercelCiInvocationAttemptsStatus410 = unknown;
+
+export type ListVercelCiInvocationAttemptsStatus429 = unknown;
+
+export type ListVercelCiInvocationAttemptsStatus500 = unknown;
+
+export type ListVercelCiInvocationAttemptsOptions = {
+	body?: never | undefined;
+	path: ListVercelCiInvocationAttemptsPath;
+	query?: ListVercelCiInvocationAttemptsQuery | undefined;
+	headers?: never | undefined;
+};
+
+export type ListVercelCiInvocationAttemptsResponses = {
+	"200": ListVercelCiInvocationAttemptsStatus200;
+	"400": ListVercelCiInvocationAttemptsStatus400;
+	"401": ListVercelCiInvocationAttemptsStatus401;
+	"403": ListVercelCiInvocationAttemptsStatus403;
+	"404": ListVercelCiInvocationAttemptsStatus404;
+	"410": ListVercelCiInvocationAttemptsStatus410;
+	"429": ListVercelCiInvocationAttemptsStatus429;
+	"500": ListVercelCiInvocationAttemptsStatus500;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type ListVercelCiInvocationAttemptsResponse =
+	| ListVercelCiInvocationAttemptsStatus200
+	| ListVercelCiInvocationAttemptsStatus400
+	| ListVercelCiInvocationAttemptsStatus401
+	| ListVercelCiInvocationAttemptsStatus403
+	| ListVercelCiInvocationAttemptsStatus404
+	| ListVercelCiInvocationAttemptsStatus410
+	| ListVercelCiInvocationAttemptsStatus429
+	| ListVercelCiInvocationAttemptsStatus500;
+
+export type GetVercelCiInvocationTreePath = {
+	invocationId: string;
+};
+
+export const getVercelCiInvocationTreeFollow = {
+	"0": 0,
+	"1": 1,
+} as const;
+
+export type GetVercelCiInvocationTreeFollowKey =
+	(typeof getVercelCiInvocationTreeFollow)[keyof typeof getVercelCiInvocationTreeFollow];
+
+export type GetVercelCiInvocationTreeQuery = {
+	/**
+	 * @description Invocation attempt to return. Defaults to the latest attempt.
+	 * @pattern ^[1-9][0-9]*$
+	 * @type string | undefined
+	 */
+	attempt?: string | undefined;
+	/**
+	 * @description When 1, stream the tree as newline-delimited JSON until the attempt finishes.
+	 * @type number | undefined
+	 */
+	follow?: GetVercelCiInvocationTreeFollowKey | undefined;
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @example my-team-url-slug
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type GetVercelCiInvocationTreeStatus200 = unknown;
+
+export type GetVercelCiInvocationTreeStatus400 = unknown;
+
+export type GetVercelCiInvocationTreeStatus401 = unknown;
+
+export type GetVercelCiInvocationTreeStatus403 = unknown;
+
+export type GetVercelCiInvocationTreeStatus404 = unknown;
+
+export type GetVercelCiInvocationTreeStatus410 = unknown;
+
+export type GetVercelCiInvocationTreeStatus429 = unknown;
+
+export type GetVercelCiInvocationTreeStatus500 = unknown;
+
+export type GetVercelCiInvocationTreeOptions = {
+	body?: never | undefined;
+	path: GetVercelCiInvocationTreePath;
+	query?: GetVercelCiInvocationTreeQuery | undefined;
+	headers?: never | undefined;
+};
+
+export type GetVercelCiInvocationTreeResponses = {
+	"200": GetVercelCiInvocationTreeStatus200;
+	"400": GetVercelCiInvocationTreeStatus400;
+	"401": GetVercelCiInvocationTreeStatus401;
+	"403": GetVercelCiInvocationTreeStatus403;
+	"404": GetVercelCiInvocationTreeStatus404;
+	"410": GetVercelCiInvocationTreeStatus410;
+	"429": GetVercelCiInvocationTreeStatus429;
+	"500": GetVercelCiInvocationTreeStatus500;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetVercelCiInvocationTreeResponse =
+	| GetVercelCiInvocationTreeStatus200
+	| GetVercelCiInvocationTreeStatus400
+	| GetVercelCiInvocationTreeStatus401
+	| GetVercelCiInvocationTreeStatus403
+	| GetVercelCiInvocationTreeStatus404
+	| GetVercelCiInvocationTreeStatus410
+	| GetVercelCiInvocationTreeStatus429
+	| GetVercelCiInvocationTreeStatus500;
+
+export type GetVercelCiInvocationPath = {
+	invocationId: string;
+	attempt: string;
+};
+
+export type GetVercelCiInvocationQuery = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @example my-team-url-slug
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type GetVercelCiInvocationStatus200 = unknown;
+
+export type GetVercelCiInvocationStatus400 = unknown;
+
+export type GetVercelCiInvocationStatus401 = unknown;
+
+export type GetVercelCiInvocationStatus403 = unknown;
+
+export type GetVercelCiInvocationStatus404 = unknown;
+
+export type GetVercelCiInvocationStatus410 = unknown;
+
+export type GetVercelCiInvocationStatus429 = unknown;
+
+export type GetVercelCiInvocationStatus500 = unknown;
+
+export type GetVercelCiInvocationOptions = {
+	body?: never | undefined;
+	path: GetVercelCiInvocationPath;
+	query?: GetVercelCiInvocationQuery | undefined;
+	headers?: never | undefined;
+};
+
+export type GetVercelCiInvocationResponses = {
+	"200": GetVercelCiInvocationStatus200;
+	"400": GetVercelCiInvocationStatus400;
+	"401": GetVercelCiInvocationStatus401;
+	"403": GetVercelCiInvocationStatus403;
+	"404": GetVercelCiInvocationStatus404;
+	"410": GetVercelCiInvocationStatus410;
+	"429": GetVercelCiInvocationStatus429;
+	"500": GetVercelCiInvocationStatus500;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetVercelCiInvocationResponse =
+	| GetVercelCiInvocationStatus200
+	| GetVercelCiInvocationStatus400
+	| GetVercelCiInvocationStatus401
+	| GetVercelCiInvocationStatus403
+	| GetVercelCiInvocationStatus404
+	| GetVercelCiInvocationStatus410
+	| GetVercelCiInvocationStatus429
+	| GetVercelCiInvocationStatus500;
+
+export type RetryVercelCiInvocationPath = {
+	invocationId: string;
+	attempt: string;
+};
+
+export type RetryVercelCiInvocationQuery = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @example my-team-url-slug
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type RetryVercelCiInvocationStatus200 = unknown;
+
+export type RetryVercelCiInvocationStatus400 = unknown;
+
+export type RetryVercelCiInvocationStatus401 = unknown;
+
+export type RetryVercelCiInvocationStatus403 = unknown;
+
+export type RetryVercelCiInvocationStatus404 = unknown;
+
+export type RetryVercelCiInvocationStatus409 = unknown;
+
+export type RetryVercelCiInvocationStatus410 = unknown;
+
+export type RetryVercelCiInvocationStatus429 = unknown;
+
+export type RetryVercelCiInvocationStatus500 = unknown;
+
+export type RetryVercelCiInvocationOptions = {
+	body?: never | undefined;
+	path: RetryVercelCiInvocationPath;
+	query?: RetryVercelCiInvocationQuery | undefined;
+	headers?: never | undefined;
+};
+
+export type RetryVercelCiInvocationResponses = {
+	"200": RetryVercelCiInvocationStatus200;
+	"400": RetryVercelCiInvocationStatus400;
+	"401": RetryVercelCiInvocationStatus401;
+	"403": RetryVercelCiInvocationStatus403;
+	"404": RetryVercelCiInvocationStatus404;
+	"409": RetryVercelCiInvocationStatus409;
+	"410": RetryVercelCiInvocationStatus410;
+	"429": RetryVercelCiInvocationStatus429;
+	"500": RetryVercelCiInvocationStatus500;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type RetryVercelCiInvocationResponse =
+	| RetryVercelCiInvocationStatus200
+	| RetryVercelCiInvocationStatus400
+	| RetryVercelCiInvocationStatus401
+	| RetryVercelCiInvocationStatus403
+	| RetryVercelCiInvocationStatus404
+	| RetryVercelCiInvocationStatus409
+	| RetryVercelCiInvocationStatus410
+	| RetryVercelCiInvocationStatus429
+	| RetryVercelCiInvocationStatus500;
+
+export type ListVercelCiJobDefinitionsPath = {
+	invocationId: string;
+	attempt: string;
+};
+
+export type ListVercelCiJobDefinitionsQuery = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @example my-team-url-slug
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type ListVercelCiJobDefinitionsStatus200 = unknown;
+
+export type ListVercelCiJobDefinitionsStatus400 = unknown;
+
+export type ListVercelCiJobDefinitionsStatus401 = unknown;
+
+export type ListVercelCiJobDefinitionsStatus403 = unknown;
+
+export type ListVercelCiJobDefinitionsStatus404 = unknown;
+
+export type ListVercelCiJobDefinitionsStatus410 = unknown;
+
+export type ListVercelCiJobDefinitionsStatus429 = unknown;
+
+export type ListVercelCiJobDefinitionsStatus500 = unknown;
+
+export type ListVercelCiJobDefinitionsOptions = {
+	body?: never | undefined;
+	path: ListVercelCiJobDefinitionsPath;
+	query?: ListVercelCiJobDefinitionsQuery | undefined;
+	headers?: never | undefined;
+};
+
+export type ListVercelCiJobDefinitionsResponses = {
+	"200": ListVercelCiJobDefinitionsStatus200;
+	"400": ListVercelCiJobDefinitionsStatus400;
+	"401": ListVercelCiJobDefinitionsStatus401;
+	"403": ListVercelCiJobDefinitionsStatus403;
+	"404": ListVercelCiJobDefinitionsStatus404;
+	"410": ListVercelCiJobDefinitionsStatus410;
+	"429": ListVercelCiJobDefinitionsStatus429;
+	"500": ListVercelCiJobDefinitionsStatus500;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type ListVercelCiJobDefinitionsResponse =
+	| ListVercelCiJobDefinitionsStatus200
+	| ListVercelCiJobDefinitionsStatus400
+	| ListVercelCiJobDefinitionsStatus401
+	| ListVercelCiJobDefinitionsStatus403
+	| ListVercelCiJobDefinitionsStatus404
+	| ListVercelCiJobDefinitionsStatus410
+	| ListVercelCiJobDefinitionsStatus429
+	| ListVercelCiJobDefinitionsStatus500;
+
+export type GetVercelCiJobDefinitionPath = {
+	invocationId: string;
+	attempt: string;
+	jobDefinitionId: string;
+};
+
+export type GetVercelCiJobDefinitionQuery = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @example my-team-url-slug
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type GetVercelCiJobDefinitionStatus200 = unknown;
+
+export type GetVercelCiJobDefinitionStatus400 = unknown;
+
+export type GetVercelCiJobDefinitionStatus401 = unknown;
+
+export type GetVercelCiJobDefinitionStatus403 = unknown;
+
+export type GetVercelCiJobDefinitionStatus404 = unknown;
+
+export type GetVercelCiJobDefinitionStatus410 = unknown;
+
+export type GetVercelCiJobDefinitionStatus429 = unknown;
+
+export type GetVercelCiJobDefinitionStatus500 = unknown;
+
+export type GetVercelCiJobDefinitionOptions = {
+	body?: never | undefined;
+	path: GetVercelCiJobDefinitionPath;
+	query?: GetVercelCiJobDefinitionQuery | undefined;
+	headers?: never | undefined;
+};
+
+export type GetVercelCiJobDefinitionResponses = {
+	"200": GetVercelCiJobDefinitionStatus200;
+	"400": GetVercelCiJobDefinitionStatus400;
+	"401": GetVercelCiJobDefinitionStatus401;
+	"403": GetVercelCiJobDefinitionStatus403;
+	"404": GetVercelCiJobDefinitionStatus404;
+	"410": GetVercelCiJobDefinitionStatus410;
+	"429": GetVercelCiJobDefinitionStatus429;
+	"500": GetVercelCiJobDefinitionStatus500;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetVercelCiJobDefinitionResponse =
+	| GetVercelCiJobDefinitionStatus200
+	| GetVercelCiJobDefinitionStatus400
+	| GetVercelCiJobDefinitionStatus401
+	| GetVercelCiJobDefinitionStatus403
+	| GetVercelCiJobDefinitionStatus404
+	| GetVercelCiJobDefinitionStatus410
+	| GetVercelCiJobDefinitionStatus429
+	| GetVercelCiJobDefinitionStatus500;
+
+export type ListVercelCiJobRunsPath = {
+	invocationId: string;
+	attempt: string;
+	jobDefinitionId: string;
+};
+
+export type ListVercelCiJobRunsQuery = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @example my-team-url-slug
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type ListVercelCiJobRunsStatus200 = unknown;
+
+export type ListVercelCiJobRunsStatus400 = unknown;
+
+export type ListVercelCiJobRunsStatus401 = unknown;
+
+export type ListVercelCiJobRunsStatus403 = unknown;
+
+export type ListVercelCiJobRunsStatus404 = unknown;
+
+export type ListVercelCiJobRunsStatus410 = unknown;
+
+export type ListVercelCiJobRunsStatus429 = unknown;
+
+export type ListVercelCiJobRunsStatus500 = unknown;
+
+export type ListVercelCiJobRunsOptions = {
+	body?: never | undefined;
+	path: ListVercelCiJobRunsPath;
+	query?: ListVercelCiJobRunsQuery | undefined;
+	headers?: never | undefined;
+};
+
+export type ListVercelCiJobRunsResponses = {
+	"200": ListVercelCiJobRunsStatus200;
+	"400": ListVercelCiJobRunsStatus400;
+	"401": ListVercelCiJobRunsStatus401;
+	"403": ListVercelCiJobRunsStatus403;
+	"404": ListVercelCiJobRunsStatus404;
+	"410": ListVercelCiJobRunsStatus410;
+	"429": ListVercelCiJobRunsStatus429;
+	"500": ListVercelCiJobRunsStatus500;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type ListVercelCiJobRunsResponse =
+	| ListVercelCiJobRunsStatus200
+	| ListVercelCiJobRunsStatus400
+	| ListVercelCiJobRunsStatus401
+	| ListVercelCiJobRunsStatus403
+	| ListVercelCiJobRunsStatus404
+	| ListVercelCiJobRunsStatus410
+	| ListVercelCiJobRunsStatus429
+	| ListVercelCiJobRunsStatus500;
+
+export type GetVercelCiJobRunPath = {
+	invocationId: string;
+	attempt: string;
+	jobDefinitionId: string;
+	runAttempt: string;
+};
+
+export type GetVercelCiJobRunQuery = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @example my-team-url-slug
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type GetVercelCiJobRunStatus200 = unknown;
+
+export type GetVercelCiJobRunStatus400 = unknown;
+
+export type GetVercelCiJobRunStatus401 = unknown;
+
+export type GetVercelCiJobRunStatus403 = unknown;
+
+export type GetVercelCiJobRunStatus404 = unknown;
+
+export type GetVercelCiJobRunStatus410 = unknown;
+
+export type GetVercelCiJobRunStatus429 = unknown;
+
+export type GetVercelCiJobRunStatus500 = unknown;
+
+export type GetVercelCiJobRunOptions = {
+	body?: never | undefined;
+	path: GetVercelCiJobRunPath;
+	query?: GetVercelCiJobRunQuery | undefined;
+	headers?: never | undefined;
+};
+
+export type GetVercelCiJobRunResponses = {
+	"200": GetVercelCiJobRunStatus200;
+	"400": GetVercelCiJobRunStatus400;
+	"401": GetVercelCiJobRunStatus401;
+	"403": GetVercelCiJobRunStatus403;
+	"404": GetVercelCiJobRunStatus404;
+	"410": GetVercelCiJobRunStatus410;
+	"429": GetVercelCiJobRunStatus429;
+	"500": GetVercelCiJobRunStatus500;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetVercelCiJobRunResponse =
+	| GetVercelCiJobRunStatus200
+	| GetVercelCiJobRunStatus400
+	| GetVercelCiJobRunStatus401
+	| GetVercelCiJobRunStatus403
+	| GetVercelCiJobRunStatus404
+	| GetVercelCiJobRunStatus410
+	| GetVercelCiJobRunStatus429
+	| GetVercelCiJobRunStatus500;
+
+export type ListVercelCiTaskDefinitionsPath = {
+	invocationId: string;
+	attempt: string;
+	jobDefinitionId: string;
+	runAttempt: string;
+};
+
+export type ListVercelCiTaskDefinitionsQuery = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @example my-team-url-slug
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type ListVercelCiTaskDefinitionsStatus200 = unknown;
+
+export type ListVercelCiTaskDefinitionsStatus400 = unknown;
+
+export type ListVercelCiTaskDefinitionsStatus401 = unknown;
+
+export type ListVercelCiTaskDefinitionsStatus403 = unknown;
+
+export type ListVercelCiTaskDefinitionsStatus404 = unknown;
+
+export type ListVercelCiTaskDefinitionsStatus410 = unknown;
+
+export type ListVercelCiTaskDefinitionsStatus429 = unknown;
+
+export type ListVercelCiTaskDefinitionsStatus500 = unknown;
+
+export type ListVercelCiTaskDefinitionsOptions = {
+	body?: never | undefined;
+	path: ListVercelCiTaskDefinitionsPath;
+	query?: ListVercelCiTaskDefinitionsQuery | undefined;
+	headers?: never | undefined;
+};
+
+export type ListVercelCiTaskDefinitionsResponses = {
+	"200": ListVercelCiTaskDefinitionsStatus200;
+	"400": ListVercelCiTaskDefinitionsStatus400;
+	"401": ListVercelCiTaskDefinitionsStatus401;
+	"403": ListVercelCiTaskDefinitionsStatus403;
+	"404": ListVercelCiTaskDefinitionsStatus404;
+	"410": ListVercelCiTaskDefinitionsStatus410;
+	"429": ListVercelCiTaskDefinitionsStatus429;
+	"500": ListVercelCiTaskDefinitionsStatus500;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type ListVercelCiTaskDefinitionsResponse =
+	| ListVercelCiTaskDefinitionsStatus200
+	| ListVercelCiTaskDefinitionsStatus400
+	| ListVercelCiTaskDefinitionsStatus401
+	| ListVercelCiTaskDefinitionsStatus403
+	| ListVercelCiTaskDefinitionsStatus404
+	| ListVercelCiTaskDefinitionsStatus410
+	| ListVercelCiTaskDefinitionsStatus429
+	| ListVercelCiTaskDefinitionsStatus500;
+
+export type ListVercelCiTaskRunsPath = {
+	invocationId: string;
+	attempt: string;
+	jobDefinitionId: string;
+	runAttempt: string;
+};
+
+export type ListVercelCiTaskRunsQuery = {
+	taskRunAttempt?: string | undefined;
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @example my-team-url-slug
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type ListVercelCiTaskRunsStatus200 = unknown;
+
+export type ListVercelCiTaskRunsStatus400 = unknown;
+
+export type ListVercelCiTaskRunsStatus401 = unknown;
+
+export type ListVercelCiTaskRunsStatus403 = unknown;
+
+export type ListVercelCiTaskRunsStatus404 = unknown;
+
+export type ListVercelCiTaskRunsStatus410 = unknown;
+
+export type ListVercelCiTaskRunsStatus429 = unknown;
+
+export type ListVercelCiTaskRunsStatus500 = unknown;
+
+export type ListVercelCiTaskRunsOptions = {
+	body?: never | undefined;
+	path: ListVercelCiTaskRunsPath;
+	query?: ListVercelCiTaskRunsQuery | undefined;
+	headers?: never | undefined;
+};
+
+export type ListVercelCiTaskRunsResponses = {
+	"200": ListVercelCiTaskRunsStatus200;
+	"400": ListVercelCiTaskRunsStatus400;
+	"401": ListVercelCiTaskRunsStatus401;
+	"403": ListVercelCiTaskRunsStatus403;
+	"404": ListVercelCiTaskRunsStatus404;
+	"410": ListVercelCiTaskRunsStatus410;
+	"429": ListVercelCiTaskRunsStatus429;
+	"500": ListVercelCiTaskRunsStatus500;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type ListVercelCiTaskRunsResponse =
+	| ListVercelCiTaskRunsStatus200
+	| ListVercelCiTaskRunsStatus400
+	| ListVercelCiTaskRunsStatus401
+	| ListVercelCiTaskRunsStatus403
+	| ListVercelCiTaskRunsStatus404
+	| ListVercelCiTaskRunsStatus410
+	| ListVercelCiTaskRunsStatus429
+	| ListVercelCiTaskRunsStatus500;
+
+export type GetVercelCiInvocationLogsPath = {
+	invocationId: string;
+	attempt: string;
+};
+
+export const getVercelCiInvocationLogsLevelEnum = {
+	trace: "trace",
+	debug: "debug",
+	command: "command",
+	info: "info",
+	warn: "warn",
+	error: "error",
+	systemError: "systemError",
+	fatal: "fatal",
+} as const;
+
+export type GetVercelCiInvocationLogsLevelEnumKey =
+	(typeof getVercelCiInvocationLogsLevelEnum)[keyof typeof getVercelCiInvocationLogsLevelEnum];
+
+export type GetVercelCiInvocationLogsQuery = {
+	/**
+	 * @description Only return log lines with one of these levels.
+	 * @type array | undefined
+	 */
+	level?: GetVercelCiInvocationLogsLevelEnumKey[] | undefined;
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @example my-team-url-slug
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type GetVercelCiInvocationLogsStatus200 = unknown;
+
+export type GetVercelCiInvocationLogsStatus400 = unknown;
+
+export type GetVercelCiInvocationLogsStatus401 = unknown;
+
+export type GetVercelCiInvocationLogsStatus403 = unknown;
+
+export type GetVercelCiInvocationLogsStatus404 = unknown;
+
+export type GetVercelCiInvocationLogsStatus410 = unknown;
+
+export type GetVercelCiInvocationLogsStatus429 = unknown;
+
+export type GetVercelCiInvocationLogsStatus500 = unknown;
+
+export type GetVercelCiInvocationLogsOptions = {
+	body?: never | undefined;
+	path: GetVercelCiInvocationLogsPath;
+	query?: GetVercelCiInvocationLogsQuery | undefined;
+	headers?: never | undefined;
+};
+
+export type GetVercelCiInvocationLogsResponses = {
+	"200": GetVercelCiInvocationLogsStatus200;
+	"400": GetVercelCiInvocationLogsStatus400;
+	"401": GetVercelCiInvocationLogsStatus401;
+	"403": GetVercelCiInvocationLogsStatus403;
+	"404": GetVercelCiInvocationLogsStatus404;
+	"410": GetVercelCiInvocationLogsStatus410;
+	"429": GetVercelCiInvocationLogsStatus429;
+	"500": GetVercelCiInvocationLogsStatus500;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetVercelCiInvocationLogsResponse =
+	| GetVercelCiInvocationLogsStatus200
+	| GetVercelCiInvocationLogsStatus400
+	| GetVercelCiInvocationLogsStatus401
+	| GetVercelCiInvocationLogsStatus403
+	| GetVercelCiInvocationLogsStatus404
+	| GetVercelCiInvocationLogsStatus410
+	| GetVercelCiInvocationLogsStatus429
+	| GetVercelCiInvocationLogsStatus500;
+
+export type GetVercelCiTaskLogsPath = {
+	invocationId: string;
+	attempt: string;
+};
+
+export const getVercelCiTaskLogsConclusionEnum = {
+	succeeded: "succeeded",
+	cached: "cached",
+	failed: "failed",
+	skipped: "skipped",
+} as const;
+
+export type GetVercelCiTaskLogsConclusionEnumKey =
+	(typeof getVercelCiTaskLogsConclusionEnum)[keyof typeof getVercelCiTaskLogsConclusionEnum];
+
+export const getVercelCiTaskLogsLevelEnum = {
+	trace: "trace",
+	debug: "debug",
+	command: "command",
+	info: "info",
+	warn: "warn",
+	error: "error",
+	systemError: "systemError",
+	fatal: "fatal",
+} as const;
+
+export type GetVercelCiTaskLogsLevelEnumKey =
+	(typeof getVercelCiTaskLogsLevelEnum)[keyof typeof getVercelCiTaskLogsLevelEnum];
+
+export type GetVercelCiTaskLogsQuery = {
+	/**
+	 * @description Only return tasks with one of these names (e.g., \\\"web#test\\\").
+	 * @type array | undefined
+	 */
+	task?: string[] | undefined;
+	/**
+	 * @description Only return completed tasks with one of these conclusions.
+	 * @type array | undefined
+	 */
+	conclusion?: GetVercelCiTaskLogsConclusionEnumKey[] | undefined;
+	/**
+	 * @description Only return log lines with one of these levels.
+	 * @type array | undefined
+	 */
+	level?: GetVercelCiTaskLogsLevelEnumKey[] | undefined;
+	/**
+	 * @description Maximum number of tasks to return (default: 10, max: 25).
+	 * @type number | undefined
+	 */
+	limit?: number | undefined;
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @example my-team-url-slug
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type GetVercelCiTaskLogsStatus200 = unknown;
+
+export type GetVercelCiTaskLogsStatus400 = unknown;
+
+export type GetVercelCiTaskLogsStatus401 = unknown;
+
+export type GetVercelCiTaskLogsStatus403 = unknown;
+
+export type GetVercelCiTaskLogsStatus404 = unknown;
+
+export type GetVercelCiTaskLogsStatus410 = unknown;
+
+export type GetVercelCiTaskLogsStatus429 = unknown;
+
+export type GetVercelCiTaskLogsStatus500 = unknown;
+
+export type GetVercelCiTaskLogsOptions = {
+	body?: never | undefined;
+	path: GetVercelCiTaskLogsPath;
+	query?: GetVercelCiTaskLogsQuery | undefined;
+	headers?: never | undefined;
+};
+
+export type GetVercelCiTaskLogsResponses = {
+	"200": GetVercelCiTaskLogsStatus200;
+	"400": GetVercelCiTaskLogsStatus400;
+	"401": GetVercelCiTaskLogsStatus401;
+	"403": GetVercelCiTaskLogsStatus403;
+	"404": GetVercelCiTaskLogsStatus404;
+	"410": GetVercelCiTaskLogsStatus410;
+	"429": GetVercelCiTaskLogsStatus429;
+	"500": GetVercelCiTaskLogsStatus500;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetVercelCiTaskLogsResponse =
+	| GetVercelCiTaskLogsStatus200
+	| GetVercelCiTaskLogsStatus400
+	| GetVercelCiTaskLogsStatus401
+	| GetVercelCiTaskLogsStatus403
+	| GetVercelCiTaskLogsStatus404
+	| GetVercelCiTaskLogsStatus410
+	| GetVercelCiTaskLogsStatus429
+	| GetVercelCiTaskLogsStatus500;
+
+export type GetVercelCiJobRunLogsPath = {
+	invocationId: string;
+	attempt: string;
+	jobDefinitionId: string;
+	runAttempt: string;
+};
+
+export const getVercelCiJobRunLogsFollow = {
+	"0": 0,
+	"1": 1,
+} as const;
+
+export type GetVercelCiJobRunLogsFollowKey =
+	(typeof getVercelCiJobRunLogsFollow)[keyof typeof getVercelCiJobRunLogsFollow];
+
+export const getVercelCiJobRunLogsLevelEnum = {
+	trace: "trace",
+	debug: "debug",
+	command: "command",
+	info: "info",
+	warn: "warn",
+	error: "error",
+	systemError: "systemError",
+	fatal: "fatal",
+} as const;
+
+export type GetVercelCiJobRunLogsLevelEnumKey =
+	(typeof getVercelCiJobRunLogsLevelEnum)[keyof typeof getVercelCiJobRunLogsLevelEnum];
+
+export type GetVercelCiJobRunLogsQuery = {
+	follow?: GetVercelCiJobRunLogsFollowKey | undefined;
+	since?: number | undefined;
+	/**
+	 * @description Only return log lines with one of these levels.
+	 * @type array | undefined
+	 */
+	level?: GetVercelCiJobRunLogsLevelEnumKey[] | undefined;
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @example my-team-url-slug
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type GetVercelCiJobRunLogsStatus200 = unknown;
+
+export type GetVercelCiJobRunLogsStatus400 = unknown;
+
+export type GetVercelCiJobRunLogsStatus401 = unknown;
+
+export type GetVercelCiJobRunLogsStatus403 = unknown;
+
+export type GetVercelCiJobRunLogsStatus404 = unknown;
+
+export type GetVercelCiJobRunLogsStatus410 = unknown;
+
+export type GetVercelCiJobRunLogsStatus429 = unknown;
+
+export type GetVercelCiJobRunLogsStatus500 = unknown;
+
+export type GetVercelCiJobRunLogsOptions = {
+	body?: never | undefined;
+	path: GetVercelCiJobRunLogsPath;
+	query?: GetVercelCiJobRunLogsQuery | undefined;
+	headers?: never | undefined;
+};
+
+export type GetVercelCiJobRunLogsResponses = {
+	"200": GetVercelCiJobRunLogsStatus200;
+	"400": GetVercelCiJobRunLogsStatus400;
+	"401": GetVercelCiJobRunLogsStatus401;
+	"403": GetVercelCiJobRunLogsStatus403;
+	"404": GetVercelCiJobRunLogsStatus404;
+	"410": GetVercelCiJobRunLogsStatus410;
+	"429": GetVercelCiJobRunLogsStatus429;
+	"500": GetVercelCiJobRunLogsStatus500;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetVercelCiJobRunLogsResponse =
+	| GetVercelCiJobRunLogsStatus200
+	| GetVercelCiJobRunLogsStatus400
+	| GetVercelCiJobRunLogsStatus401
+	| GetVercelCiJobRunLogsStatus403
+	| GetVercelCiJobRunLogsStatus404
+	| GetVercelCiJobRunLogsStatus410
+	| GetVercelCiJobRunLogsStatus429
+	| GetVercelCiJobRunLogsStatus500;
+
+export type GetVercelCiTaskRunLogsPath = {
+	invocationId: string;
+	attempt: string;
+	jobDefinitionId: string;
+	runAttempt: string;
+	taskDefinitionId: string;
+	taskRunAttempt: string;
+};
+
+export const getVercelCiTaskRunLogsFollow = {
+	"0": 0,
+	"1": 1,
+} as const;
+
+export type GetVercelCiTaskRunLogsFollowKey =
+	(typeof getVercelCiTaskRunLogsFollow)[keyof typeof getVercelCiTaskRunLogsFollow];
+
+export const getVercelCiTaskRunLogsLevelEnum = {
+	trace: "trace",
+	debug: "debug",
+	command: "command",
+	info: "info",
+	warn: "warn",
+	error: "error",
+	systemError: "systemError",
+	fatal: "fatal",
+} as const;
+
+export type GetVercelCiTaskRunLogsLevelEnumKey =
+	(typeof getVercelCiTaskRunLogsLevelEnum)[keyof typeof getVercelCiTaskRunLogsLevelEnum];
+
+export type GetVercelCiTaskRunLogsQuery = {
+	/**
+	 * @description When 1, stream log lines as newline-delimited JSON until the task run finishes.
+	 * @type number | undefined
+	 */
+	follow?: GetVercelCiTaskRunLogsFollowKey | undefined;
+	since?: number | undefined;
+	/**
+	 * @description Only return log lines with one of these levels.
+	 * @type array | undefined
+	 */
+	level?: GetVercelCiTaskRunLogsLevelEnumKey[] | undefined;
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @example my-team-url-slug
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type GetVercelCiTaskRunLogsStatus200 = unknown;
+
+export type GetVercelCiTaskRunLogsStatus400 = unknown;
+
+export type GetVercelCiTaskRunLogsStatus401 = unknown;
+
+export type GetVercelCiTaskRunLogsStatus403 = unknown;
+
+export type GetVercelCiTaskRunLogsStatus404 = unknown;
+
+export type GetVercelCiTaskRunLogsStatus410 = unknown;
+
+export type GetVercelCiTaskRunLogsStatus429 = unknown;
+
+export type GetVercelCiTaskRunLogsStatus500 = unknown;
+
+export type GetVercelCiTaskRunLogsOptions = {
+	body?: never | undefined;
+	path: GetVercelCiTaskRunLogsPath;
+	query?: GetVercelCiTaskRunLogsQuery | undefined;
+	headers?: never | undefined;
+};
+
+export type GetVercelCiTaskRunLogsResponses = {
+	"200": GetVercelCiTaskRunLogsStatus200;
+	"400": GetVercelCiTaskRunLogsStatus400;
+	"401": GetVercelCiTaskRunLogsStatus401;
+	"403": GetVercelCiTaskRunLogsStatus403;
+	"404": GetVercelCiTaskRunLogsStatus404;
+	"410": GetVercelCiTaskRunLogsStatus410;
+	"429": GetVercelCiTaskRunLogsStatus429;
+	"500": GetVercelCiTaskRunLogsStatus500;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetVercelCiTaskRunLogsResponse =
+	| GetVercelCiTaskRunLogsStatus200
+	| GetVercelCiTaskRunLogsStatus400
+	| GetVercelCiTaskRunLogsStatus401
+	| GetVercelCiTaskRunLogsStatus403
+	| GetVercelCiTaskRunLogsStatus404
+	| GetVercelCiTaskRunLogsStatus410
+	| GetVercelCiTaskRunLogsStatus429
+	| GetVercelCiTaskRunLogsStatus500;
+
 export type CreateWebInsightsToggleQuery = {
 	projectId: string;
 };

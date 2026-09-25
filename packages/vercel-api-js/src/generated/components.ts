@@ -1715,6 +1715,70 @@ import type {
 	GetTldStatus403,
 	GetTldStatus429,
 	GetTldStatus500,
+	GetVercelCiInvocationLogsResponse,
+	GetVercelCiInvocationLogsStatus400,
+	GetVercelCiInvocationLogsStatus401,
+	GetVercelCiInvocationLogsStatus403,
+	GetVercelCiInvocationLogsStatus404,
+	GetVercelCiInvocationLogsStatus410,
+	GetVercelCiInvocationLogsStatus429,
+	GetVercelCiInvocationLogsStatus500,
+	GetVercelCiInvocationResponse,
+	GetVercelCiInvocationStatus400,
+	GetVercelCiInvocationStatus401,
+	GetVercelCiInvocationStatus403,
+	GetVercelCiInvocationStatus404,
+	GetVercelCiInvocationStatus410,
+	GetVercelCiInvocationStatus429,
+	GetVercelCiInvocationStatus500,
+	GetVercelCiInvocationTreeResponse,
+	GetVercelCiInvocationTreeStatus400,
+	GetVercelCiInvocationTreeStatus401,
+	GetVercelCiInvocationTreeStatus403,
+	GetVercelCiInvocationTreeStatus404,
+	GetVercelCiInvocationTreeStatus410,
+	GetVercelCiInvocationTreeStatus429,
+	GetVercelCiInvocationTreeStatus500,
+	GetVercelCiJobDefinitionResponse,
+	GetVercelCiJobDefinitionStatus400,
+	GetVercelCiJobDefinitionStatus401,
+	GetVercelCiJobDefinitionStatus403,
+	GetVercelCiJobDefinitionStatus404,
+	GetVercelCiJobDefinitionStatus410,
+	GetVercelCiJobDefinitionStatus429,
+	GetVercelCiJobDefinitionStatus500,
+	GetVercelCiJobRunLogsResponse,
+	GetVercelCiJobRunLogsStatus400,
+	GetVercelCiJobRunLogsStatus401,
+	GetVercelCiJobRunLogsStatus403,
+	GetVercelCiJobRunLogsStatus404,
+	GetVercelCiJobRunLogsStatus410,
+	GetVercelCiJobRunLogsStatus429,
+	GetVercelCiJobRunLogsStatus500,
+	GetVercelCiJobRunResponse,
+	GetVercelCiJobRunStatus400,
+	GetVercelCiJobRunStatus401,
+	GetVercelCiJobRunStatus403,
+	GetVercelCiJobRunStatus404,
+	GetVercelCiJobRunStatus410,
+	GetVercelCiJobRunStatus429,
+	GetVercelCiJobRunStatus500,
+	GetVercelCiTaskLogsResponse,
+	GetVercelCiTaskLogsStatus400,
+	GetVercelCiTaskLogsStatus401,
+	GetVercelCiTaskLogsStatus403,
+	GetVercelCiTaskLogsStatus404,
+	GetVercelCiTaskLogsStatus410,
+	GetVercelCiTaskLogsStatus429,
+	GetVercelCiTaskLogsStatus500,
+	GetVercelCiTaskRunLogsResponse,
+	GetVercelCiTaskRunLogsStatus400,
+	GetVercelCiTaskRunLogsStatus401,
+	GetVercelCiTaskRunLogsStatus403,
+	GetVercelCiTaskRunLogsStatus404,
+	GetVercelCiTaskRunLogsStatus410,
+	GetVercelCiTaskRunLogsStatus429,
+	GetVercelCiTaskRunLogsStatus500,
 	GetVersionsResponse,
 	GetVersionsStatus400,
 	GetVersionsStatus401,
@@ -2038,6 +2102,54 @@ import type {
 	ListUserEventsStatus401,
 	ListUserEventsStatus403,
 	ListUserEventsStatus410,
+	ListVercelCiInvocationAttemptsResponse,
+	ListVercelCiInvocationAttemptsStatus400,
+	ListVercelCiInvocationAttemptsStatus401,
+	ListVercelCiInvocationAttemptsStatus403,
+	ListVercelCiInvocationAttemptsStatus404,
+	ListVercelCiInvocationAttemptsStatus410,
+	ListVercelCiInvocationAttemptsStatus429,
+	ListVercelCiInvocationAttemptsStatus500,
+	ListVercelCiInvocationsResponse,
+	ListVercelCiInvocationsStatus400,
+	ListVercelCiInvocationsStatus401,
+	ListVercelCiInvocationsStatus403,
+	ListVercelCiInvocationsStatus410,
+	ListVercelCiInvocationsStatus429,
+	ListVercelCiInvocationsStatus500,
+	ListVercelCiInvocationsStatus503,
+	ListVercelCiJobDefinitionsResponse,
+	ListVercelCiJobDefinitionsStatus400,
+	ListVercelCiJobDefinitionsStatus401,
+	ListVercelCiJobDefinitionsStatus403,
+	ListVercelCiJobDefinitionsStatus404,
+	ListVercelCiJobDefinitionsStatus410,
+	ListVercelCiJobDefinitionsStatus429,
+	ListVercelCiJobDefinitionsStatus500,
+	ListVercelCiJobRunsResponse,
+	ListVercelCiJobRunsStatus400,
+	ListVercelCiJobRunsStatus401,
+	ListVercelCiJobRunsStatus403,
+	ListVercelCiJobRunsStatus404,
+	ListVercelCiJobRunsStatus410,
+	ListVercelCiJobRunsStatus429,
+	ListVercelCiJobRunsStatus500,
+	ListVercelCiTaskDefinitionsResponse,
+	ListVercelCiTaskDefinitionsStatus400,
+	ListVercelCiTaskDefinitionsStatus401,
+	ListVercelCiTaskDefinitionsStatus403,
+	ListVercelCiTaskDefinitionsStatus404,
+	ListVercelCiTaskDefinitionsStatus410,
+	ListVercelCiTaskDefinitionsStatus429,
+	ListVercelCiTaskDefinitionsStatus500,
+	ListVercelCiTaskRunsResponse,
+	ListVercelCiTaskRunsStatus400,
+	ListVercelCiTaskRunsStatus401,
+	ListVercelCiTaskRunsStatus403,
+	ListVercelCiTaskRunsStatus404,
+	ListVercelCiTaskRunsStatus410,
+	ListVercelCiTaskRunsStatus429,
+	ListVercelCiTaskRunsStatus500,
 	MoveProjectDomainResponse,
 	MoveProjectDomainStatus400,
 	MoveProjectDomainStatus401,
@@ -2295,6 +2407,15 @@ import type {
 	RestoreRedirectsStatus404,
 	RestoreRedirectsStatus410,
 	RestoreRedirectsStatus500,
+	RetryVercelCiInvocationResponse,
+	RetryVercelCiInvocationStatus400,
+	RetryVercelCiInvocationStatus401,
+	RetryVercelCiInvocationStatus403,
+	RetryVercelCiInvocationStatus404,
+	RetryVercelCiInvocationStatus409,
+	RetryVercelCiInvocationStatus410,
+	RetryVercelCiInvocationStatus429,
+	RetryVercelCiInvocationStatus500,
 	RevokeInstallationCredentialResponse,
 	RevokeInstallationCredentialStatus400,
 	RevokeInstallationCredentialStatus401,
@@ -21206,6 +21327,965 @@ export async function getByTeamSlugByProjectSlugByRepositoryNameTagsList(
 }
 
 /**
+ * @summary List invocations for a team, optionally filtered by repository and invocation metadata
+ * @description List Invocations
+ * @link /v2/vercel-ci/invocations
+ */
+export async function listVercelCiInvocations(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: {
+			provider?: "github" | "gitlab" | "bitbucket" | "vercel";
+			repository?: string;
+			branchName?: string;
+			snapshot?: string;
+			status?: Array<
+				| "new"
+				| "skipped"
+				| "bootstrapping"
+				| "bootstrapping_failed"
+				| "snapshotted"
+				| "sandbox_named"
+				| "jobs_on_hive_clone_dispatched"
+				| "jobs_on_hive_dispatched"
+				| "jobs_on_hive_completed"
+				| "jobs_on_hive_failed"
+				| "awaiting_jobs"
+				| "completed"
+			>;
+			conclusion?: Array<"succeeded" | "failed" | "skipped">;
+			source?: Array<"vercel-ci" | "vercel-native-checks">;
+			authorGitHubId?: string;
+			author?: string;
+			createdAfter?: number;
+			createdBefore?: number;
+			limit?: number;
+			cursor?: string;
+			teamId?: string;
+			slug?: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	const data = await request<
+		ListVercelCiInvocationsResponse,
+		ErrorWrapper<
+			| ListVercelCiInvocationsStatus400
+			| ListVercelCiInvocationsStatus401
+			| ListVercelCiInvocationsStatus403
+			| ListVercelCiInvocationsStatus410
+			| ListVercelCiInvocationsStatus429
+			| ListVercelCiInvocationsStatus500
+			| ListVercelCiInvocationsStatus503
+		>,
+		null,
+		Record<string, string>,
+		{
+			provider?: "github" | "gitlab" | "bitbucket" | "vercel";
+			repository?: string;
+			branchName?: string;
+			snapshot?: string;
+			status?: Array<
+				| "new"
+				| "skipped"
+				| "bootstrapping"
+				| "bootstrapping_failed"
+				| "snapshotted"
+				| "sandbox_named"
+				| "jobs_on_hive_clone_dispatched"
+				| "jobs_on_hive_dispatched"
+				| "jobs_on_hive_completed"
+				| "jobs_on_hive_failed"
+				| "awaiting_jobs"
+				| "completed"
+			>;
+			conclusion?: Array<"succeeded" | "failed" | "skipped">;
+			source?: Array<"vercel-ci" | "vercel-native-checks">;
+			authorGitHubId?: string;
+			author?: string;
+			createdAfter?: number;
+			createdBefore?: number;
+			limit?: number;
+			cursor?: string;
+			teamId?: string;
+			slug?: string;
+		},
+		Record<string, string>
+	>({
+		method: "GET",
+		url: `/v2/vercel-ci/invocations`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary List all attempts for an invocation
+ * @description List Invocation Attempts
+ * @link /v1/vercel-ci/invocations/{invocationId}/attempts
+ */
+export async function listVercelCiInvocationAttempts(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { invocationId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.invocationId) {
+		throw new Error(`Missing required path parameter: invocationId`);
+	}
+	const data = await request<
+		ListVercelCiInvocationAttemptsResponse,
+		ErrorWrapper<
+			| ListVercelCiInvocationAttemptsStatus400
+			| ListVercelCiInvocationAttemptsStatus401
+			| ListVercelCiInvocationAttemptsStatus403
+			| ListVercelCiInvocationAttemptsStatus404
+			| ListVercelCiInvocationAttemptsStatus410
+			| ListVercelCiInvocationAttemptsStatus429
+			| ListVercelCiInvocationAttemptsStatus500
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
+		{ invocationId: string }
+	>({
+		method: "GET",
+		url: `/v1/vercel-ci/invocations/${pathParams.invocationId}/attempts`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Get an invocation with its jobs and tasks
+ * @description Returns an invocation attempt together with every job definition, its latest job run, and the task definitions and active task runs of that job run. Defaults to the latest attempt when `attempt` is omitted. With `follow=1` the response is a newline-delimited JSON stream: a `{"type":"tree", ...}` event with the full tree is sent immediately and again whenever it changes, and a final `{"type":"end","reason":...}` event is sent when the attempt finishes (`completed`) or the stream reaches its maximum duration (`timeout`), after which clients should reconnect.
+ * @link /v1/vercel-ci/invocations/{invocationId}/tree
+ */
+export async function getVercelCiInvocationTree(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { invocationId: string };
+		queryParams?: { attempt?: string; follow?: 0 | 1; teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.invocationId) {
+		throw new Error(`Missing required path parameter: invocationId`);
+	}
+	const data = await request<
+		GetVercelCiInvocationTreeResponse,
+		ErrorWrapper<
+			| GetVercelCiInvocationTreeStatus400
+			| GetVercelCiInvocationTreeStatus401
+			| GetVercelCiInvocationTreeStatus403
+			| GetVercelCiInvocationTreeStatus404
+			| GetVercelCiInvocationTreeStatus410
+			| GetVercelCiInvocationTreeStatus429
+			| GetVercelCiInvocationTreeStatus500
+		>,
+		null,
+		Record<string, string>,
+		{ attempt?: string; follow?: 0 | 1; teamId?: string; slug?: string },
+		{ invocationId: string }
+	>({
+		method: "GET",
+		url: `/v1/vercel-ci/invocations/${pathParams.invocationId}/tree`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Get a specific invocation attempt
+ * @description Get Invocation
+ * @link /v1/vercel-ci/invocations/{invocationId}/attempts/{attempt}
+ */
+export async function getVercelCiInvocation(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { invocationId: string; attempt: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.invocationId) {
+		throw new Error(`Missing required path parameter: invocationId`);
+	}
+
+	if (!pathParams.attempt) {
+		throw new Error(`Missing required path parameter: attempt`);
+	}
+	const data = await request<
+		GetVercelCiInvocationResponse,
+		ErrorWrapper<
+			| GetVercelCiInvocationStatus400
+			| GetVercelCiInvocationStatus401
+			| GetVercelCiInvocationStatus403
+			| GetVercelCiInvocationStatus404
+			| GetVercelCiInvocationStatus410
+			| GetVercelCiInvocationStatus429
+			| GetVercelCiInvocationStatus500
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
+		{ invocationId: string; attempt: string }
+	>({
+		method: "GET",
+		url: `/v1/vercel-ci/invocations/${pathParams.invocationId}/attempts/${pathParams.attempt}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Retry a terminal Vercel CI invocation attempt
+ * @description Retry Invocation
+ * @link /v1/vercel-ci/invocations/{invocationId}/attempts/{attempt}/retry
+ */
+export async function retryVercelCiInvocation(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { invocationId: string; attempt: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.invocationId) {
+		throw new Error(`Missing required path parameter: invocationId`);
+	}
+
+	if (!pathParams.attempt) {
+		throw new Error(`Missing required path parameter: attempt`);
+	}
+	const data = await request<
+		RetryVercelCiInvocationResponse,
+		ErrorWrapper<
+			| RetryVercelCiInvocationStatus400
+			| RetryVercelCiInvocationStatus401
+			| RetryVercelCiInvocationStatus403
+			| RetryVercelCiInvocationStatus404
+			| RetryVercelCiInvocationStatus409
+			| RetryVercelCiInvocationStatus410
+			| RetryVercelCiInvocationStatus429
+			| RetryVercelCiInvocationStatus500
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
+		{ invocationId: string; attempt: string }
+	>({
+		method: "POST",
+		url: `/v1/vercel-ci/invocations/${pathParams.invocationId}/attempts/${pathParams.attempt}/retry`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary List job definitions for an invocation attempt
+ * @description List Job Definitions
+ * @link /v1/vercel-ci/invocations/{invocationId}/attempts/{attempt}/job-definitions
+ */
+export async function listVercelCiJobDefinitions(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { invocationId: string; attempt: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.invocationId) {
+		throw new Error(`Missing required path parameter: invocationId`);
+	}
+
+	if (!pathParams.attempt) {
+		throw new Error(`Missing required path parameter: attempt`);
+	}
+	const data = await request<
+		ListVercelCiJobDefinitionsResponse,
+		ErrorWrapper<
+			| ListVercelCiJobDefinitionsStatus400
+			| ListVercelCiJobDefinitionsStatus401
+			| ListVercelCiJobDefinitionsStatus403
+			| ListVercelCiJobDefinitionsStatus404
+			| ListVercelCiJobDefinitionsStatus410
+			| ListVercelCiJobDefinitionsStatus429
+			| ListVercelCiJobDefinitionsStatus500
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
+		{ invocationId: string; attempt: string }
+	>({
+		method: "GET",
+		url: `/v1/vercel-ci/invocations/${pathParams.invocationId}/attempts/${pathParams.attempt}/job-definitions`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Get a specific job definition
+ * @description Get Job Definition
+ * @link /v1/vercel-ci/invocations/{invocationId}/attempts/{attempt}/job-definitions/{jobDefinitionId}
+ */
+export async function getVercelCiJobDefinition(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { invocationId: string; attempt: string; jobDefinitionId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.invocationId) {
+		throw new Error(`Missing required path parameter: invocationId`);
+	}
+
+	if (!pathParams.attempt) {
+		throw new Error(`Missing required path parameter: attempt`);
+	}
+
+	if (!pathParams.jobDefinitionId) {
+		throw new Error(`Missing required path parameter: jobDefinitionId`);
+	}
+	const data = await request<
+		GetVercelCiJobDefinitionResponse,
+		ErrorWrapper<
+			| GetVercelCiJobDefinitionStatus400
+			| GetVercelCiJobDefinitionStatus401
+			| GetVercelCiJobDefinitionStatus403
+			| GetVercelCiJobDefinitionStatus404
+			| GetVercelCiJobDefinitionStatus410
+			| GetVercelCiJobDefinitionStatus429
+			| GetVercelCiJobDefinitionStatus500
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
+		{ invocationId: string; attempt: string; jobDefinitionId: string }
+	>({
+		method: "GET",
+		url: `/v1/vercel-ci/invocations/${pathParams.invocationId}/attempts/${pathParams.attempt}/job-definitions/${pathParams.jobDefinitionId}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary List all runs for a job definition
+ * @description List Job Runs
+ * @link /v1/vercel-ci/invocations/{invocationId}/attempts/{attempt}/job-definitions/{jobDefinitionId}/runs
+ */
+export async function listVercelCiJobRuns(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { invocationId: string; attempt: string; jobDefinitionId: string };
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.invocationId) {
+		throw new Error(`Missing required path parameter: invocationId`);
+	}
+
+	if (!pathParams.attempt) {
+		throw new Error(`Missing required path parameter: attempt`);
+	}
+
+	if (!pathParams.jobDefinitionId) {
+		throw new Error(`Missing required path parameter: jobDefinitionId`);
+	}
+	const data = await request<
+		ListVercelCiJobRunsResponse,
+		ErrorWrapper<
+			| ListVercelCiJobRunsStatus400
+			| ListVercelCiJobRunsStatus401
+			| ListVercelCiJobRunsStatus403
+			| ListVercelCiJobRunsStatus404
+			| ListVercelCiJobRunsStatus410
+			| ListVercelCiJobRunsStatus429
+			| ListVercelCiJobRunsStatus500
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
+		{ invocationId: string; attempt: string; jobDefinitionId: string }
+	>({
+		method: "GET",
+		url: `/v1/vercel-ci/invocations/${pathParams.invocationId}/attempts/${pathParams.attempt}/job-definitions/${pathParams.jobDefinitionId}/runs`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Get a specific job run attempt
+ * @description Get Job Run
+ * @link /v1/vercel-ci/invocations/{invocationId}/attempts/{attempt}/job-definitions/{jobDefinitionId}/runs/{runAttempt}
+ */
+export async function getVercelCiJobRun(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: {
+			invocationId: string;
+			attempt: string;
+			jobDefinitionId: string;
+			runAttempt: string;
+		};
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.invocationId) {
+		throw new Error(`Missing required path parameter: invocationId`);
+	}
+
+	if (!pathParams.attempt) {
+		throw new Error(`Missing required path parameter: attempt`);
+	}
+
+	if (!pathParams.jobDefinitionId) {
+		throw new Error(`Missing required path parameter: jobDefinitionId`);
+	}
+
+	if (!pathParams.runAttempt) {
+		throw new Error(`Missing required path parameter: runAttempt`);
+	}
+	const data = await request<
+		GetVercelCiJobRunResponse,
+		ErrorWrapper<
+			| GetVercelCiJobRunStatus400
+			| GetVercelCiJobRunStatus401
+			| GetVercelCiJobRunStatus403
+			| GetVercelCiJobRunStatus404
+			| GetVercelCiJobRunStatus410
+			| GetVercelCiJobRunStatus429
+			| GetVercelCiJobRunStatus500
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
+		{ invocationId: string; attempt: string; jobDefinitionId: string; runAttempt: string }
+	>({
+		method: "GET",
+		url: `/v1/vercel-ci/invocations/${pathParams.invocationId}/attempts/${pathParams.attempt}/job-definitions/${pathParams.jobDefinitionId}/runs/${pathParams.runAttempt}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary List all task definitions for a job run
+ * @description List Task Definitions
+ * @link /v1/vercel-ci/invocations/{invocationId}/attempts/{attempt}/job-definitions/{jobDefinitionId}/runs/{runAttempt}/task-definitions
+ */
+export async function listVercelCiTaskDefinitions(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: {
+			invocationId: string;
+			attempt: string;
+			jobDefinitionId: string;
+			runAttempt: string;
+		};
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.invocationId) {
+		throw new Error(`Missing required path parameter: invocationId`);
+	}
+
+	if (!pathParams.attempt) {
+		throw new Error(`Missing required path parameter: attempt`);
+	}
+
+	if (!pathParams.jobDefinitionId) {
+		throw new Error(`Missing required path parameter: jobDefinitionId`);
+	}
+
+	if (!pathParams.runAttempt) {
+		throw new Error(`Missing required path parameter: runAttempt`);
+	}
+	const data = await request<
+		ListVercelCiTaskDefinitionsResponse,
+		ErrorWrapper<
+			| ListVercelCiTaskDefinitionsStatus400
+			| ListVercelCiTaskDefinitionsStatus401
+			| ListVercelCiTaskDefinitionsStatus403
+			| ListVercelCiTaskDefinitionsStatus404
+			| ListVercelCiTaskDefinitionsStatus410
+			| ListVercelCiTaskDefinitionsStatus429
+			| ListVercelCiTaskDefinitionsStatus500
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
+		{ invocationId: string; attempt: string; jobDefinitionId: string; runAttempt: string }
+	>({
+		method: "GET",
+		url: `/v1/vercel-ci/invocations/${pathParams.invocationId}/attempts/${pathParams.attempt}/job-definitions/${pathParams.jobDefinitionId}/runs/${pathParams.runAttempt}/task-definitions`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary List task runs for a job run
+ * @description List Task Runs
+ * @link /v1/vercel-ci/invocations/{invocationId}/attempts/{attempt}/job-definitions/{jobDefinitionId}/runs/{runAttempt}/task-runs
+ */
+export async function listVercelCiTaskRuns(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: {
+			invocationId: string;
+			attempt: string;
+			jobDefinitionId: string;
+			runAttempt: string;
+		};
+		queryParams?: { taskRunAttempt?: string; teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.invocationId) {
+		throw new Error(`Missing required path parameter: invocationId`);
+	}
+
+	if (!pathParams.attempt) {
+		throw new Error(`Missing required path parameter: attempt`);
+	}
+
+	if (!pathParams.jobDefinitionId) {
+		throw new Error(`Missing required path parameter: jobDefinitionId`);
+	}
+
+	if (!pathParams.runAttempt) {
+		throw new Error(`Missing required path parameter: runAttempt`);
+	}
+	const data = await request<
+		ListVercelCiTaskRunsResponse,
+		ErrorWrapper<
+			| ListVercelCiTaskRunsStatus400
+			| ListVercelCiTaskRunsStatus401
+			| ListVercelCiTaskRunsStatus403
+			| ListVercelCiTaskRunsStatus404
+			| ListVercelCiTaskRunsStatus410
+			| ListVercelCiTaskRunsStatus429
+			| ListVercelCiTaskRunsStatus500
+		>,
+		null,
+		Record<string, string>,
+		{ taskRunAttempt?: string; teamId?: string; slug?: string },
+		{ invocationId: string; attempt: string; jobDefinitionId: string; runAttempt: string }
+	>({
+		method: "GET",
+		url: `/v1/vercel-ci/invocations/${pathParams.invocationId}/attempts/${pathParams.attempt}/job-definitions/${pathParams.jobDefinitionId}/runs/${pathParams.runAttempt}/task-runs`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Get log lines for an invocation attempt
+ * @description Get Invocation Logs
+ * @link /v1/vercel-ci/invocations/{invocationId}/attempts/{attempt}/logs
+ */
+export async function getVercelCiInvocationLogs(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { invocationId: string; attempt: string };
+		queryParams?: {
+			level?: Array<
+				"trace" | "debug" | "command" | "info" | "warn" | "error" | "systemError" | "fatal"
+			>;
+			teamId?: string;
+			slug?: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.invocationId) {
+		throw new Error(`Missing required path parameter: invocationId`);
+	}
+
+	if (!pathParams.attempt) {
+		throw new Error(`Missing required path parameter: attempt`);
+	}
+	const data = await request<
+		GetVercelCiInvocationLogsResponse,
+		ErrorWrapper<
+			| GetVercelCiInvocationLogsStatus400
+			| GetVercelCiInvocationLogsStatus401
+			| GetVercelCiInvocationLogsStatus403
+			| GetVercelCiInvocationLogsStatus404
+			| GetVercelCiInvocationLogsStatus410
+			| GetVercelCiInvocationLogsStatus429
+			| GetVercelCiInvocationLogsStatus500
+		>,
+		null,
+		Record<string, string>,
+		{
+			level?: Array<
+				"trace" | "debug" | "command" | "info" | "warn" | "error" | "systemError" | "fatal"
+			>;
+			teamId?: string;
+			slug?: string;
+		},
+		{ invocationId: string; attempt: string }
+	>({
+		method: "GET",
+		url: `/v1/vercel-ci/invocations/${pathParams.invocationId}/attempts/${pathParams.attempt}/logs`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Get log lines for the tasks of an invocation attempt
+ * @description Returns log lines for the tasks of an invocation attempt in a single request, grouped by task. Tasks can be narrowed by name and by conclusion, for example `conclusion=failed` to fetch only the logs of failed tasks.
+ * @link /v1/vercel-ci/invocations/{invocationId}/attempts/{attempt}/task-logs
+ */
+export async function getVercelCiTaskLogs(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { invocationId: string; attempt: string };
+		queryParams?: {
+			task?: Array<string>;
+			conclusion?: Array<"succeeded" | "cached" | "failed" | "skipped">;
+			level?: Array<
+				"trace" | "debug" | "command" | "info" | "warn" | "error" | "systemError" | "fatal"
+			>;
+			limit?: number;
+			teamId?: string;
+			slug?: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.invocationId) {
+		throw new Error(`Missing required path parameter: invocationId`);
+	}
+
+	if (!pathParams.attempt) {
+		throw new Error(`Missing required path parameter: attempt`);
+	}
+	const data = await request<
+		GetVercelCiTaskLogsResponse,
+		ErrorWrapper<
+			| GetVercelCiTaskLogsStatus400
+			| GetVercelCiTaskLogsStatus401
+			| GetVercelCiTaskLogsStatus403
+			| GetVercelCiTaskLogsStatus404
+			| GetVercelCiTaskLogsStatus410
+			| GetVercelCiTaskLogsStatus429
+			| GetVercelCiTaskLogsStatus500
+		>,
+		null,
+		Record<string, string>,
+		{
+			task?: Array<string>;
+			conclusion?: Array<"succeeded" | "cached" | "failed" | "skipped">;
+			level?: Array<
+				"trace" | "debug" | "command" | "info" | "warn" | "error" | "systemError" | "fatal"
+			>;
+			limit?: number;
+			teamId?: string;
+			slug?: string;
+		},
+		{ invocationId: string; attempt: string }
+	>({
+		method: "GET",
+		url: `/v1/vercel-ci/invocations/${pathParams.invocationId}/attempts/${pathParams.attempt}/task-logs`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Get log lines for a specific job run attempt
+ * @description Get Job Run Logs
+ * @link /v1/vercel-ci/invocations/{invocationId}/attempts/{attempt}/job-definitions/{jobDefinitionId}/runs/{runAttempt}/logs
+ */
+export async function getVercelCiJobRunLogs(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: {
+			invocationId: string;
+			attempt: string;
+			jobDefinitionId: string;
+			runAttempt: string;
+		};
+		queryParams?: {
+			follow?: 0 | 1;
+			since?: number;
+			level?: Array<
+				"trace" | "debug" | "command" | "info" | "warn" | "error" | "systemError" | "fatal"
+			>;
+			teamId?: string;
+			slug?: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.invocationId) {
+		throw new Error(`Missing required path parameter: invocationId`);
+	}
+
+	if (!pathParams.attempt) {
+		throw new Error(`Missing required path parameter: attempt`);
+	}
+
+	if (!pathParams.jobDefinitionId) {
+		throw new Error(`Missing required path parameter: jobDefinitionId`);
+	}
+
+	if (!pathParams.runAttempt) {
+		throw new Error(`Missing required path parameter: runAttempt`);
+	}
+	const data = await request<
+		GetVercelCiJobRunLogsResponse,
+		ErrorWrapper<
+			| GetVercelCiJobRunLogsStatus400
+			| GetVercelCiJobRunLogsStatus401
+			| GetVercelCiJobRunLogsStatus403
+			| GetVercelCiJobRunLogsStatus404
+			| GetVercelCiJobRunLogsStatus410
+			| GetVercelCiJobRunLogsStatus429
+			| GetVercelCiJobRunLogsStatus500
+		>,
+		null,
+		Record<string, string>,
+		{
+			follow?: 0 | 1;
+			since?: number;
+			level?: Array<
+				"trace" | "debug" | "command" | "info" | "warn" | "error" | "systemError" | "fatal"
+			>;
+			teamId?: string;
+			slug?: string;
+		},
+		{ invocationId: string; attempt: string; jobDefinitionId: string; runAttempt: string }
+	>({
+		method: "GET",
+		url: `/v1/vercel-ci/invocations/${pathParams.invocationId}/attempts/${pathParams.attempt}/job-definitions/${pathParams.jobDefinitionId}/runs/${pathParams.runAttempt}/logs`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Get log lines for a specific task run attempt
+ * @description Get Task Run Logs With `follow=1` the response is a newline-delimited JSON stream of log lines that ends once the task run has finished and its logs are flushed, or when the stream reaches its maximum duration.
+ * @link /v1/vercel-ci/invocations/{invocationId}/attempts/{attempt}/job-definitions/{jobDefinitionId}/runs/{runAttempt}/task-definitions/{taskDefinitionId}/runs/{taskRunAttempt}/logs
+ */
+export async function getVercelCiTaskRunLogs(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: {
+			invocationId: string;
+			attempt: string;
+			jobDefinitionId: string;
+			runAttempt: string;
+			taskDefinitionId: string;
+			taskRunAttempt: string;
+		};
+		queryParams?: {
+			follow?: 0 | 1;
+			since?: number;
+			level?: Array<
+				"trace" | "debug" | "command" | "info" | "warn" | "error" | "systemError" | "fatal"
+			>;
+			teamId?: string;
+			slug?: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.invocationId) {
+		throw new Error(`Missing required path parameter: invocationId`);
+	}
+
+	if (!pathParams.attempt) {
+		throw new Error(`Missing required path parameter: attempt`);
+	}
+
+	if (!pathParams.jobDefinitionId) {
+		throw new Error(`Missing required path parameter: jobDefinitionId`);
+	}
+
+	if (!pathParams.runAttempt) {
+		throw new Error(`Missing required path parameter: runAttempt`);
+	}
+
+	if (!pathParams.taskDefinitionId) {
+		throw new Error(`Missing required path parameter: taskDefinitionId`);
+	}
+
+	if (!pathParams.taskRunAttempt) {
+		throw new Error(`Missing required path parameter: taskRunAttempt`);
+	}
+	const data = await request<
+		GetVercelCiTaskRunLogsResponse,
+		ErrorWrapper<
+			| GetVercelCiTaskRunLogsStatus400
+			| GetVercelCiTaskRunLogsStatus401
+			| GetVercelCiTaskRunLogsStatus403
+			| GetVercelCiTaskRunLogsStatus404
+			| GetVercelCiTaskRunLogsStatus410
+			| GetVercelCiTaskRunLogsStatus429
+			| GetVercelCiTaskRunLogsStatus500
+		>,
+		null,
+		Record<string, string>,
+		{
+			follow?: 0 | 1;
+			since?: number;
+			level?: Array<
+				"trace" | "debug" | "command" | "info" | "warn" | "error" | "systemError" | "fatal"
+			>;
+			teamId?: string;
+			slug?: string;
+		},
+		{
+			invocationId: string;
+			attempt: string;
+			jobDefinitionId: string;
+			runAttempt: string;
+			taskDefinitionId: string;
+			taskRunAttempt: string;
+		}
+	>({
+		method: "GET",
+		url: `/v1/vercel-ci/invocations/${pathParams.invocationId}/attempts/${pathParams.attempt}/job-definitions/${pathParams.jobDefinitionId}/runs/${pathParams.runAttempt}/task-definitions/${pathParams.taskDefinitionId}/runs/${pathParams.taskRunAttempt}/logs`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
  * @link /web/insights/toggle
  */
 export async function createWebInsightsToggle(
@@ -22789,6 +23869,29 @@ export const operationsByPath = {
 		deleteByTeamSlugByProjectSlugByRepositoryNameManifestsByReference,
 	"GET /v2/{teamSlug}/{projectSlug}/{repositoryName}/tags/list":
 		getByTeamSlugByProjectSlugByRepositoryNameTagsList,
+	"GET /v2/vercel-ci/invocations": listVercelCiInvocations,
+	"GET /v1/vercel-ci/invocations/{invocationId}/attempts": listVercelCiInvocationAttempts,
+	"GET /v1/vercel-ci/invocations/{invocationId}/tree": getVercelCiInvocationTree,
+	"GET /v1/vercel-ci/invocations/{invocationId}/attempts/{attempt}": getVercelCiInvocation,
+	"POST /v1/vercel-ci/invocations/{invocationId}/attempts/{attempt}/retry": retryVercelCiInvocation,
+	"GET /v1/vercel-ci/invocations/{invocationId}/attempts/{attempt}/job-definitions":
+		listVercelCiJobDefinitions,
+	"GET /v1/vercel-ci/invocations/{invocationId}/attempts/{attempt}/job-definitions/{jobDefinitionId}":
+		getVercelCiJobDefinition,
+	"GET /v1/vercel-ci/invocations/{invocationId}/attempts/{attempt}/job-definitions/{jobDefinitionId}/runs":
+		listVercelCiJobRuns,
+	"GET /v1/vercel-ci/invocations/{invocationId}/attempts/{attempt}/job-definitions/{jobDefinitionId}/runs/{runAttempt}":
+		getVercelCiJobRun,
+	"GET /v1/vercel-ci/invocations/{invocationId}/attempts/{attempt}/job-definitions/{jobDefinitionId}/runs/{runAttempt}/task-definitions":
+		listVercelCiTaskDefinitions,
+	"GET /v1/vercel-ci/invocations/{invocationId}/attempts/{attempt}/job-definitions/{jobDefinitionId}/runs/{runAttempt}/task-runs":
+		listVercelCiTaskRuns,
+	"GET /v1/vercel-ci/invocations/{invocationId}/attempts/{attempt}/logs": getVercelCiInvocationLogs,
+	"GET /v1/vercel-ci/invocations/{invocationId}/attempts/{attempt}/task-logs": getVercelCiTaskLogs,
+	"GET /v1/vercel-ci/invocations/{invocationId}/attempts/{attempt}/job-definitions/{jobDefinitionId}/runs/{runAttempt}/logs":
+		getVercelCiJobRunLogs,
+	"GET /v1/vercel-ci/invocations/{invocationId}/attempts/{attempt}/job-definitions/{jobDefinitionId}/runs/{runAttempt}/task-definitions/{taskDefinitionId}/runs/{taskRunAttempt}/logs":
+		getVercelCiTaskRunLogs,
 	"POST /web/insights/toggle": createWebInsightsToggle,
 	"GET /v1/query/web-analytics/visits/aggregate": aggregatePageviews,
 	"GET /v1/query/web-analytics/events/aggregate": aggregateEvents,
@@ -23283,6 +24386,23 @@ export const operationsByTag = {
 		deleteByTeamSlugByProjectSlugByRepositoryNameManifestsByReference,
 		getByTeamSlugByProjectSlugByRepositoryNameTagsList,
 	},
+	vercelCi: {
+		listVercelCiInvocations,
+		listVercelCiInvocationAttempts,
+		getVercelCiInvocationTree,
+		getVercelCiInvocation,
+		retryVercelCiInvocation,
+		listVercelCiJobDefinitions,
+		getVercelCiJobDefinition,
+		listVercelCiJobRuns,
+		getVercelCiJobRun,
+		listVercelCiTaskDefinitions,
+		listVercelCiTaskRuns,
+		getVercelCiInvocationLogs,
+		getVercelCiTaskLogs,
+		getVercelCiJobRunLogs,
+		getVercelCiTaskRunLogs,
+	},
 	webAnalytics: {
 		aggregatePageviews,
 		aggregateEvents,
@@ -23773,6 +24893,25 @@ export const tagDictionary = {
 			"replaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuid",
 			"replaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReference",
 		],
+	},
+	vercelCi: {
+		GET: [
+			"listVercelCiInvocations",
+			"listVercelCiInvocationAttempts",
+			"getVercelCiInvocationTree",
+			"getVercelCiInvocation",
+			"listVercelCiJobDefinitions",
+			"getVercelCiJobDefinition",
+			"listVercelCiJobRuns",
+			"getVercelCiJobRun",
+			"listVercelCiTaskDefinitions",
+			"listVercelCiTaskRuns",
+			"getVercelCiInvocationLogs",
+			"getVercelCiTaskLogs",
+			"getVercelCiJobRunLogs",
+			"getVercelCiTaskRunLogs",
+		],
+		POST: ["retryVercelCiInvocation"],
 	},
 	webAnalytics: {
 		GET: ["aggregatePageviews", "aggregateEvents", "countPageviews", "countEvents"],
