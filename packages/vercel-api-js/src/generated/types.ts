@@ -7038,6 +7038,8 @@ export const userEventTypeEnum = {
 	"marketplace-billing-collection-updated": "marketplace-billing-collection-updated",
 	"marketplace-flex-commit-opt-in": "marketplace-flex-commit-opt-in",
 	"marketplace-integration-allowlist-updated": "marketplace-integration-allowlist-updated",
+	"messageboard-created": "messageboard-created",
+	"messageboard-space-created": "messageboard-space-created",
 	"microfrontend-group-added": "microfrontend-group-added",
 	"microfrontend-group-deleted": "microfrontend-group-deleted",
 	"microfrontend-group-updated": "microfrontend-group-updated",
@@ -7523,6 +7525,15 @@ export type UserEvent = {
 						policyId: string;
 						projectId: string;
 						projectName: string;
+				  }
+				| {
+						boardId: string;
+						operationId: string;
+				  }
+				| {
+						boardId: string;
+						operationId: string;
+						spaceId: string;
 				  }
 				| {
 						/**
@@ -15626,6 +15637,8 @@ export const listEventTypeNameEnum = {
 	"marketplace-billing-collection-updated": "marketplace-billing-collection-updated",
 	"marketplace-flex-commit-opt-in": "marketplace-flex-commit-opt-in",
 	"marketplace-integration-allowlist-updated": "marketplace-integration-allowlist-updated",
+	"messageboard-created": "messageboard-created",
+	"messageboard-space-created": "messageboard-space-created",
 	"microfrontend-group-added": "microfrontend-group-added",
 	"microfrontend-group-deleted": "microfrontend-group-deleted",
 	"microfrontend-group-updated": "microfrontend-group-updated",
@@ -16340,6 +16353,8 @@ export const listEventTypeReplacedByEnum = {
 	"marketplace-billing-collection-updated": "marketplace-billing-collection-updated",
 	"marketplace-flex-commit-opt-in": "marketplace-flex-commit-opt-in",
 	"marketplace-integration-allowlist-updated": "marketplace-integration-allowlist-updated",
+	"messageboard-created": "messageboard-created",
+	"messageboard-space-created": "messageboard-space-created",
 	"microfrontend-group-added": "microfrontend-group-added",
 	"microfrontend-group-deleted": "microfrontend-group-deleted",
 	"microfrontend-group-updated": "microfrontend-group-updated",
