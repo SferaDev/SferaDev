@@ -21409,6 +21409,8 @@ export const getConnectorTokenStatus429Schema = z.unknown();
 
 export const getConnectorTokenStatus501Schema = z.unknown();
 
+export const getConnectorTokenStatus504Schema = z.unknown();
+
 export const getConnectorTokenResponseSchema = getConnectorTokenStatus200Schema;
 
 export const getConnectorTokenErrorSchema = z.union([
@@ -21420,6 +21422,7 @@ export const getConnectorTokenErrorSchema = z.union([
 	getConnectorTokenStatus422Schema,
 	getConnectorTokenStatus429Schema,
 	getConnectorTokenStatus501Schema,
+	getConnectorTokenStatus504Schema,
 ]);
 
 export const createConnectorAuthorizationRequestPathConnectorSchema = z.string();
