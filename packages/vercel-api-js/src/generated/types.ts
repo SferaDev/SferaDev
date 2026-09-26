@@ -25828,6 +25828,8 @@ export type GetConnectorTokenStatus429 = unknown;
 
 export type GetConnectorTokenStatus501 = unknown;
 
+export type GetConnectorTokenStatus504 = unknown;
+
 export type GetConnectorTokenOptions = {
 	body?: never | undefined;
 	path: GetConnectorTokenPath;
@@ -25845,6 +25847,7 @@ export type GetConnectorTokenResponses = {
 	"422": GetConnectorTokenStatus422;
 	"429": GetConnectorTokenStatus429;
 	"501": GetConnectorTokenStatus501;
+	"504": GetConnectorTokenStatus504;
 };
 
 /**
@@ -25859,7 +25862,8 @@ export type GetConnectorTokenResponse =
 	| GetConnectorTokenStatus410
 	| GetConnectorTokenStatus422
 	| GetConnectorTokenStatus429
-	| GetConnectorTokenStatus501;
+	| GetConnectorTokenStatus501
+	| GetConnectorTokenStatus504;
 
 export type CreateConnectorAuthorizationRequestPath = {
 	connector: string;
