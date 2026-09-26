@@ -74,7 +74,7 @@ export const aiGatewayVirtualModelConfigSchema = z
 			.describe("Only use providers that will not train on your prompts."),
 		displayName: z.string().optional().describe("Human-readable name for UI."),
 		has: z
-			.array(z.enum(["implicit-caching", "reasoning", "tool-use", "vision"]))
+			.array(z.enum(["implicit-caching", "reasoning", "structured-output", "tool-use", "vision"]))
 			.optional()
 			.describe("Limit providers to those with these features."),
 		hipaaCompliant: z
@@ -122,11 +122,11 @@ export const aiGatewayVirtualModelConfigSchema = z
 					z.string(),
 					z
 						.object({
-							capability: z
+							intelligence: z
 								.number()
 								.optional()
 								.describe(
-									"Highest task level the member handles, in [0, 1]. Read by the capability selector.",
+									"Highest task level the member handles, in [0, 1]. Read by the intelligence selector.",
 								),
 							slug: z.string(),
 						})
