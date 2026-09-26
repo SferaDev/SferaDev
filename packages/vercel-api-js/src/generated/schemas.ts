@@ -3143,6 +3143,19 @@ export const userEventSchema = z
 					.strict(),
 				z
 					.object({
+						boardId: z.string(),
+						operationId: z.string(),
+					})
+					.strict(),
+				z
+					.object({
+						boardId: z.string(),
+						operationId: z.string(),
+						spaceId: z.string(),
+					})
+					.strict(),
+				z
+					.object({
 						provider: z
 							.enum(["chatgpt", "stripe"])
 							.optional()
@@ -12946,6 +12959,8 @@ export const userEventSchema = z
 				"marketplace-billing-collection-updated",
 				"marketplace-flex-commit-opt-in",
 				"marketplace-integration-allowlist-updated",
+				"messageboard-created",
+				"messageboard-space-created",
 				"microfrontend-group-added",
 				"microfrontend-group-deleted",
 				"microfrontend-group-updated",
@@ -13751,6 +13766,8 @@ export const listEventTypeSchema = z
 				"marketplace-billing-collection-updated",
 				"marketplace-flex-commit-opt-in",
 				"marketplace-integration-allowlist-updated",
+				"messageboard-created",
+				"messageboard-space-created",
 				"microfrontend-group-added",
 				"microfrontend-group-deleted",
 				"microfrontend-group-updated",
@@ -14450,6 +14467,8 @@ export const listEventTypeSchema = z
 					"marketplace-billing-collection-updated",
 					"marketplace-flex-commit-opt-in",
 					"marketplace-integration-allowlist-updated",
+					"messageboard-created",
+					"messageboard-space-created",
 					"microfrontend-group-added",
 					"microfrontend-group-deleted",
 					"microfrontend-group-updated",
