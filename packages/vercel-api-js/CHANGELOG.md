@@ -1,5 +1,11 @@
 # vercel-api-js
 
+## 1.28.1
+
+### Patch Changes
+
+- 59877bc: Added 'messageboard-private-created' and 'messageboard-private-space-created' event types to schemas and types.
+
 ## 1.28.0
 
 ### Minor Changes
