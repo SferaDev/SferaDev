@@ -1,5 +1,15 @@
 # vercel-api-js
 
+## 1.28.0
+
+### Minor Changes
+
+- 791e56a: Added new user event types 'messageboard-created' and 'messageboard-space-created'.
+
+### Patch Changes
+
+- 791e56a: Added support for new user event payloads with 'boardId', 'operationId', and optionally 'spaceId'.
+
 ## 1.27.1
 
 ### Patch Changes
