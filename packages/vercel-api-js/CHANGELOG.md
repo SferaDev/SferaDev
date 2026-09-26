@@ -1,5 +1,11 @@
 # vercel-api-js
 
+## 1.27.1
+
+### Patch Changes
+
+- f4cd5e5: Added support for 504 error status (GetConnectorTokenStatus504) in the getConnectorToken endpoint types, schemas, and response handling.
+
 ## 1.27.0
 
 ### Minor Changes
