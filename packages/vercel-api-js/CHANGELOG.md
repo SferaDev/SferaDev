@@ -1,5 +1,12 @@
 # vercel-api-js
 
+## 1.28.2
+
+### Patch Changes
+
+- 3ccf228: Renamed 'capability' property to 'intelligence' for aiGatewayVirtualModelConfig member objects.
+- 3ccf228: Added 'structured-output' as a possible value to the 'has' feature array in aiGatewayVirtualModelConfig schema.
+
 ## 1.28.1
 
 ### Patch Changes
