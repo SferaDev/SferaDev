@@ -44,6 +44,7 @@ export type AiGatewayRouterSelectorOptionBag = {
 export const aiGatewayVirtualModelConfigHasEnum = {
 	"implicit-caching": "implicit-caching",
 	reasoning: "reasoning",
+	"structured-output": "structured-output",
 	"tool-use": "tool-use",
 	vision: "vision",
 } as const;
@@ -230,10 +231,10 @@ export type AiGatewayVirtualModelConfig = {
 				| string
 				| {
 						/**
-						 * @description Highest task level the member handles, in [0, 1]. Read by the capability selector.
+						 * @description Highest task level the member handles, in [0, 1]. Read by the intelligence selector.
 						 * @type number | undefined
 						 */
-						capability?: number | undefined;
+						intelligence?: number | undefined;
 						slug: string;
 				  }
 				| {
