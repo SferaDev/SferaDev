@@ -6733,6 +6733,7 @@ export const userEventTypeEnum = {
 	"access-group-user-removed": "access-group-user-removed",
 	"admin-agentic-provisioning-account-unlinked": "admin-agentic-provisioning-account-unlinked",
 	"admin-plan-updated": "admin-plan-updated",
+	"admin-preview-deployment-suffix-clear": "admin-preview-deployment-suffix-clear",
 	"admin-secondary-email-added": "admin-secondary-email-added",
 	"admin-secondary-email-removed": "admin-secondary-email-removed",
 	"admin-team-name-update": "admin-team-name-update",
@@ -12336,6 +12337,18 @@ export type UserEvent = {
 						previousPreviewDeploymentSuffix?: (string | null) | undefined;
 				  }
 				| {
+						previousTeamSuffix: string | null;
+						projectCount: number;
+						reason: string;
+						/**
+						 * @description Okta user id.
+						 * @type string
+						 */
+						actorId: string;
+						actorName?: string | undefined;
+						actorType: "admin";
+				  }
+				| {
 						endpoint: {
 							awsServiceName: string;
 							id: string;
@@ -15334,6 +15347,7 @@ export const listEventTypeNameEnum = {
 	"access-group-user-removed": "access-group-user-removed",
 	"admin-agentic-provisioning-account-unlinked": "admin-agentic-provisioning-account-unlinked",
 	"admin-plan-updated": "admin-plan-updated",
+	"admin-preview-deployment-suffix-clear": "admin-preview-deployment-suffix-clear",
 	"admin-secondary-email-added": "admin-secondary-email-added",
 	"admin-secondary-email-removed": "admin-secondary-email-removed",
 	"admin-team-name-update": "admin-team-name-update",
@@ -16052,6 +16066,7 @@ export const listEventTypeReplacedByEnum = {
 	"access-group-user-removed": "access-group-user-removed",
 	"admin-agentic-provisioning-account-unlinked": "admin-agentic-provisioning-account-unlinked",
 	"admin-plan-updated": "admin-plan-updated",
+	"admin-preview-deployment-suffix-clear": "admin-preview-deployment-suffix-clear",
 	"admin-secondary-email-added": "admin-secondary-email-added",
 	"admin-secondary-email-removed": "admin-secondary-email-removed",
 	"admin-team-name-update": "admin-team-name-update",
@@ -17571,8 +17586,8 @@ export type NamedSandbox = {
 	 */
 	failoverRegions?: NamedSandboxFailoverRegionsEnumKey[] | undefined;
 	/**
-	 * @description Digest-pinned reference of the container image the sandbox was created from, when it was created from an image (\"{repository}@{manifestDigest}\").
-	 * @example my-repo@sha256:2c4e8f9a1b3d5e7f091a2b3c4d5e6f708192a3b4c5d6e7f8091a2b3c4d5e6f708
+	 * @description Owner-qualified, digest-pinned reference of the container image the sandbox was created from (\"{team}/{project}/{repository}@{manifestDigest}\").
+	 * @example my-team/my-project/my-repo@sha256:2c4e8f9a1b3d5e7f091a2b3c4d5e6f708192a3b4c5d6e7f8091a2b3c4d5e6f708
 	 * @type string | undefined
 	 */
 	image?: string | undefined;
@@ -46222,6 +46237,8 @@ export type UpdateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatu
 
 export type UpdateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus404 = unknown;
 
+export type UpdateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus408 = unknown;
+
 export type UpdateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus410 = unknown;
 
 export type UpdateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus413 = unknown;
@@ -46240,6 +46257,7 @@ export type UpdateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidRespo
 	"402": UpdateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus402;
 	"403": UpdateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus403;
 	"404": UpdateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus404;
+	"408": UpdateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus408;
 	"410": UpdateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus410;
 	"413": UpdateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus413;
 };
@@ -46254,6 +46272,7 @@ export type UpdateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidRespo
 	| UpdateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus402
 	| UpdateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus403
 	| UpdateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus404
+	| UpdateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus408
 	| UpdateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus410
 	| UpdateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus413;
 
@@ -46315,6 +46334,8 @@ export type ReplaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStat
 
 export type ReplaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus404 = unknown;
 
+export type ReplaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus408 = unknown;
+
 export type ReplaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus410 = unknown;
 
 export type ReplaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus413 = unknown;
@@ -46333,6 +46354,7 @@ export type ReplaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidResp
 	"402": ReplaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus402;
 	"403": ReplaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus403;
 	"404": ReplaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus404;
+	"408": ReplaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus408;
 	"410": ReplaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus410;
 	"413": ReplaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus413;
 };
@@ -46347,6 +46369,7 @@ export type ReplaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidResp
 	| ReplaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus402
 	| ReplaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus403
 	| ReplaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus404
+	| ReplaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus408
 	| ReplaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus410
 	| ReplaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuidStatus413;
 
