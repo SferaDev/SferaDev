@@ -3,7 +3,7 @@
 import * as z from "zod";
 
 export const chatDetailSchema = z
-	.object({
+	.strictObject({
 		id: z.string().describe("A unique identifier for the chat."),
 		object: z.enum(["chat"]).describe("Fixed value identifying this object as a chat."),
 		shareable: z.boolean().describe("Indicates whether the chat can be shared via public link."),
@@ -32,7 +32,7 @@ export const chatDetailSchema = z
 		webUrl: z.string().describe("Web URL to view this chat in the browser."),
 		apiUrl: z.string().describe("API URL to access this chat via the API."),
 		latestVersion: z
-			.object({
+			.strictObject({
 				id: z.string().describe("A unique identifier for the version."),
 				object: z.enum(["version"]).describe("Fixed value identifying this object as a version."),
 				status: z
@@ -55,22 +55,19 @@ export const chatDetailSchema = z
 					.describe("The date and time when the version was last updated, in ISO 8601 format."),
 				files: z
 					.array(
-						z
-							.object({
-								object: z.enum(["file"]).describe("Fixed value identifying this object as a file."),
-								name: z.string().describe("The name of the file, including its extension."),
-								content: z.string().describe("The full contents of the file as a raw string."),
-								locked: z
-									.boolean()
-									.describe(
-										"Whether the file is locked to prevent AI from overwriting it during new version generation.",
-									),
-							})
-							.strict(),
+						z.strictObject({
+							object: z.enum(["file"]).describe("Fixed value identifying this object as a file."),
+							name: z.string().describe("The name of the file, including its extension."),
+							content: z.string().describe("The full contents of the file as a raw string."),
+							locked: z
+								.boolean()
+								.describe(
+									"Whether the file is locked to prevent AI from overwriting it during new version generation.",
+								),
+						}),
 					)
 					.describe("A list of files that were generated or included in this version."),
 			})
-			.strict()
 			.optional()
 			.describe("Full details of the most recent generated version, if available."),
 		metadata: z
@@ -80,181 +77,166 @@ export const chatDetailSchema = z
 		url: z.string().describe("The canonical URL to access this chat."),
 		messages: z
 			.array(
-				z
-					.object({
-						id: z.string().describe("A unique identifier for the message."),
-						object: z
-							.enum(["message"])
-							.describe("Fixed value identifying this object as a message."),
-						content: z.string().describe("The main text content of the message."),
-						experimentalContent: z
-							.array(
-								z.union([
-									z.tuple([z.literal(0), z.array(z.string())]),
-									z.tuple([
-										z.literal(1),
-										z
-											.object({
-												toJSONSchema: z.string(),
-												def: z.string(),
-												type: z.string(),
-												check: z.string(),
-												with: z.string(),
-												clone: z.string(),
-												brand: z.string(),
-												register: z.string(),
-												parse: z.string(),
-												safeParse: z.string(),
-												parseAsync: z.string(),
-												safeParseAsync: z.string(),
-												spa: z.string(),
-												encode: z.string(),
-												decode: z.string(),
-												encodeAsync: z.string(),
-												decodeAsync: z.string(),
-												safeEncode: z.string(),
-												safeDecode: z.string(),
-												safeEncodeAsync: z.string(),
-												safeDecodeAsync: z.string(),
-												refine: z.string(),
-												superRefine: z.string(),
-												overwrite: z.string(),
-												optional: z.string(),
-												exactOptional: z.string(),
-												nullable: z.string(),
-												nullish: z.string(),
-												nonoptional: z.string(),
-												array: z.string(),
-												or: z.string(),
-												and: z.string(),
-												transform: z.string(),
-												default: z.string(),
-												prefault: z.string(),
-												catch: z.string(),
-												pipe: z.string(),
-												readonly: z.string(),
-												describe: z.string(),
-												meta: z.string(),
-												isOptional: z.string(),
-												isNullable: z.string(),
-												apply: z.string(),
-												keyof: z.string(),
-												catchall: z.string(),
-												passthrough: z.string(),
-												loose: z.string(),
-												strict: z.string(),
-												strip: z.string(),
-												extend: z.string(),
-												safeExtend: z.string(),
-												merge: z.string(),
-												pick: z.string(),
-												omit: z.string(),
-												partial: z.string(),
-												required: z.string(),
-											})
-											.strict(),
-									]),
+				z.strictObject({
+					id: z.string().describe("A unique identifier for the message."),
+					object: z.enum(["message"]).describe("Fixed value identifying this object as a message."),
+					content: z.string().describe("The main text content of the message."),
+					experimentalContent: z
+						.array(
+							z.union([
+								z.tuple([z.literal(0), z.array(z.string())]),
+								z.tuple([
+									z.literal(1),
+									z.strictObject({
+										toJSONSchema: z.string(),
+										def: z.string(),
+										type: z.string(),
+										check: z.string(),
+										with: z.string(),
+										clone: z.string(),
+										brand: z.string(),
+										register: z.string(),
+										parse: z.string(),
+										safeParse: z.string(),
+										parseAsync: z.string(),
+										safeParseAsync: z.string(),
+										spa: z.string(),
+										encode: z.string(),
+										decode: z.string(),
+										encodeAsync: z.string(),
+										decodeAsync: z.string(),
+										safeEncode: z.string(),
+										safeDecode: z.string(),
+										safeEncodeAsync: z.string(),
+										safeDecodeAsync: z.string(),
+										refine: z.string(),
+										superRefine: z.string(),
+										overwrite: z.string(),
+										optional: z.string(),
+										exactOptional: z.string(),
+										nullable: z.string(),
+										nullish: z.string(),
+										nonoptional: z.string(),
+										array: z.string(),
+										or: z.string(),
+										and: z.string(),
+										transform: z.string(),
+										default: z.string(),
+										prefault: z.string(),
+										catch: z.string(),
+										pipe: z.string(),
+										readonly: z.string(),
+										describe: z.string(),
+										meta: z.string(),
+										isOptional: z.string(),
+										isNullable: z.string(),
+										apply: z.string(),
+										keyof: z.string(),
+										catchall: z.string(),
+										passthrough: z.string(),
+										loose: z.string(),
+										strict: z.string(),
+										strip: z.string(),
+										extend: z.string(),
+										safeExtend: z.string(),
+										merge: z.string(),
+										pick: z.string(),
+										omit: z.string(),
+										partial: z.string(),
+										required: z.string(),
+									}),
 								]),
-							)
-							.optional()
-							.describe(
-								"The parsed content of the message as an array structure containing AST nodes. This is an experimental field that may change.",
-							),
-						createdAt: z
-							.string()
-							.describe("The ISO timestamp representing when the message was created."),
-						updatedAt: z.iso
-							.datetime()
-							.optional()
-							.describe("The ISO timestamp representing when the message was last updated."),
-						type: z
-							.enum([
-								"added-environment-variables",
-								"added-integration",
-								"answered-questions",
-								"auto-fix-with-v0",
-								"cloned-repo",
-								"deleted-file",
-								"design-mode",
-								"edited-file",
-								"fix-cve",
-								"fix-with-v0",
-								"forked-block",
-								"forked-chat",
-								"manual-commit",
-								"message",
-								"moved-file",
-								"open-in-v0",
-								"pull-changes",
-								"refinement",
-								"renamed-file",
-								"replace-src",
-								"reverted-block",
-								"sync-git",
-							])
-							.describe(
-								"Indicates the format or category of the message, such as plain text or code.",
-							),
-						role: z
-							.enum(["assistant", "user"])
-							.describe("Specifies whether the message was sent by the user or the assistant."),
-						finishReason: z
-							.enum(["content-filter", "error", "length", "other", "stop", "tool-calls"])
-							.optional()
-							.describe("The reason why the message generation finished."),
-						apiUrl: z.string().describe("API URL to access this message via the API."),
-						authorId: z.string().nullable().describe("The ID of the user who sent the message."),
-						parentId: z.string().nullish().describe("The ID of the parent message."),
-						attachments: z
-							.array(
-								z
-									.object({
-										url: z.string().describe("The URL where the attachment file can be accessed."),
-										name: z
-											.string()
-											.optional()
-											.describe("The original filename of the attachment."),
-										contentType: z
-											.string()
-											.optional()
-											.describe(
-												"The MIME type of the attachment file (e.g., image/png, application/pdf).",
-											),
-										size: z.number().describe("The size of the attachment file in bytes."),
-										content: z
-											.string()
-											.optional()
-											.describe("The base64-encoded content of the attachment file, if available."),
-										type: z
-											.enum(["figma", "screenshot", "zip"])
-											.optional()
-											.describe("Optional v0-specific attachment type for enhanced processing."),
-									})
-									.strict(),
-							)
-							.optional(),
-					})
-					.strict(),
+							]),
+						)
+						.optional()
+						.describe(
+							"The parsed content of the message as an array structure containing AST nodes. This is an experimental field that may change.",
+						),
+					createdAt: z
+						.string()
+						.describe("The ISO timestamp representing when the message was created."),
+					updatedAt: z.iso
+						.datetime()
+						.optional()
+						.describe("The ISO timestamp representing when the message was last updated."),
+					type: z
+						.enum([
+							"added-environment-variables",
+							"added-integration",
+							"answered-questions",
+							"auto-fix-with-v0",
+							"cloned-repo",
+							"deleted-file",
+							"design-mode",
+							"edited-file",
+							"fix-cve",
+							"fix-with-v0",
+							"forked-block",
+							"forked-chat",
+							"manual-commit",
+							"message",
+							"moved-file",
+							"open-in-v0",
+							"pull-changes",
+							"refinement",
+							"renamed-file",
+							"replace-src",
+							"reverted-block",
+							"sync-git",
+						])
+						.describe(
+							"Indicates the format or category of the message, such as plain text or code.",
+						),
+					role: z
+						.enum(["assistant", "user"])
+						.describe("Specifies whether the message was sent by the user or the assistant."),
+					finishReason: z
+						.enum(["content-filter", "error", "length", "other", "stop", "tool-calls"])
+						.optional()
+						.describe("The reason why the message generation finished."),
+					apiUrl: z.string().describe("API URL to access this message via the API."),
+					authorId: z.string().nullable().describe("The ID of the user who sent the message."),
+					parentId: z.string().nullish().describe("The ID of the parent message."),
+					attachments: z
+						.array(
+							z.strictObject({
+								url: z.string().describe("The URL where the attachment file can be accessed."),
+								name: z.string().optional().describe("The original filename of the attachment."),
+								contentType: z
+									.string()
+									.optional()
+									.describe(
+										"The MIME type of the attachment file (e.g., image/png, application/pdf).",
+									),
+								size: z.number().describe("The size of the attachment file in bytes."),
+								content: z
+									.string()
+									.optional()
+									.describe("The base64-encoded content of the attachment file, if available."),
+								type: z
+									.enum(["figma", "screenshot", "zip"])
+									.optional()
+									.describe("Optional v0-specific attachment type for enhanced processing."),
+							}),
+						)
+						.optional(),
+				}),
 			)
 			.describe("All messages exchanged in the chat, including user and assistant entries."),
 		files: z
 			.array(
-				z
-					.object({
-						lang: z
-							.string()
-							.describe("Programming language used in the file (e.g., JavaScript, Python)."),
-						meta: z
-							.object({})
-							.catchall(z.string())
-							.describe("A key-value map of metadata associated with the file (e.g., path, type)."),
-						source: z
-							.string()
-							.describe(
-								"The origin or identifier of the file source (e.g., path or upload label).",
-							),
-					})
-					.strict(),
+				z.strictObject({
+					lang: z
+						.string()
+						.describe("Programming language used in the file (e.g., JavaScript, Python)."),
+					meta: z
+						.object({})
+						.catchall(z.string())
+						.describe("A key-value map of metadata associated with the file (e.g., path, type)."),
+					source: z
+						.string()
+						.describe("The origin or identifier of the file source (e.g., path or upload label)."),
+				}),
 			)
 			.optional()
 			.describe("Optional array of files associated with the chat context."),
@@ -264,7 +246,7 @@ export const chatDetailSchema = z
 			.describe("Deprecated demo URL used for previewing the chat result."),
 		text: z.string().describe("The main user prompt or instruction that started the chat."),
 		modelConfiguration: z
-			.object({
+			.strictObject({
 				modelId: z
 					.enum([
 						"v0-auto",
@@ -295,22 +277,18 @@ export const chatDetailSchema = z
 					.optional(),
 				fast: z.boolean().optional(),
 			})
-			.strict()
 			.optional()
 			.describe("The configuration used to generate responses in this chat."),
-		permissions: z
-			.object({
-				write: z.boolean().describe("If true, the user has write access to the chat."),
-			})
-			.strict(),
+		permissions: z.strictObject({
+			write: z.boolean().describe("If true, the user has write access to the chat."),
+		}),
 	})
-	.strict()
 	.describe(
 		"Detailed representation of a chat, including its messages, files, versions, and model configuration.",
 	);
 
 export const chatSummarySchema = z
-	.object({
+	.strictObject({
 		id: z.string().describe("A unique identifier for the chat."),
 		object: z.enum(["chat"]).describe("Fixed value identifying this object as a chat."),
 		shareable: z.boolean().describe("Indicates whether the chat can be shared via public link."),
@@ -339,7 +317,7 @@ export const chatSummarySchema = z
 		webUrl: z.string().describe("Web URL to view this chat in the browser."),
 		apiUrl: z.string().describe("API URL to access this chat via the API."),
 		latestVersion: z
-			.object({
+			.strictObject({
 				id: z.string().describe("A unique identifier for the version."),
 				object: z.enum(["version"]).describe("Fixed value identifying this object as a version."),
 				status: z
@@ -361,7 +339,6 @@ export const chatSummarySchema = z
 					.optional()
 					.describe("The date and time when the version was last updated, in ISO 8601 format."),
 			})
-			.strict()
 			.optional()
 			.describe("The most recent generated version of the chat, if available."),
 		metadata: z
@@ -369,49 +346,40 @@ export const chatSummarySchema = z
 			.catchall(z.string())
 			.describe("Arbitrary key-value data associated with this chat."),
 	})
-	.strict()
 	.describe(
 		"Summary of a chat, including metadata like privacy, author, latest version, and URLs.",
 	);
 
-export const deploymentDetailSchema = z
-	.object({
-		id: z.string().describe("A unique identifier for the deployment."),
-		object: z.enum(["deployment"]).describe("Fixed value identifying this object as a deployment."),
-		inspectorUrl: z.string().describe("URL to the deployment inspector."),
-		chatId: z.string().describe("The ID of the chat that this deployment is scoped to."),
-		projectId: z
-			.string()
-			.optional()
-			.describe("The ID of the project that this deployment is scoped to."),
-		versionId: z.string().describe("The ID of the version that this deployment is scoped to."),
-		apiUrl: z
-			.url()
-			.describe("The API endpoint URL for accessing this deployment programmatically."),
-		webUrl: z.url().describe("The web URL where the deployment can be viewed or managed."),
-	})
-	.strict();
+export const deploymentDetailSchema = z.strictObject({
+	id: z.string().describe("A unique identifier for the deployment."),
+	object: z.enum(["deployment"]).describe("Fixed value identifying this object as a deployment."),
+	inspectorUrl: z.string().describe("URL to the deployment inspector."),
+	chatId: z.string().describe("The ID of the chat that this deployment is scoped to."),
+	projectId: z
+		.string()
+		.optional()
+		.describe("The ID of the project that this deployment is scoped to."),
+	versionId: z.string().describe("The ID of the version that this deployment is scoped to."),
+	apiUrl: z.url().describe("The API endpoint URL for accessing this deployment programmatically."),
+	webUrl: z.url().describe("The web URL where the deployment can be viewed or managed."),
+});
 
-export const deploymentSummarySchema = z
-	.object({
-		id: z.string().describe("A unique identifier for the deployment."),
-		object: z.enum(["deployment"]).describe("Fixed value identifying this object as a deployment."),
-		inspectorUrl: z.string().describe("URL to the deployment inspector."),
-		chatId: z.string().describe("The ID of the chat that this deployment is scoped to."),
-		projectId: z
-			.string()
-			.optional()
-			.describe("The ID of the project that this deployment is scoped to."),
-		versionId: z.string().describe("The ID of the version that this deployment is scoped to."),
-		apiUrl: z
-			.url()
-			.describe("The API endpoint URL for accessing this deployment programmatically."),
-		webUrl: z.url().describe("The web URL where the deployment can be viewed or managed."),
-	})
-	.strict();
+export const deploymentSummarySchema = z.strictObject({
+	id: z.string().describe("A unique identifier for the deployment."),
+	object: z.enum(["deployment"]).describe("Fixed value identifying this object as a deployment."),
+	inspectorUrl: z.string().describe("URL to the deployment inspector."),
+	chatId: z.string().describe("The ID of the chat that this deployment is scoped to."),
+	projectId: z
+		.string()
+		.optional()
+		.describe("The ID of the project that this deployment is scoped to."),
+	versionId: z.string().describe("The ID of the version that this deployment is scoped to."),
+	apiUrl: z.url().describe("The API endpoint URL for accessing this deployment programmatically."),
+	webUrl: z.url().describe("The web URL where the deployment can be viewed or managed."),
+});
 
 export const environmentVariableDetailSchemaSchema = z
-	.object({
+	.strictObject({
 		id: z.string().describe("A unique identifier for the environment variable."),
 		object: z.enum(["environment_variable"]).describe("The object type."),
 		key: z.string().describe("The name of the environment variable."),
@@ -423,11 +391,10 @@ export const environmentVariableDetailSchemaSchema = z
 			.optional()
 			.describe("The timestamp when the environment variable was last updated."),
 	})
-	.strict()
 	.describe("Detailed information for an environment variable including its value.");
 
 export const environmentVariableSummarySchemaSchema = z
-	.object({
+	.strictObject({
 		id: z.string().describe("A unique identifier for the environment variable."),
 		object: z.enum(["environment_variable"]).describe("The object type."),
 		key: z.string().describe("The name of the environment variable."),
@@ -439,38 +406,34 @@ export const environmentVariableSummarySchemaSchema = z
 			.optional()
 			.describe("The timestamp when the environment variable was last updated."),
 	})
-	.strict()
 	.describe("Summary information for an environment variable.");
 
 export const environmentVariablesListSchemaSchema = z
-	.object({
+	.strictObject({
 		object: z.enum(["list"]).describe("Fixed value identifying this as a list response."),
 		data: z
 			.array(
-				z
-					.object({
-						id: z.string().describe("A unique identifier for the environment variable."),
-						object: z.enum(["environment_variable"]).describe("The object type."),
-						key: z.string().describe("The name of the environment variable."),
-						value: z.string().describe("The value of the environment variable."),
-						decrypted: z.boolean().describe("Whether the value is decrypted or encrypted."),
-						createdAt: z
-							.number()
-							.describe("The timestamp when the environment variable was created."),
-						updatedAt: z
-							.number()
-							.optional()
-							.describe("The timestamp when the environment variable was last updated."),
-					})
-					.strict(),
+				z.strictObject({
+					id: z.string().describe("A unique identifier for the environment variable."),
+					object: z.enum(["environment_variable"]).describe("The object type."),
+					key: z.string().describe("The name of the environment variable."),
+					value: z.string().describe("The value of the environment variable."),
+					decrypted: z.boolean().describe("Whether the value is decrypted or encrypted."),
+					createdAt: z
+						.number()
+						.describe("The timestamp when the environment variable was created."),
+					updatedAt: z
+						.number()
+						.optional()
+						.describe("The timestamp when the environment variable was last updated."),
+				}),
 			)
 			.describe("Array of environment variable details."),
 	})
-	.strict()
 	.describe("List response containing environment variables.");
 
 export const fileDetailSchema = z
-	.object({
+	.strictObject({
 		object: z.enum(["file"]).describe("Fixed value identifying this object as a file."),
 		name: z.string().describe("The name of the file, including its extension."),
 		content: z.string().describe("The full contents of the file as a raw string."),
@@ -480,19 +443,17 @@ export const fileDetailSchema = z
 				"Whether the file is locked to prevent AI from overwriting it during new version generation.",
 			),
 	})
-	.strict()
 	.describe("Detailed representation of a file, including its content and lock status.");
 
 export const fileSummarySchema = z
-	.object({
+	.strictObject({
 		object: z.enum(["file"]).describe("Fixed value identifying this object as a file."),
 		name: z.string().describe("The name of the file, including its extension."),
 	})
-	.strict()
 	.describe("Basic metadata about a file, such as its type and name.");
 
 export const hookDetailSchema = z
-	.object({
+	.strictObject({
 		id: z.string().describe("A unique identifier for the webhook."),
 		object: z.enum(["hook"]).describe("Fixed value identifying this object as a webhook."),
 		name: z.string().describe("A user-defined name to label the webhook."),
@@ -515,11 +476,10 @@ export const hookDetailSchema = z
 			.describe("Optional ID of the chat that this webhook is scoped to."),
 		url: z.string().describe("Target URL that receives event payloads for this webhook."),
 	})
-	.strict()
 	.describe("Full configuration details for a webhook, including its scope and subscription.");
 
 export const hookEventDetailSchema = z
-	.object({
+	.strictObject({
 		id: z.string().describe("A unique identifier for the webhook event log entry."),
 		object: z
 			.enum(["hook_event"])
@@ -542,20 +502,18 @@ export const hookEventDetailSchema = z
 			.describe("The delivery status of the webhook (e.g., delivered, failed)."),
 		createdAt: z.iso.datetime().describe("Timestamp of when the webhook event was triggered."),
 	})
-	.strict()
 	.describe("Detailed record of a webhook event, including its type, status, and timestamp.");
 
 export const hookSummarySchema = z
-	.object({
+	.strictObject({
 		id: z.string().describe("A unique identifier for the webhook."),
 		object: z.enum(["hook"]).describe("Fixed value identifying this object as a webhook."),
 		name: z.string().describe("A user-defined name to label the webhook."),
 	})
-	.strict()
 	.describe("Summary of a webhook, including its ID and display name.");
 
 export const integrationConnectionDetailSchemaSchema = z
-	.object({
+	.strictObject({
 		object: z.enum(["integration_connection"]).describe("The object type."),
 		id: z
 			.string()
@@ -564,13 +522,12 @@ export const integrationConnectionDetailSchemaSchema = z
 			),
 		connected: z.boolean().describe("Whether the integration is connected to the project."),
 		integration: z
-			.object({
+			.strictObject({
 				id: z.string().describe("The ID of the integration."),
 				object: z.enum(["integration"]).describe("The object type."),
 				slug: z.string().describe("The slug of the integration."),
 				name: z.string().describe("The name of the integration."),
 			})
-			.strict()
 			.describe("Information about the connected integration."),
 		metadata: z
 			.object({})
@@ -578,42 +535,37 @@ export const integrationConnectionDetailSchemaSchema = z
 			.optional()
 			.describe("Additional metadata about the integration connection."),
 	})
-	.strict()
 	.describe("Detailed information about an integration connection to a project.");
 
 export const integrationConnectionListSchemaSchema = z
-	.object({
+	.strictObject({
 		object: z.enum(["list"]).describe("Fixed value identifying this as a list response."),
 		data: z
 			.array(
-				z
-					.object({
-						object: z.enum(["integration_connection"]).describe("The object type."),
-						id: z
-							.string()
-							.describe(
-								"The unique ID of the integration connection (format: {projectId}_{integrationId}).",
-							),
-						connected: z.boolean().describe("Whether the integration is connected to the project."),
-						integration: z
-							.object({
-								id: z.string().describe("The ID of the integration."),
-								object: z.enum(["integration"]).describe("The object type."),
-								slug: z.string().describe("The slug of the integration."),
-								name: z.string().describe("The name of the integration."),
-							})
-							.strict()
-							.describe("Information about the connected integration."),
-					})
-					.strict(),
+				z.strictObject({
+					object: z.enum(["integration_connection"]).describe("The object type."),
+					id: z
+						.string()
+						.describe(
+							"The unique ID of the integration connection (format: {projectId}_{integrationId}).",
+						),
+					connected: z.boolean().describe("Whether the integration is connected to the project."),
+					integration: z
+						.strictObject({
+							id: z.string().describe("The ID of the integration."),
+							object: z.enum(["integration"]).describe("The object type."),
+							slug: z.string().describe("The slug of the integration."),
+							name: z.string().describe("The name of the integration."),
+						})
+						.describe("Information about the connected integration."),
+				}),
 			)
 			.describe("Array of integration connection summaries."),
 	})
-	.strict()
 	.describe("List response containing integration connections.");
 
 export const integrationConnectionSummarySchemaSchema = z
-	.object({
+	.strictObject({
 		object: z.enum(["integration_connection"]).describe("The object type."),
 		id: z
 			.string()
@@ -622,20 +574,18 @@ export const integrationConnectionSummarySchemaSchema = z
 			),
 		connected: z.boolean().describe("Whether the integration is connected to the project."),
 		integration: z
-			.object({
+			.strictObject({
 				id: z.string().describe("The ID of the integration."),
 				object: z.enum(["integration"]).describe("The object type."),
 				slug: z.string().describe("The slug of the integration."),
 				name: z.string().describe("The name of the integration."),
 			})
-			.strict()
 			.describe("Information about the connected integration."),
 	})
-	.strict()
 	.describe("Summary information about an integration connection to a project.");
 
 export const integrationDetailSchemaSchema = z
-	.object({
+	.strictObject({
 		id: z.string().describe("The ID of the integration."),
 		object: z.enum(["integration"]).describe("The object type."),
 		slug: z.string().describe("The slug of the integration."),
@@ -643,42 +593,37 @@ export const integrationDetailSchemaSchema = z
 		description: z.string().describe("A short description of the integration."),
 		iconUrl: z.string().describe("URL to the integration icon."),
 	})
-	.strict()
 	.describe("Detailed information about an integration.");
 
 export const integrationListSchemaSchema = z
-	.object({
+	.strictObject({
 		object: z.enum(["list"]).describe("Fixed value identifying this as a list response."),
 		data: z
 			.array(
-				z
-					.object({
-						id: z.string().describe("The ID of the integration."),
-						object: z.enum(["integration"]).describe("The object type."),
-						slug: z.string().describe("The slug of the integration."),
-						name: z.string().describe("The name of the integration."),
-						description: z.string().describe("A short description of the integration."),
-						iconUrl: z.string().describe("URL to the integration icon."),
-					})
-					.strict(),
+				z.strictObject({
+					id: z.string().describe("The ID of the integration."),
+					object: z.enum(["integration"]).describe("The object type."),
+					slug: z.string().describe("The slug of the integration."),
+					name: z.string().describe("The name of the integration."),
+					description: z.string().describe("A short description of the integration."),
+					iconUrl: z.string().describe("URL to the integration icon."),
+				}),
 			)
 			.describe("Array of integration details."),
 	})
-	.strict()
 	.describe("List of available integrations.");
 
 export const integrationSummarySchemaSchema = z
-	.object({
+	.strictObject({
 		id: z.string().describe("The ID of the integration."),
 		object: z.enum(["integration"]).describe("The object type."),
 		slug: z.string().describe("The slug of the integration."),
 		name: z.string().describe("The name of the integration."),
 	})
-	.strict()
 	.describe("Basic information about an integration.");
 
 export const messageDetailSchema = z
-	.object({
+	.strictObject({
 		id: z.string().describe("A unique identifier for the message."),
 		object: z.enum(["message"]).describe("Fixed value identifying this object as a message."),
 		content: z.string().describe("The main text content of the message."),
@@ -688,66 +633,64 @@ export const messageDetailSchema = z
 					z.tuple([z.literal(0), z.array(z.string())]),
 					z.tuple([
 						z.literal(1),
-						z
-							.object({
-								toJSONSchema: z.string(),
-								def: z.string(),
-								type: z.string(),
-								check: z.string(),
-								with: z.string(),
-								clone: z.string(),
-								brand: z.string(),
-								register: z.string(),
-								parse: z.string(),
-								safeParse: z.string(),
-								parseAsync: z.string(),
-								safeParseAsync: z.string(),
-								spa: z.string(),
-								encode: z.string(),
-								decode: z.string(),
-								encodeAsync: z.string(),
-								decodeAsync: z.string(),
-								safeEncode: z.string(),
-								safeDecode: z.string(),
-								safeEncodeAsync: z.string(),
-								safeDecodeAsync: z.string(),
-								refine: z.string(),
-								superRefine: z.string(),
-								overwrite: z.string(),
-								optional: z.string(),
-								exactOptional: z.string(),
-								nullable: z.string(),
-								nullish: z.string(),
-								nonoptional: z.string(),
-								array: z.string(),
-								or: z.string(),
-								and: z.string(),
-								transform: z.string(),
-								default: z.string(),
-								prefault: z.string(),
-								catch: z.string(),
-								pipe: z.string(),
-								readonly: z.string(),
-								describe: z.string(),
-								meta: z.string(),
-								isOptional: z.string(),
-								isNullable: z.string(),
-								apply: z.string(),
-								keyof: z.string(),
-								catchall: z.string(),
-								passthrough: z.string(),
-								loose: z.string(),
-								strict: z.string(),
-								strip: z.string(),
-								extend: z.string(),
-								safeExtend: z.string(),
-								merge: z.string(),
-								pick: z.string(),
-								omit: z.string(),
-								partial: z.string(),
-								required: z.string(),
-							})
-							.strict(),
+						z.strictObject({
+							toJSONSchema: z.string(),
+							def: z.string(),
+							type: z.string(),
+							check: z.string(),
+							with: z.string(),
+							clone: z.string(),
+							brand: z.string(),
+							register: z.string(),
+							parse: z.string(),
+							safeParse: z.string(),
+							parseAsync: z.string(),
+							safeParseAsync: z.string(),
+							spa: z.string(),
+							encode: z.string(),
+							decode: z.string(),
+							encodeAsync: z.string(),
+							decodeAsync: z.string(),
+							safeEncode: z.string(),
+							safeDecode: z.string(),
+							safeEncodeAsync: z.string(),
+							safeDecodeAsync: z.string(),
+							refine: z.string(),
+							superRefine: z.string(),
+							overwrite: z.string(),
+							optional: z.string(),
+							exactOptional: z.string(),
+							nullable: z.string(),
+							nullish: z.string(),
+							nonoptional: z.string(),
+							array: z.string(),
+							or: z.string(),
+							and: z.string(),
+							transform: z.string(),
+							default: z.string(),
+							prefault: z.string(),
+							catch: z.string(),
+							pipe: z.string(),
+							readonly: z.string(),
+							describe: z.string(),
+							meta: z.string(),
+							isOptional: z.string(),
+							isNullable: z.string(),
+							apply: z.string(),
+							keyof: z.string(),
+							catchall: z.string(),
+							passthrough: z.string(),
+							loose: z.string(),
+							strict: z.string(),
+							strip: z.string(),
+							extend: z.string(),
+							safeExtend: z.string(),
+							merge: z.string(),
+							pick: z.string(),
+							omit: z.string(),
+							partial: z.string(),
+							required: z.string(),
+						}),
 					]),
 				]),
 			)
@@ -798,34 +741,31 @@ export const messageDetailSchema = z
 		parentId: z.string().nullish().describe("The ID of the parent message."),
 		attachments: z
 			.array(
-				z
-					.object({
-						url: z.string().describe("The URL where the attachment file can be accessed."),
-						name: z.string().optional().describe("The original filename of the attachment."),
-						contentType: z
-							.string()
-							.optional()
-							.describe("The MIME type of the attachment file (e.g., image/png, application/pdf)."),
-						size: z.number().describe("The size of the attachment file in bytes."),
-						content: z
-							.string()
-							.optional()
-							.describe("The base64-encoded content of the attachment file, if available."),
-						type: z
-							.enum(["figma", "screenshot", "zip"])
-							.optional()
-							.describe("Optional v0-specific attachment type for enhanced processing."),
-					})
-					.strict(),
+				z.strictObject({
+					url: z.string().describe("The URL where the attachment file can be accessed."),
+					name: z.string().optional().describe("The original filename of the attachment."),
+					contentType: z
+						.string()
+						.optional()
+						.describe("The MIME type of the attachment file (e.g., image/png, application/pdf)."),
+					size: z.number().describe("The size of the attachment file in bytes."),
+					content: z
+						.string()
+						.optional()
+						.describe("The base64-encoded content of the attachment file, if available."),
+					type: z
+						.enum(["figma", "screenshot", "zip"])
+						.optional()
+						.describe("Optional v0-specific attachment type for enhanced processing."),
+				}),
 			)
 			.optional(),
 		chatId: z.string().describe("The ID of the chat to which this message belongs."),
 	})
-	.strict()
 	.describe("Detailed message object extending MessageSummary with chat metadata.");
 
 export const messageSummarySchema = z
-	.object({
+	.strictObject({
 		id: z.string().describe("A unique identifier for the message."),
 		object: z.enum(["message"]).describe("Fixed value identifying this object as a message."),
 		content: z.string().describe("The main text content of the message."),
@@ -835,66 +775,64 @@ export const messageSummarySchema = z
 					z.tuple([z.literal(0), z.array(z.string())]),
 					z.tuple([
 						z.literal(1),
-						z
-							.object({
-								toJSONSchema: z.string(),
-								def: z.string(),
-								type: z.string(),
-								check: z.string(),
-								with: z.string(),
-								clone: z.string(),
-								brand: z.string(),
-								register: z.string(),
-								parse: z.string(),
-								safeParse: z.string(),
-								parseAsync: z.string(),
-								safeParseAsync: z.string(),
-								spa: z.string(),
-								encode: z.string(),
-								decode: z.string(),
-								encodeAsync: z.string(),
-								decodeAsync: z.string(),
-								safeEncode: z.string(),
-								safeDecode: z.string(),
-								safeEncodeAsync: z.string(),
-								safeDecodeAsync: z.string(),
-								refine: z.string(),
-								superRefine: z.string(),
-								overwrite: z.string(),
-								optional: z.string(),
-								exactOptional: z.string(),
-								nullable: z.string(),
-								nullish: z.string(),
-								nonoptional: z.string(),
-								array: z.string(),
-								or: z.string(),
-								and: z.string(),
-								transform: z.string(),
-								default: z.string(),
-								prefault: z.string(),
-								catch: z.string(),
-								pipe: z.string(),
-								readonly: z.string(),
-								describe: z.string(),
-								meta: z.string(),
-								isOptional: z.string(),
-								isNullable: z.string(),
-								apply: z.string(),
-								keyof: z.string(),
-								catchall: z.string(),
-								passthrough: z.string(),
-								loose: z.string(),
-								strict: z.string(),
-								strip: z.string(),
-								extend: z.string(),
-								safeExtend: z.string(),
-								merge: z.string(),
-								pick: z.string(),
-								omit: z.string(),
-								partial: z.string(),
-								required: z.string(),
-							})
-							.strict(),
+						z.strictObject({
+							toJSONSchema: z.string(),
+							def: z.string(),
+							type: z.string(),
+							check: z.string(),
+							with: z.string(),
+							clone: z.string(),
+							brand: z.string(),
+							register: z.string(),
+							parse: z.string(),
+							safeParse: z.string(),
+							parseAsync: z.string(),
+							safeParseAsync: z.string(),
+							spa: z.string(),
+							encode: z.string(),
+							decode: z.string(),
+							encodeAsync: z.string(),
+							decodeAsync: z.string(),
+							safeEncode: z.string(),
+							safeDecode: z.string(),
+							safeEncodeAsync: z.string(),
+							safeDecodeAsync: z.string(),
+							refine: z.string(),
+							superRefine: z.string(),
+							overwrite: z.string(),
+							optional: z.string(),
+							exactOptional: z.string(),
+							nullable: z.string(),
+							nullish: z.string(),
+							nonoptional: z.string(),
+							array: z.string(),
+							or: z.string(),
+							and: z.string(),
+							transform: z.string(),
+							default: z.string(),
+							prefault: z.string(),
+							catch: z.string(),
+							pipe: z.string(),
+							readonly: z.string(),
+							describe: z.string(),
+							meta: z.string(),
+							isOptional: z.string(),
+							isNullable: z.string(),
+							apply: z.string(),
+							keyof: z.string(),
+							catchall: z.string(),
+							passthrough: z.string(),
+							loose: z.string(),
+							strict: z.string(),
+							strip: z.string(),
+							extend: z.string(),
+							safeExtend: z.string(),
+							merge: z.string(),
+							pick: z.string(),
+							omit: z.string(),
+							partial: z.string(),
+							required: z.string(),
+						}),
 					]),
 				]),
 			)
@@ -945,221 +883,204 @@ export const messageSummarySchema = z
 		parentId: z.string().nullish().describe("The ID of the parent message."),
 		attachments: z
 			.array(
-				z
-					.object({
-						url: z.string().describe("The URL where the attachment file can be accessed."),
-						name: z.string().optional().describe("The original filename of the attachment."),
-						contentType: z
-							.string()
-							.optional()
-							.describe("The MIME type of the attachment file (e.g., image/png, application/pdf)."),
-						size: z.number().describe("The size of the attachment file in bytes."),
-						content: z
-							.string()
-							.optional()
-							.describe("The base64-encoded content of the attachment file, if available."),
-						type: z
-							.enum(["figma", "screenshot", "zip"])
-							.optional()
-							.describe("Optional v0-specific attachment type for enhanced processing."),
-					})
-					.strict(),
+				z.strictObject({
+					url: z.string().describe("The URL where the attachment file can be accessed."),
+					name: z.string().optional().describe("The original filename of the attachment."),
+					contentType: z
+						.string()
+						.optional()
+						.describe("The MIME type of the attachment file (e.g., image/png, application/pdf)."),
+					size: z.number().describe("The size of the attachment file in bytes."),
+					content: z
+						.string()
+						.optional()
+						.describe("The base64-encoded content of the attachment file, if available."),
+					type: z
+						.enum(["figma", "screenshot", "zip"])
+						.optional()
+						.describe("Optional v0-specific attachment type for enhanced processing."),
+				}),
 			)
 			.optional(),
 	})
-	.strict()
 	.describe(
 		"Summary of a single message within a chat, including role, content, type, timestamp, and API URL.",
 	);
 
 export const messageSummaryListSchema = z
-	.object({
+	.strictObject({
 		object: z.enum(["list"]).describe("Fixed value identifying this as a list response."),
 		data: z
 			.array(
-				z
-					.object({
-						id: z.string().describe("A unique identifier for the message."),
-						object: z
-							.enum(["message"])
-							.describe("Fixed value identifying this object as a message."),
-						content: z.string().describe("The main text content of the message."),
-						experimentalContent: z
-							.array(
-								z.union([
-									z.tuple([z.literal(0), z.array(z.string())]),
-									z.tuple([
-										z.literal(1),
-										z
-											.object({
-												toJSONSchema: z.string(),
-												def: z.string(),
-												type: z.string(),
-												check: z.string(),
-												with: z.string(),
-												clone: z.string(),
-												brand: z.string(),
-												register: z.string(),
-												parse: z.string(),
-												safeParse: z.string(),
-												parseAsync: z.string(),
-												safeParseAsync: z.string(),
-												spa: z.string(),
-												encode: z.string(),
-												decode: z.string(),
-												encodeAsync: z.string(),
-												decodeAsync: z.string(),
-												safeEncode: z.string(),
-												safeDecode: z.string(),
-												safeEncodeAsync: z.string(),
-												safeDecodeAsync: z.string(),
-												refine: z.string(),
-												superRefine: z.string(),
-												overwrite: z.string(),
-												optional: z.string(),
-												exactOptional: z.string(),
-												nullable: z.string(),
-												nullish: z.string(),
-												nonoptional: z.string(),
-												array: z.string(),
-												or: z.string(),
-												and: z.string(),
-												transform: z.string(),
-												default: z.string(),
-												prefault: z.string(),
-												catch: z.string(),
-												pipe: z.string(),
-												readonly: z.string(),
-												describe: z.string(),
-												meta: z.string(),
-												isOptional: z.string(),
-												isNullable: z.string(),
-												apply: z.string(),
-												keyof: z.string(),
-												catchall: z.string(),
-												passthrough: z.string(),
-												loose: z.string(),
-												strict: z.string(),
-												strip: z.string(),
-												extend: z.string(),
-												safeExtend: z.string(),
-												merge: z.string(),
-												pick: z.string(),
-												omit: z.string(),
-												partial: z.string(),
-												required: z.string(),
-											})
-											.strict(),
-									]),
+				z.strictObject({
+					id: z.string().describe("A unique identifier for the message."),
+					object: z.enum(["message"]).describe("Fixed value identifying this object as a message."),
+					content: z.string().describe("The main text content of the message."),
+					experimentalContent: z
+						.array(
+							z.union([
+								z.tuple([z.literal(0), z.array(z.string())]),
+								z.tuple([
+									z.literal(1),
+									z.strictObject({
+										toJSONSchema: z.string(),
+										def: z.string(),
+										type: z.string(),
+										check: z.string(),
+										with: z.string(),
+										clone: z.string(),
+										brand: z.string(),
+										register: z.string(),
+										parse: z.string(),
+										safeParse: z.string(),
+										parseAsync: z.string(),
+										safeParseAsync: z.string(),
+										spa: z.string(),
+										encode: z.string(),
+										decode: z.string(),
+										encodeAsync: z.string(),
+										decodeAsync: z.string(),
+										safeEncode: z.string(),
+										safeDecode: z.string(),
+										safeEncodeAsync: z.string(),
+										safeDecodeAsync: z.string(),
+										refine: z.string(),
+										superRefine: z.string(),
+										overwrite: z.string(),
+										optional: z.string(),
+										exactOptional: z.string(),
+										nullable: z.string(),
+										nullish: z.string(),
+										nonoptional: z.string(),
+										array: z.string(),
+										or: z.string(),
+										and: z.string(),
+										transform: z.string(),
+										default: z.string(),
+										prefault: z.string(),
+										catch: z.string(),
+										pipe: z.string(),
+										readonly: z.string(),
+										describe: z.string(),
+										meta: z.string(),
+										isOptional: z.string(),
+										isNullable: z.string(),
+										apply: z.string(),
+										keyof: z.string(),
+										catchall: z.string(),
+										passthrough: z.string(),
+										loose: z.string(),
+										strict: z.string(),
+										strip: z.string(),
+										extend: z.string(),
+										safeExtend: z.string(),
+										merge: z.string(),
+										pick: z.string(),
+										omit: z.string(),
+										partial: z.string(),
+										required: z.string(),
+									}),
 								]),
-							)
-							.optional()
-							.describe(
-								"The parsed content of the message as an array structure containing AST nodes. This is an experimental field that may change.",
-							),
-						createdAt: z
-							.string()
-							.describe("The ISO timestamp representing when the message was created."),
-						updatedAt: z.iso
-							.datetime()
-							.optional()
-							.describe("The ISO timestamp representing when the message was last updated."),
-						type: z
-							.enum([
-								"added-environment-variables",
-								"added-integration",
-								"answered-questions",
-								"auto-fix-with-v0",
-								"cloned-repo",
-								"deleted-file",
-								"design-mode",
-								"edited-file",
-								"fix-cve",
-								"fix-with-v0",
-								"forked-block",
-								"forked-chat",
-								"manual-commit",
-								"message",
-								"moved-file",
-								"open-in-v0",
-								"pull-changes",
-								"refinement",
-								"renamed-file",
-								"replace-src",
-								"reverted-block",
-								"sync-git",
-							])
-							.describe(
-								"Indicates the format or category of the message, such as plain text or code.",
-							),
-						role: z
-							.enum(["assistant", "user"])
-							.describe("Specifies whether the message was sent by the user or the assistant."),
-						finishReason: z
-							.enum(["content-filter", "error", "length", "other", "stop", "tool-calls"])
-							.optional()
-							.describe("The reason why the message generation finished."),
-						apiUrl: z.string().describe("API URL to access this message via the API."),
-						authorId: z.string().nullable().describe("The ID of the user who sent the message."),
-						parentId: z.string().nullish().describe("The ID of the parent message."),
-						attachments: z
-							.array(
-								z
-									.object({
-										url: z.string().describe("The URL where the attachment file can be accessed."),
-										name: z
-											.string()
-											.optional()
-											.describe("The original filename of the attachment."),
-										contentType: z
-											.string()
-											.optional()
-											.describe(
-												"The MIME type of the attachment file (e.g., image/png, application/pdf).",
-											),
-										size: z.number().describe("The size of the attachment file in bytes."),
-										content: z
-											.string()
-											.optional()
-											.describe("The base64-encoded content of the attachment file, if available."),
-										type: z
-											.enum(["figma", "screenshot", "zip"])
-											.optional()
-											.describe("Optional v0-specific attachment type for enhanced processing."),
-									})
-									.strict(),
-							)
-							.optional(),
-					})
-					.strict(),
+							]),
+						)
+						.optional()
+						.describe(
+							"The parsed content of the message as an array structure containing AST nodes. This is an experimental field that may change.",
+						),
+					createdAt: z
+						.string()
+						.describe("The ISO timestamp representing when the message was created."),
+					updatedAt: z.iso
+						.datetime()
+						.optional()
+						.describe("The ISO timestamp representing when the message was last updated."),
+					type: z
+						.enum([
+							"added-environment-variables",
+							"added-integration",
+							"answered-questions",
+							"auto-fix-with-v0",
+							"cloned-repo",
+							"deleted-file",
+							"design-mode",
+							"edited-file",
+							"fix-cve",
+							"fix-with-v0",
+							"forked-block",
+							"forked-chat",
+							"manual-commit",
+							"message",
+							"moved-file",
+							"open-in-v0",
+							"pull-changes",
+							"refinement",
+							"renamed-file",
+							"replace-src",
+							"reverted-block",
+							"sync-git",
+						])
+						.describe(
+							"Indicates the format or category of the message, such as plain text or code.",
+						),
+					role: z
+						.enum(["assistant", "user"])
+						.describe("Specifies whether the message was sent by the user or the assistant."),
+					finishReason: z
+						.enum(["content-filter", "error", "length", "other", "stop", "tool-calls"])
+						.optional()
+						.describe("The reason why the message generation finished."),
+					apiUrl: z.string().describe("API URL to access this message via the API."),
+					authorId: z.string().nullable().describe("The ID of the user who sent the message."),
+					parentId: z.string().nullish().describe("The ID of the parent message."),
+					attachments: z
+						.array(
+							z.strictObject({
+								url: z.string().describe("The URL where the attachment file can be accessed."),
+								name: z.string().optional().describe("The original filename of the attachment."),
+								contentType: z
+									.string()
+									.optional()
+									.describe(
+										"The MIME type of the attachment file (e.g., image/png, application/pdf).",
+									),
+								size: z.number().describe("The size of the attachment file in bytes."),
+								content: z
+									.string()
+									.optional()
+									.describe("The base64-encoded content of the attachment file, if available."),
+								type: z
+									.enum(["figma", "screenshot", "zip"])
+									.optional()
+									.describe("Optional v0-specific attachment type for enhanced processing."),
+							}),
+						)
+						.optional(),
+				}),
 			)
 			.describe("Array of message summaries in this page of results."),
 		pagination: z
-			.object({
+			.strictObject({
 				hasMore: z
 					.boolean()
 					.describe("Indicates if there are more results available beyond this page."),
 				nextCursor: z.string().optional().describe("Cursor for fetching the next page of results."),
 				nextUrl: z.string().optional().describe("API URL for retrieving the next page of results."),
 			})
-			.strict()
 			.describe("Pagination metadata for navigating through multiple pages of results."),
 	})
-	.strict()
 	.describe("List response containing multiple message summaries with cursor-based pagination.");
 
 export const notificationPreferenceSchemaSchema = z
-	.object({
+	.strictObject({
 		liveActivity: z.boolean().describe("Whether the user wants to receive live activities."),
 		pushNotifications: z
 			.boolean()
 			.describe("Whether the user wants to receive push notifications."),
 	})
-	.strict()
 	.describe("User preference for notification delivery methods.");
 
 export const productDetailSchemaSchema = z
-	.object({
+	.strictObject({
 		object: z.enum(["product"]).describe("The object type."),
 		id: z.string().describe("The unique ID of the product."),
 		slug: z.string().describe("The URL-friendly slug of the product."),
@@ -1174,38 +1095,34 @@ export const productDetailSchemaSchema = z
 			),
 		iconBackgroundColor: z.string().optional().describe("Background color for the product icon."),
 	})
-	.strict()
 	.describe("Detailed information about a marketplace or store product.");
 
 export const productListSchemaSchema = z
-	.object({
+	.strictObject({
 		object: z.enum(["list"]).describe("Fixed value identifying this as a list response."),
 		data: z
 			.array(
-				z
-					.object({
-						object: z.enum(["product"]).describe("The object type."),
-						id: z.string().describe("The unique ID of the product."),
-						slug: z.string().describe("The URL-friendly slug of the product."),
-						name: z.string().describe("The name of the product."),
-						description: z.string().describe("A short description of the product."),
-						iconUrl: z.string().describe("URL to the product icon."),
-						v0Availability: z
-							.enum(["in-review", "published"])
-							.optional()
-							.describe(
-								"The product's availability in v0. 'in-review' products only appear for teams with the review view and should be rendered as such.",
-							),
-					})
-					.strict(),
+				z.strictObject({
+					object: z.enum(["product"]).describe("The object type."),
+					id: z.string().describe("The unique ID of the product."),
+					slug: z.string().describe("The URL-friendly slug of the product."),
+					name: z.string().describe("The name of the product."),
+					description: z.string().describe("A short description of the product."),
+					iconUrl: z.string().describe("URL to the product icon."),
+					v0Availability: z
+						.enum(["in-review", "published"])
+						.optional()
+						.describe(
+							"The product's availability in v0. 'in-review' products only appear for teams with the review view and should be rendered as such.",
+						),
+				}),
 			)
 			.describe("Array of product summaries."),
 	})
-	.strict()
 	.describe("List of available marketplace and store products.");
 
 export const productSummarySchemaSchema = z
-	.object({
+	.strictObject({
 		object: z.enum(["product"]).describe("The object type."),
 		id: z.string().describe("The unique ID of the product."),
 		slug: z.string().describe("The URL-friendly slug of the product."),
@@ -1219,11 +1136,10 @@ export const productSummarySchemaSchema = z
 				"The product's availability in v0. 'in-review' products only appear for teams with the review view and should be rendered as such.",
 			),
 	})
-	.strict()
 	.describe("Summary information about a marketplace or store product.");
 
 export const projectDetailSchema = z
-	.object({
+	.strictObject({
 		id: z.string().describe("A unique identifier for the project."),
 		object: z.enum(["project"]).describe("Fixed value identifying this object as a project."),
 		name: z.string().describe("The name of the project as defined by the user."),
@@ -1247,87 +1163,83 @@ export const projectDetailSchema = z
 		instructions: z.string().optional().describe("The instructions for the project."),
 		chats: z
 			.array(
-				z
-					.object({
-						id: z.string().describe("A unique identifier for the chat."),
-						object: z.enum(["chat"]).describe("Fixed value identifying this object as a chat."),
-						shareable: z
-							.boolean()
-							.describe("Indicates whether the chat can be shared via public link."),
-						privacy: z
-							.enum(["private", "public", "team", "team-edit", "unlisted"])
-							.describe("Defines the visibility of the chat—private, team-only, or public."),
-						name: z
-							.string()
-							.optional()
-							.describe("An optional name assigned to the chat by the user."),
-						title: z
-							.string()
-							.optional()
-							.describe("Deprecated title field preserved for backward compatibility."),
-						createdAt: z.iso
-							.datetime()
-							.describe("The ISO timestamp representing when the chat was created."),
-						updatedAt: z
-							.string()
-							.optional()
-							.describe("The ISO timestamp of the last update to the chat."),
-						favorite: z.boolean().describe("Indicates whether the chat is marked as a favorite."),
-						authorId: z.string().describe("The ID of the user who created the chat."),
-						projectId: z
-							.string()
-							.optional()
-							.describe("Optional ID of the v0 project associated with this chat."),
-						vercelProjectId: z
-							.string()
-							.optional()
-							.describe("Optional ID of the linked Vercel project, if connected."),
-						webUrl: z.string().describe("Web URL to view this chat in the browser."),
-						apiUrl: z.string().describe("API URL to access this chat via the API."),
-						latestVersion: z
-							.object({
-								id: z.string().describe("A unique identifier for the version."),
-								object: z
-									.enum(["version"])
-									.describe("Fixed value identifying this object as a version."),
-								status: z
-									.enum(["completed", "failed", "pending"])
-									.describe("The current status of the version generation process."),
-								demoUrl: z
-									.string()
-									.optional()
-									.describe("Optional URL for previewing the generated output."),
-								screenshotUrl: z
-									.string()
-									.optional()
-									.describe("URL to retrieve a screenshot of this version."),
-								createdAt: z.iso
-									.datetime()
-									.describe("The date and time when the version was created, in ISO 8601 format."),
-								updatedAt: z.iso
-									.datetime()
-									.optional()
-									.describe(
-										"The date and time when the version was last updated, in ISO 8601 format.",
-									),
-							})
-							.strict()
-							.optional()
-							.describe("The most recent generated version of the chat, if available."),
-						metadata: z
-							.object({})
-							.catchall(z.string())
-							.describe("Arbitrary key-value data associated with this chat."),
-					})
-					.strict(),
+				z.strictObject({
+					id: z.string().describe("A unique identifier for the chat."),
+					object: z.enum(["chat"]).describe("Fixed value identifying this object as a chat."),
+					shareable: z
+						.boolean()
+						.describe("Indicates whether the chat can be shared via public link."),
+					privacy: z
+						.enum(["private", "public", "team", "team-edit", "unlisted"])
+						.describe("Defines the visibility of the chat—private, team-only, or public."),
+					name: z
+						.string()
+						.optional()
+						.describe("An optional name assigned to the chat by the user."),
+					title: z
+						.string()
+						.optional()
+						.describe("Deprecated title field preserved for backward compatibility."),
+					createdAt: z.iso
+						.datetime()
+						.describe("The ISO timestamp representing when the chat was created."),
+					updatedAt: z
+						.string()
+						.optional()
+						.describe("The ISO timestamp of the last update to the chat."),
+					favorite: z.boolean().describe("Indicates whether the chat is marked as a favorite."),
+					authorId: z.string().describe("The ID of the user who created the chat."),
+					projectId: z
+						.string()
+						.optional()
+						.describe("Optional ID of the v0 project associated with this chat."),
+					vercelProjectId: z
+						.string()
+						.optional()
+						.describe("Optional ID of the linked Vercel project, if connected."),
+					webUrl: z.string().describe("Web URL to view this chat in the browser."),
+					apiUrl: z.string().describe("API URL to access this chat via the API."),
+					latestVersion: z
+						.strictObject({
+							id: z.string().describe("A unique identifier for the version."),
+							object: z
+								.enum(["version"])
+								.describe("Fixed value identifying this object as a version."),
+							status: z
+								.enum(["completed", "failed", "pending"])
+								.describe("The current status of the version generation process."),
+							demoUrl: z
+								.string()
+								.optional()
+								.describe("Optional URL for previewing the generated output."),
+							screenshotUrl: z
+								.string()
+								.optional()
+								.describe("URL to retrieve a screenshot of this version."),
+							createdAt: z.iso
+								.datetime()
+								.describe("The date and time when the version was created, in ISO 8601 format."),
+							updatedAt: z.iso
+								.datetime()
+								.optional()
+								.describe(
+									"The date and time when the version was last updated, in ISO 8601 format.",
+								),
+						})
+						.optional()
+						.describe("The most recent generated version of the chat, if available."),
+					metadata: z
+						.object({})
+						.catchall(z.string())
+						.describe("Arbitrary key-value data associated with this chat."),
+				}),
 			)
 			.describe("List of all chats that are associated with this project."),
 	})
-	.strict()
 	.describe("Full representation of a project, including its associated chats.");
 
 export const projectSummarySchema = z
-	.object({
+	.strictObject({
 		id: z.string().describe("A unique identifier for the project."),
 		object: z.enum(["project"]).describe("Fixed value identifying this object as a project."),
 		name: z.string().describe("The name of the project as defined by the user."),
@@ -1348,20 +1260,18 @@ export const projectSummarySchema = z
 		apiUrl: z.url().describe("The API endpoint URL for accessing this project programmatically."),
 		webUrl: z.url().describe("The web URL where the project can be viewed or managed."),
 	})
-	.strict()
 	.describe("Summary of a project, including metadata, timestamps, and optional Vercel linkage.");
 
 export const scopeSummarySchema = z
-	.object({
+	.strictObject({
 		id: z.string().describe("A unique identifier for the scope (e.g., user or team workspace)."),
 		object: z.enum(["scope"]).describe("Fixed value identifying this object as a scope."),
 		name: z.string().optional().describe("An optional human-readable name for the scope."),
 	})
-	.strict()
 	.describe("Basic information about a workspace or identity context for projects and chats.");
 
 export const searchResultItemSchema = z
-	.object({
+	.strictObject({
 		id: z.string().describe("The unique ID of the item returned in the search result."),
 		object: z
 			.enum(["chat", "project"])
@@ -1377,99 +1287,84 @@ export const searchResultItemSchema = z
 		apiUrl: z.string().describe("API endpoint for accessing the item programmatically."),
 		webUrl: z.string().describe("Web URL for viewing the item in the interface."),
 	})
-	.strict()
 	.describe(
 		"Generic result returned from a search query, representing either a chat or a project.",
 	);
 
-export const userDetailSchemaSchema = z
-	.object({
-		id: z.string().describe("A unique identifier for the user."),
-		object: z.enum(["user"]).describe("Fixed value identifying this object as a user."),
-		name: z.string().optional().describe("Optional full name of the user."),
-		email: z.string().describe("The user's email address."),
-		avatar: z.string().describe("URL to the user's avatar image."),
-		createdAt: z.iso
-			.datetime()
-			.describe("The ISO timestamp representing when the user was created."),
-		updatedAt: z.iso
-			.datetime()
-			.optional()
-			.describe("The ISO timestamp of the last update to the user."),
-	})
-	.strict();
+export const userDetailSchemaSchema = z.strictObject({
+	id: z.string().describe("A unique identifier for the user."),
+	object: z.enum(["user"]).describe("Fixed value identifying this object as a user."),
+	name: z.string().optional().describe("Optional full name of the user."),
+	email: z.string().describe("The user's email address."),
+	avatar: z.string().describe("URL to the user's avatar image."),
+	createdAt: z.iso.datetime().describe("The ISO timestamp representing when the user was created."),
+	updatedAt: z.iso
+		.datetime()
+		.optional()
+		.describe("The ISO timestamp of the last update to the user."),
+});
 
 export const userPreferencesPostResponseSchemaSchema = z
-	.object({
+	.strictObject({
 		object: z.enum(["user_preferences"]).describe("Object type identifier."),
 		preferences: z
 			.union([
-				z
-					.object({
-						notifications: z
-							.object({
-								liveActivity: z
-									.boolean()
-									.describe("Whether the user wants to receive live activities."),
-								pushNotifications: z
-									.boolean()
-									.describe("Whether the user wants to receive push notifications."),
-							})
-							.strict()
-							.describe("The user's preferred method for receiving notifications."),
-					})
-					.strict(),
+				z.strictObject({
+					notifications: z
+						.strictObject({
+							liveActivity: z
+								.boolean()
+								.describe("Whether the user wants to receive live activities."),
+							pushNotifications: z
+								.boolean()
+								.describe("Whether the user wants to receive push notifications."),
+						})
+						.describe("The user's preferred method for receiving notifications."),
+				}),
 				z.null(),
 			])
 			.describe("The updated preferences if successful, or null if failed."),
 	})
-	.strict()
 	.describe("Response schema for updating user preferences.");
 
 export const userPreferencesResponseSchemaSchema = z
-	.object({
+	.strictObject({
 		object: z.enum(["user_preferences"]).describe("Object type identifier."),
 		preferences: z
 			.union([
-				z
-					.object({
-						notifications: z
-							.object({
-								liveActivity: z
-									.boolean()
-									.describe("Whether the user wants to receive live activities."),
-								pushNotifications: z
-									.boolean()
-									.describe("Whether the user wants to receive push notifications."),
-							})
-							.strict()
-							.describe("The user's preferred method for receiving notifications."),
-					})
-					.strict(),
+				z.strictObject({
+					notifications: z
+						.strictObject({
+							liveActivity: z
+								.boolean()
+								.describe("Whether the user wants to receive live activities."),
+							pushNotifications: z
+								.boolean()
+								.describe("Whether the user wants to receive push notifications."),
+						})
+						.describe("The user's preferred method for receiving notifications."),
+				}),
 				z.null(),
 			])
 			.describe("The user's current preferences, or null if errored."),
 	})
-	.strict()
 	.describe("Response schema for retrieving user preferences.");
 
 export const userPreferencesSchemaSchema = z
-	.object({
+	.strictObject({
 		notifications: z
-			.object({
+			.strictObject({
 				liveActivity: z.boolean().describe("Whether the user wants to receive live activities."),
 				pushNotifications: z
 					.boolean()
 					.describe("Whether the user wants to receive push notifications."),
 			})
-			.strict()
 			.describe("The user's preferred method for receiving notifications."),
 	})
-	.strict()
 	.describe("User preferences configuration including notification settings.");
 
 export const userSummarySchemaSchema = z
-	.object({
+	.strictObject({
 		id: z.string().describe("A unique identifier for the user."),
 		object: z.enum(["user"]).describe("Fixed value identifying this object as a user."),
 		name: z.string().optional().describe("Optional full name of the user."),
@@ -1483,32 +1378,28 @@ export const userSummarySchemaSchema = z
 			.optional()
 			.describe("The ISO timestamp of the last update to the user."),
 	})
-	.strict()
 	.describe("Details of the authenticated user, including profile and contact information.");
 
-export const vercelProjectDetailSchema = z
-	.object({
-		id: z.string().describe("A unique identifier for the linked Vercel project."),
-		object: z
-			.enum(["vercel_project"])
-			.describe("Fixed value identifying this object as a Vercel project."),
-		name: z.string().describe("The name of the Vercel project."),
-	})
-	.strict();
+export const vercelProjectDetailSchema = z.strictObject({
+	id: z.string().describe("A unique identifier for the linked Vercel project."),
+	object: z
+		.enum(["vercel_project"])
+		.describe("Fixed value identifying this object as a Vercel project."),
+	name: z.string().describe("The name of the Vercel project."),
+});
 
 export const vercelProjectSummarySchema = z
-	.object({
+	.strictObject({
 		id: z.string().describe("A unique identifier for the linked Vercel project."),
 		object: z
 			.enum(["vercel_project"])
 			.describe("Fixed value identifying this object as a Vercel project."),
 		name: z.string().describe("The name of the Vercel project."),
 	})
-	.strict()
 	.describe("Basic metadata about a Vercel project connected to a v0 project.");
 
 export const versionDetailSchema = z
-	.object({
+	.strictObject({
 		id: z.string().describe("A unique identifier for the version."),
 		object: z.enum(["version"]).describe("Fixed value identifying this object as a version."),
 		status: z
@@ -1525,26 +1416,23 @@ export const versionDetailSchema = z
 			.describe("The date and time when the version was last updated, in ISO 8601 format."),
 		files: z
 			.array(
-				z
-					.object({
-						object: z.enum(["file"]).describe("Fixed value identifying this object as a file."),
-						name: z.string().describe("The name of the file, including its extension."),
-						content: z.string().describe("The full contents of the file as a raw string."),
-						locked: z
-							.boolean()
-							.describe(
-								"Whether the file is locked to prevent AI from overwriting it during new version generation.",
-							),
-					})
-					.strict(),
+				z.strictObject({
+					object: z.enum(["file"]).describe("Fixed value identifying this object as a file."),
+					name: z.string().describe("The name of the file, including its extension."),
+					content: z.string().describe("The full contents of the file as a raw string."),
+					locked: z
+						.boolean()
+						.describe(
+							"Whether the file is locked to prevent AI from overwriting it during new version generation.",
+						),
+				}),
 			)
 			.describe("A list of files that were generated or included in this version."),
 	})
-	.strict()
 	.describe("Detailed version data including file contents.");
 
 export const versionSummarySchema = z
-	.object({
+	.strictObject({
 		id: z.string().describe("A unique identifier for the version."),
 		object: z.enum(["version"]).describe("Fixed value identifying this object as a version."),
 		status: z
@@ -1560,145 +1448,106 @@ export const versionSummarySchema = z
 			.optional()
 			.describe("The date and time when the version was last updated, in ISO 8601 format."),
 	})
-	.strict()
 	.describe(
 		"Summary of a generated version of a chat, including its status and optional demo link.",
 	);
 
 export const versionSummaryListSchema = z
-	.object({
+	.strictObject({
 		object: z.enum(["list"]).describe("Fixed value identifying this as a list response."),
 		data: z
 			.array(
-				z
-					.object({
-						id: z.string().describe("A unique identifier for the version."),
-						object: z
-							.enum(["version"])
-							.describe("Fixed value identifying this object as a version."),
-						status: z
-							.enum(["completed", "failed", "pending"])
-							.describe("The current status of the version generation process."),
-						demoUrl: z
-							.string()
-							.optional()
-							.describe("Optional URL for previewing the generated output."),
-						screenshotUrl: z
-							.string()
-							.optional()
-							.describe("URL to retrieve a screenshot of this version."),
-						createdAt: z.iso
-							.datetime()
-							.describe("The date and time when the version was created, in ISO 8601 format."),
-						updatedAt: z.iso
-							.datetime()
-							.optional()
-							.describe("The date and time when the version was last updated, in ISO 8601 format."),
-					})
-					.strict(),
+				z.strictObject({
+					id: z.string().describe("A unique identifier for the version."),
+					object: z.enum(["version"]).describe("Fixed value identifying this object as a version."),
+					status: z
+						.enum(["completed", "failed", "pending"])
+						.describe("The current status of the version generation process."),
+					demoUrl: z
+						.string()
+						.optional()
+						.describe("Optional URL for previewing the generated output."),
+					screenshotUrl: z
+						.string()
+						.optional()
+						.describe("URL to retrieve a screenshot of this version."),
+					createdAt: z.iso
+						.datetime()
+						.describe("The date and time when the version was created, in ISO 8601 format."),
+					updatedAt: z.iso
+						.datetime()
+						.optional()
+						.describe("The date and time when the version was last updated, in ISO 8601 format."),
+				}),
 			)
 			.describe("Array of version summaries in this page of results."),
 		pagination: z
-			.object({
+			.strictObject({
 				hasMore: z
 					.boolean()
 					.describe("Indicates if there are more results available beyond this page."),
 				nextCursor: z.string().optional().describe("Cursor for fetching the next page of results."),
 				nextUrl: z.string().optional().describe("API URL for retrieving the next page of results."),
 			})
-			.strict()
 			.describe("Pagination metadata for navigating through multiple pages of results."),
 	})
-	.strict()
 	.describe("List response containing multiple version summaries with cursor-based pagination.");
 
-export const unauthorizedErrorSchema = z
-	.object({
-		error: z
-			.object({
-				message: z.string(),
-				type: z.enum(["unauthorized_error"]),
-			})
-			.strict(),
-	})
-	.strict();
+export const unauthorizedErrorSchema = z.strictObject({
+	error: z.strictObject({
+		message: z.string(),
+		type: z.enum(["unauthorized_error"]),
+	}),
+});
 
-export const forbiddenErrorSchema = z
-	.object({
-		error: z
-			.object({
-				message: z.string(),
-				type: z.enum(["forbidden_error"]),
-			})
-			.strict(),
-	})
-	.strict();
+export const forbiddenErrorSchema = z.strictObject({
+	error: z.strictObject({
+		message: z.string(),
+		type: z.enum(["forbidden_error"]),
+	}),
+});
 
-export const notFoundErrorSchema = z
-	.object({
-		error: z
-			.object({
-				message: z.string(),
-				type: z.enum(["not_found_error"]),
-			})
-			.strict(),
-	})
-	.strict();
+export const notFoundErrorSchema = z.strictObject({
+	error: z.strictObject({
+		message: z.string(),
+		type: z.enum(["not_found_error"]),
+	}),
+});
 
-export const conflictErrorSchema = z
-	.object({
-		error: z
-			.object({
-				message: z.string(),
-				type: z.enum(["conflict_error"]),
-			})
-			.strict(),
-	})
-	.strict();
+export const conflictErrorSchema = z.strictObject({
+	error: z.strictObject({
+		message: z.string(),
+		type: z.enum(["conflict_error"]),
+	}),
+});
 
-export const payloadTooLargeErrorSchema = z
-	.object({
-		error: z
-			.object({
-				message: z.string(),
-				type: z.enum(["payload_too_large_error"]),
-			})
-			.strict(),
-	})
-	.strict();
+export const payloadTooLargeErrorSchema = z.strictObject({
+	error: z.strictObject({
+		message: z.string(),
+		type: z.enum(["payload_too_large_error"]),
+	}),
+});
 
-export const unprocessableEntityErrorSchema = z
-	.object({
-		error: z
-			.object({
-				message: z.string(),
-				type: z.enum(["unprocessable_entity_error"]),
-			})
-			.strict(),
-	})
-	.strict();
+export const unprocessableEntityErrorSchema = z.strictObject({
+	error: z.strictObject({
+		message: z.string(),
+		type: z.enum(["unprocessable_entity_error"]),
+	}),
+});
 
-export const tooManyRequestsErrorSchema = z
-	.object({
-		error: z
-			.object({
-				message: z.string(),
-				type: z.enum(["too_many_requests_error"]),
-			})
-			.strict(),
-	})
-	.strict();
+export const tooManyRequestsErrorSchema = z.strictObject({
+	error: z.strictObject({
+		message: z.string(),
+		type: z.enum(["too_many_requests_error"]),
+	}),
+});
 
-export const internalServerErrorSchema = z
-	.object({
-		error: z
-			.object({
-				message: z.string(),
-				type: z.enum(["internal_server_error"]),
-			})
-			.strict(),
-	})
-	.strict();
+export const internalServerErrorSchema = z.strictObject({
+	error: z.strictObject({
+		message: z.string(),
+		type: z.enum(["internal_server_error"]),
+	}),
+});
 
 export const chatsCreateStatus200Schema = z.unknown();
 
