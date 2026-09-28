@@ -28,14 +28,14 @@ export const termsOfUseSchema = z.object({
 });
 
 export const accountSchema = z.object({
-	accountId: z.int().describe("The account id"),
-	type: z.int().describe("The type: 0 .. user, 1 .. company, 2 .. caretaker"),
+	accountId: z.int32().describe("The account id"),
+	type: z.int32().describe("The type: 0 .. user, 1 .. company, 2 .. caretaker"),
 	email: z.string().describe("The email address"),
 	emailVerified: z.boolean().optional().describe("true, if the email is verified"),
 	name: z.string().describe("The name"),
-	masterAccountId: z.int().optional().describe("The master account id if it's a sub account"),
+	masterAccountId: z.int32().optional().describe("The master account id if it's a sub account"),
 	rights: z
-		.int()
+		.int32()
 		.optional()
 		.describe(
 			"The rights bitmask if it's a sub account: 1 .. manage smartlock, 2 .. operate smartlock, 4 .. manage smartlock config, 8 .. manage smartlock authorizations, 16 .. view smartlock logs, 32 .. manage sub accounts, 64 .. create smartlocks",
@@ -80,7 +80,7 @@ export const accountIntegrationSchema = z.object({
 			"Name of the sub-account or null if there is none, which is associated with this token",
 		),
 	subAccountId: z
-		.int()
+		.int32()
 		.optional()
 		.describe(
 			"Id of the sub-account or null if there is none, which is associated with this token",
@@ -114,7 +114,7 @@ export const accountIntegrationSchema = z.object({
 		.string()
 		.describe("The clientId of this integration/device used for deleting the integration"),
 	sortOrder: z
-		.int()
+		.int32()
 		.optional()
 		.describe(
 			"Sort order by which the entry should be sorted, is being set by the vendor key enum",
@@ -180,7 +180,7 @@ export const accountSubCreateSchema = z.object({
 	password: z.string().describe("The password (must be at least 7 chars long)"),
 	name: z.string().describe("The name of the sub account"),
 	rights: z
-		.int()
+		.int32()
 		.describe(
 			"The right bitmask of the sub account: 1 .. operate smartlock, 2 .. change smartlock config, 4 .. manage smartlock users, 8 .. view smartlock logs, 16 .. manage sub accounts",
 		),
@@ -200,7 +200,7 @@ export const accountSubUpdateSchema = z.object({
 	password: z.string().optional().describe("The new password (must be at least 7 chars long)"),
 	name: z.string().optional().describe("The new name of the sub account"),
 	rights: z
-		.int()
+		.int32()
 		.optional()
 		.describe(
 			"The new right bitmask of the sub account: 1 .. operate smartlock, 2 .. change smartlock config, 4 .. manage smartlock users, 8 .. view smartlock logs, 16 .. manage sub accounts, 32 .. manage sub accounts, 64 .. create smartlocks",
@@ -230,9 +230,9 @@ export const accountUpdateSchema = z.object({
 });
 
 export const accountUserSchema = z.object({
-	accountUserId: z.int().describe("The account user id"),
-	accountId: z.int().describe("The account id"),
-	type: z.int().optional().describe("The optional type: 0 .. user, 1 .. company"),
+	accountUserId: z.int32().describe("The account user id"),
+	accountId: z.int32().describe("The account id"),
+	type: z.int32().optional().describe("The optional type: 0 .. user, 1 .. company"),
 	email: z.string().describe("The email address"),
 	name: z.string().describe("The name"),
 	language: z
@@ -250,7 +250,7 @@ export const accountUserSchema = z.object({
 
 export const accountUserCreateSchema = z.object({
 	type: z
-		.int()
+		.int32()
 		.optional()
 		.describe("The optional type - only allowed for caretakers: 0 .. user, 1 .. company"),
 	email: z.string().describe("The email address"),
@@ -275,8 +275,8 @@ export const accountUserUpdateSchema = z.object({
 });
 
 export const addressSchema = z.object({
-	addressId: z.int().describe("The address id"),
-	accountId: z.int().describe("The account id"),
+	addressId: z.int32().describe("The address id"),
+	accountId: z.int32().describe("The account id"),
 	name: z.string().describe("The name of the address"),
 	smartlockIds: z.array(z.coerce.bigint()).describe("The smartlocks for this address"),
 	serviceId: z
@@ -284,8 +284,8 @@ export const addressSchema = z.object({
 		.optional()
 		.describe("The optional service id if the address is from an partner service"),
 	timeZone: z.string().optional().describe("The timezone"),
-	checkInTime: z.int().optional().describe("The optional check in time (minutes of the day)"),
-	checkOutTime: z.int().optional().describe("The optional check out time (minutes of the day)"),
+	checkInTime: z.int32().optional().describe("The optional check in time (minutes of the day)"),
+	checkOutTime: z.int32().optional().describe("The optional check out time (minutes of the day)"),
 	settings: z.object({}).catchall(z.object({})).optional().describe("The optional settings object"),
 	creationDate: z.iso.datetime().describe("The creation date"),
 	updateDate: z.iso.datetime().describe("The update date"),
@@ -298,12 +298,12 @@ export const addressCreateSchema = z.object({
 
 export const addressReservationSchema = z.object({
 	id: z.string().describe("The id"),
-	addressId: z.int().describe("The address id"),
-	accountId: z.int().describe("The account id"),
+	addressId: z.int32().describe("The address id"),
+	accountId: z.int32().describe("The account id"),
 	email: z.string().describe("The email of the guest"),
 	name: z.string().describe("The name of the guest"),
-	guests: z.int().describe("The number of guests"),
-	guestsIssued: z.int().describe("The number of guests issued"),
+	guests: z.int32().describe("The number of guests"),
+	guestsIssued: z.int32().describe("The number of guests issued"),
 	keypadIssued: z.boolean().describe("True if a keypad authorization was issued"),
 	state: z.enum(["canceled", "accepted"]).describe("The state"),
 	serviceId: z
@@ -311,7 +311,7 @@ export const addressReservationSchema = z.object({
 		.optional()
 		.describe("The optional service id if the address is from an partner service"),
 	reference: z.string().optional().describe("The reference (booking code)"),
-	automation: z.int().describe("The automation state"),
+	automation: z.int32().describe("The automation state"),
 	checkedIn: z
 		.boolean()
 		.optional()
@@ -330,10 +330,10 @@ export const addressReservationSchema = z.object({
 
 export const addressTokenSchema = z.object({
 	id: z.string().describe("The id"),
-	addressId: z.int().describe("The address id"),
+	addressId: z.int32().describe("The address id"),
 	creationDate: z.iso.datetime().describe("The creation date"),
 	redeemDate: z.iso.datetime().describe("The redeem date"),
-	redeemAccountId: z.int().describe("The redeem account id"),
+	redeemAccountId: z.int32().describe("The redeem account id"),
 	inviteKeys: z.array(z.string()).optional().describe("The list of invite keys"),
 	redeemResult: z.enum(["ok", "failed"]).optional().describe("The redeem result"),
 });
@@ -347,7 +347,7 @@ export const addressTokenInfoSchema = z.object({
 export const addressUnitSchema = z.object({
 	id: z.string().optional().describe("The id"),
 	name: z.string().describe("The name of the address unit"),
-	addressId: z.int().optional().describe("The address id"),
+	addressId: z.int32().optional().describe("The address id"),
 	addressTokenId: z.string().optional().describe("The address token id"),
 	operationId: z
 		.string()
@@ -358,7 +358,7 @@ export const addressUnitSchema = z.object({
 export const addressUnitResponseSchema = z.object({
 	id: z.string().optional().describe("The id"),
 	name: z.string().describe("The name of the address unit"),
-	addressId: z.int().optional().describe("The address id"),
+	addressId: z.int32().optional().describe("The address id"),
 	addressTokenId: z.string().optional().describe("The address token id"),
 	operationId: z
 		.string()
@@ -376,7 +376,11 @@ export const addressUpdateSchema = z.object({
 });
 
 export const advancedApiKeySchema = z.object({
-	name: z.string().describe("The name of the company for which you apply for access"),
+	name: z
+		.string()
+		.describe(
+			"The name of the company for which you apply for access. Only the first 17 characters of your integration's name will be visible in the device's activity log.",
+		),
 	country: z
 		.string()
 		.describe(
@@ -426,7 +430,11 @@ export const advancedApiKeySchema = z.object({
 });
 
 export const advancedApiKeyCreateSchema = z.object({
-	name: z.string().describe("The name of the company for which you apply for access"),
+	name: z
+		.string()
+		.describe(
+			"The name of the company for which you apply for access. Only the first 17 characters of your integration's name will be visible in the device's activity log.",
+		),
 	country: z
 		.string()
 		.describe(
@@ -501,8 +509,8 @@ export const advancedConfirmationResponseSchema = z.object({
 });
 
 export const apiKeySchema = z.object({
-	apiKeyId: z.int().describe("The id"),
-	accountId: z.int().describe("The account id"),
+	apiKeyId: z.int32().describe("The id"),
+	accountId: z.int32().describe("The account id"),
 	description: z.string().optional().describe("The description"),
 	redirectUris: z.array(z.string()).optional().describe("The redirect uris"),
 	creationDate: z.iso.datetime().describe("The creation date"),
@@ -532,8 +540,8 @@ export const apiKeyAdvancedSchema = z.object({
 		})
 		.optional(),
 	webhookUrl: z.string().optional(),
-	webhookSentSuccessfully: z.int().optional(),
-	webhookSentErroneous: z.int().optional(),
+	webhookSentSuccessfully: z.int32().optional(),
+	webhookSentErroneous: z.int32().optional(),
 	lastSuccessfulPost: z.iso.datetime().optional(),
 	lastPostDuration: z.coerce.bigint().optional(),
 	lastPostSuccesful: z.boolean().optional(),
@@ -551,7 +559,7 @@ export const apiKeyCreateSchema = z.object({
 
 export const completableFutureListApiKeySchema = z.object({
 	completedExceptionally: z.boolean().optional(),
-	numberOfDependents: z.int().optional(),
+	numberOfDependents: z.int32().optional(),
 	done: z.boolean().optional(),
 	cancelled: z.boolean().optional(),
 });
@@ -562,7 +570,7 @@ export const apiKeyServiceSchema = z.object({
 
 export const apiKeyTokenSchema = z.object({
 	id: z.string().describe("The id"),
-	accountId: z.int().describe("The account id"),
+	accountId: z.int32().describe("The account id"),
 	description: z.string().optional().describe("The description"),
 	accessToken: z.string().optional().describe("The access token"),
 	scopes: z.array(z.string()).describe("The list of scopes"),
@@ -669,10 +677,10 @@ export const restletSchema = z.object({
 	get logger() {
 		return loggerSchema.optional();
 	},
+	stopped: z.boolean().optional(),
 	get application() {
 		return applicationSchema.optional();
 	},
-	stopped: z.boolean().optional(),
 });
 
 export const parameterSchema = z.object({
@@ -745,6 +753,57 @@ export const converterServiceSchema = z.object({
 	stopped: z.boolean().optional(),
 });
 
+export const protocolSchema = z.object({
+	confidential: z.boolean().optional(),
+	defaultPort: z.int32().optional(),
+	description: z.string().optional(),
+	name: z.string().optional(),
+	schemeName: z.string().optional(),
+	technicalName: z.string().optional(),
+	version: z.string().optional(),
+});
+
+export const referenceSchema = z.object({
+	get baseRef() {
+		return referenceSchema.optional();
+	},
+	absolute: z.boolean().optional(),
+	scheme: z.string().optional(),
+	opaque: z.boolean().optional(),
+	authority: z.string().optional(),
+	relative: z.boolean().optional(),
+	query: z.string().optional(),
+	path: z.string().optional(),
+	userInfo: z.string().optional(),
+	schemeSpecificPart: z.string().optional(),
+	fragment: z.string().optional(),
+	extensions: z.string().optional(),
+	identifier: z.string().optional(),
+	matrix: z.string().optional(),
+	matrixAsForm: z.array(parameterSchema).optional(),
+	queryAsForm: z.array(parameterSchema).optional(),
+	extensionsAsArray: z.array(z.string()).optional(),
+	hierarchicalPart: z.string().optional(),
+	hostDomain: z.string().optional(),
+	hostIdentifier: z.string().optional(),
+	hostPort: z.int32().optional(),
+	lastSegment: z.string().optional(),
+	get parentRef() {
+		return referenceSchema.optional();
+	},
+	relativePart: z.string().optional(),
+	get relativeRef() {
+		return referenceSchema.optional();
+	},
+	remainingPart: z.string().optional(),
+	schemeProtocol: protocolSchema.optional(),
+	segments: z.array(z.string()).optional(),
+	get targetRef() {
+		return referenceSchema.optional();
+	},
+	hierarchical: z.boolean().optional(),
+});
+
 export const metadataSchema = z.object({
 	description: z.string().optional(),
 	name: z.string().optional(),
@@ -805,72 +864,12 @@ export const metadataServiceSchema = z.object({
 	get defaultMediaType() {
 		return mediaTypeSchema.optional();
 	},
-	allCharacterSetExtensionNames: z.array(z.string()).optional(),
 	allEncodingExtensionNames: z.array(z.string()).optional(),
-	allLanguageExtensionNames: z.array(z.string()).optional(),
+	allCharacterSetExtensionNames: z.array(z.string()).optional(),
 	allExtensionNames: z.array(z.string()).optional(),
+	allLanguageExtensionNames: z.array(z.string()).optional(),
 	allMediaTypeExtensionNames: z.array(z.string()).optional(),
 	stopped: z.boolean().optional(),
-});
-
-export const rangeServiceSchema = z.object({
-	get context() {
-		return contextSchema.optional();
-	},
-	enabled: z.boolean().optional(),
-	started: z.boolean().optional(),
-	stopped: z.boolean().optional(),
-});
-
-export const protocolSchema = z.object({
-	confidential: z.boolean().optional(),
-	defaultPort: z.int().optional(),
-	description: z.string().optional(),
-	name: z.string().optional(),
-	schemeName: z.string().optional(),
-	technicalName: z.string().optional(),
-	version: z.string().optional(),
-});
-
-export const referenceSchema = z.object({
-	get baseRef() {
-		return referenceSchema.optional();
-	},
-	absolute: z.boolean().optional(),
-	scheme: z.string().optional(),
-	opaque: z.boolean().optional(),
-	authority: z.string().optional(),
-	relative: z.boolean().optional(),
-	query: z.string().optional(),
-	path: z.string().optional(),
-	userInfo: z.string().optional(),
-	schemeSpecificPart: z.string().optional(),
-	fragment: z.string().optional(),
-	extensions: z.string().optional(),
-	extensionsAsArray: z.array(z.string()).optional(),
-	hierarchicalPart: z.string().optional(),
-	hostDomain: z.string().optional(),
-	hostIdentifier: z.string().optional(),
-	hostPort: z.int().optional(),
-	lastSegment: z.string().optional(),
-	get parentRef() {
-		return referenceSchema.optional();
-	},
-	relativePart: z.string().optional(),
-	get relativeRef() {
-		return referenceSchema.optional();
-	},
-	remainingPart: z.string().optional(),
-	schemeProtocol: protocolSchema.optional(),
-	segments: z.array(z.string()).optional(),
-	get targetRef() {
-		return referenceSchema.optional();
-	},
-	hierarchical: z.boolean().optional(),
-	identifier: z.string().optional(),
-	matrix: z.string().optional(),
-	matrixAsForm: z.array(parameterSchema).optional(),
-	queryAsForm: z.array(parameterSchema).optional(),
 });
 
 export const statusServiceSchema = z.object({
@@ -896,13 +895,22 @@ export const statusServiceSchema = z.object({
 	stopped: z.boolean().optional(),
 });
 
+export const rangeServiceSchema = z.object({
+	get context() {
+		return contextSchema.optional();
+	},
+	enabled: z.boolean().optional(),
+	started: z.boolean().optional(),
+	stopped: z.boolean().optional(),
+});
+
 export const taskServiceSchema = z.object({
 	get context() {
 		return contextSchema.optional();
 	},
 	enabled: z.boolean().optional(),
 	started: z.boolean().optional(),
-	corePoolSize: z.int().optional(),
+	corePoolSize: z.int32().optional(),
 	daemon: z.boolean().optional(),
 	shutdownAllowed: z.boolean().optional(),
 	terminated: z.boolean().optional(),
@@ -989,20 +997,20 @@ export const applicationSchema = z.object({
 	get services() {
 		return z.array(serviceSchema).optional();
 	},
+	get statusService() {
+		return statusServiceSchema.optional();
+	},
 	get connegService() {
 		return connegServiceSchema.optional();
-	},
-	get converterService() {
-		return converterServiceSchema.optional();
 	},
 	get metadataService() {
 		return metadataServiceSchema.optional();
 	},
+	get converterService() {
+		return converterServiceSchema.optional();
+	},
 	get rangeService() {
 		return rangeServiceSchema.optional();
-	},
-	get statusService() {
-		return statusServiceSchema.optional();
 	},
 	get taskService() {
 		return taskServiceSchema.optional();
@@ -1022,15 +1030,15 @@ export const applicationSchema = z.object({
 	get logger() {
 		return loggerSchema.optional();
 	},
+	stopped: z.boolean().optional(),
 	get application() {
 		return applicationSchema.optional();
 	},
-	stopped: z.boolean().optional(),
 });
 
 export const authenticationInfoSchema = z.object({
 	nextServerNonce: z.string().optional(),
-	nonceCount: z.int().optional(),
+	nonceCount: z.int32().optional(),
 	clientNonce: z.string().optional(),
 	quality: z.string().optional(),
 	responseDigest: z.string().optional(),
@@ -1044,7 +1052,7 @@ export const smartlockWebConfigSchema = z.object({
 			"True if a battery warning is send via email, if null/not send, the value is not being updated",
 		),
 	dismissedLiftUpHandleWarning: z
-		.array(z.int())
+		.array(z.int32())
 		.optional()
 		.describe(
 			"Contains the account ids which have dismissed the lift up handle warning, if null/not send, the value is not being updated. To clear send a empty array []",
@@ -1119,7 +1127,7 @@ export const challengeResponseSchema = z.object({
 	quality: z.string().optional(),
 	secret: z.array(z.string()).optional(),
 	secretAlgorithm: z.string().optional(),
-	serverNounceCount: z.int().optional(),
+	serverNounceCount: z.int32().optional(),
 	timeIssued: z.coerce.bigint().optional(),
 	principal: principalSchema.optional(),
 	serverNounceCountAsHex: z.string().optional(),
@@ -1190,16 +1198,16 @@ export const clientInfoSchema = z.object({
 	expectations: z.array(expectationSchema).optional(),
 	forwardedAddresses: z.array(z.string()).optional(),
 	from: z.string().optional(),
-	port: z.int().optional(),
+	port: z.int32().optional(),
 	principals: z.array(principalSchema).optional(),
 	get roles() {
 		return z.array(roleSchema).optional();
 	},
 	user: userSchema.optional(),
+	upstreamAddress: z.string().optional(),
 	agentName: z.string().optional(),
 	agentVersion: z.string().optional(),
 	mainAgentProduct: productSchema.optional(),
-	upstreamAddress: z.string().optional(),
 });
 
 export const companySchema = z.object({
@@ -1209,7 +1217,7 @@ export const companySchema = z.object({
 
 export const completableFutureSchema = z.object({
 	completedExceptionally: z.boolean().optional(),
-	numberOfDependents: z.int().optional(),
+	numberOfDependents: z.int32().optional(),
 	done: z.boolean().optional(),
 	cancelled: z.boolean().optional(),
 });
@@ -1233,7 +1241,7 @@ export const cookieSchema = z.object({
 	name: z.string().optional(),
 	path: z.string().optional(),
 	value: z.string().optional(),
-	version: z.int().optional(),
+	version: z.int32().optional(),
 });
 
 export const cookieSettingSchema = z.object({
@@ -1241,16 +1249,16 @@ export const cookieSettingSchema = z.object({
 	name: z.string().optional(),
 	path: z.string().optional(),
 	value: z.string().optional(),
-	version: z.int().optional(),
+	version: z.int32().optional(),
 	accessRestricted: z.boolean().optional(),
 	comment: z.string().optional(),
-	maxAge: z.int().optional(),
+	maxAge: z.int32().optional(),
 	secure: z.boolean().optional(),
 	description: z.string().optional(),
 });
 
 export const decentralWebhookSchema = z.object({
-	id: z.int().optional().describe("The identifier"),
+	id: z.int32().optional().describe("The identifier"),
 	secret: z.string().optional().describe("The secret to sign the webhook's payload"),
 	webhookUrl: z
 		.string()
@@ -1304,14 +1312,14 @@ export const methodSchema = z.object({
 });
 
 export const myAccountSchema = z.object({
-	accountId: z.int().describe("The account id"),
-	type: z.int().describe("The type: 0 .. user, 1 .. company, 2 .. caretaker"),
+	accountId: z.int32().describe("The account id"),
+	type: z.int32().describe("The type: 0 .. user, 1 .. company, 2 .. caretaker"),
 	email: z.string().describe("The email address"),
 	emailVerified: z.boolean().optional().describe("true, if the email is verified"),
 	name: z.string().describe("The name"),
-	masterAccountId: z.int().optional().describe("The master account id if it's a sub account"),
+	masterAccountId: z.int32().optional().describe("The master account id if it's a sub account"),
 	rights: z
-		.int()
+		.int32()
 		.optional()
 		.describe(
 			"The rights bitmask if it's a sub account: 1 .. manage smartlock, 2 .. operate smartlock, 4 .. manage smartlock config, 8 .. manage smartlock authorizations, 16 .. view smartlock logs, 32 .. manage sub accounts, 64 .. create smartlocks",
@@ -1387,38 +1395,38 @@ export const notificationSchema = z.object({
 			"The 40 byte hex string to sign the checksumof the POST payload if the notification is webhook (os=2)",
 		)
 		.meta({ examples: ["8d41a187c3954f886f9de3a88c2ef22df0eac190"] }),
-	os: z.int().describe("The operating system: 0 .. Android, 1 .. iOS, 2 .. web hook"),
+	os: z.int32().describe("The operating system: 0 .. Android, 1 .. iOS, 2 .. web hook"),
 	language: z
 		.string()
 		.optional()
 		.describe("The language of push messages: cs, de, en (default), es, fr, it, nl, sk"),
-	status: z.int().optional().describe("Current state: 0 .. init, 1 .. active, 2 .. failed"),
+	status: z.int32().optional().describe("Current state: 0 .. init, 1 .. active, 2 .. failed"),
 	lastActiveDate: z.iso.datetime().optional().describe("The last active date"),
 	settings: z.array(notificationSettingSchema).describe("Settings per Smart Lock"),
 });
 
 export const objectIdSchema = z.object({
-	timestamp: z.int().optional(),
-	counter: z.int().optional(),
+	timestamp: z.int32().optional(),
+	counter: z.int32().optional(),
 	time: z.coerce.bigint().optional(),
 	date: z.iso.datetime().optional(),
-	machineIdentifier: z.int().optional(),
-	processIdentifier: z.int().optional(),
-	timeSecond: z.int().optional(),
+	machineIdentifier: z.int32().optional(),
+	processIdentifier: z.int32().optional(),
+	timeSecond: z.int32().optional(),
 });
 
 export const openerIntercomBrandSchema = z.object({
-	brandId: z.int().describe("The brand ID"),
+	brandId: z.int32().describe("The brand ID"),
 	brand: z.string().describe("The brand name"),
 });
 
 export const openerIntercomModelSchema = z.object({
-	intercomId: z.int().describe("The intercom ID"),
-	brandId: z.int().describe("The related brand ID"),
-	type: z.int().describe("The type of the model"),
+	intercomId: z.int32().describe("The intercom ID"),
+	brandId: z.int32().describe("The related brand ID"),
+	type: z.int32().describe("The type of the model"),
 	model: z.string().describe("The model name"),
 	verified: z
-		.int()
+		.int32()
 		.describe(
 			"Verified Nuki intercom: 1 .. verified to work, 2 .. may be compatible, but not verified, 3 .. not compatible",
 		),
@@ -1429,9 +1437,9 @@ export const openerIntercomModelSchema = z.object({
 	conDoorbellMinus: z.string().describe("Connection for doorbell minus"),
 	conOpendoor: z.string().describe("Connection for open the door"),
 	conGndAnalogue: z.string().describe("Connection for ground analogue"),
-	busModeSwitch: z.int().describe("Settings value for BUS mode switch"),
+	busModeSwitch: z.int32().describe("Settings value for BUS mode switch"),
 	busModeSwitchShortCircuitDuration: z
-		.int()
+		.int32()
 		.describe("Settings value for BUS mode switch short cicuit duration"),
 	creationDate: z.iso.datetime().optional().describe("The creation date"),
 	updateDate: z.iso.datetime().optional().describe("The update date"),
@@ -1439,11 +1447,11 @@ export const openerIntercomModelSchema = z.object({
 
 export const paginationSchema = z.object({
 	totalItems: z.coerce.bigint().optional(),
-	totalPages: z.int().optional(),
-	currentPage: z.int().optional(),
+	totalPages: z.int32().optional(),
+	currentPage: z.int32().optional(),
 	nextPage: z.string().optional(),
 	prevPage: z.string().optional(),
-	pageSize: z.int().optional(),
+	pageSize: z.int32().optional(),
 });
 
 export const paginatedResponseSchema = z.object({
@@ -1490,9 +1498,9 @@ export const wakeupListenerSchema = z.object({});
 
 export const selectionRegistrationSchema = z.object({
 	canceling: z.boolean().optional(),
-	interestOperations: z.int().optional(),
+	interestOperations: z.int32().optional(),
 	selectionListener: selectionListenerSchema.optional(),
-	readyOperations: z.int().optional(),
+	readyOperations: z.int32().optional(),
 	selectableChannel: selectableChannelSchema.optional(),
 	wakeupListener: wakeupListenerSchema.optional(),
 	readable: z.boolean().optional(),
@@ -1540,7 +1548,7 @@ export const stackTraceElementSchema = z.object({
 	moduleVersion: z.string().optional(),
 	methodName: z.string().optional(),
 	fileName: z.string().optional(),
-	lineNumber: z.int().optional(),
+	lineNumber: z.int32().optional(),
 	className: z.string().optional(),
 	nativeMethod: z.boolean().optional(),
 });
@@ -1558,7 +1566,7 @@ export const throwableSchema = z.object({
 });
 
 export const statusSchema = z.object({
-	code: z.int().optional(),
+	code: z.int32().optional(),
 	description: z.string().optional(),
 	reasonPhrase: z.string().optional(),
 	get throwable() {
@@ -1567,13 +1575,13 @@ export const statusSchema = z.object({
 	uri: z.string().optional(),
 	error: z.boolean().optional(),
 	success: z.boolean().optional(),
+	serverError: z.boolean().optional(),
+	connectorError: z.boolean().optional(),
+	clientError: z.boolean().optional(),
 	globalError: z.boolean().optional(),
 	informational: z.boolean().optional(),
 	redirection: z.boolean().optional(),
 	recoverableError: z.boolean().optional(),
-	serverError: z.boolean().optional(),
-	connectorError: z.boolean().optional(),
-	clientError: z.boolean().optional(),
 });
 
 export const warningSchema = z.object({
@@ -1607,7 +1615,7 @@ export const requestSchema = z.object({
 		return referenceSchema.optional();
 	},
 	loggable: z.boolean().optional(),
-	maxForwards: z.int().optional(),
+	maxForwards: z.int32().optional(),
 	method: methodSchema.optional(),
 	onResponse: uniformSchema.optional(),
 	get originalRef() {
@@ -1625,25 +1633,25 @@ export const requestSchema = z.object({
 	get rootRef() {
 		return referenceSchema.optional();
 	},
+	confidential: z.boolean().optional(),
 	asynchronous: z.boolean().optional(),
 	entityAvailable: z.boolean().optional(),
 	expectingResponse: z.boolean().optional(),
 	synchronous: z.boolean().optional(),
-	confidential: z.boolean().optional(),
-	entityAsText: z.string().optional(),
 	headers: z.array(headerSchema).optional(),
+	entityAsText: z.string().optional(),
 });
 
 export const reservationAccessTimesUpdateSchema = z.object({
-	checkInTime: z.int().optional().describe("Custom check in time in minutes from midnight"),
-	checkOutTime: z.int().optional().describe("Custom check out time in minutes from midnight"),
+	checkInTime: z.int32().optional().describe("Custom check in time in minutes from midnight"),
+	checkOutTime: z.int32().optional().describe("Custom check out time in minutes from midnight"),
 });
 
 export const serverInfoSchema = z.object({
 	acceptingRanges: z.boolean().optional(),
 	address: z.string().optional(),
 	agent: z.string().optional(),
-	port: z.int().optional(),
+	port: z.int32().optional(),
 });
 
 export const responseSchema = z.object({
@@ -1675,8 +1683,8 @@ export const responseSchema = z.object({
 			message: "Array entries must be unique",
 		})
 		.optional(),
-	accessControlMaxAge: z.int().optional(),
-	age: z.int().optional(),
+	accessControlMaxAge: z.int32().optional(),
+	age: z.int32().optional(),
 	allowedMethods: z
 		.array(methodSchema)
 		.refine((items) => new Set(items).size === items.length, {
@@ -1716,11 +1724,11 @@ export const responseSchema = z.object({
 	serverInfo: serverInfoSchema.optional(),
 	status: statusSchema.optional(),
 	final: z.boolean().optional(),
-	provisional: z.boolean().optional(),
 	confidential: z.boolean().optional(),
+	provisional: z.boolean().optional(),
+	headers: z.array(headerSchema).optional(),
 	entityAvailable: z.boolean().optional(),
 	entityAsText: z.string().optional(),
-	headers: z.array(headerSchema).optional(),
 });
 
 export const shsSubscriptionSchema = z.object({
@@ -1743,7 +1751,7 @@ export const smartlockConfigSchema = z.object({
 	latitude: z.number().describe("The latitude of the smartlock position"),
 	longitude: z.number().describe("The longitude of the smartlock position"),
 	capabilities: z
-		.int()
+		.int32()
 		.optional()
 		.describe(
 			"The capabilities indicate whether door opening via app is possible, RTO is possible or both: 0 .. only door opening possible, 1 .. both possible, 2 .. only RTO possible (only for type=2)",
@@ -1767,29 +1775,29 @@ export const smartlockConfigSchema = z.object({
 	buttonEnabled: z.boolean().optional().describe("True if the button on the smartlock is enabled"),
 	ledEnabled: z.boolean().optional().describe("True if the LED on the smartlock is enabled"),
 	ledBrightness: z
-		.int()
+		.int32()
 		.optional()
 		.describe("The brightness of the LED: 0 .. off, 5 .. max (only for type=1 and type=3)"),
-	timezoneOffset: z.int().describe("[deprecated] The timezone offset (in minutes)"),
+	timezoneOffset: z.int32().describe("[deprecated] The timezone offset (in minutes)"),
 	daylightSavingMode: z
-		.int()
+		.int32()
 		.optional()
 		.describe("[deprecated] The daylight saving mode: 0 .. off, 1 .. european"),
 	fobPaired: z.boolean().optional().describe("True if a fob is paired with the smartlock"),
 	fobAction1: z
-		.int()
+		.int32()
 		.optional()
 		.describe(
 			"The fob action if button is pressed once: type=0/3/4: 0 .. none, 1 .. unlock, 2 .. lock, 3 .. lock 'n' go, 4 .. intelligent (lock/unlocked based on the current state); type=2: 0 .. none, 1 .. toggle ring to open, 2 .. activate ring to open, 3 .. deactivate ring to open, 7 .. open (electric strike actuation), 8 .. ring",
 		),
 	fobAction2: z
-		.int()
+		.int32()
 		.optional()
 		.describe(
 			"The fob action if button is pressed twice: type=0/3/4: 0 .. none, 1 .. unlock, 2 .. lock, 3 .. lock 'n' go, 4 .. intelligent (lock/unlocked based on the current state); type=2: 0 .. none, 1 .. toggle ring to open, 2 .. activate ring to open, 3 .. deactivate ring to open, 7 .. open (electric strike actuation), 8 .. ring",
 		),
 	fobAction3: z
-		.int()
+		.int32()
 		.optional()
 		.describe(
 			"The fob action if button is pressed 3 times: type=0/3/4: 0 .. none, 1 .. unlock, 2 .. lock, 3 .. lock 'n' go, 4 .. intelligent (lock/unlocked based on the current state); type=2: 0 .. none, 1 .. toggle ring to open, 2 .. activate ring to open, 3 .. deactivate ring to open, 7 .. open (electric strike actuation), 8 .. ring",
@@ -1798,32 +1806,32 @@ export const smartlockConfigSchema = z.object({
 		.boolean()
 		.describe("True if the smartlock should only lock once (instead of twice) (only for type=1)"),
 	operatingMode: z
-		.int()
+		.int32()
 		.optional()
 		.describe(
 			"The operating mode of the opener (only for type=2): 0x00 .. generic door opener, 0x01 .. analogue intercom, 0x02 .. digital intercom, 0x03 .. digital intercom Siedle, 0x04 .. digital intercom TCS, 0x05 .. digital intercom Bticino, 0x06 .. analog intercom Siedle HTS, 0x07 .. digital intercom STR, 0x08 .. digital intercom Ritto, 0x09 .. digital intercom Fermax, 0x0A .. digital intercom Comelit, 0x0B .. digital intercom Urmet BiBus, 0x0C .. digital intercom Urmet 2Voice, 0x0D .. digital intercom Golmar, 0x0E .. digital intercom SKS, 0x0F .. digital intercom Spare",
 		),
 	advertisingMode: z
-		.int()
+		.int32()
 		.describe(
 			"The advertising mode (battery saving): 0 .. automatic, 1 .. normal, 2 .. slow, 3 .. slowest",
 		),
 	keypadPaired: z.boolean().optional().describe("True if a keypad is paired with the smartlock"),
 	keypad2Paired: z.boolean().optional().describe("True if a keypad 2 is paired with the smartlock"),
 	homekitState: z
-		.int()
+		.int32()
 		.optional()
 		.describe(
 			"The homekit state: 0 .. unavailable, 1 .. disabled, 2 .. enabled, 3 .. enabled & paired",
 		),
 	matterState: z
-		.int()
+		.int32()
 		.optional()
 		.describe(
 			"The matter state: 0 .. not available, 1 .. disabled and no certificate available, 2 .. disabled, 3 .. enabled, 4 .. enabled & paired",
 		),
-	timezoneId: z.int().describe("The timezone id (check https://developer.nuki.io for ids)"),
-	deviceType: z.int().optional().describe("The device type of a Nuki device"),
+	timezoneId: z.int32().describe("The timezone id (check https://developer.nuki.io for ids)"),
+	deviceType: z.int32().optional().describe("The device type of a Nuki device"),
 	wifiEnabled: z
 		.boolean()
 		.optional()
@@ -1833,21 +1841,21 @@ export const smartlockConfigSchema = z.object({
 		.optional()
 		.describe("The operation id - if set it's locked for another operation"),
 	productVariant: z
-		.int()
+		.int32()
 		.optional()
 		.describe("The product variant for Smartlock 5: 1 .. Go, 2 .. Pro, 3 .. Ultra"),
 });
 
 export const smartlockAdvancedConfigSchema = z.object({
-	lngTimeout: z.int().optional().describe("Timeout in seconds for lock ‘n’ go"),
+	lngTimeout: z.int32().optional().describe("Timeout in seconds for lock ‘n’ go"),
 	singleButtonPressAction: z
-		.int()
+		.int32()
 		.optional()
 		.describe(
 			"The desired action, if the button is pressed once: 0 .. no action, 1 .. intelligent, 2 .. unlock, 3 .. lock, 4 .. unlatch, 5 .. lock 'n' go, 6 .. show status",
 		),
 	doubleButtonPressAction: z
-		.int()
+		.int32()
 		.optional()
 		.describe(
 			"The desired action, if the button is pressed twice: 0 .. no action, 1 .. intelligent, 2 .. unlock, 3 .. lock, 4 .. unlatch, 5 .. lock 'n' go, 6 .. show status",
@@ -1857,7 +1865,7 @@ export const smartlockAdvancedConfigSchema = z.object({
 		.optional()
 		.describe("Flag that indicates if the automatic detection of the battery type is enabled"),
 	unlatchDuration: z
-		.int()
+		.int32()
 		.optional()
 		.describe("Duration in seconds for holding the latch in unlatched position"),
 	operationId: z
@@ -1865,17 +1873,17 @@ export const smartlockAdvancedConfigSchema = z.object({
 		.optional()
 		.describe("The operation id - if set it's locked for another operation"),
 	totalDegrees: z
-		.int()
+		.int32()
 		.describe("The absolute total position in degrees that has been reached during calibration"),
 	singleLockedPositionOffsetDegrees: z
-		.int()
+		.int32()
 		.describe("Offset that alters the single locked position"),
 	unlockedToLockedTransitionOffsetDegrees: z
-		.int()
+		.int32()
 		.optional()
 		.describe("Offset that alters the position where transition from unlocked to locked happens"),
-	unlockedPositionOffsetDegrees: z.int().describe("Offset that alters the unlocked position"),
-	lockedPositionOffsetDegrees: z.int().describe("Offset that alters the locked position"),
+	unlockedPositionOffsetDegrees: z.int32().describe("Offset that alters the unlocked position"),
+	lockedPositionOffsetDegrees: z.int32().describe("Offset that alters the locked position"),
 	detachedCylinder: z
 		.boolean()
 		.optional()
@@ -1883,7 +1891,7 @@ export const smartlockAdvancedConfigSchema = z.object({
 			"Flag that indicates that the inner side of the used cylinder is detached from the outer side",
 		),
 	batteryType: z
-		.int()
+		.int32()
 		.describe(
 			"The type of the batteries present in the smart lock: 0 .. alkali, 1 .. accumulator, 2 .. lithium",
 		),
@@ -1894,7 +1902,7 @@ export const smartlockAdvancedConfigSchema = z.object({
 			"New separate flag with FW >= 2.7.8/1.9.1: The Auto Lock feature automatically locks your door when it has been unlocked for a certain period of time",
 		),
 	autoLockTimeout: z
-		.int()
+		.int32()
 		.optional()
 		.describe(
 			"Seconds until the smart lock relocks itself after it has been unlocked. FW < 2.7.8/1.9.1: No auto relock if value is 0, FW >= 2.7.8/1.9.1: has to be >=2 (defaults to 2 for values <2 if autoLock is set to true)",
@@ -1906,7 +1914,7 @@ export const smartlockAdvancedConfigSchema = z.object({
 			"Flag that indicates if available firmware updates for the deviceshould be installed automatically",
 		),
 	motorSpeed: z
-		.int()
+		.int32()
 		.optional()
 		.describe(
 			"Field used for setting the motor speed. 0x00 ... standard, 0x01 ... fast, 0x02 ... slow",
@@ -1918,13 +1926,13 @@ export const smartlockAdvancedConfigSchema = z.object({
 });
 
 export const smartlockOpenerAdvancedConfigSchema = z.object({
-	intercomId: z.int().describe("The database ID of the connected intercom"),
-	busModeSwitch: z.int().describe("Method to switch between data and analogue mode"),
+	intercomId: z.int32().describe("The database ID of the connected intercom"),
+	busModeSwitch: z.int32().describe("Method to switch between data and analogue mode"),
 	shortCircuitDuration: z
-		.int()
+		.int32()
 		.describe("Duration of the short circuit for BUS mode switching in ms"),
 	electricStrikeDelay: z
-		.int()
+		.int32()
 		.describe(
 			"Delay of electric strike activation in ms after lock action 3 'electric strike actuation'",
 		),
@@ -1934,50 +1942,50 @@ export const smartlockOpenerAdvancedConfigSchema = z.object({
 			"Random electricStrikeDelay (range 3000 - 7000 ms) in order to simulate a person inside actuating the electric strike",
 		),
 	electricStrikeDuration: z
-		.int()
+		.int32()
 		.describe(
 			"Duration in ms of electric strike actuation lock action 3 'electric strike actuation'",
 		),
 	disableRtoAfterRing: z.boolean().describe("Flag to disable RTO after ring"),
 	rtoTimeout: z
-		.int()
+		.int32()
 		.describe("After this period of time in minutes, RTO gets deactivated automatically"),
 	doorbellSuppression: z
-		.int()
+		.int32()
 		.describe(
 			"The doorbell supression bitmask: first bit (least significant) .. whenever the doorbell rings and CM and RTO are inactive, second bit .. RTO is active, third bit .. CM is active",
 		),
 	doorbellSuppressionDuration: z
-		.int()
+		.int32()
 		.describe(
 			"Duration in ms of doorbell suppression (only in Operating mode 2 'digital Intercom')",
 		),
 	soundRing: z
-		.int()
+		.int32()
 		.describe("The sound for ring: 0 .. no sound, 1 .. Sound1, 2 .. Sound2, 3 .. Sound3"),
 	soundOpen: z
-		.int()
+		.int32()
 		.describe("The sound for open: 0 .. no sound, 1 .. Sound1, 2 .. Sound2, 3 .. Sound3"),
 	soundRto: z
-		.int()
+		.int32()
 		.describe("The sound for RTO: 0 .. no sound, 1 .. Sound1, 2 .. Sound2, 3 .. Sound3"),
 	soundCm: z
-		.int()
+		.int32()
 		.describe("The sound for CM: 0 .. no sound, 1 .. Sound1, 2 .. Sound2, 3 .. Sound3"),
-	soundConfirmation: z.int().describe("The sound confirmation: 0 .. no sound, 1 .. sound"),
-	soundLevel: z.int().describe("The sound level"),
+	soundConfirmation: z.int32().describe("The sound confirmation: 0 .. no sound, 1 .. sound"),
+	soundLevel: z.int32().describe("The sound level"),
 	singleButtonPressAction: z
-		.int()
+		.int32()
 		.describe(
 			"The desired action, if the button is pressed once: 0 .. no action, 1 .. toggle RTO, 2 .. activate RTO, 3 .. deactivate RTO, 4 .. toggle CM, 5 .. activate CM, 6 .. deactivate CM, 7 .. open",
 		),
 	doubleButtonPressAction: z
-		.int()
+		.int32()
 		.describe(
 			"The desired action, if the button is pressed twice: 0 .. no action, 1 .. toggle RTO, 2 .. activate RTO, 3 .. deactivate RTO, 4 .. toggle CM, 5 .. activate CM, 6 .. deactivate CM, 7 .. open",
 		),
 	batteryType: z
-		.int()
+		.int32()
 		.describe(
 			"The type of the batteries present in the smart lock: 0 .. alkali, 1 .. accumulator, 2 .. lithium, 3 .. fixed",
 		),
@@ -1998,15 +2006,15 @@ export const smartlockOpenerAdvancedConfigSchema = z.object({
 });
 
 export const smartlockSmartdoorAdvancedConfigSchema = z.object({
-	lngTimeout: z.int().optional().describe("Timeout in seconds for lock ‘n’ go"),
+	lngTimeout: z.int32().optional().describe("Timeout in seconds for lock ‘n’ go"),
 	singleButtonPressAction: z
-		.int()
+		.int32()
 		.optional()
 		.describe(
 			"The desired action, if the button is pressed once: 0 .. no action, 1 .. intelligent, 2 .. unlock, 3 .. lock, 4 .. unlatch, 5 .. lock 'n' go, 6 .. show status",
 		),
 	doubleButtonPressAction: z
-		.int()
+		.int32()
 		.optional()
 		.describe(
 			"The desired action, if the button is pressed twice: 0 .. no action, 1 .. intelligent, 2 .. unlock, 3 .. lock, 4 .. unlatch, 5 .. lock 'n' go, 6 .. show status",
@@ -2016,7 +2024,7 @@ export const smartlockSmartdoorAdvancedConfigSchema = z.object({
 		.optional()
 		.describe("Flag that indicates if the automatic detection of the battery type is enabled"),
 	unlatchDuration: z
-		.int()
+		.int32()
 		.optional()
 		.describe("Duration in seconds for holding the latch in unlatched position"),
 	operationId: z
@@ -2024,11 +2032,11 @@ export const smartlockSmartdoorAdvancedConfigSchema = z.object({
 		.optional()
 		.describe("The operation id - if set it's locked for another operation"),
 	buzzerVolume: z
-		.int()
+		.int32()
 		.optional()
 		.describe("The volume of the buzzer: 0 .. off, 1 .. low, 2 .. normal"),
 	supportedBatteryTypes: z
-		.array(z.int())
+		.array(z.int32())
 		.refine((items) => new Set(items).size === items.length, {
 			message: "Array entries must be unique",
 		})
@@ -2037,12 +2045,12 @@ export const smartlockSmartdoorAdvancedConfigSchema = z.object({
 			"Set of supported battery types: 0 .. alkali, 1 .. accumulator, 2 .. lithium, 3 .. fixed, 254 .. automatic, 255 .. unknown",
 		),
 	batteryType: z
-		.int()
+		.int32()
 		.describe(
 			"The type of the batteries present in the smart lock: 0 .. alkali, 1 .. accumulator, 2 .. lithium, 3 .. fixed, 255 .. unknown",
 		),
 	autoLockTimeout: z
-		.int()
+		.int32()
 		.optional()
 		.describe(
 			"Seconds until the smart lock relocks itself after it has been unlocked. No auto relock if value is 0",
@@ -2056,22 +2064,22 @@ export const smartlockSmartdoorAdvancedConfigSchema = z.object({
 
 export const smartlockStateSchema = z.object({
 	mode: z
-		.int()
+		.int32()
 		.describe(
 			"The smartlock mode: 0 .. uninitialized, 1 .. pairing, 2 .. door (default), 3 .. continuous (type=2 only), 4 .. maintenance, 5 .. off-door charging",
 		),
 	state: z
-		.int()
+		.int32()
 		.describe(
 			"The smartlock state: type=0/3/4: 0 .. uncalibrated, 1 .. locked, 2 .. unlocking, 3 .. unlocked, 4 .. locking, 5 .. unlatched, 6 .. unlocked (lock 'n' go), 7 .. unlatching, 224 .. Error wrong entry code, 225 .. Error wrong Fingerprint, 254 .. motor blocked, 255 .. undefined; type=2: 0 .. untrained, 1 .. online, 3 .. ring to open active, 5 .. open, 7 .. opening, 253 .. boot run, 255 .. undefined",
 		),
 	trigger: z
-		.int()
+		.int32()
 		.describe(
 			" The state trigger: 0 .. system, 1 .. manual, 2 .. button, 3 .. automatic, 4 .. web (type=1 only), 5 .. app (type=1 only), 6 .. continuous mode (type=2 only), 7 .. accessory (type=3 only)",
 		),
 	lastAction: z
-		.int()
+		.int32()
 		.describe(
 			"The action: type=0/3/4: 1 .. unlock, 2 .. lock, 3 .. unlatch, 4 .. lock 'n' go, 5 .. lock 'n' go with unlatch; type=1: 1 .. unlock; type=2: 1 .. activate ring to open, 2 .. deactivate ring to open, 3 .. open (electric strike actuation)",
 		),
@@ -2080,7 +2088,7 @@ export const smartlockStateSchema = z.object({
 		.boolean()
 		.optional()
 		.describe("True if a Nuki battery pack in a Smart Lock is currently charging"),
-	batteryCharge: z.int().optional().describe("Remaining capacity of a Nuki battery pack in %"),
+	batteryCharge: z.int32().optional().describe("Remaining capacity of a Nuki battery pack in %"),
 	keypadBatteryCritical: z
 		.boolean()
 		.optional()
@@ -2094,12 +2102,18 @@ export const smartlockStateSchema = z.object({
 			"True if the battery of a paired doorsensor is critical (only available for supported devices)",
 		),
 	doorState: z
-		.int()
+		.int32()
 		.describe(
 			"The door state: 0 .. unavailable/not paired, 1 .. deactivated, 2 .. door closed, 3 .. door opened, 4 .. door state unknown, 5 .. calibrating, 16 .. uncalibrated, 240 .. removed, 255 .. unknown",
 		),
+	keypadMountingState: z
+		.int32()
+		.optional()
+		.describe(
+			"The keypad mounting state: 0 .. unknown/disabled/n.a., 1 .. mounted, 2 .. moved (dismounted), 255 .. error (theft detection) (only available for supported devices)",
+		),
 	ringToOpenTimer: z
-		.int()
+		.int32()
 		.describe(
 			"[deprecated] Remaining ring to open time; 0 if ring to open is not active (type=2 only)",
 		),
@@ -2116,19 +2130,19 @@ export const smartlockStateSchema = z.object({
 
 export const smartlockSchema = z.object({
 	smartlockId: z.coerce.bigint().describe("The smartlock id"),
-	accountId: z.int().describe("The account id"),
+	accountId: z.int32().describe("The account id"),
 	type: z
-		.int()
+		.int32()
 		.describe(
 			"The type: 0 .. Smartlock 1/2, 1 .. Box, 2 .. Opener, 3 .. Smartdoor, 4 .. Smartlock 3/4, 5 .. Smartlock 5",
 		),
 	lmType: z
-		.int()
+		.int32()
 		.optional()
 		.describe(
 			"The lock mechanism used in the smart door lock: 1 .. MyEVO, 2 .. KFV Genius (only for type = 3)",
 		),
-	authId: z.int().describe("The authorization id"),
+	authId: z.int32().describe("The authorization id"),
 	name: z.string().describe("The name of the smartlock"),
 	favorite: z.boolean().describe("The favorite flag"),
 	config: smartlockConfigSchema.optional().describe("The config"),
@@ -2141,18 +2155,18 @@ export const smartlockSchema = z.object({
 		.describe("The smartdoor advanced config"),
 	webConfig: smartlockWebConfigSchema.optional().describe("The web config"),
 	state: smartlockStateSchema.optional().describe("The state"),
-	firmwareVersion: z.int().optional().describe("The firmware version"),
-	hardwareVersion: z.int().optional().describe("The hardware version"),
+	firmwareVersion: z.int32().optional().describe("The firmware version"),
+	hardwareVersion: z.int32().optional().describe("The hardware version"),
 	operationId: z
 		.string()
 		.optional()
 		.describe("The operation id - if set it's locked for another operation"),
 	serverState: z
-		.int()
+		.int32()
 		.describe(
 			"The server state: 0 .. ok, 1 .. unregistered, 2 .. auth uuid invalid, 3 .. auth invalid, 4 .. offline",
 		),
-	adminPinState: z.int().describe("The admin pin state: 0 .. ok, 1 .. missing, 2 .. invalid"),
+	adminPinState: z.int32().describe("The admin pin state: 0 .. ok, 1 .. missing, 2 .. invalid"),
 	virtualDevice: z.boolean().optional().describe("The flag indicating a virtual Smart Lock"),
 	creationDate: z.iso.datetime().optional().describe("The creation date"),
 	updateDate: z.iso.datetime().optional().describe("The update date"),
@@ -2162,8 +2176,8 @@ export const smartlockSchema = z.object({
 		.optional()
 		.describe("Previous Subscriptions"),
 	currentSubscription: shsSubscriptionSchema.optional().describe("Current Subscription"),
-	region: z.int().optional().describe("The region"),
-	mountingVariant: z.int().optional().describe("The mounting variant"),
+	region: z.int32().optional().describe("The region"),
+	mountingVariant: z.int32().optional().describe("The mounting variant"),
 	opener: z.boolean().optional(),
 	box: z.boolean().optional(),
 	smartDoor: z.boolean().optional(),
@@ -2172,44 +2186,47 @@ export const smartlockSchema = z.object({
 
 export const smartlockActionSchema = z.object({
 	action: z
-		.int()
+		.int32()
 		.describe(
 			"The action: type=0/3/4: 1 .. unlock, 2 .. lock, 3 .. unlatch, 4 .. lock 'n' go, 5 .. lock 'n' go with unlatch; type=1: 1 .. unlock; type=2: 1 activate ring to open, 2 .. deactivate ring to open, 3 .. open (electric strike actuation), 6 ... activate continuous mode, 7 ... deactivate continuous mode",
 		),
-	option: z.int().optional().describe("The option mask: 0 .. none, 2 .. force, 4 .. full lock"),
+	option: z.int32().optional().describe("The option mask: 0 .. none, 2 .. force, 4 .. full lock"),
 });
 
 export const smartlockAdminPinUpdateSchema = z.object({
-	adminPin: z.int().describe("The admin pin"),
+	adminPin: z.int32().describe("The admin pin"),
 });
 
 export const smartlockAuthSchema = z.object({
 	id: z.string().describe("The unique id for the smartlock authorization"),
 	smartlockId: z.coerce.bigint().describe("The smartlock id"),
-	accountUserId: z.int().optional().describe("The id of the linked account user"),
-	authId: z.int().optional().describe("The smartlock authorization id"),
-	code: z.int().optional().describe("The keypad code (only for type keypad)"),
+	accountUserId: z.int32().optional().describe("The id of the linked account user"),
+	authId: z.int32().optional().describe("The smartlock authorization id"),
+	code: z.int32().optional().describe("The keypad code (only for type keypad)"),
 	fingerprints: z.object({}).catchall(z.string()).optional(),
 	type: z
-		.int()
+		.int32()
 		.describe(
 			"The type of the authorization: 0 .. app, 1 .. bridge, 2 .. fob, 3 .. keypad, 13 .. keypad code, 14 .. z-key, 15 .. virtual",
 		),
 	name: z.string().describe("The name of the authorization (max 32 chars)"),
 	enabled: z.boolean().describe("True if the auth is enabled"),
 	remoteAllowed: z.boolean().describe("True if the auth has remote access"),
-	lockCount: z.int().describe("The lock count"),
+	lockCount: z.int32().describe("The lock count"),
 	allowedFromDate: z.iso.datetime().optional().describe("The allowed from date"),
 	allowedUntilDate: z.iso.datetime().optional().describe("The allowed until date"),
 	allowedWeekDays: z
-		.int()
+		.int32()
 		.optional()
 		.describe(
 			"The allowed weekdays bitmask: 64 .. monday, 32 .. tuesday, 16 .. wednesday, 8 .. thursday, 4 .. friday, 2 .. saturday, 1 .. sunday",
 		),
-	allowedFromTime: z.int().optional().describe("The allowed from time (in minutes from midnight)"),
+	allowedFromTime: z
+		.int32()
+		.optional()
+		.describe("The allowed from time (in minutes from midnight)"),
 	allowedUntilTime: z
-		.int()
+		.int32()
 		.optional()
 		.describe("The allowed until time (in minutes from midnight)"),
 	lastActiveDate: z.iso.datetime().optional().describe("The last active date"),
@@ -2219,7 +2236,7 @@ export const smartlockAuthSchema = z.object({
 		.optional()
 		.describe("The operation id - if set the auth is locked for another operations."),
 	error: z.string().optional().describe("In case of any error, it contains the error message"),
-	appId: z.int().optional().describe("The ID of the Nuki App"),
+	appId: z.int32().optional().describe("The ID of the Nuki App"),
 	authTypeAsString: z.string().optional(),
 });
 
@@ -2228,27 +2245,30 @@ export const smartlockAuthCreateSchema = z.object({
 	allowedFromDate: z.iso.datetime().optional().describe("The allowed from date"),
 	allowedUntilDate: z.iso.datetime().optional().describe("The allowed until date"),
 	allowedWeekDays: z
-		.int()
+		.int32()
 		.optional()
 		.describe(
 			"The allowed weekdays bitmask: 64 .. monday, 32 .. tuesday, 16 .. wednesday, 8 .. thursday, 4 .. friday, 2 .. saturday, 1 .. sunday",
 		),
-	allowedFromTime: z.int().optional().describe("The allowed from time (in minutes from midnight)"),
+	allowedFromTime: z
+		.int32()
+		.optional()
+		.describe("The allowed from time (in minutes from midnight)"),
 	allowedUntilTime: z
-		.int()
+		.int32()
 		.optional()
 		.describe("The allowed until time (in minutes from midnight)"),
 	accountUserId: z
-		.int()
+		.int32()
 		.optional()
 		.describe("The id of the linked account user (required if type is NOT 13 .. keypad)"),
 	remoteAllowed: z.boolean().describe("True if the auth has remote access"),
 	smartActionsEnabled: z.boolean().optional().describe("The smart actions enabled flag"),
 	type: z
-		.int()
+		.int32()
 		.optional()
 		.describe("The optional type of the auth 0 .. app (default), 2 .. fob, 13 .. keypad"),
-	code: z.int().optional().describe("The code of the keypad authorization (only for keypad)"),
+	code: z.int32().optional().describe("The code of the keypad authorization (only for keypad)"),
 });
 
 export const smartlockAuthMultiUpdateSchema = z.object({
@@ -2256,20 +2276,23 @@ export const smartlockAuthMultiUpdateSchema = z.object({
 	allowedFromDate: z.iso.datetime().optional().describe("The allowed from date"),
 	allowedUntilDate: z.iso.datetime().optional().describe("The allowed until date"),
 	allowedWeekDays: z
-		.int()
+		.int32()
 		.optional()
 		.describe(
 			"The allowed weekdays bitmask: 64 .. monday, 32 .. tuesday, 16 .. wednesday, 8 .. thursday, 4 .. friday, 2 .. saturday, 1 .. sunday",
 		),
-	allowedFromTime: z.int().optional().describe("The allowed from time (in minutes from midnight)"),
+	allowedFromTime: z
+		.int32()
+		.optional()
+		.describe("The allowed from time (in minutes from midnight)"),
 	allowedUntilTime: z
-		.int()
+		.int32()
 		.optional()
 		.describe("The allowed until time (in minutes from midnight)"),
-	accountUserId: z.int().optional().describe("The id of the linked account user"),
+	accountUserId: z.int32().optional().describe("The id of the linked account user"),
 	enabled: z.boolean().optional().describe("True if the auth is enabled"),
 	remoteAllowed: z.boolean().optional().describe("True if the auth has remote access"),
-	code: z.int().optional().describe("The code of the keypad authorization (only for keypad)"),
+	code: z.int32().optional().describe("The code of the keypad authorization (only for keypad)"),
 	id: z.string().describe("The unique id for the smartlock authorization"),
 });
 
@@ -2278,20 +2301,23 @@ export const smartlockAuthUpdateSchema = z.object({
 	allowedFromDate: z.iso.datetime().optional().describe("The allowed from date"),
 	allowedUntilDate: z.iso.datetime().optional().describe("The allowed until date"),
 	allowedWeekDays: z
-		.int()
+		.int32()
 		.optional()
 		.describe(
 			"The allowed weekdays bitmask: 64 .. monday, 32 .. tuesday, 16 .. wednesday, 8 .. thursday, 4 .. friday, 2 .. saturday, 1 .. sunday",
 		),
-	allowedFromTime: z.int().optional().describe("The allowed from time (in minutes from midnight)"),
+	allowedFromTime: z
+		.int32()
+		.optional()
+		.describe("The allowed from time (in minutes from midnight)"),
 	allowedUntilTime: z
-		.int()
+		.int32()
 		.optional()
 		.describe("The allowed until time (in minutes from midnight)"),
-	accountUserId: z.int().optional().describe("The id of the linked account user"),
+	accountUserId: z.int32().optional().describe("The id of the linked account user"),
 	enabled: z.boolean().optional().describe("True if the auth is enabled"),
 	remoteAllowed: z.boolean().optional().describe("True if the auth has remote access"),
-	code: z.int().optional().describe("The code of the keypad authorization (only for keypad)"),
+	code: z.int32().optional().describe("The code of the keypad authorization (only for keypad)"),
 });
 
 export const smartlockAuthWithSharedKeyCreateSchema = z.object({
@@ -2299,24 +2325,27 @@ export const smartlockAuthWithSharedKeyCreateSchema = z.object({
 	allowedFromDate: z.iso.datetime().optional().describe("The allowed from date"),
 	allowedUntilDate: z.iso.datetime().optional().describe("The allowed until date"),
 	allowedWeekDays: z
-		.int()
+		.int32()
 		.optional()
 		.describe(
 			"The allowed weekdays bitmask: 64 .. monday, 32 .. tuesday, 16 .. wednesday, 8 .. thursday, 4 .. friday, 2 .. saturday, 1 .. sunday",
 		),
-	allowedFromTime: z.int().optional().describe("The allowed from time (in minutes from midnight)"),
+	allowedFromTime: z
+		.int32()
+		.optional()
+		.describe("The allowed from time (in minutes from midnight)"),
 	allowedUntilTime: z
-		.int()
+		.int32()
 		.optional()
 		.describe("The allowed until time (in minutes from midnight)"),
-	accountUserId: z.int().optional().describe("The id of the linked account user"),
+	accountUserId: z.int32().optional().describe("The id of the linked account user"),
 });
 
 export const smartlockLogOpenerLogSchema = z.object({
 	activeCm: z.boolean().describe("Flag indicating if continuous mode was active"),
 	activeRto: z.boolean().describe("Flag indicating if ring to open was active"),
 	source: z
-		.int()
+		.int32()
 		.describe(
 			"The cause of the activation of ring to open or continuous mode: 0 .. doorbell, 1 .. timecontrol, 2 .. app, 3 .. button, 4 .. fob, 5 .. bridge, 6 .. keypad",
 		),
@@ -2331,25 +2360,25 @@ export const smartlockLogSchema = z.object({
 	id: z.string().describe("The unique id for the smartlock log"),
 	smartlockId: z.coerce.bigint().describe("The smartlock id"),
 	deviceType: z
-		.int()
+		.int32()
 		.describe(
 			"The device type: 0 .. Smartlock 1/2 + Box, 2 .. Opener, 3 .. Smartdoor, 4 .. Smartlock 3/4, 5 .. Smartlock 5",
 		),
-	accountUserId: z.int().optional().describe("The id of the linked account user"),
+	accountUserId: z.int32().optional().describe("The id of the linked account user"),
 	authId: z.string().optional().describe("The id of the linked smartlock auth"),
 	name: z.string().describe("The name"),
 	action: z
-		.int()
+		.int32()
 		.describe(
 			"The action: 1 .. unlock, 2 .. lock, 3 .. unlatch, 4 .. lock'n'go, 5 .. lock'n'go with unlatch, 11 .. Restore reset to default setting, 208 .. door warning ajar, 209 door warning status mismatch, 224 .. doorbell recognition (only Opener), 240 .. door opened, 241 .. door closed, 242 .. door sensor jammed, 243 .. firmware update, 250 .. door log enabled, 251 .. door log disabled, 252 .. initialization, 253 .. calibration, 254 .. log enabled, 255 .. log disabled",
 		),
 	trigger: z
-		.int()
+		.int32()
 		.describe(
 			"The trigger: 0 .. system, 1 .. manual, 2 .. button, 3 .. automatic, 4 .. web, 5 .. app, 6 .. auto lock, 7 .. accessory, 253 .. keypad error, 254 .. nuki mode, 255 .. keypad",
 		),
 	state: z
-		.int()
+		.int32()
 		.describe(
 			"The completion state: 0 .. Success, 1 .. Motor blocked, 2 .. Canceled, 3 .. Too recent, 4 .. Busy, 5 .. Low motor voltage, 6 .. Clutch failure, 7 .. Motor power failure, 8 .. Incomplete, 9 .. Rejected, 10 .. Rejected night mode, 224 .. Invalid Code, 225 .. Invalid Fingerprint, 226 .. Invalid NFC Tag, 254 .. Other error, 255 .. Unknown error\nFor source=3 and trigger=253 the following states are used: 0 .. Access document revoked, 1 .. Send NFC failed, 2 .. Control flow, 3 .. Command time expired, 7 .. Invalid data content, 37 .. Invalid access rights, 255 .. Unknown",
 		),
@@ -2357,11 +2386,11 @@ export const smartlockLogSchema = z.object({
 	date: z.iso.datetime().describe("The log date"),
 	openerLog: smartlockLogOpenerLogSchema.optional().describe("The opener specific log"),
 	ajarTimeout: z
-		.int()
+		.int32()
 		.optional()
 		.describe("The door sensor warning ajar timeout (in minutes, only for action = 208)"),
 	source: z
-		.int()
+		.int32()
 		.optional()
 		.describe(
 			"The source of action: 1 .. Keypad code, 2 .. Fingerprint, 3 .. Tap to Unlock, 0 .. Default",
@@ -2379,17 +2408,20 @@ export const smartlocksAuthAdvancedCreateSchema = z.object({
 	allowedFromDate: z.iso.datetime().optional().describe("The allowed from date"),
 	allowedUntilDate: z.iso.datetime().optional().describe("The allowed until date"),
 	allowedWeekDays: z
-		.int()
+		.int32()
 		.optional()
 		.describe(
 			"The allowed weekdays bitmask: 64 .. monday, 32 .. tuesday, 16 .. wednesday, 8 .. thursday, 4 .. friday, 2 .. saturday, 1 .. sunday",
 		),
-	allowedFromTime: z.int().optional().describe("The allowed from time (in minutes from midnight)"),
+	allowedFromTime: z
+		.int32()
+		.optional()
+		.describe("The allowed from time (in minutes from midnight)"),
 	allowedUntilTime: z
-		.int()
+		.int32()
 		.optional()
 		.describe("The allowed until time (in minutes from midnight)"),
-	accountUserId: z.int().describe("The id of the linked account user"),
+	accountUserId: z.int32().describe("The id of the linked account user"),
 	smartlockIds: z.array(z.coerce.bigint()).describe("The list of smartlock ids"),
 	remoteAllowed: z.boolean().describe("True if the auth has remote access"),
 	smartActionsEnabled: z.boolean().optional().describe("The smart actions enabled flag"),
@@ -2400,28 +2432,31 @@ export const smartlocksAuthCreateSchema = z.object({
 	allowedFromDate: z.iso.datetime().optional().describe("The allowed from date"),
 	allowedUntilDate: z.iso.datetime().optional().describe("The allowed until date"),
 	allowedWeekDays: z
-		.int()
+		.int32()
 		.optional()
 		.describe(
 			"The allowed weekdays bitmask: 64 .. monday, 32 .. tuesday, 16 .. wednesday, 8 .. thursday, 4 .. friday, 2 .. saturday, 1 .. sunday",
 		),
-	allowedFromTime: z.int().optional().describe("The allowed from time (in minutes from midnight)"),
+	allowedFromTime: z
+		.int32()
+		.optional()
+		.describe("The allowed from time (in minutes from midnight)"),
 	allowedUntilTime: z
-		.int()
+		.int32()
 		.optional()
 		.describe("The allowed until time (in minutes from midnight)"),
 	accountUserId: z
-		.int()
+		.int32()
 		.optional()
 		.describe("The id of the linked account user (required if type is NOT 13 .. keypad)"),
 	smartlockIds: z.array(z.coerce.bigint()).optional().describe("The list of smartlock ids"),
 	remoteAllowed: z.boolean().describe("True if the auth has remote access"),
 	smartActionsEnabled: z.boolean().optional().describe("The smart actions enabled flag"),
 	type: z
-		.int()
+		.int32()
 		.optional()
 		.describe("The optional type of the auth 0 .. app (default), 2 .. fob, 13 .. keypad"),
-	code: z.int().optional().describe("The code of the keypad authorization (only for keypad)"),
+	code: z.int32().optional().describe("The code of the keypad authorization (only for keypad)"),
 });
 
 export const variantSchema = z.object({
@@ -2452,12 +2487,12 @@ export const webhookLogSchema = z.object({
 		.optional()
 		.describe("Request id, set when api-triggered request otherwise empty"),
 	succeeded: z.boolean().optional().describe("If the webhooks sends the data successfully"),
-	responseStatus: z.int().optional().describe("Http Status code of the webhook response"),
+	responseStatus: z.int32().optional().describe("Http Status code of the webhook response"),
 	duration: z.coerce.bigint().optional().describe("The duration of the webhook in milli seconds"),
-	accountId: z.int().describe("The account id"),
+	accountId: z.int32().describe("The account id"),
 	request: webhookMessageSchema.optional().describe("Only set if webhook triggered by user"),
 	response: webhookMessageSchema.optional().describe("Set if webhook sent"),
-	apiKeyId: z.int().describe("Used Api Key for the webhook"),
+	apiKeyId: z.int32().describe("Used Api Key for the webhook"),
 	updated: z.iso.datetime().describe("last updated time"),
 	created: z.iso.datetime().describe("Creation Date"),
 });
