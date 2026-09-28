@@ -1,5 +1,11 @@
 # v0-api
 
+## 0.3.1
+
+### Patch Changes
+
+- 2772ca5: Use zod's strictObject in all schemas to enforce strict object validation.
+
 ## 0.3.0
 
 ### Minor Changes
