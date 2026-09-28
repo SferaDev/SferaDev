@@ -358,7 +358,7 @@ export const applicationRepresentationSchema = z.object({
 	defaultRoles: z.array(z.string()).optional(),
 	redirectUris: z.array(z.string()).optional(),
 	webOrigins: z.array(z.string()).optional(),
-	notBefore: z.int().optional(),
+	notBefore: z.int32().optional(),
 	bearerOnly: z.boolean().optional(),
 	consentRequired: z.boolean().optional(),
 	standardFlowEnabled: z.boolean().optional(),
@@ -373,8 +373,8 @@ export const applicationRepresentationSchema = z.object({
 	attributes: z.object({}).catchall(z.string()).optional(),
 	authenticationFlowBindingOverrides: z.object({}).catchall(z.string()).optional(),
 	fullScopeAllowed: z.boolean().optional(),
-	nodeReRegistrationTimeout: z.int().optional(),
-	registeredNodes: z.object({}).catchall(z.int()).optional(),
+	nodeReRegistrationTimeout: z.int32().optional(),
+	registeredNodes: z.object({}).catchall(z.int32()).optional(),
 	protocolMappers: z.array(protocolMapperRepresentationSchema).optional(),
 	clientTemplate: z.string().optional(),
 	useTemplateConfig: z.boolean().optional(),
@@ -394,7 +394,7 @@ export const authenticationExecutionExportRepresentationSchema = z.object({
 	authenticator: z.string().optional(),
 	authenticatorFlow: z.boolean().optional(),
 	requirement: z.string().optional(),
-	priority: z.int().optional(),
+	priority: z.int32().optional(),
 	autheticatorFlow: z.boolean().optional(),
 	flowAlias: z.string().optional(),
 	userSetupAllowed: z.boolean().optional(),
@@ -412,9 +412,9 @@ export const authenticationExecutionInfoRepresentationSchema = z.object({
 	providerId: z.string().optional(),
 	authenticationConfig: z.string().optional(),
 	flowId: z.string().optional(),
-	level: z.int().optional(),
-	index: z.int().optional(),
-	priority: z.int().optional(),
+	level: z.int32().optional(),
+	index: z.int32().optional(),
+	priority: z.int32().optional(),
 });
 
 export const authenticationExecutionRepresentationSchema = z.object({
@@ -422,7 +422,7 @@ export const authenticationExecutionRepresentationSchema = z.object({
 	authenticator: z.string().optional(),
 	authenticatorFlow: z.boolean().optional(),
 	requirement: z.string().optional(),
-	priority: z.int().optional(),
+	priority: z.int32().optional(),
 	autheticatorFlow: z.boolean().optional(),
 	id: z.string().optional(),
 	flowId: z.string().optional(),
@@ -475,18 +475,18 @@ export const certificateRepresentationSchema = z.object({
 });
 
 export const clientInitialAccessCreatePresentationSchema = z.object({
-	expiration: z.int().optional(),
-	count: z.int().optional(),
+	expiration: z.int32().optional(),
+	count: z.int32().optional(),
 	webOrigins: z.array(z.string()).optional(),
 });
 
 export const clientInitialAccessPresentationSchema = z.object({
 	id: z.string().optional(),
 	token: z.string().optional(),
-	timestamp: z.int().optional(),
-	expiration: z.int().optional(),
-	count: z.int().optional(),
-	remainingCount: z.int().optional(),
+	timestamp: z.int32().optional(),
+	expiration: z.int32().optional(),
+	count: z.int32().optional(),
+	remainingCount: z.int32().optional(),
 });
 
 export const compositesSchema = z.object({
@@ -579,7 +579,7 @@ export const clientRepresentationSchema = z.object({
 	defaultRoles: z.array(z.string()).optional(),
 	redirectUris: z.array(z.string()).optional(),
 	webOrigins: z.array(z.string()).optional(),
-	notBefore: z.int().optional(),
+	notBefore: z.int32().optional(),
 	bearerOnly: z.boolean().optional(),
 	consentRequired: z.boolean().optional(),
 	standardFlowEnabled: z.boolean().optional(),
@@ -594,8 +594,8 @@ export const clientRepresentationSchema = z.object({
 	attributes: z.object({}).catchall(z.string()).optional(),
 	authenticationFlowBindingOverrides: z.object({}).catchall(z.string()).optional(),
 	fullScopeAllowed: z.boolean().optional(),
-	nodeReRegistrationTimeout: z.int().optional(),
-	registeredNodes: z.object({}).catchall(z.int()).optional(),
+	nodeReRegistrationTimeout: z.int32().optional(),
+	registeredNodes: z.object({}).catchall(z.int32()).optional(),
 	protocolMappers: z.array(protocolMapperRepresentationSchema).optional(),
 	clientTemplate: z.string().optional(),
 	useTemplateConfig: z.boolean().optional(),
@@ -694,17 +694,17 @@ export const credentialRepresentationSchema = z.object({
 	createdDate: z.coerce.bigint().optional(),
 	secretData: z.string().optional(),
 	credentialData: z.string().optional(),
-	priority: z.int().optional(),
+	priority: z.int32().optional(),
 	value: z.string().optional(),
 	temporary: z.boolean().optional(),
 	device: z.string().optional(),
 	hashedSaltedValue: z.string().optional(),
 	salt: z.string().optional(),
-	hashIterations: z.int().optional(),
-	counter: z.int().optional(),
+	hashIterations: z.int32().optional(),
+	counter: z.int32().optional(),
 	algorithm: z.string().optional(),
-	digits: z.int().optional(),
-	period: z.int().optional(),
+	digits: z.int32().optional(),
+	period: z.int32().optional(),
 	config: multivaluedHashMapStringStringSchema.optional(),
 	federationLink: z.string().optional(),
 });
@@ -920,8 +920,8 @@ export const keyStoreConfigSchema = z.object({
 	keyAlias: z.string().optional(),
 	realmAlias: z.string().optional(),
 	format: z.string().optional(),
-	keySize: z.int().optional(),
-	validity: z.int().optional(),
+	keySize: z.int32().optional(),
+	validity: z.int32().optional(),
 });
 
 export const keysMetadataRepresentationSchema = z.object({
@@ -1017,7 +1017,7 @@ export const memberRepresentationSchema = z.object({
 	realmRoles: z.array(z.string()).optional(),
 	clientRoles: z.object({}).catchall(z.array(z.string())).optional(),
 	clientConsents: z.array(userConsentRepresentationSchema).optional(),
-	notBefore: z.int().optional(),
+	notBefore: z.int32().optional(),
 	verifiableCredentials: z.array(userVerifiableCredentialRepresentationSchema).optional(),
 	issuedVerifiableCredentials: z.array(issuedVerifiableCredentialRepresentationSchema).optional(),
 	applicationRoles: z.object({}).catchall(z.array(z.string())).optional(),
@@ -1044,7 +1044,7 @@ export const oAuthClientRepresentationSchema = z.object({
 	defaultRoles: z.array(z.string()).optional(),
 	redirectUris: z.array(z.string()).optional(),
 	webOrigins: z.array(z.string()).optional(),
-	notBefore: z.int().optional(),
+	notBefore: z.int32().optional(),
 	bearerOnly: z.boolean().optional(),
 	consentRequired: z.boolean().optional(),
 	standardFlowEnabled: z.boolean().optional(),
@@ -1059,8 +1059,8 @@ export const oAuthClientRepresentationSchema = z.object({
 	attributes: z.object({}).catchall(z.string()).optional(),
 	authenticationFlowBindingOverrides: z.object({}).catchall(z.string()).optional(),
 	fullScopeAllowed: z.boolean().optional(),
-	nodeReRegistrationTimeout: z.int().optional(),
-	registeredNodes: z.object({}).catchall(z.int()).optional(),
+	nodeReRegistrationTimeout: z.int32().optional(),
+	registeredNodes: z.object({}).catchall(z.int32()).optional(),
 	protocolMappers: z.array(protocolMapperRepresentationSchema).optional(),
 	clientTemplate: z.string().optional(),
 	useTemplateConfig: z.boolean().optional(),
@@ -1088,8 +1088,8 @@ export const organizationInvitationRepresentationSchema = z.object({
 	email: z.string().optional(),
 	firstName: z.string().optional(),
 	lastName: z.string().optional(),
-	sentDate: z.int().optional(),
-	expiresAt: z.int().optional(),
+	sentDate: z.int32().optional(),
+	expiresAt: z.int32().optional(),
 	status: statusSchema.optional(),
 	inviteLink: z.string().optional(),
 });
@@ -1156,7 +1156,7 @@ export const publishedRealmRepresentationSchema = z.object({
 	public_key: z.string().optional(),
 	"token-service": z.string().optional(),
 	"account-service": z.string().optional(),
-	"tokens-not-before": z.int().optional(),
+	"tokens-not-before": z.int32().optional(),
 });
 
 export const realmEventsConfigRepresentationSchema = z.object({
@@ -1202,7 +1202,7 @@ export const userRepresentationSchema = z.object({
 	realmRoles: z.array(z.string()).optional(),
 	clientRoles: z.object({}).catchall(z.array(z.string())).optional(),
 	clientConsents: z.array(userConsentRepresentationSchema).optional(),
-	notBefore: z.int().optional(),
+	notBefore: z.int32().optional(),
 	verifiableCredentials: z.array(userVerifiableCredentialRepresentationSchema).optional(),
 	issuedVerifiableCredentials: z.array(issuedVerifiableCredentialRepresentationSchema).optional(),
 	applicationRoles: z.object({}).catchall(z.array(z.string())).optional(),
@@ -1229,10 +1229,10 @@ export const userFederationProviderRepresentationSchema = z.object({
 	displayName: z.string().optional(),
 	providerName: z.string().optional(),
 	config: z.object({}).catchall(z.string()).optional(),
-	priority: z.int().optional(),
-	fullSyncPeriod: z.int().optional(),
-	changedSyncPeriod: z.int().optional(),
-	lastSync: z.int().optional(),
+	priority: z.int32().optional(),
+	fullSyncPeriod: z.int32().optional(),
+	changedSyncPeriod: z.int32().optional(),
+	lastSync: z.int32().optional(),
 });
 
 export const userFederationMapperRepresentationSchema = z.object({
@@ -1249,7 +1249,7 @@ export const requiredActionProviderRepresentationSchema = z.object({
 	providerId: z.string().optional(),
 	enabled: z.boolean().optional(),
 	defaultAction: z.boolean().optional(),
-	priority: z.int().optional(),
+	priority: z.int32().optional(),
 	config: z.object({}).catchall(z.string()).optional(),
 });
 
@@ -1258,30 +1258,30 @@ export const realmRepresentationSchema = z.object({
 	realm: z.string().optional(),
 	displayName: z.string().optional(),
 	displayNameHtml: z.string().optional(),
-	notBefore: z.int().optional(),
+	notBefore: z.int32().optional(),
 	defaultSignatureAlgorithm: z.string().optional(),
 	revokeRefreshToken: z.boolean().optional(),
-	refreshTokenMaxReuse: z.int().optional(),
-	accessTokenLifespan: z.int().optional(),
-	accessTokenLifespanForImplicitFlow: z.int().optional(),
-	ssoSessionIdleTimeout: z.int().optional(),
-	ssoSessionMaxLifespan: z.int().optional(),
-	ssoSessionIdleTimeoutRememberMe: z.int().optional(),
-	ssoSessionMaxLifespanRememberMe: z.int().optional(),
-	offlineSessionIdleTimeout: z.int().optional(),
+	refreshTokenMaxReuse: z.int32().optional(),
+	accessTokenLifespan: z.int32().optional(),
+	accessTokenLifespanForImplicitFlow: z.int32().optional(),
+	ssoSessionIdleTimeout: z.int32().optional(),
+	ssoSessionMaxLifespan: z.int32().optional(),
+	ssoSessionIdleTimeoutRememberMe: z.int32().optional(),
+	ssoSessionMaxLifespanRememberMe: z.int32().optional(),
+	offlineSessionIdleTimeout: z.int32().optional(),
 	offlineSessionMaxLifespanEnabled: z.boolean().optional(),
-	offlineSessionMaxLifespan: z.int().optional(),
-	clientSessionIdleTimeout: z.int().optional(),
-	clientSessionMaxLifespan: z.int().optional(),
-	clientOfflineSessionIdleTimeout: z.int().optional(),
-	clientOfflineSessionMaxLifespan: z.int().optional(),
-	accessCodeLifespan: z.int().optional(),
-	accessCodeLifespanUserAction: z.int().optional(),
-	accessCodeLifespanLogin: z.int().optional(),
-	actionTokenGeneratedByAdminLifespan: z.int().optional(),
-	actionTokenGeneratedByUserLifespan: z.int().optional(),
-	oauth2DeviceCodeLifespan: z.int().optional(),
-	oauth2DevicePollingInterval: z.int().optional(),
+	offlineSessionMaxLifespan: z.int32().optional(),
+	clientSessionIdleTimeout: z.int32().optional(),
+	clientSessionMaxLifespan: z.int32().optional(),
+	clientOfflineSessionIdleTimeout: z.int32().optional(),
+	clientOfflineSessionMaxLifespan: z.int32().optional(),
+	accessCodeLifespan: z.int32().optional(),
+	accessCodeLifespanUserAction: z.int32().optional(),
+	accessCodeLifespanLogin: z.int32().optional(),
+	actionTokenGeneratedByAdminLifespan: z.int32().optional(),
+	actionTokenGeneratedByUserLifespan: z.int32().optional(),
+	oauth2DeviceCodeLifespan: z.int32().optional(),
+	oauth2DevicePollingInterval: z.int32().optional(),
 	enabled: z.boolean().optional(),
 	sslRequired: z.string().optional(),
 	passwordCredentialGrantAllowed: z.boolean().optional(),
@@ -1297,15 +1297,15 @@ export const realmRepresentationSchema = z.object({
 	realmCacheEnabled: z.boolean().optional(),
 	bruteForceProtected: z.boolean().optional(),
 	permanentLockout: z.boolean().optional(),
-	maxTemporaryLockouts: z.int().optional(),
+	maxTemporaryLockouts: z.int32().optional(),
 	bruteForceStrategy: bruteForceStrategySchema.optional(),
-	maxFailureWaitSeconds: z.int().optional(),
-	minimumQuickLoginWaitSeconds: z.int().optional(),
-	waitIncrementSeconds: z.int().optional(),
+	maxFailureWaitSeconds: z.int32().optional(),
+	minimumQuickLoginWaitSeconds: z.int32().optional(),
+	waitIncrementSeconds: z.int32().optional(),
 	quickLoginCheckMilliSeconds: z.coerce.bigint().optional(),
-	maxDeltaTimeSeconds: z.int().optional(),
-	failureFactor: z.int().optional(),
-	maxSecondaryAuthFailures: z.int().optional(),
+	maxDeltaTimeSeconds: z.int32().optional(),
+	failureFactor: z.int32().optional(),
+	maxSecondaryAuthFailures: z.int32().optional(),
 	privateKey: z.string().optional(),
 	publicKey: z.string().optional(),
 	certificate: z.string().optional(),
@@ -1327,10 +1327,10 @@ export const realmRepresentationSchema = z.object({
 	passwordPolicy: z.string().optional(),
 	otpPolicyType: z.string().optional(),
 	otpPolicyAlgorithm: z.string().optional(),
-	otpPolicyInitialCounter: z.int().optional(),
-	otpPolicyDigits: z.int().optional(),
-	otpPolicyLookAheadWindow: z.int().optional(),
-	otpPolicyPeriod: z.int().optional(),
+	otpPolicyInitialCounter: z.int32().optional(),
+	otpPolicyDigits: z.int32().optional(),
+	otpPolicyLookAheadWindow: z.int32().optional(),
+	otpPolicyPeriod: z.int32().optional(),
 	otpPolicyCodeReusable: z.boolean().optional(),
 	otpSupportedApplications: z.array(z.string()).optional(),
 	localizationTexts: z.object({}).catchall(z.object({}).catchall(z.string())).optional(),
@@ -1342,7 +1342,7 @@ export const realmRepresentationSchema = z.object({
 	webAuthnPolicyRequireResidentKey: z.string().optional(),
 	webAuthnPolicyResidentKey: z.string().optional(),
 	webAuthnPolicyUserVerificationRequirement: z.string().optional(),
-	webAuthnPolicyCreateTimeout: z.int().optional(),
+	webAuthnPolicyCreateTimeout: z.int32().optional(),
 	webAuthnPolicyAvoidSameAuthenticatorRegister: z.boolean().optional(),
 	webAuthnPolicyAcceptableAaguids: z.array(z.string()).optional(),
 	webAuthnPolicyExtraOrigins: z.array(z.string()).optional(),
@@ -1354,7 +1354,7 @@ export const realmRepresentationSchema = z.object({
 	webAuthnPolicyPasswordlessRequireResidentKey: z.string().optional(),
 	webAuthnPolicyPasswordlessResidentKey: z.string().optional(),
 	webAuthnPolicyPasswordlessUserVerificationRequirement: z.string().optional(),
-	webAuthnPolicyPasswordlessCreateTimeout: z.int().optional(),
+	webAuthnPolicyPasswordlessCreateTimeout: z.int32().optional(),
 	webAuthnPolicyPasswordlessAvoidSameAuthenticatorRegister: z.boolean().optional(),
 	webAuthnPolicyPasswordlessAcceptableAaguids: z.array(z.string()).optional(),
 	webAuthnPolicyPasswordlessExtraOrigins: z.array(z.string()).optional(),
@@ -1534,7 +1534,7 @@ export const workflowConcurrencyRepresentationSchema = z.object({
 
 export const workflowScheduleRepresentationSchema = z.object({
 	after: z.string().optional(),
-	"batch-size": z.int().optional(),
+	"batch-size": z.int32().optional(),
 });
 
 export const workflowStepRepresentationSchema = z.object({
@@ -1684,10 +1684,10 @@ export const gETAdminRealmsRealmAdminEventsQueryDirectionSchema = z
 	.optional()
 	.describe("The direction to sort events by (asc or desc)");
 
-export const gETAdminRealmsRealmAdminEventsQueryFirstSchema = z.int().optional();
+export const gETAdminRealmsRealmAdminEventsQueryFirstSchema = z.int32().optional();
 
 export const gETAdminRealmsRealmAdminEventsQueryMaxSchema = z
-	.int()
+	.int32()
 	.optional()
 	.describe("Maximum results size (defaults to 100)");
 
@@ -2541,12 +2541,12 @@ export const gETAdminRealmsRealmClientsQueryClientIdSchema = z
 	.describe("filter by clientId");
 
 export const gETAdminRealmsRealmClientsQueryFirstSchema = z
-	.int()
+	.int32()
 	.optional()
 	.describe("the first result");
 
 export const gETAdminRealmsRealmClientsQueryMaxSchema = z
-	.int()
+	.int32()
 	.optional()
 	.describe("the max results to return");
 
@@ -2922,7 +2922,7 @@ export const gETAdminRealmsRealmEventsQueryDirectionSchema = z
 	.describe("The direction to sort events by (asc or desc)");
 
 export const gETAdminRealmsRealmEventsQueryFirstSchema = z
-	.int()
+	.int32()
 	.optional()
 	.describe("Paging offset");
 
@@ -2932,7 +2932,7 @@ export const gETAdminRealmsRealmEventsQueryIpAddressSchema = z
 	.describe("IP Address");
 
 export const gETAdminRealmsRealmEventsQueryMaxSchema = z
-	.int()
+	.int32()
 	.optional()
 	.default("100")
 	.describe("Maximum results size");
@@ -3032,9 +3032,9 @@ export const gETAdminRealmsRealmGroupsQueryBriefRepresentationSchema = z
 
 export const gETAdminRealmsRealmGroupsQueryExactSchema = z.boolean().optional().default("false");
 
-export const gETAdminRealmsRealmGroupsQueryFirstSchema = z.int().optional();
+export const gETAdminRealmsRealmGroupsQueryFirstSchema = z.int32().optional();
 
-export const gETAdminRealmsRealmGroupsQueryMaxSchema = z.int().optional();
+export const gETAdminRealmsRealmGroupsQueryMaxSchema = z.int32().optional();
 
 export const gETAdminRealmsRealmGroupsQueryPopulateHierarchySchema = z
 	.boolean()
@@ -3131,12 +3131,12 @@ export const gETAdminRealmsRealmIdentityProviderInstancesQueryCapabilitySchema =
 	.describe("Filter by identity providers capability");
 
 export const gETAdminRealmsRealmIdentityProviderInstancesQueryFirstSchema = z
-	.int()
+	.int32()
 	.optional()
 	.describe("Pagination offset");
 
 export const gETAdminRealmsRealmIdentityProviderInstancesQueryMaxSchema = z
-	.int()
+	.int32()
 	.optional()
 	.describe("Maximum results size (defaults to 100)");
 
@@ -3574,13 +3574,13 @@ export const gETAdminRealmsRealmOrganizationsQueryExactSchema = z
 	.describe("Boolean which defines whether the param 'search' must match exactly or not");
 
 export const gETAdminRealmsRealmOrganizationsQueryFirstSchema = z
-	.int()
+	.int32()
 	.optional()
 	.default("0")
 	.describe("The position of the first result to be processed (pagination offset)");
 
 export const gETAdminRealmsRealmOrganizationsQueryMaxSchema = z
-	.int()
+	.int32()
 	.optional()
 	.default("10")
 	.describe("The maximum number of results to be returned - defaults to 10");
@@ -3722,9 +3722,9 @@ export const gETAdminRealmsRealmRolesQueryBriefRepresentationSchema = z
 	.optional()
 	.default(true);
 
-export const gETAdminRealmsRealmRolesQueryFirstSchema = z.int().optional();
+export const gETAdminRealmsRealmRolesQueryFirstSchema = z.int32().optional();
 
-export const gETAdminRealmsRealmRolesQueryMaxSchema = z.int().optional();
+export const gETAdminRealmsRealmRolesQueryMaxSchema = z.int32().optional();
 
 export const gETAdminRealmsRealmRolesQuerySearchSchema = z.string().optional().default("");
 
@@ -3850,7 +3850,7 @@ export const gETAdminRealmsRealmUsersQueryExactSchema = z
 	);
 
 export const gETAdminRealmsRealmUsersQueryFirstSchema = z
-	.int()
+	.int32()
 	.optional()
 	.describe("Pagination offset");
 
@@ -3875,7 +3875,7 @@ export const gETAdminRealmsRealmUsersQueryLastNameSchema = z
 	.describe('A String contained in lastName, or the complete lastName, if param "exact" is true');
 
 export const gETAdminRealmsRealmUsersQueryMaxSchema = z
-	.int()
+	.int32()
 	.optional()
 	.describe("Maximum results size (defaults to 100)");
 
@@ -4037,7 +4037,7 @@ export const gETAdminRealmsRealmUsersCountQueryUsernameSchema = z
 	.optional()
 	.describe('A String contained in username, or the complete username, if param "exact" is true');
 
-export const gETAdminRealmsRealmUsersCountStatus200Schema = z.int();
+export const gETAdminRealmsRealmUsersCountStatus200Schema = z.int32();
 
 export const gETAdminRealmsRealmUsersCountStatus403Schema = z.unknown();
 
@@ -4101,13 +4101,13 @@ export const gETAdminRealmsRealmWorkflowsQueryExactSchema = z
 	.describe("Boolean which defines whether the param 'search' must match exactly or not");
 
 export const gETAdminRealmsRealmWorkflowsQueryFirstSchema = z
-	.int()
+	.int32()
 	.optional()
 	.default("0")
 	.describe("The position of the first result to be processed (pagination offset)");
 
 export const gETAdminRealmsRealmWorkflowsQueryMaxSchema = z
-	.int()
+	.int32()
 	.optional()
 	.default("10")
 	.describe("The maximum number of results to be returned - defaults to 10");
@@ -5107,11 +5107,11 @@ export const gETAdminRealmsRealmClientsClientUuidAuthzResourceServerPermissionQu
 	.optional();
 
 export const gETAdminRealmsRealmClientsClientUuidAuthzResourceServerPermissionQueryFirstSchema = z
-	.int()
+	.int32()
 	.optional();
 
 export const gETAdminRealmsRealmClientsClientUuidAuthzResourceServerPermissionQueryMaxSchema = z
-	.int()
+	.int32()
 	.optional()
 	.default("100");
 
@@ -5248,11 +5248,11 @@ export const gETAdminRealmsRealmClientsClientUuidAuthzResourceServerPolicyQueryF
 	.optional();
 
 export const gETAdminRealmsRealmClientsClientUuidAuthzResourceServerPolicyQueryFirstSchema = z
-	.int()
+	.int32()
 	.optional();
 
 export const gETAdminRealmsRealmClientsClientUuidAuthzResourceServerPolicyQueryMaxSchema = z
-	.int()
+	.int32()
 	.optional()
 	.default("100");
 
@@ -5403,14 +5403,14 @@ export const gETAdminRealmsRealmClientsClientUuidAuthzResourceServerResourceQuer
 	.optional();
 
 export const gETAdminRealmsRealmClientsClientUuidAuthzResourceServerResourceQueryFirstSchema = z
-	.int()
+	.int32()
 	.optional();
 
 export const gETAdminRealmsRealmClientsClientUuidAuthzResourceServerResourceQueryMatchingUriSchema =
 	z.boolean().optional();
 
 export const gETAdminRealmsRealmClientsClientUuidAuthzResourceServerResourceQueryMaxSchema = z
-	.int()
+	.int32()
 	.optional()
 	.default("100");
 
@@ -5459,14 +5459,14 @@ export const pOSTAdminRealmsRealmClientsClientUuidAuthzResourceServerResourceQue
 	z.boolean().optional();
 
 export const pOSTAdminRealmsRealmClientsClientUuidAuthzResourceServerResourceQueryFirstSchema = z
-	.int()
+	.int32()
 	.optional();
 
 export const pOSTAdminRealmsRealmClientsClientUuidAuthzResourceServerResourceQueryMatchingUriSchema =
 	z.boolean().optional();
 
 export const pOSTAdminRealmsRealmClientsClientUuidAuthzResourceServerResourceQueryMaxSchema = z
-	.int()
+	.int32()
 	.optional()
 	.default("100");
 
@@ -5523,13 +5523,13 @@ export const gETAdminRealmsRealmClientsClientUuidAuthzResourceServerResourceSear
 	z.boolean().optional();
 
 export const gETAdminRealmsRealmClientsClientUuidAuthzResourceServerResourceSearchQueryFirstSchema =
-	z.int().optional();
+	z.int32().optional();
 
 export const gETAdminRealmsRealmClientsClientUuidAuthzResourceServerResourceSearchQueryMatchingUriSchema =
 	z.boolean().optional();
 
 export const gETAdminRealmsRealmClientsClientUuidAuthzResourceServerResourceSearchQueryMaxSchema = z
-	.int()
+	.int32()
 	.optional()
 	.default("100");
 
@@ -5583,13 +5583,13 @@ export const gETAdminRealmsRealmClientsClientUuidAuthzResourceServerResourceReso
 	z.boolean().optional();
 
 export const gETAdminRealmsRealmClientsClientUuidAuthzResourceServerResourceResourceIdQueryFirstSchema =
-	z.int().optional();
+	z.int32().optional();
 
 export const gETAdminRealmsRealmClientsClientUuidAuthzResourceServerResourceResourceIdQueryMatchingUriSchema =
 	z.boolean().optional();
 
 export const gETAdminRealmsRealmClientsClientUuidAuthzResourceServerResourceResourceIdQueryMaxSchema =
-	z.int().optional().default("100");
+	z.int32().optional().default("100");
 
 export const gETAdminRealmsRealmClientsClientUuidAuthzResourceServerResourceResourceIdQueryNameSchema =
 	z.string().optional();
@@ -5637,13 +5637,13 @@ export const pUTAdminRealmsRealmClientsClientUuidAuthzResourceServerResourceReso
 	z.boolean().optional();
 
 export const pUTAdminRealmsRealmClientsClientUuidAuthzResourceServerResourceResourceIdQueryFirstSchema =
-	z.int().optional();
+	z.int32().optional();
 
 export const pUTAdminRealmsRealmClientsClientUuidAuthzResourceServerResourceResourceIdQueryMatchingUriSchema =
 	z.boolean().optional();
 
 export const pUTAdminRealmsRealmClientsClientUuidAuthzResourceServerResourceResourceIdQueryMaxSchema =
-	z.int().optional().default("100");
+	z.int32().optional().default("100");
 
 export const pUTAdminRealmsRealmClientsClientUuidAuthzResourceServerResourceResourceIdQueryNameSchema =
 	z.string().optional();
@@ -5695,13 +5695,13 @@ export const dELETEAdminRealmsRealmClientsClientUuidAuthzResourceServerResourceR
 	z.boolean().optional();
 
 export const dELETEAdminRealmsRealmClientsClientUuidAuthzResourceServerResourceResourceIdQueryFirstSchema =
-	z.int().optional();
+	z.int32().optional();
 
 export const dELETEAdminRealmsRealmClientsClientUuidAuthzResourceServerResourceResourceIdQueryMatchingUriSchema =
 	z.boolean().optional();
 
 export const dELETEAdminRealmsRealmClientsClientUuidAuthzResourceServerResourceResourceIdQueryMaxSchema =
-	z.int().optional().default("100");
+	z.int32().optional().default("100");
 
 export const dELETEAdminRealmsRealmClientsClientUuidAuthzResourceServerResourceResourceIdQueryNameSchema =
 	z.string().optional();
@@ -5749,13 +5749,13 @@ export const gETAdminRealmsRealmClientsClientUuidAuthzResourceServerResourceReso
 	z.boolean().optional();
 
 export const gETAdminRealmsRealmClientsClientUuidAuthzResourceServerResourceResourceIdAttributesQueryFirstSchema =
-	z.int().optional();
+	z.int32().optional();
 
 export const gETAdminRealmsRealmClientsClientUuidAuthzResourceServerResourceResourceIdAttributesQueryMatchingUriSchema =
 	z.boolean().optional();
 
 export const gETAdminRealmsRealmClientsClientUuidAuthzResourceServerResourceResourceIdAttributesQueryMaxSchema =
-	z.int().optional().default("100");
+	z.int32().optional().default("100");
 
 export const gETAdminRealmsRealmClientsClientUuidAuthzResourceServerResourceResourceIdAttributesQueryNameSchema =
 	z.string().optional();
@@ -5797,13 +5797,13 @@ export const gETAdminRealmsRealmClientsClientUuidAuthzResourceServerResourceReso
 	z.boolean().optional();
 
 export const gETAdminRealmsRealmClientsClientUuidAuthzResourceServerResourceResourceIdPermissionsQueryFirstSchema =
-	z.int().optional();
+	z.int32().optional();
 
 export const gETAdminRealmsRealmClientsClientUuidAuthzResourceServerResourceResourceIdPermissionsQueryMatchingUriSchema =
 	z.boolean().optional();
 
 export const gETAdminRealmsRealmClientsClientUuidAuthzResourceServerResourceResourceIdPermissionsQueryMaxSchema =
-	z.int().optional().default("100");
+	z.int32().optional().default("100");
 
 export const gETAdminRealmsRealmClientsClientUuidAuthzResourceServerResourceResourceIdPermissionsQueryNameSchema =
 	z.string().optional();
@@ -5851,13 +5851,13 @@ export const gETAdminRealmsRealmClientsClientUuidAuthzResourceServerResourceReso
 	z.boolean().optional();
 
 export const gETAdminRealmsRealmClientsClientUuidAuthzResourceServerResourceResourceIdScopesQueryFirstSchema =
-	z.int().optional();
+	z.int32().optional();
 
 export const gETAdminRealmsRealmClientsClientUuidAuthzResourceServerResourceResourceIdScopesQueryMatchingUriSchema =
 	z.boolean().optional();
 
 export const gETAdminRealmsRealmClientsClientUuidAuthzResourceServerResourceResourceIdScopesQueryMaxSchema =
-	z.int().optional().default("100");
+	z.int32().optional().default("100");
 
 export const gETAdminRealmsRealmClientsClientUuidAuthzResourceServerResourceResourceIdScopesQueryNameSchema =
 	z.string().optional();
@@ -5898,11 +5898,11 @@ export const gETAdminRealmsRealmClientsClientUuidAuthzResourceServerScopePathCli
 	.describe("id of client (not client-id!)");
 
 export const gETAdminRealmsRealmClientsClientUuidAuthzResourceServerScopeQueryFirstSchema = z
-	.int()
+	.int32()
 	.optional();
 
 export const gETAdminRealmsRealmClientsClientUuidAuthzResourceServerScopeQueryMaxSchema = z
-	.int()
+	.int32()
 	.optional();
 
 export const gETAdminRealmsRealmClientsClientUuidAuthzResourceServerScopeQueryNameSchema = z
@@ -6570,12 +6570,12 @@ export const gETAdminRealmsRealmClientsClientUuidOfflineSessionsPathClientUuidSc
 	.describe("id of client (not client-id!)");
 
 export const gETAdminRealmsRealmClientsClientUuidOfflineSessionsQueryFirstSchema = z
-	.int()
+	.int32()
 	.optional()
 	.describe("Paging offset");
 
 export const gETAdminRealmsRealmClientsClientUuidOfflineSessionsQueryMaxSchema = z
-	.int()
+	.int32()
 	.optional()
 	.default("100")
 	.describe("Maximum results size.");
@@ -6802,9 +6802,9 @@ export const gETAdminRealmsRealmClientsClientUuidRolesQueryBriefRepresentationSc
 	.optional()
 	.default(true);
 
-export const gETAdminRealmsRealmClientsClientUuidRolesQueryFirstSchema = z.int().optional();
+export const gETAdminRealmsRealmClientsClientUuidRolesQueryFirstSchema = z.int32().optional();
 
-export const gETAdminRealmsRealmClientsClientUuidRolesQueryMaxSchema = z.int().optional();
+export const gETAdminRealmsRealmClientsClientUuidRolesQueryMaxSchema = z.int32().optional();
 
 export const gETAdminRealmsRealmClientsClientUuidRolesQuerySearchSchema = z
 	.string()
@@ -7120,12 +7120,12 @@ export const gETAdminRealmsRealmClientsClientUuidRolesRoleNameGroupsQueryBriefRe
 		.describe("If false, return a full representation of the {@code GroupRepresentation} objects.");
 
 export const gETAdminRealmsRealmClientsClientUuidRolesRoleNameGroupsQueryFirstSchema = z
-	.int()
+	.int32()
 	.optional()
 	.describe("First result to return. Ignored if negative or {@code null}.");
 
 export const gETAdminRealmsRealmClientsClientUuidRolesRoleNameGroupsQueryMaxSchema = z
-	.int()
+	.int32()
 	.optional()
 	.default("100")
 	.describe("Maximum number of results to return. Unbounded if negative.");
@@ -7221,12 +7221,12 @@ export const gETAdminRealmsRealmClientsClientUuidRolesRoleNameUsersQueryBriefRep
 		.describe("Boolean which defines whether brief representations are returned (default: false)");
 
 export const gETAdminRealmsRealmClientsClientUuidRolesRoleNameUsersQueryFirstSchema = z
-	.int()
+	.int32()
 	.optional()
 	.describe("first result to return. Ignored if negative or {@code null}.");
 
 export const gETAdminRealmsRealmClientsClientUuidRolesRoleNameUsersQueryMaxSchema = z
-	.int()
+	.int32()
 	.optional()
 	.default("100")
 	.describe("Maximum number of results to return. Unbounded if negative.");
@@ -7482,12 +7482,12 @@ export const gETAdminRealmsRealmClientsClientUuidUserSessionsPathClientUuidSchem
 	.describe("id of client (not client-id!)");
 
 export const gETAdminRealmsRealmClientsClientUuidUserSessionsQueryFirstSchema = z
-	.int()
+	.int32()
 	.optional()
 	.describe("Paging offset");
 
 export const gETAdminRealmsRealmClientsClientUuidUserSessionsQueryMaxSchema = z
-	.int()
+	.int32()
 	.optional()
 	.default("100")
 	.describe("Maximum results size.");
@@ -7567,13 +7567,13 @@ export const gETAdminRealmsRealmGroupsGroupIdChildrenQueryExactSchema = z
 	.describe('Boolean which defines whether the params "search" must match exactly or not');
 
 export const gETAdminRealmsRealmGroupsGroupIdChildrenQueryFirstSchema = z
-	.int()
+	.int32()
 	.optional()
 	.default("0")
 	.describe("The position of the first result to be returned (pagination offset).");
 
 export const gETAdminRealmsRealmGroupsGroupIdChildrenQueryMaxSchema = z
-	.int()
+	.int32()
 	.optional()
 	.default("10")
 	.describe("The maximum number of results that are to be returned. Defaults to 10");
@@ -7669,12 +7669,12 @@ export const gETAdminRealmsRealmGroupsGroupIdMembersQueryBriefRepresentationSche
 	);
 
 export const gETAdminRealmsRealmGroupsGroupIdMembersQueryFirstSchema = z
-	.int()
+	.int32()
 	.optional()
 	.describe("Pagination offset");
 
 export const gETAdminRealmsRealmGroupsGroupIdMembersQueryMaxSchema = z
-	.int()
+	.int32()
 	.optional()
 	.describe("Maximum results size (defaults to 100)");
 
@@ -8039,9 +8039,9 @@ export const gETAdminRealmsRealmOrganizationsOrgIdGroupsQueryExactSchema = z
 	.optional()
 	.default("false");
 
-export const gETAdminRealmsRealmOrganizationsOrgIdGroupsQueryFirstSchema = z.int().optional();
+export const gETAdminRealmsRealmOrganizationsOrgIdGroupsQueryFirstSchema = z.int32().optional();
 
-export const gETAdminRealmsRealmOrganizationsOrgIdGroupsQueryMaxSchema = z.int().optional();
+export const gETAdminRealmsRealmOrganizationsOrgIdGroupsQueryMaxSchema = z.int32().optional();
 
 export const gETAdminRealmsRealmOrganizationsOrgIdGroupsQueryPopulateHierarchySchema = z
 	.boolean()
@@ -8229,13 +8229,13 @@ export const gETAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdChildrenQueryExac
 	.describe('Boolean which defines whether the params "search" must match exactly or not');
 
 export const gETAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdChildrenQueryFirstSchema = z
-	.int()
+	.int32()
 	.optional()
 	.default("0")
 	.describe("The position of the first result to be returned (pagination offset).");
 
 export const gETAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdChildrenQueryMaxSchema = z
-	.int()
+	.int32()
 	.optional()
 	.default("10")
 	.describe("The maximum number of results that are to be returned. Defaults to 10");
@@ -8325,12 +8325,12 @@ export const gETAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersQueryBrief
 		);
 
 export const gETAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersQueryFirstSchema = z
-	.int()
+	.int32()
 	.optional()
 	.describe("Pagination offset");
 
 export const gETAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersQueryMaxSchema = z
-	.int()
+	.int32()
 	.optional()
 	.describe("Maximum results size (defaults to 100)");
 
@@ -8816,12 +8816,12 @@ export const gETAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasGroupsQu
 	.describe("If true, perform exact match on the search parameter");
 
 export const gETAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasGroupsQueryFirstSchema = z
-	.int()
+	.int32()
 	.optional()
 	.describe("The position of the first result (pagination offset)");
 
 export const gETAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasGroupsQueryMaxSchema = z
-	.int()
+	.int32()
 	.optional()
 	.describe("The maximum number of results to return");
 
@@ -8871,7 +8871,9 @@ export const gETAdminRealmsRealmOrganizationsOrgIdInvitationsQueryEmailSchema = 
 	.string()
 	.optional();
 
-export const gETAdminRealmsRealmOrganizationsOrgIdInvitationsQueryFirstSchema = z.int().optional();
+export const gETAdminRealmsRealmOrganizationsOrgIdInvitationsQueryFirstSchema = z
+	.int32()
+	.optional();
 
 export const gETAdminRealmsRealmOrganizationsOrgIdInvitationsQueryFirstNameSchema = z
 	.string()
@@ -8881,7 +8883,7 @@ export const gETAdminRealmsRealmOrganizationsOrgIdInvitationsQueryLastNameSchema
 	.string()
 	.optional();
 
-export const gETAdminRealmsRealmOrganizationsOrgIdInvitationsQueryMaxSchema = z.int().optional();
+export const gETAdminRealmsRealmOrganizationsOrgIdInvitationsQueryMaxSchema = z.int32().optional();
 
 export const gETAdminRealmsRealmOrganizationsOrgIdInvitationsQuerySearchSchema = z
 	.string()
@@ -8990,13 +8992,13 @@ export const gETAdminRealmsRealmOrganizationsOrgIdMembersQueryExactSchema = z
 	.describe("Boolean which defines whether the param 'search' must match exactly or not");
 
 export const gETAdminRealmsRealmOrganizationsOrgIdMembersQueryFirstSchema = z
-	.int()
+	.int32()
 	.optional()
 	.default("0")
 	.describe("The position of the first result to be processed (pagination offset)");
 
 export const gETAdminRealmsRealmOrganizationsOrgIdMembersQueryMaxSchema = z
-	.int()
+	.int32()
 	.optional()
 	.default("10")
 	.describe("The maximum number of results to be returned. Defaults to 10");
@@ -9180,11 +9182,11 @@ export const gETAdminRealmsRealmOrganizationsOrgIdMembersMemberIdGroupsQueryBrie
 	z.boolean().optional().default(true);
 
 export const gETAdminRealmsRealmOrganizationsOrgIdMembersMemberIdGroupsQueryFirstSchema = z
-	.int()
+	.int32()
 	.optional();
 
 export const gETAdminRealmsRealmOrganizationsOrgIdMembersMemberIdGroupsQueryMaxSchema = z
-	.int()
+	.int32()
 	.optional();
 
 export const gETAdminRealmsRealmOrganizationsOrgIdMembersMemberIdGroupsQuerySearchSchema = z
@@ -9313,9 +9315,9 @@ export const gETAdminRealmsRealmRolesByIdRoleIdCompositesPathRealmSchema = z
 
 export const gETAdminRealmsRealmRolesByIdRoleIdCompositesPathRoleIdSchema = z.string();
 
-export const gETAdminRealmsRealmRolesByIdRoleIdCompositesQueryFirstSchema = z.int().optional();
+export const gETAdminRealmsRealmRolesByIdRoleIdCompositesQueryFirstSchema = z.int32().optional();
 
-export const gETAdminRealmsRealmRolesByIdRoleIdCompositesQueryMaxSchema = z.int().optional();
+export const gETAdminRealmsRealmRolesByIdRoleIdCompositesQueryMaxSchema = z.int32().optional();
 
 export const gETAdminRealmsRealmRolesByIdRoleIdCompositesQuerySearchSchema = z.string().optional();
 
@@ -9673,12 +9675,12 @@ export const gETAdminRealmsRealmRolesRoleNameGroupsQueryBriefRepresentationSchem
 	.describe("If false, return a full representation of the {@code GroupRepresentation} objects.");
 
 export const gETAdminRealmsRealmRolesRoleNameGroupsQueryFirstSchema = z
-	.int()
+	.int32()
 	.optional()
 	.describe("First result to return. Ignored if negative or {@code null}.");
 
 export const gETAdminRealmsRealmRolesRoleNameGroupsQueryMaxSchema = z
-	.int()
+	.int32()
 	.optional()
 	.default("100")
 	.describe("Maximum number of results to return. Unbounded if negative.");
@@ -9757,12 +9759,12 @@ export const gETAdminRealmsRealmRolesRoleNameUsersQueryBriefRepresentationSchema
 	.describe("Boolean which defines whether brief representations are returned (default: false)");
 
 export const gETAdminRealmsRealmRolesRoleNameUsersQueryFirstSchema = z
-	.int()
+	.int32()
 	.optional()
 	.describe("first result to return. Ignored if negative or {@code null}.");
 
 export const gETAdminRealmsRealmRolesRoleNameUsersQueryMaxSchema = z
-	.int()
+	.int32()
 	.optional()
 	.default("100")
 	.describe("Maximum number of results to return. Unbounded if negative.");
@@ -10075,7 +10077,7 @@ export const pUTAdminRealmsRealmUsersUserIdExecuteActionsEmailQueryClientIdSchem
 	.describe("Client id");
 
 export const pUTAdminRealmsRealmUsersUserIdExecuteActionsEmailQueryLifespanSchema = z
-	.int()
+	.int32()
 	.optional()
 	.describe("Number of seconds after which the generated token expires");
 
@@ -10192,9 +10194,9 @@ export const gETAdminRealmsRealmUsersUserIdGroupsQueryBriefRepresentationSchema 
 	.optional()
 	.default(true);
 
-export const gETAdminRealmsRealmUsersUserIdGroupsQueryFirstSchema = z.int().optional();
+export const gETAdminRealmsRealmUsersUserIdGroupsQueryFirstSchema = z.int32().optional();
 
-export const gETAdminRealmsRealmUsersUserIdGroupsQueryMaxSchema = z.int().optional();
+export const gETAdminRealmsRealmUsersUserIdGroupsQueryMaxSchema = z.int32().optional();
 
 export const gETAdminRealmsRealmUsersUserIdGroupsQuerySearchSchema = z.string().optional();
 
@@ -10643,7 +10645,7 @@ export const pUTAdminRealmsRealmUsersUserIdSendVerifyEmailQueryClientIdSchema = 
 	.describe("Client id");
 
 export const pUTAdminRealmsRealmUsersUserIdSendVerifyEmailQueryLifespanSchema = z
-	.int()
+	.int32()
 	.optional()
 	.describe("Number of seconds after which the generated token expires");
 
