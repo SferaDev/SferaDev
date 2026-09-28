@@ -3377,51 +3377,47 @@ export const upgradeZpasAppBodySchema = z
 			.describe("The ZDM group ID.")
 			.meta({ examples: ["ff49588c-92c4-4406-99e6-1942d8a61a7b"] }),
 		data: z.discriminatedUnion("upgrade_type", [
-			z
-				.object({
-					firmware_versions: z
-						.array(
-							z.object({
-								vendor: z
-									.string()
-									.optional()
-									.describe("The device's manufacturer.")
-									.meta({ examples: ["AudioCodes"] }),
-								version: z
-									.string()
-									.optional()
-									.describe("The firmware version.")
-									.meta({ examples: ["1.19.552"] }),
-								model: z
-									.string()
-									.optional()
-									.describe("The device's model name. Maximum of 64 characters.")
-									.meta({ examples: ["C470HD"] }),
-							}),
-						)
-						.optional(),
-					upgrade_type: z
-						.enum(["UPGRADE_FIRMWARE"])
-						.default("UPGRADE_FIRMWARE")
-						.describe("Upgrade firmware.")
-						.meta({ examples: ["UPGRADE_FIRMWARE"] }),
-				})
-				.strict(),
-			z
-				.object({
-					app_version: z
-						.string()
-						.optional()
-						.describe(
-							"The app version to be upgraded. If upgrade type is `0`, this field won't work. If upgrade type is `1`, this field will work.",
-						)
-						.meta({ examples: ["5.16.5.3920"] }),
-					upgrade_type: z
-						.enum(["UPGRADE_APP"])
-						.describe("Upgrade app.")
-						.meta({ examples: ["UPGRADE_APP"] }),
-				})
-				.strict(),
+			z.strictObject({
+				firmware_versions: z
+					.array(
+						z.object({
+							vendor: z
+								.string()
+								.optional()
+								.describe("The device's manufacturer.")
+								.meta({ examples: ["AudioCodes"] }),
+							version: z
+								.string()
+								.optional()
+								.describe("The firmware version.")
+								.meta({ examples: ["1.19.552"] }),
+							model: z
+								.string()
+								.optional()
+								.describe("The device's model name. Maximum of 64 characters.")
+								.meta({ examples: ["C470HD"] }),
+						}),
+					)
+					.optional(),
+				upgrade_type: z
+					.enum(["UPGRADE_FIRMWARE"])
+					.default("UPGRADE_FIRMWARE")
+					.describe("Upgrade firmware.")
+					.meta({ examples: ["UPGRADE_FIRMWARE"] }),
+			}),
+			z.strictObject({
+				app_version: z
+					.string()
+					.optional()
+					.describe(
+						"The app version to be upgraded. If upgrade type is `0`, this field won't work. If upgrade type is `1`, this field will work.",
+					)
+					.meta({ examples: ["5.16.5.3920"] }),
+				upgrade_type: z
+					.enum(["UPGRADE_APP"])
+					.describe("Upgrade app.")
+					.meta({ examples: ["UPGRADE_APP"] }),
+			}),
 		]),
 	})
 	.optional();
