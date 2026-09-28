@@ -1,5 +1,13 @@
 # vercel-api-js
 
+## 1.29.1
+
+### Patch Changes
+
+- d49f984: Made the 'question' property optional in AiGatewayEvaluationFallbackCondition schema.
+- d49f984: Added 'threadId' optional property to certain UserEvent objects for thread identification.
+- d49f984: Added new event types: 'team-deployment-storage-high-retention-opt-in' and 'team-deployment-storage-retention-opt-out' to event type enums and schemas.
+
 ## 1.29.0
 
 ### Minor Changes
