@@ -5,11 +5,11 @@ import * as z from "zod";
 export const aiGatewayEvaluationFallbackConditionSchema = z.union([
 	z.strictObject({
 		confidenceBelow: z.number(),
-		question: z.string(),
+		question: z.string().optional(),
 	}),
 	z.strictObject({
 		probabilityBetween: z.array(z.number()).min(2).max(2),
-		question: z.string(),
+		question: z.string().optional(),
 	}),
 	z.strictObject({
 		any: z.array(z.unknown()),
@@ -6099,6 +6099,10 @@ export const userEventSchema = z
 													.optional(),
 												reason: z.string(),
 												statusCode: z.number().optional(),
+												threadId: z
+													.string()
+													.optional()
+													.describe("Plain thread ID, recorded separately from `caseId`."),
 											}),
 										)
 										.optional()
@@ -11963,6 +11967,8 @@ export const userEventSchema = z
 				"team-default-passport-updated",
 				"team-delete",
 				"team-deployment-policy-updated",
+				"team-deployment-storage-high-retention-opt-in",
+				"team-deployment-storage-retention-opt-out",
 				"team-domain-verification-created",
 				"team-domain-verification-deleted",
 				"team-domain-verification-verified",
@@ -12765,6 +12771,8 @@ export const listEventTypeSchema = z
 				"team-default-passport-updated",
 				"team-delete",
 				"team-deployment-policy-updated",
+				"team-deployment-storage-high-retention-opt-in",
+				"team-deployment-storage-retention-opt-out",
 				"team-domain-verification-created",
 				"team-domain-verification-deleted",
 				"team-domain-verification-verified",
@@ -13469,6 +13477,8 @@ export const listEventTypeSchema = z
 					"team-default-passport-updated",
 					"team-delete",
 					"team-deployment-policy-updated",
+					"team-deployment-storage-high-retention-opt-in",
+					"team-deployment-storage-retention-opt-out",
 					"team-domain-verification-created",
 					"team-domain-verification-deleted",
 					"team-domain-verification-verified",

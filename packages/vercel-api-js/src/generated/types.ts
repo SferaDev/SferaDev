@@ -6,11 +6,11 @@
 export type AiGatewayEvaluationFallbackCondition =
 	| {
 			confidenceBelow: number;
-			question: string;
+			question?: string | undefined;
 	  }
 	| {
 			probabilityBetween: number[];
-			question: string;
+			question?: string | undefined;
 	  }
 	| {
 			any: unknown[];
@@ -7327,6 +7327,8 @@ export const userEventTypeEnum = {
 	"team-default-passport-updated": "team-default-passport-updated",
 	"team-delete": "team-delete",
 	"team-deployment-policy-updated": "team-deployment-policy-updated",
+	"team-deployment-storage-high-retention-opt-in": "team-deployment-storage-high-retention-opt-in",
+	"team-deployment-storage-retention-opt-out": "team-deployment-storage-retention-opt-out",
 	"team-domain-verification-created": "team-domain-verification-created",
 	"team-domain-verification-deleted": "team-domain-verification-deleted",
 	"team-domain-verification-verified": "team-domain-verification-verified",
@@ -10397,6 +10399,11 @@ export type UserEvent = {
 													ineligibleForAppeal?: (false | true) | undefined;
 													reason: string;
 													statusCode?: number | undefined;
+													/**
+													 * @description Plain thread ID, recorded separately from `caseId`.
+													 * @type string | undefined
+													 */
+													threadId?: string | undefined;
 											  }[]
 											| undefined;
 										/**
@@ -15941,6 +15948,8 @@ export const listEventTypeNameEnum = {
 	"team-default-passport-updated": "team-default-passport-updated",
 	"team-delete": "team-delete",
 	"team-deployment-policy-updated": "team-deployment-policy-updated",
+	"team-deployment-storage-high-retention-opt-in": "team-deployment-storage-high-retention-opt-in",
+	"team-deployment-storage-retention-opt-out": "team-deployment-storage-retention-opt-out",
 	"team-domain-verification-created": "team-domain-verification-created",
 	"team-domain-verification-deleted": "team-domain-verification-deleted",
 	"team-domain-verification-verified": "team-domain-verification-verified",
@@ -16660,6 +16669,8 @@ export const listEventTypeReplacedByEnum = {
 	"team-default-passport-updated": "team-default-passport-updated",
 	"team-delete": "team-delete",
 	"team-deployment-policy-updated": "team-deployment-policy-updated",
+	"team-deployment-storage-high-retention-opt-in": "team-deployment-storage-high-retention-opt-in",
+	"team-deployment-storage-retention-opt-out": "team-deployment-storage-retention-opt-out",
 	"team-domain-verification-created": "team-domain-verification-created",
 	"team-domain-verification-deleted": "team-domain-verification-deleted",
 	"team-domain-verification-verified": "team-domain-verification-verified",
