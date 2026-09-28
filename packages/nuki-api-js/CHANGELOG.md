@@ -1,5 +1,18 @@
 # nuki-api-js
 
+## 1.2.0
+
+### Minor Changes
+
+- fdb31d7: Add keypadMountingState property to SmartlockState schema and type.
+
+### Patch Changes
+
+- fdb31d7: Switch all Zod integer fields from int to int32 in schemas for better compatibility and type safety.
+- fdb31d7: Add missing properties and reorder some fields in Request and Response types to match schema changes.
+- fdb31d7: Fix order and structure of properties in Application and Restlet types for consistency with schema.
+- fdb31d7: Improve description of AdvancedApiKey and AdvancedApiKeyCreate name to clarify visibility in device logs.
+
 ## 1.1.1
 
 ### Patch Changes

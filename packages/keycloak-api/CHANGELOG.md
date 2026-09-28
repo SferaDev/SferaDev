@@ -1,5 +1,11 @@
 # keycloak-api
 
+## 1.1.3
+
+### Patch Changes
+
+- 5a0d356: Replaced all uses of z.int() with z.int32() in schemas to clarify integer type handling.
+
 ## 1.1.2
 
 ### Patch Changes

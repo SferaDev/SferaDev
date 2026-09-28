@@ -1,5 +1,16 @@
 # vercel-api-js
 
+## 1.29.0
+
+### Minor Changes
+
+- 085e78a: Added new user event type 'admin-preview-deployment-suffix-clear' and its payload structure.
+
+### Patch Changes
+
+- 085e78a: Documented that the NamedSandbox image field is now owner-qualified in its example and description.
+- 085e78a: Added 408 status code handling to update and replace blob upload endpoints.
+
 ## 1.28.2
 
 ### Patch Changes

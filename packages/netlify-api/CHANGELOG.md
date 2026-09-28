@@ -1,5 +1,12 @@
 # netlify-api
 
+## 1.4.1
+
+### Patch Changes
+
+- 63b5781: Updated zip field in DeployFiles, CreateSiteDeployBody, and UpdateSiteDeployBody types from unknown to Blob, and in schemas to z.instanceof(File).
+- 63b5781: Changed form, submission, snippet, and pagination fields from z.int() to z.int32() in schemas to enforce 32-bit integer types.
+
 ## 1.4.0
 
 ### Minor Changes
