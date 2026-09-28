@@ -846,7 +846,7 @@ export const repoInfoSchema = z.object({
 
 export const submissionSchema = z.object({
 	id: z.string().optional(),
-	number: z.int().optional(),
+	number: z.int32().optional(),
 	email: z.string().optional(),
 	name: z.string().optional(),
 	first_name: z.string().optional(),
@@ -953,7 +953,7 @@ export const formSchema = z.object({
 	site_id: z.string().optional(),
 	name: z.string().optional(),
 	paths: z.array(z.string()).optional(),
-	submission_count: z.int().optional(),
+	submission_count: z.int32().optional(),
 	fields: z.array(z.object({})).optional(),
 	created_at: z.string().optional(),
 });
@@ -991,7 +991,7 @@ export const functionSchema = z.object({
 });
 
 export const snippetSchema = z.object({
-	id: z.int().optional(),
+	id: z.int32().optional(),
 	site_id: z.string().optional(),
 	title: z.string().optional(),
 	general: z.string().optional(),
@@ -1088,7 +1088,7 @@ export const deployFilesSchema = z
 			.optional()
 			.describe("A hash mapping file paths to SHA1 digests of the file contents."),
 		zip: z
-			.unknown()
+			.instanceof(File)
 			.optional()
 			.describe(
 				"A zip file containing the site files to deploy. Alternative to 'files'.\nTo use this field, set Content-Type to 'application/json' and include the zip content here.\nAlternatively, you can set Content-Type to 'application/zip' and send the zip as the raw request body (not as JSON).\n",
@@ -1988,9 +1988,9 @@ export const listSitesQueryNameSchema = z.string().optional();
 
 export const listSitesQueryFilterSchema = z.enum(["all", "owner", "guest"]).optional();
 
-export const listSitesQueryPageSchema = z.int().optional();
+export const listSitesQueryPageSchema = z.int32().optional();
 
-export const listSitesQueryPerPageSchema = z.int().optional();
+export const listSitesQueryPerPageSchema = z.int32().optional();
 
 export const listSitesStatus200Schema = z.array(
 	z.object({
@@ -3833,7 +3833,7 @@ export const listSiteFormsStatus200Schema = z.array(
 		site_id: z.string().optional(),
 		name: z.string().optional(),
 		paths: z.array(z.string()).optional(),
-		submission_count: z.int().optional(),
+		submission_count: z.int32().optional(),
 		fields: z.array(z.object({})).optional(),
 		created_at: z.string().optional(),
 	}),
@@ -3865,14 +3865,14 @@ export const deleteSiteFormErrorSchema = deleteSiteFormStatusDefaultSchema;
 
 export const listSiteSubmissionsPathSiteIdSchema = z.string();
 
-export const listSiteSubmissionsQueryPageSchema = z.int().optional();
+export const listSiteSubmissionsQueryPageSchema = z.int32().optional();
 
-export const listSiteSubmissionsQueryPerPageSchema = z.int().optional();
+export const listSiteSubmissionsQueryPerPageSchema = z.int32().optional();
 
 export const listSiteSubmissionsStatus200Schema = z.array(
 	z.object({
 		id: z.string().optional(),
-		number: z.int().optional(),
+		number: z.int32().optional(),
 		email: z.string().optional(),
 		name: z.string().optional(),
 		first_name: z.string().optional(),
@@ -4123,7 +4123,7 @@ export const listSiteSnippetsPathSiteIdSchema = z.string();
 
 export const listSiteSnippetsStatus200Schema = z.array(
 	z.object({
-		id: z.int().optional(),
+		id: z.int32().optional(),
 		site_id: z.string().optional(),
 		title: z.string().optional(),
 		general: z.string().optional(),
@@ -4145,7 +4145,7 @@ export const listSiteSnippetsErrorSchema = listSiteSnippetsStatusDefaultSchema;
 export const createSiteSnippetPathSiteIdSchema = z.string();
 
 export const createSiteSnippetStatus201Schema = z.object({
-	id: z.int().optional(),
+	id: z.int32().optional(),
 	site_id: z.string().optional(),
 	title: z.string().optional(),
 	general: z.string().optional(),
@@ -4164,7 +4164,7 @@ export const createSiteSnippetResponseSchema = createSiteSnippetStatus201Schema;
 export const createSiteSnippetErrorSchema = createSiteSnippetStatusDefaultSchema;
 
 export const createSiteSnippetBodySchema = z.object({
-	id: z.int().optional(),
+	id: z.int32().optional(),
 	site_id: z.string().optional(),
 	title: z.string().optional(),
 	general: z.string().optional(),
@@ -4178,7 +4178,7 @@ export const getSiteSnippetPathSiteIdSchema = z.string();
 export const getSiteSnippetPathSnippetIdSchema = z.string();
 
 export const getSiteSnippetStatus200Schema = z.object({
-	id: z.int().optional(),
+	id: z.int32().optional(),
 	site_id: z.string().optional(),
 	title: z.string().optional(),
 	general: z.string().optional(),
@@ -4212,7 +4212,7 @@ export const updateSiteSnippetResponseSchema = updateSiteSnippetStatus204Schema;
 export const updateSiteSnippetErrorSchema = updateSiteSnippetStatusDefaultSchema;
 
 export const updateSiteSnippetBodySchema = z.object({
-	id: z.int().optional(),
+	id: z.int32().optional(),
 	site_id: z.string().optional(),
 	title: z.string().optional(),
 	general: z.string().optional(),
@@ -4398,9 +4398,9 @@ export const listSiteDeploysQueryBranchSchema = z.string().optional();
 
 export const listSiteDeploysQueryLatestPublishedSchema = z.boolean().optional();
 
-export const listSiteDeploysQueryPageSchema = z.int().optional();
+export const listSiteDeploysQueryPageSchema = z.int32().optional();
 
-export const listSiteDeploysQueryPerPageSchema = z.int().optional();
+export const listSiteDeploysQueryPerPageSchema = z.int32().optional();
 
 export const listSiteDeploysStatus200Schema = z.array(
 	z.object({
@@ -4597,7 +4597,7 @@ export const createSiteDeployBodySchema = z
 			.optional()
 			.describe("A hash mapping file paths to SHA1 digests of the file contents."),
 		zip: z
-			.unknown()
+			.instanceof(File)
 			.optional()
 			.describe(
 				"A zip file containing the site files to deploy. Alternative to 'files'.\nTo use this field, set Content-Type to 'application/json' and include the zip content here.\nAlternatively, you can set Content-Type to 'application/zip' and send the zip as the raw request body (not as JSON).\n",
@@ -4900,7 +4900,7 @@ export const updateSiteDeployBodySchema = z
 			.optional()
 			.describe("A hash mapping file paths to SHA1 digests of the file contents."),
 		zip: z
-			.unknown()
+			.instanceof(File)
 			.optional()
 			.describe(
 				"A zip file containing the site files to deploy. Alternative to 'files'.\nTo use this field, set Content-Type to 'application/json' and include the zip content here.\nAlternatively, you can set Content-Type to 'application/zip' and send the zip as the raw request body (not as JSON).\n",
@@ -5209,9 +5209,9 @@ export const restoreSiteDeployErrorSchema = restoreSiteDeployStatusDefaultSchema
 
 export const listSiteBuildsPathSiteIdSchema = z.string();
 
-export const listSiteBuildsQueryPageSchema = z.int().optional();
+export const listSiteBuildsQueryPageSchema = z.int32().optional();
 
-export const listSiteBuildsQueryPerPageSchema = z.int().optional();
+export const listSiteBuildsQueryPerPageSchema = z.int32().optional();
 
 export const listSiteBuildsStatus200Schema = z.array(
 	z.object({
@@ -6144,14 +6144,14 @@ export const createPluginRunBodySchema = z
 
 export const listFormSubmissionsPathFormIdSchema = z.string();
 
-export const listFormSubmissionsQueryPageSchema = z.int().optional();
+export const listFormSubmissionsQueryPageSchema = z.int32().optional();
 
-export const listFormSubmissionsQueryPerPageSchema = z.int().optional();
+export const listFormSubmissionsQueryPerPageSchema = z.int32().optional();
 
 export const listFormSubmissionsStatus200Schema = z.array(
 	z.object({
 		id: z.string().optional(),
-		number: z.int().optional(),
+		number: z.int32().optional(),
 		email: z.string().optional(),
 		name: z.string().optional(),
 		first_name: z.string().optional(),
@@ -6829,9 +6829,9 @@ export const listSitesForAccountQueryNameSchema = z.string().optional();
 
 export const listSitesForAccountPathAccountSlugSchema = z.string();
 
-export const listSitesForAccountQueryPageSchema = z.int().optional();
+export const listSitesForAccountQueryPageSchema = z.int32().optional();
 
-export const listSitesForAccountQueryPerPageSchema = z.int().optional();
+export const listSitesForAccountQueryPerPageSchema = z.int32().optional();
 
 export const listSitesForAccountStatus200Schema = z.array(
 	z.object({
@@ -7375,9 +7375,9 @@ export const listAccountAuditEventsQueryQuerySchema = z.string().optional();
 
 export const listAccountAuditEventsQueryLogTypeSchema = z.string().optional();
 
-export const listAccountAuditEventsQueryPageSchema = z.int().optional();
+export const listAccountAuditEventsQueryPageSchema = z.int32().optional();
 
-export const listAccountAuditEventsQueryPerPageSchema = z.int().optional();
+export const listAccountAuditEventsQueryPerPageSchema = z.int32().optional();
 
 export const listAccountAuditEventsStatus200Schema = z.array(
 	z.object({
@@ -7410,9 +7410,9 @@ export const listAgentRunnersQueryAccountIdSchema = z.string();
 
 export const listAgentRunnersQuerySiteIdSchema = z.string();
 
-export const listAgentRunnersQueryPageSchema = z.int().optional();
+export const listAgentRunnersQueryPageSchema = z.int32().optional();
 
-export const listAgentRunnersQueryPerPageSchema = z.int().optional();
+export const listAgentRunnersQueryPerPageSchema = z.int32().optional();
 
 export const listAgentRunnersQueryStateSchema = z.enum(["live", "error"]).optional();
 
@@ -7757,9 +7757,9 @@ export const agentRunnerCommitToBranchErrorSchema = z.union([
 
 export const listAgentRunnerSessionsPathAgentRunnerIdSchema = z.string();
 
-export const listAgentRunnerSessionsQueryPageSchema = z.int().optional();
+export const listAgentRunnerSessionsQueryPageSchema = z.int32().optional();
 
-export const listAgentRunnerSessionsQueryPerPageSchema = z.int().optional();
+export const listAgentRunnerSessionsQueryPerPageSchema = z.int32().optional();
 
 export const listAgentRunnerSessionsQueryStateSchema = z.enum(["live", "error"]).optional();
 
@@ -8026,14 +8026,14 @@ export const listFormSubmissionPathSubmissionIdSchema = z.string();
 
 export const listFormSubmissionQueryQuerySchema = z.string().optional();
 
-export const listFormSubmissionQueryPageSchema = z.int().optional();
+export const listFormSubmissionQueryPageSchema = z.int32().optional();
 
-export const listFormSubmissionQueryPerPageSchema = z.int().optional();
+export const listFormSubmissionQueryPerPageSchema = z.int32().optional();
 
 export const listFormSubmissionStatus200Schema = z.array(
 	z.object({
 		id: z.string().optional(),
-		number: z.int().optional(),
+		number: z.int32().optional(),
 		email: z.string().optional(),
 		name: z.string().optional(),
 		first_name: z.string().optional(),
@@ -8749,9 +8749,9 @@ export const deleteDnsRecordErrorSchema = deleteDnsRecordStatusDefaultSchema;
 
 export const listSiteDevServersPathSiteIdSchema = z.string();
 
-export const listSiteDevServersQueryPageSchema = z.int().optional();
+export const listSiteDevServersQueryPageSchema = z.int32().optional();
 
-export const listSiteDevServersQueryPerPageSchema = z.int().optional();
+export const listSiteDevServersQueryPerPageSchema = z.int32().optional();
 
 export const listSiteDevServersStatus200Schema = z.array(
 	z.object({
