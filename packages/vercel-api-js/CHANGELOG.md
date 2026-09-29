@@ -1,5 +1,12 @@
 # vercel-api-js
 
+## 1.29.2
+
+### Patch Changes
+
+- 33c2911: Remove all references to GetConnectorTokenStatus501 and CreateConnectorAuthorizationRequestStatus501 in types and schemas.
+- 33c2911: Replace 501 status codes with 422 for CreateConnectorAuthorizationRequest and GetConnectorToken API responses.
+
 ## 1.29.1
 
 ### Patch Changes
