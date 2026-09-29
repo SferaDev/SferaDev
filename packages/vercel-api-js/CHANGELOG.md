@@ -1,5 +1,17 @@
 # vercel-api-js
 
+## 1.30.0
+
+### Minor Changes
+
+- e9a968c: Added optional finalPromille property to flag schema and types.
+- e9a968c: Added new ai-gateway-access-policy-* event types to user event and event-type enums and schemas.
+
+### Patch Changes
+
+- e9a968c: Added support for HTTP 404 status in many API endpoints and corresponding types and schemas.
+- e9a968c: Improved the description for image tag listing endpoint to document cursor usage and errors.
+
 ## 1.29.3
 
 ### Patch Changes
