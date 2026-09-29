@@ -3068,6 +3068,30 @@ export const userEventSchema = z
 					toPlan: z.enum(["hobby", "pro"]),
 				}),
 				z.strictObject({
+					accessPolicy: z.object({
+						id: z.string(),
+						name: z.string(),
+					}),
+				}),
+				z.strictObject({
+					accessPolicy: z.object({
+						id: z.string(),
+						name: z.string(),
+					}),
+					previousName: z.string().optional(),
+				}),
+				z.strictObject({
+					accessPolicy: z.object({
+						id: z.string(),
+						name: z.string(),
+					}),
+					member: z.object({
+						id: z.string(),
+						kind: z.enum(["project", "team", "user"]),
+						name: z.string().optional(),
+					}),
+				}),
+				z.strictObject({
 					apiKey: z.object({
 						id: z.string(),
 						name: z.string(),
@@ -11405,6 +11429,11 @@ export const userEventSchema = z
 				"agentic-provisioning-team-created",
 				"ai-alert-investigation",
 				"ai-code-review",
+				"ai-gateway-access-policy-created",
+				"ai-gateway-access-policy-deleted",
+				"ai-gateway-access-policy-member-added",
+				"ai-gateway-access-policy-member-removed",
+				"ai-gateway-access-policy-updated",
 				"ai-gateway-api-key-created",
 				"ai-gateway-api-key-deleted",
 				"ai-gateway-api-key-quota-updated",
@@ -12209,6 +12238,11 @@ export const listEventTypeSchema = z
 				"agentic-provisioning-team-created",
 				"ai-alert-investigation",
 				"ai-code-review",
+				"ai-gateway-access-policy-created",
+				"ai-gateway-access-policy-deleted",
+				"ai-gateway-access-policy-member-added",
+				"ai-gateway-access-policy-member-removed",
+				"ai-gateway-access-policy-updated",
 				"ai-gateway-api-key-created",
 				"ai-gateway-api-key-deleted",
 				"ai-gateway-api-key-quota-updated",
@@ -12915,6 +12949,11 @@ export const listEventTypeSchema = z
 					"agentic-provisioning-team-created",
 					"ai-alert-investigation",
 					"ai-code-review",
+					"ai-gateway-access-policy-created",
+					"ai-gateway-access-policy-deleted",
+					"ai-gateway-access-policy-member-added",
+					"ai-gateway-access-policy-member-removed",
+					"ai-gateway-access-policy-updated",
 					"ai-gateway-api-key-created",
 					"ai-gateway-api-key-deleted",
 					"ai-gateway-api-key-quota-updated",
@@ -13662,6 +13701,7 @@ export const flagSchema = z.object({
 						type: z.enum(["entity"]),
 					}),
 					defaultVariantId: z.string(),
+					finalPromille: z.number().optional(),
 					rollFromVariantId: z.string(),
 					rollToVariantId: z.string(),
 					slots: z.array(
@@ -13779,6 +13819,7 @@ export const flagSchema = z.object({
 								type: z.enum(["entity"]),
 							}),
 							defaultVariantId: z.string(),
+							finalPromille: z.number().optional(),
 							rollFromVariantId: z.string(),
 							rollToVariantId: z.string(),
 							slots: z.array(
@@ -16792,6 +16833,8 @@ export const readAccessGroupStatus401Schema = z.unknown();
 
 export const readAccessGroupStatus403Schema = z.unknown();
 
+export const readAccessGroupStatus404Schema = z.unknown();
+
 export const readAccessGroupStatus410Schema = z.unknown();
 
 export const readAccessGroupResponseSchema = readAccessGroupStatus200Schema;
@@ -16800,6 +16843,7 @@ export const readAccessGroupErrorSchema = z.union([
 	readAccessGroupStatus400Schema,
 	readAccessGroupStatus401Schema,
 	readAccessGroupStatus403Schema,
+	readAccessGroupStatus404Schema,
 	readAccessGroupStatus410Schema,
 ]);
 
@@ -16825,6 +16869,8 @@ export const updateAccessGroupStatus401Schema = z.unknown();
 
 export const updateAccessGroupStatus403Schema = z.unknown();
 
+export const updateAccessGroupStatus404Schema = z.unknown();
+
 export const updateAccessGroupStatus410Schema = z.unknown();
 
 export const updateAccessGroupResponseSchema = updateAccessGroupStatus200Schema;
@@ -16833,6 +16879,7 @@ export const updateAccessGroupErrorSchema = z.union([
 	updateAccessGroupStatus400Schema,
 	updateAccessGroupStatus401Schema,
 	updateAccessGroupStatus403Schema,
+	updateAccessGroupStatus404Schema,
 	updateAccessGroupStatus410Schema,
 ]);
 
@@ -16858,6 +16905,8 @@ export const deleteAccessGroupStatus401Schema = z.unknown();
 
 export const deleteAccessGroupStatus403Schema = z.unknown();
 
+export const deleteAccessGroupStatus404Schema = z.unknown();
+
 export const deleteAccessGroupStatus410Schema = z.unknown();
 
 export const deleteAccessGroupResponseSchema = deleteAccessGroupStatus200Schema;
@@ -16866,6 +16915,7 @@ export const deleteAccessGroupErrorSchema = z.union([
 	deleteAccessGroupStatus400Schema,
 	deleteAccessGroupStatus401Schema,
 	deleteAccessGroupStatus403Schema,
+	deleteAccessGroupStatus404Schema,
 	deleteAccessGroupStatus410Schema,
 ]);
 
@@ -16912,6 +16962,8 @@ export const listAccessGroupMembersStatus401Schema = z.unknown();
 
 export const listAccessGroupMembersStatus403Schema = z.unknown();
 
+export const listAccessGroupMembersStatus404Schema = z.unknown();
+
 export const listAccessGroupMembersStatus410Schema = z.unknown();
 
 export const listAccessGroupMembersResponseSchema = listAccessGroupMembersStatus200Schema;
@@ -16920,6 +16972,7 @@ export const listAccessGroupMembersErrorSchema = z.union([
 	listAccessGroupMembersStatus400Schema,
 	listAccessGroupMembersStatus401Schema,
 	listAccessGroupMembersStatus403Schema,
+	listAccessGroupMembersStatus404Schema,
 	listAccessGroupMembersStatus410Schema,
 ]);
 
@@ -16984,6 +17037,8 @@ export const listAccessGroupsStatus401Schema = z.unknown();
 
 export const listAccessGroupsStatus403Schema = z.unknown();
 
+export const listAccessGroupsStatus404Schema = z.unknown();
+
 export const listAccessGroupsStatus410Schema = z.unknown();
 
 export const listAccessGroupsResponseSchema = listAccessGroupsStatus200Schema;
@@ -16992,6 +17047,7 @@ export const listAccessGroupsErrorSchema = z.union([
 	listAccessGroupsStatus400Schema,
 	listAccessGroupsStatus401Schema,
 	listAccessGroupsStatus403Schema,
+	listAccessGroupsStatus404Schema,
 	listAccessGroupsStatus410Schema,
 ]);
 
@@ -17015,6 +17071,8 @@ export const createAccessGroupStatus401Schema = z.unknown();
 
 export const createAccessGroupStatus403Schema = z.unknown();
 
+export const createAccessGroupStatus404Schema = z.unknown();
+
 export const createAccessGroupStatus410Schema = z.unknown();
 
 export const createAccessGroupResponseSchema = createAccessGroupStatus200Schema;
@@ -17023,6 +17081,7 @@ export const createAccessGroupErrorSchema = z.union([
 	createAccessGroupStatus400Schema,
 	createAccessGroupStatus401Schema,
 	createAccessGroupStatus403Schema,
+	createAccessGroupStatus404Schema,
 	createAccessGroupStatus410Schema,
 ]);
 
@@ -17064,6 +17123,8 @@ export const listAccessGroupProjectsStatus401Schema = z.unknown();
 
 export const listAccessGroupProjectsStatus403Schema = z.unknown();
 
+export const listAccessGroupProjectsStatus404Schema = z.unknown();
+
 export const listAccessGroupProjectsStatus410Schema = z.unknown();
 
 export const listAccessGroupProjectsResponseSchema = listAccessGroupProjectsStatus200Schema;
@@ -17072,6 +17133,7 @@ export const listAccessGroupProjectsErrorSchema = z.union([
 	listAccessGroupProjectsStatus400Schema,
 	listAccessGroupProjectsStatus401Schema,
 	listAccessGroupProjectsStatus403Schema,
+	listAccessGroupProjectsStatus404Schema,
 	listAccessGroupProjectsStatus410Schema,
 ]);
 
@@ -17097,6 +17159,8 @@ export const createAccessGroupProjectStatus401Schema = z.unknown();
 
 export const createAccessGroupProjectStatus403Schema = z.unknown();
 
+export const createAccessGroupProjectStatus404Schema = z.unknown();
+
 export const createAccessGroupProjectStatus410Schema = z.unknown();
 
 export const createAccessGroupProjectResponseSchema = createAccessGroupProjectStatus200Schema;
@@ -17105,6 +17169,7 @@ export const createAccessGroupProjectErrorSchema = z.union([
 	createAccessGroupProjectStatus400Schema,
 	createAccessGroupProjectStatus401Schema,
 	createAccessGroupProjectStatus403Schema,
+	createAccessGroupProjectStatus404Schema,
 	createAccessGroupProjectStatus410Schema,
 ]);
 
@@ -17132,6 +17197,8 @@ export const readAccessGroupProjectStatus401Schema = z.unknown();
 
 export const readAccessGroupProjectStatus403Schema = z.unknown();
 
+export const readAccessGroupProjectStatus404Schema = z.unknown();
+
 export const readAccessGroupProjectStatus410Schema = z.unknown();
 
 export const readAccessGroupProjectResponseSchema = readAccessGroupProjectStatus200Schema;
@@ -17140,6 +17207,7 @@ export const readAccessGroupProjectErrorSchema = z.union([
 	readAccessGroupProjectStatus400Schema,
 	readAccessGroupProjectStatus401Schema,
 	readAccessGroupProjectStatus403Schema,
+	readAccessGroupProjectStatus404Schema,
 	readAccessGroupProjectStatus410Schema,
 ]);
 
@@ -17167,6 +17235,8 @@ export const updateAccessGroupProjectStatus401Schema = z.unknown();
 
 export const updateAccessGroupProjectStatus403Schema = z.unknown();
 
+export const updateAccessGroupProjectStatus404Schema = z.unknown();
+
 export const updateAccessGroupProjectStatus410Schema = z.unknown();
 
 export const updateAccessGroupProjectResponseSchema = updateAccessGroupProjectStatus200Schema;
@@ -17175,6 +17245,7 @@ export const updateAccessGroupProjectErrorSchema = z.union([
 	updateAccessGroupProjectStatus400Schema,
 	updateAccessGroupProjectStatus401Schema,
 	updateAccessGroupProjectStatus403Schema,
+	updateAccessGroupProjectStatus404Schema,
 	updateAccessGroupProjectStatus410Schema,
 ]);
 
@@ -17202,6 +17273,8 @@ export const deleteAccessGroupProjectStatus401Schema = z.unknown();
 
 export const deleteAccessGroupProjectStatus403Schema = z.unknown();
 
+export const deleteAccessGroupProjectStatus404Schema = z.unknown();
+
 export const deleteAccessGroupProjectStatus410Schema = z.unknown();
 
 export const deleteAccessGroupProjectResponseSchema = deleteAccessGroupProjectStatus200Schema;
@@ -17210,6 +17283,7 @@ export const deleteAccessGroupProjectErrorSchema = z.union([
 	deleteAccessGroupProjectStatus400Schema,
 	deleteAccessGroupProjectStatus401Schema,
 	deleteAccessGroupProjectStatus403Schema,
+	deleteAccessGroupProjectStatus404Schema,
 	deleteAccessGroupProjectStatus410Schema,
 ]);
 
@@ -17233,6 +17307,8 @@ export const createAiGatewayVirtualModelConfigStatus401Schema = z.unknown();
 
 export const createAiGatewayVirtualModelConfigStatus403Schema = z.unknown();
 
+export const createAiGatewayVirtualModelConfigStatus404Schema = z.unknown();
+
 export const createAiGatewayVirtualModelConfigStatus409Schema = z.unknown();
 
 export const createAiGatewayVirtualModelConfigStatus410Schema = z.unknown();
@@ -17248,6 +17324,7 @@ export const createAiGatewayVirtualModelConfigErrorSchema = z.union([
 	createAiGatewayVirtualModelConfigStatus400Schema,
 	createAiGatewayVirtualModelConfigStatus401Schema,
 	createAiGatewayVirtualModelConfigStatus403Schema,
+	createAiGatewayVirtualModelConfigStatus404Schema,
 	createAiGatewayVirtualModelConfigStatus409Schema,
 	createAiGatewayVirtualModelConfigStatus410Schema,
 	createAiGatewayVirtualModelConfigStatus429Schema,
@@ -17415,6 +17492,8 @@ export const listAiGatewayVirtualModelConfigsStatus401Schema = z.unknown();
 
 export const listAiGatewayVirtualModelConfigsStatus403Schema = z.unknown();
 
+export const listAiGatewayVirtualModelConfigsStatus404Schema = z.unknown();
+
 export const listAiGatewayVirtualModelConfigsStatus410Schema = z.unknown();
 
 export const listAiGatewayVirtualModelConfigsStatus500Schema = z.unknown();
@@ -17426,6 +17505,7 @@ export const listAiGatewayVirtualModelConfigsErrorSchema = z.union([
 	listAiGatewayVirtualModelConfigsStatus400Schema,
 	listAiGatewayVirtualModelConfigsStatus401Schema,
 	listAiGatewayVirtualModelConfigsStatus403Schema,
+	listAiGatewayVirtualModelConfigsStatus404Schema,
 	listAiGatewayVirtualModelConfigsStatus410Schema,
 	listAiGatewayVirtualModelConfigsStatus500Schema,
 ]);
@@ -17585,6 +17665,8 @@ export const createAiGatewayRuleStatus401Schema = z.unknown();
 
 export const createAiGatewayRuleStatus403Schema = z.unknown();
 
+export const createAiGatewayRuleStatus404Schema = z.unknown();
+
 export const createAiGatewayRuleStatus409Schema = z.unknown();
 
 export const createAiGatewayRuleStatus410Schema = z.unknown();
@@ -17597,6 +17679,7 @@ export const createAiGatewayRuleErrorSchema = z.union([
 	createAiGatewayRuleStatus400Schema,
 	createAiGatewayRuleStatus401Schema,
 	createAiGatewayRuleStatus403Schema,
+	createAiGatewayRuleStatus404Schema,
 	createAiGatewayRuleStatus409Schema,
 	createAiGatewayRuleStatus410Schema,
 	createAiGatewayRuleStatus500Schema,
@@ -17624,6 +17707,8 @@ export const listAiGatewayRulesStatus401Schema = z.unknown();
 
 export const listAiGatewayRulesStatus403Schema = z.unknown();
 
+export const listAiGatewayRulesStatus404Schema = z.unknown();
+
 export const listAiGatewayRulesStatus410Schema = z.unknown();
 
 export const listAiGatewayRulesStatus500Schema = z.unknown();
@@ -17634,6 +17719,7 @@ export const listAiGatewayRulesErrorSchema = z.union([
 	listAiGatewayRulesStatus400Schema,
 	listAiGatewayRulesStatus401Schema,
 	listAiGatewayRulesStatus403Schema,
+	listAiGatewayRulesStatus404Schema,
 	listAiGatewayRulesStatus410Schema,
 	listAiGatewayRulesStatus500Schema,
 ]);
@@ -17751,6 +17837,8 @@ export const recordEventsStatus402Schema = z.unknown();
 
 export const recordEventsStatus403Schema = z.unknown();
 
+export const recordEventsStatus404Schema = z.unknown();
+
 export const recordEventsStatus410Schema = z.unknown();
 
 export const recordEventsResponseSchema = recordEventsStatus200Schema;
@@ -17760,6 +17848,7 @@ export const recordEventsErrorSchema = z.union([
 	recordEventsStatus401Schema,
 	recordEventsStatus402Schema,
 	recordEventsStatus403Schema,
+	recordEventsStatus404Schema,
 	recordEventsStatus410Schema,
 ]);
 
@@ -17785,6 +17874,8 @@ export const statusStatus402Schema = z.unknown();
 
 export const statusStatus403Schema = z.unknown();
 
+export const statusStatus404Schema = z.unknown();
+
 export const statusStatus410Schema = z.unknown();
 
 export const statusResponseSchema = statusStatus200Schema;
@@ -17794,6 +17885,7 @@ export const statusErrorSchema = z.union([
 	statusStatus401Schema,
 	statusStatus402Schema,
 	statusStatus403Schema,
+	statusStatus404Schema,
 	statusStatus410Schema,
 ]);
 
@@ -17872,6 +17964,8 @@ export const uploadArtifactStatus402Schema = z.unknown();
 
 export const uploadArtifactStatus403Schema = z.unknown();
 
+export const uploadArtifactStatus404Schema = z.unknown();
+
 export const uploadArtifactStatus410Schema = z.unknown();
 
 export const uploadArtifactResponseSchema = uploadArtifactStatus202Schema;
@@ -17881,6 +17975,7 @@ export const uploadArtifactErrorSchema = z.union([
 	uploadArtifactStatus401Schema,
 	uploadArtifactStatus402Schema,
 	uploadArtifactStatus403Schema,
+	uploadArtifactStatus404Schema,
 	uploadArtifactStatus410Schema,
 ]);
 
@@ -17963,6 +18058,8 @@ export const artifactQueryStatus402Schema = z.unknown();
 
 export const artifactQueryStatus403Schema = z.unknown();
 
+export const artifactQueryStatus404Schema = z.unknown();
+
 export const artifactQueryStatus410Schema = z.unknown();
 
 export const artifactQueryResponseSchema = artifactQueryStatus200Schema;
@@ -17972,6 +18069,7 @@ export const artifactQueryErrorSchema = z.union([
 	artifactQueryStatus401Schema,
 	artifactQueryStatus402Schema,
 	artifactQueryStatus403Schema,
+	artifactQueryStatus404Schema,
 	artifactQueryStatus410Schema,
 ]);
 
@@ -17995,6 +18093,8 @@ export const deleteAllArtifactsStatus401Schema = z.unknown();
 
 export const deleteAllArtifactsStatus403Schema = z.unknown();
 
+export const deleteAllArtifactsStatus404Schema = z.unknown();
+
 export const deleteAllArtifactsStatus410Schema = z.unknown();
 
 export const deleteAllArtifactsResponseSchema = deleteAllArtifactsStatus200Schema;
@@ -18003,6 +18103,7 @@ export const deleteAllArtifactsErrorSchema = z.union([
 	deleteAllArtifactsStatus400Schema,
 	deleteAllArtifactsStatus401Schema,
 	deleteAllArtifactsStatus403Schema,
+	deleteAllArtifactsStatus404Schema,
 	deleteAllArtifactsStatus410Schema,
 ]);
 
@@ -18158,6 +18259,8 @@ export const stageRedirectsStatus401Schema = z.unknown();
 
 export const stageRedirectsStatus403Schema = z.unknown();
 
+export const stageRedirectsStatus404Schema = z.unknown();
+
 export const stageRedirectsStatus410Schema = z.unknown();
 
 export const stageRedirectsStatus500Schema = z.unknown();
@@ -18168,6 +18271,7 @@ export const stageRedirectsErrorSchema = z.union([
 	stageRedirectsStatus400Schema,
 	stageRedirectsStatus401Schema,
 	stageRedirectsStatus403Schema,
+	stageRedirectsStatus404Schema,
 	stageRedirectsStatus410Schema,
 	stageRedirectsStatus500Schema,
 ]);
@@ -18363,6 +18467,8 @@ export const getVersionsStatus401Schema = z.unknown();
 
 export const getVersionsStatus403Schema = z.unknown();
 
+export const getVersionsStatus404Schema = z.unknown();
+
 export const getVersionsStatus410Schema = z.unknown();
 
 export const getVersionsStatus500Schema = z.unknown();
@@ -18373,6 +18479,7 @@ export const getVersionsErrorSchema = z.union([
 	getVersionsStatus400Schema,
 	getVersionsStatus401Schema,
 	getVersionsStatus403Schema,
+	getVersionsStatus404Schema,
 	getVersionsStatus410Schema,
 	getVersionsStatus500Schema,
 ]);
@@ -18442,6 +18549,8 @@ export const listProjectChecksStatus401Schema = z.unknown();
 
 export const listProjectChecksStatus403Schema = z.unknown();
 
+export const listProjectChecksStatus404Schema = z.unknown();
+
 export const listProjectChecksStatus410Schema = z.unknown();
 
 export const listProjectChecksStatus500Schema = z.unknown();
@@ -18452,6 +18561,7 @@ export const listProjectChecksErrorSchema = z.union([
 	listProjectChecksStatus400Schema,
 	listProjectChecksStatus401Schema,
 	listProjectChecksStatus403Schema,
+	listProjectChecksStatus404Schema,
 	listProjectChecksStatus410Schema,
 	listProjectChecksStatus500Schema,
 ]);
@@ -18478,6 +18588,8 @@ export const createProjectCheckStatus401Schema = z.unknown();
 
 export const createProjectCheckStatus403Schema = z.unknown();
 
+export const createProjectCheckStatus404Schema = z.unknown();
+
 export const createProjectCheckStatus410Schema = z.unknown();
 
 export const createProjectCheckStatus500Schema = z.unknown();
@@ -18488,6 +18600,7 @@ export const createProjectCheckErrorSchema = z.union([
 	createProjectCheckStatus400Schema,
 	createProjectCheckStatus401Schema,
 	createProjectCheckStatus403Schema,
+	createProjectCheckStatus404Schema,
 	createProjectCheckStatus410Schema,
 	createProjectCheckStatus500Schema,
 ]);
@@ -18519,6 +18632,8 @@ export const getProjectCheckStatus401Schema = z.unknown();
 
 export const getProjectCheckStatus403Schema = z.unknown();
 
+export const getProjectCheckStatus404Schema = z.unknown();
+
 export const getProjectCheckStatus410Schema = z.unknown();
 
 export const getProjectCheckStatus500Schema = z.unknown();
@@ -18529,6 +18644,7 @@ export const getProjectCheckErrorSchema = z.union([
 	getProjectCheckStatus400Schema,
 	getProjectCheckStatus401Schema,
 	getProjectCheckStatus403Schema,
+	getProjectCheckStatus404Schema,
 	getProjectCheckStatus410Schema,
 	getProjectCheckStatus500Schema,
 ]);
@@ -18642,6 +18758,8 @@ export const listCheckRunsStatus401Schema = z.unknown();
 
 export const listCheckRunsStatus403Schema = z.unknown();
 
+export const listCheckRunsStatus404Schema = z.unknown();
+
 export const listCheckRunsStatus410Schema = z.unknown();
 
 export const listCheckRunsStatus500Schema = z.unknown();
@@ -18652,6 +18770,7 @@ export const listCheckRunsErrorSchema = z.union([
 	listCheckRunsStatus400Schema,
 	listCheckRunsStatus401Schema,
 	listCheckRunsStatus403Schema,
+	listCheckRunsStatus404Schema,
 	listCheckRunsStatus410Schema,
 	listCheckRunsStatus500Schema,
 ]);
@@ -18678,6 +18797,8 @@ export const listDeploymentCheckRunsStatus401Schema = z.unknown();
 
 export const listDeploymentCheckRunsStatus403Schema = z.unknown();
 
+export const listDeploymentCheckRunsStatus404Schema = z.unknown();
+
 export const listDeploymentCheckRunsStatus410Schema = z.unknown();
 
 export const listDeploymentCheckRunsStatus500Schema = z.unknown();
@@ -18688,6 +18809,7 @@ export const listDeploymentCheckRunsErrorSchema = z.union([
 	listDeploymentCheckRunsStatus400Schema,
 	listDeploymentCheckRunsStatus401Schema,
 	listDeploymentCheckRunsStatus403Schema,
+	listDeploymentCheckRunsStatus404Schema,
 	listDeploymentCheckRunsStatus410Schema,
 	listDeploymentCheckRunsStatus500Schema,
 ]);
@@ -18799,6 +18921,8 @@ export const updateDeploymentCheckRunStatus401Schema = z.unknown();
 
 export const updateDeploymentCheckRunStatus403Schema = z.unknown();
 
+export const updateDeploymentCheckRunStatus404Schema = z.unknown();
+
 export const updateDeploymentCheckRunStatus410Schema = z.unknown();
 
 export const updateDeploymentCheckRunStatus413Schema = z.unknown();
@@ -18811,6 +18935,7 @@ export const updateDeploymentCheckRunErrorSchema = z.union([
 	updateDeploymentCheckRunStatus400Schema,
 	updateDeploymentCheckRunStatus401Schema,
 	updateDeploymentCheckRunStatus403Schema,
+	updateDeploymentCheckRunStatus404Schema,
 	updateDeploymentCheckRunStatus410Schema,
 	updateDeploymentCheckRunStatus413Schema,
 	updateDeploymentCheckRunStatus500Schema,
@@ -19078,6 +19203,8 @@ export const listNetworksStatus401Schema = z.unknown();
 
 export const listNetworksStatus403Schema = z.unknown();
 
+export const listNetworksStatus404Schema = z.unknown();
+
 export const listNetworksStatus410Schema = z.unknown();
 
 export const listNetworksResponseSchema = listNetworksStatus200Schema;
@@ -19086,6 +19213,7 @@ export const listNetworksErrorSchema = z.union([
 	listNetworksStatus400Schema,
 	listNetworksStatus401Schema,
 	listNetworksStatus403Schema,
+	listNetworksStatus404Schema,
 	listNetworksStatus410Schema,
 ]);
 
@@ -19111,6 +19239,8 @@ export const createNetworkStatus402Schema = z.unknown();
 
 export const createNetworkStatus403Schema = z.unknown();
 
+export const createNetworkStatus404Schema = z.unknown();
+
 export const createNetworkStatus409Schema = z.unknown();
 
 export const createNetworkStatus410Schema = z.unknown();
@@ -19122,6 +19252,7 @@ export const createNetworkErrorSchema = z.union([
 	createNetworkStatus401Schema,
 	createNetworkStatus402Schema,
 	createNetworkStatus403Schema,
+	createNetworkStatus404Schema,
 	createNetworkStatus409Schema,
 	createNetworkStatus410Schema,
 ]);
@@ -19153,6 +19284,8 @@ export const deleteNetworkStatus402Schema = z.unknown();
 
 export const deleteNetworkStatus403Schema = z.unknown();
 
+export const deleteNetworkStatus404Schema = z.unknown();
+
 export const deleteNetworkStatus409Schema = z.unknown();
 
 export const deleteNetworkStatus410Schema = z.unknown();
@@ -19164,6 +19297,7 @@ export const deleteNetworkErrorSchema = z.union([
 	deleteNetworkStatus401Schema,
 	deleteNetworkStatus402Schema,
 	deleteNetworkStatus403Schema,
+	deleteNetworkStatus404Schema,
 	deleteNetworkStatus409Schema,
 	deleteNetworkStatus410Schema,
 ]);
@@ -19193,6 +19327,8 @@ export const updateNetworkStatus401Schema = z.unknown();
 
 export const updateNetworkStatus403Schema = z.unknown();
 
+export const updateNetworkStatus404Schema = z.unknown();
+
 export const updateNetworkStatus410Schema = z.unknown();
 
 export const updateNetworkResponseSchema = updateNetworkStatus200Schema;
@@ -19201,6 +19337,7 @@ export const updateNetworkErrorSchema = z.union([
 	updateNetworkStatus400Schema,
 	updateNetworkStatus401Schema,
 	updateNetworkStatus403Schema,
+	updateNetworkStatus404Schema,
 	updateNetworkStatus410Schema,
 ]);
 
@@ -19229,6 +19366,8 @@ export const readNetworkStatus401Schema = z.unknown();
 
 export const readNetworkStatus403Schema = z.unknown();
 
+export const readNetworkStatus404Schema = z.unknown();
+
 export const readNetworkStatus410Schema = z.unknown();
 
 export const readNetworkResponseSchema = readNetworkStatus200Schema;
@@ -19237,6 +19376,7 @@ export const readNetworkErrorSchema = z.union([
 	readNetworkStatus400Schema,
 	readNetworkStatus401Schema,
 	readNetworkStatus403Schema,
+	readNetworkStatus404Schema,
 	readNetworkStatus410Schema,
 ]);
 
@@ -20214,6 +20354,8 @@ export const getDeploymentEventsStatus401Schema = z.unknown();
 
 export const getDeploymentEventsStatus403Schema = z.unknown();
 
+export const getDeploymentEventsStatus404Schema = z.unknown();
+
 export const getDeploymentEventsStatus410Schema = z.unknown();
 
 export const getDeploymentEventsStatus500Schema = z.unknown();
@@ -20224,6 +20366,7 @@ export const getDeploymentEventsErrorSchema = z.union([
 	getDeploymentEventsStatus400Schema,
 	getDeploymentEventsStatus401Schema,
 	getDeploymentEventsStatus403Schema,
+	getDeploymentEventsStatus404Schema,
 	getDeploymentEventsStatus410Schema,
 	getDeploymentEventsStatus500Schema,
 ]);
@@ -21773,6 +21916,8 @@ export const createConfigurableLogDrainStatus401Schema = z.unknown();
 
 export const createConfigurableLogDrainStatus403Schema = z.unknown();
 
+export const createConfigurableLogDrainStatus404Schema = z.unknown();
+
 export const createConfigurableLogDrainStatus410Schema = z.unknown();
 
 export const createConfigurableLogDrainResponseSchema = createConfigurableLogDrainStatus200Schema;
@@ -21781,6 +21926,7 @@ export const createConfigurableLogDrainErrorSchema = z.union([
 	createConfigurableLogDrainStatus400Schema,
 	createConfigurableLogDrainStatus401Schema,
 	createConfigurableLogDrainStatus403Schema,
+	createConfigurableLogDrainStatus404Schema,
 	createConfigurableLogDrainStatus410Schema,
 ]);
 
@@ -21806,6 +21952,8 @@ export const createDrainStatus402Schema = z.unknown();
 
 export const createDrainStatus403Schema = z.unknown();
 
+export const createDrainStatus404Schema = z.unknown();
+
 export const createDrainStatus410Schema = z.unknown();
 
 export const createDrainResponseSchema = createDrainStatus200Schema;
@@ -21815,6 +21963,7 @@ export const createDrainErrorSchema = z.union([
 	createDrainStatus401Schema,
 	createDrainStatus402Schema,
 	createDrainStatus403Schema,
+	createDrainStatus404Schema,
 	createDrainStatus410Schema,
 ]);
 
@@ -21989,6 +22138,8 @@ export const testDrainStatus402Schema = z.unknown();
 
 export const testDrainStatus403Schema = z.unknown();
 
+export const testDrainStatus404Schema = z.unknown();
+
 export const testDrainStatus410Schema = z.unknown();
 
 export const testDrainResponseSchema = testDrainStatus200Schema;
@@ -21998,6 +22149,7 @@ export const testDrainErrorSchema = z.union([
 	testDrainStatus401Schema,
 	testDrainStatus402Schema,
 	testDrainStatus403Schema,
+	testDrainStatus404Schema,
 	testDrainStatus410Schema,
 ]);
 
@@ -22172,6 +22324,8 @@ export const getEdgeConfigsStatus401Schema = z.unknown();
 
 export const getEdgeConfigsStatus403Schema = z.unknown();
 
+export const getEdgeConfigsStatus404Schema = z.unknown();
+
 export const getEdgeConfigsStatus410Schema = z.unknown();
 
 export const getEdgeConfigsResponseSchema = getEdgeConfigsStatus200Schema;
@@ -22180,6 +22334,7 @@ export const getEdgeConfigsErrorSchema = z.union([
 	getEdgeConfigsStatus400Schema,
 	getEdgeConfigsStatus401Schema,
 	getEdgeConfigsStatus403Schema,
+	getEdgeConfigsStatus404Schema,
 	getEdgeConfigsStatus410Schema,
 ]);
 
@@ -22205,6 +22360,8 @@ export const createEdgeConfigStatus402Schema = z.unknown();
 
 export const createEdgeConfigStatus403Schema = z.unknown();
 
+export const createEdgeConfigStatus404Schema = z.unknown();
+
 export const createEdgeConfigStatus410Schema = z.unknown();
 
 export const createEdgeConfigResponseSchema = createEdgeConfigStatus201Schema;
@@ -22214,6 +22371,7 @@ export const createEdgeConfigErrorSchema = z.union([
 	createEdgeConfigStatus401Schema,
 	createEdgeConfigStatus402Schema,
 	createEdgeConfigStatus403Schema,
+	createEdgeConfigStatus404Schema,
 	createEdgeConfigStatus410Schema,
 ]);
 
@@ -22882,6 +23040,8 @@ export const createSharedEnvVariableStatus402Schema = z.unknown();
 
 export const createSharedEnvVariableStatus403Schema = z.unknown();
 
+export const createSharedEnvVariableStatus404Schema = z.unknown();
+
 export const createSharedEnvVariableStatus410Schema = z.unknown();
 
 export const createSharedEnvVariableResponseSchema = createSharedEnvVariableStatus201Schema;
@@ -22891,6 +23051,7 @@ export const createSharedEnvVariableErrorSchema = z.union([
 	createSharedEnvVariableStatus401Schema,
 	createSharedEnvVariableStatus402Schema,
 	createSharedEnvVariableStatus403Schema,
+	createSharedEnvVariableStatus404Schema,
 	createSharedEnvVariableStatus410Schema,
 ]);
 
@@ -22976,6 +23137,8 @@ export const updateSharedEnvVariableStatus402Schema = z.unknown();
 
 export const updateSharedEnvVariableStatus403Schema = z.unknown();
 
+export const updateSharedEnvVariableStatus404Schema = z.unknown();
+
 export const updateSharedEnvVariableStatus410Schema = z.unknown();
 
 export const updateSharedEnvVariableResponseSchema = updateSharedEnvVariableStatus200Schema;
@@ -22985,6 +23148,7 @@ export const updateSharedEnvVariableErrorSchema = z.union([
 	updateSharedEnvVariableStatus401Schema,
 	updateSharedEnvVariableStatus402Schema,
 	updateSharedEnvVariableStatus403Schema,
+	updateSharedEnvVariableStatus404Schema,
 	updateSharedEnvVariableStatus410Schema,
 ]);
 
@@ -23010,6 +23174,8 @@ export const deleteSharedEnvVariableStatus402Schema = z.unknown();
 
 export const deleteSharedEnvVariableStatus403Schema = z.unknown();
 
+export const deleteSharedEnvVariableStatus404Schema = z.unknown();
+
 export const deleteSharedEnvVariableStatus410Schema = z.unknown();
 
 export const deleteSharedEnvVariableResponseSchema = deleteSharedEnvVariableStatus200Schema;
@@ -23019,6 +23185,7 @@ export const deleteSharedEnvVariableErrorSchema = z.union([
 	deleteSharedEnvVariableStatus401Schema,
 	deleteSharedEnvVariableStatus402Schema,
 	deleteSharedEnvVariableStatus403Schema,
+	deleteSharedEnvVariableStatus404Schema,
 	deleteSharedEnvVariableStatus410Schema,
 ]);
 
@@ -23046,6 +23213,8 @@ export const getSharedEnvVarStatus401Schema = z.unknown();
 
 export const getSharedEnvVarStatus403Schema = z.unknown();
 
+export const getSharedEnvVarStatus404Schema = z.unknown();
+
 export const getSharedEnvVarStatus410Schema = z.unknown();
 
 export const getSharedEnvVarResponseSchema = getSharedEnvVarStatus200Schema;
@@ -23054,6 +23223,7 @@ export const getSharedEnvVarErrorSchema = z.union([
 	getSharedEnvVarStatus400Schema,
 	getSharedEnvVarStatus401Schema,
 	getSharedEnvVarStatus403Schema,
+	getSharedEnvVarStatus404Schema,
 	getSharedEnvVarStatus410Schema,
 ]);
 
@@ -23083,6 +23253,8 @@ export const unlinkSharedEnvVariableStatus401Schema = z.unknown();
 
 export const unlinkSharedEnvVariableStatus403Schema = z.unknown();
 
+export const unlinkSharedEnvVariableStatus404Schema = z.unknown();
+
 export const unlinkSharedEnvVariableStatus410Schema = z.unknown();
 
 export const unlinkSharedEnvVariableResponseSchema = unlinkSharedEnvVariableStatus200Schema;
@@ -23091,6 +23263,7 @@ export const unlinkSharedEnvVariableErrorSchema = z.union([
 	unlinkSharedEnvVariableStatus400Schema,
 	unlinkSharedEnvVariableStatus401Schema,
 	unlinkSharedEnvVariableStatus403Schema,
+	unlinkSharedEnvVariableStatus404Schema,
 	unlinkSharedEnvVariableStatus410Schema,
 ]);
 
@@ -23774,6 +23947,8 @@ export const listTeamFlagSettingsStatus401Schema = z.unknown();
 
 export const listTeamFlagSettingsStatus403Schema = z.unknown();
 
+export const listTeamFlagSettingsStatus404Schema = z.unknown();
+
 export const listTeamFlagSettingsStatus410Schema = z.unknown();
 
 export const listTeamFlagSettingsResponseSchema = listTeamFlagSettingsStatus200Schema;
@@ -23782,6 +23957,7 @@ export const listTeamFlagSettingsErrorSchema = z.union([
 	listTeamFlagSettingsStatus400Schema,
 	listTeamFlagSettingsStatus401Schema,
 	listTeamFlagSettingsStatus403Schema,
+	listTeamFlagSettingsStatus404Schema,
 	listTeamFlagSettingsStatus410Schema,
 ]);
 
@@ -23859,6 +24035,8 @@ export const listTeamFlagsV2Status401Schema = z.unknown();
 
 export const listTeamFlagsV2Status403Schema = z.unknown();
 
+export const listTeamFlagsV2Status404Schema = z.unknown();
+
 export const listTeamFlagsV2Status410Schema = z.unknown();
 
 export const listTeamFlagsV2Status503Schema = z.unknown();
@@ -23869,6 +24047,7 @@ export const listTeamFlagsV2ErrorSchema = z.union([
 	listTeamFlagsV2Status400Schema,
 	listTeamFlagsV2Status401Schema,
 	listTeamFlagsV2Status403Schema,
+	listTeamFlagsV2Status404Schema,
 	listTeamFlagsV2Status410Schema,
 	listTeamFlagsV2Status503Schema,
 ]);
@@ -23933,6 +24112,8 @@ export const listTeamFlagsStatus401Schema = z.unknown();
 
 export const listTeamFlagsStatus403Schema = z.unknown();
 
+export const listTeamFlagsStatus404Schema = z.unknown();
+
 export const listTeamFlagsStatus410Schema = z.unknown();
 
 export const listTeamFlagsResponseSchema = listTeamFlagsStatus200Schema;
@@ -23941,6 +24122,7 @@ export const listTeamFlagsErrorSchema = z.union([
 	listTeamFlagsStatus400Schema,
 	listTeamFlagsStatus401Schema,
 	listTeamFlagsStatus403Schema,
+	listTeamFlagsStatus404Schema,
 	listTeamFlagsStatus410Schema,
 ]);
 
@@ -25104,6 +25286,8 @@ export const getConfigurationsStatus401Schema = z.unknown();
 
 export const getConfigurationsStatus403Schema = z.unknown();
 
+export const getConfigurationsStatus404Schema = z.unknown();
+
 export const getConfigurationsStatus410Schema = z.unknown();
 
 export const getConfigurationsResponseSchema = getConfigurationsStatus200Schema;
@@ -25112,6 +25296,7 @@ export const getConfigurationsErrorSchema = z.union([
 	getConfigurationsStatus400Schema,
 	getConfigurationsStatus401Schema,
 	getConfigurationsStatus403Schema,
+	getConfigurationsStatus404Schema,
 	getConfigurationsStatus410Schema,
 ]);
 
@@ -25268,6 +25453,8 @@ export const getIntegrationLogDrainsStatus401Schema = z.unknown();
 
 export const getIntegrationLogDrainsStatus403Schema = z.unknown();
 
+export const getIntegrationLogDrainsStatus404Schema = z.unknown();
+
 export const getIntegrationLogDrainsStatus410Schema = z.unknown();
 
 export const getIntegrationLogDrainsResponseSchema = getIntegrationLogDrainsStatus200Schema;
@@ -25276,6 +25463,7 @@ export const getIntegrationLogDrainsErrorSchema = z.union([
 	getIntegrationLogDrainsStatus400Schema,
 	getIntegrationLogDrainsStatus401Schema,
 	getIntegrationLogDrainsStatus403Schema,
+	getIntegrationLogDrainsStatus404Schema,
 	getIntegrationLogDrainsStatus410Schema,
 ]);
 
@@ -25299,6 +25487,8 @@ export const createLogDrainStatus401Schema = z.unknown();
 
 export const createLogDrainStatus403Schema = z.unknown();
 
+export const createLogDrainStatus404Schema = z.unknown();
+
 export const createLogDrainStatus410Schema = z.unknown();
 
 export const createLogDrainResponseSchema = createLogDrainStatus200Schema;
@@ -25307,6 +25497,7 @@ export const createLogDrainErrorSchema = z.union([
 	createLogDrainStatus400Schema,
 	createLogDrainStatus401Schema,
 	createLogDrainStatus403Schema,
+	createLogDrainStatus404Schema,
 	createLogDrainStatus410Schema,
 ]);
 
@@ -25356,6 +25547,8 @@ export const createApiKeysStatus401Schema = z.unknown();
 
 export const createApiKeysStatus403Schema = z.unknown();
 
+export const createApiKeysStatus404Schema = z.unknown();
+
 export const createApiKeysStatus409Schema = z.unknown();
 
 export const createApiKeysStatus410Schema = z.unknown();
@@ -25370,6 +25563,7 @@ export const createApiKeysErrorSchema = z.union([
 	createApiKeysStatus400Schema,
 	createApiKeysStatus401Schema,
 	createApiKeysStatus403Schema,
+	createApiKeysStatus404Schema,
 	createApiKeysStatus409Schema,
 	createApiKeysStatus410Schema,
 	createApiKeysStatus429Schema,
@@ -25458,6 +25652,8 @@ export const listKmsIssuersStatus401Schema = z.unknown();
 
 export const listKmsIssuersStatus403Schema = z.unknown();
 
+export const listKmsIssuersStatus404Schema = z.unknown();
+
 export const listKmsIssuersStatus410Schema = z.unknown();
 
 export const listKmsIssuersResponseSchema = listKmsIssuersStatus200Schema;
@@ -25466,6 +25662,7 @@ export const listKmsIssuersErrorSchema = z.union([
 	listKmsIssuersStatus400Schema,
 	listKmsIssuersStatus401Schema,
 	listKmsIssuersStatus403Schema,
+	listKmsIssuersStatus404Schema,
 	listKmsIssuersStatus410Schema,
 ]);
 
@@ -25886,6 +26083,8 @@ export const getRuntimeLogsStatus401Schema = z.unknown();
 
 export const getRuntimeLogsStatus403Schema = z.unknown();
 
+export const getRuntimeLogsStatus404Schema = z.unknown();
+
 export const getRuntimeLogsStatus410Schema = z.unknown();
 
 export const getRuntimeLogsResponseSchema = getRuntimeLogsStatus200Schema;
@@ -25894,6 +26093,7 @@ export const getRuntimeLogsErrorSchema = z.union([
 	getRuntimeLogsStatus400Schema,
 	getRuntimeLogsStatus401Schema,
 	getRuntimeLogsStatus403Schema,
+	getRuntimeLogsStatus404Schema,
 	getRuntimeLogsStatus410Schema,
 ]);
 
@@ -26115,6 +26315,8 @@ export const getMicrofrontendsGroupsStatus401Schema = z.unknown();
 
 export const getMicrofrontendsGroupsStatus403Schema = z.unknown();
 
+export const getMicrofrontendsGroupsStatus404Schema = z.unknown();
+
 export const getMicrofrontendsGroupsStatus410Schema = z.unknown();
 
 export const getMicrofrontendsGroupsStatus500Schema = z.unknown();
@@ -26125,6 +26327,7 @@ export const getMicrofrontendsGroupsErrorSchema = z.union([
 	getMicrofrontendsGroupsStatus400Schema,
 	getMicrofrontendsGroupsStatus401Schema,
 	getMicrofrontendsGroupsStatus403Schema,
+	getMicrofrontendsGroupsStatus404Schema,
 	getMicrofrontendsGroupsStatus410Schema,
 	getMicrofrontendsGroupsStatus500Schema,
 ]);
@@ -26151,6 +26354,8 @@ export const getMicrofrontendsInGroupStatus401Schema = z.unknown();
 
 export const getMicrofrontendsInGroupStatus403Schema = z.unknown();
 
+export const getMicrofrontendsInGroupStatus404Schema = z.unknown();
+
 export const getMicrofrontendsInGroupStatus410Schema = z.unknown();
 
 export const getMicrofrontendsInGroupResponseSchema = getMicrofrontendsInGroupStatus200Schema;
@@ -26159,6 +26364,7 @@ export const getMicrofrontendsInGroupErrorSchema = z.union([
 	getMicrofrontendsInGroupStatus400Schema,
 	getMicrofrontendsInGroupStatus401Schema,
 	getMicrofrontendsInGroupStatus403Schema,
+	getMicrofrontendsInGroupStatus404Schema,
 	getMicrofrontendsInGroupStatus410Schema,
 ]);
 
@@ -26265,6 +26471,8 @@ export const createMicrofrontendsGroupWithApplicationsStatus401Schema = z.unknow
 
 export const createMicrofrontendsGroupWithApplicationsStatus403Schema = z.unknown();
 
+export const createMicrofrontendsGroupWithApplicationsStatus404Schema = z.unknown();
+
 export const createMicrofrontendsGroupWithApplicationsStatus410Schema = z.unknown();
 
 export const createMicrofrontendsGroupWithApplicationsStatus500Schema = z.unknown();
@@ -26276,6 +26484,7 @@ export const createMicrofrontendsGroupWithApplicationsErrorSchema = z.union([
 	createMicrofrontendsGroupWithApplicationsStatus400Schema,
 	createMicrofrontendsGroupWithApplicationsStatus401Schema,
 	createMicrofrontendsGroupWithApplicationsStatus403Schema,
+	createMicrofrontendsGroupWithApplicationsStatus404Schema,
 	createMicrofrontendsGroupWithApplicationsStatus410Schema,
 	createMicrofrontendsGroupWithApplicationsStatus500Schema,
 ]);
@@ -26367,6 +26576,8 @@ export const createObservabilityQueryStatus402Schema = z.unknown();
 
 export const createObservabilityQueryStatus403Schema = z.unknown();
 
+export const createObservabilityQueryStatus404Schema = z.unknown();
+
 export const createObservabilityQueryStatus408Schema = z.unknown();
 
 export const createObservabilityQueryStatus410Schema = z.unknown();
@@ -26386,6 +26597,7 @@ export const createObservabilityQueryErrorSchema = z.union([
 	createObservabilityQueryStatus401Schema,
 	createObservabilityQueryStatus402Schema,
 	createObservabilityQueryStatus403Schema,
+	createObservabilityQueryStatus404Schema,
 	createObservabilityQueryStatus408Schema,
 	createObservabilityQueryStatus410Schema,
 	createObservabilityQueryStatus413Schema,
@@ -26402,6 +26614,8 @@ export const getObservabilitySchemaStatus401Schema = z.unknown();
 
 export const getObservabilitySchemaStatus403Schema = z.unknown();
 
+export const getObservabilitySchemaStatus404Schema = z.unknown();
+
 export const getObservabilitySchemaStatus410Schema = z.unknown();
 
 export const getObservabilitySchemaResponseSchema = getObservabilitySchemaStatus200Schema;
@@ -26410,6 +26624,7 @@ export const getObservabilitySchemaErrorSchema = z.union([
 	getObservabilitySchemaStatus400Schema,
 	getObservabilitySchemaStatus401Schema,
 	getObservabilitySchemaStatus403Schema,
+	getObservabilitySchemaStatus404Schema,
 	getObservabilitySchemaStatus410Schema,
 ]);
 
@@ -26423,6 +26638,8 @@ export const getObservabilitySchemaByMetricIdStatus401Schema = z.unknown();
 
 export const getObservabilitySchemaByMetricIdStatus403Schema = z.unknown();
 
+export const getObservabilitySchemaByMetricIdStatus404Schema = z.unknown();
+
 export const getObservabilitySchemaByMetricIdStatus410Schema = z.unknown();
 
 export const getObservabilitySchemaByMetricIdResponseSchema =
@@ -26432,6 +26649,7 @@ export const getObservabilitySchemaByMetricIdErrorSchema = z.union([
 	getObservabilitySchemaByMetricIdStatus400Schema,
 	getObservabilitySchemaByMetricIdStatus401Schema,
 	getObservabilitySchemaByMetricIdStatus403Schema,
+	getObservabilitySchemaByMetricIdStatus404Schema,
 	getObservabilitySchemaByMetricIdStatus410Schema,
 ]);
 
@@ -26485,6 +26703,8 @@ export const getProjectMembersStatus401Schema = z.unknown();
 
 export const getProjectMembersStatus403Schema = z.unknown();
 
+export const getProjectMembersStatus404Schema = z.unknown();
+
 export const getProjectMembersStatus410Schema = z.unknown();
 
 export const getProjectMembersResponseSchema = getProjectMembersStatus200Schema;
@@ -26493,6 +26713,7 @@ export const getProjectMembersErrorSchema = z.union([
 	getProjectMembersStatus400Schema,
 	getProjectMembersStatus401Schema,
 	getProjectMembersStatus403Schema,
+	getProjectMembersStatus404Schema,
 	getProjectMembersStatus410Schema,
 ]);
 
@@ -26521,6 +26742,8 @@ export const addProjectMemberStatus401Schema = z.unknown();
 
 export const addProjectMemberStatus403Schema = z.unknown();
 
+export const addProjectMemberStatus404Schema = z.unknown();
+
 export const addProjectMemberStatus410Schema = z.unknown();
 
 export const addProjectMemberStatus500Schema = z.unknown();
@@ -26531,6 +26754,7 @@ export const addProjectMemberErrorSchema = z.union([
 	addProjectMemberStatus400Schema,
 	addProjectMemberStatus401Schema,
 	addProjectMemberStatus403Schema,
+	addProjectMemberStatus404Schema,
 	addProjectMemberStatus410Schema,
 	addProjectMemberStatus500Schema,
 ]);
@@ -26565,6 +26789,8 @@ export const removeProjectMemberStatus401Schema = z.unknown();
 
 export const removeProjectMemberStatus403Schema = z.unknown();
 
+export const removeProjectMemberStatus404Schema = z.unknown();
+
 export const removeProjectMemberStatus410Schema = z.unknown();
 
 export const removeProjectMemberResponseSchema = removeProjectMemberStatus200Schema;
@@ -26573,6 +26799,7 @@ export const removeProjectMemberErrorSchema = z.union([
 	removeProjectMemberStatus400Schema,
 	removeProjectMemberStatus401Schema,
 	removeProjectMemberStatus403Schema,
+	removeProjectMemberStatus404Schema,
 	removeProjectMemberStatus410Schema,
 ]);
 
@@ -26644,6 +26871,8 @@ export const stageRoutesStatus401Schema = z.unknown();
 
 export const stageRoutesStatus403Schema = z.unknown();
 
+export const stageRoutesStatus404Schema = z.unknown();
+
 export const stageRoutesStatus409Schema = z.unknown();
 
 export const stageRoutesStatus410Schema = z.unknown();
@@ -26656,6 +26885,7 @@ export const stageRoutesErrorSchema = z.union([
 	stageRoutesStatus400Schema,
 	stageRoutesStatus401Schema,
 	stageRoutesStatus403Schema,
+	stageRoutesStatus404Schema,
 	stageRoutesStatus409Schema,
 	stageRoutesStatus410Schema,
 	stageRoutesStatus500Schema,
@@ -26683,6 +26913,8 @@ export const addRouteStatus401Schema = z.unknown();
 
 export const addRouteStatus403Schema = z.unknown();
 
+export const addRouteStatus404Schema = z.unknown();
+
 export const addRouteStatus409Schema = z.unknown();
 
 export const addRouteStatus410Schema = z.unknown();
@@ -26695,6 +26927,7 @@ export const addRouteErrorSchema = z.union([
 	addRouteStatus400Schema,
 	addRouteStatus401Schema,
 	addRouteStatus403Schema,
+	addRouteStatus404Schema,
 	addRouteStatus409Schema,
 	addRouteStatus410Schema,
 	addRouteStatus500Schema,
@@ -26808,6 +27041,8 @@ export const generateRouteStatus401Schema = z.unknown();
 
 export const generateRouteStatus403Schema = z.unknown();
 
+export const generateRouteStatus404Schema = z.unknown();
+
 export const generateRouteStatus408Schema = z.unknown();
 
 export const generateRouteStatus410Schema = z.unknown();
@@ -26820,6 +27055,7 @@ export const generateRouteErrorSchema = z.union([
 	generateRouteStatus400Schema,
 	generateRouteStatus401Schema,
 	generateRouteStatus403Schema,
+	generateRouteStatus404Schema,
 	generateRouteStatus408Schema,
 	generateRouteStatus410Schema,
 	generateRouteStatus500Schema,
@@ -26847,6 +27083,8 @@ export const getRouteVersionsStatus401Schema = z.unknown();
 
 export const getRouteVersionsStatus403Schema = z.unknown();
 
+export const getRouteVersionsStatus404Schema = z.unknown();
+
 export const getRouteVersionsStatus410Schema = z.unknown();
 
 export const getRouteVersionsResponseSchema = getRouteVersionsStatus200Schema;
@@ -26855,6 +27093,7 @@ export const getRouteVersionsErrorSchema = z.union([
 	getRouteVersionsStatus400Schema,
 	getRouteVersionsStatus401Schema,
 	getRouteVersionsStatus403Schema,
+	getRouteVersionsStatus404Schema,
 	getRouteVersionsStatus410Schema,
 ]);
 
@@ -27005,6 +27244,8 @@ export const getProjectsStatus401Schema = z.unknown();
 
 export const getProjectsStatus403Schema = z.unknown();
 
+export const getProjectsStatus404Schema = z.unknown();
+
 export const getProjectsStatus410Schema = z.unknown();
 
 export const getProjectsResponseSchema = getProjectsStatus200Schema;
@@ -27013,6 +27254,7 @@ export const getProjectsErrorSchema = z.union([
 	getProjectsStatus400Schema,
 	getProjectsStatus401Schema,
 	getProjectsStatus403Schema,
+	getProjectsStatus404Schema,
 	getProjectsStatus410Schema,
 ]);
 
@@ -27171,6 +27413,8 @@ export const createTraceSessionStatus401Schema = z.unknown();
 
 export const createTraceSessionStatus403Schema = z.unknown();
 
+export const createTraceSessionStatus404Schema = z.unknown();
+
 export const createTraceSessionStatus410Schema = z.unknown();
 
 export const createTraceSessionStatus422Schema = z.unknown();
@@ -27181,6 +27425,7 @@ export const createTraceSessionErrorSchema = z.union([
 	createTraceSessionStatus400Schema,
 	createTraceSessionStatus401Schema,
 	createTraceSessionStatus403Schema,
+	createTraceSessionStatus404Schema,
 	createTraceSessionStatus410Schema,
 	createTraceSessionStatus422Schema,
 ]);
@@ -27210,6 +27455,8 @@ export const getProjectStatus401Schema = z.unknown();
 
 export const getProjectStatus403Schema = z.unknown();
 
+export const getProjectStatus404Schema = z.unknown();
+
 export const getProjectStatus410Schema = z.unknown();
 
 export const getProjectResponseSchema = getProjectStatus200Schema;
@@ -27218,6 +27465,7 @@ export const getProjectErrorSchema = z.union([
 	getProjectStatus400Schema,
 	getProjectStatus401Schema,
 	getProjectStatus403Schema,
+	getProjectStatus404Schema,
 	getProjectStatus410Schema,
 ]);
 
@@ -27294,6 +27542,8 @@ export const deleteProjectStatus401Schema = z.unknown();
 
 export const deleteProjectStatus403Schema = z.unknown();
 
+export const deleteProjectStatus404Schema = z.unknown();
+
 export const deleteProjectStatus409Schema = z.unknown();
 
 export const deleteProjectStatus410Schema = z.unknown();
@@ -27304,6 +27554,7 @@ export const deleteProjectErrorSchema = z.union([
 	deleteProjectStatus400Schema,
 	deleteProjectStatus401Schema,
 	deleteProjectStatus403Schema,
+	deleteProjectStatus404Schema,
 	deleteProjectStatus409Schema,
 	deleteProjectStatus410Schema,
 ]);
@@ -27332,6 +27583,8 @@ export const uploadProjectAvatarStatus401Schema = z.unknown();
 
 export const uploadProjectAvatarStatus403Schema = z.unknown();
 
+export const uploadProjectAvatarStatus404Schema = z.unknown();
+
 export const uploadProjectAvatarStatus410Schema = z.unknown();
 
 export const uploadProjectAvatarStatus413Schema = z.unknown();
@@ -27344,6 +27597,7 @@ export const uploadProjectAvatarErrorSchema = z.union([
 	uploadProjectAvatarStatus400Schema,
 	uploadProjectAvatarStatus401Schema,
 	uploadProjectAvatarStatus403Schema,
+	uploadProjectAvatarStatus404Schema,
 	uploadProjectAvatarStatus410Schema,
 	uploadProjectAvatarStatus413Schema,
 	uploadProjectAvatarStatus415Schema,
@@ -27422,6 +27676,8 @@ export const createCustomEnvironmentStatus402Schema = z.unknown();
 
 export const createCustomEnvironmentStatus403Schema = z.unknown();
 
+export const createCustomEnvironmentStatus404Schema = z.unknown();
+
 export const createCustomEnvironmentStatus409Schema = z.unknown();
 
 export const createCustomEnvironmentStatus410Schema = z.unknown();
@@ -27435,6 +27691,7 @@ export const createCustomEnvironmentErrorSchema = z.union([
 	createCustomEnvironmentStatus401Schema,
 	createCustomEnvironmentStatus402Schema,
 	createCustomEnvironmentStatus403Schema,
+	createCustomEnvironmentStatus404Schema,
 	createCustomEnvironmentStatus409Schema,
 	createCustomEnvironmentStatus410Schema,
 	createCustomEnvironmentStatus500Schema,
@@ -27469,6 +27726,8 @@ export const getProjectsByIdOrNameCustomEnvironmentsStatus401Schema = z.unknown(
 
 export const getProjectsByIdOrNameCustomEnvironmentsStatus403Schema = z.unknown();
 
+export const getProjectsByIdOrNameCustomEnvironmentsStatus404Schema = z.unknown();
+
 export const getProjectsByIdOrNameCustomEnvironmentsStatus410Schema = z.unknown();
 
 export const getProjectsByIdOrNameCustomEnvironmentsResponseSchema =
@@ -27478,6 +27737,7 @@ export const getProjectsByIdOrNameCustomEnvironmentsErrorSchema = z.union([
 	getProjectsByIdOrNameCustomEnvironmentsStatus400Schema,
 	getProjectsByIdOrNameCustomEnvironmentsStatus401Schema,
 	getProjectsByIdOrNameCustomEnvironmentsStatus403Schema,
+	getProjectsByIdOrNameCustomEnvironmentsStatus404Schema,
 	getProjectsByIdOrNameCustomEnvironmentsStatus410Schema,
 ]);
 
@@ -27553,6 +27813,8 @@ export const updateCustomEnvironmentStatus402Schema = z.unknown();
 
 export const updateCustomEnvironmentStatus403Schema = z.unknown();
 
+export const updateCustomEnvironmentStatus404Schema = z.unknown();
+
 export const updateCustomEnvironmentStatus410Schema = z.unknown();
 
 export const updateCustomEnvironmentStatus500Schema = z.unknown();
@@ -27564,6 +27826,7 @@ export const updateCustomEnvironmentErrorSchema = z.union([
 	updateCustomEnvironmentStatus401Schema,
 	updateCustomEnvironmentStatus402Schema,
 	updateCustomEnvironmentStatus403Schema,
+	updateCustomEnvironmentStatus404Schema,
 	updateCustomEnvironmentStatus410Schema,
 	updateCustomEnvironmentStatus500Schema,
 ]);
@@ -27596,6 +27859,8 @@ export const removeCustomEnvironmentStatus401Schema = z.unknown();
 
 export const removeCustomEnvironmentStatus403Schema = z.unknown();
 
+export const removeCustomEnvironmentStatus404Schema = z.unknown();
+
 export const removeCustomEnvironmentStatus410Schema = z.unknown();
 
 export const removeCustomEnvironmentResponseSchema = removeCustomEnvironmentStatus200Schema;
@@ -27604,6 +27869,7 @@ export const removeCustomEnvironmentErrorSchema = z.union([
 	removeCustomEnvironmentStatus400Schema,
 	removeCustomEnvironmentStatus401Schema,
 	removeCustomEnvironmentStatus403Schema,
+	removeCustomEnvironmentStatus404Schema,
 	removeCustomEnvironmentStatus410Schema,
 ]);
 
@@ -27696,6 +27962,8 @@ export const getProjectDomainsStatus401Schema = z.unknown();
 
 export const getProjectDomainsStatus403Schema = z.unknown();
 
+export const getProjectDomainsStatus404Schema = z.unknown();
+
 export const getProjectDomainsStatus410Schema = z.unknown();
 
 export const getProjectDomainsResponseSchema = getProjectDomainsStatus200Schema;
@@ -27704,6 +27972,7 @@ export const getProjectDomainsErrorSchema = z.union([
 	getProjectDomainsStatus400Schema,
 	getProjectDomainsStatus401Schema,
 	getProjectDomainsStatus403Schema,
+	getProjectDomainsStatus404Schema,
 	getProjectDomainsStatus410Schema,
 ]);
 
@@ -27736,6 +28005,8 @@ export const getProjectDomainStatus401Schema = z.unknown();
 
 export const getProjectDomainStatus403Schema = z.unknown();
 
+export const getProjectDomainStatus404Schema = z.unknown();
+
 export const getProjectDomainStatus410Schema = z.unknown();
 
 export const getProjectDomainResponseSchema = getProjectDomainStatus200Schema;
@@ -27744,6 +28015,7 @@ export const getProjectDomainErrorSchema = z.union([
 	getProjectDomainStatus400Schema,
 	getProjectDomainStatus401Schema,
 	getProjectDomainStatus403Schema,
+	getProjectDomainStatus404Schema,
 	getProjectDomainStatus410Schema,
 ]);
 
@@ -27776,6 +28048,8 @@ export const updateProjectDomainStatus401Schema = z.unknown();
 
 export const updateProjectDomainStatus403Schema = z.unknown();
 
+export const updateProjectDomainStatus404Schema = z.unknown();
+
 export const updateProjectDomainStatus409Schema = z.unknown();
 
 export const updateProjectDomainStatus410Schema = z.unknown();
@@ -27786,6 +28060,7 @@ export const updateProjectDomainErrorSchema = z.union([
 	updateProjectDomainStatus400Schema,
 	updateProjectDomainStatus401Schema,
 	updateProjectDomainStatus403Schema,
+	updateProjectDomainStatus404Schema,
 	updateProjectDomainStatus409Schema,
 	updateProjectDomainStatus410Schema,
 ]);
@@ -27862,6 +28137,8 @@ export const addProjectDomainStatus402Schema = z.unknown();
 
 export const addProjectDomainStatus403Schema = z.unknown();
 
+export const addProjectDomainStatus404Schema = z.unknown();
+
 export const addProjectDomainStatus409Schema = z.unknown();
 
 export const addProjectDomainStatus410Schema = z.unknown();
@@ -27873,6 +28150,7 @@ export const addProjectDomainErrorSchema = z.union([
 	addProjectDomainStatus401Schema,
 	addProjectDomainStatus402Schema,
 	addProjectDomainStatus403Schema,
+	addProjectDomainStatus404Schema,
 	addProjectDomainStatus409Schema,
 	addProjectDomainStatus410Schema,
 ]);
@@ -27906,6 +28184,8 @@ export const moveProjectDomainStatus401Schema = z.unknown();
 
 export const moveProjectDomainStatus403Schema = z.unknown();
 
+export const moveProjectDomainStatus404Schema = z.unknown();
+
 export const moveProjectDomainStatus409Schema = z.unknown();
 
 export const moveProjectDomainStatus410Schema = z.unknown();
@@ -27916,6 +28196,7 @@ export const moveProjectDomainErrorSchema = z.union([
 	moveProjectDomainStatus400Schema,
 	moveProjectDomainStatus401Schema,
 	moveProjectDomainStatus403Schema,
+	moveProjectDomainStatus404Schema,
 	moveProjectDomainStatus409Schema,
 	moveProjectDomainStatus410Schema,
 ]);
@@ -27950,6 +28231,8 @@ export const verifyProjectDomainStatus401Schema = z.unknown();
 
 export const verifyProjectDomainStatus403Schema = z.unknown();
 
+export const verifyProjectDomainStatus404Schema = z.unknown();
+
 export const verifyProjectDomainStatus410Schema = z.unknown();
 
 export const verifyProjectDomainResponseSchema = verifyProjectDomainStatus200Schema;
@@ -27958,6 +28241,7 @@ export const verifyProjectDomainErrorSchema = z.union([
 	verifyProjectDomainStatus400Schema,
 	verifyProjectDomainStatus401Schema,
 	verifyProjectDomainStatus403Schema,
+	verifyProjectDomainStatus404Schema,
 	verifyProjectDomainStatus410Schema,
 ]);
 
@@ -28019,6 +28303,8 @@ export const filterProjectEnvsStatus401Schema = z.unknown();
 
 export const filterProjectEnvsStatus403Schema = z.unknown();
 
+export const filterProjectEnvsStatus404Schema = z.unknown();
+
 export const filterProjectEnvsStatus410Schema = z.unknown();
 
 export const filterProjectEnvsResponseSchema = filterProjectEnvsStatus200Schema;
@@ -28027,6 +28313,7 @@ export const filterProjectEnvsErrorSchema = z.union([
 	filterProjectEnvsStatus400Schema,
 	filterProjectEnvsStatus401Schema,
 	filterProjectEnvsStatus403Schema,
+	filterProjectEnvsStatus404Schema,
 	filterProjectEnvsStatus410Schema,
 ]);
 
@@ -28116,6 +28403,8 @@ export const getProjectEnvStatus401Schema = z.unknown();
 
 export const getProjectEnvStatus403Schema = z.unknown();
 
+export const getProjectEnvStatus404Schema = z.unknown();
+
 export const getProjectEnvStatus410Schema = z.unknown();
 
 export const getProjectEnvResponseSchema = getProjectEnvStatus200Schema;
@@ -28124,6 +28413,7 @@ export const getProjectEnvErrorSchema = z.union([
 	getProjectEnvStatus400Schema,
 	getProjectEnvStatus401Schema,
 	getProjectEnvStatus403Schema,
+	getProjectEnvStatus404Schema,
 	getProjectEnvStatus410Schema,
 ]);
 
@@ -28618,6 +28908,8 @@ export const createProjectTransferRequestStatus401Schema = z.unknown();
 
 export const createProjectTransferRequestStatus403Schema = z.unknown();
 
+export const createProjectTransferRequestStatus404Schema = z.unknown();
+
 export const createProjectTransferRequestStatus409Schema = z.unknown();
 
 export const createProjectTransferRequestStatus410Schema = z.unknown();
@@ -28629,6 +28921,7 @@ export const createProjectTransferRequestErrorSchema = z.union([
 	createProjectTransferRequestStatus400Schema,
 	createProjectTransferRequestStatus401Schema,
 	createProjectTransferRequestStatus403Schema,
+	createProjectTransferRequestStatus404Schema,
 	createProjectTransferRequestStatus409Schema,
 	createProjectTransferRequestStatus410Schema,
 ]);
@@ -28750,6 +29043,8 @@ export const requestRollbackStatus402Schema = z.unknown();
 
 export const requestRollbackStatus403Schema = z.unknown();
 
+export const requestRollbackStatus404Schema = z.unknown();
+
 export const requestRollbackStatus409Schema = z.unknown();
 
 export const requestRollbackStatus410Schema = z.unknown();
@@ -28763,6 +29058,7 @@ export const requestRollbackErrorSchema = z.union([
 	requestRollbackStatus401Schema,
 	requestRollbackStatus402Schema,
 	requestRollbackStatus403Schema,
+	requestRollbackStatus404Schema,
 	requestRollbackStatus409Schema,
 	requestRollbackStatus410Schema,
 	requestRollbackStatus422Schema,
@@ -28786,6 +29082,9 @@ export const updateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionSta
 export const updateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionStatus403Schema =
 	z.unknown();
 
+export const updateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionStatus404Schema =
+	z.unknown();
+
 export const updateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionStatus409Schema =
 	z.unknown();
 
@@ -28802,6 +29101,7 @@ export const updateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionErr
 	updateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionStatus400Schema,
 	updateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionStatus401Schema,
 	updateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionStatus403Schema,
+	updateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionStatus404Schema,
 	updateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionStatus409Schema,
 	updateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionStatus410Schema,
 	updateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionStatus422Schema,
@@ -28832,6 +29132,8 @@ export const updateMicrofrontendsStatus401Schema = z.unknown();
 
 export const updateMicrofrontendsStatus403Schema = z.unknown();
 
+export const updateMicrofrontendsStatus404Schema = z.unknown();
+
 export const updateMicrofrontendsStatus409Schema = z.unknown();
 
 export const updateMicrofrontendsStatus410Schema = z.unknown();
@@ -28844,6 +29146,7 @@ export const updateMicrofrontendsErrorSchema = z.union([
 	updateMicrofrontendsStatus400Schema,
 	updateMicrofrontendsStatus401Schema,
 	updateMicrofrontendsStatus403Schema,
+	updateMicrofrontendsStatus404Schema,
 	updateMicrofrontendsStatus409Schema,
 	updateMicrofrontendsStatus410Schema,
 	updateMicrofrontendsStatus500Schema,
@@ -28875,6 +29178,8 @@ export const requestPromoteStatus401Schema = z.unknown();
 
 export const requestPromoteStatus403Schema = z.unknown();
 
+export const requestPromoteStatus404Schema = z.unknown();
+
 export const requestPromoteStatus409Schema = z.unknown();
 
 export const requestPromoteStatus410Schema = z.unknown();
@@ -28890,6 +29195,7 @@ export const requestPromoteErrorSchema = z.union([
 	requestPromoteStatus400Schema,
 	requestPromoteStatus401Schema,
 	requestPromoteStatus403Schema,
+	requestPromoteStatus404Schema,
 	requestPromoteStatus409Schema,
 	requestPromoteStatus410Schema,
 	requestPromoteStatus422Schema,
@@ -28977,6 +29283,8 @@ export const pauseProjectStatus401Schema = z.unknown();
 
 export const pauseProjectStatus403Schema = z.unknown();
 
+export const pauseProjectStatus404Schema = z.unknown();
+
 export const pauseProjectStatus410Schema = z.unknown();
 
 export const pauseProjectStatus500Schema = z.unknown();
@@ -28987,6 +29295,7 @@ export const pauseProjectErrorSchema = z.union([
 	pauseProjectStatus400Schema,
 	pauseProjectStatus401Schema,
 	pauseProjectStatus403Schema,
+	pauseProjectStatus404Schema,
 	pauseProjectStatus410Schema,
 	pauseProjectStatus500Schema,
 ]);
@@ -29015,6 +29324,8 @@ export const unpauseProjectStatus401Schema = z.unknown();
 
 export const unpauseProjectStatus403Schema = z.unknown();
 
+export const unpauseProjectStatus404Schema = z.unknown();
+
 export const unpauseProjectStatus410Schema = z.unknown();
 
 export const unpauseProjectStatus500Schema = z.unknown();
@@ -29025,6 +29336,7 @@ export const unpauseProjectErrorSchema = z.union([
 	unpauseProjectStatus400Schema,
 	unpauseProjectStatus401Schema,
 	unpauseProjectStatus403Schema,
+	unpauseProjectStatus404Schema,
 	unpauseProjectStatus410Schema,
 	unpauseProjectStatus500Schema,
 ]);
@@ -31288,6 +31600,8 @@ export const createSpeedInsightsToggleStatus402Schema = z.unknown();
 
 export const createSpeedInsightsToggleStatus403Schema = z.unknown();
 
+export const createSpeedInsightsToggleStatus404Schema = z.unknown();
+
 export const createSpeedInsightsToggleStatus410Schema = z.unknown();
 
 export const createSpeedInsightsToggleResponseSchema = createSpeedInsightsToggleStatus200Schema;
@@ -31297,6 +31611,7 @@ export const createSpeedInsightsToggleErrorSchema = z.union([
 	createSpeedInsightsToggleStatus401Schema,
 	createSpeedInsightsToggleStatus402Schema,
 	createSpeedInsightsToggleStatus403Schema,
+	createSpeedInsightsToggleStatus404Schema,
 	createSpeedInsightsToggleStatus410Schema,
 ]);
 
@@ -31531,6 +31846,8 @@ export const inviteUserToTeamStatus401Schema = z.unknown();
 
 export const inviteUserToTeamStatus403Schema = z.unknown();
 
+export const inviteUserToTeamStatus404Schema = z.unknown();
+
 export const inviteUserToTeamStatus410Schema = z.unknown();
 
 export const inviteUserToTeamStatus503Schema = z.unknown();
@@ -31541,6 +31858,7 @@ export const inviteUserToTeamErrorSchema = z.union([
 	inviteUserToTeamStatus400Schema,
 	inviteUserToTeamStatus401Schema,
 	inviteUserToTeamStatus403Schema,
+	inviteUserToTeamStatus404Schema,
 	inviteUserToTeamStatus410Schema,
 	inviteUserToTeamStatus503Schema,
 ]);
@@ -31777,6 +32095,8 @@ export const patchTeamStatus402Schema = z.unknown();
 
 export const patchTeamStatus403Schema = z.unknown();
 
+export const patchTeamStatus404Schema = z.unknown();
+
 export const patchTeamStatus409Schema = z.unknown();
 
 export const patchTeamStatus410Schema = z.unknown();
@@ -31790,6 +32110,7 @@ export const patchTeamErrorSchema = z.union([
 	patchTeamStatus401Schema,
 	patchTeamStatus402Schema,
 	patchTeamStatus403Schema,
+	patchTeamStatus404Schema,
 	patchTeamStatus409Schema,
 	patchTeamStatus410Schema,
 	patchTeamStatus428Schema,
@@ -31876,6 +32197,8 @@ export const postTeamDsyncRolesStatus401Schema = z.unknown();
 
 export const postTeamDsyncRolesStatus403Schema = z.unknown();
 
+export const postTeamDsyncRolesStatus404Schema = z.unknown();
+
 export const postTeamDsyncRolesStatus410Schema = z.unknown();
 
 export const postTeamDsyncRolesResponseSchema = postTeamDsyncRolesStatus200Schema;
@@ -31884,6 +32207,7 @@ export const postTeamDsyncRolesErrorSchema = z.union([
 	postTeamDsyncRolesStatus400Schema,
 	postTeamDsyncRolesStatus401Schema,
 	postTeamDsyncRolesStatus403Schema,
+	postTeamDsyncRolesStatus404Schema,
 	postTeamDsyncRolesStatus410Schema,
 ]);
 
@@ -31914,6 +32238,8 @@ export const deleteTeamStatus402Schema = z.unknown();
 
 export const deleteTeamStatus403Schema = z.unknown();
 
+export const deleteTeamStatus404Schema = z.unknown();
+
 export const deleteTeamStatus409Schema = z.unknown();
 
 export const deleteTeamStatus410Schema = z.unknown();
@@ -31927,6 +32253,7 @@ export const deleteTeamErrorSchema = z.union([
 	deleteTeamStatus401Schema,
 	deleteTeamStatus402Schema,
 	deleteTeamStatus403Schema,
+	deleteTeamStatus404Schema,
 	deleteTeamStatus409Schema,
 	deleteTeamStatus410Schema,
 	deleteTeamStatus503Schema,
@@ -32082,6 +32409,8 @@ export const uploadFileStatus401Schema = z.unknown();
 
 export const uploadFileStatus403Schema = z.unknown();
 
+export const uploadFileStatus404Schema = z.unknown();
+
 export const uploadFileStatus410Schema = z.unknown();
 
 export const uploadFileStatus426Schema = z.unknown();
@@ -32092,6 +32421,7 @@ export const uploadFileErrorSchema = z.union([
 	uploadFileStatus400Schema,
 	uploadFileStatus401Schema,
 	uploadFileStatus403Schema,
+	uploadFileStatus404Schema,
 	uploadFileStatus410Schema,
 	uploadFileStatus426Schema,
 ]);
@@ -33671,6 +34001,8 @@ export const listVercelCiInvocationsStatus401Schema = z.unknown();
 
 export const listVercelCiInvocationsStatus403Schema = z.unknown();
 
+export const listVercelCiInvocationsStatus404Schema = z.unknown();
+
 export const listVercelCiInvocationsStatus410Schema = z.unknown();
 
 export const listVercelCiInvocationsStatus429Schema = z.unknown();
@@ -33685,6 +34017,7 @@ export const listVercelCiInvocationsErrorSchema = z.union([
 	listVercelCiInvocationsStatus400Schema,
 	listVercelCiInvocationsStatus401Schema,
 	listVercelCiInvocationsStatus403Schema,
+	listVercelCiInvocationsStatus404Schema,
 	listVercelCiInvocationsStatus410Schema,
 	listVercelCiInvocationsStatus429Schema,
 	listVercelCiInvocationsStatus500Schema,
@@ -34340,6 +34673,8 @@ export const searchVercelCiLogsStatus401Schema = z.unknown();
 
 export const searchVercelCiLogsStatus403Schema = z.unknown();
 
+export const searchVercelCiLogsStatus404Schema = z.unknown();
+
 export const searchVercelCiLogsStatus410Schema = z.unknown();
 
 export const searchVercelCiLogsStatus429Schema = z.unknown();
@@ -34352,6 +34687,7 @@ export const searchVercelCiLogsErrorSchema = z.union([
 	searchVercelCiLogsStatus400Schema,
 	searchVercelCiLogsStatus401Schema,
 	searchVercelCiLogsStatus403Schema,
+	searchVercelCiLogsStatus404Schema,
 	searchVercelCiLogsStatus410Schema,
 	searchVercelCiLogsStatus429Schema,
 	searchVercelCiLogsStatus500Schema,
@@ -34498,6 +34834,8 @@ export const createWebInsightsToggleStatus401Schema = z.unknown();
 
 export const createWebInsightsToggleStatus403Schema = z.unknown();
 
+export const createWebInsightsToggleStatus404Schema = z.unknown();
+
 export const createWebInsightsToggleStatus410Schema = z.unknown();
 
 export const createWebInsightsToggleResponseSchema = createWebInsightsToggleStatus200Schema;
@@ -34506,6 +34844,7 @@ export const createWebInsightsToggleErrorSchema = z.union([
 	createWebInsightsToggleStatus400Schema,
 	createWebInsightsToggleStatus401Schema,
 	createWebInsightsToggleStatus403Schema,
+	createWebInsightsToggleStatus404Schema,
 	createWebInsightsToggleStatus410Schema,
 ]);
 
@@ -34847,6 +35186,8 @@ export const createWebhookStatus401Schema = z.unknown();
 
 export const createWebhookStatus403Schema = z.unknown();
 
+export const createWebhookStatus404Schema = z.unknown();
+
 export const createWebhookStatus410Schema = z.unknown();
 
 export const createWebhookResponseSchema = createWebhookStatus200Schema;
@@ -34855,6 +35196,7 @@ export const createWebhookErrorSchema = z.union([
 	createWebhookStatus400Schema,
 	createWebhookStatus401Schema,
 	createWebhookStatus403Schema,
+	createWebhookStatus404Schema,
 	createWebhookStatus410Schema,
 ]);
 
@@ -34883,6 +35225,8 @@ export const getWebhooksStatus401Schema = z.unknown();
 
 export const getWebhooksStatus403Schema = z.unknown();
 
+export const getWebhooksStatus404Schema = z.unknown();
+
 export const getWebhooksStatus410Schema = z.unknown();
 
 export const getWebhooksResponseSchema = getWebhooksStatus200Schema;
@@ -34891,6 +35235,7 @@ export const getWebhooksErrorSchema = z.union([
 	getWebhooksStatus400Schema,
 	getWebhooksStatus401Schema,
 	getWebhooksStatus403Schema,
+	getWebhooksStatus404Schema,
 	getWebhooksStatus410Schema,
 ]);
 
@@ -34916,6 +35261,8 @@ export const getWebhookStatus401Schema = z.unknown();
 
 export const getWebhookStatus403Schema = z.unknown();
 
+export const getWebhookStatus404Schema = z.unknown();
+
 export const getWebhookStatus410Schema = z.unknown();
 
 export const getWebhookResponseSchema = getWebhookStatus200Schema;
@@ -34924,6 +35271,7 @@ export const getWebhookErrorSchema = z.union([
 	getWebhookStatus400Schema,
 	getWebhookStatus401Schema,
 	getWebhookStatus403Schema,
+	getWebhookStatus404Schema,
 	getWebhookStatus410Schema,
 ]);
 
@@ -34949,6 +35297,8 @@ export const deleteWebhookStatus401Schema = z.unknown();
 
 export const deleteWebhookStatus403Schema = z.unknown();
 
+export const deleteWebhookStatus404Schema = z.unknown();
+
 export const deleteWebhookStatus410Schema = z.unknown();
 
 export const deleteWebhookResponseSchema = deleteWebhookStatus204Schema;
@@ -34957,6 +35307,7 @@ export const deleteWebhookErrorSchema = z.union([
 	deleteWebhookStatus400Schema,
 	deleteWebhookStatus401Schema,
 	deleteWebhookStatus403Schema,
+	deleteWebhookStatus404Schema,
 	deleteWebhookStatus410Schema,
 ]);
 
@@ -35434,6 +35785,8 @@ export const uploadCertStatus402Schema = z.unknown();
 
 export const uploadCertStatus403Schema = z.unknown();
 
+export const uploadCertStatus404Schema = z.unknown();
+
 export const uploadCertStatus410Schema = z.unknown();
 
 export const uploadCertResponseSchema = uploadCertStatus200Schema;
@@ -35443,6 +35796,7 @@ export const uploadCertErrorSchema = z.union([
 	uploadCertStatus401Schema,
 	uploadCertStatus402Schema,
 	uploadCertStatus403Schema,
+	uploadCertStatus404Schema,
 	uploadCertStatus410Schema,
 ]);
 

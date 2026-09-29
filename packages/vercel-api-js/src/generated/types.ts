@@ -4516,6 +4516,15 @@ export const userEventPayloadToPlanEnum = {
 export type UserEventPayloadToPlanEnumKey =
 	(typeof userEventPayloadToPlanEnum)[keyof typeof userEventPayloadToPlanEnum];
 
+export const userEventPayloadMemberKindEnum = {
+	project: "project",
+	team: "team",
+	user: "user",
+} as const;
+
+export type UserEventPayloadMemberKindEnumKey =
+	(typeof userEventPayloadMemberKindEnum)[keyof typeof userEventPayloadMemberKindEnum];
+
 export const userEventPayloadBudgetRefreshPeriodEnum = {
 	daily: "daily",
 	monthly: "monthly",
@@ -6750,6 +6759,11 @@ export const userEventTypeEnum = {
 	"agentic-provisioning-team-created": "agentic-provisioning-team-created",
 	"ai-alert-investigation": "ai-alert-investigation",
 	"ai-code-review": "ai-code-review",
+	"ai-gateway-access-policy-created": "ai-gateway-access-policy-created",
+	"ai-gateway-access-policy-deleted": "ai-gateway-access-policy-deleted",
+	"ai-gateway-access-policy-member-added": "ai-gateway-access-policy-member-added",
+	"ai-gateway-access-policy-member-removed": "ai-gateway-access-policy-member-removed",
+	"ai-gateway-access-policy-updated": "ai-gateway-access-policy-updated",
 	"ai-gateway-api-key-created": "ai-gateway-api-key-created",
 	"ai-gateway-api-key-deleted": "ai-gateway-api-key-deleted",
 	"ai-gateway-api-key-quota-updated": "ai-gateway-api-key-quota-updated",
@@ -7710,6 +7724,30 @@ export type UserEvent = {
 						resourceId: string;
 						teamId: string;
 						toPlan: UserEventPayloadToPlanEnumKey;
+				  }
+				| {
+						accessPolicy: {
+							id: string;
+							name: string;
+						};
+				  }
+				| {
+						accessPolicy: {
+							id: string;
+							name: string;
+						};
+						previousName?: string | undefined;
+				  }
+				| {
+						accessPolicy: {
+							id: string;
+							name: string;
+						};
+						member: {
+							id: string;
+							kind: UserEventPayloadMemberKindEnumKey;
+							name?: string | undefined;
+						};
 				  }
 				| {
 						apiKey: {
@@ -15371,6 +15409,11 @@ export const listEventTypeNameEnum = {
 	"agentic-provisioning-team-created": "agentic-provisioning-team-created",
 	"ai-alert-investigation": "ai-alert-investigation",
 	"ai-code-review": "ai-code-review",
+	"ai-gateway-access-policy-created": "ai-gateway-access-policy-created",
+	"ai-gateway-access-policy-deleted": "ai-gateway-access-policy-deleted",
+	"ai-gateway-access-policy-member-added": "ai-gateway-access-policy-member-added",
+	"ai-gateway-access-policy-member-removed": "ai-gateway-access-policy-member-removed",
+	"ai-gateway-access-policy-updated": "ai-gateway-access-policy-updated",
 	"ai-gateway-api-key-created": "ai-gateway-api-key-created",
 	"ai-gateway-api-key-deleted": "ai-gateway-api-key-deleted",
 	"ai-gateway-api-key-quota-updated": "ai-gateway-api-key-quota-updated",
@@ -16092,6 +16135,11 @@ export const listEventTypeReplacedByEnum = {
 	"agentic-provisioning-team-created": "agentic-provisioning-team-created",
 	"ai-alert-investigation": "ai-alert-investigation",
 	"ai-code-review": "ai-code-review",
+	"ai-gateway-access-policy-created": "ai-gateway-access-policy-created",
+	"ai-gateway-access-policy-deleted": "ai-gateway-access-policy-deleted",
+	"ai-gateway-access-policy-member-added": "ai-gateway-access-policy-member-added",
+	"ai-gateway-access-policy-member-removed": "ai-gateway-access-policy-member-removed",
+	"ai-gateway-access-policy-updated": "ai-gateway-access-policy-updated",
 	"ai-gateway-api-key-created": "ai-gateway-api-key-created",
 	"ai-gateway-api-key-deleted": "ai-gateway-api-key-deleted",
 	"ai-gateway-api-key-quota-updated": "ai-gateway-api-key-quota-updated",
@@ -16944,6 +16992,7 @@ export type Flag = {
 							type: "entity";
 						};
 						defaultVariantId: string;
+						finalPromille?: number | undefined;
 						rollFromVariantId: string;
 						rollToVariantId: string;
 						slots: {
@@ -17037,6 +17086,7 @@ export type Flag = {
 								type: "entity";
 							};
 							defaultVariantId: string;
+							finalPromille?: number | undefined;
 							rollFromVariantId: string;
 							rollToVariantId: string;
 							slots: {
@@ -20918,6 +20968,8 @@ export type ReadAccessGroupStatus401 = unknown;
 
 export type ReadAccessGroupStatus403 = unknown;
 
+export type ReadAccessGroupStatus404 = unknown;
+
 export type ReadAccessGroupStatus410 = unknown;
 
 export type ReadAccessGroupOptions = {
@@ -20932,6 +20984,7 @@ export type ReadAccessGroupResponses = {
 	"400": ReadAccessGroupStatus400;
 	"401": ReadAccessGroupStatus401;
 	"403": ReadAccessGroupStatus403;
+	"404": ReadAccessGroupStatus404;
 	"410": ReadAccessGroupStatus410;
 };
 
@@ -20943,6 +20996,7 @@ export type ReadAccessGroupResponse =
 	| ReadAccessGroupStatus400
 	| ReadAccessGroupStatus401
 	| ReadAccessGroupStatus403
+	| ReadAccessGroupStatus404
 	| ReadAccessGroupStatus410;
 
 export type UpdateAccessGroupPath = {
@@ -20972,6 +21026,8 @@ export type UpdateAccessGroupStatus401 = unknown;
 
 export type UpdateAccessGroupStatus403 = unknown;
 
+export type UpdateAccessGroupStatus404 = unknown;
+
 export type UpdateAccessGroupStatus410 = unknown;
 
 export type UpdateAccessGroupOptions = {
@@ -20986,6 +21042,7 @@ export type UpdateAccessGroupResponses = {
 	"400": UpdateAccessGroupStatus400;
 	"401": UpdateAccessGroupStatus401;
 	"403": UpdateAccessGroupStatus403;
+	"404": UpdateAccessGroupStatus404;
 	"410": UpdateAccessGroupStatus410;
 };
 
@@ -20997,6 +21054,7 @@ export type UpdateAccessGroupResponse =
 	| UpdateAccessGroupStatus400
 	| UpdateAccessGroupStatus401
 	| UpdateAccessGroupStatus403
+	| UpdateAccessGroupStatus404
 	| UpdateAccessGroupStatus410;
 
 export type DeleteAccessGroupPath = {
@@ -21026,6 +21084,8 @@ export type DeleteAccessGroupStatus401 = unknown;
 
 export type DeleteAccessGroupStatus403 = unknown;
 
+export type DeleteAccessGroupStatus404 = unknown;
+
 export type DeleteAccessGroupStatus410 = unknown;
 
 export type DeleteAccessGroupOptions = {
@@ -21040,6 +21100,7 @@ export type DeleteAccessGroupResponses = {
 	"400": DeleteAccessGroupStatus400;
 	"401": DeleteAccessGroupStatus401;
 	"403": DeleteAccessGroupStatus403;
+	"404": DeleteAccessGroupStatus404;
 	"410": DeleteAccessGroupStatus410;
 };
 
@@ -21051,6 +21112,7 @@ export type DeleteAccessGroupResponse =
 	| DeleteAccessGroupStatus400
 	| DeleteAccessGroupStatus401
 	| DeleteAccessGroupStatus403
+	| DeleteAccessGroupStatus404
 	| DeleteAccessGroupStatus410;
 
 export type ListAccessGroupMembersPath = {
@@ -21103,6 +21165,8 @@ export type ListAccessGroupMembersStatus401 = unknown;
 
 export type ListAccessGroupMembersStatus403 = unknown;
 
+export type ListAccessGroupMembersStatus404 = unknown;
+
 export type ListAccessGroupMembersStatus410 = unknown;
 
 export type ListAccessGroupMembersOptions = {
@@ -21117,6 +21181,7 @@ export type ListAccessGroupMembersResponses = {
 	"400": ListAccessGroupMembersStatus400;
 	"401": ListAccessGroupMembersStatus401;
 	"403": ListAccessGroupMembersStatus403;
+	"404": ListAccessGroupMembersStatus404;
 	"410": ListAccessGroupMembersStatus410;
 };
 
@@ -21128,6 +21193,7 @@ export type ListAccessGroupMembersResponse =
 	| ListAccessGroupMembersStatus400
 	| ListAccessGroupMembersStatus401
 	| ListAccessGroupMembersStatus403
+	| ListAccessGroupMembersStatus404
 	| ListAccessGroupMembersStatus410;
 
 export type ListAccessGroupsQuery = {
@@ -21194,6 +21260,8 @@ export type ListAccessGroupsStatus401 = unknown;
 
 export type ListAccessGroupsStatus403 = unknown;
 
+export type ListAccessGroupsStatus404 = unknown;
+
 export type ListAccessGroupsStatus410 = unknown;
 
 export type ListAccessGroupsOptions = {
@@ -21208,6 +21276,7 @@ export type ListAccessGroupsResponses = {
 	"400": ListAccessGroupsStatus400;
 	"401": ListAccessGroupsStatus401;
 	"403": ListAccessGroupsStatus403;
+	"404": ListAccessGroupsStatus404;
 	"410": ListAccessGroupsStatus410;
 };
 
@@ -21219,6 +21288,7 @@ export type ListAccessGroupsResponse =
 	| ListAccessGroupsStatus400
 	| ListAccessGroupsStatus401
 	| ListAccessGroupsStatus403
+	| ListAccessGroupsStatus404
 	| ListAccessGroupsStatus410;
 
 export type CreateAccessGroupQuery = {
@@ -21244,6 +21314,8 @@ export type CreateAccessGroupStatus401 = unknown;
 
 export type CreateAccessGroupStatus403 = unknown;
 
+export type CreateAccessGroupStatus404 = unknown;
+
 export type CreateAccessGroupStatus410 = unknown;
 
 export type CreateAccessGroupOptions = {
@@ -21258,6 +21330,7 @@ export type CreateAccessGroupResponses = {
 	"400": CreateAccessGroupStatus400;
 	"401": CreateAccessGroupStatus401;
 	"403": CreateAccessGroupStatus403;
+	"404": CreateAccessGroupStatus404;
 	"410": CreateAccessGroupStatus410;
 };
 
@@ -21269,6 +21342,7 @@ export type CreateAccessGroupResponse =
 	| CreateAccessGroupStatus400
 	| CreateAccessGroupStatus401
 	| CreateAccessGroupStatus403
+	| CreateAccessGroupStatus404
 	| CreateAccessGroupStatus410;
 
 export type ListAccessGroupProjectsPath = {
@@ -21316,6 +21390,8 @@ export type ListAccessGroupProjectsStatus401 = unknown;
 
 export type ListAccessGroupProjectsStatus403 = unknown;
 
+export type ListAccessGroupProjectsStatus404 = unknown;
+
 export type ListAccessGroupProjectsStatus410 = unknown;
 
 export type ListAccessGroupProjectsOptions = {
@@ -21330,6 +21406,7 @@ export type ListAccessGroupProjectsResponses = {
 	"400": ListAccessGroupProjectsStatus400;
 	"401": ListAccessGroupProjectsStatus401;
 	"403": ListAccessGroupProjectsStatus403;
+	"404": ListAccessGroupProjectsStatus404;
 	"410": ListAccessGroupProjectsStatus410;
 };
 
@@ -21341,6 +21418,7 @@ export type ListAccessGroupProjectsResponse =
 	| ListAccessGroupProjectsStatus400
 	| ListAccessGroupProjectsStatus401
 	| ListAccessGroupProjectsStatus403
+	| ListAccessGroupProjectsStatus404
 	| ListAccessGroupProjectsStatus410;
 
 export type CreateAccessGroupProjectPath = {
@@ -21370,6 +21448,8 @@ export type CreateAccessGroupProjectStatus401 = unknown;
 
 export type CreateAccessGroupProjectStatus403 = unknown;
 
+export type CreateAccessGroupProjectStatus404 = unknown;
+
 export type CreateAccessGroupProjectStatus410 = unknown;
 
 export type CreateAccessGroupProjectOptions = {
@@ -21384,6 +21464,7 @@ export type CreateAccessGroupProjectResponses = {
 	"400": CreateAccessGroupProjectStatus400;
 	"401": CreateAccessGroupProjectStatus401;
 	"403": CreateAccessGroupProjectStatus403;
+	"404": CreateAccessGroupProjectStatus404;
 	"410": CreateAccessGroupProjectStatus410;
 };
 
@@ -21395,6 +21476,7 @@ export type CreateAccessGroupProjectResponse =
 	| CreateAccessGroupProjectStatus400
 	| CreateAccessGroupProjectStatus401
 	| CreateAccessGroupProjectStatus403
+	| CreateAccessGroupProjectStatus404
 	| CreateAccessGroupProjectStatus410;
 
 export type ReadAccessGroupProjectPath = {
@@ -21425,6 +21507,8 @@ export type ReadAccessGroupProjectStatus401 = unknown;
 
 export type ReadAccessGroupProjectStatus403 = unknown;
 
+export type ReadAccessGroupProjectStatus404 = unknown;
+
 export type ReadAccessGroupProjectStatus410 = unknown;
 
 export type ReadAccessGroupProjectOptions = {
@@ -21439,6 +21523,7 @@ export type ReadAccessGroupProjectResponses = {
 	"400": ReadAccessGroupProjectStatus400;
 	"401": ReadAccessGroupProjectStatus401;
 	"403": ReadAccessGroupProjectStatus403;
+	"404": ReadAccessGroupProjectStatus404;
 	"410": ReadAccessGroupProjectStatus410;
 };
 
@@ -21450,6 +21535,7 @@ export type ReadAccessGroupProjectResponse =
 	| ReadAccessGroupProjectStatus400
 	| ReadAccessGroupProjectStatus401
 	| ReadAccessGroupProjectStatus403
+	| ReadAccessGroupProjectStatus404
 	| ReadAccessGroupProjectStatus410;
 
 export type UpdateAccessGroupProjectPath = {
@@ -21480,6 +21566,8 @@ export type UpdateAccessGroupProjectStatus401 = unknown;
 
 export type UpdateAccessGroupProjectStatus403 = unknown;
 
+export type UpdateAccessGroupProjectStatus404 = unknown;
+
 export type UpdateAccessGroupProjectStatus410 = unknown;
 
 export type UpdateAccessGroupProjectOptions = {
@@ -21494,6 +21582,7 @@ export type UpdateAccessGroupProjectResponses = {
 	"400": UpdateAccessGroupProjectStatus400;
 	"401": UpdateAccessGroupProjectStatus401;
 	"403": UpdateAccessGroupProjectStatus403;
+	"404": UpdateAccessGroupProjectStatus404;
 	"410": UpdateAccessGroupProjectStatus410;
 };
 
@@ -21505,6 +21594,7 @@ export type UpdateAccessGroupProjectResponse =
 	| UpdateAccessGroupProjectStatus400
 	| UpdateAccessGroupProjectStatus401
 	| UpdateAccessGroupProjectStatus403
+	| UpdateAccessGroupProjectStatus404
 	| UpdateAccessGroupProjectStatus410;
 
 export type DeleteAccessGroupProjectPath = {
@@ -21535,6 +21625,8 @@ export type DeleteAccessGroupProjectStatus401 = unknown;
 
 export type DeleteAccessGroupProjectStatus403 = unknown;
 
+export type DeleteAccessGroupProjectStatus404 = unknown;
+
 export type DeleteAccessGroupProjectStatus410 = unknown;
 
 export type DeleteAccessGroupProjectOptions = {
@@ -21549,6 +21641,7 @@ export type DeleteAccessGroupProjectResponses = {
 	"400": DeleteAccessGroupProjectStatus400;
 	"401": DeleteAccessGroupProjectStatus401;
 	"403": DeleteAccessGroupProjectStatus403;
+	"404": DeleteAccessGroupProjectStatus404;
 	"410": DeleteAccessGroupProjectStatus410;
 };
 
@@ -21560,6 +21653,7 @@ export type DeleteAccessGroupProjectResponse =
 	| DeleteAccessGroupProjectStatus400
 	| DeleteAccessGroupProjectStatus401
 	| DeleteAccessGroupProjectStatus403
+	| DeleteAccessGroupProjectStatus404
 	| DeleteAccessGroupProjectStatus410;
 
 export type CreateAiGatewayVirtualModelConfigQuery = {
@@ -21585,6 +21679,8 @@ export type CreateAiGatewayVirtualModelConfigStatus401 = unknown;
 
 export type CreateAiGatewayVirtualModelConfigStatus403 = unknown;
 
+export type CreateAiGatewayVirtualModelConfigStatus404 = unknown;
+
 export type CreateAiGatewayVirtualModelConfigStatus409 = unknown;
 
 export type CreateAiGatewayVirtualModelConfigStatus410 = unknown;
@@ -21605,6 +21701,7 @@ export type CreateAiGatewayVirtualModelConfigResponses = {
 	"400": CreateAiGatewayVirtualModelConfigStatus400;
 	"401": CreateAiGatewayVirtualModelConfigStatus401;
 	"403": CreateAiGatewayVirtualModelConfigStatus403;
+	"404": CreateAiGatewayVirtualModelConfigStatus404;
 	"409": CreateAiGatewayVirtualModelConfigStatus409;
 	"410": CreateAiGatewayVirtualModelConfigStatus410;
 	"429": CreateAiGatewayVirtualModelConfigStatus429;
@@ -21619,6 +21716,7 @@ export type CreateAiGatewayVirtualModelConfigResponse =
 	| CreateAiGatewayVirtualModelConfigStatus400
 	| CreateAiGatewayVirtualModelConfigStatus401
 	| CreateAiGatewayVirtualModelConfigStatus403
+	| CreateAiGatewayVirtualModelConfigStatus404
 	| CreateAiGatewayVirtualModelConfigStatus409
 	| CreateAiGatewayVirtualModelConfigStatus410
 	| CreateAiGatewayVirtualModelConfigStatus429
@@ -21845,6 +21943,8 @@ export type ListAiGatewayVirtualModelConfigsStatus401 = unknown;
 
 export type ListAiGatewayVirtualModelConfigsStatus403 = unknown;
 
+export type ListAiGatewayVirtualModelConfigsStatus404 = unknown;
+
 export type ListAiGatewayVirtualModelConfigsStatus410 = unknown;
 
 export type ListAiGatewayVirtualModelConfigsStatus500 = unknown;
@@ -21861,6 +21961,7 @@ export type ListAiGatewayVirtualModelConfigsResponses = {
 	"400": ListAiGatewayVirtualModelConfigsStatus400;
 	"401": ListAiGatewayVirtualModelConfigsStatus401;
 	"403": ListAiGatewayVirtualModelConfigsStatus403;
+	"404": ListAiGatewayVirtualModelConfigsStatus404;
 	"410": ListAiGatewayVirtualModelConfigsStatus410;
 	"500": ListAiGatewayVirtualModelConfigsStatus500;
 };
@@ -21873,6 +21974,7 @@ export type ListAiGatewayVirtualModelConfigsResponse =
 	| ListAiGatewayVirtualModelConfigsStatus400
 	| ListAiGatewayVirtualModelConfigsStatus401
 	| ListAiGatewayVirtualModelConfigsStatus403
+	| ListAiGatewayVirtualModelConfigsStatus404
 	| ListAiGatewayVirtualModelConfigsStatus410
 	| ListAiGatewayVirtualModelConfigsStatus500;
 
@@ -22094,6 +22196,8 @@ export type CreateAiGatewayRuleStatus401 = unknown;
 
 export type CreateAiGatewayRuleStatus403 = unknown;
 
+export type CreateAiGatewayRuleStatus404 = unknown;
+
 export type CreateAiGatewayRuleStatus409 = unknown;
 
 export type CreateAiGatewayRuleStatus410 = unknown;
@@ -22112,6 +22216,7 @@ export type CreateAiGatewayRuleResponses = {
 	"400": CreateAiGatewayRuleStatus400;
 	"401": CreateAiGatewayRuleStatus401;
 	"403": CreateAiGatewayRuleStatus403;
+	"404": CreateAiGatewayRuleStatus404;
 	"409": CreateAiGatewayRuleStatus409;
 	"410": CreateAiGatewayRuleStatus410;
 	"500": CreateAiGatewayRuleStatus500;
@@ -22125,6 +22230,7 @@ export type CreateAiGatewayRuleResponse =
 	| CreateAiGatewayRuleStatus400
 	| CreateAiGatewayRuleStatus401
 	| CreateAiGatewayRuleStatus403
+	| CreateAiGatewayRuleStatus404
 	| CreateAiGatewayRuleStatus409
 	| CreateAiGatewayRuleStatus410
 	| CreateAiGatewayRuleStatus500;
@@ -22161,6 +22267,8 @@ export type ListAiGatewayRulesStatus401 = unknown;
 
 export type ListAiGatewayRulesStatus403 = unknown;
 
+export type ListAiGatewayRulesStatus404 = unknown;
+
 export type ListAiGatewayRulesStatus410 = unknown;
 
 export type ListAiGatewayRulesStatus500 = unknown;
@@ -22177,6 +22285,7 @@ export type ListAiGatewayRulesResponses = {
 	"400": ListAiGatewayRulesStatus400;
 	"401": ListAiGatewayRulesStatus401;
 	"403": ListAiGatewayRulesStatus403;
+	"404": ListAiGatewayRulesStatus404;
 	"410": ListAiGatewayRulesStatus410;
 	"500": ListAiGatewayRulesStatus500;
 };
@@ -22189,6 +22298,7 @@ export type ListAiGatewayRulesResponse =
 	| ListAiGatewayRulesStatus400
 	| ListAiGatewayRulesStatus401
 	| ListAiGatewayRulesStatus403
+	| ListAiGatewayRulesStatus404
 	| ListAiGatewayRulesStatus410
 	| ListAiGatewayRulesStatus500;
 
@@ -22352,6 +22462,8 @@ export type RecordEventsStatus402 = unknown;
 
 export type RecordEventsStatus403 = unknown;
 
+export type RecordEventsStatus404 = unknown;
+
 export type RecordEventsStatus410 = unknown;
 
 export type RecordEventsOptions = {
@@ -22367,6 +22479,7 @@ export type RecordEventsResponses = {
 	"401": RecordEventsStatus401;
 	"402": RecordEventsStatus402;
 	"403": RecordEventsStatus403;
+	"404": RecordEventsStatus404;
 	"410": RecordEventsStatus410;
 };
 
@@ -22379,6 +22492,7 @@ export type RecordEventsResponse =
 	| RecordEventsStatus401
 	| RecordEventsStatus402
 	| RecordEventsStatus403
+	| RecordEventsStatus404
 	| RecordEventsStatus410;
 
 export type StatusQuery = {
@@ -22406,6 +22520,8 @@ export type StatusStatus402 = unknown;
 
 export type StatusStatus403 = unknown;
 
+export type StatusStatus404 = unknown;
+
 export type StatusStatus410 = unknown;
 
 export type StatusOptions = {
@@ -22421,6 +22537,7 @@ export type StatusResponses = {
 	"401": StatusStatus401;
 	"402": StatusStatus402;
 	"403": StatusStatus403;
+	"404": StatusStatus404;
 	"410": StatusStatus410;
 };
 
@@ -22433,6 +22550,7 @@ export type StatusResponse =
 	| StatusStatus401
 	| StatusStatus402
 	| StatusStatus403
+	| StatusStatus404
 	| StatusStatus410;
 
 export type UploadArtifactPath = {
@@ -22517,6 +22635,8 @@ export type UploadArtifactStatus402 = unknown;
 
 export type UploadArtifactStatus403 = unknown;
 
+export type UploadArtifactStatus404 = unknown;
+
 export type UploadArtifactStatus410 = unknown;
 
 export type UploadArtifactOptions = {
@@ -22532,6 +22652,7 @@ export type UploadArtifactResponses = {
 	"401": UploadArtifactStatus401;
 	"402": UploadArtifactStatus402;
 	"403": UploadArtifactStatus403;
+	"404": UploadArtifactStatus404;
 	"410": UploadArtifactStatus410;
 };
 
@@ -22544,6 +22665,7 @@ export type UploadArtifactResponse =
 	| UploadArtifactStatus401
 	| UploadArtifactStatus402
 	| UploadArtifactStatus403
+	| UploadArtifactStatus404
 	| UploadArtifactStatus410;
 
 export type DownloadArtifactPath = {
@@ -22656,6 +22778,8 @@ export type ArtifactQueryStatus402 = unknown;
 
 export type ArtifactQueryStatus403 = unknown;
 
+export type ArtifactQueryStatus404 = unknown;
+
 export type ArtifactQueryStatus410 = unknown;
 
 export type ArtifactQueryOptions = {
@@ -22671,6 +22795,7 @@ export type ArtifactQueryResponses = {
 	"401": ArtifactQueryStatus401;
 	"402": ArtifactQueryStatus402;
 	"403": ArtifactQueryStatus403;
+	"404": ArtifactQueryStatus404;
 	"410": ArtifactQueryStatus410;
 };
 
@@ -22683,6 +22808,7 @@ export type ArtifactQueryResponse =
 	| ArtifactQueryStatus401
 	| ArtifactQueryStatus402
 	| ArtifactQueryStatus403
+	| ArtifactQueryStatus404
 	| ArtifactQueryStatus410;
 
 export type DeleteAllArtifactsQuery = {
@@ -22708,6 +22834,8 @@ export type DeleteAllArtifactsStatus401 = unknown;
 
 export type DeleteAllArtifactsStatus403 = unknown;
 
+export type DeleteAllArtifactsStatus404 = unknown;
+
 export type DeleteAllArtifactsStatus410 = unknown;
 
 export type DeleteAllArtifactsOptions = {
@@ -22722,6 +22850,7 @@ export type DeleteAllArtifactsResponses = {
 	"400": DeleteAllArtifactsStatus400;
 	"401": DeleteAllArtifactsStatus401;
 	"403": DeleteAllArtifactsStatus403;
+	"404": DeleteAllArtifactsStatus404;
 	"410": DeleteAllArtifactsStatus410;
 };
 
@@ -22733,6 +22862,7 @@ export type DeleteAllArtifactsResponse =
 	| DeleteAllArtifactsStatus400
 	| DeleteAllArtifactsStatus401
 	| DeleteAllArtifactsStatus403
+	| DeleteAllArtifactsStatus404
 	| DeleteAllArtifactsStatus410;
 
 export type ListBillingChargesQuery = {
@@ -22957,6 +23087,8 @@ export type StageRedirectsStatus401 = unknown;
 
 export type StageRedirectsStatus403 = unknown;
 
+export type StageRedirectsStatus404 = unknown;
+
 export type StageRedirectsStatus410 = unknown;
 
 export type StageRedirectsStatus500 = unknown;
@@ -22973,6 +23105,7 @@ export type StageRedirectsResponses = {
 	"400": StageRedirectsStatus400;
 	"401": StageRedirectsStatus401;
 	"403": StageRedirectsStatus403;
+	"404": StageRedirectsStatus404;
 	"410": StageRedirectsStatus410;
 	"500": StageRedirectsStatus500;
 };
@@ -22985,6 +23118,7 @@ export type StageRedirectsResponse =
 	| StageRedirectsStatus400
 	| StageRedirectsStatus401
 	| StageRedirectsStatus403
+	| StageRedirectsStatus404
 	| StageRedirectsStatus410
 	| StageRedirectsStatus500;
 
@@ -23276,6 +23410,8 @@ export type GetVersionsStatus401 = unknown;
 
 export type GetVersionsStatus403 = unknown;
 
+export type GetVersionsStatus404 = unknown;
+
 export type GetVersionsStatus410 = unknown;
 
 export type GetVersionsStatus500 = unknown;
@@ -23292,6 +23428,7 @@ export type GetVersionsResponses = {
 	"400": GetVersionsStatus400;
 	"401": GetVersionsStatus401;
 	"403": GetVersionsStatus403;
+	"404": GetVersionsStatus404;
 	"410": GetVersionsStatus410;
 	"500": GetVersionsStatus500;
 };
@@ -23304,6 +23441,7 @@ export type GetVersionsResponse =
 	| GetVersionsStatus400
 	| GetVersionsStatus401
 	| GetVersionsStatus403
+	| GetVersionsStatus404
 	| GetVersionsStatus410
 	| GetVersionsStatus500;
 
@@ -23405,6 +23543,8 @@ export type ListProjectChecksStatus401 = unknown;
 
 export type ListProjectChecksStatus403 = unknown;
 
+export type ListProjectChecksStatus404 = unknown;
+
 export type ListProjectChecksStatus410 = unknown;
 
 export type ListProjectChecksStatus500 = unknown;
@@ -23421,6 +23561,7 @@ export type ListProjectChecksResponses = {
 	"400": ListProjectChecksStatus400;
 	"401": ListProjectChecksStatus401;
 	"403": ListProjectChecksStatus403;
+	"404": ListProjectChecksStatus404;
 	"410": ListProjectChecksStatus410;
 	"500": ListProjectChecksStatus500;
 };
@@ -23433,6 +23574,7 @@ export type ListProjectChecksResponse =
 	| ListProjectChecksStatus400
 	| ListProjectChecksStatus401
 	| ListProjectChecksStatus403
+	| ListProjectChecksStatus404
 	| ListProjectChecksStatus410
 	| ListProjectChecksStatus500;
 
@@ -23463,6 +23605,8 @@ export type CreateProjectCheckStatus401 = unknown;
 
 export type CreateProjectCheckStatus403 = unknown;
 
+export type CreateProjectCheckStatus404 = unknown;
+
 export type CreateProjectCheckStatus410 = unknown;
 
 export type CreateProjectCheckStatus500 = unknown;
@@ -23479,6 +23623,7 @@ export type CreateProjectCheckResponses = {
 	"400": CreateProjectCheckStatus400;
 	"401": CreateProjectCheckStatus401;
 	"403": CreateProjectCheckStatus403;
+	"404": CreateProjectCheckStatus404;
 	"410": CreateProjectCheckStatus410;
 	"500": CreateProjectCheckStatus500;
 };
@@ -23491,6 +23636,7 @@ export type CreateProjectCheckResponse =
 	| CreateProjectCheckStatus400
 	| CreateProjectCheckStatus401
 	| CreateProjectCheckStatus403
+	| CreateProjectCheckStatus404
 	| CreateProjectCheckStatus410
 	| CreateProjectCheckStatus500;
 
@@ -23527,6 +23673,8 @@ export type GetProjectCheckStatus401 = unknown;
 
 export type GetProjectCheckStatus403 = unknown;
 
+export type GetProjectCheckStatus404 = unknown;
+
 export type GetProjectCheckStatus410 = unknown;
 
 export type GetProjectCheckStatus500 = unknown;
@@ -23543,6 +23691,7 @@ export type GetProjectCheckResponses = {
 	"400": GetProjectCheckStatus400;
 	"401": GetProjectCheckStatus401;
 	"403": GetProjectCheckStatus403;
+	"404": GetProjectCheckStatus404;
 	"410": GetProjectCheckStatus410;
 	"500": GetProjectCheckStatus500;
 };
@@ -23555,6 +23704,7 @@ export type GetProjectCheckResponse =
 	| GetProjectCheckStatus400
 	| GetProjectCheckStatus401
 	| GetProjectCheckStatus403
+	| GetProjectCheckStatus404
 	| GetProjectCheckStatus410
 	| GetProjectCheckStatus500;
 
@@ -23717,6 +23867,8 @@ export type ListCheckRunsStatus401 = unknown;
 
 export type ListCheckRunsStatus403 = unknown;
 
+export type ListCheckRunsStatus404 = unknown;
+
 export type ListCheckRunsStatus410 = unknown;
 
 export type ListCheckRunsStatus500 = unknown;
@@ -23733,6 +23885,7 @@ export type ListCheckRunsResponses = {
 	"400": ListCheckRunsStatus400;
 	"401": ListCheckRunsStatus401;
 	"403": ListCheckRunsStatus403;
+	"404": ListCheckRunsStatus404;
 	"410": ListCheckRunsStatus410;
 	"500": ListCheckRunsStatus500;
 };
@@ -23745,6 +23898,7 @@ export type ListCheckRunsResponse =
 	| ListCheckRunsStatus400
 	| ListCheckRunsStatus401
 	| ListCheckRunsStatus403
+	| ListCheckRunsStatus404
 	| ListCheckRunsStatus410
 	| ListCheckRunsStatus500;
 
@@ -23775,6 +23929,8 @@ export type ListDeploymentCheckRunsStatus401 = unknown;
 
 export type ListDeploymentCheckRunsStatus403 = unknown;
 
+export type ListDeploymentCheckRunsStatus404 = unknown;
+
 export type ListDeploymentCheckRunsStatus410 = unknown;
 
 export type ListDeploymentCheckRunsStatus500 = unknown;
@@ -23791,6 +23947,7 @@ export type ListDeploymentCheckRunsResponses = {
 	"400": ListDeploymentCheckRunsStatus400;
 	"401": ListDeploymentCheckRunsStatus401;
 	"403": ListDeploymentCheckRunsStatus403;
+	"404": ListDeploymentCheckRunsStatus404;
 	"410": ListDeploymentCheckRunsStatus410;
 	"500": ListDeploymentCheckRunsStatus500;
 };
@@ -23803,6 +23960,7 @@ export type ListDeploymentCheckRunsResponse =
 	| ListDeploymentCheckRunsStatus400
 	| ListDeploymentCheckRunsStatus401
 	| ListDeploymentCheckRunsStatus403
+	| ListDeploymentCheckRunsStatus404
 	| ListDeploymentCheckRunsStatus410
 	| ListDeploymentCheckRunsStatus500;
 
@@ -23964,6 +24122,8 @@ export type UpdateDeploymentCheckRunStatus401 = unknown;
 
 export type UpdateDeploymentCheckRunStatus403 = unknown;
 
+export type UpdateDeploymentCheckRunStatus404 = unknown;
+
 export type UpdateDeploymentCheckRunStatus410 = unknown;
 
 export type UpdateDeploymentCheckRunStatus413 = unknown;
@@ -23982,6 +24142,7 @@ export type UpdateDeploymentCheckRunResponses = {
 	"400": UpdateDeploymentCheckRunStatus400;
 	"401": UpdateDeploymentCheckRunStatus401;
 	"403": UpdateDeploymentCheckRunStatus403;
+	"404": UpdateDeploymentCheckRunStatus404;
 	"410": UpdateDeploymentCheckRunStatus410;
 	"413": UpdateDeploymentCheckRunStatus413;
 	"500": UpdateDeploymentCheckRunStatus500;
@@ -23995,6 +24156,7 @@ export type UpdateDeploymentCheckRunResponse =
 	| UpdateDeploymentCheckRunStatus400
 	| UpdateDeploymentCheckRunStatus401
 	| UpdateDeploymentCheckRunStatus403
+	| UpdateDeploymentCheckRunStatus404
 	| UpdateDeploymentCheckRunStatus410
 	| UpdateDeploymentCheckRunStatus413
 	| UpdateDeploymentCheckRunStatus500;
@@ -24408,6 +24570,8 @@ export type ListNetworksStatus401 = unknown;
 
 export type ListNetworksStatus403 = unknown;
 
+export type ListNetworksStatus404 = unknown;
+
 export type ListNetworksStatus410 = unknown;
 
 export type ListNetworksOptions = {
@@ -24422,6 +24586,7 @@ export type ListNetworksResponses = {
 	"400": ListNetworksStatus400;
 	"401": ListNetworksStatus401;
 	"403": ListNetworksStatus403;
+	"404": ListNetworksStatus404;
 	"410": ListNetworksStatus410;
 };
 
@@ -24433,6 +24598,7 @@ export type ListNetworksResponse =
 	| ListNetworksStatus400
 	| ListNetworksStatus401
 	| ListNetworksStatus403
+	| ListNetworksStatus404
 	| ListNetworksStatus410;
 
 export type CreateNetworkQuery = {
@@ -24460,6 +24626,8 @@ export type CreateNetworkStatus402 = unknown;
 
 export type CreateNetworkStatus403 = unknown;
 
+export type CreateNetworkStatus404 = unknown;
+
 export type CreateNetworkStatus409 = unknown;
 
 export type CreateNetworkStatus410 = unknown;
@@ -24477,6 +24645,7 @@ export type CreateNetworkResponses = {
 	"401": CreateNetworkStatus401;
 	"402": CreateNetworkStatus402;
 	"403": CreateNetworkStatus403;
+	"404": CreateNetworkStatus404;
 	"409": CreateNetworkStatus409;
 	"410": CreateNetworkStatus410;
 };
@@ -24490,6 +24659,7 @@ export type CreateNetworkResponse =
 	| CreateNetworkStatus401
 	| CreateNetworkStatus402
 	| CreateNetworkStatus403
+	| CreateNetworkStatus404
 	| CreateNetworkStatus409
 	| CreateNetworkStatus410;
 
@@ -24527,6 +24697,8 @@ export type DeleteNetworkStatus402 = unknown;
 
 export type DeleteNetworkStatus403 = unknown;
 
+export type DeleteNetworkStatus404 = unknown;
+
 export type DeleteNetworkStatus409 = unknown;
 
 export type DeleteNetworkStatus410 = unknown;
@@ -24544,6 +24716,7 @@ export type DeleteNetworkResponses = {
 	"401": DeleteNetworkStatus401;
 	"402": DeleteNetworkStatus402;
 	"403": DeleteNetworkStatus403;
+	"404": DeleteNetworkStatus404;
 	"409": DeleteNetworkStatus409;
 	"410": DeleteNetworkStatus410;
 };
@@ -24557,6 +24730,7 @@ export type DeleteNetworkResponse =
 	| DeleteNetworkStatus401
 	| DeleteNetworkStatus402
 	| DeleteNetworkStatus403
+	| DeleteNetworkStatus404
 	| DeleteNetworkStatus409
 	| DeleteNetworkStatus410;
 
@@ -24592,6 +24766,8 @@ export type UpdateNetworkStatus401 = unknown;
 
 export type UpdateNetworkStatus403 = unknown;
 
+export type UpdateNetworkStatus404 = unknown;
+
 export type UpdateNetworkStatus410 = unknown;
 
 export type UpdateNetworkOptions = {
@@ -24606,6 +24782,7 @@ export type UpdateNetworkResponses = {
 	"400": UpdateNetworkStatus400;
 	"401": UpdateNetworkStatus401;
 	"403": UpdateNetworkStatus403;
+	"404": UpdateNetworkStatus404;
 	"410": UpdateNetworkStatus410;
 };
 
@@ -24617,6 +24794,7 @@ export type UpdateNetworkResponse =
 	| UpdateNetworkStatus400
 	| UpdateNetworkStatus401
 	| UpdateNetworkStatus403
+	| UpdateNetworkStatus404
 	| UpdateNetworkStatus410;
 
 export type ReadNetworkPath = {
@@ -24651,6 +24829,8 @@ export type ReadNetworkStatus401 = unknown;
 
 export type ReadNetworkStatus403 = unknown;
 
+export type ReadNetworkStatus404 = unknown;
+
 export type ReadNetworkStatus410 = unknown;
 
 export type ReadNetworkOptions = {
@@ -24665,6 +24845,7 @@ export type ReadNetworkResponses = {
 	"400": ReadNetworkStatus400;
 	"401": ReadNetworkStatus401;
 	"403": ReadNetworkStatus403;
+	"404": ReadNetworkStatus404;
 	"410": ReadNetworkStatus410;
 };
 
@@ -24676,6 +24857,7 @@ export type ReadNetworkResponse =
 	| ReadNetworkStatus400
 	| ReadNetworkStatus401
 	| ReadNetworkStatus403
+	| ReadNetworkStatus404
 	| ReadNetworkStatus410;
 
 export type CreatePrivateLinkEndpointQuery = {
@@ -26072,6 +26254,8 @@ export type GetDeploymentEventsStatus401 = unknown;
 
 export type GetDeploymentEventsStatus403 = unknown;
 
+export type GetDeploymentEventsStatus404 = unknown;
+
 export type GetDeploymentEventsStatus410 = unknown;
 
 export type GetDeploymentEventsStatus500 = unknown;
@@ -26088,6 +26272,7 @@ export type GetDeploymentEventsResponses = {
 	"400": GetDeploymentEventsStatus400;
 	"401": GetDeploymentEventsStatus401;
 	"403": GetDeploymentEventsStatus403;
+	"404": GetDeploymentEventsStatus404;
 	"410": GetDeploymentEventsStatus410;
 	"500": GetDeploymentEventsStatus500;
 };
@@ -26100,6 +26285,7 @@ export type GetDeploymentEventsResponse =
 	| GetDeploymentEventsStatus400
 	| GetDeploymentEventsStatus401
 	| GetDeploymentEventsStatus403
+	| GetDeploymentEventsStatus404
 	| GetDeploymentEventsStatus410
 	| GetDeploymentEventsStatus500;
 
@@ -28574,6 +28760,8 @@ export type CreateConfigurableLogDrainStatus401 = unknown;
 
 export type CreateConfigurableLogDrainStatus403 = unknown;
 
+export type CreateConfigurableLogDrainStatus404 = unknown;
+
 export type CreateConfigurableLogDrainStatus410 = unknown;
 
 export type CreateConfigurableLogDrainOptions = {
@@ -28588,6 +28776,7 @@ export type CreateConfigurableLogDrainResponses = {
 	"400": CreateConfigurableLogDrainStatus400;
 	"401": CreateConfigurableLogDrainStatus401;
 	"403": CreateConfigurableLogDrainStatus403;
+	"404": CreateConfigurableLogDrainStatus404;
 	"410": CreateConfigurableLogDrainStatus410;
 };
 
@@ -28599,6 +28788,7 @@ export type CreateConfigurableLogDrainResponse =
 	| CreateConfigurableLogDrainStatus400
 	| CreateConfigurableLogDrainStatus401
 	| CreateConfigurableLogDrainStatus403
+	| CreateConfigurableLogDrainStatus404
 	| CreateConfigurableLogDrainStatus410;
 
 export type CreateDrainQuery = {
@@ -28626,6 +28816,8 @@ export type CreateDrainStatus402 = unknown;
 
 export type CreateDrainStatus403 = unknown;
 
+export type CreateDrainStatus404 = unknown;
+
 export type CreateDrainStatus410 = unknown;
 
 export type CreateDrainOptions = {
@@ -28641,6 +28833,7 @@ export type CreateDrainResponses = {
 	"401": CreateDrainStatus401;
 	"402": CreateDrainStatus402;
 	"403": CreateDrainStatus403;
+	"404": CreateDrainStatus404;
 	"410": CreateDrainStatus410;
 };
 
@@ -28653,6 +28846,7 @@ export type CreateDrainResponse =
 	| CreateDrainStatus401
 	| CreateDrainStatus402
 	| CreateDrainStatus403
+	| CreateDrainStatus404
 	| CreateDrainStatus410;
 
 export type GetDrainsQuery = {
@@ -28918,6 +29112,8 @@ export type TestDrainStatus402 = unknown;
 
 export type TestDrainStatus403 = unknown;
 
+export type TestDrainStatus404 = unknown;
+
 export type TestDrainStatus410 = unknown;
 
 export type TestDrainOptions = {
@@ -28933,6 +29129,7 @@ export type TestDrainResponses = {
 	"401": TestDrainStatus401;
 	"402": TestDrainStatus402;
 	"403": TestDrainStatus403;
+	"404": TestDrainStatus404;
 	"410": TestDrainStatus410;
 };
 
@@ -28945,6 +29142,7 @@ export type TestDrainResponse =
 	| TestDrainStatus401
 	| TestDrainStatus402
 	| TestDrainStatus403
+	| TestDrainStatus404
 	| TestDrainStatus410;
 
 export type InvalidateByTagsQuery = {
@@ -29198,6 +29396,8 @@ export type GetEdgeConfigsStatus401 = unknown;
 
 export type GetEdgeConfigsStatus403 = unknown;
 
+export type GetEdgeConfigsStatus404 = unknown;
+
 export type GetEdgeConfigsStatus410 = unknown;
 
 export type GetEdgeConfigsOptions = {
@@ -29212,6 +29412,7 @@ export type GetEdgeConfigsResponses = {
 	"400": GetEdgeConfigsStatus400;
 	"401": GetEdgeConfigsStatus401;
 	"403": GetEdgeConfigsStatus403;
+	"404": GetEdgeConfigsStatus404;
 	"410": GetEdgeConfigsStatus410;
 };
 
@@ -29223,6 +29424,7 @@ export type GetEdgeConfigsResponse =
 	| GetEdgeConfigsStatus400
 	| GetEdgeConfigsStatus401
 	| GetEdgeConfigsStatus403
+	| GetEdgeConfigsStatus404
 	| GetEdgeConfigsStatus410;
 
 export type CreateEdgeConfigQuery = {
@@ -29250,6 +29452,8 @@ export type CreateEdgeConfigStatus402 = unknown;
 
 export type CreateEdgeConfigStatus403 = unknown;
 
+export type CreateEdgeConfigStatus404 = unknown;
+
 export type CreateEdgeConfigStatus410 = unknown;
 
 export type CreateEdgeConfigOptions = {
@@ -29265,6 +29469,7 @@ export type CreateEdgeConfigResponses = {
 	"401": CreateEdgeConfigStatus401;
 	"402": CreateEdgeConfigStatus402;
 	"403": CreateEdgeConfigStatus403;
+	"404": CreateEdgeConfigStatus404;
 	"410": CreateEdgeConfigStatus410;
 };
 
@@ -29277,6 +29482,7 @@ export type CreateEdgeConfigResponse =
 	| CreateEdgeConfigStatus401
 	| CreateEdgeConfigStatus402
 	| CreateEdgeConfigStatus403
+	| CreateEdgeConfigStatus404
 	| CreateEdgeConfigStatus410;
 
 export type GetEdgeConfigPath = {
@@ -30337,6 +30543,8 @@ export type CreateSharedEnvVariableStatus402 = unknown;
 
 export type CreateSharedEnvVariableStatus403 = unknown;
 
+export type CreateSharedEnvVariableStatus404 = unknown;
+
 export type CreateSharedEnvVariableStatus410 = unknown;
 
 export type CreateSharedEnvVariableOptions = {
@@ -30352,6 +30560,7 @@ export type CreateSharedEnvVariableResponses = {
 	"401": CreateSharedEnvVariableStatus401;
 	"402": CreateSharedEnvVariableStatus402;
 	"403": CreateSharedEnvVariableStatus403;
+	"404": CreateSharedEnvVariableStatus404;
 	"410": CreateSharedEnvVariableStatus410;
 };
 
@@ -30364,6 +30573,7 @@ export type CreateSharedEnvVariableResponse =
 	| CreateSharedEnvVariableStatus401
 	| CreateSharedEnvVariableStatus402
 	| CreateSharedEnvVariableStatus403
+	| CreateSharedEnvVariableStatus404
 	| CreateSharedEnvVariableStatus410;
 
 export type ListSharedEnvVariableQuery = {
@@ -30482,6 +30692,8 @@ export type UpdateSharedEnvVariableStatus402 = unknown;
 
 export type UpdateSharedEnvVariableStatus403 = unknown;
 
+export type UpdateSharedEnvVariableStatus404 = unknown;
+
 export type UpdateSharedEnvVariableStatus410 = unknown;
 
 export type UpdateSharedEnvVariableOptions = {
@@ -30497,6 +30709,7 @@ export type UpdateSharedEnvVariableResponses = {
 	"401": UpdateSharedEnvVariableStatus401;
 	"402": UpdateSharedEnvVariableStatus402;
 	"403": UpdateSharedEnvVariableStatus403;
+	"404": UpdateSharedEnvVariableStatus404;
 	"410": UpdateSharedEnvVariableStatus410;
 };
 
@@ -30509,6 +30722,7 @@ export type UpdateSharedEnvVariableResponse =
 	| UpdateSharedEnvVariableStatus401
 	| UpdateSharedEnvVariableStatus402
 	| UpdateSharedEnvVariableStatus403
+	| UpdateSharedEnvVariableStatus404
 	| UpdateSharedEnvVariableStatus410;
 
 export type DeleteSharedEnvVariableQuery = {
@@ -30536,6 +30750,8 @@ export type DeleteSharedEnvVariableStatus402 = unknown;
 
 export type DeleteSharedEnvVariableStatus403 = unknown;
 
+export type DeleteSharedEnvVariableStatus404 = unknown;
+
 export type DeleteSharedEnvVariableStatus410 = unknown;
 
 export type DeleteSharedEnvVariableOptions = {
@@ -30551,6 +30767,7 @@ export type DeleteSharedEnvVariableResponses = {
 	"401": DeleteSharedEnvVariableStatus401;
 	"402": DeleteSharedEnvVariableStatus402;
 	"403": DeleteSharedEnvVariableStatus403;
+	"404": DeleteSharedEnvVariableStatus404;
 	"410": DeleteSharedEnvVariableStatus410;
 };
 
@@ -30563,6 +30780,7 @@ export type DeleteSharedEnvVariableResponse =
 	| DeleteSharedEnvVariableStatus401
 	| DeleteSharedEnvVariableStatus402
 	| DeleteSharedEnvVariableStatus403
+	| DeleteSharedEnvVariableStatus404
 	| DeleteSharedEnvVariableStatus410;
 
 export type GetSharedEnvVarPath = {
@@ -30596,6 +30814,8 @@ export type GetSharedEnvVarStatus401 = unknown;
 
 export type GetSharedEnvVarStatus403 = unknown;
 
+export type GetSharedEnvVarStatus404 = unknown;
+
 export type GetSharedEnvVarStatus410 = unknown;
 
 export type GetSharedEnvVarOptions = {
@@ -30610,6 +30830,7 @@ export type GetSharedEnvVarResponses = {
 	"400": GetSharedEnvVarStatus400;
 	"401": GetSharedEnvVarStatus401;
 	"403": GetSharedEnvVarStatus403;
+	"404": GetSharedEnvVarStatus404;
 	"410": GetSharedEnvVarStatus410;
 };
 
@@ -30621,6 +30842,7 @@ export type GetSharedEnvVarResponse =
 	| GetSharedEnvVarStatus400
 	| GetSharedEnvVarStatus401
 	| GetSharedEnvVarStatus403
+	| GetSharedEnvVarStatus404
 	| GetSharedEnvVarStatus410;
 
 export type UnlinkSharedEnvVariablePath = {
@@ -30655,6 +30877,8 @@ export type UnlinkSharedEnvVariableStatus401 = unknown;
 
 export type UnlinkSharedEnvVariableStatus403 = unknown;
 
+export type UnlinkSharedEnvVariableStatus404 = unknown;
+
 export type UnlinkSharedEnvVariableStatus410 = unknown;
 
 export type UnlinkSharedEnvVariableOptions = {
@@ -30669,6 +30893,7 @@ export type UnlinkSharedEnvVariableResponses = {
 	"400": UnlinkSharedEnvVariableStatus400;
 	"401": UnlinkSharedEnvVariableStatus401;
 	"403": UnlinkSharedEnvVariableStatus403;
+	"404": UnlinkSharedEnvVariableStatus404;
 	"410": UnlinkSharedEnvVariableStatus410;
 };
 
@@ -30680,6 +30905,7 @@ export type UnlinkSharedEnvVariableResponse =
 	| UnlinkSharedEnvVariableStatus400
 	| UnlinkSharedEnvVariableStatus401
 	| UnlinkSharedEnvVariableStatus403
+	| UnlinkSharedEnvVariableStatus404
 	| UnlinkSharedEnvVariableStatus410;
 
 export type ListUserEventsQuery = {
@@ -31657,6 +31883,8 @@ export type ListTeamFlagSettingsStatus401 = unknown;
 
 export type ListTeamFlagSettingsStatus403 = unknown;
 
+export type ListTeamFlagSettingsStatus404 = unknown;
+
 export type ListTeamFlagSettingsStatus410 = unknown;
 
 export type ListTeamFlagSettingsOptions = {
@@ -31671,6 +31899,7 @@ export type ListTeamFlagSettingsResponses = {
 	"400": ListTeamFlagSettingsStatus400;
 	"401": ListTeamFlagSettingsStatus401;
 	"403": ListTeamFlagSettingsStatus403;
+	"404": ListTeamFlagSettingsStatus404;
 	"410": ListTeamFlagSettingsStatus410;
 };
 
@@ -31682,6 +31911,7 @@ export type ListTeamFlagSettingsResponse =
 	| ListTeamFlagSettingsStatus400
 	| ListTeamFlagSettingsStatus401
 	| ListTeamFlagSettingsStatus403
+	| ListTeamFlagSettingsStatus404
 	| ListTeamFlagSettingsStatus410;
 
 export type ListTeamFlagsV2Path = {
@@ -31777,6 +32007,8 @@ export type ListTeamFlagsV2Status401 = unknown;
 
 export type ListTeamFlagsV2Status403 = unknown;
 
+export type ListTeamFlagsV2Status404 = unknown;
+
 export type ListTeamFlagsV2Status410 = unknown;
 
 export type ListTeamFlagsV2Status503 = unknown;
@@ -31793,6 +32025,7 @@ export type ListTeamFlagsV2Responses = {
 	"400": ListTeamFlagsV2Status400;
 	"401": ListTeamFlagsV2Status401;
 	"403": ListTeamFlagsV2Status403;
+	"404": ListTeamFlagsV2Status404;
 	"410": ListTeamFlagsV2Status410;
 	"503": ListTeamFlagsV2Status503;
 };
@@ -31805,6 +32038,7 @@ export type ListTeamFlagsV2Response =
 	| ListTeamFlagsV2Status400
 	| ListTeamFlagsV2Status401
 	| ListTeamFlagsV2Status403
+	| ListTeamFlagsV2Status404
 	| ListTeamFlagsV2Status410
 	| ListTeamFlagsV2Status503;
 
@@ -31890,6 +32124,8 @@ export type ListTeamFlagsStatus401 = unknown;
 
 export type ListTeamFlagsStatus403 = unknown;
 
+export type ListTeamFlagsStatus404 = unknown;
+
 export type ListTeamFlagsStatus410 = unknown;
 
 export type ListTeamFlagsOptions = {
@@ -31904,6 +32140,7 @@ export type ListTeamFlagsResponses = {
 	"400": ListTeamFlagsStatus400;
 	"401": ListTeamFlagsStatus401;
 	"403": ListTeamFlagsStatus403;
+	"404": ListTeamFlagsStatus404;
 	"410": ListTeamFlagsStatus410;
 };
 
@@ -31915,6 +32152,7 @@ export type ListTeamFlagsResponse =
 	| ListTeamFlagsStatus400
 	| ListTeamFlagsStatus401
 	| ListTeamFlagsStatus403
+	| ListTeamFlagsStatus404
 	| ListTeamFlagsStatus410;
 
 export type CreateFlagSegmentPath = {
@@ -33806,6 +34044,8 @@ export type GetConfigurationsStatus401 = unknown;
 
 export type GetConfigurationsStatus403 = unknown;
 
+export type GetConfigurationsStatus404 = unknown;
+
 export type GetConfigurationsStatus410 = unknown;
 
 export type GetConfigurationsOptions = {
@@ -33820,6 +34060,7 @@ export type GetConfigurationsResponses = {
 	"400": GetConfigurationsStatus400;
 	"401": GetConfigurationsStatus401;
 	"403": GetConfigurationsStatus403;
+	"404": GetConfigurationsStatus404;
 	"410": GetConfigurationsStatus410;
 };
 
@@ -33831,6 +34072,7 @@ export type GetConfigurationsResponse =
 	| GetConfigurationsStatus400
 	| GetConfigurationsStatus401
 	| GetConfigurationsStatus403
+	| GetConfigurationsStatus404
 	| GetConfigurationsStatus410;
 
 export type GetConfigurationPath = {
@@ -34075,6 +34317,8 @@ export type GetIntegrationLogDrainsStatus401 = unknown;
 
 export type GetIntegrationLogDrainsStatus403 = unknown;
 
+export type GetIntegrationLogDrainsStatus404 = unknown;
+
 export type GetIntegrationLogDrainsStatus410 = unknown;
 
 export type GetIntegrationLogDrainsOptions = {
@@ -34089,6 +34333,7 @@ export type GetIntegrationLogDrainsResponses = {
 	"400": GetIntegrationLogDrainsStatus400;
 	"401": GetIntegrationLogDrainsStatus401;
 	"403": GetIntegrationLogDrainsStatus403;
+	"404": GetIntegrationLogDrainsStatus404;
 	"410": GetIntegrationLogDrainsStatus410;
 };
 
@@ -34100,6 +34345,7 @@ export type GetIntegrationLogDrainsResponse =
 	| GetIntegrationLogDrainsStatus400
 	| GetIntegrationLogDrainsStatus401
 	| GetIntegrationLogDrainsStatus403
+	| GetIntegrationLogDrainsStatus404
 	| GetIntegrationLogDrainsStatus410;
 
 export type CreateLogDrainQuery = {
@@ -34125,6 +34371,8 @@ export type CreateLogDrainStatus401 = unknown;
 
 export type CreateLogDrainStatus403 = unknown;
 
+export type CreateLogDrainStatus404 = unknown;
+
 export type CreateLogDrainStatus410 = unknown;
 
 export type CreateLogDrainOptions = {
@@ -34139,6 +34387,7 @@ export type CreateLogDrainResponses = {
 	"400": CreateLogDrainStatus400;
 	"401": CreateLogDrainStatus401;
 	"403": CreateLogDrainStatus403;
+	"404": CreateLogDrainStatus404;
 	"410": CreateLogDrainStatus410;
 };
 
@@ -34150,6 +34399,7 @@ export type CreateLogDrainResponse =
 	| CreateLogDrainStatus400
 	| CreateLogDrainStatus401
 	| CreateLogDrainStatus403
+	| CreateLogDrainStatus404
 	| CreateLogDrainStatus410;
 
 export type DeleteIntegrationLogDrainPath = {
@@ -34222,6 +34472,8 @@ export type CreateApiKeysStatus401 = unknown;
 
 export type CreateApiKeysStatus403 = unknown;
 
+export type CreateApiKeysStatus404 = unknown;
+
 export type CreateApiKeysStatus409 = unknown;
 
 export type CreateApiKeysStatus410 = unknown;
@@ -34242,6 +34494,7 @@ export type CreateApiKeysResponses = {
 	"400": CreateApiKeysStatus400;
 	"401": CreateApiKeysStatus401;
 	"403": CreateApiKeysStatus403;
+	"404": CreateApiKeysStatus404;
 	"409": CreateApiKeysStatus409;
 	"410": CreateApiKeysStatus410;
 	"429": CreateApiKeysStatus429;
@@ -34256,6 +34509,7 @@ export type CreateApiKeysResponse =
 	| CreateApiKeysStatus400
 	| CreateApiKeysStatus401
 	| CreateApiKeysStatus403
+	| CreateApiKeysStatus404
 	| CreateApiKeysStatus409
 	| CreateApiKeysStatus410
 	| CreateApiKeysStatus429
@@ -34392,6 +34646,8 @@ export type ListKmsIssuersStatus401 = unknown;
 
 export type ListKmsIssuersStatus403 = unknown;
 
+export type ListKmsIssuersStatus404 = unknown;
+
 export type ListKmsIssuersStatus410 = unknown;
 
 export type ListKmsIssuersOptions = {
@@ -34406,6 +34662,7 @@ export type ListKmsIssuersResponses = {
 	"400": ListKmsIssuersStatus400;
 	"401": ListKmsIssuersStatus401;
 	"403": ListKmsIssuersStatus403;
+	"404": ListKmsIssuersStatus404;
 	"410": ListKmsIssuersStatus410;
 };
 
@@ -34417,6 +34674,7 @@ export type ListKmsIssuersResponse =
 	| ListKmsIssuersStatus400
 	| ListKmsIssuersStatus401
 	| ListKmsIssuersStatus403
+	| ListKmsIssuersStatus404
 	| ListKmsIssuersStatus410;
 
 export type CreateKmsIssuerQuery = {
@@ -35109,6 +35367,8 @@ export type GetRuntimeLogsStatus401 = unknown;
 
 export type GetRuntimeLogsStatus403 = unknown;
 
+export type GetRuntimeLogsStatus404 = unknown;
+
 export type GetRuntimeLogsStatus410 = unknown;
 
 export type GetRuntimeLogsOptions = {
@@ -35123,6 +35383,7 @@ export type GetRuntimeLogsResponses = {
 	"400": GetRuntimeLogsStatus400;
 	"401": GetRuntimeLogsStatus401;
 	"403": GetRuntimeLogsStatus403;
+	"404": GetRuntimeLogsStatus404;
 	"410": GetRuntimeLogsStatus410;
 };
 
@@ -35134,6 +35395,7 @@ export type GetRuntimeLogsResponse =
 	| GetRuntimeLogsStatus400
 	| GetRuntimeLogsStatus401
 	| GetRuntimeLogsStatus403
+	| GetRuntimeLogsStatus404
 	| GetRuntimeLogsStatus410;
 
 export type CreateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsPath =
@@ -35441,6 +35703,8 @@ export type GetMicrofrontendsGroupsStatus401 = unknown;
 
 export type GetMicrofrontendsGroupsStatus403 = unknown;
 
+export type GetMicrofrontendsGroupsStatus404 = unknown;
+
 export type GetMicrofrontendsGroupsStatus410 = unknown;
 
 export type GetMicrofrontendsGroupsStatus500 = unknown;
@@ -35457,6 +35721,7 @@ export type GetMicrofrontendsGroupsResponses = {
 	"400": GetMicrofrontendsGroupsStatus400;
 	"401": GetMicrofrontendsGroupsStatus401;
 	"403": GetMicrofrontendsGroupsStatus403;
+	"404": GetMicrofrontendsGroupsStatus404;
 	"410": GetMicrofrontendsGroupsStatus410;
 	"500": GetMicrofrontendsGroupsStatus500;
 };
@@ -35469,6 +35734,7 @@ export type GetMicrofrontendsGroupsResponse =
 	| GetMicrofrontendsGroupsStatus400
 	| GetMicrofrontendsGroupsStatus401
 	| GetMicrofrontendsGroupsStatus403
+	| GetMicrofrontendsGroupsStatus404
 	| GetMicrofrontendsGroupsStatus410
 	| GetMicrofrontendsGroupsStatus500;
 
@@ -35499,6 +35765,8 @@ export type GetMicrofrontendsInGroupStatus401 = unknown;
 
 export type GetMicrofrontendsInGroupStatus403 = unknown;
 
+export type GetMicrofrontendsInGroupStatus404 = unknown;
+
 export type GetMicrofrontendsInGroupStatus410 = unknown;
 
 export type GetMicrofrontendsInGroupOptions = {
@@ -35513,6 +35781,7 @@ export type GetMicrofrontendsInGroupResponses = {
 	"400": GetMicrofrontendsInGroupStatus400;
 	"401": GetMicrofrontendsInGroupStatus401;
 	"403": GetMicrofrontendsInGroupStatus403;
+	"404": GetMicrofrontendsInGroupStatus404;
 	"410": GetMicrofrontendsInGroupStatus410;
 };
 
@@ -35524,6 +35793,7 @@ export type GetMicrofrontendsInGroupResponse =
 	| GetMicrofrontendsInGroupStatus400
 	| GetMicrofrontendsInGroupStatus401
 	| GetMicrofrontendsInGroupStatus403
+	| GetMicrofrontendsInGroupStatus404
 	| GetMicrofrontendsInGroupStatus410;
 
 export type GetMicrofrontendsConfigPath = {
@@ -35681,6 +35951,8 @@ export type CreateMicrofrontendsGroupWithApplicationsStatus401 = unknown;
 
 export type CreateMicrofrontendsGroupWithApplicationsStatus403 = unknown;
 
+export type CreateMicrofrontendsGroupWithApplicationsStatus404 = unknown;
+
 export type CreateMicrofrontendsGroupWithApplicationsStatus410 = unknown;
 
 export type CreateMicrofrontendsGroupWithApplicationsStatus500 = unknown;
@@ -35697,6 +35969,7 @@ export type CreateMicrofrontendsGroupWithApplicationsResponses = {
 	"400": CreateMicrofrontendsGroupWithApplicationsStatus400;
 	"401": CreateMicrofrontendsGroupWithApplicationsStatus401;
 	"403": CreateMicrofrontendsGroupWithApplicationsStatus403;
+	"404": CreateMicrofrontendsGroupWithApplicationsStatus404;
 	"410": CreateMicrofrontendsGroupWithApplicationsStatus410;
 	"500": CreateMicrofrontendsGroupWithApplicationsStatus500;
 };
@@ -35709,6 +35982,7 @@ export type CreateMicrofrontendsGroupWithApplicationsResponse =
 	| CreateMicrofrontendsGroupWithApplicationsStatus400
 	| CreateMicrofrontendsGroupWithApplicationsStatus401
 	| CreateMicrofrontendsGroupWithApplicationsStatus403
+	| CreateMicrofrontendsGroupWithApplicationsStatus404
 	| CreateMicrofrontendsGroupWithApplicationsStatus410
 	| CreateMicrofrontendsGroupWithApplicationsStatus500;
 
@@ -35842,6 +36116,8 @@ export type CreateObservabilityQueryStatus402 = unknown;
 
 export type CreateObservabilityQueryStatus403 = unknown;
 
+export type CreateObservabilityQueryStatus404 = unknown;
+
 export type CreateObservabilityQueryStatus408 = unknown;
 
 export type CreateObservabilityQueryStatus410 = unknown;
@@ -35867,6 +36143,7 @@ export type CreateObservabilityQueryResponses = {
 	"401": CreateObservabilityQueryStatus401;
 	"402": CreateObservabilityQueryStatus402;
 	"403": CreateObservabilityQueryStatus403;
+	"404": CreateObservabilityQueryStatus404;
 	"408": CreateObservabilityQueryStatus408;
 	"410": CreateObservabilityQueryStatus410;
 	"413": CreateObservabilityQueryStatus413;
@@ -35884,6 +36161,7 @@ export type CreateObservabilityQueryResponse =
 	| CreateObservabilityQueryStatus401
 	| CreateObservabilityQueryStatus402
 	| CreateObservabilityQueryStatus403
+	| CreateObservabilityQueryStatus404
 	| CreateObservabilityQueryStatus408
 	| CreateObservabilityQueryStatus410
 	| CreateObservabilityQueryStatus413
@@ -35899,6 +36177,8 @@ export type GetObservabilitySchemaStatus401 = unknown;
 
 export type GetObservabilitySchemaStatus403 = unknown;
 
+export type GetObservabilitySchemaStatus404 = unknown;
+
 export type GetObservabilitySchemaStatus410 = unknown;
 
 export type GetObservabilitySchemaOptions = {
@@ -35913,6 +36193,7 @@ export type GetObservabilitySchemaResponses = {
 	"400": GetObservabilitySchemaStatus400;
 	"401": GetObservabilitySchemaStatus401;
 	"403": GetObservabilitySchemaStatus403;
+	"404": GetObservabilitySchemaStatus404;
 	"410": GetObservabilitySchemaStatus410;
 };
 
@@ -35924,6 +36205,7 @@ export type GetObservabilitySchemaResponse =
 	| GetObservabilitySchemaStatus400
 	| GetObservabilitySchemaStatus401
 	| GetObservabilitySchemaStatus403
+	| GetObservabilitySchemaStatus404
 	| GetObservabilitySchemaStatus410;
 
 export type GetObservabilitySchemaByMetricIdPath = {
@@ -35937,6 +36219,8 @@ export type GetObservabilitySchemaByMetricIdStatus400 = unknown;
 export type GetObservabilitySchemaByMetricIdStatus401 = unknown;
 
 export type GetObservabilitySchemaByMetricIdStatus403 = unknown;
+
+export type GetObservabilitySchemaByMetricIdStatus404 = unknown;
 
 export type GetObservabilitySchemaByMetricIdStatus410 = unknown;
 
@@ -35952,6 +36236,7 @@ export type GetObservabilitySchemaByMetricIdResponses = {
 	"400": GetObservabilitySchemaByMetricIdStatus400;
 	"401": GetObservabilitySchemaByMetricIdStatus401;
 	"403": GetObservabilitySchemaByMetricIdStatus403;
+	"404": GetObservabilitySchemaByMetricIdStatus404;
 	"410": GetObservabilitySchemaByMetricIdStatus410;
 };
 
@@ -35963,6 +36248,7 @@ export type GetObservabilitySchemaByMetricIdResponse =
 	| GetObservabilitySchemaByMetricIdStatus400
 	| GetObservabilitySchemaByMetricIdStatus401
 	| GetObservabilitySchemaByMetricIdStatus403
+	| GetObservabilitySchemaByMetricIdStatus404
 	| GetObservabilitySchemaByMetricIdStatus410;
 
 export type GetProjectMembersPath = {
@@ -36022,6 +36308,8 @@ export type GetProjectMembersStatus401 = unknown;
 
 export type GetProjectMembersStatus403 = unknown;
 
+export type GetProjectMembersStatus404 = unknown;
+
 export type GetProjectMembersStatus410 = unknown;
 
 export type GetProjectMembersOptions = {
@@ -36036,6 +36324,7 @@ export type GetProjectMembersResponses = {
 	"400": GetProjectMembersStatus400;
 	"401": GetProjectMembersStatus401;
 	"403": GetProjectMembersStatus403;
+	"404": GetProjectMembersStatus404;
 	"410": GetProjectMembersStatus410;
 };
 
@@ -36047,6 +36336,7 @@ export type GetProjectMembersResponse =
 	| GetProjectMembersStatus400
 	| GetProjectMembersStatus401
 	| GetProjectMembersStatus403
+	| GetProjectMembersStatus404
 	| GetProjectMembersStatus410;
 
 export type AddProjectMemberPath = {
@@ -36081,6 +36371,8 @@ export type AddProjectMemberStatus401 = unknown;
 
 export type AddProjectMemberStatus403 = unknown;
 
+export type AddProjectMemberStatus404 = unknown;
+
 export type AddProjectMemberStatus410 = unknown;
 
 export type AddProjectMemberStatus500 = unknown;
@@ -36097,6 +36389,7 @@ export type AddProjectMemberResponses = {
 	"400": AddProjectMemberStatus400;
 	"401": AddProjectMemberStatus401;
 	"403": AddProjectMemberStatus403;
+	"404": AddProjectMemberStatus404;
 	"410": AddProjectMemberStatus410;
 	"500": AddProjectMemberStatus500;
 };
@@ -36109,6 +36402,7 @@ export type AddProjectMemberResponse =
 	| AddProjectMemberStatus400
 	| AddProjectMemberStatus401
 	| AddProjectMemberStatus403
+	| AddProjectMemberStatus404
 	| AddProjectMemberStatus410
 	| AddProjectMemberStatus500;
 
@@ -36150,6 +36444,8 @@ export type RemoveProjectMemberStatus401 = unknown;
 
 export type RemoveProjectMemberStatus403 = unknown;
 
+export type RemoveProjectMemberStatus404 = unknown;
+
 export type RemoveProjectMemberStatus410 = unknown;
 
 export type RemoveProjectMemberOptions = {
@@ -36164,6 +36460,7 @@ export type RemoveProjectMemberResponses = {
 	"400": RemoveProjectMemberStatus400;
 	"401": RemoveProjectMemberStatus401;
 	"403": RemoveProjectMemberStatus403;
+	"404": RemoveProjectMemberStatus404;
 	"410": RemoveProjectMemberStatus410;
 };
 
@@ -36175,6 +36472,7 @@ export type RemoveProjectMemberResponse =
 	| RemoveProjectMemberStatus400
 	| RemoveProjectMemberStatus401
 	| RemoveProjectMemberStatus403
+	| RemoveProjectMemberStatus404
 	| RemoveProjectMemberStatus410;
 
 export type GetRoutesPath = {
@@ -36275,6 +36573,8 @@ export type StageRoutesStatus401 = unknown;
 
 export type StageRoutesStatus403 = unknown;
 
+export type StageRoutesStatus404 = unknown;
+
 export type StageRoutesStatus409 = unknown;
 
 export type StageRoutesStatus410 = unknown;
@@ -36293,6 +36593,7 @@ export type StageRoutesResponses = {
 	"400": StageRoutesStatus400;
 	"401": StageRoutesStatus401;
 	"403": StageRoutesStatus403;
+	"404": StageRoutesStatus404;
 	"409": StageRoutesStatus409;
 	"410": StageRoutesStatus410;
 	"500": StageRoutesStatus500;
@@ -36306,6 +36607,7 @@ export type StageRoutesResponse =
 	| StageRoutesStatus400
 	| StageRoutesStatus401
 	| StageRoutesStatus403
+	| StageRoutesStatus404
 	| StageRoutesStatus409
 	| StageRoutesStatus410
 	| StageRoutesStatus500;
@@ -36337,6 +36639,8 @@ export type AddRouteStatus401 = unknown;
 
 export type AddRouteStatus403 = unknown;
 
+export type AddRouteStatus404 = unknown;
+
 export type AddRouteStatus409 = unknown;
 
 export type AddRouteStatus410 = unknown;
@@ -36355,6 +36659,7 @@ export type AddRouteResponses = {
 	"400": AddRouteStatus400;
 	"401": AddRouteStatus401;
 	"403": AddRouteStatus403;
+	"404": AddRouteStatus404;
 	"409": AddRouteStatus409;
 	"410": AddRouteStatus410;
 	"500": AddRouteStatus500;
@@ -36368,6 +36673,7 @@ export type AddRouteResponse =
 	| AddRouteStatus400
 	| AddRouteStatus401
 	| AddRouteStatus403
+	| AddRouteStatus404
 	| AddRouteStatus409
 	| AddRouteStatus410
 	| AddRouteStatus500;
@@ -36532,6 +36838,8 @@ export type GenerateRouteStatus401 = unknown;
 
 export type GenerateRouteStatus403 = unknown;
 
+export type GenerateRouteStatus404 = unknown;
+
 export type GenerateRouteStatus408 = unknown;
 
 export type GenerateRouteStatus410 = unknown;
@@ -36550,6 +36858,7 @@ export type GenerateRouteResponses = {
 	"400": GenerateRouteStatus400;
 	"401": GenerateRouteStatus401;
 	"403": GenerateRouteStatus403;
+	"404": GenerateRouteStatus404;
 	"408": GenerateRouteStatus408;
 	"410": GenerateRouteStatus410;
 	"500": GenerateRouteStatus500;
@@ -36563,6 +36872,7 @@ export type GenerateRouteResponse =
 	| GenerateRouteStatus400
 	| GenerateRouteStatus401
 	| GenerateRouteStatus403
+	| GenerateRouteStatus404
 	| GenerateRouteStatus408
 	| GenerateRouteStatus410
 	| GenerateRouteStatus500;
@@ -36594,6 +36904,8 @@ export type GetRouteVersionsStatus401 = unknown;
 
 export type GetRouteVersionsStatus403 = unknown;
 
+export type GetRouteVersionsStatus404 = unknown;
+
 export type GetRouteVersionsStatus410 = unknown;
 
 export type GetRouteVersionsOptions = {
@@ -36608,6 +36920,7 @@ export type GetRouteVersionsResponses = {
 	"400": GetRouteVersionsStatus400;
 	"401": GetRouteVersionsStatus401;
 	"403": GetRouteVersionsStatus403;
+	"404": GetRouteVersionsStatus404;
 	"410": GetRouteVersionsStatus410;
 };
 
@@ -36619,6 +36932,7 @@ export type GetRouteVersionsResponse =
 	| GetRouteVersionsStatus400
 	| GetRouteVersionsStatus401
 	| GetRouteVersionsStatus403
+	| GetRouteVersionsStatus404
 	| GetRouteVersionsStatus410;
 
 export type UpdateRouteVersionsPath = {
@@ -36796,6 +37110,8 @@ export type GetProjectsStatus401 = unknown;
 
 export type GetProjectsStatus403 = unknown;
 
+export type GetProjectsStatus404 = unknown;
+
 export type GetProjectsStatus410 = unknown;
 
 export type GetProjectsOptions = {
@@ -36810,6 +37126,7 @@ export type GetProjectsResponses = {
 	"400": GetProjectsStatus400;
 	"401": GetProjectsStatus401;
 	"403": GetProjectsStatus403;
+	"404": GetProjectsStatus404;
 	"410": GetProjectsStatus410;
 };
 
@@ -36821,6 +37138,7 @@ export type GetProjectsResponse =
 	| GetProjectsStatus400
 	| GetProjectsStatus401
 	| GetProjectsStatus403
+	| GetProjectsStatus404
 	| GetProjectsStatus410;
 
 export type GetProjectTraceQuery = {
@@ -37052,6 +37370,8 @@ export type CreateTraceSessionStatus401 = unknown;
 
 export type CreateTraceSessionStatus403 = unknown;
 
+export type CreateTraceSessionStatus404 = unknown;
+
 export type CreateTraceSessionStatus410 = unknown;
 
 export type CreateTraceSessionStatus422 = unknown;
@@ -37068,6 +37388,7 @@ export type CreateTraceSessionResponses = {
 	"400": CreateTraceSessionStatus400;
 	"401": CreateTraceSessionStatus401;
 	"403": CreateTraceSessionStatus403;
+	"404": CreateTraceSessionStatus404;
 	"410": CreateTraceSessionStatus410;
 	"422": CreateTraceSessionStatus422;
 };
@@ -37080,6 +37401,7 @@ export type CreateTraceSessionResponse =
 	| CreateTraceSessionStatus400
 	| CreateTraceSessionStatus401
 	| CreateTraceSessionStatus403
+	| CreateTraceSessionStatus404
 	| CreateTraceSessionStatus410
 	| CreateTraceSessionStatus422;
 
@@ -37115,6 +37437,8 @@ export type GetProjectStatus401 = unknown;
 
 export type GetProjectStatus403 = unknown;
 
+export type GetProjectStatus404 = unknown;
+
 export type GetProjectStatus410 = unknown;
 
 export type GetProjectOptions = {
@@ -37129,6 +37453,7 @@ export type GetProjectResponses = {
 	"400": GetProjectStatus400;
 	"401": GetProjectStatus401;
 	"403": GetProjectStatus403;
+	"404": GetProjectStatus404;
 	"410": GetProjectStatus410;
 };
 
@@ -37140,6 +37465,7 @@ export type GetProjectResponse =
 	| GetProjectStatus400
 	| GetProjectStatus401
 	| GetProjectStatus403
+	| GetProjectStatus404
 	| GetProjectStatus410;
 
 export type UpdateProjectPath = {
@@ -37249,6 +37575,8 @@ export type DeleteProjectStatus401 = unknown;
 
 export type DeleteProjectStatus403 = unknown;
 
+export type DeleteProjectStatus404 = unknown;
+
 export type DeleteProjectStatus409 = unknown;
 
 export type DeleteProjectStatus410 = unknown;
@@ -37265,6 +37593,7 @@ export type DeleteProjectResponses = {
 	"400": DeleteProjectStatus400;
 	"401": DeleteProjectStatus401;
 	"403": DeleteProjectStatus403;
+	"404": DeleteProjectStatus404;
 	"409": DeleteProjectStatus409;
 	"410": DeleteProjectStatus410;
 };
@@ -37277,6 +37606,7 @@ export type DeleteProjectResponse =
 	| DeleteProjectStatus400
 	| DeleteProjectStatus401
 	| DeleteProjectStatus403
+	| DeleteProjectStatus404
 	| DeleteProjectStatus409
 	| DeleteProjectStatus410;
 
@@ -37311,6 +37641,8 @@ export type UploadProjectAvatarStatus401 = unknown;
 
 export type UploadProjectAvatarStatus403 = unknown;
 
+export type UploadProjectAvatarStatus404 = unknown;
+
 export type UploadProjectAvatarStatus410 = unknown;
 
 export type UploadProjectAvatarStatus413 = unknown;
@@ -37329,6 +37661,7 @@ export type UploadProjectAvatarResponses = {
 	"400": UploadProjectAvatarStatus400;
 	"401": UploadProjectAvatarStatus401;
 	"403": UploadProjectAvatarStatus403;
+	"404": UploadProjectAvatarStatus404;
 	"410": UploadProjectAvatarStatus410;
 	"413": UploadProjectAvatarStatus413;
 	"415": UploadProjectAvatarStatus415;
@@ -37342,6 +37675,7 @@ export type UploadProjectAvatarResponse =
 	| UploadProjectAvatarStatus400
 	| UploadProjectAvatarStatus401
 	| UploadProjectAvatarStatus403
+	| UploadProjectAvatarStatus404
 	| UploadProjectAvatarStatus410
 	| UploadProjectAvatarStatus413
 	| UploadProjectAvatarStatus415;
@@ -37453,6 +37787,8 @@ export type CreateCustomEnvironmentStatus402 = unknown;
 
 export type CreateCustomEnvironmentStatus403 = unknown;
 
+export type CreateCustomEnvironmentStatus404 = unknown;
+
 export type CreateCustomEnvironmentStatus409 = unknown;
 
 export type CreateCustomEnvironmentStatus410 = unknown;
@@ -37472,6 +37808,7 @@ export type CreateCustomEnvironmentResponses = {
 	"401": CreateCustomEnvironmentStatus401;
 	"402": CreateCustomEnvironmentStatus402;
 	"403": CreateCustomEnvironmentStatus403;
+	"404": CreateCustomEnvironmentStatus404;
 	"409": CreateCustomEnvironmentStatus409;
 	"410": CreateCustomEnvironmentStatus410;
 	"500": CreateCustomEnvironmentStatus500;
@@ -37486,6 +37823,7 @@ export type CreateCustomEnvironmentResponse =
 	| CreateCustomEnvironmentStatus401
 	| CreateCustomEnvironmentStatus402
 	| CreateCustomEnvironmentStatus403
+	| CreateCustomEnvironmentStatus404
 	| CreateCustomEnvironmentStatus409
 	| CreateCustomEnvironmentStatus410
 	| CreateCustomEnvironmentStatus500;
@@ -37526,6 +37864,8 @@ export type GetProjectsByIdOrNameCustomEnvironmentsStatus401 = unknown;
 
 export type GetProjectsByIdOrNameCustomEnvironmentsStatus403 = unknown;
 
+export type GetProjectsByIdOrNameCustomEnvironmentsStatus404 = unknown;
+
 export type GetProjectsByIdOrNameCustomEnvironmentsStatus410 = unknown;
 
 export type GetProjectsByIdOrNameCustomEnvironmentsOptions = {
@@ -37540,6 +37880,7 @@ export type GetProjectsByIdOrNameCustomEnvironmentsResponses = {
 	"400": GetProjectsByIdOrNameCustomEnvironmentsStatus400;
 	"401": GetProjectsByIdOrNameCustomEnvironmentsStatus401;
 	"403": GetProjectsByIdOrNameCustomEnvironmentsStatus403;
+	"404": GetProjectsByIdOrNameCustomEnvironmentsStatus404;
 	"410": GetProjectsByIdOrNameCustomEnvironmentsStatus410;
 };
 
@@ -37551,6 +37892,7 @@ export type GetProjectsByIdOrNameCustomEnvironmentsResponse =
 	| GetProjectsByIdOrNameCustomEnvironmentsStatus400
 	| GetProjectsByIdOrNameCustomEnvironmentsStatus401
 	| GetProjectsByIdOrNameCustomEnvironmentsStatus403
+	| GetProjectsByIdOrNameCustomEnvironmentsStatus404
 	| GetProjectsByIdOrNameCustomEnvironmentsStatus410;
 
 export type GetCustomEnvironmentPath = {
@@ -37658,6 +38000,8 @@ export type UpdateCustomEnvironmentStatus402 = unknown;
 
 export type UpdateCustomEnvironmentStatus403 = unknown;
 
+export type UpdateCustomEnvironmentStatus404 = unknown;
+
 export type UpdateCustomEnvironmentStatus410 = unknown;
 
 export type UpdateCustomEnvironmentStatus500 = unknown;
@@ -37675,6 +38019,7 @@ export type UpdateCustomEnvironmentResponses = {
 	"401": UpdateCustomEnvironmentStatus401;
 	"402": UpdateCustomEnvironmentStatus402;
 	"403": UpdateCustomEnvironmentStatus403;
+	"404": UpdateCustomEnvironmentStatus404;
 	"410": UpdateCustomEnvironmentStatus410;
 	"500": UpdateCustomEnvironmentStatus500;
 };
@@ -37688,6 +38033,7 @@ export type UpdateCustomEnvironmentResponse =
 	| UpdateCustomEnvironmentStatus401
 	| UpdateCustomEnvironmentStatus402
 	| UpdateCustomEnvironmentStatus403
+	| UpdateCustomEnvironmentStatus404
 	| UpdateCustomEnvironmentStatus410
 	| UpdateCustomEnvironmentStatus500;
 
@@ -37727,6 +38073,8 @@ export type RemoveCustomEnvironmentStatus401 = unknown;
 
 export type RemoveCustomEnvironmentStatus403 = unknown;
 
+export type RemoveCustomEnvironmentStatus404 = unknown;
+
 export type RemoveCustomEnvironmentStatus410 = unknown;
 
 export type RemoveCustomEnvironmentOptions = {
@@ -37741,6 +38089,7 @@ export type RemoveCustomEnvironmentResponses = {
 	"400": RemoveCustomEnvironmentStatus400;
 	"401": RemoveCustomEnvironmentStatus401;
 	"403": RemoveCustomEnvironmentStatus403;
+	"404": RemoveCustomEnvironmentStatus404;
 	"410": RemoveCustomEnvironmentStatus410;
 };
 
@@ -37752,6 +38101,7 @@ export type RemoveCustomEnvironmentResponse =
 	| RemoveCustomEnvironmentStatus400
 	| RemoveCustomEnvironmentStatus401
 	| RemoveCustomEnvironmentStatus403
+	| RemoveCustomEnvironmentStatus404
 	| RemoveCustomEnvironmentStatus410;
 
 export type GetProjectDomainsPath = {
@@ -37887,6 +38237,8 @@ export type GetProjectDomainsStatus401 = unknown;
 
 export type GetProjectDomainsStatus403 = unknown;
 
+export type GetProjectDomainsStatus404 = unknown;
+
 export type GetProjectDomainsStatus410 = unknown;
 
 export type GetProjectDomainsOptions = {
@@ -37901,6 +38253,7 @@ export type GetProjectDomainsResponses = {
 	"400": GetProjectDomainsStatus400;
 	"401": GetProjectDomainsStatus401;
 	"403": GetProjectDomainsStatus403;
+	"404": GetProjectDomainsStatus404;
 	"410": GetProjectDomainsStatus410;
 };
 
@@ -37912,6 +38265,7 @@ export type GetProjectDomainsResponse =
 	| GetProjectDomainsStatus400
 	| GetProjectDomainsStatus401
 	| GetProjectDomainsStatus403
+	| GetProjectDomainsStatus404
 	| GetProjectDomainsStatus410;
 
 export type GetProjectDomainPath = {
@@ -37951,6 +38305,8 @@ export type GetProjectDomainStatus401 = unknown;
 
 export type GetProjectDomainStatus403 = unknown;
 
+export type GetProjectDomainStatus404 = unknown;
+
 export type GetProjectDomainStatus410 = unknown;
 
 export type GetProjectDomainOptions = {
@@ -37965,6 +38321,7 @@ export type GetProjectDomainResponses = {
 	"400": GetProjectDomainStatus400;
 	"401": GetProjectDomainStatus401;
 	"403": GetProjectDomainStatus403;
+	"404": GetProjectDomainStatus404;
 	"410": GetProjectDomainStatus410;
 };
 
@@ -37976,6 +38333,7 @@ export type GetProjectDomainResponse =
 	| GetProjectDomainStatus400
 	| GetProjectDomainStatus401
 	| GetProjectDomainStatus403
+	| GetProjectDomainStatus404
 	| GetProjectDomainStatus410;
 
 export type UpdateProjectDomainPath = {
@@ -38015,6 +38373,8 @@ export type UpdateProjectDomainStatus401 = unknown;
 
 export type UpdateProjectDomainStatus403 = unknown;
 
+export type UpdateProjectDomainStatus404 = unknown;
+
 export type UpdateProjectDomainStatus409 = unknown;
 
 export type UpdateProjectDomainStatus410 = unknown;
@@ -38031,6 +38391,7 @@ export type UpdateProjectDomainResponses = {
 	"400": UpdateProjectDomainStatus400;
 	"401": UpdateProjectDomainStatus401;
 	"403": UpdateProjectDomainStatus403;
+	"404": UpdateProjectDomainStatus404;
 	"409": UpdateProjectDomainStatus409;
 	"410": UpdateProjectDomainStatus410;
 };
@@ -38043,6 +38404,7 @@ export type UpdateProjectDomainResponse =
 	| UpdateProjectDomainStatus400
 	| UpdateProjectDomainStatus401
 	| UpdateProjectDomainStatus403
+	| UpdateProjectDomainStatus404
 	| UpdateProjectDomainStatus409
 	| UpdateProjectDomainStatus410;
 
@@ -38151,6 +38513,8 @@ export type AddProjectDomainStatus402 = unknown;
 
 export type AddProjectDomainStatus403 = unknown;
 
+export type AddProjectDomainStatus404 = unknown;
+
 export type AddProjectDomainStatus409 = unknown;
 
 export type AddProjectDomainStatus410 = unknown;
@@ -38168,6 +38532,7 @@ export type AddProjectDomainResponses = {
 	"401": AddProjectDomainStatus401;
 	"402": AddProjectDomainStatus402;
 	"403": AddProjectDomainStatus403;
+	"404": AddProjectDomainStatus404;
 	"409": AddProjectDomainStatus409;
 	"410": AddProjectDomainStatus410;
 };
@@ -38181,6 +38546,7 @@ export type AddProjectDomainResponse =
 	| AddProjectDomainStatus401
 	| AddProjectDomainStatus402
 	| AddProjectDomainStatus403
+	| AddProjectDomainStatus404
 	| AddProjectDomainStatus409
 	| AddProjectDomainStatus410;
 
@@ -38221,6 +38587,8 @@ export type MoveProjectDomainStatus401 = unknown;
 
 export type MoveProjectDomainStatus403 = unknown;
 
+export type MoveProjectDomainStatus404 = unknown;
+
 export type MoveProjectDomainStatus409 = unknown;
 
 export type MoveProjectDomainStatus410 = unknown;
@@ -38237,6 +38605,7 @@ export type MoveProjectDomainResponses = {
 	"400": MoveProjectDomainStatus400;
 	"401": MoveProjectDomainStatus401;
 	"403": MoveProjectDomainStatus403;
+	"404": MoveProjectDomainStatus404;
 	"409": MoveProjectDomainStatus409;
 	"410": MoveProjectDomainStatus410;
 };
@@ -38249,6 +38618,7 @@ export type MoveProjectDomainResponse =
 	| MoveProjectDomainStatus400
 	| MoveProjectDomainStatus401
 	| MoveProjectDomainStatus403
+	| MoveProjectDomainStatus404
 	| MoveProjectDomainStatus409
 	| MoveProjectDomainStatus410;
 
@@ -38290,6 +38660,8 @@ export type VerifyProjectDomainStatus401 = unknown;
 
 export type VerifyProjectDomainStatus403 = unknown;
 
+export type VerifyProjectDomainStatus404 = unknown;
+
 export type VerifyProjectDomainStatus410 = unknown;
 
 export type VerifyProjectDomainOptions = {
@@ -38304,6 +38676,7 @@ export type VerifyProjectDomainResponses = {
 	"400": VerifyProjectDomainStatus400;
 	"401": VerifyProjectDomainStatus401;
 	"403": VerifyProjectDomainStatus403;
+	"404": VerifyProjectDomainStatus404;
 	"410": VerifyProjectDomainStatus410;
 };
 
@@ -38315,6 +38688,7 @@ export type VerifyProjectDomainResponse =
 	| VerifyProjectDomainStatus400
 	| VerifyProjectDomainStatus401
 	| VerifyProjectDomainStatus403
+	| VerifyProjectDomainStatus404
 	| VerifyProjectDomainStatus410;
 
 export type FilterProjectEnvsPath = {
@@ -38389,6 +38763,8 @@ export type FilterProjectEnvsStatus401 = unknown;
 
 export type FilterProjectEnvsStatus403 = unknown;
 
+export type FilterProjectEnvsStatus404 = unknown;
+
 export type FilterProjectEnvsStatus410 = unknown;
 
 export type FilterProjectEnvsOptions = {
@@ -38403,6 +38779,7 @@ export type FilterProjectEnvsResponses = {
 	"400": FilterProjectEnvsStatus400;
 	"401": FilterProjectEnvsStatus401;
 	"403": FilterProjectEnvsStatus403;
+	"404": FilterProjectEnvsStatus404;
 	"410": FilterProjectEnvsStatus410;
 };
 
@@ -38414,6 +38791,7 @@ export type FilterProjectEnvsResponse =
 	| FilterProjectEnvsStatus400
 	| FilterProjectEnvsStatus401
 	| FilterProjectEnvsStatus403
+	| FilterProjectEnvsStatus404
 	| FilterProjectEnvsStatus410;
 
 export type CreateProjectEnvPath = {
@@ -38538,6 +38916,8 @@ export type GetProjectEnvStatus401 = unknown;
 
 export type GetProjectEnvStatus403 = unknown;
 
+export type GetProjectEnvStatus404 = unknown;
+
 export type GetProjectEnvStatus410 = unknown;
 
 export type GetProjectEnvOptions = {
@@ -38552,6 +38932,7 @@ export type GetProjectEnvResponses = {
 	"400": GetProjectEnvStatus400;
 	"401": GetProjectEnvStatus401;
 	"403": GetProjectEnvStatus403;
+	"404": GetProjectEnvStatus404;
 	"410": GetProjectEnvStatus410;
 };
 
@@ -38563,6 +38944,7 @@ export type GetProjectEnvResponse =
 	| GetProjectEnvStatus400
 	| GetProjectEnvStatus401
 	| GetProjectEnvStatus403
+	| GetProjectEnvStatus404
 	| GetProjectEnvStatus410;
 
 export type RemoveProjectEnvPath = {
@@ -39345,6 +39727,8 @@ export type CreateProjectTransferRequestStatus401 = unknown;
 
 export type CreateProjectTransferRequestStatus403 = unknown;
 
+export type CreateProjectTransferRequestStatus404 = unknown;
+
 export type CreateProjectTransferRequestStatus409 = unknown;
 
 export type CreateProjectTransferRequestStatus410 = unknown;
@@ -39361,6 +39745,7 @@ export type CreateProjectTransferRequestResponses = {
 	"400": CreateProjectTransferRequestStatus400;
 	"401": CreateProjectTransferRequestStatus401;
 	"403": CreateProjectTransferRequestStatus403;
+	"404": CreateProjectTransferRequestStatus404;
 	"409": CreateProjectTransferRequestStatus409;
 	"410": CreateProjectTransferRequestStatus410;
 };
@@ -39373,6 +39758,7 @@ export type CreateProjectTransferRequestResponse =
 	| CreateProjectTransferRequestStatus400
 	| CreateProjectTransferRequestStatus401
 	| CreateProjectTransferRequestStatus403
+	| CreateProjectTransferRequestStatus404
 	| CreateProjectTransferRequestStatus409
 	| CreateProjectTransferRequestStatus410;
 
@@ -39547,6 +39933,8 @@ export type RequestRollbackStatus402 = unknown;
 
 export type RequestRollbackStatus403 = unknown;
 
+export type RequestRollbackStatus404 = unknown;
+
 export type RequestRollbackStatus409 = unknown;
 
 export type RequestRollbackStatus410 = unknown;
@@ -39566,6 +39954,7 @@ export type RequestRollbackResponses = {
 	"401": RequestRollbackStatus401;
 	"402": RequestRollbackStatus402;
 	"403": RequestRollbackStatus403;
+	"404": RequestRollbackStatus404;
 	"409": RequestRollbackStatus409;
 	"410": RequestRollbackStatus410;
 	"422": RequestRollbackStatus422;
@@ -39580,6 +39969,7 @@ export type RequestRollbackResponse =
 	| RequestRollbackStatus401
 	| RequestRollbackStatus402
 	| RequestRollbackStatus403
+	| RequestRollbackStatus404
 	| RequestRollbackStatus409
 	| RequestRollbackStatus410
 	| RequestRollbackStatus422;
@@ -39596,6 +39986,8 @@ export type UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionStat
 export type UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionStatus401 = unknown;
 
 export type UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionStatus403 = unknown;
+
+export type UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionStatus404 = unknown;
 
 export type UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionStatus409 = unknown;
 
@@ -39615,6 +40007,7 @@ export type UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionResp
 	"400": UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionStatus400;
 	"401": UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionStatus401;
 	"403": UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionStatus403;
+	"404": UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionStatus404;
 	"409": UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionStatus409;
 	"410": UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionStatus410;
 	"422": UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionStatus422;
@@ -39628,6 +40021,7 @@ export type UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionResp
 	| UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionStatus400
 	| UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionStatus401
 	| UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionStatus403
+	| UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionStatus404
 	| UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionStatus409
 	| UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionStatus410
 	| UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionStatus422;
@@ -39664,6 +40058,8 @@ export type UpdateMicrofrontendsStatus401 = unknown;
 
 export type UpdateMicrofrontendsStatus403 = unknown;
 
+export type UpdateMicrofrontendsStatus404 = unknown;
+
 export type UpdateMicrofrontendsStatus409 = unknown;
 
 export type UpdateMicrofrontendsStatus410 = unknown;
@@ -39682,6 +40078,7 @@ export type UpdateMicrofrontendsResponses = {
 	"400": UpdateMicrofrontendsStatus400;
 	"401": UpdateMicrofrontendsStatus401;
 	"403": UpdateMicrofrontendsStatus403;
+	"404": UpdateMicrofrontendsStatus404;
 	"409": UpdateMicrofrontendsStatus409;
 	"410": UpdateMicrofrontendsStatus410;
 	"500": UpdateMicrofrontendsStatus500;
@@ -39695,6 +40092,7 @@ export type UpdateMicrofrontendsResponse =
 	| UpdateMicrofrontendsStatus400
 	| UpdateMicrofrontendsStatus401
 	| UpdateMicrofrontendsStatus403
+	| UpdateMicrofrontendsStatus404
 	| UpdateMicrofrontendsStatus409
 	| UpdateMicrofrontendsStatus410
 	| UpdateMicrofrontendsStatus500;
@@ -39729,6 +40127,8 @@ export type RequestPromoteStatus401 = unknown;
 
 export type RequestPromoteStatus403 = unknown;
 
+export type RequestPromoteStatus404 = unknown;
+
 export type RequestPromoteStatus409 = unknown;
 
 export type RequestPromoteStatus410 = unknown;
@@ -39748,6 +40148,7 @@ export type RequestPromoteResponses = {
 	"400": RequestPromoteStatus400;
 	"401": RequestPromoteStatus401;
 	"403": RequestPromoteStatus403;
+	"404": RequestPromoteStatus404;
 	"409": RequestPromoteStatus409;
 	"410": RequestPromoteStatus410;
 	"422": RequestPromoteStatus422;
@@ -39762,6 +40163,7 @@ export type RequestPromoteResponse =
 	| RequestPromoteStatus400
 	| RequestPromoteStatus401
 	| RequestPromoteStatus403
+	| RequestPromoteStatus404
 	| RequestPromoteStatus409
 	| RequestPromoteStatus410
 	| RequestPromoteStatus422;
@@ -39879,6 +40281,8 @@ export type PauseProjectStatus401 = unknown;
 
 export type PauseProjectStatus403 = unknown;
 
+export type PauseProjectStatus404 = unknown;
+
 export type PauseProjectStatus410 = unknown;
 
 export type PauseProjectStatus500 = unknown;
@@ -39895,6 +40299,7 @@ export type PauseProjectResponses = {
 	"400": PauseProjectStatus400;
 	"401": PauseProjectStatus401;
 	"403": PauseProjectStatus403;
+	"404": PauseProjectStatus404;
 	"410": PauseProjectStatus410;
 	"500": PauseProjectStatus500;
 };
@@ -39907,6 +40312,7 @@ export type PauseProjectResponse =
 	| PauseProjectStatus400
 	| PauseProjectStatus401
 	| PauseProjectStatus403
+	| PauseProjectStatus404
 	| PauseProjectStatus410
 	| PauseProjectStatus500;
 
@@ -39941,6 +40347,8 @@ export type UnpauseProjectStatus401 = unknown;
 
 export type UnpauseProjectStatus403 = unknown;
 
+export type UnpauseProjectStatus404 = unknown;
+
 export type UnpauseProjectStatus410 = unknown;
 
 export type UnpauseProjectStatus500 = unknown;
@@ -39957,6 +40365,7 @@ export type UnpauseProjectResponses = {
 	"400": UnpauseProjectStatus400;
 	"401": UnpauseProjectStatus401;
 	"403": UnpauseProjectStatus403;
+	"404": UnpauseProjectStatus404;
 	"410": UnpauseProjectStatus410;
 	"500": UnpauseProjectStatus500;
 };
@@ -39969,6 +40378,7 @@ export type UnpauseProjectResponse =
 	| UnpauseProjectStatus400
 	| UnpauseProjectStatus401
 	| UnpauseProjectStatus403
+	| UnpauseProjectStatus404
 	| UnpauseProjectStatus410
 	| UnpauseProjectStatus500;
 
@@ -43323,6 +43733,8 @@ export type CreateSpeedInsightsToggleStatus402 = unknown;
 
 export type CreateSpeedInsightsToggleStatus403 = unknown;
 
+export type CreateSpeedInsightsToggleStatus404 = unknown;
+
 export type CreateSpeedInsightsToggleStatus410 = unknown;
 
 export type CreateSpeedInsightsToggleOptions = {
@@ -43338,6 +43750,7 @@ export type CreateSpeedInsightsToggleResponses = {
 	"401": CreateSpeedInsightsToggleStatus401;
 	"402": CreateSpeedInsightsToggleStatus402;
 	"403": CreateSpeedInsightsToggleStatus403;
+	"404": CreateSpeedInsightsToggleStatus404;
 	"410": CreateSpeedInsightsToggleStatus410;
 };
 
@@ -43350,6 +43763,7 @@ export type CreateSpeedInsightsToggleResponse =
 	| CreateSpeedInsightsToggleStatus401
 	| CreateSpeedInsightsToggleStatus402
 	| CreateSpeedInsightsToggleStatus403
+	| CreateSpeedInsightsToggleStatus404
 	| CreateSpeedInsightsToggleStatus410;
 
 export type GetStorageStoresByIdPath = {
@@ -43700,6 +44114,8 @@ export type InviteUserToTeamStatus401 = unknown;
 
 export type InviteUserToTeamStatus403 = unknown;
 
+export type InviteUserToTeamStatus404 = unknown;
+
 export type InviteUserToTeamStatus410 = unknown;
 
 export type InviteUserToTeamStatus503 = unknown;
@@ -43716,6 +44132,7 @@ export type InviteUserToTeamResponses = {
 	"400": InviteUserToTeamStatus400;
 	"401": InviteUserToTeamStatus401;
 	"403": InviteUserToTeamStatus403;
+	"404": InviteUserToTeamStatus404;
 	"410": InviteUserToTeamStatus410;
 	"503": InviteUserToTeamStatus503;
 };
@@ -43728,6 +44145,7 @@ export type InviteUserToTeamResponse =
 	| InviteUserToTeamStatus400
 	| InviteUserToTeamStatus401
 	| InviteUserToTeamStatus403
+	| InviteUserToTeamStatus404
 	| InviteUserToTeamStatus410
 	| InviteUserToTeamStatus503;
 
@@ -44113,6 +44531,8 @@ export type PatchTeamStatus402 = unknown;
 
 export type PatchTeamStatus403 = unknown;
 
+export type PatchTeamStatus404 = unknown;
+
 export type PatchTeamStatus409 = unknown;
 
 export type PatchTeamStatus410 = unknown;
@@ -44132,6 +44552,7 @@ export type PatchTeamResponses = {
 	"401": PatchTeamStatus401;
 	"402": PatchTeamStatus402;
 	"403": PatchTeamStatus403;
+	"404": PatchTeamStatus404;
 	"409": PatchTeamStatus409;
 	"410": PatchTeamStatus410;
 	"428": PatchTeamStatus428;
@@ -44146,6 +44567,7 @@ export type PatchTeamResponse =
 	| PatchTeamStatus401
 	| PatchTeamStatus402
 	| PatchTeamStatus403
+	| PatchTeamStatus404
 	| PatchTeamStatus409
 	| PatchTeamStatus410
 	| PatchTeamStatus428;
@@ -44275,6 +44697,8 @@ export type PostTeamDsyncRolesStatus401 = unknown;
 
 export type PostTeamDsyncRolesStatus403 = unknown;
 
+export type PostTeamDsyncRolesStatus404 = unknown;
+
 export type PostTeamDsyncRolesStatus410 = unknown;
 
 export type PostTeamDsyncRolesOptions = {
@@ -44289,6 +44713,7 @@ export type PostTeamDsyncRolesResponses = {
 	"400": PostTeamDsyncRolesStatus400;
 	"401": PostTeamDsyncRolesStatus401;
 	"403": PostTeamDsyncRolesStatus403;
+	"404": PostTeamDsyncRolesStatus404;
 	"410": PostTeamDsyncRolesStatus410;
 };
 
@@ -44300,6 +44725,7 @@ export type PostTeamDsyncRolesResponse =
 	| PostTeamDsyncRolesStatus400
 	| PostTeamDsyncRolesStatus401
 	| PostTeamDsyncRolesStatus403
+	| PostTeamDsyncRolesStatus404
 	| PostTeamDsyncRolesStatus410;
 
 export type DeleteTeamPath = {
@@ -44336,6 +44762,8 @@ export type DeleteTeamStatus402 = unknown;
 
 export type DeleteTeamStatus403 = unknown;
 
+export type DeleteTeamStatus404 = unknown;
+
 export type DeleteTeamStatus409 = unknown;
 
 export type DeleteTeamStatus410 = unknown;
@@ -44355,6 +44783,7 @@ export type DeleteTeamResponses = {
 	"401": DeleteTeamStatus401;
 	"402": DeleteTeamStatus402;
 	"403": DeleteTeamStatus403;
+	"404": DeleteTeamStatus404;
 	"409": DeleteTeamStatus409;
 	"410": DeleteTeamStatus410;
 	"503": DeleteTeamStatus503;
@@ -44369,6 +44798,7 @@ export type DeleteTeamResponse =
 	| DeleteTeamStatus401
 	| DeleteTeamStatus402
 	| DeleteTeamStatus403
+	| DeleteTeamStatus404
 	| DeleteTeamStatus409
 	| DeleteTeamStatus410
 	| DeleteTeamStatus503;
@@ -44602,6 +45032,8 @@ export type UploadFileStatus401 = unknown;
 
 export type UploadFileStatus403 = unknown;
 
+export type UploadFileStatus404 = unknown;
+
 export type UploadFileStatus410 = unknown;
 
 export type UploadFileStatus426 = unknown;
@@ -44618,6 +45050,7 @@ export type UploadFileResponses = {
 	"400": UploadFileStatus400;
 	"401": UploadFileStatus401;
 	"403": UploadFileStatus403;
+	"404": UploadFileStatus404;
 	"410": UploadFileStatus410;
 	"426": UploadFileStatus426;
 };
@@ -44630,6 +45063,7 @@ export type UploadFileResponse =
 	| UploadFileStatus400
 	| UploadFileStatus401
 	| UploadFileStatus403
+	| UploadFileStatus404
 	| UploadFileStatus410
 	| UploadFileStatus426;
 
@@ -46899,6 +47333,8 @@ export type ListVercelCiInvocationsStatus401 = unknown;
 
 export type ListVercelCiInvocationsStatus403 = unknown;
 
+export type ListVercelCiInvocationsStatus404 = unknown;
+
 export type ListVercelCiInvocationsStatus410 = unknown;
 
 export type ListVercelCiInvocationsStatus429 = unknown;
@@ -46919,6 +47355,7 @@ export type ListVercelCiInvocationsResponses = {
 	"400": ListVercelCiInvocationsStatus400;
 	"401": ListVercelCiInvocationsStatus401;
 	"403": ListVercelCiInvocationsStatus403;
+	"404": ListVercelCiInvocationsStatus404;
 	"410": ListVercelCiInvocationsStatus410;
 	"429": ListVercelCiInvocationsStatus429;
 	"500": ListVercelCiInvocationsStatus500;
@@ -46933,6 +47370,7 @@ export type ListVercelCiInvocationsResponse =
 	| ListVercelCiInvocationsStatus400
 	| ListVercelCiInvocationsStatus401
 	| ListVercelCiInvocationsStatus403
+	| ListVercelCiInvocationsStatus404
 	| ListVercelCiInvocationsStatus410
 	| ListVercelCiInvocationsStatus429
 	| ListVercelCiInvocationsStatus500
@@ -47894,6 +48332,8 @@ export type SearchVercelCiLogsStatus401 = unknown;
 
 export type SearchVercelCiLogsStatus403 = unknown;
 
+export type SearchVercelCiLogsStatus404 = unknown;
+
 export type SearchVercelCiLogsStatus410 = unknown;
 
 export type SearchVercelCiLogsStatus429 = unknown;
@@ -47912,6 +48352,7 @@ export type SearchVercelCiLogsResponses = {
 	"400": SearchVercelCiLogsStatus400;
 	"401": SearchVercelCiLogsStatus401;
 	"403": SearchVercelCiLogsStatus403;
+	"404": SearchVercelCiLogsStatus404;
 	"410": SearchVercelCiLogsStatus410;
 	"429": SearchVercelCiLogsStatus429;
 	"500": SearchVercelCiLogsStatus500;
@@ -47925,6 +48366,7 @@ export type SearchVercelCiLogsResponse =
 	| SearchVercelCiLogsStatus400
 	| SearchVercelCiLogsStatus401
 	| SearchVercelCiLogsStatus403
+	| SearchVercelCiLogsStatus404
 	| SearchVercelCiLogsStatus410
 	| SearchVercelCiLogsStatus429
 	| SearchVercelCiLogsStatus500;
@@ -48143,6 +48585,8 @@ export type CreateWebInsightsToggleStatus401 = unknown;
 
 export type CreateWebInsightsToggleStatus403 = unknown;
 
+export type CreateWebInsightsToggleStatus404 = unknown;
+
 export type CreateWebInsightsToggleStatus410 = unknown;
 
 export type CreateWebInsightsToggleOptions = {
@@ -48157,6 +48601,7 @@ export type CreateWebInsightsToggleResponses = {
 	"400": CreateWebInsightsToggleStatus400;
 	"401": CreateWebInsightsToggleStatus401;
 	"403": CreateWebInsightsToggleStatus403;
+	"404": CreateWebInsightsToggleStatus404;
 	"410": CreateWebInsightsToggleStatus410;
 };
 
@@ -48168,6 +48613,7 @@ export type CreateWebInsightsToggleResponse =
 	| CreateWebInsightsToggleStatus400
 	| CreateWebInsightsToggleStatus401
 	| CreateWebInsightsToggleStatus403
+	| CreateWebInsightsToggleStatus404
 	| CreateWebInsightsToggleStatus410;
 
 export type AggregatePageviewsQuery = {
@@ -48559,6 +49005,8 @@ export type CreateWebhookStatus401 = unknown;
 
 export type CreateWebhookStatus403 = unknown;
 
+export type CreateWebhookStatus404 = unknown;
+
 export type CreateWebhookStatus410 = unknown;
 
 export type CreateWebhookOptions = {
@@ -48573,6 +49021,7 @@ export type CreateWebhookResponses = {
 	"400": CreateWebhookStatus400;
 	"401": CreateWebhookStatus401;
 	"403": CreateWebhookStatus403;
+	"404": CreateWebhookStatus404;
 	"410": CreateWebhookStatus410;
 };
 
@@ -48584,6 +49033,7 @@ export type CreateWebhookResponse =
 	| CreateWebhookStatus400
 	| CreateWebhookStatus401
 	| CreateWebhookStatus403
+	| CreateWebhookStatus404
 	| CreateWebhookStatus410;
 
 export type GetWebhooksQuery = {
@@ -48614,6 +49064,8 @@ export type GetWebhooksStatus401 = unknown;
 
 export type GetWebhooksStatus403 = unknown;
 
+export type GetWebhooksStatus404 = unknown;
+
 export type GetWebhooksStatus410 = unknown;
 
 export type GetWebhooksOptions = {
@@ -48628,6 +49080,7 @@ export type GetWebhooksResponses = {
 	"400": GetWebhooksStatus400;
 	"401": GetWebhooksStatus401;
 	"403": GetWebhooksStatus403;
+	"404": GetWebhooksStatus404;
 	"410": GetWebhooksStatus410;
 };
 
@@ -48639,6 +49092,7 @@ export type GetWebhooksResponse =
 	| GetWebhooksStatus400
 	| GetWebhooksStatus401
 	| GetWebhooksStatus403
+	| GetWebhooksStatus404
 	| GetWebhooksStatus410;
 
 export type GetWebhookPath = {
@@ -48668,6 +49122,8 @@ export type GetWebhookStatus401 = unknown;
 
 export type GetWebhookStatus403 = unknown;
 
+export type GetWebhookStatus404 = unknown;
+
 export type GetWebhookStatus410 = unknown;
 
 export type GetWebhookOptions = {
@@ -48682,6 +49138,7 @@ export type GetWebhookResponses = {
 	"400": GetWebhookStatus400;
 	"401": GetWebhookStatus401;
 	"403": GetWebhookStatus403;
+	"404": GetWebhookStatus404;
 	"410": GetWebhookStatus410;
 };
 
@@ -48693,6 +49150,7 @@ export type GetWebhookResponse =
 	| GetWebhookStatus400
 	| GetWebhookStatus401
 	| GetWebhookStatus403
+	| GetWebhookStatus404
 	| GetWebhookStatus410;
 
 export type DeleteWebhookPath = {
@@ -48722,6 +49180,8 @@ export type DeleteWebhookStatus401 = unknown;
 
 export type DeleteWebhookStatus403 = unknown;
 
+export type DeleteWebhookStatus404 = unknown;
+
 export type DeleteWebhookStatus410 = unknown;
 
 export type DeleteWebhookOptions = {
@@ -48736,6 +49196,7 @@ export type DeleteWebhookResponses = {
 	"400": DeleteWebhookStatus400;
 	"401": DeleteWebhookStatus401;
 	"403": DeleteWebhookStatus403;
+	"404": DeleteWebhookStatus404;
 	"410": DeleteWebhookStatus410;
 };
 
@@ -48747,6 +49208,7 @@ export type DeleteWebhookResponse =
 	| DeleteWebhookStatus400
 	| DeleteWebhookStatus401
 	| DeleteWebhookStatus403
+	| DeleteWebhookStatus404
 	| DeleteWebhookStatus410;
 
 export type ListDeploymentAliasesPath = {
@@ -49463,6 +49925,8 @@ export type UploadCertStatus402 = unknown;
 
 export type UploadCertStatus403 = unknown;
 
+export type UploadCertStatus404 = unknown;
+
 export type UploadCertStatus410 = unknown;
 
 export type UploadCertOptions = {
@@ -49478,6 +49942,7 @@ export type UploadCertResponses = {
 	"401": UploadCertStatus401;
 	"402": UploadCertStatus402;
 	"403": UploadCertStatus403;
+	"404": UploadCertStatus404;
 	"410": UploadCertStatus410;
 };
 
@@ -49490,6 +49955,7 @@ export type UploadCertResponse =
 	| UploadCertStatus401
 	| UploadCertStatus402
 	| UploadCertStatus403
+	| UploadCertStatus404
 	| UploadCertStatus410;
 
 export type ListDeploymentFilesPath = {

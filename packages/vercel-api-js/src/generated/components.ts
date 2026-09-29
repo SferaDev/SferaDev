@@ -33,12 +33,14 @@ import type {
 	AddProjectDomainStatus401,
 	AddProjectDomainStatus402,
 	AddProjectDomainStatus403,
+	AddProjectDomainStatus404,
 	AddProjectDomainStatus409,
 	AddProjectDomainStatus410,
 	AddProjectMemberResponse,
 	AddProjectMemberStatus400,
 	AddProjectMemberStatus401,
 	AddProjectMemberStatus403,
+	AddProjectMemberStatus404,
 	AddProjectMemberStatus410,
 	AddProjectMemberStatus500,
 	AddRepositoryPermissionResponse,
@@ -51,6 +53,7 @@ import type {
 	AddRouteStatus400,
 	AddRouteStatus401,
 	AddRouteStatus403,
+	AddRouteStatus404,
 	AddRouteStatus409,
 	AddRouteStatus410,
 	AddRouteStatus500,
@@ -82,6 +85,7 @@ import type {
 	ArtifactQueryStatus401,
 	ArtifactQueryStatus402,
 	ArtifactQueryStatus403,
+	ArtifactQueryStatus404,
 	ArtifactQueryStatus410,
 	AssignAliasResponse,
 	AssignAliasStatus400,
@@ -169,16 +173,19 @@ import type {
 	CreateAccessGroupProjectStatus400,
 	CreateAccessGroupProjectStatus401,
 	CreateAccessGroupProjectStatus403,
+	CreateAccessGroupProjectStatus404,
 	CreateAccessGroupProjectStatus410,
 	CreateAccessGroupResponse,
 	CreateAccessGroupStatus400,
 	CreateAccessGroupStatus401,
 	CreateAccessGroupStatus403,
+	CreateAccessGroupStatus404,
 	CreateAccessGroupStatus410,
 	CreateAiGatewayRuleResponse,
 	CreateAiGatewayRuleStatus400,
 	CreateAiGatewayRuleStatus401,
 	CreateAiGatewayRuleStatus403,
+	CreateAiGatewayRuleStatus404,
 	CreateAiGatewayRuleStatus409,
 	CreateAiGatewayRuleStatus410,
 	CreateAiGatewayRuleStatus500,
@@ -186,6 +193,7 @@ import type {
 	CreateAiGatewayVirtualModelConfigStatus400,
 	CreateAiGatewayVirtualModelConfigStatus401,
 	CreateAiGatewayVirtualModelConfigStatus403,
+	CreateAiGatewayVirtualModelConfigStatus404,
 	CreateAiGatewayVirtualModelConfigStatus409,
 	CreateAiGatewayVirtualModelConfigStatus410,
 	CreateAiGatewayVirtualModelConfigStatus429,
@@ -194,6 +202,7 @@ import type {
 	CreateApiKeysStatus400,
 	CreateApiKeysStatus401,
 	CreateApiKeysStatus403,
+	CreateApiKeysStatus404,
 	CreateApiKeysStatus409,
 	CreateApiKeysStatus410,
 	CreateApiKeysStatus429,
@@ -221,6 +230,7 @@ import type {
 	CreateConfigurableLogDrainStatus400,
 	CreateConfigurableLogDrainStatus401,
 	CreateConfigurableLogDrainStatus403,
+	CreateConfigurableLogDrainStatus404,
 	CreateConfigurableLogDrainStatus410,
 	CreateConnectorAuthorizationRequestResponse,
 	CreateConnectorAuthorizationRequestStatus400,
@@ -246,6 +256,7 @@ import type {
 	CreateCustomEnvironmentStatus401,
 	CreateCustomEnvironmentStatus402,
 	CreateCustomEnvironmentStatus403,
+	CreateCustomEnvironmentStatus404,
 	CreateCustomEnvironmentStatus409,
 	CreateCustomEnvironmentStatus410,
 	CreateCustomEnvironmentStatus500,
@@ -273,12 +284,14 @@ import type {
 	CreateDrainStatus401,
 	CreateDrainStatus402,
 	CreateDrainStatus403,
+	CreateDrainStatus404,
 	CreateDrainStatus410,
 	CreateEdgeConfigResponse,
 	CreateEdgeConfigStatus400,
 	CreateEdgeConfigStatus401,
 	CreateEdgeConfigStatus402,
 	CreateEdgeConfigStatus403,
+	CreateEdgeConfigStatus404,
 	CreateEdgeConfigStatus410,
 	CreateEdgeConfigTokenResponse,
 	CreateEdgeConfigTokenStatus400,
@@ -348,11 +361,13 @@ import type {
 	CreateLogDrainStatus400,
 	CreateLogDrainStatus401,
 	CreateLogDrainStatus403,
+	CreateLogDrainStatus404,
 	CreateLogDrainStatus410,
 	CreateMicrofrontendsGroupWithApplicationsResponse,
 	CreateMicrofrontendsGroupWithApplicationsStatus400,
 	CreateMicrofrontendsGroupWithApplicationsStatus401,
 	CreateMicrofrontendsGroupWithApplicationsStatus403,
+	CreateMicrofrontendsGroupWithApplicationsStatus404,
 	CreateMicrofrontendsGroupWithApplicationsStatus410,
 	CreateMicrofrontendsGroupWithApplicationsStatus500,
 	CreateNetworkResponse,
@@ -360,6 +375,7 @@ import type {
 	CreateNetworkStatus401,
 	CreateNetworkStatus402,
 	CreateNetworkStatus403,
+	CreateNetworkStatus404,
 	CreateNetworkStatus409,
 	CreateNetworkStatus410,
 	CreateObservabilityQueryResponse,
@@ -367,6 +383,7 @@ import type {
 	CreateObservabilityQueryStatus401,
 	CreateObservabilityQueryStatus402,
 	CreateObservabilityQueryStatus403,
+	CreateObservabilityQueryStatus404,
 	CreateObservabilityQueryStatus408,
 	CreateObservabilityQueryStatus410,
 	CreateObservabilityQueryStatus413,
@@ -392,6 +409,7 @@ import type {
 	CreateProjectCheckStatus400,
 	CreateProjectCheckStatus401,
 	CreateProjectCheckStatus403,
+	CreateProjectCheckStatus404,
 	CreateProjectCheckStatus410,
 	CreateProjectCheckStatus500,
 	CreateProjectEnvResponse,
@@ -419,6 +437,7 @@ import type {
 	CreateProjectTransferRequestStatus400,
 	CreateProjectTransferRequestStatus401,
 	CreateProjectTransferRequestStatus403,
+	CreateProjectTransferRequestStatus404,
 	CreateProjectTransferRequestStatus409,
 	CreateProjectTransferRequestStatus410,
 	CreateRecordResponse,
@@ -547,12 +566,14 @@ import type {
 	CreateSharedEnvVariableStatus401,
 	CreateSharedEnvVariableStatus402,
 	CreateSharedEnvVariableStatus403,
+	CreateSharedEnvVariableStatus404,
 	CreateSharedEnvVariableStatus410,
 	CreateSpeedInsightsToggleResponse,
 	CreateSpeedInsightsToggleStatus400,
 	CreateSpeedInsightsToggleStatus401,
 	CreateSpeedInsightsToggleStatus402,
 	CreateSpeedInsightsToggleStatus403,
+	CreateSpeedInsightsToggleStatus404,
 	CreateSpeedInsightsToggleStatus410,
 	CreateStorageStoresBlobResponse,
 	CreateStorageStoresBlobStatus400,
@@ -573,17 +594,20 @@ import type {
 	CreateTraceSessionStatus400,
 	CreateTraceSessionStatus401,
 	CreateTraceSessionStatus403,
+	CreateTraceSessionStatus404,
 	CreateTraceSessionStatus410,
 	CreateTraceSessionStatus422,
 	CreateWebhookResponse,
 	CreateWebhookStatus400,
 	CreateWebhookStatus401,
 	CreateWebhookStatus403,
+	CreateWebhookStatus404,
 	CreateWebhookStatus410,
 	CreateWebInsightsToggleResponse,
 	CreateWebInsightsToggleStatus400,
 	CreateWebInsightsToggleStatus401,
 	CreateWebInsightsToggleStatus403,
+	CreateWebInsightsToggleStatus404,
 	CreateWebInsightsToggleStatus410,
 	DangerouslyDeleteBySrcImagesResponse,
 	DangerouslyDeleteBySrcImagesStatus400,
@@ -602,11 +626,13 @@ import type {
 	DeleteAccessGroupProjectStatus400,
 	DeleteAccessGroupProjectStatus401,
 	DeleteAccessGroupProjectStatus403,
+	DeleteAccessGroupProjectStatus404,
 	DeleteAccessGroupProjectStatus410,
 	DeleteAccessGroupResponse,
 	DeleteAccessGroupStatus400,
 	DeleteAccessGroupStatus401,
 	DeleteAccessGroupStatus403,
+	DeleteAccessGroupStatus404,
 	DeleteAccessGroupStatus410,
 	DeleteAiGatewayRuleResponse,
 	DeleteAiGatewayRuleStatus400,
@@ -639,6 +665,7 @@ import type {
 	DeleteAllArtifactsStatus400,
 	DeleteAllArtifactsStatus401,
 	DeleteAllArtifactsStatus403,
+	DeleteAllArtifactsStatus404,
 	DeleteAllArtifactsStatus410,
 	DeleteAuthTokenResponse,
 	DeleteAuthTokenStatus400,
@@ -804,6 +831,7 @@ import type {
 	DeleteNetworkStatus401,
 	DeleteNetworkStatus402,
 	DeleteNetworkStatus403,
+	DeleteNetworkStatus404,
 	DeleteNetworkStatus409,
 	DeleteNetworkStatus410,
 	DeletePrivateLinkEndpointResponse,
@@ -824,6 +852,7 @@ import type {
 	DeleteProjectStatus400,
 	DeleteProjectStatus401,
 	DeleteProjectStatus403,
+	DeleteProjectStatus404,
 	DeleteProjectStatus409,
 	DeleteProjectStatus410,
 	DeleteRedirectsResponse,
@@ -893,6 +922,7 @@ import type {
 	DeleteSharedEnvVariableStatus401,
 	DeleteSharedEnvVariableStatus402,
 	DeleteSharedEnvVariableStatus403,
+	DeleteSharedEnvVariableStatus404,
 	DeleteSharedEnvVariableStatus410,
 	DeleteStorageStoresBlobByIdResponse,
 	DeleteStorageStoresBlobByIdStatus400,
@@ -912,6 +942,7 @@ import type {
 	DeleteTeamStatus401,
 	DeleteTeamStatus402,
 	DeleteTeamStatus403,
+	DeleteTeamStatus404,
 	DeleteTeamStatus409,
 	DeleteTeamStatus410,
 	DeleteTeamStatus503,
@@ -919,6 +950,7 @@ import type {
 	DeleteWebhookStatus400,
 	DeleteWebhookStatus401,
 	DeleteWebhookStatus403,
+	DeleteWebhookStatus404,
 	DeleteWebhookStatus410,
 	DownloadArtifactResponse,
 	DownloadArtifactStatus400,
@@ -968,6 +1000,7 @@ import type {
 	FilterProjectEnvsStatus400,
 	FilterProjectEnvsStatus401,
 	FilterProjectEnvsStatus403,
+	FilterProjectEnvsStatus404,
 	FilterProjectEnvsStatus410,
 	FinalizeInstallationResponse,
 	FinalizeInstallationStatus400,
@@ -987,6 +1020,7 @@ import type {
 	GenerateRouteStatus400,
 	GenerateRouteStatus401,
 	GenerateRouteStatus403,
+	GenerateRouteStatus404,
 	GenerateRouteStatus408,
 	GenerateRouteStatus410,
 	GenerateRouteStatus500,
@@ -1141,6 +1175,7 @@ import type {
 	GetConfigurationsStatus400,
 	GetConfigurationsStatus401,
 	GetConfigurationsStatus403,
+	GetConfigurationsStatus404,
 	GetConfigurationsStatus410,
 	GetConnectorProjectConnectionResponse,
 	GetConnectorProjectConnectionStatus400,
@@ -1189,6 +1224,7 @@ import type {
 	GetDeploymentEventsStatus400,
 	GetDeploymentEventsStatus401,
 	GetDeploymentEventsStatus403,
+	GetDeploymentEventsStatus404,
 	GetDeploymentEventsStatus410,
 	GetDeploymentEventsStatus500,
 	GetDeploymentFeatureFlagsResponse,
@@ -1338,6 +1374,7 @@ import type {
 	GetEdgeConfigsStatus400,
 	GetEdgeConfigsStatus401,
 	GetEdgeConfigsStatus403,
+	GetEdgeConfigsStatus404,
 	GetEdgeConfigsStatus410,
 	GetEdgeConfigTokenResponse,
 	GetEdgeConfigTokenStatus400,
@@ -1388,6 +1425,7 @@ import type {
 	GetIntegrationLogDrainsStatus400,
 	GetIntegrationLogDrainsStatus401,
 	GetIntegrationLogDrainsStatus403,
+	GetIntegrationLogDrainsStatus404,
 	GetIntegrationLogDrainsStatus410,
 	GetIntegrationResourceResponse,
 	GetIntegrationResourceStatus400,
@@ -1438,12 +1476,14 @@ import type {
 	GetMicrofrontendsGroupsStatus400,
 	GetMicrofrontendsGroupsStatus401,
 	GetMicrofrontendsGroupsStatus403,
+	GetMicrofrontendsGroupsStatus404,
 	GetMicrofrontendsGroupsStatus410,
 	GetMicrofrontendsGroupsStatus500,
 	GetMicrofrontendsInGroupResponse,
 	GetMicrofrontendsInGroupStatus400,
 	GetMicrofrontendsInGroupStatus401,
 	GetMicrofrontendsInGroupStatus403,
+	GetMicrofrontendsInGroupStatus404,
 	GetMicrofrontendsInGroupStatus410,
 	GetNamedSandboxResponse,
 	GetNamedSandboxStatus400,
@@ -1467,11 +1507,13 @@ import type {
 	GetObservabilitySchemaByMetricIdStatus400,
 	GetObservabilitySchemaByMetricIdStatus401,
 	GetObservabilitySchemaByMetricIdStatus403,
+	GetObservabilitySchemaByMetricIdStatus404,
 	GetObservabilitySchemaByMetricIdStatus410,
 	GetObservabilitySchemaResponse,
 	GetObservabilitySchemaStatus400,
 	GetObservabilitySchemaStatus401,
 	GetObservabilitySchemaStatus403,
+	GetObservabilitySchemaStatus404,
 	GetObservabilitySchemaStatus410,
 	GetOrCreateDriveResponse,
 	GetOrCreateDriveStatus400,
@@ -1493,42 +1535,50 @@ import type {
 	GetProjectCheckStatus400,
 	GetProjectCheckStatus401,
 	GetProjectCheckStatus403,
+	GetProjectCheckStatus404,
 	GetProjectCheckStatus410,
 	GetProjectCheckStatus500,
 	GetProjectDomainResponse,
 	GetProjectDomainStatus400,
 	GetProjectDomainStatus401,
 	GetProjectDomainStatus403,
+	GetProjectDomainStatus404,
 	GetProjectDomainStatus410,
 	GetProjectDomainsResponse,
 	GetProjectDomainsStatus400,
 	GetProjectDomainsStatus401,
 	GetProjectDomainsStatus403,
+	GetProjectDomainsStatus404,
 	GetProjectDomainsStatus410,
 	GetProjectEnvResponse,
 	GetProjectEnvStatus400,
 	GetProjectEnvStatus401,
 	GetProjectEnvStatus403,
+	GetProjectEnvStatus404,
 	GetProjectEnvStatus410,
 	GetProjectMembersResponse,
 	GetProjectMembersStatus400,
 	GetProjectMembersStatus401,
 	GetProjectMembersStatus403,
+	GetProjectMembersStatus404,
 	GetProjectMembersStatus410,
 	GetProjectResponse,
 	GetProjectStatus400,
 	GetProjectStatus401,
 	GetProjectStatus403,
+	GetProjectStatus404,
 	GetProjectStatus410,
 	GetProjectsByIdOrNameCustomEnvironmentsResponse,
 	GetProjectsByIdOrNameCustomEnvironmentsStatus400,
 	GetProjectsByIdOrNameCustomEnvironmentsStatus401,
 	GetProjectsByIdOrNameCustomEnvironmentsStatus403,
+	GetProjectsByIdOrNameCustomEnvironmentsStatus404,
 	GetProjectsByIdOrNameCustomEnvironmentsStatus410,
 	GetProjectsResponse,
 	GetProjectsStatus400,
 	GetProjectsStatus401,
 	GetProjectsStatus403,
+	GetProjectsStatus404,
 	GetProjectsStatus410,
 	GetProjectTokenResponse,
 	GetProjectTokenStatus400,
@@ -1607,11 +1657,13 @@ import type {
 	GetRouteVersionsStatus400,
 	GetRouteVersionsStatus401,
 	GetRouteVersionsStatus403,
+	GetRouteVersionsStatus404,
 	GetRouteVersionsStatus410,
 	GetRuntimeLogsResponse,
 	GetRuntimeLogsStatus400,
 	GetRuntimeLogsStatus401,
 	GetRuntimeLogsStatus403,
+	GetRuntimeLogsStatus404,
 	GetRuntimeLogsStatus410,
 	GetSdkKeysResponse,
 	GetSdkKeysStatus400,
@@ -1671,6 +1723,7 @@ import type {
 	GetSharedEnvVarStatus400,
 	GetSharedEnvVarStatus401,
 	GetSharedEnvVarStatus403,
+	GetSharedEnvVarStatus404,
 	GetSharedEnvVarStatus410,
 	GetStorageStoresByIdResponse,
 	GetStorageStoresByIdStatus400,
@@ -1788,17 +1841,20 @@ import type {
 	GetVersionsStatus400,
 	GetVersionsStatus401,
 	GetVersionsStatus403,
+	GetVersionsStatus404,
 	GetVersionsStatus410,
 	GetVersionsStatus500,
 	GetWebhookResponse,
 	GetWebhookStatus400,
 	GetWebhookStatus401,
 	GetWebhookStatus403,
+	GetWebhookStatus404,
 	GetWebhookStatus410,
 	GetWebhooksResponse,
 	GetWebhooksStatus400,
 	GetWebhooksStatus401,
 	GetWebhooksStatus403,
+	GetWebhooksStatus404,
 	GetWebhooksStatus410,
 	GitNamespacesResponse,
 	GitNamespacesStatus400,
@@ -1833,6 +1889,7 @@ import type {
 	InviteUserToTeamStatus400,
 	InviteUserToTeamStatus401,
 	InviteUserToTeamStatus403,
+	InviteUserToTeamStatus404,
 	InviteUserToTeamStatus410,
 	InviteUserToTeamStatus503,
 	IssueCertResponse,
@@ -1865,27 +1922,32 @@ import type {
 	ListAccessGroupMembersStatus400,
 	ListAccessGroupMembersStatus401,
 	ListAccessGroupMembersStatus403,
+	ListAccessGroupMembersStatus404,
 	ListAccessGroupMembersStatus410,
 	ListAccessGroupProjectsResponse,
 	ListAccessGroupProjectsStatus400,
 	ListAccessGroupProjectsStatus401,
 	ListAccessGroupProjectsStatus403,
+	ListAccessGroupProjectsStatus404,
 	ListAccessGroupProjectsStatus410,
 	ListAccessGroupsResponse,
 	ListAccessGroupsStatus400,
 	ListAccessGroupsStatus401,
 	ListAccessGroupsStatus403,
+	ListAccessGroupsStatus404,
 	ListAccessGroupsStatus410,
 	ListAiGatewayRulesResponse,
 	ListAiGatewayRulesStatus400,
 	ListAiGatewayRulesStatus401,
 	ListAiGatewayRulesStatus403,
+	ListAiGatewayRulesStatus404,
 	ListAiGatewayRulesStatus410,
 	ListAiGatewayRulesStatus500,
 	ListAiGatewayVirtualModelConfigsResponse,
 	ListAiGatewayVirtualModelConfigsStatus400,
 	ListAiGatewayVirtualModelConfigsStatus401,
 	ListAiGatewayVirtualModelConfigsStatus403,
+	ListAiGatewayVirtualModelConfigsStatus404,
 	ListAiGatewayVirtualModelConfigsStatus410,
 	ListAiGatewayVirtualModelConfigsStatus500,
 	ListAliasesResponse,
@@ -1911,6 +1973,7 @@ import type {
 	ListCheckRunsStatus400,
 	ListCheckRunsStatus401,
 	ListCheckRunsStatus403,
+	ListCheckRunsStatus404,
 	ListCheckRunsStatus410,
 	ListCheckRunsStatus500,
 	ListConnectorProjectConnectionsResponse,
@@ -1944,6 +2007,7 @@ import type {
 	ListDeploymentCheckRunsStatus400,
 	ListDeploymentCheckRunsStatus401,
 	ListDeploymentCheckRunsStatus403,
+	ListDeploymentCheckRunsStatus404,
 	ListDeploymentCheckRunsStatus410,
 	ListDeploymentCheckRunsStatus500,
 	ListDeploymentFilesResponse,
@@ -1997,6 +2061,7 @@ import type {
 	ListKmsIssuersStatus400,
 	ListKmsIssuersStatus401,
 	ListKmsIssuersStatus403,
+	ListKmsIssuersStatus404,
 	ListKmsIssuersStatus410,
 	ListNamedSandboxesResponse,
 	ListNamedSandboxesStatus400,
@@ -2009,6 +2074,7 @@ import type {
 	ListNetworksStatus400,
 	ListNetworksStatus401,
 	ListNetworksStatus403,
+	ListNetworksStatus404,
 	ListNetworksStatus410,
 	ListPrivateLinkEndpointsResponse,
 	ListPrivateLinkEndpointsStatus400,
@@ -2020,6 +2086,7 @@ import type {
 	ListProjectChecksStatus400,
 	ListProjectChecksStatus401,
 	ListProjectChecksStatus403,
+	ListProjectChecksStatus404,
 	ListProjectChecksStatus410,
 	ListProjectChecksStatus500,
 	ListProjectConnectorConnectionsResponse,
@@ -2090,16 +2157,19 @@ import type {
 	ListTeamFlagSettingsStatus400,
 	ListTeamFlagSettingsStatus401,
 	ListTeamFlagSettingsStatus403,
+	ListTeamFlagSettingsStatus404,
 	ListTeamFlagSettingsStatus410,
 	ListTeamFlagsResponse,
 	ListTeamFlagsStatus400,
 	ListTeamFlagsStatus401,
 	ListTeamFlagsStatus403,
+	ListTeamFlagsStatus404,
 	ListTeamFlagsStatus410,
 	ListTeamFlagsV2Response,
 	ListTeamFlagsV2Status400,
 	ListTeamFlagsV2Status401,
 	ListTeamFlagsV2Status403,
+	ListTeamFlagsV2Status404,
 	ListTeamFlagsV2Status410,
 	ListTeamFlagsV2Status503,
 	ListUserEventsResponse,
@@ -2119,6 +2189,7 @@ import type {
 	ListVercelCiInvocationsStatus400,
 	ListVercelCiInvocationsStatus401,
 	ListVercelCiInvocationsStatus403,
+	ListVercelCiInvocationsStatus404,
 	ListVercelCiInvocationsStatus410,
 	ListVercelCiInvocationsStatus429,
 	ListVercelCiInvocationsStatus500,
@@ -2159,6 +2230,7 @@ import type {
 	MoveProjectDomainStatus400,
 	MoveProjectDomainStatus401,
 	MoveProjectDomainStatus403,
+	MoveProjectDomainStatus404,
 	MoveProjectDomainStatus409,
 	MoveProjectDomainStatus410,
 	PatchDomainResponse,
@@ -2191,6 +2263,7 @@ import type {
 	PatchTeamStatus401,
 	PatchTeamStatus402,
 	PatchTeamStatus403,
+	PatchTeamStatus404,
 	PatchTeamStatus409,
 	PatchTeamStatus410,
 	PatchTeamStatus428,
@@ -2206,12 +2279,14 @@ import type {
 	PauseProjectStatus400,
 	PauseProjectStatus401,
 	PauseProjectStatus403,
+	PauseProjectStatus404,
 	PauseProjectStatus410,
 	PauseProjectStatus500,
 	PostTeamDsyncRolesResponse,
 	PostTeamDsyncRolesStatus400,
 	PostTeamDsyncRolesStatus401,
 	PostTeamDsyncRolesStatus403,
+	PostTeamDsyncRolesStatus404,
 	PostTeamDsyncRolesStatus410,
 	PutFirewallConfigResponse,
 	PutFirewallConfigStatus400,
@@ -2225,16 +2300,19 @@ import type {
 	ReadAccessGroupProjectStatus400,
 	ReadAccessGroupProjectStatus401,
 	ReadAccessGroupProjectStatus403,
+	ReadAccessGroupProjectStatus404,
 	ReadAccessGroupProjectStatus410,
 	ReadAccessGroupResponse,
 	ReadAccessGroupStatus400,
 	ReadAccessGroupStatus401,
 	ReadAccessGroupStatus403,
+	ReadAccessGroupStatus404,
 	ReadAccessGroupStatus410,
 	ReadNetworkResponse,
 	ReadNetworkStatus400,
 	ReadNetworkStatus401,
 	ReadNetworkStatus403,
+	ReadNetworkStatus404,
 	ReadNetworkStatus410,
 	ReadPrivateLinkEndpointResponse,
 	ReadPrivateLinkEndpointStatus400,
@@ -2256,6 +2334,7 @@ import type {
 	RecordEventsStatus401,
 	RecordEventsStatus402,
 	RecordEventsStatus403,
+	RecordEventsStatus404,
 	RecordEventsStatus410,
 	RemoveBypassIpResponse,
 	RemoveBypassIpStatus400,
@@ -2275,6 +2354,7 @@ import type {
 	RemoveCustomEnvironmentStatus400,
 	RemoveCustomEnvironmentStatus401,
 	RemoveCustomEnvironmentStatus403,
+	RemoveCustomEnvironmentStatus404,
 	RemoveCustomEnvironmentStatus410,
 	RemoveProjectDomainResponse,
 	RemoveProjectDomainStatus400,
@@ -2294,6 +2374,7 @@ import type {
 	RemoveProjectMemberStatus400,
 	RemoveProjectMemberStatus401,
 	RemoveProjectMemberStatus403,
+	RemoveProjectMemberStatus404,
 	RemoveProjectMemberStatus410,
 	RemoveRecordResponse,
 	RemoveRecordStatus400,
@@ -2381,6 +2462,7 @@ import type {
 	RequestPromoteStatus400,
 	RequestPromoteStatus401,
 	RequestPromoteStatus403,
+	RequestPromoteStatus404,
 	RequestPromoteStatus409,
 	RequestPromoteStatus410,
 	RequestPromoteStatus422,
@@ -2389,6 +2471,7 @@ import type {
 	RequestRollbackStatus401,
 	RequestRollbackStatus402,
 	RequestRollbackStatus403,
+	RequestRollbackStatus404,
 	RequestRollbackStatus409,
 	RequestRollbackStatus410,
 	RequestRollbackStatus422,
@@ -2472,6 +2555,7 @@ import type {
 	SearchVercelCiLogsStatus400,
 	SearchVercelCiLogsStatus401,
 	SearchVercelCiLogsStatus403,
+	SearchVercelCiLogsStatus404,
 	SearchVercelCiLogsStatus410,
 	SearchVercelCiLogsStatus429,
 	SearchVercelCiLogsStatus500,
@@ -2491,12 +2575,14 @@ import type {
 	StageRedirectsStatus400,
 	StageRedirectsStatus401,
 	StageRedirectsStatus403,
+	StageRedirectsStatus404,
 	StageRedirectsStatus410,
 	StageRedirectsStatus500,
 	StageRoutesResponse,
 	StageRoutesStatus400,
 	StageRoutesStatus401,
 	StageRoutesStatus403,
+	StageRoutesStatus404,
 	StageRoutesStatus409,
 	StageRoutesStatus410,
 	StageRoutesStatus500,
@@ -2513,6 +2599,7 @@ import type {
 	StatusStatus401,
 	StatusStatus402,
 	StatusStatus403,
+	StatusStatus404,
 	StatusStatus410,
 	StopSessionResponse,
 	StopSessionStatus400,
@@ -2547,6 +2634,7 @@ import type {
 	TestDrainStatus401,
 	TestDrainStatus402,
 	TestDrainStatus403,
+	TestDrainStatus404,
 	TestDrainStatus410,
 	TransferInDomainResponse,
 	TransferInDomainStatus400,
@@ -2558,22 +2646,26 @@ import type {
 	UnlinkSharedEnvVariableStatus400,
 	UnlinkSharedEnvVariableStatus401,
 	UnlinkSharedEnvVariableStatus403,
+	UnlinkSharedEnvVariableStatus404,
 	UnlinkSharedEnvVariableStatus410,
 	UnpauseProjectResponse,
 	UnpauseProjectStatus400,
 	UnpauseProjectStatus401,
 	UnpauseProjectStatus403,
+	UnpauseProjectStatus404,
 	UnpauseProjectStatus410,
 	UnpauseProjectStatus500,
 	UpdateAccessGroupProjectResponse,
 	UpdateAccessGroupProjectStatus400,
 	UpdateAccessGroupProjectStatus401,
 	UpdateAccessGroupProjectStatus403,
+	UpdateAccessGroupProjectStatus404,
 	UpdateAccessGroupProjectStatus410,
 	UpdateAccessGroupResponse,
 	UpdateAccessGroupStatus400,
 	UpdateAccessGroupStatus401,
 	UpdateAccessGroupStatus403,
+	UpdateAccessGroupStatus404,
 	UpdateAccessGroupStatus410,
 	UpdateAiGatewayRuleResponse,
 	UpdateAiGatewayRuleStatus400,
@@ -2635,12 +2727,14 @@ import type {
 	UpdateCustomEnvironmentStatus401,
 	UpdateCustomEnvironmentStatus402,
 	UpdateCustomEnvironmentStatus403,
+	UpdateCustomEnvironmentStatus404,
 	UpdateCustomEnvironmentStatus410,
 	UpdateCustomEnvironmentStatus500,
 	UpdateDeploymentCheckRunResponse,
 	UpdateDeploymentCheckRunStatus400,
 	UpdateDeploymentCheckRunStatus401,
 	UpdateDeploymentCheckRunStatus403,
+	UpdateDeploymentCheckRunStatus404,
 	UpdateDeploymentCheckRunStatus410,
 	UpdateDeploymentCheckRunStatus413,
 	UpdateDeploymentCheckRunStatus500,
@@ -2752,6 +2846,7 @@ import type {
 	UpdateMicrofrontendsStatus400,
 	UpdateMicrofrontendsStatus401,
 	UpdateMicrofrontendsStatus403,
+	UpdateMicrofrontendsStatus404,
 	UpdateMicrofrontendsStatus409,
 	UpdateMicrofrontendsStatus410,
 	UpdateMicrofrontendsStatus500,
@@ -2759,6 +2854,7 @@ import type {
 	UpdateNetworkStatus400,
 	UpdateNetworkStatus401,
 	UpdateNetworkStatus403,
+	UpdateNetworkStatus404,
 	UpdateNetworkStatus410,
 	UpdateObservabilityConfigurationProjectResponse,
 	UpdateObservabilityConfigurationProjectStatus400,
@@ -2785,6 +2881,7 @@ import type {
 	UpdateProjectDomainStatus400,
 	UpdateProjectDomainStatus401,
 	UpdateProjectDomainStatus403,
+	UpdateProjectDomainStatus404,
 	UpdateProjectDomainStatus409,
 	UpdateProjectDomainStatus410,
 	UpdateProjectProtectionBypassResponse,
@@ -2807,6 +2904,7 @@ import type {
 	UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionStatus400,
 	UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionStatus401,
 	UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionStatus403,
+	UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionStatus404,
 	UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionStatus409,
 	UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionStatus410,
 	UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionStatus422,
@@ -2882,6 +2980,7 @@ import type {
 	UpdateSharedEnvVariableStatus401,
 	UpdateSharedEnvVariableStatus402,
 	UpdateSharedEnvVariableStatus403,
+	UpdateSharedEnvVariableStatus404,
 	UpdateSharedEnvVariableStatus410,
 	UpdateStaticIpsResponse,
 	UpdateStaticIpsStatus400,
@@ -2913,23 +3012,27 @@ import type {
 	UploadArtifactStatus401,
 	UploadArtifactStatus402,
 	UploadArtifactStatus403,
+	UploadArtifactStatus404,
 	UploadArtifactStatus410,
 	UploadCertResponse,
 	UploadCertStatus400,
 	UploadCertStatus401,
 	UploadCertStatus402,
 	UploadCertStatus403,
+	UploadCertStatus404,
 	UploadCertStatus410,
 	UploadFileResponse,
 	UploadFileStatus400,
 	UploadFileStatus401,
 	UploadFileStatus403,
+	UploadFileStatus404,
 	UploadFileStatus410,
 	UploadFileStatus426,
 	UploadProjectAvatarResponse,
 	UploadProjectAvatarStatus400,
 	UploadProjectAvatarStatus401,
 	UploadProjectAvatarStatus403,
+	UploadProjectAvatarStatus404,
 	UploadProjectAvatarStatus410,
 	UploadProjectAvatarStatus413,
 	UploadProjectAvatarStatus415,
@@ -2943,6 +3046,7 @@ import type {
 	VerifyProjectDomainStatus400,
 	VerifyProjectDomainStatus401,
 	VerifyProjectDomainStatus403,
+	VerifyProjectDomainStatus404,
 	VerifyProjectDomainStatus410,
 	WriteSessionFilesResponse,
 	WriteSessionFilesStatus400,
@@ -2982,6 +3086,7 @@ export async function readAccessGroup(
 			| ReadAccessGroupStatus400
 			| ReadAccessGroupStatus401
 			| ReadAccessGroupStatus403
+			| ReadAccessGroupStatus404
 			| ReadAccessGroupStatus410
 		>,
 		null,
@@ -3026,6 +3131,7 @@ export async function updateAccessGroup(
 			| UpdateAccessGroupStatus400
 			| UpdateAccessGroupStatus401
 			| UpdateAccessGroupStatus403
+			| UpdateAccessGroupStatus404
 			| UpdateAccessGroupStatus410
 		>,
 		null,
@@ -3070,6 +3176,7 @@ export async function deleteAccessGroup(
 			| DeleteAccessGroupStatus400
 			| DeleteAccessGroupStatus401
 			| DeleteAccessGroupStatus403
+			| DeleteAccessGroupStatus404
 			| DeleteAccessGroupStatus410
 		>,
 		null,
@@ -3120,6 +3227,7 @@ export async function listAccessGroupMembers(
 			| ListAccessGroupMembersStatus400
 			| ListAccessGroupMembersStatus401
 			| ListAccessGroupMembersStatus403
+			| ListAccessGroupMembersStatus404
 			| ListAccessGroupMembersStatus410
 		>,
 		null,
@@ -3168,6 +3276,7 @@ export async function listAccessGroups(
 			| ListAccessGroupsStatus400
 			| ListAccessGroupsStatus401
 			| ListAccessGroupsStatus403
+			| ListAccessGroupsStatus404
 			| ListAccessGroupsStatus410
 		>,
 		null,
@@ -3216,6 +3325,7 @@ export async function createAccessGroup(
 			| CreateAccessGroupStatus400
 			| CreateAccessGroupStatus401
 			| CreateAccessGroupStatus403
+			| CreateAccessGroupStatus404
 			| CreateAccessGroupStatus410
 		>,
 		null,
@@ -3260,6 +3370,7 @@ export async function listAccessGroupProjects(
 			| ListAccessGroupProjectsStatus400
 			| ListAccessGroupProjectsStatus401
 			| ListAccessGroupProjectsStatus403
+			| ListAccessGroupProjectsStatus404
 			| ListAccessGroupProjectsStatus410
 		>,
 		null,
@@ -3304,6 +3415,7 @@ export async function createAccessGroupProject(
 			| CreateAccessGroupProjectStatus400
 			| CreateAccessGroupProjectStatus401
 			| CreateAccessGroupProjectStatus403
+			| CreateAccessGroupProjectStatus404
 			| CreateAccessGroupProjectStatus410
 		>,
 		null,
@@ -3352,6 +3464,7 @@ export async function readAccessGroupProject(
 			| ReadAccessGroupProjectStatus400
 			| ReadAccessGroupProjectStatus401
 			| ReadAccessGroupProjectStatus403
+			| ReadAccessGroupProjectStatus404
 			| ReadAccessGroupProjectStatus410
 		>,
 		null,
@@ -3400,6 +3513,7 @@ export async function updateAccessGroupProject(
 			| UpdateAccessGroupProjectStatus400
 			| UpdateAccessGroupProjectStatus401
 			| UpdateAccessGroupProjectStatus403
+			| UpdateAccessGroupProjectStatus404
 			| UpdateAccessGroupProjectStatus410
 		>,
 		null,
@@ -3448,6 +3562,7 @@ export async function deleteAccessGroupProject(
 			| DeleteAccessGroupProjectStatus400
 			| DeleteAccessGroupProjectStatus401
 			| DeleteAccessGroupProjectStatus403
+			| DeleteAccessGroupProjectStatus404
 			| DeleteAccessGroupProjectStatus410
 		>,
 		null,
@@ -3487,6 +3602,7 @@ export async function createAiGatewayVirtualModelConfig(
 			| CreateAiGatewayVirtualModelConfigStatus400
 			| CreateAiGatewayVirtualModelConfigStatus401
 			| CreateAiGatewayVirtualModelConfigStatus403
+			| CreateAiGatewayVirtualModelConfigStatus404
 			| CreateAiGatewayVirtualModelConfigStatus409
 			| CreateAiGatewayVirtualModelConfigStatus410
 			| CreateAiGatewayVirtualModelConfigStatus429
@@ -3689,6 +3805,7 @@ export async function listAiGatewayVirtualModelConfigs(
 			| ListAiGatewayVirtualModelConfigsStatus400
 			| ListAiGatewayVirtualModelConfigsStatus401
 			| ListAiGatewayVirtualModelConfigsStatus403
+			| ListAiGatewayVirtualModelConfigsStatus404
 			| ListAiGatewayVirtualModelConfigsStatus410
 			| ListAiGatewayVirtualModelConfigsStatus500
 		>,
@@ -3882,6 +3999,7 @@ export async function createAiGatewayRule(
 			| CreateAiGatewayRuleStatus400
 			| CreateAiGatewayRuleStatus401
 			| CreateAiGatewayRuleStatus403
+			| CreateAiGatewayRuleStatus404
 			| CreateAiGatewayRuleStatus409
 			| CreateAiGatewayRuleStatus410
 			| CreateAiGatewayRuleStatus500
@@ -3923,6 +4041,7 @@ export async function listAiGatewayRules(
 			| ListAiGatewayRulesStatus400
 			| ListAiGatewayRulesStatus401
 			| ListAiGatewayRulesStatus403
+			| ListAiGatewayRulesStatus404
 			| ListAiGatewayRulesStatus410
 			| ListAiGatewayRulesStatus500
 		>,
@@ -4048,6 +4167,7 @@ export async function recordEvents(
 			| RecordEventsStatus401
 			| RecordEventsStatus402
 			| RecordEventsStatus403
+			| RecordEventsStatus404
 			| RecordEventsStatus410
 		>,
 		null,
@@ -4084,7 +4204,12 @@ export async function status(
 	const data = await request<
 		StatusResponse,
 		ErrorWrapper<
-			StatusStatus400 | StatusStatus401 | StatusStatus402 | StatusStatus403 | StatusStatus410
+			| StatusStatus400
+			| StatusStatus401
+			| StatusStatus402
+			| StatusStatus403
+			| StatusStatus404
+			| StatusStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -4139,6 +4264,7 @@ export async function uploadArtifact(
 			| UploadArtifactStatus401
 			| UploadArtifactStatus402
 			| UploadArtifactStatus403
+			| UploadArtifactStatus404
 			| UploadArtifactStatus410
 		>,
 		null,
@@ -4235,6 +4361,7 @@ export async function artifactQuery(
 			| ArtifactQueryStatus401
 			| ArtifactQueryStatus402
 			| ArtifactQueryStatus403
+			| ArtifactQueryStatus404
 			| ArtifactQueryStatus410
 		>,
 		null,
@@ -4274,6 +4401,7 @@ export async function deleteAllArtifacts(
 			| DeleteAllArtifactsStatus400
 			| DeleteAllArtifactsStatus401
 			| DeleteAllArtifactsStatus403
+			| DeleteAllArtifactsStatus404
 			| DeleteAllArtifactsStatus410
 		>,
 		null,
@@ -4438,6 +4566,7 @@ export async function stageRedirects(
 			| StageRedirectsStatus400
 			| StageRedirectsStatus401
 			| StageRedirectsStatus403
+			| StageRedirectsStatus404
 			| StageRedirectsStatus410
 			| StageRedirectsStatus500
 		>,
@@ -4663,6 +4792,7 @@ export async function getVersions(
 			| GetVersionsStatus400
 			| GetVersionsStatus401
 			| GetVersionsStatus403
+			| GetVersionsStatus404
 			| GetVersionsStatus410
 			| GetVersionsStatus500
 		>,
@@ -4758,6 +4888,7 @@ export async function listProjectChecks(
 			| ListProjectChecksStatus400
 			| ListProjectChecksStatus401
 			| ListProjectChecksStatus403
+			| ListProjectChecksStatus404
 			| ListProjectChecksStatus410
 			| ListProjectChecksStatus500
 		>,
@@ -4812,6 +4943,7 @@ export async function createProjectCheck(
 			| CreateProjectCheckStatus400
 			| CreateProjectCheckStatus401
 			| CreateProjectCheckStatus403
+			| CreateProjectCheckStatus404
 			| CreateProjectCheckStatus410
 			| CreateProjectCheckStatus500
 		>,
@@ -4861,6 +4993,7 @@ export async function getProjectCheck(
 			| GetProjectCheckStatus400
 			| GetProjectCheckStatus401
 			| GetProjectCheckStatus403
+			| GetProjectCheckStatus404
 			| GetProjectCheckStatus410
 			| GetProjectCheckStatus500
 		>,
@@ -5010,6 +5143,7 @@ export async function listCheckRuns(
 			| ListCheckRunsStatus400
 			| ListCheckRunsStatus401
 			| ListCheckRunsStatus403
+			| ListCheckRunsStatus404
 			| ListCheckRunsStatus410
 			| ListCheckRunsStatus500
 		>,
@@ -5055,6 +5189,7 @@ export async function listDeploymentCheckRuns(
 			| ListDeploymentCheckRunsStatus400
 			| ListDeploymentCheckRunsStatus401
 			| ListDeploymentCheckRunsStatus403
+			| ListDeploymentCheckRunsStatus404
 			| ListDeploymentCheckRunsStatus410
 			| ListDeploymentCheckRunsStatus500
 		>,
@@ -5200,6 +5335,7 @@ export async function updateDeploymentCheckRun(
 			| UpdateDeploymentCheckRunStatus400
 			| UpdateDeploymentCheckRunStatus401
 			| UpdateDeploymentCheckRunStatus403
+			| UpdateDeploymentCheckRunStatus404
 			| UpdateDeploymentCheckRunStatus410
 			| UpdateDeploymentCheckRunStatus413
 			| UpdateDeploymentCheckRunStatus500
@@ -5488,7 +5624,11 @@ export async function listNetworks(
 	const data = await request<
 		ListNetworksResponse,
 		ErrorWrapper<
-			ListNetworksStatus400 | ListNetworksStatus401 | ListNetworksStatus403 | ListNetworksStatus410
+			| ListNetworksStatus400
+			| ListNetworksStatus401
+			| ListNetworksStatus403
+			| ListNetworksStatus404
+			| ListNetworksStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -5535,6 +5675,7 @@ export async function createNetwork(
 			| CreateNetworkStatus401
 			| CreateNetworkStatus402
 			| CreateNetworkStatus403
+			| CreateNetworkStatus404
 			| CreateNetworkStatus409
 			| CreateNetworkStatus410
 		>,
@@ -5581,6 +5722,7 @@ export async function deleteNetwork(
 			| DeleteNetworkStatus401
 			| DeleteNetworkStatus402
 			| DeleteNetworkStatus403
+			| DeleteNetworkStatus404
 			| DeleteNetworkStatus409
 			| DeleteNetworkStatus410
 		>,
@@ -5626,6 +5768,7 @@ export async function updateNetwork(
 			| UpdateNetworkStatus400
 			| UpdateNetworkStatus401
 			| UpdateNetworkStatus403
+			| UpdateNetworkStatus404
 			| UpdateNetworkStatus410
 		>,
 		null,
@@ -5667,7 +5810,11 @@ export async function readNetwork(
 	const data = await request<
 		ReadNetworkResponse,
 		ErrorWrapper<
-			ReadNetworkStatus400 | ReadNetworkStatus401 | ReadNetworkStatus403 | ReadNetworkStatus410
+			| ReadNetworkStatus400
+			| ReadNetworkStatus401
+			| ReadNetworkStatus403
+			| ReadNetworkStatus404
+			| ReadNetworkStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -6569,6 +6716,7 @@ export async function getDeploymentEvents(
 			| GetDeploymentEventsStatus400
 			| GetDeploymentEventsStatus401
 			| GetDeploymentEventsStatus403
+			| GetDeploymentEventsStatus404
 			| GetDeploymentEventsStatus410
 			| GetDeploymentEventsStatus500
 		>,
@@ -8490,6 +8638,7 @@ export async function createConfigurableLogDrain(
 			| CreateConfigurableLogDrainStatus400
 			| CreateConfigurableLogDrainStatus401
 			| CreateConfigurableLogDrainStatus403
+			| CreateConfigurableLogDrainStatus404
 			| CreateConfigurableLogDrainStatus410
 		>,
 		null,
@@ -8530,6 +8679,7 @@ export async function createDrain(
 			| CreateDrainStatus401
 			| CreateDrainStatus402
 			| CreateDrainStatus403
+			| CreateDrainStatus404
 			| CreateDrainStatus410
 		>,
 		null,
@@ -8746,6 +8896,7 @@ export async function testDrain(
 			| TestDrainStatus401
 			| TestDrainStatus402
 			| TestDrainStatus403
+			| TestDrainStatus404
 			| TestDrainStatus410
 		>,
 		null,
@@ -8947,6 +9098,7 @@ export async function getEdgeConfigs(
 			| GetEdgeConfigsStatus400
 			| GetEdgeConfigsStatus401
 			| GetEdgeConfigsStatus403
+			| GetEdgeConfigsStatus404
 			| GetEdgeConfigsStatus410
 		>,
 		null,
@@ -8987,6 +9139,7 @@ export async function createEdgeConfig(
 			| CreateEdgeConfigStatus401
 			| CreateEdgeConfigStatus402
 			| CreateEdgeConfigStatus403
+			| CreateEdgeConfigStatus404
 			| CreateEdgeConfigStatus410
 		>,
 		null,
@@ -9786,6 +9939,7 @@ export async function createSharedEnvVariable(
 			| CreateSharedEnvVariableStatus401
 			| CreateSharedEnvVariableStatus402
 			| CreateSharedEnvVariableStatus403
+			| CreateSharedEnvVariableStatus404
 			| CreateSharedEnvVariableStatus410
 		>,
 		null,
@@ -9886,6 +10040,7 @@ export async function updateSharedEnvVariable(
 			| UpdateSharedEnvVariableStatus401
 			| UpdateSharedEnvVariableStatus402
 			| UpdateSharedEnvVariableStatus403
+			| UpdateSharedEnvVariableStatus404
 			| UpdateSharedEnvVariableStatus410
 		>,
 		null,
@@ -9926,6 +10081,7 @@ export async function deleteSharedEnvVariable(
 			| DeleteSharedEnvVariableStatus401
 			| DeleteSharedEnvVariableStatus402
 			| DeleteSharedEnvVariableStatus403
+			| DeleteSharedEnvVariableStatus404
 			| DeleteSharedEnvVariableStatus410
 		>,
 		null,
@@ -9970,6 +10126,7 @@ export async function getSharedEnvVar(
 			| GetSharedEnvVarStatus400
 			| GetSharedEnvVarStatus401
 			| GetSharedEnvVarStatus403
+			| GetSharedEnvVarStatus404
 			| GetSharedEnvVarStatus410
 		>,
 		null,
@@ -10018,6 +10175,7 @@ export async function unlinkSharedEnvVariable(
 			| UnlinkSharedEnvVariableStatus400
 			| UnlinkSharedEnvVariableStatus401
 			| UnlinkSharedEnvVariableStatus403
+			| UnlinkSharedEnvVariableStatus404
 			| UnlinkSharedEnvVariableStatus410
 		>,
 		null,
@@ -10653,6 +10811,7 @@ export async function listTeamFlagSettings(
 			| ListTeamFlagSettingsStatus400
 			| ListTeamFlagSettingsStatus401
 			| ListTeamFlagSettingsStatus403
+			| ListTeamFlagSettingsStatus404
 			| ListTeamFlagSettingsStatus410
 		>,
 		null,
@@ -10708,6 +10867,7 @@ export async function listTeamFlagsV2(
 			| ListTeamFlagsV2Status400
 			| ListTeamFlagsV2Status401
 			| ListTeamFlagsV2Status403
+			| ListTeamFlagsV2Status404
 			| ListTeamFlagsV2Status410
 			| ListTeamFlagsV2Status503
 		>,
@@ -10773,6 +10933,7 @@ export async function listTeamFlags(
 			| ListTeamFlagsStatus400
 			| ListTeamFlagsStatus401
 			| ListTeamFlagsStatus403
+			| ListTeamFlagsStatus404
 			| ListTeamFlagsStatus410
 		>,
 		null,
@@ -12368,6 +12529,7 @@ export async function getConfigurations(
 			| GetConfigurationsStatus400
 			| GetConfigurationsStatus401
 			| GetConfigurationsStatus403
+			| GetConfigurationsStatus404
 			| GetConfigurationsStatus410
 		>,
 		null,
@@ -12576,6 +12738,7 @@ export async function getIntegrationLogDrains(
 			| GetIntegrationLogDrainsStatus400
 			| GetIntegrationLogDrainsStatus401
 			| GetIntegrationLogDrainsStatus403
+			| GetIntegrationLogDrainsStatus404
 			| GetIntegrationLogDrainsStatus410
 		>,
 		null,
@@ -12615,6 +12778,7 @@ export async function createLogDrain(
 			| CreateLogDrainStatus400
 			| CreateLogDrainStatus401
 			| CreateLogDrainStatus403
+			| CreateLogDrainStatus404
 			| CreateLogDrainStatus410
 		>,
 		null,
@@ -12691,6 +12855,7 @@ export async function createApiKeys(
 			| CreateApiKeysStatus400
 			| CreateApiKeysStatus401
 			| CreateApiKeysStatus403
+			| CreateApiKeysStatus404
 			| CreateApiKeysStatus409
 			| CreateApiKeysStatus410
 			| CreateApiKeysStatus429
@@ -12816,6 +12981,7 @@ export async function listKmsIssuers(
 			| ListKmsIssuersStatus400
 			| ListKmsIssuersStatus401
 			| ListKmsIssuersStatus403
+			| ListKmsIssuersStatus404
 			| ListKmsIssuersStatus410
 		>,
 		null,
@@ -13336,6 +13502,7 @@ export async function getRuntimeLogs(
 			| GetRuntimeLogsStatus400
 			| GetRuntimeLogsStatus401
 			| GetRuntimeLogsStatus403
+			| GetRuntimeLogsStatus404
 			| GetRuntimeLogsStatus410
 		>,
 		null,
@@ -13615,6 +13782,7 @@ export async function getMicrofrontendsGroups(
 			| GetMicrofrontendsGroupsStatus400
 			| GetMicrofrontendsGroupsStatus401
 			| GetMicrofrontendsGroupsStatus403
+			| GetMicrofrontendsGroupsStatus404
 			| GetMicrofrontendsGroupsStatus410
 			| GetMicrofrontendsGroupsStatus500
 		>,
@@ -13660,6 +13828,7 @@ export async function getMicrofrontendsInGroup(
 			| GetMicrofrontendsInGroupStatus400
 			| GetMicrofrontendsInGroupStatus401
 			| GetMicrofrontendsInGroupStatus403
+			| GetMicrofrontendsInGroupStatus404
 			| GetMicrofrontendsInGroupStatus410
 		>,
 		null,
@@ -13791,6 +13960,7 @@ export async function createMicrofrontendsGroupWithApplications(
 			| CreateMicrofrontendsGroupWithApplicationsStatus400
 			| CreateMicrofrontendsGroupWithApplicationsStatus401
 			| CreateMicrofrontendsGroupWithApplicationsStatus403
+			| CreateMicrofrontendsGroupWithApplicationsStatus404
 			| CreateMicrofrontendsGroupWithApplicationsStatus410
 			| CreateMicrofrontendsGroupWithApplicationsStatus500
 		>,
@@ -13910,6 +14080,7 @@ export async function createObservabilityQuery(
 			| CreateObservabilityQueryStatus401
 			| CreateObservabilityQueryStatus402
 			| CreateObservabilityQueryStatus403
+			| CreateObservabilityQueryStatus404
 			| CreateObservabilityQueryStatus408
 			| CreateObservabilityQueryStatus410
 			| CreateObservabilityQueryStatus413
@@ -13945,6 +14116,7 @@ export async function getObservabilitySchema(
 			| GetObservabilitySchemaStatus400
 			| GetObservabilitySchemaStatus401
 			| GetObservabilitySchemaStatus403
+			| GetObservabilitySchemaStatus404
 			| GetObservabilitySchemaStatus410
 		>,
 		null,
@@ -13984,6 +14156,7 @@ export async function getObservabilitySchemaByMetricId(
 			| GetObservabilitySchemaByMetricIdStatus400
 			| GetObservabilitySchemaByMetricIdStatus401
 			| GetObservabilitySchemaByMetricIdStatus403
+			| GetObservabilitySchemaByMetricIdStatus404
 			| GetObservabilitySchemaByMetricIdStatus410
 		>,
 		null,
@@ -14034,6 +14207,7 @@ export async function getProjectMembers(
 			| GetProjectMembersStatus400
 			| GetProjectMembersStatus401
 			| GetProjectMembersStatus403
+			| GetProjectMembersStatus404
 			| GetProjectMembersStatus410
 		>,
 		null,
@@ -14085,6 +14259,7 @@ export async function addProjectMember(
 			| AddProjectMemberStatus400
 			| AddProjectMemberStatus401
 			| AddProjectMemberStatus403
+			| AddProjectMemberStatus404
 			| AddProjectMemberStatus410
 			| AddProjectMemberStatus500
 		>,
@@ -14134,6 +14309,7 @@ export async function removeProjectMember(
 			| RemoveProjectMemberStatus400
 			| RemoveProjectMemberStatus401
 			| RemoveProjectMemberStatus403
+			| RemoveProjectMemberStatus404
 			| RemoveProjectMemberStatus410
 		>,
 		null,
@@ -14237,6 +14413,7 @@ export async function stageRoutes(
 			| StageRoutesStatus400
 			| StageRoutesStatus401
 			| StageRoutesStatus403
+			| StageRoutesStatus404
 			| StageRoutesStatus409
 			| StageRoutesStatus410
 			| StageRoutesStatus500
@@ -14283,6 +14460,7 @@ export async function addRoute(
 			| AddRouteStatus400
 			| AddRouteStatus401
 			| AddRouteStatus403
+			| AddRouteStatus404
 			| AddRouteStatus409
 			| AddRouteStatus410
 			| AddRouteStatus500
@@ -14427,6 +14605,7 @@ export async function generateRoute(
 			| GenerateRouteStatus400
 			| GenerateRouteStatus401
 			| GenerateRouteStatus403
+			| GenerateRouteStatus404
 			| GenerateRouteStatus408
 			| GenerateRouteStatus410
 			| GenerateRouteStatus500
@@ -14473,6 +14652,7 @@ export async function getRouteVersions(
 			| GetRouteVersionsStatus400
 			| GetRouteVersionsStatus401
 			| GetRouteVersionsStatus403
+			| GetRouteVersionsStatus404
 			| GetRouteVersionsStatus410
 		>,
 		null,
@@ -14574,7 +14754,11 @@ export async function getProjects(
 	const data = await request<
 		GetProjectsResponse,
 		ErrorWrapper<
-			GetProjectsStatus400 | GetProjectsStatus401 | GetProjectsStatus403 | GetProjectsStatus410
+			| GetProjectsStatus400
+			| GetProjectsStatus401
+			| GetProjectsStatus403
+			| GetProjectsStatus404
+			| GetProjectsStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -14761,6 +14945,7 @@ export async function createTraceSession(
 			| CreateTraceSessionStatus400
 			| CreateTraceSessionStatus401
 			| CreateTraceSessionStatus403
+			| CreateTraceSessionStatus404
 			| CreateTraceSessionStatus410
 			| CreateTraceSessionStatus422
 		>,
@@ -14803,7 +14988,11 @@ export async function getProject(
 	const data = await request<
 		GetProjectResponse,
 		ErrorWrapper<
-			GetProjectStatus400 | GetProjectStatus401 | GetProjectStatus403 | GetProjectStatus410
+			| GetProjectStatus400
+			| GetProjectStatus401
+			| GetProjectStatus403
+			| GetProjectStatus404
+			| GetProjectStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -14895,6 +15084,7 @@ export async function deleteProject(
 			| DeleteProjectStatus400
 			| DeleteProjectStatus401
 			| DeleteProjectStatus403
+			| DeleteProjectStatus404
 			| DeleteProjectStatus409
 			| DeleteProjectStatus410
 		>,
@@ -14940,6 +15130,7 @@ export async function uploadProjectAvatar(
 			| UploadProjectAvatarStatus400
 			| UploadProjectAvatarStatus401
 			| UploadProjectAvatarStatus403
+			| UploadProjectAvatarStatus404
 			| UploadProjectAvatarStatus410
 			| UploadProjectAvatarStatus413
 			| UploadProjectAvatarStatus415
@@ -15035,6 +15226,7 @@ export async function createCustomEnvironment(
 			| CreateCustomEnvironmentStatus401
 			| CreateCustomEnvironmentStatus402
 			| CreateCustomEnvironmentStatus403
+			| CreateCustomEnvironmentStatus404
 			| CreateCustomEnvironmentStatus409
 			| CreateCustomEnvironmentStatus410
 			| CreateCustomEnvironmentStatus500
@@ -15081,6 +15273,7 @@ export async function getProjectsByIdOrNameCustomEnvironments(
 			| GetProjectsByIdOrNameCustomEnvironmentsStatus400
 			| GetProjectsByIdOrNameCustomEnvironmentsStatus401
 			| GetProjectsByIdOrNameCustomEnvironmentsStatus403
+			| GetProjectsByIdOrNameCustomEnvironmentsStatus404
 			| GetProjectsByIdOrNameCustomEnvironmentsStatus410
 		>,
 		null,
@@ -15179,6 +15372,7 @@ export async function updateCustomEnvironment(
 			| UpdateCustomEnvironmentStatus401
 			| UpdateCustomEnvironmentStatus402
 			| UpdateCustomEnvironmentStatus403
+			| UpdateCustomEnvironmentStatus404
 			| UpdateCustomEnvironmentStatus410
 			| UpdateCustomEnvironmentStatus500
 		>,
@@ -15228,6 +15422,7 @@ export async function removeCustomEnvironment(
 			| RemoveCustomEnvironmentStatus400
 			| RemoveCustomEnvironmentStatus401
 			| RemoveCustomEnvironmentStatus403
+			| RemoveCustomEnvironmentStatus404
 			| RemoveCustomEnvironmentStatus410
 		>,
 		null,
@@ -15286,6 +15481,7 @@ export async function getProjectDomains(
 			| GetProjectDomainsStatus400
 			| GetProjectDomainsStatus401
 			| GetProjectDomainsStatus403
+			| GetProjectDomainsStatus404
 			| GetProjectDomainsStatus410
 		>,
 		null,
@@ -15348,6 +15544,7 @@ export async function getProjectDomain(
 			| GetProjectDomainStatus400
 			| GetProjectDomainStatus401
 			| GetProjectDomainStatus403
+			| GetProjectDomainStatus404
 			| GetProjectDomainStatus410
 		>,
 		null,
@@ -15396,6 +15593,7 @@ export async function updateProjectDomain(
 			| UpdateProjectDomainStatus400
 			| UpdateProjectDomainStatus401
 			| UpdateProjectDomainStatus403
+			| UpdateProjectDomainStatus404
 			| UpdateProjectDomainStatus409
 			| UpdateProjectDomainStatus410
 		>,
@@ -15492,6 +15690,7 @@ export async function addProjectDomain(
 			| AddProjectDomainStatus401
 			| AddProjectDomainStatus402
 			| AddProjectDomainStatus403
+			| AddProjectDomainStatus404
 			| AddProjectDomainStatus409
 			| AddProjectDomainStatus410
 		>,
@@ -15541,6 +15740,7 @@ export async function moveProjectDomain(
 			| MoveProjectDomainStatus400
 			| MoveProjectDomainStatus401
 			| MoveProjectDomainStatus403
+			| MoveProjectDomainStatus404
 			| MoveProjectDomainStatus409
 			| MoveProjectDomainStatus410
 		>,
@@ -15590,6 +15790,7 @@ export async function verifyProjectDomain(
 			| VerifyProjectDomainStatus400
 			| VerifyProjectDomainStatus401
 			| VerifyProjectDomainStatus403
+			| VerifyProjectDomainStatus404
 			| VerifyProjectDomainStatus410
 		>,
 		null,
@@ -15642,6 +15843,7 @@ export async function filterProjectEnvs(
 			| FilterProjectEnvsStatus400
 			| FilterProjectEnvsStatus401
 			| FilterProjectEnvsStatus403
+			| FilterProjectEnvsStatus404
 			| FilterProjectEnvsStatus410
 		>,
 		null,
@@ -15747,6 +15949,7 @@ export async function getProjectEnv(
 			| GetProjectEnvStatus400
 			| GetProjectEnvStatus401
 			| GetProjectEnvStatus403
+			| GetProjectEnvStatus404
 			| GetProjectEnvStatus410
 		>,
 		null,
@@ -16302,6 +16505,7 @@ export async function createProjectTransferRequest(
 			| CreateProjectTransferRequestStatus400
 			| CreateProjectTransferRequestStatus401
 			| CreateProjectTransferRequestStatus403
+			| CreateProjectTransferRequestStatus404
 			| CreateProjectTransferRequestStatus409
 			| CreateProjectTransferRequestStatus410
 		>,
@@ -16444,6 +16648,7 @@ export async function requestRollback(
 			| RequestRollbackStatus401
 			| RequestRollbackStatus402
 			| RequestRollbackStatus403
+			| RequestRollbackStatus404
 			| RequestRollbackStatus409
 			| RequestRollbackStatus410
 			| RequestRollbackStatus422
@@ -16492,6 +16697,7 @@ export async function updateProjectsByProjectIdRollbackByDeploymentIdUpdateDescr
 			| UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionStatus400
 			| UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionStatus401
 			| UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionStatus403
+			| UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionStatus404
 			| UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionStatus409
 			| UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionStatus410
 			| UpdateProjectsByProjectIdRollbackByDeploymentIdUpdateDescriptionStatus422
@@ -16537,6 +16743,7 @@ export async function updateMicrofrontends(
 			| UpdateMicrofrontendsStatus400
 			| UpdateMicrofrontendsStatus401
 			| UpdateMicrofrontendsStatus403
+			| UpdateMicrofrontendsStatus404
 			| UpdateMicrofrontendsStatus409
 			| UpdateMicrofrontendsStatus410
 			| UpdateMicrofrontendsStatus500
@@ -16587,6 +16794,7 @@ export async function requestPromote(
 			| RequestPromoteStatus400
 			| RequestPromoteStatus401
 			| RequestPromoteStatus403
+			| RequestPromoteStatus404
 			| RequestPromoteStatus409
 			| RequestPromoteStatus410
 			| RequestPromoteStatus422
@@ -16692,6 +16900,7 @@ export async function pauseProject(
 			| PauseProjectStatus400
 			| PauseProjectStatus401
 			| PauseProjectStatus403
+			| PauseProjectStatus404
 			| PauseProjectStatus410
 			| PauseProjectStatus500
 		>,
@@ -16737,6 +16946,7 @@ export async function unpauseProject(
 			| UnpauseProjectStatus400
 			| UnpauseProjectStatus401
 			| UnpauseProjectStatus403
+			| UnpauseProjectStatus404
 			| UnpauseProjectStatus410
 			| UnpauseProjectStatus500
 		>,
@@ -18849,6 +19059,7 @@ export async function createSpeedInsightsToggle(
 			| CreateSpeedInsightsToggleStatus401
 			| CreateSpeedInsightsToggleStatus402
 			| CreateSpeedInsightsToggleStatus403
+			| CreateSpeedInsightsToggleStatus404
 			| CreateSpeedInsightsToggleStatus410
 		>,
 		null,
@@ -19136,6 +19347,7 @@ export async function inviteUserToTeam(
 			| InviteUserToTeamStatus400
 			| InviteUserToTeamStatus401
 			| InviteUserToTeamStatus403
+			| InviteUserToTeamStatus404
 			| InviteUserToTeamStatus410
 			| InviteUserToTeamStatus503
 		>,
@@ -19456,6 +19668,7 @@ export async function patchTeam(
 			| PatchTeamStatus401
 			| PatchTeamStatus402
 			| PatchTeamStatus403
+			| PatchTeamStatus404
 			| PatchTeamStatus409
 			| PatchTeamStatus410
 			| PatchTeamStatus428
@@ -19575,6 +19788,7 @@ export async function postTeamDsyncRoles(
 			| PostTeamDsyncRolesStatus400
 			| PostTeamDsyncRolesStatus401
 			| PostTeamDsyncRolesStatus403
+			| PostTeamDsyncRolesStatus404
 			| PostTeamDsyncRolesStatus410
 		>,
 		null,
@@ -19620,6 +19834,7 @@ export async function deleteTeam(
 			| DeleteTeamStatus401
 			| DeleteTeamStatus402
 			| DeleteTeamStatus403
+			| DeleteTeamStatus404
 			| DeleteTeamStatus409
 			| DeleteTeamStatus410
 			| DeleteTeamStatus503
@@ -19813,6 +20028,7 @@ export async function uploadFile(
 			| UploadFileStatus400
 			| UploadFileStatus401
 			| UploadFileStatus403
+			| UploadFileStatus404
 			| UploadFileStatus410
 			| UploadFileStatus426
 		>,
@@ -21299,7 +21515,7 @@ export async function deleteByTeamSlugByProjectSlugByRepositoryNameManifestsByRe
 
 /**
  * @summary List image tags
- * @description GET /v2/:teamSlug/:projectSlug/:repositoryName/tags/list List the tags in a repository.
+ * @description GET /v2/:teamSlug/:projectSlug/:repositoryName/tags/list List the tags in a repository. The `last` parameter accepts the opaque cursor from a previous response's `Link` header. Unparseable cursors return HTTP 400 with code `invalid_cursor`.
  * @link /v2/{teamSlug}/{projectSlug}/{repositoryName}/tags/list
  */
 export async function getByTeamSlugByProjectSlugByRepositoryNameTagsList(
@@ -21402,6 +21618,7 @@ export async function listVercelCiInvocations(
 			| ListVercelCiInvocationsStatus400
 			| ListVercelCiInvocationsStatus401
 			| ListVercelCiInvocationsStatus403
+			| ListVercelCiInvocationsStatus404
 			| ListVercelCiInvocationsStatus410
 			| ListVercelCiInvocationsStatus429
 			| ListVercelCiInvocationsStatus500
@@ -22165,6 +22382,7 @@ export async function searchVercelCiLogs(
 			| SearchVercelCiLogsStatus400
 			| SearchVercelCiLogsStatus401
 			| SearchVercelCiLogsStatus403
+			| SearchVercelCiLogsStatus404
 			| SearchVercelCiLogsStatus410
 			| SearchVercelCiLogsStatus429
 			| SearchVercelCiLogsStatus500
@@ -22389,6 +22607,7 @@ export async function createWebInsightsToggle(
 			| CreateWebInsightsToggleStatus400
 			| CreateWebInsightsToggleStatus401
 			| CreateWebInsightsToggleStatus403
+			| CreateWebInsightsToggleStatus404
 			| CreateWebInsightsToggleStatus410
 		>,
 		null,
@@ -22660,6 +22879,7 @@ export async function createWebhook(
 			| CreateWebhookStatus400
 			| CreateWebhookStatus401
 			| CreateWebhookStatus403
+			| CreateWebhookStatus404
 			| CreateWebhookStatus410
 		>,
 		null,
@@ -22696,7 +22916,11 @@ export async function getWebhooks(
 	const data = await request<
 		GetWebhooksResponse,
 		ErrorWrapper<
-			GetWebhooksStatus400 | GetWebhooksStatus401 | GetWebhooksStatus403 | GetWebhooksStatus410
+			| GetWebhooksStatus400
+			| GetWebhooksStatus401
+			| GetWebhooksStatus403
+			| GetWebhooksStatus404
+			| GetWebhooksStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -22737,7 +22961,11 @@ export async function getWebhook(
 	const data = await request<
 		GetWebhookResponse,
 		ErrorWrapper<
-			GetWebhookStatus400 | GetWebhookStatus401 | GetWebhookStatus403 | GetWebhookStatus410
+			| GetWebhookStatus400
+			| GetWebhookStatus401
+			| GetWebhookStatus403
+			| GetWebhookStatus404
+			| GetWebhookStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -22781,6 +23009,7 @@ export async function deleteWebhook(
 			| DeleteWebhookStatus400
 			| DeleteWebhookStatus401
 			| DeleteWebhookStatus403
+			| DeleteWebhookStatus404
 			| DeleteWebhookStatus410
 		>,
 		null,
@@ -23291,6 +23520,7 @@ export async function uploadCert(
 			| UploadCertStatus401
 			| UploadCertStatus402
 			| UploadCertStatus403
+			| UploadCertStatus404
 			| UploadCertStatus410
 		>,
 		null,
