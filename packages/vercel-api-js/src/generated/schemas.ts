@@ -20093,8 +20093,6 @@ export const getConnectorTokenStatus422Schema = z.unknown();
 
 export const getConnectorTokenStatus429Schema = z.unknown();
 
-export const getConnectorTokenStatus501Schema = z.unknown();
-
 export const getConnectorTokenStatus504Schema = z.unknown();
 
 export const getConnectorTokenResponseSchema = getConnectorTokenStatus200Schema;
@@ -20107,7 +20105,6 @@ export const getConnectorTokenErrorSchema = z.union([
 	getConnectorTokenStatus410Schema,
 	getConnectorTokenStatus422Schema,
 	getConnectorTokenStatus429Schema,
-	getConnectorTokenStatus501Schema,
 	getConnectorTokenStatus504Schema,
 ]);
 
@@ -20125,7 +20122,7 @@ export const createConnectorAuthorizationRequestStatus404Schema = z.unknown();
 
 export const createConnectorAuthorizationRequestStatus410Schema = z.unknown();
 
-export const createConnectorAuthorizationRequestStatus501Schema = z.unknown();
+export const createConnectorAuthorizationRequestStatus422Schema = z.unknown();
 
 export const createConnectorAuthorizationRequestResponseSchema =
 	createConnectorAuthorizationRequestStatus200Schema;
@@ -20136,7 +20133,7 @@ export const createConnectorAuthorizationRequestErrorSchema = z.union([
 	createConnectorAuthorizationRequestStatus403Schema,
 	createConnectorAuthorizationRequestStatus404Schema,
 	createConnectorAuthorizationRequestStatus410Schema,
-	createConnectorAuthorizationRequestStatus501Schema,
+	createConnectorAuthorizationRequestStatus422Schema,
 ]);
 
 export const getDeploymentEventsPathIdOrUrlSchema = z
