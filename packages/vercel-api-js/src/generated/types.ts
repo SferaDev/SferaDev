@@ -25874,8 +25874,6 @@ export type GetConnectorTokenStatus422 = unknown;
 
 export type GetConnectorTokenStatus429 = unknown;
 
-export type GetConnectorTokenStatus501 = unknown;
-
 export type GetConnectorTokenStatus504 = unknown;
 
 export type GetConnectorTokenOptions = {
@@ -25894,7 +25892,6 @@ export type GetConnectorTokenResponses = {
 	"410": GetConnectorTokenStatus410;
 	"422": GetConnectorTokenStatus422;
 	"429": GetConnectorTokenStatus429;
-	"501": GetConnectorTokenStatus501;
 	"504": GetConnectorTokenStatus504;
 };
 
@@ -25910,7 +25907,6 @@ export type GetConnectorTokenResponse =
 	| GetConnectorTokenStatus410
 	| GetConnectorTokenStatus422
 	| GetConnectorTokenStatus429
-	| GetConnectorTokenStatus501
 	| GetConnectorTokenStatus504;
 
 export type CreateConnectorAuthorizationRequestPath = {
@@ -25929,7 +25925,7 @@ export type CreateConnectorAuthorizationRequestStatus404 = unknown;
 
 export type CreateConnectorAuthorizationRequestStatus410 = unknown;
 
-export type CreateConnectorAuthorizationRequestStatus501 = unknown;
+export type CreateConnectorAuthorizationRequestStatus422 = unknown;
 
 export type CreateConnectorAuthorizationRequestOptions = {
 	body?: never | undefined;
@@ -25945,7 +25941,7 @@ export type CreateConnectorAuthorizationRequestResponses = {
 	"403": CreateConnectorAuthorizationRequestStatus403;
 	"404": CreateConnectorAuthorizationRequestStatus404;
 	"410": CreateConnectorAuthorizationRequestStatus410;
-	"501": CreateConnectorAuthorizationRequestStatus501;
+	"422": CreateConnectorAuthorizationRequestStatus422;
 };
 
 /**
@@ -25958,7 +25954,7 @@ export type CreateConnectorAuthorizationRequestResponse =
 	| CreateConnectorAuthorizationRequestStatus403
 	| CreateConnectorAuthorizationRequestStatus404
 	| CreateConnectorAuthorizationRequestStatus410
-	| CreateConnectorAuthorizationRequestStatus501;
+	| CreateConnectorAuthorizationRequestStatus422;
 
 export type GetDeploymentEventsPath = {
 	/**

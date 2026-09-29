@@ -228,7 +228,7 @@ import type {
 	CreateConnectorAuthorizationRequestStatus403,
 	CreateConnectorAuthorizationRequestStatus404,
 	CreateConnectorAuthorizationRequestStatus410,
-	CreateConnectorAuthorizationRequestStatus501,
+	CreateConnectorAuthorizationRequestStatus422,
 	CreateConnectorResponse,
 	CreateConnectorStatus400,
 	CreateConnectorStatus401,
@@ -1164,7 +1164,6 @@ import type {
 	GetConnectorTokenStatus410,
 	GetConnectorTokenStatus422,
 	GetConnectorTokenStatus429,
-	GetConnectorTokenStatus501,
 	GetConnectorTokenStatus504,
 	GetContactInfoSchemaResponse,
 	GetContactInfoSchemaStatus400,
@@ -6471,7 +6470,6 @@ export async function getConnectorToken(
 			| GetConnectorTokenStatus410
 			| GetConnectorTokenStatus422
 			| GetConnectorTokenStatus429
-			| GetConnectorTokenStatus501
 			| GetConnectorTokenStatus504
 		>,
 		null,
@@ -6515,7 +6513,7 @@ export async function createConnectorAuthorizationRequest(
 			| CreateConnectorAuthorizationRequestStatus403
 			| CreateConnectorAuthorizationRequestStatus404
 			| CreateConnectorAuthorizationRequestStatus410
-			| CreateConnectorAuthorizationRequestStatus501
+			| CreateConnectorAuthorizationRequestStatus422
 		>,
 		null,
 		Record<string, string>,
