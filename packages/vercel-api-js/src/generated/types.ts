@@ -37453,6 +37453,8 @@ export type CreateCustomEnvironmentStatus402 = unknown;
 
 export type CreateCustomEnvironmentStatus403 = unknown;
 
+export type CreateCustomEnvironmentStatus409 = unknown;
+
 export type CreateCustomEnvironmentStatus410 = unknown;
 
 export type CreateCustomEnvironmentStatus500 = unknown;
@@ -37470,6 +37472,7 @@ export type CreateCustomEnvironmentResponses = {
 	"401": CreateCustomEnvironmentStatus401;
 	"402": CreateCustomEnvironmentStatus402;
 	"403": CreateCustomEnvironmentStatus403;
+	"409": CreateCustomEnvironmentStatus409;
 	"410": CreateCustomEnvironmentStatus410;
 	"500": CreateCustomEnvironmentStatus500;
 };
@@ -37483,6 +37486,7 @@ export type CreateCustomEnvironmentResponse =
 	| CreateCustomEnvironmentStatus401
 	| CreateCustomEnvironmentStatus402
 	| CreateCustomEnvironmentStatus403
+	| CreateCustomEnvironmentStatus409
 	| CreateCustomEnvironmentStatus410
 	| CreateCustomEnvironmentStatus500;
 

@@ -246,6 +246,7 @@ import type {
 	CreateCustomEnvironmentStatus401,
 	CreateCustomEnvironmentStatus402,
 	CreateCustomEnvironmentStatus403,
+	CreateCustomEnvironmentStatus409,
 	CreateCustomEnvironmentStatus410,
 	CreateCustomEnvironmentStatus500,
 	CreateDeploymentCheckRunResponse,
@@ -4292,7 +4293,7 @@ export async function deleteAllArtifacts(
 
 /**
  * @summary List FOCUS billing charges
- * @description Returns the billing charge data in FOCUS v1.3 JSONL format for a specified Vercel team, within a date range specified by `from` and `to` query parameters. Supports 1-day granularity with a maximum date range of 1 year. The response is streamed as newline-delimited JSON (JSONL) and can be optionally compressed with gzip if the `Accept-Encoding: gzip` header is provided. This is only available for Owner, Member, Developer, Security, Billing, and Enterprise Viewer roles for the supplied team.
+ * @description Returns the billing charge data in FOCUS v1.3 JSONL format for a specified Vercel team, within a date range specified by `from` and `to` query parameters. Supports 1-day granularity with a maximum date range of 1 year. The response is streamed as newline-delimited JSON (JSONL) and can be optionally compressed with gzip if the `Accept-Encoding: gzip` header is provided. `SkuId` is the stable product ID. For unmapped items, it is derived from the item identifier. This is only available for Owner, Member, Developer, Security, Billing, and Enterprise Viewer roles for the supplied team.
  * @link /v1/billing/charges
  */
 export async function listBillingCharges(
@@ -15034,6 +15035,7 @@ export async function createCustomEnvironment(
 			| CreateCustomEnvironmentStatus401
 			| CreateCustomEnvironmentStatus402
 			| CreateCustomEnvironmentStatus403
+			| CreateCustomEnvironmentStatus409
 			| CreateCustomEnvironmentStatus410
 			| CreateCustomEnvironmentStatus500
 		>,
