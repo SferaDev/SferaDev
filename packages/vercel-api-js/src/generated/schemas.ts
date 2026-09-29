@@ -27422,6 +27422,8 @@ export const createCustomEnvironmentStatus402Schema = z.unknown();
 
 export const createCustomEnvironmentStatus403Schema = z.unknown();
 
+export const createCustomEnvironmentStatus409Schema = z.unknown();
+
 export const createCustomEnvironmentStatus410Schema = z.unknown();
 
 export const createCustomEnvironmentStatus500Schema = z.unknown();
@@ -27433,6 +27435,7 @@ export const createCustomEnvironmentErrorSchema = z.union([
 	createCustomEnvironmentStatus401Schema,
 	createCustomEnvironmentStatus402Schema,
 	createCustomEnvironmentStatus403Schema,
+	createCustomEnvironmentStatus409Schema,
 	createCustomEnvironmentStatus410Schema,
 	createCustomEnvironmentStatus500Schema,
 ]);
