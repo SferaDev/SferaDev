@@ -1,5 +1,12 @@
 # vercel-api-js
 
+## 1.29.3
+
+### Patch Changes
+
+- 52d4bc3: Added support for the 409 status code (CreateCustomEnvironmentStatus409) to the createCustomEnvironment API responses.
+- 52d4bc3: Clarified that SkuId is the stable product ID in the billing charges list endpoint documentation.
+
 ## 1.29.2
 
 ### Patch Changes
