@@ -14386,6 +14386,41 @@ export type UserEvent = {
 										| {
 												accessGroupId: string;
 										  }
+										| {
+												teamPermissions?:
+													| (
+															| "AiGatewayBudgetManager"
+															| "AiGatewayCredits"
+															| "AiGatewaySettings"
+															| "AiGatewayTranscriptsManager"
+															| "AiGatewayTranscriptsViewer"
+															| "AiGatewayUser"
+															| "ConnectorManager"
+															| "CreateProject"
+															| "EnvVariableManager"
+															| "EnvironmentManager"
+															| "FullProductionDeployment"
+															| "IntegrationManager"
+															| "OrgAdmin"
+															| "OrgViewer"
+															| "UsageViewer"
+															| "V0Builder"
+															| "V0Chatter"
+															| "V0Viewer"
+															| "WorkflowDecryptor"
+													  )[]
+													| undefined;
+												teamRoles: (
+													| "BILLING"
+													| "CONTRIBUTOR"
+													| "DEVELOPER"
+													| "MEMBER"
+													| "OWNER"
+													| "SECURITY"
+													| "VIEWER"
+													| "VIEWER_FOR_PLUS"
+												)[];
+										  }
 										| (
 												| "BILLING"
 												| "CONTRIBUTOR"
@@ -14403,6 +14438,41 @@ export type UserEvent = {
 									[key: string]:
 										| {
 												accessGroupId: string;
+										  }
+										| {
+												teamPermissions?:
+													| (
+															| "AiGatewayBudgetManager"
+															| "AiGatewayCredits"
+															| "AiGatewaySettings"
+															| "AiGatewayTranscriptsManager"
+															| "AiGatewayTranscriptsViewer"
+															| "AiGatewayUser"
+															| "ConnectorManager"
+															| "CreateProject"
+															| "EnvVariableManager"
+															| "EnvironmentManager"
+															| "FullProductionDeployment"
+															| "IntegrationManager"
+															| "OrgAdmin"
+															| "OrgViewer"
+															| "UsageViewer"
+															| "V0Builder"
+															| "V0Chatter"
+															| "V0Viewer"
+															| "WorkflowDecryptor"
+													  )[]
+													| undefined;
+												teamRoles: (
+													| "BILLING"
+													| "CONTRIBUTOR"
+													| "DEVELOPER"
+													| "MEMBER"
+													| "OWNER"
+													| "SECURITY"
+													| "VIEWER"
+													| "VIEWER_FOR_PLUS"
+												)[];
 										  }
 										| (
 												| "BILLING"
@@ -19271,7 +19341,7 @@ export type Team = {
 				 */
 				enforced: false | true;
 				/**
-				 * @description When \"Directory Sync\" is configured, this object contains a mapping of which Directory Group (by ID) should be assigned to which Vercel Team \"role\".
+				 * @description When \"Directory Sync\" is configured, this object contains a mapping of which Directory Group (by ID) should be assigned to which Vercel Team roles and permissions, or an access group. Bare team roles are deprecated in favor of DirectorySyncRolesMapping.
 				 * @type object | undefined
 				 */
 				roles?:
@@ -19279,6 +19349,41 @@ export type Team = {
 							[key: string]:
 								| {
 										accessGroupId: string;
+								  }
+								| {
+										teamPermissions?:
+											| (
+													| "AiGatewayBudgetManager"
+													| "AiGatewayCredits"
+													| "AiGatewaySettings"
+													| "AiGatewayTranscriptsManager"
+													| "AiGatewayTranscriptsViewer"
+													| "AiGatewayUser"
+													| "ConnectorManager"
+													| "CreateProject"
+													| "EnvVariableManager"
+													| "EnvironmentManager"
+													| "FullProductionDeployment"
+													| "IntegrationManager"
+													| "OrgAdmin"
+													| "OrgViewer"
+													| "UsageViewer"
+													| "V0Builder"
+													| "V0Chatter"
+													| "V0Viewer"
+													| "WorkflowDecryptor"
+											  )[]
+											| undefined;
+										teamRoles: (
+											| "BILLING"
+											| "CONTRIBUTOR"
+											| "DEVELOPER"
+											| "MEMBER"
+											| "OWNER"
+											| "SECURITY"
+											| "VIEWER"
+											| "VIEWER_FOR_PLUS"
+										)[];
 								  }
 								| (
 										| "BILLING"
