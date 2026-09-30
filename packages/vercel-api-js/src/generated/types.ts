@@ -2581,7 +2581,7 @@ export type ConnectCreateConnectorRequest = (unknown | unknown) & {
 	 */
 	triggers?: boolean | undefined;
 	/**
-	 * @description Trigger driver type. Resolved automatically from the service or known service registry when not provided. Only set when using the newly decoupled triggers resolution flow.
+	 * @description Trigger driver type. Resolved automatically from the known service connection method when not provided. Only set when using the newly decoupled triggers resolution flow.
 	 * @type string | undefined
 	 */
 	triggerType?: string | undefined;
@@ -26681,8 +26681,6 @@ export type GetConnectorTokenStatus422 = unknown;
 
 export type GetConnectorTokenStatus429 = unknown;
 
-export type GetConnectorTokenStatus504 = unknown;
-
 export type GetConnectorTokenOptions = {
 	body?: never | undefined;
 	path: GetConnectorTokenPath;
@@ -26699,7 +26697,6 @@ export type GetConnectorTokenResponses = {
 	"410": GetConnectorTokenStatus410;
 	"422": GetConnectorTokenStatus422;
 	"429": GetConnectorTokenStatus429;
-	"504": GetConnectorTokenStatus504;
 };
 
 /**
@@ -26713,8 +26710,7 @@ export type GetConnectorTokenResponse =
 	| GetConnectorTokenStatus404
 	| GetConnectorTokenStatus410
 	| GetConnectorTokenStatus422
-	| GetConnectorTokenStatus429
-	| GetConnectorTokenStatus504;
+	| GetConnectorTokenStatus429;
 
 export type CreateConnectorAuthorizationRequestPath = {
 	connector: string;
