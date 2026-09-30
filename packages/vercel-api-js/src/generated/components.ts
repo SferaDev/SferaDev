@@ -3583,7 +3583,7 @@ export async function deleteAccessGroupProject(
 /**
  * @summary Create virtual model config
  * @description Create a virtual model config (VMC)
- * @link /v1/ai-gateway/virtual-model-configs
+ * @link /ai-gateway/virtual-model-configs
  */
 export async function createAiGatewayVirtualModelConfig(
 	{
@@ -3614,7 +3614,7 @@ export async function createAiGatewayVirtualModelConfig(
 		Record<string, string>
 	>({
 		method: "POST",
-		url: `/v1/ai-gateway/virtual-model-configs`,
+		url: `/ai-gateway/virtual-model-configs`,
 		queryParams,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
@@ -3626,7 +3626,7 @@ export async function createAiGatewayVirtualModelConfig(
 /**
  * @summary Get virtual model config
  * @description Get a virtual model config
- * @link /v1/ai-gateway/virtual-model-configs
+ * @link /ai-gateway/virtual-model-configs
  */
 export async function getAiGatewayVirtualModelConfig(
 	{
@@ -3669,7 +3669,7 @@ export async function getAiGatewayVirtualModelConfig(
 		Record<string, string>
 	>({
 		method: "GET",
-		url: `/v1/ai-gateway/virtual-model-configs`,
+		url: `/ai-gateway/virtual-model-configs`,
 		queryParams,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
@@ -3681,7 +3681,7 @@ export async function getAiGatewayVirtualModelConfig(
 /**
  * @summary Update virtual model config
  * @description Update a virtual model config
- * @link /v1/ai-gateway/virtual-model-configs
+ * @link /ai-gateway/virtual-model-configs
  */
 export async function updateAiGatewayVirtualModelConfig(
 	{
@@ -3711,7 +3711,7 @@ export async function updateAiGatewayVirtualModelConfig(
 		Record<string, string>
 	>({
 		method: "PATCH",
-		url: `/v1/ai-gateway/virtual-model-configs`,
+		url: `/ai-gateway/virtual-model-configs`,
 		queryParams,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
@@ -3723,7 +3723,7 @@ export async function updateAiGatewayVirtualModelConfig(
 /**
  * @summary Delete virtual model config
  * @description Delete a virtual model config (soft delete)
- * @link /v1/ai-gateway/virtual-model-configs
+ * @link /ai-gateway/virtual-model-configs
  */
 export async function deleteAiGatewayVirtualModelConfig(
 	{
@@ -3768,7 +3768,7 @@ export async function deleteAiGatewayVirtualModelConfig(
 		Record<string, string>
 	>({
 		method: "DELETE",
-		url: `/v1/ai-gateway/virtual-model-configs`,
+		url: `/ai-gateway/virtual-model-configs`,
 		queryParams,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
@@ -3780,7 +3780,7 @@ export async function deleteAiGatewayVirtualModelConfig(
 /**
  * @summary List virtual model configs
  * @description List virtual model configs. With `ownerId`, returns all of that team's VMCs. Without it, pages through VMCs across all teams (newest-first, `limit`/`cursor`).
- * @link /v1/ai-gateway/virtual-model-configs/list
+ * @link /ai-gateway/virtual-model-configs/list
  */
 export async function listAiGatewayVirtualModelConfigs(
 	{
@@ -3815,7 +3815,7 @@ export async function listAiGatewayVirtualModelConfigs(
 		Record<string, string>
 	>({
 		method: "GET",
-		url: `/v1/ai-gateway/virtual-model-configs/list`,
+		url: `/ai-gateway/virtual-model-configs/list`,
 		queryParams,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
@@ -3827,7 +3827,7 @@ export async function listAiGatewayVirtualModelConfigs(
 /**
  * @summary Get virtual model config
  * @description Get a virtual model config by path slug
- * @link /v1/ai-gateway/virtual-model-configs/{vmcSlug}
+ * @link /ai-gateway/virtual-model-configs/{vmcSlug}
  */
 export async function getAiGatewayVirtualModelConfigBySlug(
 	{
@@ -3861,7 +3861,7 @@ export async function getAiGatewayVirtualModelConfigBySlug(
 		{ vmcSlug: string }
 	>({
 		method: "GET",
-		url: `/v1/ai-gateway/virtual-model-configs/${pathParams.vmcSlug}`,
+		url: `/ai-gateway/virtual-model-configs/${pathParams.vmcSlug}`,
 		queryParams,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
@@ -3873,7 +3873,7 @@ export async function getAiGatewayVirtualModelConfigBySlug(
 /**
  * @summary Update virtual model config
  * @description Update a virtual model config by path slug
- * @link /v1/ai-gateway/virtual-model-configs/{vmcSlug}
+ * @link /ai-gateway/virtual-model-configs/{vmcSlug}
  */
 export async function updateAiGatewayVirtualModelConfigBySlug(
 	{
@@ -3908,7 +3908,7 @@ export async function updateAiGatewayVirtualModelConfigBySlug(
 		{ vmcSlug: string }
 	>({
 		method: "PATCH",
-		url: `/v1/ai-gateway/virtual-model-configs/${pathParams.vmcSlug}`,
+		url: `/ai-gateway/virtual-model-configs/${pathParams.vmcSlug}`,
 		queryParams,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
@@ -3920,7 +3920,7 @@ export async function updateAiGatewayVirtualModelConfigBySlug(
 /**
  * @summary Delete virtual model config
  * @description Delete a virtual model config by path slug (soft delete)
- * @link /v1/ai-gateway/virtual-model-configs/{vmcSlug}
+ * @link /ai-gateway/virtual-model-configs/{vmcSlug}
  */
 export async function deleteAiGatewayVirtualModelConfigBySlug(
 	{
@@ -3968,7 +3968,7 @@ export async function deleteAiGatewayVirtualModelConfigBySlug(
 		{ vmcSlug: string }
 	>({
 		method: "DELETE",
-		url: `/v1/ai-gateway/virtual-model-configs/${pathParams.vmcSlug}`,
+		url: `/ai-gateway/virtual-model-configs/${pathParams.vmcSlug}`,
 		queryParams,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
@@ -3980,7 +3980,7 @@ export async function deleteAiGatewayVirtualModelConfigBySlug(
 /**
  * @summary Create rule
  * @description Create a routing rule
- * @link /v1/ai-gateway/rules
+ * @link /ai-gateway/rules
  */
 export async function createAiGatewayRule(
 	{
@@ -4010,7 +4010,7 @@ export async function createAiGatewayRule(
 		Record<string, string>
 	>({
 		method: "POST",
-		url: `/v1/ai-gateway/rules`,
+		url: `/ai-gateway/rules`,
 		queryParams,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
@@ -4022,7 +4022,7 @@ export async function createAiGatewayRule(
 /**
  * @summary List rules
  * @description List the authenticated team's routing rules
- * @link /v1/ai-gateway/rules
+ * @link /ai-gateway/rules
  */
 export async function listAiGatewayRules(
 	{
@@ -4051,7 +4051,7 @@ export async function listAiGatewayRules(
 		Record<string, string>
 	>({
 		method: "GET",
-		url: `/v1/ai-gateway/rules`,
+		url: `/ai-gateway/rules`,
 		queryParams,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
@@ -4063,7 +4063,7 @@ export async function listAiGatewayRules(
 /**
  * @summary Update rule
  * @description Update a routing rule (enabled, action, or description)
- * @link /v1/ai-gateway/rules
+ * @link /ai-gateway/rules
  */
 export async function updateAiGatewayRule(
 	{
@@ -4092,7 +4092,7 @@ export async function updateAiGatewayRule(
 		Record<string, string>
 	>({
 		method: "PATCH",
-		url: `/v1/ai-gateway/rules`,
+		url: `/ai-gateway/rules`,
 		queryParams,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
@@ -4104,7 +4104,7 @@ export async function updateAiGatewayRule(
 /**
  * @summary Delete rule
  * @description Delete a routing rule (soft delete)
- * @link /v1/ai-gateway/rules
+ * @link /ai-gateway/rules
  */
 export async function deleteAiGatewayRule(
 	{
@@ -4133,7 +4133,7 @@ export async function deleteAiGatewayRule(
 		Record<string, string>
 	>({
 		method: "DELETE",
-		url: `/v1/ai-gateway/rules`,
+		url: `/ai-gateway/rules`,
 		queryParams,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
@@ -23764,18 +23764,18 @@ export const operationsByPath = {
 	"GET /v1/access-groups/{accessGroupIdOrName}/projects/{projectId}": readAccessGroupProject,
 	"PATCH /v1/access-groups/{accessGroupIdOrName}/projects/{projectId}": updateAccessGroupProject,
 	"DELETE /v1/access-groups/{accessGroupIdOrName}/projects/{projectId}": deleteAccessGroupProject,
-	"POST /v1/ai-gateway/virtual-model-configs": createAiGatewayVirtualModelConfig,
-	"GET /v1/ai-gateway/virtual-model-configs": getAiGatewayVirtualModelConfig,
-	"PATCH /v1/ai-gateway/virtual-model-configs": updateAiGatewayVirtualModelConfig,
-	"DELETE /v1/ai-gateway/virtual-model-configs": deleteAiGatewayVirtualModelConfig,
-	"GET /v1/ai-gateway/virtual-model-configs/list": listAiGatewayVirtualModelConfigs,
-	"GET /v1/ai-gateway/virtual-model-configs/{vmcSlug}": getAiGatewayVirtualModelConfigBySlug,
-	"PATCH /v1/ai-gateway/virtual-model-configs/{vmcSlug}": updateAiGatewayVirtualModelConfigBySlug,
-	"DELETE /v1/ai-gateway/virtual-model-configs/{vmcSlug}": deleteAiGatewayVirtualModelConfigBySlug,
-	"POST /v1/ai-gateway/rules": createAiGatewayRule,
-	"GET /v1/ai-gateway/rules": listAiGatewayRules,
-	"PATCH /v1/ai-gateway/rules": updateAiGatewayRule,
-	"DELETE /v1/ai-gateway/rules": deleteAiGatewayRule,
+	"POST /ai-gateway/virtual-model-configs": createAiGatewayVirtualModelConfig,
+	"GET /ai-gateway/virtual-model-configs": getAiGatewayVirtualModelConfig,
+	"PATCH /ai-gateway/virtual-model-configs": updateAiGatewayVirtualModelConfig,
+	"DELETE /ai-gateway/virtual-model-configs": deleteAiGatewayVirtualModelConfig,
+	"GET /ai-gateway/virtual-model-configs/list": listAiGatewayVirtualModelConfigs,
+	"GET /ai-gateway/virtual-model-configs/{vmcSlug}": getAiGatewayVirtualModelConfigBySlug,
+	"PATCH /ai-gateway/virtual-model-configs/{vmcSlug}": updateAiGatewayVirtualModelConfigBySlug,
+	"DELETE /ai-gateway/virtual-model-configs/{vmcSlug}": deleteAiGatewayVirtualModelConfigBySlug,
+	"POST /ai-gateway/rules": createAiGatewayRule,
+	"GET /ai-gateway/rules": listAiGatewayRules,
+	"PATCH /ai-gateway/rules": updateAiGatewayRule,
+	"DELETE /ai-gateway/rules": deleteAiGatewayRule,
 	"POST /v8/artifacts/events": recordEvents,
 	"GET /v8/artifacts/status": status,
 	"PUT /v8/artifacts/{hash}": uploadArtifact,
@@ -24247,7 +24247,7 @@ export const operationsByTag = {
 		updateAccessGroupProject,
 		deleteAccessGroupProject,
 	},
-	apiAiGateway: {
+	aiGateway: {
 		createAiGatewayVirtualModelConfig,
 		getAiGatewayVirtualModelConfig,
 		updateAiGatewayVirtualModelConfig,
@@ -24256,8 +24256,6 @@ export const operationsByTag = {
 		getAiGatewayVirtualModelConfigBySlug,
 		updateAiGatewayVirtualModelConfigBySlug,
 		deleteAiGatewayVirtualModelConfigBySlug,
-	},
-	aiGateway: {
 		createAiGatewayRule,
 		listAiGatewayRules,
 		updateAiGatewayRule,
@@ -24761,21 +24759,24 @@ export const tagDictionary = {
 		DELETE: ["deleteAccessGroup", "deleteAccessGroupProject"],
 		PATCH: ["updateAccessGroupProject"],
 	},
-	apiAiGateway: {
-		POST: ["createAiGatewayVirtualModelConfig"],
+	aiGateway: {
+		POST: ["createAiGatewayVirtualModelConfig", "createAiGatewayRule"],
 		GET: [
 			"getAiGatewayVirtualModelConfig",
 			"listAiGatewayVirtualModelConfigs",
 			"getAiGatewayVirtualModelConfigBySlug",
+			"listAiGatewayRules",
 		],
-		PATCH: ["updateAiGatewayVirtualModelConfig", "updateAiGatewayVirtualModelConfigBySlug"],
-		DELETE: ["deleteAiGatewayVirtualModelConfig", "deleteAiGatewayVirtualModelConfigBySlug"],
-	},
-	aiGateway: {
-		POST: ["createAiGatewayRule"],
-		GET: ["listAiGatewayRules"],
-		PATCH: ["updateAiGatewayRule"],
-		DELETE: ["deleteAiGatewayRule"],
+		PATCH: [
+			"updateAiGatewayVirtualModelConfig",
+			"updateAiGatewayVirtualModelConfigBySlug",
+			"updateAiGatewayRule",
+		],
+		DELETE: [
+			"deleteAiGatewayVirtualModelConfig",
+			"deleteAiGatewayVirtualModelConfigBySlug",
+			"deleteAiGatewayRule",
+		],
 	},
 	artifacts: {
 		POST: ["recordEvents", "artifactQuery"],

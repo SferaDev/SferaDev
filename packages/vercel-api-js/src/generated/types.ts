@@ -1596,6 +1596,16 @@ export type ConnectConnectorCreateData =
 						 */
 						grantTypesSupported?: string[] | undefined;
 						/**
+						 * @description Supported authorization grant profiles. urn:ietf:params:oauth:grant-profile:id-jag advertises XAA resource support.
+						 * @type array | undefined
+						 */
+						authorizationGrantProfilesSupported?: string[] | undefined;
+						/**
+						 * @description Token types supported for identity chaining. urn:ietf:params:oauth:token-type:id-jag advertises XAA IdP support.
+						 * @type array | undefined
+						 */
+						identityChainingRequestedTokenTypesSupported?: string[] | undefined;
+						/**
 						 * @description OAuth response modes supported by the server.
 						 * @type array | undefined
 						 */
@@ -2821,6 +2831,16 @@ export type ConnectConnectorUpdateData =
 						 * @type array | undefined
 						 */
 						grantTypesSupported?: string[] | undefined;
+						/**
+						 * @description Supported authorization grant profiles. urn:ietf:params:oauth:grant-profile:id-jag advertises XAA resource support.
+						 * @type array | undefined
+						 */
+						authorizationGrantProfilesSupported?: string[] | undefined;
+						/**
+						 * @description Token types supported for identity chaining. urn:ietf:params:oauth:token-type:id-jag advertises XAA IdP support.
+						 * @type array | undefined
+						 */
+						identityChainingRequestedTokenTypesSupported?: string[] | undefined;
 						/**
 						 * @description OAuth response modes supported by the server.
 						 * @type array | undefined

@@ -995,6 +995,18 @@ export const connectConnectorCreateDataSchema = z
 						.array(z.string())
 						.optional()
 						.describe("OAuth grant types supported by the server."),
+					authorizationGrantProfilesSupported: z
+						.array(z.string())
+						.optional()
+						.describe(
+							"Supported authorization grant profiles. urn:ietf:params:oauth:grant-profile:id-jag advertises XAA resource support.",
+						),
+					identityChainingRequestedTokenTypesSupported: z
+						.array(z.string())
+						.optional()
+						.describe(
+							"Token types supported for identity chaining. urn:ietf:params:oauth:token-type:id-jag advertises XAA IdP support.",
+						),
 					responseModesSupported: z
 						.array(z.string())
 						.optional()
@@ -1751,6 +1763,18 @@ export const connectConnectorUpdateDataSchema = z
 						.array(z.string())
 						.optional()
 						.describe("OAuth grant types supported by the server."),
+					authorizationGrantProfilesSupported: z
+						.array(z.string())
+						.optional()
+						.describe(
+							"Supported authorization grant profiles. urn:ietf:params:oauth:grant-profile:id-jag advertises XAA resource support.",
+						),
+					identityChainingRequestedTokenTypesSupported: z
+						.array(z.string())
+						.optional()
+						.describe(
+							"Token types supported for identity chaining. urn:ietf:params:oauth:token-type:id-jag advertises XAA IdP support.",
+						),
 					responseModesSupported: z
 						.array(z.string())
 						.optional()
