@@ -243,6 +243,49 @@ export const aiGatewayRuleListSchema = z.object({
 	rules: z.array(z.unknown()),
 });
 
+export const aiGatewayBudgetSchema = z.object({
+	active: z.union([z.literal(false), z.literal(true)]),
+	alertThresholds: z.array(z.number()).optional(),
+	archived: z.union([z.literal(false), z.literal(true)]),
+	createdAt: z.number(),
+	currentByokSpend: z.number(),
+	currentSpend: z.number(),
+	includeByokInQuota: z.union([z.literal(false), z.literal(true)]),
+	limitAmount: z.number(),
+	name: z.string().optional(),
+	quotaEntityId: z.string(),
+	refreshPeriod: z.enum(["daily", "monthly", "none", "weekly"]),
+	scopeId: z
+		.string()
+		.describe(
+			"The native Vercel id of the scoped entity. Team/project ids already carry their prefix, so this equals `quotaEntityId` (`team_…` / `prj_…`); for the api-key scope it is the api key id (the `api_key_id_` prefix stripped).",
+		),
+	scopeType: z.enum(["api-key", "project", "team", "user"]),
+	source: z
+		.enum(["default"])
+		.optional()
+		.describe("Set when the row is inherited from the team's budget default."),
+	updatedAt: z.number(),
+});
+
+export const aiGatewayBudgetListSchema = z.object({
+	budgets: z.array(z.unknown()),
+});
+
+export const aiGatewayBudgetDefaultSchema = z.object({
+	active: z.union([z.literal(false), z.literal(true)]),
+	alertThresholds: z.array(z.number()).optional(),
+	createdAt: z.number(),
+	limitAmount: z.number(),
+	refreshPeriod: z.enum(["daily", "monthly", "none", "weekly"]),
+	scopeType: z.enum(["api-key", "project", "team", "user"]),
+	updatedAt: z.number(),
+});
+
+export const aiGatewayBudgetDefaultListSchema = z.object({
+	defaults: z.array(z.unknown()),
+});
+
 export const networkSchema = z.object({
 	awsAccountId: z.string().describe("The ID of the AWS Account in which the network exists."),
 	awsAvailabilityZoneIds: z
@@ -17950,6 +17993,253 @@ export const deleteAiGatewayRuleErrorSchema = z.union([
 	deleteAiGatewayRuleStatus500Schema,
 ]);
 
+export const listAiGatewayBudgetsQueryScopeTypeSchema = z
+	.enum(["team", "project", "user", "api-key"])
+	.optional()
+	.describe("Restrict the list to a single budget scope.");
+
+export const listAiGatewayBudgetsQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe("The Team identifier to perform the request on behalf of.")
+	.meta({ examples: ["team_1a2b3c4d5e6f7g8h9i0j1k2l"] });
+
+export const listAiGatewayBudgetsQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.")
+	.meta({ examples: ["my-team-url-slug"] });
+
+export const listAiGatewayBudgetsStatus200Schema = z.unknown();
+
+export const listAiGatewayBudgetsStatus400Schema = z.unknown();
+
+export const listAiGatewayBudgetsStatus401Schema = z.unknown();
+
+export const listAiGatewayBudgetsStatus403Schema = z.unknown();
+
+export const listAiGatewayBudgetsStatus404Schema = z.unknown();
+
+export const listAiGatewayBudgetsStatus410Schema = z.unknown();
+
+export const listAiGatewayBudgetsStatus500Schema = z.unknown();
+
+export const listAiGatewayBudgetsResponseSchema = listAiGatewayBudgetsStatus200Schema;
+
+export const listAiGatewayBudgetsErrorSchema = z.union([
+	listAiGatewayBudgetsStatus400Schema,
+	listAiGatewayBudgetsStatus401Schema,
+	listAiGatewayBudgetsStatus403Schema,
+	listAiGatewayBudgetsStatus404Schema,
+	listAiGatewayBudgetsStatus410Schema,
+	listAiGatewayBudgetsStatus500Schema,
+]);
+
+export const upsertAiGatewayBudgetQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe("The Team identifier to perform the request on behalf of.")
+	.meta({ examples: ["team_1a2b3c4d5e6f7g8h9i0j1k2l"] });
+
+export const upsertAiGatewayBudgetQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.")
+	.meta({ examples: ["my-team-url-slug"] });
+
+export const upsertAiGatewayBudgetStatus200Schema = z.unknown();
+
+export const upsertAiGatewayBudgetStatus400Schema = z.unknown();
+
+export const upsertAiGatewayBudgetStatus401Schema = z.unknown();
+
+export const upsertAiGatewayBudgetStatus403Schema = z.unknown();
+
+export const upsertAiGatewayBudgetStatus404Schema = z.unknown();
+
+export const upsertAiGatewayBudgetStatus410Schema = z.unknown();
+
+export const upsertAiGatewayBudgetStatus500Schema = z.unknown();
+
+export const upsertAiGatewayBudgetResponseSchema = upsertAiGatewayBudgetStatus200Schema;
+
+export const upsertAiGatewayBudgetErrorSchema = z.union([
+	upsertAiGatewayBudgetStatus400Schema,
+	upsertAiGatewayBudgetStatus401Schema,
+	upsertAiGatewayBudgetStatus403Schema,
+	upsertAiGatewayBudgetStatus404Schema,
+	upsertAiGatewayBudgetStatus410Schema,
+	upsertAiGatewayBudgetStatus500Schema,
+]);
+
+export const archiveAiGatewayBudgetQueryScopeTypeSchema = z
+	.enum(["team", "project", "user"])
+	.describe("The budget scope to archive.");
+
+export const archiveAiGatewayBudgetQueryProjectIdSchema = z
+	.string()
+	.optional()
+	.describe('Required when scopeType is "project".');
+
+export const archiveAiGatewayBudgetQueryUserIdSchema = z
+	.string()
+	.optional()
+	.describe('Required when scopeType is "user".');
+
+export const archiveAiGatewayBudgetQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe("The Team identifier to perform the request on behalf of.")
+	.meta({ examples: ["team_1a2b3c4d5e6f7g8h9i0j1k2l"] });
+
+export const archiveAiGatewayBudgetQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.")
+	.meta({ examples: ["my-team-url-slug"] });
+
+export const archiveAiGatewayBudgetStatus200Schema = z.unknown();
+
+export const archiveAiGatewayBudgetStatus400Schema = z.unknown();
+
+export const archiveAiGatewayBudgetStatus401Schema = z.unknown();
+
+export const archiveAiGatewayBudgetStatus403Schema = z.unknown();
+
+export const archiveAiGatewayBudgetStatus404Schema = z.unknown();
+
+export const archiveAiGatewayBudgetStatus410Schema = z.unknown();
+
+export const archiveAiGatewayBudgetStatus500Schema = z.unknown();
+
+export const archiveAiGatewayBudgetResponseSchema = archiveAiGatewayBudgetStatus200Schema;
+
+export const archiveAiGatewayBudgetErrorSchema = z.union([
+	archiveAiGatewayBudgetStatus400Schema,
+	archiveAiGatewayBudgetStatus401Schema,
+	archiveAiGatewayBudgetStatus403Schema,
+	archiveAiGatewayBudgetStatus404Schema,
+	archiveAiGatewayBudgetStatus410Schema,
+	archiveAiGatewayBudgetStatus500Schema,
+]);
+
+export const listAiGatewayBudgetDefaultsQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe("The Team identifier to perform the request on behalf of.")
+	.meta({ examples: ["team_1a2b3c4d5e6f7g8h9i0j1k2l"] });
+
+export const listAiGatewayBudgetDefaultsQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.")
+	.meta({ examples: ["my-team-url-slug"] });
+
+export const listAiGatewayBudgetDefaultsStatus200Schema = z.unknown();
+
+export const listAiGatewayBudgetDefaultsStatus400Schema = z.unknown();
+
+export const listAiGatewayBudgetDefaultsStatus401Schema = z.unknown();
+
+export const listAiGatewayBudgetDefaultsStatus403Schema = z.unknown();
+
+export const listAiGatewayBudgetDefaultsStatus404Schema = z.unknown();
+
+export const listAiGatewayBudgetDefaultsStatus410Schema = z.unknown();
+
+export const listAiGatewayBudgetDefaultsStatus500Schema = z.unknown();
+
+export const listAiGatewayBudgetDefaultsResponseSchema = listAiGatewayBudgetDefaultsStatus200Schema;
+
+export const listAiGatewayBudgetDefaultsErrorSchema = z.union([
+	listAiGatewayBudgetDefaultsStatus400Schema,
+	listAiGatewayBudgetDefaultsStatus401Schema,
+	listAiGatewayBudgetDefaultsStatus403Schema,
+	listAiGatewayBudgetDefaultsStatus404Schema,
+	listAiGatewayBudgetDefaultsStatus410Schema,
+	listAiGatewayBudgetDefaultsStatus500Schema,
+]);
+
+export const upsertAiGatewayBudgetDefaultQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe("The Team identifier to perform the request on behalf of.")
+	.meta({ examples: ["team_1a2b3c4d5e6f7g8h9i0j1k2l"] });
+
+export const upsertAiGatewayBudgetDefaultQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.")
+	.meta({ examples: ["my-team-url-slug"] });
+
+export const upsertAiGatewayBudgetDefaultStatus200Schema = z.unknown();
+
+export const upsertAiGatewayBudgetDefaultStatus400Schema = z.unknown();
+
+export const upsertAiGatewayBudgetDefaultStatus401Schema = z.unknown();
+
+export const upsertAiGatewayBudgetDefaultStatus403Schema = z.unknown();
+
+export const upsertAiGatewayBudgetDefaultStatus404Schema = z.unknown();
+
+export const upsertAiGatewayBudgetDefaultStatus410Schema = z.unknown();
+
+export const upsertAiGatewayBudgetDefaultStatus500Schema = z.unknown();
+
+export const upsertAiGatewayBudgetDefaultResponseSchema =
+	upsertAiGatewayBudgetDefaultStatus200Schema;
+
+export const upsertAiGatewayBudgetDefaultErrorSchema = z.union([
+	upsertAiGatewayBudgetDefaultStatus400Schema,
+	upsertAiGatewayBudgetDefaultStatus401Schema,
+	upsertAiGatewayBudgetDefaultStatus403Schema,
+	upsertAiGatewayBudgetDefaultStatus404Schema,
+	upsertAiGatewayBudgetDefaultStatus410Schema,
+	upsertAiGatewayBudgetDefaultStatus500Schema,
+]);
+
+export const archiveAiGatewayBudgetDefaultQueryScopeTypeSchema = z
+	.enum(["team", "project", "api-key", "user"])
+	.describe("The budget default scope to delete.");
+
+export const archiveAiGatewayBudgetDefaultQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe("The Team identifier to perform the request on behalf of.")
+	.meta({ examples: ["team_1a2b3c4d5e6f7g8h9i0j1k2l"] });
+
+export const archiveAiGatewayBudgetDefaultQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.")
+	.meta({ examples: ["my-team-url-slug"] });
+
+export const archiveAiGatewayBudgetDefaultStatus204Schema = z.unknown();
+
+export const archiveAiGatewayBudgetDefaultStatus400Schema = z.unknown();
+
+export const archiveAiGatewayBudgetDefaultStatus401Schema = z.unknown();
+
+export const archiveAiGatewayBudgetDefaultStatus403Schema = z.unknown();
+
+export const archiveAiGatewayBudgetDefaultStatus404Schema = z.unknown();
+
+export const archiveAiGatewayBudgetDefaultStatus410Schema = z.unknown();
+
+export const archiveAiGatewayBudgetDefaultStatus500Schema = z.unknown();
+
+export const archiveAiGatewayBudgetDefaultResponseSchema =
+	archiveAiGatewayBudgetDefaultStatus204Schema;
+
+export const archiveAiGatewayBudgetDefaultErrorSchema = z.union([
+	archiveAiGatewayBudgetDefaultStatus400Schema,
+	archiveAiGatewayBudgetDefaultStatus401Schema,
+	archiveAiGatewayBudgetDefaultStatus403Schema,
+	archiveAiGatewayBudgetDefaultStatus404Schema,
+	archiveAiGatewayBudgetDefaultStatus410Schema,
+	archiveAiGatewayBudgetDefaultStatus500Schema,
+]);
+
 export const recordEventsHeaderXArtifactClientCiSchema = z
 	.string()
 	.max(50)
@@ -34172,6 +34462,53 @@ export const listVercelCiInvocationsErrorSchema = z.union([
 	listVercelCiInvocationsStatus429Schema,
 	listVercelCiInvocationsStatus500Schema,
 	listVercelCiInvocationsStatus503Schema,
+]);
+
+export const listVercelCiBranchesQueryQuerySchema = z.string().max(100).optional();
+
+export const listVercelCiBranchesQueryLimitSchema = z.number().min(1).max(50).optional();
+
+export const listVercelCiBranchesQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe("The Team identifier to perform the request on behalf of.")
+	.meta({ examples: ["team_1a2b3c4d5e6f7g8h9i0j1k2l"] });
+
+export const listVercelCiBranchesQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.")
+	.meta({ examples: ["my-team-url-slug"] });
+
+export const listVercelCiBranchesStatus200Schema = z.unknown();
+
+export const listVercelCiBranchesStatus400Schema = z.unknown();
+
+export const listVercelCiBranchesStatus401Schema = z.unknown();
+
+export const listVercelCiBranchesStatus403Schema = z.unknown();
+
+export const listVercelCiBranchesStatus404Schema = z.unknown();
+
+export const listVercelCiBranchesStatus410Schema = z.unknown();
+
+export const listVercelCiBranchesStatus429Schema = z.unknown();
+
+export const listVercelCiBranchesStatus500Schema = z.unknown();
+
+export const listVercelCiBranchesStatus503Schema = z.unknown();
+
+export const listVercelCiBranchesResponseSchema = listVercelCiBranchesStatus200Schema;
+
+export const listVercelCiBranchesErrorSchema = z.union([
+	listVercelCiBranchesStatus400Schema,
+	listVercelCiBranchesStatus401Schema,
+	listVercelCiBranchesStatus403Schema,
+	listVercelCiBranchesStatus404Schema,
+	listVercelCiBranchesStatus410Schema,
+	listVercelCiBranchesStatus429Schema,
+	listVercelCiBranchesStatus500Schema,
+	listVercelCiBranchesStatus503Schema,
 ]);
 
 export const listVercelCiInvocationAttemptsPathInvocationIdSchema = z.string();

@@ -406,6 +406,90 @@ export type AiGatewayRuleList = {
 	rules: unknown[];
 };
 
+export const aiGatewayBudgetRefreshPeriodEnum = {
+	daily: "daily",
+	monthly: "monthly",
+	none: "none",
+	weekly: "weekly",
+} as const;
+
+export type AiGatewayBudgetRefreshPeriodEnumKey =
+	(typeof aiGatewayBudgetRefreshPeriodEnum)[keyof typeof aiGatewayBudgetRefreshPeriodEnum];
+
+export const aiGatewayBudgetScopeTypeEnum = {
+	"api-key": "api-key",
+	project: "project",
+	team: "team",
+	user: "user",
+} as const;
+
+export type AiGatewayBudgetScopeTypeEnumKey =
+	(typeof aiGatewayBudgetScopeTypeEnum)[keyof typeof aiGatewayBudgetScopeTypeEnum];
+
+export type AiGatewayBudget = {
+	active: false | true;
+	alertThresholds?: number[] | undefined;
+	archived: false | true;
+	createdAt: number;
+	currentByokSpend: number;
+	currentSpend: number;
+	includeByokInQuota: false | true;
+	limitAmount: number;
+	name?: string | undefined;
+	quotaEntityId: string;
+	refreshPeriod: AiGatewayBudgetRefreshPeriodEnumKey;
+	/**
+	 * @description The native Vercel id of the scoped entity. Team/project ids already carry their prefix, so this equals `quotaEntityId` (`team_…` / `prj_…`); for the api-key scope it is the api key id (the `api_key_id_` prefix stripped).
+	 * @type string
+	 */
+	scopeId: string;
+	scopeType: AiGatewayBudgetScopeTypeEnumKey;
+	/**
+	 * @description Set when the row is inherited from the team\'s budget default.
+	 * @type string | undefined
+	 */
+	source?: "default" | undefined;
+	updatedAt: number;
+};
+
+export type AiGatewayBudgetList = {
+	budgets: unknown[];
+};
+
+export const aiGatewayBudgetDefaultRefreshPeriodEnum = {
+	daily: "daily",
+	monthly: "monthly",
+	none: "none",
+	weekly: "weekly",
+} as const;
+
+export type AiGatewayBudgetDefaultRefreshPeriodEnumKey =
+	(typeof aiGatewayBudgetDefaultRefreshPeriodEnum)[keyof typeof aiGatewayBudgetDefaultRefreshPeriodEnum];
+
+export const aiGatewayBudgetDefaultScopeTypeEnum = {
+	"api-key": "api-key",
+	project: "project",
+	team: "team",
+	user: "user",
+} as const;
+
+export type AiGatewayBudgetDefaultScopeTypeEnumKey =
+	(typeof aiGatewayBudgetDefaultScopeTypeEnum)[keyof typeof aiGatewayBudgetDefaultScopeTypeEnum];
+
+export type AiGatewayBudgetDefault = {
+	active: false | true;
+	alertThresholds?: number[] | undefined;
+	createdAt: number;
+	limitAmount: number;
+	refreshPeriod: AiGatewayBudgetDefaultRefreshPeriodEnumKey;
+	scopeType: AiGatewayBudgetDefaultScopeTypeEnumKey;
+	updatedAt: number;
+};
+
+export type AiGatewayBudgetDefaultList = {
+	defaults: unknown[];
+};
+
 export const networkStatusEnum = {
 	create_in_progress: "create_in_progress",
 	delete_in_progress: "delete_in_progress",
@@ -22557,6 +22641,408 @@ export type DeleteAiGatewayRuleResponse =
 	| DeleteAiGatewayRuleStatus404
 	| DeleteAiGatewayRuleStatus410
 	| DeleteAiGatewayRuleStatus500;
+
+export const listAiGatewayBudgetsScopeType = {
+	team: "team",
+	project: "project",
+	user: "user",
+	"api-key": "api-key",
+} as const;
+
+export type ListAiGatewayBudgetsScopeTypeKey =
+	(typeof listAiGatewayBudgetsScopeType)[keyof typeof listAiGatewayBudgetsScopeType];
+
+export type ListAiGatewayBudgetsQuery = {
+	/**
+	 * @description Restrict the list to a single budget scope.
+	 * @type string | undefined
+	 */
+	scopeType?: ListAiGatewayBudgetsScopeTypeKey | undefined;
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @example my-team-url-slug
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type ListAiGatewayBudgetsStatus200 = unknown;
+
+export type ListAiGatewayBudgetsStatus400 = unknown;
+
+export type ListAiGatewayBudgetsStatus401 = unknown;
+
+export type ListAiGatewayBudgetsStatus403 = unknown;
+
+export type ListAiGatewayBudgetsStatus404 = unknown;
+
+export type ListAiGatewayBudgetsStatus410 = unknown;
+
+export type ListAiGatewayBudgetsStatus500 = unknown;
+
+export type ListAiGatewayBudgetsOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query?: ListAiGatewayBudgetsQuery | undefined;
+	headers?: never | undefined;
+};
+
+export type ListAiGatewayBudgetsResponses = {
+	"200": ListAiGatewayBudgetsStatus200;
+	"400": ListAiGatewayBudgetsStatus400;
+	"401": ListAiGatewayBudgetsStatus401;
+	"403": ListAiGatewayBudgetsStatus403;
+	"404": ListAiGatewayBudgetsStatus404;
+	"410": ListAiGatewayBudgetsStatus410;
+	"500": ListAiGatewayBudgetsStatus500;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type ListAiGatewayBudgetsResponse =
+	| ListAiGatewayBudgetsStatus200
+	| ListAiGatewayBudgetsStatus400
+	| ListAiGatewayBudgetsStatus401
+	| ListAiGatewayBudgetsStatus403
+	| ListAiGatewayBudgetsStatus404
+	| ListAiGatewayBudgetsStatus410
+	| ListAiGatewayBudgetsStatus500;
+
+export type UpsertAiGatewayBudgetQuery = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @example my-team-url-slug
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type UpsertAiGatewayBudgetStatus200 = unknown;
+
+export type UpsertAiGatewayBudgetStatus400 = unknown;
+
+export type UpsertAiGatewayBudgetStatus401 = unknown;
+
+export type UpsertAiGatewayBudgetStatus403 = unknown;
+
+export type UpsertAiGatewayBudgetStatus404 = unknown;
+
+export type UpsertAiGatewayBudgetStatus410 = unknown;
+
+export type UpsertAiGatewayBudgetStatus500 = unknown;
+
+export type UpsertAiGatewayBudgetOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query?: UpsertAiGatewayBudgetQuery | undefined;
+	headers?: never | undefined;
+};
+
+export type UpsertAiGatewayBudgetResponses = {
+	"200": UpsertAiGatewayBudgetStatus200;
+	"400": UpsertAiGatewayBudgetStatus400;
+	"401": UpsertAiGatewayBudgetStatus401;
+	"403": UpsertAiGatewayBudgetStatus403;
+	"404": UpsertAiGatewayBudgetStatus404;
+	"410": UpsertAiGatewayBudgetStatus410;
+	"500": UpsertAiGatewayBudgetStatus500;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type UpsertAiGatewayBudgetResponse =
+	| UpsertAiGatewayBudgetStatus200
+	| UpsertAiGatewayBudgetStatus400
+	| UpsertAiGatewayBudgetStatus401
+	| UpsertAiGatewayBudgetStatus403
+	| UpsertAiGatewayBudgetStatus404
+	| UpsertAiGatewayBudgetStatus410
+	| UpsertAiGatewayBudgetStatus500;
+
+export const archiveAiGatewayBudgetScopeType = {
+	team: "team",
+	project: "project",
+	user: "user",
+} as const;
+
+export type ArchiveAiGatewayBudgetScopeTypeKey =
+	(typeof archiveAiGatewayBudgetScopeType)[keyof typeof archiveAiGatewayBudgetScopeType];
+
+export type ArchiveAiGatewayBudgetQuery = {
+	/**
+	 * @description The budget scope to archive.
+	 * @type string
+	 */
+	scopeType: ArchiveAiGatewayBudgetScopeTypeKey;
+	/**
+	 * @description Required when scopeType is \"project\".
+	 * @type string | undefined
+	 */
+	projectId?: string | undefined;
+	/**
+	 * @description Required when scopeType is \"user\".
+	 * @type string | undefined
+	 */
+	userId?: string | undefined;
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @example my-team-url-slug
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type ArchiveAiGatewayBudgetStatus200 = unknown;
+
+export type ArchiveAiGatewayBudgetStatus400 = unknown;
+
+export type ArchiveAiGatewayBudgetStatus401 = unknown;
+
+export type ArchiveAiGatewayBudgetStatus403 = unknown;
+
+export type ArchiveAiGatewayBudgetStatus404 = unknown;
+
+export type ArchiveAiGatewayBudgetStatus410 = unknown;
+
+export type ArchiveAiGatewayBudgetStatus500 = unknown;
+
+export type ArchiveAiGatewayBudgetOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query: ArchiveAiGatewayBudgetQuery;
+	headers?: never | undefined;
+};
+
+export type ArchiveAiGatewayBudgetResponses = {
+	"200": ArchiveAiGatewayBudgetStatus200;
+	"400": ArchiveAiGatewayBudgetStatus400;
+	"401": ArchiveAiGatewayBudgetStatus401;
+	"403": ArchiveAiGatewayBudgetStatus403;
+	"404": ArchiveAiGatewayBudgetStatus404;
+	"410": ArchiveAiGatewayBudgetStatus410;
+	"500": ArchiveAiGatewayBudgetStatus500;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type ArchiveAiGatewayBudgetResponse =
+	| ArchiveAiGatewayBudgetStatus200
+	| ArchiveAiGatewayBudgetStatus400
+	| ArchiveAiGatewayBudgetStatus401
+	| ArchiveAiGatewayBudgetStatus403
+	| ArchiveAiGatewayBudgetStatus404
+	| ArchiveAiGatewayBudgetStatus410
+	| ArchiveAiGatewayBudgetStatus500;
+
+export type ListAiGatewayBudgetDefaultsQuery = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @example my-team-url-slug
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type ListAiGatewayBudgetDefaultsStatus200 = unknown;
+
+export type ListAiGatewayBudgetDefaultsStatus400 = unknown;
+
+export type ListAiGatewayBudgetDefaultsStatus401 = unknown;
+
+export type ListAiGatewayBudgetDefaultsStatus403 = unknown;
+
+export type ListAiGatewayBudgetDefaultsStatus404 = unknown;
+
+export type ListAiGatewayBudgetDefaultsStatus410 = unknown;
+
+export type ListAiGatewayBudgetDefaultsStatus500 = unknown;
+
+export type ListAiGatewayBudgetDefaultsOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query?: ListAiGatewayBudgetDefaultsQuery | undefined;
+	headers?: never | undefined;
+};
+
+export type ListAiGatewayBudgetDefaultsResponses = {
+	"200": ListAiGatewayBudgetDefaultsStatus200;
+	"400": ListAiGatewayBudgetDefaultsStatus400;
+	"401": ListAiGatewayBudgetDefaultsStatus401;
+	"403": ListAiGatewayBudgetDefaultsStatus403;
+	"404": ListAiGatewayBudgetDefaultsStatus404;
+	"410": ListAiGatewayBudgetDefaultsStatus410;
+	"500": ListAiGatewayBudgetDefaultsStatus500;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type ListAiGatewayBudgetDefaultsResponse =
+	| ListAiGatewayBudgetDefaultsStatus200
+	| ListAiGatewayBudgetDefaultsStatus400
+	| ListAiGatewayBudgetDefaultsStatus401
+	| ListAiGatewayBudgetDefaultsStatus403
+	| ListAiGatewayBudgetDefaultsStatus404
+	| ListAiGatewayBudgetDefaultsStatus410
+	| ListAiGatewayBudgetDefaultsStatus500;
+
+export type UpsertAiGatewayBudgetDefaultQuery = {
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @example my-team-url-slug
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type UpsertAiGatewayBudgetDefaultStatus200 = unknown;
+
+export type UpsertAiGatewayBudgetDefaultStatus400 = unknown;
+
+export type UpsertAiGatewayBudgetDefaultStatus401 = unknown;
+
+export type UpsertAiGatewayBudgetDefaultStatus403 = unknown;
+
+export type UpsertAiGatewayBudgetDefaultStatus404 = unknown;
+
+export type UpsertAiGatewayBudgetDefaultStatus410 = unknown;
+
+export type UpsertAiGatewayBudgetDefaultStatus500 = unknown;
+
+export type UpsertAiGatewayBudgetDefaultOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query?: UpsertAiGatewayBudgetDefaultQuery | undefined;
+	headers?: never | undefined;
+};
+
+export type UpsertAiGatewayBudgetDefaultResponses = {
+	"200": UpsertAiGatewayBudgetDefaultStatus200;
+	"400": UpsertAiGatewayBudgetDefaultStatus400;
+	"401": UpsertAiGatewayBudgetDefaultStatus401;
+	"403": UpsertAiGatewayBudgetDefaultStatus403;
+	"404": UpsertAiGatewayBudgetDefaultStatus404;
+	"410": UpsertAiGatewayBudgetDefaultStatus410;
+	"500": UpsertAiGatewayBudgetDefaultStatus500;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type UpsertAiGatewayBudgetDefaultResponse =
+	| UpsertAiGatewayBudgetDefaultStatus200
+	| UpsertAiGatewayBudgetDefaultStatus400
+	| UpsertAiGatewayBudgetDefaultStatus401
+	| UpsertAiGatewayBudgetDefaultStatus403
+	| UpsertAiGatewayBudgetDefaultStatus404
+	| UpsertAiGatewayBudgetDefaultStatus410
+	| UpsertAiGatewayBudgetDefaultStatus500;
+
+export const archiveAiGatewayBudgetDefaultScopeType = {
+	team: "team",
+	project: "project",
+	"api-key": "api-key",
+	user: "user",
+} as const;
+
+export type ArchiveAiGatewayBudgetDefaultScopeTypeKey =
+	(typeof archiveAiGatewayBudgetDefaultScopeType)[keyof typeof archiveAiGatewayBudgetDefaultScopeType];
+
+export type ArchiveAiGatewayBudgetDefaultQuery = {
+	/**
+	 * @description The budget default scope to delete.
+	 * @type string
+	 */
+	scopeType: ArchiveAiGatewayBudgetDefaultScopeTypeKey;
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @example my-team-url-slug
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type ArchiveAiGatewayBudgetDefaultStatus204 = unknown;
+
+export type ArchiveAiGatewayBudgetDefaultStatus400 = unknown;
+
+export type ArchiveAiGatewayBudgetDefaultStatus401 = unknown;
+
+export type ArchiveAiGatewayBudgetDefaultStatus403 = unknown;
+
+export type ArchiveAiGatewayBudgetDefaultStatus404 = unknown;
+
+export type ArchiveAiGatewayBudgetDefaultStatus410 = unknown;
+
+export type ArchiveAiGatewayBudgetDefaultStatus500 = unknown;
+
+export type ArchiveAiGatewayBudgetDefaultOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query: ArchiveAiGatewayBudgetDefaultQuery;
+	headers?: never | undefined;
+};
+
+export type ArchiveAiGatewayBudgetDefaultResponses = {
+	"204": ArchiveAiGatewayBudgetDefaultStatus204;
+	"400": ArchiveAiGatewayBudgetDefaultStatus400;
+	"401": ArchiveAiGatewayBudgetDefaultStatus401;
+	"403": ArchiveAiGatewayBudgetDefaultStatus403;
+	"404": ArchiveAiGatewayBudgetDefaultStatus404;
+	"410": ArchiveAiGatewayBudgetDefaultStatus410;
+	"500": ArchiveAiGatewayBudgetDefaultStatus500;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type ArchiveAiGatewayBudgetDefaultResponse =
+	| ArchiveAiGatewayBudgetDefaultStatus204
+	| ArchiveAiGatewayBudgetDefaultStatus400
+	| ArchiveAiGatewayBudgetDefaultStatus401
+	| ArchiveAiGatewayBudgetDefaultStatus403
+	| ArchiveAiGatewayBudgetDefaultStatus404
+	| ArchiveAiGatewayBudgetDefaultStatus410
+	| ArchiveAiGatewayBudgetDefaultStatus500;
 
 export type RecordEventsQuery = {
 	/**
@@ -47514,6 +48000,83 @@ export type ListVercelCiInvocationsResponse =
 	| ListVercelCiInvocationsStatus429
 	| ListVercelCiInvocationsStatus500
 	| ListVercelCiInvocationsStatus503;
+
+export type ListVercelCiBranchesQuery = {
+	/**
+	 * @maxLength 100
+	 * @type string | undefined
+	 */
+	query?: string | undefined;
+	/**
+	 * @minLength 1
+	 * @maxLength 50
+	 * @type number | undefined
+	 */
+	limit?: number | undefined;
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @example my-team-url-slug
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type ListVercelCiBranchesStatus200 = unknown;
+
+export type ListVercelCiBranchesStatus400 = unknown;
+
+export type ListVercelCiBranchesStatus401 = unknown;
+
+export type ListVercelCiBranchesStatus403 = unknown;
+
+export type ListVercelCiBranchesStatus404 = unknown;
+
+export type ListVercelCiBranchesStatus410 = unknown;
+
+export type ListVercelCiBranchesStatus429 = unknown;
+
+export type ListVercelCiBranchesStatus500 = unknown;
+
+export type ListVercelCiBranchesStatus503 = unknown;
+
+export type ListVercelCiBranchesOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query?: ListVercelCiBranchesQuery | undefined;
+	headers?: never | undefined;
+};
+
+export type ListVercelCiBranchesResponses = {
+	"200": ListVercelCiBranchesStatus200;
+	"400": ListVercelCiBranchesStatus400;
+	"401": ListVercelCiBranchesStatus401;
+	"403": ListVercelCiBranchesStatus403;
+	"404": ListVercelCiBranchesStatus404;
+	"410": ListVercelCiBranchesStatus410;
+	"429": ListVercelCiBranchesStatus429;
+	"500": ListVercelCiBranchesStatus500;
+	"503": ListVercelCiBranchesStatus503;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type ListVercelCiBranchesResponse =
+	| ListVercelCiBranchesStatus200
+	| ListVercelCiBranchesStatus400
+	| ListVercelCiBranchesStatus401
+	| ListVercelCiBranchesStatus403
+	| ListVercelCiBranchesStatus404
+	| ListVercelCiBranchesStatus410
+	| ListVercelCiBranchesStatus429
+	| ListVercelCiBranchesStatus500
+	| ListVercelCiBranchesStatus503;
 
 export type ListVercelCiInvocationAttemptsPath = {
 	invocationId: string;

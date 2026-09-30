@@ -80,6 +80,20 @@ import type {
 	ApproveRollingReleaseStageStatus404,
 	ApproveRollingReleaseStageStatus410,
 	ApproveRollingReleaseStageStatus500,
+	ArchiveAiGatewayBudgetDefaultResponse,
+	ArchiveAiGatewayBudgetDefaultStatus400,
+	ArchiveAiGatewayBudgetDefaultStatus401,
+	ArchiveAiGatewayBudgetDefaultStatus403,
+	ArchiveAiGatewayBudgetDefaultStatus404,
+	ArchiveAiGatewayBudgetDefaultStatus410,
+	ArchiveAiGatewayBudgetDefaultStatus500,
+	ArchiveAiGatewayBudgetResponse,
+	ArchiveAiGatewayBudgetStatus400,
+	ArchiveAiGatewayBudgetStatus401,
+	ArchiveAiGatewayBudgetStatus403,
+	ArchiveAiGatewayBudgetStatus404,
+	ArchiveAiGatewayBudgetStatus410,
+	ArchiveAiGatewayBudgetStatus500,
 	ArtifactQueryResponse,
 	ArtifactQueryStatus400,
 	ArtifactQueryStatus401,
@@ -1936,6 +1950,20 @@ import type {
 	ListAccessGroupsStatus403,
 	ListAccessGroupsStatus404,
 	ListAccessGroupsStatus410,
+	ListAiGatewayBudgetDefaultsResponse,
+	ListAiGatewayBudgetDefaultsStatus400,
+	ListAiGatewayBudgetDefaultsStatus401,
+	ListAiGatewayBudgetDefaultsStatus403,
+	ListAiGatewayBudgetDefaultsStatus404,
+	ListAiGatewayBudgetDefaultsStatus410,
+	ListAiGatewayBudgetDefaultsStatus500,
+	ListAiGatewayBudgetsResponse,
+	ListAiGatewayBudgetsStatus400,
+	ListAiGatewayBudgetsStatus401,
+	ListAiGatewayBudgetsStatus403,
+	ListAiGatewayBudgetsStatus404,
+	ListAiGatewayBudgetsStatus410,
+	ListAiGatewayBudgetsStatus500,
 	ListAiGatewayRulesResponse,
 	ListAiGatewayRulesStatus400,
 	ListAiGatewayRulesStatus401,
@@ -2177,6 +2205,15 @@ import type {
 	ListUserEventsStatus401,
 	ListUserEventsStatus403,
 	ListUserEventsStatus410,
+	ListVercelCiBranchesResponse,
+	ListVercelCiBranchesStatus400,
+	ListVercelCiBranchesStatus401,
+	ListVercelCiBranchesStatus403,
+	ListVercelCiBranchesStatus404,
+	ListVercelCiBranchesStatus410,
+	ListVercelCiBranchesStatus429,
+	ListVercelCiBranchesStatus500,
+	ListVercelCiBranchesStatus503,
 	ListVercelCiInvocationAttemptsResponse,
 	ListVercelCiInvocationAttemptsStatus400,
 	ListVercelCiInvocationAttemptsStatus401,
@@ -3036,6 +3073,20 @@ import type {
 	UploadProjectAvatarStatus410,
 	UploadProjectAvatarStatus413,
 	UploadProjectAvatarStatus415,
+	UpsertAiGatewayBudgetDefaultResponse,
+	UpsertAiGatewayBudgetDefaultStatus400,
+	UpsertAiGatewayBudgetDefaultStatus401,
+	UpsertAiGatewayBudgetDefaultStatus403,
+	UpsertAiGatewayBudgetDefaultStatus404,
+	UpsertAiGatewayBudgetDefaultStatus410,
+	UpsertAiGatewayBudgetDefaultStatus500,
+	UpsertAiGatewayBudgetResponse,
+	UpsertAiGatewayBudgetStatus400,
+	UpsertAiGatewayBudgetStatus401,
+	UpsertAiGatewayBudgetStatus403,
+	UpsertAiGatewayBudgetStatus404,
+	UpsertAiGatewayBudgetStatus410,
+	UpsertAiGatewayBudgetStatus500,
 	UpsertConnectorProjectConnectionResponse,
 	UpsertConnectorProjectConnectionStatus400,
 	UpsertConnectorProjectConnectionStatus401,
@@ -4134,6 +4185,272 @@ export async function deleteAiGatewayRule(
 	>({
 		method: "DELETE",
 		url: `/ai-gateway/rules`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary List AI Gateway budgets
+ * @description List the team's AI Gateway budgets (team/project/user scopes, plus default-covered api-key spend) as a flat list, optionally filtered by scope.
+ * @link /ai-gateway/budgets/list
+ */
+export async function listAiGatewayBudgets(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: {
+			scopeType?: "team" | "project" | "user" | "api-key";
+			teamId?: string;
+			slug?: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	const data = await request<
+		ListAiGatewayBudgetsResponse,
+		ErrorWrapper<
+			| ListAiGatewayBudgetsStatus400
+			| ListAiGatewayBudgetsStatus401
+			| ListAiGatewayBudgetsStatus403
+			| ListAiGatewayBudgetsStatus404
+			| ListAiGatewayBudgetsStatus410
+			| ListAiGatewayBudgetsStatus500
+		>,
+		null,
+		Record<string, string>,
+		{ scopeType?: "team" | "project" | "user" | "api-key"; teamId?: string; slug?: string },
+		Record<string, string>
+	>({
+		method: "GET",
+		url: `/ai-gateway/budgets/list`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Upsert AI Gateway budget
+ * @description Create or update a team-, project-, or user-scope AI Gateway budget.
+ * @link /ai-gateway/budgets
+ */
+export async function upsertAiGatewayBudget(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	const data = await request<
+		UpsertAiGatewayBudgetResponse,
+		ErrorWrapper<
+			| UpsertAiGatewayBudgetStatus400
+			| UpsertAiGatewayBudgetStatus401
+			| UpsertAiGatewayBudgetStatus403
+			| UpsertAiGatewayBudgetStatus404
+			| UpsertAiGatewayBudgetStatus410
+			| UpsertAiGatewayBudgetStatus500
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
+		Record<string, string>
+	>({
+		method: "PUT",
+		url: `/ai-gateway/budgets`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Archive AI Gateway budget
+ * @description Archive a team-, project-, or user-scope AI Gateway budget.
+ * @link /ai-gateway/budgets
+ */
+export async function archiveAiGatewayBudget(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: {
+			scopeType?: "team" | "project" | "user";
+			projectId?: string;
+			userId?: string;
+			teamId?: string;
+			slug?: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	const data = await request<
+		ArchiveAiGatewayBudgetResponse,
+		ErrorWrapper<
+			| ArchiveAiGatewayBudgetStatus400
+			| ArchiveAiGatewayBudgetStatus401
+			| ArchiveAiGatewayBudgetStatus403
+			| ArchiveAiGatewayBudgetStatus404
+			| ArchiveAiGatewayBudgetStatus410
+			| ArchiveAiGatewayBudgetStatus500
+		>,
+		null,
+		Record<string, string>,
+		{
+			scopeType?: "team" | "project" | "user";
+			projectId?: string;
+			userId?: string;
+			teamId?: string;
+			slug?: string;
+		},
+		Record<string, string>
+	>({
+		method: "DELETE",
+		url: `/ai-gateway/budgets`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary List AI Gateway budget defaults
+ * @description List the team's AI Gateway budget defaults as a flat per-scope list (one row per team/project/api-key/user scope with a default set). An empty list is a normal state for the dashboard.
+ * @link /ai-gateway/budgets/defaults/list
+ */
+export async function listAiGatewayBudgetDefaults(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	const data = await request<
+		ListAiGatewayBudgetDefaultsResponse,
+		ErrorWrapper<
+			| ListAiGatewayBudgetDefaultsStatus400
+			| ListAiGatewayBudgetDefaultsStatus401
+			| ListAiGatewayBudgetDefaultsStatus403
+			| ListAiGatewayBudgetDefaultsStatus404
+			| ListAiGatewayBudgetDefaultsStatus410
+			| ListAiGatewayBudgetDefaultsStatus500
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
+		Record<string, string>
+	>({
+		method: "GET",
+		url: `/ai-gateway/budgets/defaults/list`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Upsert AI Gateway budget default
+ * @description Create or update an AI Gateway budget default for one scope. Team-level authority only (owners/admins).
+ * @link /ai-gateway/budgets/defaults
+ */
+export async function upsertAiGatewayBudgetDefault(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	const data = await request<
+		UpsertAiGatewayBudgetDefaultResponse,
+		ErrorWrapper<
+			| UpsertAiGatewayBudgetDefaultStatus400
+			| UpsertAiGatewayBudgetDefaultStatus401
+			| UpsertAiGatewayBudgetDefaultStatus403
+			| UpsertAiGatewayBudgetDefaultStatus404
+			| UpsertAiGatewayBudgetDefaultStatus410
+			| UpsertAiGatewayBudgetDefaultStatus500
+		>,
+		null,
+		Record<string, string>,
+		{ teamId?: string; slug?: string },
+		Record<string, string>
+	>({
+		method: "PUT",
+		url: `/ai-gateway/budgets/defaults`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Archive AI Gateway budget default
+ * @description Delete an AI Gateway budget default for one scope. Team-level authority only (owners/admins).
+ * @link /ai-gateway/budgets/defaults
+ */
+export async function archiveAiGatewayBudgetDefault(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: {
+			scopeType?: "team" | "project" | "api-key" | "user";
+			teamId?: string;
+			slug?: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	const data = await request<
+		ArchiveAiGatewayBudgetDefaultResponse,
+		ErrorWrapper<
+			| ArchiveAiGatewayBudgetDefaultStatus400
+			| ArchiveAiGatewayBudgetDefaultStatus401
+			| ArchiveAiGatewayBudgetDefaultStatus403
+			| ArchiveAiGatewayBudgetDefaultStatus404
+			| ArchiveAiGatewayBudgetDefaultStatus410
+			| ArchiveAiGatewayBudgetDefaultStatus500
+		>,
+		null,
+		Record<string, string>,
+		{ scopeType?: "team" | "project" | "api-key" | "user"; teamId?: string; slug?: string },
+		Record<string, string>
+	>({
+		method: "DELETE",
+		url: `/ai-gateway/budgets/defaults`,
 		queryParams,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
@@ -21669,6 +21986,49 @@ export async function listVercelCiInvocations(
 }
 
 /**
+ * @summary List Vercel CI branch suggestions for a team
+ * @description List branches
+ * @link /v2/vercel-ci/branches
+ */
+export async function listVercelCiBranches(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: { query?: string; limit?: number; teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	const data = await request<
+		ListVercelCiBranchesResponse,
+		ErrorWrapper<
+			| ListVercelCiBranchesStatus400
+			| ListVercelCiBranchesStatus401
+			| ListVercelCiBranchesStatus403
+			| ListVercelCiBranchesStatus404
+			| ListVercelCiBranchesStatus410
+			| ListVercelCiBranchesStatus429
+			| ListVercelCiBranchesStatus500
+			| ListVercelCiBranchesStatus503
+		>,
+		null,
+		Record<string, string>,
+		{ query?: string; limit?: number; teamId?: string; slug?: string },
+		Record<string, string>
+	>({
+		method: "GET",
+		url: `/v2/vercel-ci/branches`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
  * @summary List all attempts for an invocation
  * @description List Invocation Attempts
  * @link /v1/vercel-ci/invocations/{invocationId}/attempts
@@ -23776,6 +24136,12 @@ export const operationsByPath = {
 	"GET /ai-gateway/rules": listAiGatewayRules,
 	"PATCH /ai-gateway/rules": updateAiGatewayRule,
 	"DELETE /ai-gateway/rules": deleteAiGatewayRule,
+	"GET /ai-gateway/budgets/list": listAiGatewayBudgets,
+	"PUT /ai-gateway/budgets": upsertAiGatewayBudget,
+	"DELETE /ai-gateway/budgets": archiveAiGatewayBudget,
+	"GET /ai-gateway/budgets/defaults/list": listAiGatewayBudgetDefaults,
+	"PUT /ai-gateway/budgets/defaults": upsertAiGatewayBudgetDefault,
+	"DELETE /ai-gateway/budgets/defaults": archiveAiGatewayBudgetDefault,
 	"POST /v8/artifacts/events": recordEvents,
 	"GET /v8/artifacts/status": status,
 	"PUT /v8/artifacts/{hash}": uploadArtifact,
@@ -24184,6 +24550,7 @@ export const operationsByPath = {
 	"GET /v2/{teamSlug}/{projectSlug}/{repositoryName}/tags/list":
 		getByTeamSlugByProjectSlugByRepositoryNameTagsList,
 	"GET /v2/vercel-ci/invocations": listVercelCiInvocations,
+	"GET /v2/vercel-ci/branches": listVercelCiBranches,
 	"GET /v1/vercel-ci/invocations/{invocationId}/attempts": listVercelCiInvocationAttempts,
 	"GET /v1/vercel-ci/invocations/{invocationId}/tree": getVercelCiInvocationTree,
 	"GET /v1/vercel-ci/invocations/{invocationId}/attempts/{attempt}": getVercelCiInvocation,
@@ -24260,6 +24627,12 @@ export const operationsByTag = {
 		listAiGatewayRules,
 		updateAiGatewayRule,
 		deleteAiGatewayRule,
+		listAiGatewayBudgets,
+		upsertAiGatewayBudget,
+		archiveAiGatewayBudget,
+		listAiGatewayBudgetDefaults,
+		upsertAiGatewayBudgetDefault,
+		archiveAiGatewayBudgetDefault,
 	},
 	artifacts: {
 		recordEvents,
@@ -24701,6 +25074,7 @@ export const operationsByTag = {
 	},
 	vercelCi: {
 		listVercelCiInvocations,
+		listVercelCiBranches,
 		listVercelCiInvocationAttempts,
 		getVercelCiInvocationTree,
 		getVercelCiInvocation,
@@ -24766,6 +25140,8 @@ export const tagDictionary = {
 			"listAiGatewayVirtualModelConfigs",
 			"getAiGatewayVirtualModelConfigBySlug",
 			"listAiGatewayRules",
+			"listAiGatewayBudgets",
+			"listAiGatewayBudgetDefaults",
 		],
 		PATCH: [
 			"updateAiGatewayVirtualModelConfig",
@@ -24776,7 +25152,10 @@ export const tagDictionary = {
 			"deleteAiGatewayVirtualModelConfig",
 			"deleteAiGatewayVirtualModelConfigBySlug",
 			"deleteAiGatewayRule",
+			"archiveAiGatewayBudget",
+			"archiveAiGatewayBudgetDefault",
 		],
+		PUT: ["upsertAiGatewayBudget", "upsertAiGatewayBudgetDefault"],
 	},
 	artifacts: {
 		POST: ["recordEvents", "artifactQuery"],
@@ -25214,6 +25593,7 @@ export const tagDictionary = {
 	vercelCi: {
 		GET: [
 			"listVercelCiInvocations",
+			"listVercelCiBranches",
 			"listVercelCiInvocationAttempts",
 			"getVercelCiInvocationTree",
 			"getVercelCiInvocation",
