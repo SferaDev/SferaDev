@@ -7833,6 +7833,7 @@ export const userEventSchema = z
 					allowedIntegrationCount: z.number().optional(),
 					allowedIntegrationIds: z.array(z.string()).optional(),
 					enabled: z.union([z.literal(false), z.literal(true)]),
+					resourceOnlyIntegrationCount: z.number().optional(),
 				}),
 				z.strictObject({
 					id: z.string(),
@@ -14984,6 +14985,14 @@ export const teamSchema = z
 			.describe("Default Passport configuration for new projects in this team."),
 		defaultProjectJobs: z
 			.object({
+				flagDefinitionsPresent: z
+					.object({
+						targets: z
+							.array(z.string())
+							.describe("Default job configuration applied to new projects created in this team."),
+					})
+					.optional()
+					.describe("Default job configuration applied to new projects created in this team."),
 				lint: z
 					.object({
 						targets: z
