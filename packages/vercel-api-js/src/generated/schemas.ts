@@ -10533,6 +10533,45 @@ export const userEventSchema = z
 								z.strictObject({
 									accessGroupId: z.string(),
 								}),
+								z.strictObject({
+									teamPermissions: z
+										.array(
+											z.enum([
+												"AiGatewayBudgetManager",
+												"AiGatewayCredits",
+												"AiGatewaySettings",
+												"AiGatewayTranscriptsManager",
+												"AiGatewayTranscriptsViewer",
+												"AiGatewayUser",
+												"ConnectorManager",
+												"CreateProject",
+												"EnvVariableManager",
+												"EnvironmentManager",
+												"FullProductionDeployment",
+												"IntegrationManager",
+												"OrgAdmin",
+												"OrgViewer",
+												"UsageViewer",
+												"V0Builder",
+												"V0Chatter",
+												"V0Viewer",
+												"WorkflowDecryptor",
+											]),
+										)
+										.optional(),
+									teamRoles: z.array(
+										z.enum([
+											"BILLING",
+											"CONTRIBUTOR",
+											"DEVELOPER",
+											"MEMBER",
+											"OWNER",
+											"SECURITY",
+											"VIEWER",
+											"VIEWER_FOR_PLUS",
+										]),
+									),
+								}),
 								z.enum([
 									"BILLING",
 									"CONTRIBUTOR",
@@ -10552,6 +10591,45 @@ export const userEventSchema = z
 							z.union([
 								z.strictObject({
 									accessGroupId: z.string(),
+								}),
+								z.strictObject({
+									teamPermissions: z
+										.array(
+											z.enum([
+												"AiGatewayBudgetManager",
+												"AiGatewayCredits",
+												"AiGatewaySettings",
+												"AiGatewayTranscriptsManager",
+												"AiGatewayTranscriptsViewer",
+												"AiGatewayUser",
+												"ConnectorManager",
+												"CreateProject",
+												"EnvVariableManager",
+												"EnvironmentManager",
+												"FullProductionDeployment",
+												"IntegrationManager",
+												"OrgAdmin",
+												"OrgViewer",
+												"UsageViewer",
+												"V0Builder",
+												"V0Chatter",
+												"V0Viewer",
+												"WorkflowDecryptor",
+											]),
+										)
+										.optional(),
+									teamRoles: z.array(
+										z.enum([
+											"BILLING",
+											"CONTRIBUTOR",
+											"DEVELOPER",
+											"MEMBER",
+											"OWNER",
+											"SECURITY",
+											"VIEWER",
+											"VIEWER_FOR_PLUS",
+										]),
+									),
 								}),
 								z.enum([
 									"BILLING",
@@ -15415,6 +15493,45 @@ export const teamSchema = z
 							z.strictObject({
 								accessGroupId: z.string(),
 							}),
+							z.strictObject({
+								teamPermissions: z
+									.array(
+										z.enum([
+											"AiGatewayBudgetManager",
+											"AiGatewayCredits",
+											"AiGatewaySettings",
+											"AiGatewayTranscriptsManager",
+											"AiGatewayTranscriptsViewer",
+											"AiGatewayUser",
+											"ConnectorManager",
+											"CreateProject",
+											"EnvVariableManager",
+											"EnvironmentManager",
+											"FullProductionDeployment",
+											"IntegrationManager",
+											"OrgAdmin",
+											"OrgViewer",
+											"UsageViewer",
+											"V0Builder",
+											"V0Chatter",
+											"V0Viewer",
+											"WorkflowDecryptor",
+										]),
+									)
+									.optional(),
+								teamRoles: z.array(
+									z.enum([
+										"BILLING",
+										"CONTRIBUTOR",
+										"DEVELOPER",
+										"MEMBER",
+										"OWNER",
+										"SECURITY",
+										"VIEWER",
+										"VIEWER_FOR_PLUS",
+									]),
+								),
+							}),
 							z.enum([
 								"BILLING",
 								"CONTRIBUTOR",
@@ -15429,7 +15546,7 @@ export const teamSchema = z
 					)
 					.optional()
 					.describe(
-						'When "Directory Sync" is configured, this object contains a mapping of which Directory Group (by ID) should be assigned to which Vercel Team "role".',
+						'When "Directory Sync" is configured, this object contains a mapping of which Directory Group (by ID) should be assigned to which Vercel Team roles and permissions, or an access group. Bare team roles are deprecated in favor of DirectorySyncRolesMapping.',
 					),
 			})
 			.optional()
