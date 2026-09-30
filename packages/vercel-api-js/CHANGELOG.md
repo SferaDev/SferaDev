@@ -1,5 +1,13 @@
 # vercel-api-js
 
+## 1.32.1
+
+### Patch Changes
+
+- 9a6a22a: Added optional resourceOnlyIntegrationCount property to UserEvent type and schema.
+- 9a6a22a: Updated description for deleteSandbox to clarify it returns 404 if the sandbox does not exist or was deleted by a concurrent request.
+- 9a6a22a: Added optional flagDefinitionsPresent property to Team's defaultProjectJobs with targets array field.
+
 ## 1.32.0
 
 ### Minor Changes
