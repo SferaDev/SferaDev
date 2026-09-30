@@ -1,5 +1,15 @@
 # vercel-api-js
 
+## 1.32.0
+
+### Minor Changes
+
+- 7a14232: Added authorizationGrantProfilesSupported and identityChainingRequestedTokenTypesSupported properties to ConnectConnectorCreateData and ConnectConnectorUpdateData.
+
+### Patch Changes
+
+- 7a14232: [BREAKING] Removed /v1/ prefix from all ai-gateway virtual model config and rule endpoints.
+
 ## 1.31.0
 
 ### Minor Changes
