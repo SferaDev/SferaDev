@@ -11835,6 +11835,7 @@ export type UserEvent = {
 						allowedIntegrationCount?: number | undefined;
 						allowedIntegrationIds?: string[] | undefined;
 						enabled: false | true;
+						resourceOnlyIntegrationCount?: number | undefined;
 				  }
 				| {
 						id: string;
@@ -18894,6 +18895,19 @@ export type Team = {
 	 */
 	defaultProjectJobs?:
 		| {
+				/**
+				 * @description Default job configuration applied to new projects created in this team.
+				 * @type object | undefined
+				 */
+				flagDefinitionsPresent?:
+					| {
+							/**
+							 * @description Default job configuration applied to new projects created in this team.
+							 * @type array
+							 */
+							targets: string[];
+					  }
+					| undefined;
 				/**
 				 * @description Default job configuration applied to new projects created in this team.
 				 * @type object | undefined
