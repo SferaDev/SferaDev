@@ -1,5 +1,13 @@
 # vercel-api-js
 
+## 1.33.0
+
+### Minor Changes
+
+- 6408063: Added schemas and types for AI Gateway budgets and budget defaults.
+- 6408063: Added support for managing AI Gateway budgets, including listing, upserting, and archiving team, project, user, and api-key scoped budgets and defaults.
+- 6408063: Added a new API endpoint to list Vercel CI branch suggestions for a team.
+
 ## 1.32.1
 
 ### Patch Changes
