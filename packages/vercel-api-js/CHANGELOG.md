@@ -1,5 +1,16 @@
 # vercel-api-js
 
+## 1.31.0
+
+### Minor Changes
+
+- 5918e17: Added support for mapping Directory Groups to Vercel Team roles and permissions with the new teamPermissions and teamRoles properties.
+
+### Patch Changes
+
+- 5918e17: Deprecated bare team roles in favor of DirectorySyncRolesMapping in team roles mapping.
+- 5918e17: Updated the getNamedSandbox endpoint documentation to clarify that it returns 404 if the named sandbox or its configuration no longer exists.
+
 ## 1.30.0
 
 ### Minor Changes
