@@ -1,5 +1,15 @@
 # vercel-api-js
 
+## 1.34.0
+
+### Minor Changes
+
+- b4e304b: Added advanced filtering and pagination options (sort, limit, cursor, ip, isActive, action, actionType, ruleKind, ruleId) to GET /v1/security/firewall/events.
+- b4e304b: Improved team and organization roles structure in user event payloads.
+- b4e304b: Added new permission values for read and write access to project trusted sources.
+- b4e304b: Added GET /v1/security/firewall/events/summary endpoint to fetch firewall action summaries for a project.
+- b4e304b: Removed 'google-dpop' from connector type enums.
+
 ## 1.33.2
 
 ### Patch Changes
