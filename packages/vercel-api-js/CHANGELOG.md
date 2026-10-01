@@ -1,5 +1,12 @@
 # vercel-api-js
 
+## 1.33.1
+
+### Patch Changes
+
+- edd45e5: Updated the description for triggerType in ConnectCreateConnectorRequest to clarify service connection method resolution.
+- edd45e5: Removed support for 504 Gateway Timeout status in getConnectorToken responses.
+
 ## 1.33.0
 
 ### Minor Changes
