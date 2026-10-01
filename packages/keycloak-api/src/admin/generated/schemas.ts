@@ -518,13 +518,14 @@ export const clientMappingsRepresentationSchema = z.object({
 	mappings: z.array(roleRepresentationSchema).optional(),
 });
 
+export const rawJsonValueSchema = z.object({
+	value: z.unknown().optional(),
+	empty: z.boolean().optional(),
+});
+
 export const clientPolicyConditionRepresentationSchema = z.object({
 	condition: z.string().optional(),
-	configuration: z
-		.object({})
-		.catchall(z.unknown())
-		.optional()
-		.describe("Configuration settings as a JSON object"),
+	configuration: rawJsonValueSchema.optional().describe("Configuration settings as a JSON object"),
 });
 
 export const clientPolicyRepresentationSchema = z.object({
@@ -543,11 +544,7 @@ export const clientPoliciesRepresentationSchema = z.object({
 
 export const clientPolicyExecutorRepresentationSchema = z.object({
 	executor: z.string().optional(),
-	configuration: z
-		.object({})
-		.catchall(z.unknown())
-		.optional()
-		.describe("Configuration settings as a JSON object"),
+	configuration: rawJsonValueSchema.optional().describe("Configuration settings as a JSON object"),
 });
 
 export const clientProfileRepresentationSchema = z.object({
@@ -865,6 +862,12 @@ export const identityProviderMapperTypeRepresentationSchema = z.object({
 	properties: z.array(configPropertyRepresentationSchema).optional(),
 });
 
+export const organizationIdentityProviderLinkRepresentationSchema = z.object({
+	organizationId: z.string().optional(),
+	autoMembership: z.boolean().optional(),
+	membershipType: z.string().optional(),
+});
+
 export const identityProviderRepresentationSchema = z.object({
 	alias: z.string().optional(),
 	displayName: z.string().optional(),
@@ -880,10 +883,11 @@ export const identityProviderRepresentationSchema = z.object({
 	hideOnLogin: z.boolean().optional(),
 	firstBrokerLoginFlowAlias: z.string().optional(),
 	postBrokerLoginFlowAlias: z.string().optional(),
-	organizationId: z.string().optional(),
+	organizationLinks: z.array(organizationIdentityProviderLinkRepresentationSchema).optional(),
 	config: z.object({}).catchall(z.string()).optional(),
 	types: z.array(z.string()).optional(),
 	updateProfileFirstLogin: z.boolean().optional(),
+	organizationId: z.string().optional(),
 });
 
 export const issuedVerifiableCredentialRepresentationSchema = z.object({
@@ -1078,6 +1082,8 @@ export const oAuthClientRepresentationSchema = z.object({
 export const organizationDomainRepresentationSchema = z.object({
 	name: z.string().optional(),
 	verified: z.boolean().optional(),
+	identityProviderAlias: z.string().optional(),
+	autoRedirect: z.boolean().optional(),
 });
 
 export const statusSchema = z.enum(["EXPIRED", "PENDING"]);
@@ -3194,7 +3200,7 @@ export const gETAdminRealmsRealmIdentityProviderInstancesAliasPathRealmSchema = 
 export const gETAdminRealmsRealmIdentityProviderInstancesAliasPathAliasSchema = z.string();
 
 export const gETAdminRealmsRealmIdentityProviderInstancesAliasStatus200Schema =
-	identityProviderRepresentationSchema;
+	identityProviderRepresentationSchema.omit({ organizationId: true });
 
 export const gETAdminRealmsRealmIdentityProviderInstancesAliasResponseSchema =
 	gETAdminRealmsRealmIdentityProviderInstancesAliasStatus200Schema;
@@ -3579,6 +3585,13 @@ export const gETAdminRealmsRealmOrganizationsQueryFirstSchema = z
 	.default("0")
 	.describe("The position of the first result to be processed (pagination offset)");
 
+export const gETAdminRealmsRealmOrganizationsQueryIdentityProviderSchema = z
+	.string()
+	.optional()
+	.describe(
+		"The alias of an identity provider, to only return the organizations linked to it. Cannot be combined with 'q'",
+	);
+
 export const gETAdminRealmsRealmOrganizationsQueryMaxSchema = z
 	.int32()
 	.optional()
@@ -3640,6 +3653,13 @@ export const gETAdminRealmsRealmOrganizationsCountQueryExactSchema = z
 	.boolean()
 	.optional()
 	.describe("Boolean which defines whether the param 'search' must match exactly or not");
+
+export const gETAdminRealmsRealmOrganizationsCountQueryIdentityProviderSchema = z
+	.string()
+	.optional()
+	.describe(
+		"The alias of an identity provider, to only count the organizations linked to it. Cannot be combined with 'q'",
+	);
 
 export const gETAdminRealmsRealmOrganizationsCountQueryQSchema = z
 	.string()
@@ -6523,8 +6543,13 @@ export const pOSTAdminRealmsRealmClientsClientUuidNodesPathClientUuidSchema = z
 
 export const pOSTAdminRealmsRealmClientsClientUuidNodesStatus204Schema = z.unknown();
 
+export const pOSTAdminRealmsRealmClientsClientUuidNodesStatus400Schema = z.unknown();
+
 export const pOSTAdminRealmsRealmClientsClientUuidNodesResponseSchema =
 	pOSTAdminRealmsRealmClientsClientUuidNodesStatus204Schema;
+
+export const pOSTAdminRealmsRealmClientsClientUuidNodesErrorSchema =
+	pOSTAdminRealmsRealmClientsClientUuidNodesStatus400Schema;
 
 export const pOSTAdminRealmsRealmClientsClientUuidNodesBodySchema = z
 	.object({})
@@ -7130,8 +7155,9 @@ export const gETAdminRealmsRealmClientsClientUuidRolesRoleNameGroupsQueryMaxSche
 	.default("100")
 	.describe("Maximum number of results to return. Unbounded if negative.");
 
-export const gETAdminRealmsRealmClientsClientUuidRolesRoleNameGroupsStatus200Schema =
-	z.array(userRepresentationSchema);
+export const gETAdminRealmsRealmClientsClientUuidRolesRoleNameGroupsStatus200Schema = z.array(
+	z.lazy(() => groupRepresentationSchema),
+);
 
 export const gETAdminRealmsRealmClientsClientUuidRolesRoleNameGroupsStatus403Schema = z.unknown();
 
@@ -8113,6 +8139,13 @@ export const gETAdminRealmsRealmOrganizationsOrgIdGroupsGroupByPathPathPathPathS
 	.string()
 	.regex(/.*/);
 
+export const gETAdminRealmsRealmOrganizationsOrgIdGroupsGroupByPathPathQueryBriefRepresentationSchema =
+	z
+		.boolean()
+		.optional()
+		.default(true)
+		.describe("Whether to return a brief representation (default: true)");
+
 export const gETAdminRealmsRealmOrganizationsOrgIdGroupsGroupByPathPathQuerySubGroupsCountSchema = z
 	.boolean()
 	.optional()
@@ -8744,7 +8777,7 @@ export const gETAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasPathAlia
 	z.string();
 
 export const gETAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasStatus200Schema =
-	identityProviderRepresentationSchema;
+	identityProviderRepresentationSchema.omit({ organizationId: true });
 
 export const gETAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasStatus403Schema =
 	z.unknown();
@@ -8759,6 +8792,40 @@ export const gETAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasErrorSch
 	gETAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasStatus403Schema,
 	gETAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasStatus404Schema,
 ]);
+
+export const pUTAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasPathRealmSchema = z
+	.string()
+	.describe("realm name (not id!)");
+
+export const pUTAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasPathOrgIdSchema =
+	z.string();
+
+export const pUTAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasPathAliasSchema =
+	z.string();
+
+export const pUTAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasStatus204Schema =
+	z.unknown();
+
+export const pUTAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasStatus400Schema =
+	z.unknown();
+
+export const pUTAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasStatus403Schema =
+	z.unknown();
+
+export const pUTAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasStatus404Schema =
+	z.unknown();
+
+export const pUTAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasResponseSchema =
+	pUTAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasStatus204Schema;
+
+export const pUTAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasErrorSchema = z.union([
+	pUTAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasStatus400Schema,
+	pUTAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasStatus403Schema,
+	pUTAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasStatus404Schema,
+]);
+
+export const pUTAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasBodySchema =
+	organizationIdentityProviderLinkRepresentationSchema.optional();
 
 export const dELETEAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasPathRealmSchema = z
 	.string()
@@ -9104,6 +9171,11 @@ export const pOSTAdminRealmsRealmOrganizationsOrgIdMembersInviteUserPathRealmSch
 
 export const pOSTAdminRealmsRealmOrganizationsOrgIdMembersInviteUserPathOrgIdSchema = z.string();
 
+export const pOSTAdminRealmsRealmOrganizationsOrgIdMembersInviteUserQueryClientIdSchema = z
+	.string()
+	.optional()
+	.describe("Client id");
+
 export const pOSTAdminRealmsRealmOrganizationsOrgIdMembersInviteUserStatus204Schema = z.unknown();
 
 export const pOSTAdminRealmsRealmOrganizationsOrgIdMembersInviteUserStatus400Schema = z.unknown();
@@ -9210,6 +9282,41 @@ export const gETAdminRealmsRealmOrganizationsOrgIdMembersMemberIdGroupsErrorSche
 	gETAdminRealmsRealmOrganizationsOrgIdMembersMemberIdGroupsStatus400Schema,
 	gETAdminRealmsRealmOrganizationsOrgIdMembersMemberIdGroupsStatus403Schema,
 ]);
+
+export const pUTAdminRealmsRealmOrganizationsOrgIdMembersMemberIdMembershipTypePathRealmSchema = z
+	.string()
+	.describe("realm name (not id!)");
+
+export const pUTAdminRealmsRealmOrganizationsOrgIdMembersMemberIdMembershipTypePathOrgIdSchema =
+	z.string();
+
+export const pUTAdminRealmsRealmOrganizationsOrgIdMembersMemberIdMembershipTypePathMemberIdSchema =
+	z.string();
+
+export const pUTAdminRealmsRealmOrganizationsOrgIdMembersMemberIdMembershipTypeStatus204Schema =
+	z.unknown();
+
+export const pUTAdminRealmsRealmOrganizationsOrgIdMembersMemberIdMembershipTypeStatus400Schema =
+	z.unknown();
+
+export const pUTAdminRealmsRealmOrganizationsOrgIdMembersMemberIdMembershipTypeStatus403Schema =
+	z.unknown();
+
+export const pUTAdminRealmsRealmOrganizationsOrgIdMembersMemberIdMembershipTypeStatus404Schema =
+	z.unknown();
+
+export const pUTAdminRealmsRealmOrganizationsOrgIdMembersMemberIdMembershipTypeResponseSchema =
+	pUTAdminRealmsRealmOrganizationsOrgIdMembersMemberIdMembershipTypeStatus204Schema;
+
+export const pUTAdminRealmsRealmOrganizationsOrgIdMembersMemberIdMembershipTypeErrorSchema =
+	z.union([
+		pUTAdminRealmsRealmOrganizationsOrgIdMembersMemberIdMembershipTypeStatus400Schema,
+		pUTAdminRealmsRealmOrganizationsOrgIdMembersMemberIdMembershipTypeStatus403Schema,
+		pUTAdminRealmsRealmOrganizationsOrgIdMembersMemberIdMembershipTypeStatus404Schema,
+	]);
+
+export const pUTAdminRealmsRealmOrganizationsOrgIdMembersMemberIdMembershipTypeBodySchema =
+	membershipTypeSchema.optional();
 
 export const gETAdminRealmsRealmOrganizationsOrgIdMembersMemberIdOrganizationsPathRealmSchema = z
 	.string()
@@ -9685,8 +9792,9 @@ export const gETAdminRealmsRealmRolesRoleNameGroupsQueryMaxSchema = z
 	.default("100")
 	.describe("Maximum number of results to return. Unbounded if negative.");
 
-export const gETAdminRealmsRealmRolesRoleNameGroupsStatus200Schema =
-	z.array(userRepresentationSchema);
+export const gETAdminRealmsRealmRolesRoleNameGroupsStatus200Schema = z.array(
+	z.lazy(() => groupRepresentationSchema),
+);
 
 export const gETAdminRealmsRealmRolesRoleNameGroupsStatus403Schema = z.unknown();
 

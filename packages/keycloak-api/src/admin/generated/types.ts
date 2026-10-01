@@ -638,17 +638,17 @@ export type ClientMappingsRepresentation = {
 	mappings?: RoleRepresentation[] | undefined;
 };
 
+export type RawJsonValue = {
+	value?: unknown | undefined;
+	empty?: boolean | undefined;
+};
+
 export type ClientPolicyConditionRepresentation = {
 	condition?: string | undefined;
 	/**
 	 * @description Configuration settings as a JSON object
-	 * @type object | undefined
 	 */
-	configuration?:
-		| {
-				[key: string]: unknown;
-		  }
-		| undefined;
+	configuration?: RawJsonValue | undefined;
 };
 
 export type ClientPolicyRepresentation = {
@@ -669,13 +669,8 @@ export type ClientPolicyExecutorRepresentation = {
 	executor?: string | undefined;
 	/**
 	 * @description Configuration settings as a JSON object
-	 * @type object | undefined
 	 */
-	configuration?:
-		| {
-				[key: string]: unknown;
-		  }
-		| undefined;
+	configuration?: RawJsonValue | undefined;
 };
 
 export type ClientProfileRepresentation = {
@@ -1143,6 +1138,12 @@ export type IdentityProviderMapperTypeRepresentation = {
 	properties?: ConfigPropertyRepresentation[] | undefined;
 };
 
+export type OrganizationIdentityProviderLinkRepresentation = {
+	organizationId?: string | undefined;
+	autoMembership?: boolean | undefined;
+	membershipType?: string | undefined;
+};
+
 export type IdentityProviderRepresentation = {
 	alias?: string | undefined;
 	displayName?: string | undefined;
@@ -1162,7 +1163,7 @@ export type IdentityProviderRepresentation = {
 	hideOnLogin?: boolean | undefined;
 	firstBrokerLoginFlowAlias?: string | undefined;
 	postBrokerLoginFlowAlias?: string | undefined;
-	organizationId?: string | undefined;
+	organizationLinks?: OrganizationIdentityProviderLinkRepresentation[] | undefined;
 	config?:
 		| {
 				[key: string]: string;
@@ -1174,6 +1175,11 @@ export type IdentityProviderRepresentation = {
 	 * @type boolean | undefined
 	 */
 	updateProfileFirstLogin?: boolean | undefined;
+	/**
+	 * @deprecated
+	 * @type string | undefined
+	 */
+	organizationId?: string | undefined;
 };
 
 export type IssuedVerifiableCredentialRepresentation = {
@@ -1550,6 +1556,8 @@ export type OAuthClientRepresentation = {
 export type OrganizationDomainRepresentation = {
 	name?: string | undefined;
 	verified?: boolean | undefined;
+	identityProviderAlias?: string | undefined;
+	autoRedirect?: boolean | undefined;
 };
 
 export const status = {
@@ -5734,8 +5742,10 @@ export type GETAdminRealmsRealmIdentityProviderInstancesAliasPath = {
 	alias: string;
 };
 
-export type GETAdminRealmsRealmIdentityProviderInstancesAliasStatus200 =
-	IdentityProviderRepresentation;
+export type GETAdminRealmsRealmIdentityProviderInstancesAliasStatus200 = Omit<
+	NonNullable<IdentityProviderRepresentation>,
+	"organizationId"
+>;
 
 export type GETAdminRealmsRealmIdentityProviderInstancesAliasOptions = {
 	body?: never | undefined;
@@ -6509,6 +6519,11 @@ export type GETAdminRealmsRealmOrganizationsQuery = {
 	 */
 	first?: number | undefined;
 	/**
+	 * @description The alias of an identity provider, to only return the organizations linked to it. Cannot be combined with \'q\'
+	 * @type string | undefined
+	 */
+	identityProvider?: string | undefined;
+	/**
 	 * @description The maximum number of results to be returned - defaults to 10
 	 *
 	 * Format: `int32`
@@ -6606,6 +6621,11 @@ export type GETAdminRealmsRealmOrganizationsCountQuery = {
 	 * @type boolean | undefined
 	 */
 	exact?: boolean | undefined;
+	/**
+	 * @description The alias of an identity provider, to only count the organizations linked to it. Cannot be combined with \'q\'
+	 * @type string | undefined
+	 */
+	identityProvider?: string | undefined;
 	/**
 	 * @description A query to search for custom attributes, in the format \'key1:value2 key2:value2\'
 	 * @type string | undefined
@@ -10823,6 +10843,10 @@ export type POSTAdminRealmsRealmClientsClientUuidCertificatesAttrDownloadBody =
 	| KeyStoreConfig
 	| undefined;
 
+/**
+ * @deprecated
+ * @type object
+ */
 export type POSTAdminRealmsRealmClientsClientUuidCertificatesAttrDownloadOptions = {
 	body: POSTAdminRealmsRealmClientsClientUuidCertificatesAttrDownloadBody;
 	path: POSTAdminRealmsRealmClientsClientUuidCertificatesAttrDownloadPath;
@@ -10857,6 +10881,10 @@ export type POSTAdminRealmsRealmClientsClientUuidCertificatesAttrGeneratePath = 
 export type POSTAdminRealmsRealmClientsClientUuidCertificatesAttrGenerateStatus200 =
 	CertificateRepresentation;
 
+/**
+ * @deprecated
+ * @type object
+ */
 export type POSTAdminRealmsRealmClientsClientUuidCertificatesAttrGenerateOptions = {
 	body?: never | undefined;
 	path: POSTAdminRealmsRealmClientsClientUuidCertificatesAttrGeneratePath;
@@ -10895,6 +10923,10 @@ export type POSTAdminRealmsRealmClientsClientUuidCertificatesAttrGenerateAndDown
 	| KeyStoreConfig
 	| undefined;
 
+/**
+ * @deprecated
+ * @type object
+ */
 export type POSTAdminRealmsRealmClientsClientUuidCertificatesAttrGenerateAndDownloadOptions = {
 	body: POSTAdminRealmsRealmClientsClientUuidCertificatesAttrGenerateAndDownloadBody;
 	path: POSTAdminRealmsRealmClientsClientUuidCertificatesAttrGenerateAndDownloadPath;
@@ -10929,6 +10961,10 @@ export type POSTAdminRealmsRealmClientsClientUuidCertificatesAttrUploadPath = {
 export type POSTAdminRealmsRealmClientsClientUuidCertificatesAttrUploadStatus200 =
 	CertificateRepresentation;
 
+/**
+ * @deprecated
+ * @type object
+ */
 export type POSTAdminRealmsRealmClientsClientUuidCertificatesAttrUploadOptions = {
 	body?: never | undefined;
 	path: POSTAdminRealmsRealmClientsClientUuidCertificatesAttrUploadPath;
@@ -11662,6 +11698,8 @@ export type POSTAdminRealmsRealmClientsClientUuidNodesPath = {
 
 export type POSTAdminRealmsRealmClientsClientUuidNodesStatus204 = unknown;
 
+export type POSTAdminRealmsRealmClientsClientUuidNodesStatus400 = unknown;
+
 export type POSTAdminRealmsRealmClientsClientUuidNodesBody =
 	| {
 			[key: string]: string;
@@ -11677,13 +11715,15 @@ export type POSTAdminRealmsRealmClientsClientUuidNodesOptions = {
 
 export type POSTAdminRealmsRealmClientsClientUuidNodesResponses = {
 	"204": POSTAdminRealmsRealmClientsClientUuidNodesStatus204;
+	"400": POSTAdminRealmsRealmClientsClientUuidNodesStatus400;
 };
 
 /**
  * @description Union of all possible responses
  */
 export type POSTAdminRealmsRealmClientsClientUuidNodesResponse =
-	POSTAdminRealmsRealmClientsClientUuidNodesStatus204;
+	| POSTAdminRealmsRealmClientsClientUuidNodesStatus204
+	| POSTAdminRealmsRealmClientsClientUuidNodesStatus400;
 
 export type DELETEAdminRealmsRealmClientsClientUuidNodesNodePath = {
 	/**
@@ -12776,7 +12816,8 @@ export type GETAdminRealmsRealmClientsClientUuidRolesRoleNameGroupsQuery = {
 	max?: number | undefined;
 };
 
-export type GETAdminRealmsRealmClientsClientUuidRolesRoleNameGroupsStatus200 = UserRepresentation[];
+export type GETAdminRealmsRealmClientsClientUuidRolesRoleNameGroupsStatus200 =
+	GroupRepresentation[];
 
 export type GETAdminRealmsRealmClientsClientUuidRolesRoleNameGroupsStatus403 = unknown;
 
@@ -14570,6 +14611,12 @@ export type GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupByPathPathPath = {
 
 export type GETAdminRealmsRealmOrganizationsOrgIdGroupsGroupByPathPathQuery = {
 	/**
+	 * @description Whether to return a brief representation (default: true)
+	 * @default true
+	 * @type boolean | undefined
+	 */
+	briefRepresentation?: boolean | undefined;
+	/**
 	 * @description Whether to return the count of subgroups (default: false)
 	 * @default false
 	 * @type boolean | undefined
@@ -15543,8 +15590,10 @@ export type GETAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasPath = {
 	alias: string;
 };
 
-export type GETAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasStatus200 =
-	IdentityProviderRepresentation;
+export type GETAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasStatus200 = Omit<
+	NonNullable<IdentityProviderRepresentation>,
+	"organizationId"
+>;
 
 export type GETAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasStatus403 = unknown;
 
@@ -15570,6 +15619,51 @@ export type GETAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasResponse 
 	| GETAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasStatus200
 	| GETAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasStatus403
 	| GETAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasStatus404;
+
+export type PUTAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasPath = {
+	/**
+	 * @description realm name (not id!)
+	 * @type string
+	 */
+	realm: string;
+	orgId: string;
+	alias: string;
+};
+
+export type PUTAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasStatus204 = unknown;
+
+export type PUTAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasStatus400 = unknown;
+
+export type PUTAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasStatus403 = unknown;
+
+export type PUTAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasStatus404 = unknown;
+
+export type PUTAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasBody =
+	| OrganizationIdentityProviderLinkRepresentation
+	| undefined;
+
+export type PUTAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasOptions = {
+	body: PUTAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasBody;
+	path: PUTAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasPath;
+	query?: never | undefined;
+	headers?: never | undefined;
+};
+
+export type PUTAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasResponses = {
+	"204": PUTAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasStatus204;
+	"400": PUTAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasStatus400;
+	"403": PUTAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasStatus403;
+	"404": PUTAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasStatus404;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type PUTAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasResponse =
+	| PUTAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasStatus204
+	| PUTAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasStatus400
+	| PUTAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasStatus403
+	| PUTAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasStatus404;
 
 export type DELETEAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasPath = {
 	/**
@@ -16068,6 +16162,14 @@ export type POSTAdminRealmsRealmOrganizationsOrgIdMembersInviteUserPath = {
 	orgId: string;
 };
 
+export type POSTAdminRealmsRealmOrganizationsOrgIdMembersInviteUserQuery = {
+	/**
+	 * @description Client id
+	 * @type string | undefined
+	 */
+	client_id?: string | undefined;
+};
+
 export type POSTAdminRealmsRealmOrganizationsOrgIdMembersInviteUserStatus204 = unknown;
 
 export type POSTAdminRealmsRealmOrganizationsOrgIdMembersInviteUserStatus400 = unknown;
@@ -16081,7 +16183,7 @@ export type POSTAdminRealmsRealmOrganizationsOrgIdMembersInviteUserStatus500 = u
 export type POSTAdminRealmsRealmOrganizationsOrgIdMembersInviteUserOptions = {
 	body?: never | undefined;
 	path: POSTAdminRealmsRealmOrganizationsOrgIdMembersInviteUserPath;
-	query?: never | undefined;
+	query?: POSTAdminRealmsRealmOrganizationsOrgIdMembersInviteUserQuery | undefined;
 	headers?: never | undefined;
 };
 
@@ -16235,6 +16337,51 @@ export type GETAdminRealmsRealmOrganizationsOrgIdMembersMemberIdGroupsResponse =
 	| GETAdminRealmsRealmOrganizationsOrgIdMembersMemberIdGroupsStatus200
 	| GETAdminRealmsRealmOrganizationsOrgIdMembersMemberIdGroupsStatus400
 	| GETAdminRealmsRealmOrganizationsOrgIdMembersMemberIdGroupsStatus403;
+
+export type PUTAdminRealmsRealmOrganizationsOrgIdMembersMemberIdMembershipTypePath = {
+	/**
+	 * @description realm name (not id!)
+	 * @type string
+	 */
+	realm: string;
+	orgId: string;
+	memberId: string;
+};
+
+export type PUTAdminRealmsRealmOrganizationsOrgIdMembersMemberIdMembershipTypeStatus204 = unknown;
+
+export type PUTAdminRealmsRealmOrganizationsOrgIdMembersMemberIdMembershipTypeStatus400 = unknown;
+
+export type PUTAdminRealmsRealmOrganizationsOrgIdMembersMemberIdMembershipTypeStatus403 = unknown;
+
+export type PUTAdminRealmsRealmOrganizationsOrgIdMembersMemberIdMembershipTypeStatus404 = unknown;
+
+export type PUTAdminRealmsRealmOrganizationsOrgIdMembersMemberIdMembershipTypeBody =
+	| MembershipTypeKey
+	| undefined;
+
+export type PUTAdminRealmsRealmOrganizationsOrgIdMembersMemberIdMembershipTypeOptions = {
+	body: PUTAdminRealmsRealmOrganizationsOrgIdMembersMemberIdMembershipTypeBody;
+	path: PUTAdminRealmsRealmOrganizationsOrgIdMembersMemberIdMembershipTypePath;
+	query?: never | undefined;
+	headers?: never | undefined;
+};
+
+export type PUTAdminRealmsRealmOrganizationsOrgIdMembersMemberIdMembershipTypeResponses = {
+	"204": PUTAdminRealmsRealmOrganizationsOrgIdMembersMemberIdMembershipTypeStatus204;
+	"400": PUTAdminRealmsRealmOrganizationsOrgIdMembersMemberIdMembershipTypeStatus400;
+	"403": PUTAdminRealmsRealmOrganizationsOrgIdMembersMemberIdMembershipTypeStatus403;
+	"404": PUTAdminRealmsRealmOrganizationsOrgIdMembersMemberIdMembershipTypeStatus404;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type PUTAdminRealmsRealmOrganizationsOrgIdMembersMemberIdMembershipTypeResponse =
+	| PUTAdminRealmsRealmOrganizationsOrgIdMembersMemberIdMembershipTypeStatus204
+	| PUTAdminRealmsRealmOrganizationsOrgIdMembersMemberIdMembershipTypeStatus400
+	| PUTAdminRealmsRealmOrganizationsOrgIdMembersMemberIdMembershipTypeStatus403
+	| PUTAdminRealmsRealmOrganizationsOrgIdMembersMemberIdMembershipTypeStatus404;
 
 export type GETAdminRealmsRealmOrganizationsOrgIdMembersMemberIdOrganizationsPath = {
 	/**
@@ -17038,7 +17185,7 @@ export type GETAdminRealmsRealmRolesRoleNameGroupsQuery = {
 	max?: number | undefined;
 };
 
-export type GETAdminRealmsRealmRolesRoleNameGroupsStatus200 = UserRepresentation[];
+export type GETAdminRealmsRealmRolesRoleNameGroupsStatus200 = GroupRepresentation[];
 
 export type GETAdminRealmsRealmRolesRoleNameGroupsStatus403 = unknown;
 
