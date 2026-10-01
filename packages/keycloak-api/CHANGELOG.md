@@ -1,5 +1,21 @@
 # keycloak-api
 
+## 1.2.0
+
+### Minor Changes
+
+- 62df07c: Added new organizationLinks field to identity provider schema to support multiple org links.
+- 62df07c: Added identityProvider query parameter to organization GET and count endpoints.
+- 62df07c: Added support for updating organization member membership type with new PUT endpoint.
+- 62df07c: Added client_id query parameter to organization member invite-user endpoint.
+- 62df07c: Added identityProviderAlias and autoRedirect fields to organization domain schema.
+- 62df07c: Added support for updating organization identity provider links with new PUT endpoint.
+
+### Patch Changes
+
+- 62df07c: Updated several GET /groups endpoints to return groups instead of users in some cases.
+- 62df07c: Marked several client certificate endpoints as deprecated and updated summaries to reflect new behavior.
+
 ## 1.1.3
 
 ### Patch Changes

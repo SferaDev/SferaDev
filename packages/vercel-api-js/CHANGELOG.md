@@ -1,5 +1,14 @@
 # vercel-api-js
 
+## 1.33.2
+
+### Patch Changes
+
+- 8234bb6: Add new user event object variant with consumerProjectId, consumerProjectName, projectId, and projectName fields.
+- 8234bb6: Add optional v0 property to NamedSandbox, Session, Drive, and Snapshot schemas and types.
+- 8234bb6: Add flags-connection-created and flags-connection-deleted to userEventTypeEnum, listEventTypeNameEnum, and listEventTypeReplacedByEnum.
+- 8234bb6: Add support for 204 status response in getEdgeConfigItem API types and schemas.
+
 ## 1.33.1
 
 ### Patch Changes
