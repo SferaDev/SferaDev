@@ -6110,6 +6110,12 @@ export const userEventSchema = z
 					rulesetName: z.string(),
 				}),
 				z.strictObject({
+					consumerProjectId: z.string(),
+					consumerProjectName: z.string().optional(),
+					projectId: z.string(),
+					projectName: z.string().optional(),
+				}),
+				z.strictObject({
 					newOwnerId: z.string(),
 					previousOwnerId: z.string(),
 					projectId: z.string(),
@@ -11804,6 +11810,8 @@ export const userEventSchema = z
 				"flag-deleted",
 				"flag-unarchived",
 				"flag-updated",
+				"flags-connection-created",
+				"flags-connection-deleted",
 				"flags-explorer-subscription",
 				"flags-sdk-key",
 				"flags-sdk-key-added",
@@ -12613,6 +12621,8 @@ export const listEventTypeSchema = z
 				"flag-deleted",
 				"flag-unarchived",
 				"flag-updated",
+				"flags-connection-created",
+				"flags-connection-deleted",
 				"flags-explorer-subscription",
 				"flags-sdk-key",
 				"flags-sdk-key-added",
@@ -13324,6 +13334,8 @@ export const listEventTypeSchema = z
 					"flag-deleted",
 					"flag-unarchived",
 					"flag-updated",
+					"flags-connection-created",
+					"flags-connection-deleted",
 					"flags-explorer-subscription",
 					"flags-sdk-key",
 					"flags-sdk-key-added",
@@ -14511,6 +14523,10 @@ export const namedSandboxSchema = z
 				"The time when the named sandbox was last updated, in milliseconds since the epoch.",
 			)
 			.meta({ examples: [1750344501629] }),
+		v0: z
+			.union([z.literal(false), z.literal(true)])
+			.optional()
+			.describe("Whether this sandbox is managed by v0 on the customer's behalf."),
 		vcpus: z
 			.number()
 			.optional()
@@ -14692,6 +14708,10 @@ export const sessionSchema = z
 			.number()
 			.describe("The last time the sandbox was updated, in milliseconds since the epoch.")
 			.meta({ examples: [1750344501629] }),
+		v0: z
+			.union([z.literal(false), z.literal(true)])
+			.optional()
+			.describe("Whether this sandbox is managed by v0 on the customer's behalf."),
 		vcpus: z
 			.number()
 			.describe("Number of vCPUs allocated to this sandbox.")
@@ -14741,6 +14761,10 @@ export const driveSchema = z
 			.number()
 			.describe("The last time the drive was updated, in milliseconds since the epoch.")
 			.meta({ examples: [1750344501629] }),
+		v0: z
+			.union([z.literal(false), z.literal(true)])
+			.optional()
+			.describe("Whether this drive is managed by v0 on the customer's behalf."),
 	})
 	.describe("This object contains information related to a Vercel Sandbox Drive.");
 
@@ -14809,6 +14833,10 @@ export const snapshotSchema = z
 			.number()
 			.describe("The last time the snapshot was updated, in milliseconds since the epoch.")
 			.meta({ examples: [1750344501629] }),
+		v0: z
+			.union([z.literal(false), z.literal(true)])
+			.optional()
+			.describe("Whether this snapshot is managed by v0 on the customer's behalf."),
 	})
 	.describe(
 		"This object contains information related to a Snapshot of a Vercel Sandbox session (v2 API).",
@@ -23150,6 +23178,8 @@ export const getEdgeConfigItemQuerySlugSchema = z
 
 export const getEdgeConfigItemStatus200Schema = z.unknown();
 
+export const getEdgeConfigItemStatus204Schema = z.unknown();
+
 export const getEdgeConfigItemStatus400Schema = z.unknown();
 
 export const getEdgeConfigItemStatus401Schema = z.unknown();
@@ -23160,7 +23190,10 @@ export const getEdgeConfigItemStatus404Schema = z.unknown();
 
 export const getEdgeConfigItemStatus410Schema = z.unknown();
 
-export const getEdgeConfigItemResponseSchema = getEdgeConfigItemStatus200Schema;
+export const getEdgeConfigItemResponseSchema = z.union([
+	getEdgeConfigItemStatus200Schema,
+	getEdgeConfigItemStatus204Schema,
+]);
 
 export const getEdgeConfigItemErrorSchema = z.union([
 	getEdgeConfigItemStatus400Schema,
