@@ -7095,6 +7095,8 @@ export const userEventTypeEnum = {
 	"flag-deleted": "flag-deleted",
 	"flag-unarchived": "flag-unarchived",
 	"flag-updated": "flag-updated",
+	"flags-connection-created": "flags-connection-created",
+	"flags-connection-deleted": "flags-connection-deleted",
 	"flags-explorer-subscription": "flags-explorer-subscription",
 	"flags-sdk-key": "flags-sdk-key",
 	"flags-sdk-key-added": "flags-sdk-key-added",
@@ -10446,6 +10448,12 @@ export type UserEvent = {
 						active: false | true;
 						projectId: string;
 						rulesetName: string;
+				  }
+				| {
+						consumerProjectId: string;
+						consumerProjectName?: string | undefined;
+						projectId: string;
+						projectName?: string | undefined;
 				  }
 				| {
 						newOwnerId: string;
@@ -15816,6 +15824,8 @@ export const listEventTypeNameEnum = {
 	"flag-deleted": "flag-deleted",
 	"flag-unarchived": "flag-unarchived",
 	"flag-updated": "flag-updated",
+	"flags-connection-created": "flags-connection-created",
+	"flags-connection-deleted": "flags-connection-deleted",
 	"flags-explorer-subscription": "flags-explorer-subscription",
 	"flags-sdk-key": "flags-sdk-key",
 	"flags-sdk-key-added": "flags-sdk-key-added",
@@ -16542,6 +16552,8 @@ export const listEventTypeReplacedByEnum = {
 	"flag-deleted": "flag-deleted",
 	"flag-unarchived": "flag-unarchived",
 	"flag-updated": "flag-updated",
+	"flags-connection-created": "flags-connection-created",
+	"flags-connection-deleted": "flags-connection-deleted",
 	"flags-explorer-subscription": "flags-explorer-subscription",
 	"flags-sdk-key": "flags-sdk-key",
 	"flags-sdk-key-added": "flags-sdk-key-added",
@@ -17978,6 +17990,11 @@ export type NamedSandbox = {
 	 */
 	updatedAt: number;
 	/**
+	 * @description Whether this sandbox is managed by v0 on the customer\'s behalf.
+	 * @type boolean | undefined
+	 */
+	v0?: (false | true) | undefined;
+	/**
 	 * @description Number of virtual CPUs allocated.
 	 * @example 2
 	 * @type number | undefined
@@ -18239,6 +18256,11 @@ export type Session = {
 	 */
 	updatedAt: number;
 	/**
+	 * @description Whether this sandbox is managed by v0 on the customer\'s behalf.
+	 * @type boolean | undefined
+	 */
+	v0?: (false | true) | undefined;
+	/**
 	 * @description Number of vCPUs allocated to this sandbox.
 	 * @example 2
 	 * @type number
@@ -18305,6 +18327,11 @@ export type Drive = {
 	 * @type number
 	 */
 	updatedAt: number;
+	/**
+	 * @description Whether this drive is managed by v0 on the customer\'s behalf.
+	 * @type boolean | undefined
+	 */
+	v0?: (false | true) | undefined;
 };
 
 export const snapshotArchitectureEnum = {
@@ -18413,6 +18440,11 @@ export type Snapshot = {
 	 * @type number
 	 */
 	updatedAt: number;
+	/**
+	 * @description Whether this snapshot is managed by v0 on the customer\'s behalf.
+	 * @type boolean | undefined
+	 */
+	v0?: (false | true) | undefined;
 };
 
 /**
@@ -30645,6 +30677,8 @@ export type GetEdgeConfigItemQuery = {
 
 export type GetEdgeConfigItemStatus200 = unknown;
 
+export type GetEdgeConfigItemStatus204 = unknown;
+
 export type GetEdgeConfigItemStatus400 = unknown;
 
 export type GetEdgeConfigItemStatus401 = unknown;
@@ -30664,6 +30698,7 @@ export type GetEdgeConfigItemOptions = {
 
 export type GetEdgeConfigItemResponses = {
 	"200": GetEdgeConfigItemStatus200;
+	"204": GetEdgeConfigItemStatus204;
 	"400": GetEdgeConfigItemStatus400;
 	"401": GetEdgeConfigItemStatus401;
 	"403": GetEdgeConfigItemStatus403;
@@ -30676,6 +30711,7 @@ export type GetEdgeConfigItemResponses = {
  */
 export type GetEdgeConfigItemResponse =
 	| GetEdgeConfigItemStatus200
+	| GetEdgeConfigItemStatus204
 	| GetEdgeConfigItemStatus400
 	| GetEdgeConfigItemStatus401
 	| GetEdgeConfigItemStatus403
