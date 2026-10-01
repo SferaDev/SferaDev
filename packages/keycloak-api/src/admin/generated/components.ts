@@ -576,6 +576,7 @@ import type {
 	POSTAdminRealmsRealmClientsClientUuidClientSecretResponse,
 	POSTAdminRealmsRealmClientsClientUuidNodesBody,
 	POSTAdminRealmsRealmClientsClientUuidNodesResponse,
+	POSTAdminRealmsRealmClientsClientUuidNodesStatus400,
 	POSTAdminRealmsRealmClientsClientUuidProtocolMappersAddModelsBody,
 	POSTAdminRealmsRealmClientsClientUuidProtocolMappersAddModelsResponse,
 	POSTAdminRealmsRealmClientsClientUuidProtocolMappersModelsBody,
@@ -864,6 +865,16 @@ import type {
 	PUTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdStatus400,
 	PUTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdStatus403,
 	PUTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdStatus409,
+	PUTAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasBody,
+	PUTAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasResponse,
+	PUTAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasStatus400,
+	PUTAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasStatus403,
+	PUTAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasStatus404,
+	PUTAdminRealmsRealmOrganizationsOrgIdMembersMemberIdMembershipTypeBody,
+	PUTAdminRealmsRealmOrganizationsOrgIdMembersMemberIdMembershipTypeResponse,
+	PUTAdminRealmsRealmOrganizationsOrgIdMembersMemberIdMembershipTypeStatus400,
+	PUTAdminRealmsRealmOrganizationsOrgIdMembersMemberIdMembershipTypeStatus403,
+	PUTAdminRealmsRealmOrganizationsOrgIdMembersMemberIdMembershipTypeStatus404,
 	PUTAdminRealmsRealmOrganizationsOrgIdResponse,
 	PUTAdminRealmsRealmOrganizationsOrgIdStatus400,
 	PUTAdminRealmsRealmOrganizationsOrgIdStatus403,
@@ -5588,6 +5599,7 @@ export async function gETAdminRealmsRealmOrganizations(
 			briefRepresentation?: boolean;
 			exact?: boolean;
 			first?: number;
+			identityProvider?: string;
 			max?: number;
 			q?: string;
 			search?: string;
@@ -5611,6 +5623,7 @@ export async function gETAdminRealmsRealmOrganizations(
 			briefRepresentation?: boolean;
 			exact?: boolean;
 			first?: number;
+			identityProvider?: string;
 			max?: number;
 			q?: string;
 			search?: string;
@@ -5678,7 +5691,7 @@ export async function gETAdminRealmsRealmOrganizationsCount(
 		config,
 	}: {
 		pathParams: { realm: string };
-		queryParams?: { exact?: boolean; q?: string; search?: string };
+		queryParams?: { exact?: boolean; identityProvider?: string; q?: string; search?: string };
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
 ) {
@@ -5692,7 +5705,7 @@ export async function gETAdminRealmsRealmOrganizationsCount(
 		ErrorWrapper<GETAdminRealmsRealmOrganizationsCountStatus403>,
 		null,
 		Record<string, string>,
-		{ exact?: boolean; q?: string; search?: string },
+		{ exact?: boolean; identityProvider?: string; q?: string; search?: string },
 		{ realm: string }
 	>({
 		method: "GET",
@@ -10206,7 +10219,8 @@ export async function gETAdminRealmsRealmClientsClientUuidCertificatesAttr(
 }
 
 /**
- * @summary Get a keystore file for the client, containing private key and public certificate
+ * @summary Get a keystore file for the client, containing the public certificate
+ * @deprecated
  * @link /admin/realms/{realm}/clients/{clientUuid}/certificates/{attr}/download
  */
 export async function pOSTAdminRealmsRealmClientsClientUuidCertificatesAttrDownload(
@@ -10253,6 +10267,7 @@ export async function pOSTAdminRealmsRealmClientsClientUuidCertificatesAttrDownl
 
 /**
  * @summary Generate a new certificate with new key pair
+ * @deprecated
  * @link /admin/realms/{realm}/clients/{clientUuid}/certificates/{attr}/generate
  */
 export async function pOSTAdminRealmsRealmClientsClientUuidCertificatesAttrGenerate(
@@ -10298,6 +10313,7 @@ export async function pOSTAdminRealmsRealmClientsClientUuidCertificatesAttrGener
  * @summary Generate a new keypair and certificate, and get the private key file
  * Generates a keypair and certificate and serves the private key in a specified keystore format.
  * Only generated public certificate is saved in Keycloak DB - the private key is not.
+ * @deprecated
  * @link /admin/realms/{realm}/clients/{clientUuid}/certificates/{attr}/generate-and-download
  */
 export async function pOSTAdminRealmsRealmClientsClientUuidCertificatesAttrGenerateAndDownload(
@@ -10343,7 +10359,8 @@ export async function pOSTAdminRealmsRealmClientsClientUuidCertificatesAttrGener
 }
 
 /**
- * @summary Upload certificate and eventually private key
+ * @summary Upload only certificate, not private key
+ * @deprecated
  * @link /admin/realms/{realm}/clients/{clientUuid}/certificates/{attr}/upload
  */
 export async function pOSTAdminRealmsRealmClientsClientUuidCertificatesAttrUpload(
@@ -11167,7 +11184,7 @@ export async function pOSTAdminRealmsRealmClientsClientUuidNodes(
 	}
 	const data = await request<
 		POSTAdminRealmsRealmClientsClientUuidNodesResponse,
-		ErrorWrapper<Error>,
+		ErrorWrapper<POSTAdminRealmsRealmClientsClientUuidNodesStatus400>,
 		POSTAdminRealmsRealmClientsClientUuidNodesBody,
 		Record<string, string>,
 		Record<string, string>,
@@ -14255,7 +14272,7 @@ export async function gETAdminRealmsRealmOrganizationsOrgIdGroupsGroupByPathPath
 		config,
 	}: {
 		pathParams: { realm: string; orgId: string; path: string };
-		queryParams?: { subGroupsCount?: boolean };
+		queryParams?: { briefRepresentation?: boolean; subGroupsCount?: boolean };
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
 ) {
@@ -14280,7 +14297,7 @@ export async function gETAdminRealmsRealmOrganizationsOrgIdGroupsGroupByPathPath
 		>,
 		null,
 		Record<string, string>,
-		{ subGroupsCount?: boolean },
+		{ briefRepresentation?: boolean; subGroupsCount?: boolean },
 		{ realm: string; orgId: string; path: string }
 	>({
 		method: "GET",
@@ -15349,6 +15366,57 @@ export async function gETAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAlia
 }
 
 /**
+ * @summary Updates the per-association config for the identity provider linked to the organization
+ * @description Updates the autoMembership and membershipType settings for the link between the organization and the identity provider with the given alias. If the provider is not linked to the organization, a NOT_FOUND error is returned
+ * @link /admin/realms/{realm}/organizations/{orgId}/identity-providers/{alias}
+ */
+export async function pUTAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAlias(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { realm: string; orgId: string; alias: string };
+		body?: PUTAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.realm) {
+		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	if (!pathParams.orgId) {
+		throw new Error(`Missing required path parameter: orgId`);
+	}
+
+	if (!pathParams.alias) {
+		throw new Error(`Missing required path parameter: alias`);
+	}
+	const data = await request<
+		PUTAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasResponse,
+		ErrorWrapper<
+			| PUTAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasStatus400
+			| PUTAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasStatus403
+			| PUTAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasStatus404
+		>,
+		PUTAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasBody,
+		Record<string, string>,
+		Record<string, string>,
+		{ realm: string; orgId: string; alias: string }
+	>({
+		method: "PUT",
+		url: `/admin/realms/${pathParams.realm}/organizations/${pathParams.orgId}/identity-providers/${pathParams.alias}`,
+		body: body,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
  * @summary Removes the identity provider with the specified alias from the organization
  * @description Breaks the association between the identity provider and the organization. The provider itself is not deleted. If no provider is found, or if it is not currently associated with the org, an error response is returned
  * @link /admin/realms/{realm}/organizations/{orgId}/identity-providers/{alias}
@@ -15845,15 +15913,17 @@ export async function pOSTAdminRealmsRealmOrganizationsOrgIdMembersInviteExistin
 
 /**
  * @summary Invites an existing user or sends a registration link to a new user, based on the provided e-mail address.
- * @description If the user with the given e-mail address exists, it sends an invitation link, otherwise it sends a registration link.
+ * @description If the user with the given e-mail address exists, it sends an invitation link, otherwise it sends a registration link. The client_id query parameter is optional. If no client_id is provided, the account client is used. After accepting the invitation the user is redirected to the selected client's home URL; for the account client the organization redirect URL is used instead when configured.
  * @link /admin/realms/{realm}/organizations/{orgId}/members/invite-user
  */
 export async function pOSTAdminRealmsRealmOrganizationsOrgIdMembersInviteUser(
 	{
 		pathParams,
+		queryParams,
 		config,
 	}: {
 		pathParams: { realm: string; orgId: string };
+		queryParams?: { client_id?: string };
 		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
 	} = {} as any,
 ) {
@@ -15876,11 +15946,12 @@ export async function pOSTAdminRealmsRealmOrganizationsOrgIdMembersInviteUser(
 		>,
 		null,
 		Record<string, string>,
-		Record<string, string>,
+		{ client_id?: string },
 		{ realm: string; orgId: string }
 	>({
 		method: "POST",
 		url: `/admin/realms/${pathParams.realm}/organizations/${pathParams.orgId}/members/invite-user`,
+		queryParams,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
 	});
@@ -16025,6 +16096,56 @@ export async function gETAdminRealmsRealmOrganizationsOrgIdMembersMemberIdGroups
 		method: "GET",
 		url: `/admin/realms/${pathParams.realm}/organizations/${pathParams.orgId}/members/${pathParams.memberId}/groups`,
 		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Updates the membership type of the member with the specified id
+ * @link /admin/realms/{realm}/organizations/{orgId}/members/{memberId}/membership-type
+ */
+export async function pUTAdminRealmsRealmOrganizationsOrgIdMembersMemberIdMembershipType(
+	{
+		pathParams,
+		body,
+		config,
+	}: {
+		pathParams: { realm: string; orgId: string; memberId: string };
+		body?: PUTAdminRealmsRealmOrganizationsOrgIdMembersMemberIdMembershipTypeBody;
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.realm) {
+		throw new Error(`Missing required path parameter: realm`);
+	}
+
+	if (!pathParams.orgId) {
+		throw new Error(`Missing required path parameter: orgId`);
+	}
+
+	if (!pathParams.memberId) {
+		throw new Error(`Missing required path parameter: memberId`);
+	}
+	const data = await request<
+		PUTAdminRealmsRealmOrganizationsOrgIdMembersMemberIdMembershipTypeResponse,
+		ErrorWrapper<
+			| PUTAdminRealmsRealmOrganizationsOrgIdMembersMemberIdMembershipTypeStatus400
+			| PUTAdminRealmsRealmOrganizationsOrgIdMembersMemberIdMembershipTypeStatus403
+			| PUTAdminRealmsRealmOrganizationsOrgIdMembersMemberIdMembershipTypeStatus404
+		>,
+		PUTAdminRealmsRealmOrganizationsOrgIdMembersMemberIdMembershipTypeBody,
+		Record<string, string>,
+		Record<string, string>,
+		{ realm: string; orgId: string; memberId: string }
+	>({
+		method: "PUT",
+		url: `/admin/realms/${pathParams.realm}/organizations/${pathParams.orgId}/members/${pathParams.memberId}/membership-type`,
+		body: body,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
 	});
@@ -19361,6 +19482,8 @@ export const operationsByPath = {
 		pOSTAdminRealmsRealmOrganizationsOrgIdIdentityProviders,
 	"GET /admin/realms/{realm}/organizations/{orgId}/identity-providers/{alias}":
 		gETAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAlias,
+	"PUT /admin/realms/{realm}/organizations/{orgId}/identity-providers/{alias}":
+		pUTAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAlias,
 	"DELETE /admin/realms/{realm}/organizations/{orgId}/identity-providers/{alias}":
 		dELETEAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAlias,
 	"GET /admin/realms/{realm}/organizations/{orgId}/identity-providers/{alias}/groups":
@@ -19389,6 +19512,8 @@ export const operationsByPath = {
 		dELETEAdminRealmsRealmOrganizationsOrgIdMembersMemberId,
 	"GET /admin/realms/{realm}/organizations/{orgId}/members/{memberId}/groups":
 		gETAdminRealmsRealmOrganizationsOrgIdMembersMemberIdGroups,
+	"PUT /admin/realms/{realm}/organizations/{orgId}/members/{memberId}/membership-type":
+		pUTAdminRealmsRealmOrganizationsOrgIdMembersMemberIdMembershipType,
 	"GET /admin/realms/{realm}/organizations/{orgId}/members/{memberId}/organizations":
 		gETAdminRealmsRealmOrganizationsOrgIdMembersMemberIdOrganizations,
 	"GET /admin/realms/{realm}/roles-by-id/{roleId}": gETAdminRealmsRealmRolesByIdRoleId,
@@ -19726,6 +19851,7 @@ export const operationsByTag = {
 		gETAdminRealmsRealmOrganizationsOrgIdIdentityProviders,
 		pOSTAdminRealmsRealmOrganizationsOrgIdIdentityProviders,
 		gETAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAlias,
+		pUTAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAlias,
 		dELETEAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAlias,
 		gETAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAliasGroups,
 		gETAdminRealmsRealmOrganizationsOrgIdInvitations,
@@ -19740,6 +19866,7 @@ export const operationsByTag = {
 		gETAdminRealmsRealmOrganizationsOrgIdMembersMemberId,
 		dELETEAdminRealmsRealmOrganizationsOrgIdMembersMemberId,
 		gETAdminRealmsRealmOrganizationsOrgIdMembersMemberIdGroups,
+		pUTAdminRealmsRealmOrganizationsOrgIdMembersMemberIdMembershipType,
 		gETAdminRealmsRealmOrganizationsOrgIdMembersMemberIdOrganizations,
 	},
 	roles: {
@@ -20213,6 +20340,8 @@ export const tagDictionary = {
 			"pUTAdminRealmsRealmOrganizationsOrgId",
 			"pUTAdminRealmsRealmOrganizationsOrgIdGroupsGroupId",
 			"pUTAdminRealmsRealmOrganizationsOrgIdGroupsGroupIdMembersUserId",
+			"pUTAdminRealmsRealmOrganizationsOrgIdIdentityProvidersAlias",
+			"pUTAdminRealmsRealmOrganizationsOrgIdMembersMemberIdMembershipType",
 		],
 		DELETE: [
 			"dELETEAdminRealmsRealmOrganizationsOrgId",
