@@ -1214,7 +1214,6 @@ import type {
 	GetConnectorTokenStatus410,
 	GetConnectorTokenStatus422,
 	GetConnectorTokenStatus429,
-	GetConnectorTokenStatus504,
 	GetContactInfoSchemaResponse,
 	GetContactInfoSchemaStatus400,
 	GetContactInfoSchemaStatus401,
@@ -6935,7 +6934,6 @@ export async function getConnectorToken(
 			| GetConnectorTokenStatus410
 			| GetConnectorTokenStatus422
 			| GetConnectorTokenStatus429
-			| GetConnectorTokenStatus504
 		>,
 		null,
 		Record<string, string>,

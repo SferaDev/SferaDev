@@ -1577,7 +1577,7 @@ export const connectCreateConnectorRequestSchema = z
 				.string()
 				.optional()
 				.describe(
-					"Trigger driver type. Resolved automatically from the service or known service registry when not provided. Only set when using the newly decoupled triggers resolution flow.",
+					"Trigger driver type. Resolved automatically from the known service connection method when not provided. Only set when using the newly decoupled triggers resolution flow.",
 				),
 			triggerData: z
 				.object({})
@@ -20673,8 +20673,6 @@ export const getConnectorTokenStatus422Schema = z.unknown();
 
 export const getConnectorTokenStatus429Schema = z.unknown();
 
-export const getConnectorTokenStatus504Schema = z.unknown();
-
 export const getConnectorTokenResponseSchema = getConnectorTokenStatus200Schema;
 
 export const getConnectorTokenErrorSchema = z.union([
@@ -20685,7 +20683,6 @@ export const getConnectorTokenErrorSchema = z.union([
 	getConnectorTokenStatus410Schema,
 	getConnectorTokenStatus422Schema,
 	getConnectorTokenStatus429Schema,
-	getConnectorTokenStatus504Schema,
 ]);
 
 export const createConnectorAuthorizationRequestPathConnectorSchema = z.string();
