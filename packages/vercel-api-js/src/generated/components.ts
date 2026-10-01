@@ -1699,6 +1699,14 @@ import type {
 	GetSecurityFirewallEventsStatus408,
 	GetSecurityFirewallEventsStatus410,
 	GetSecurityFirewallEventsStatus500,
+	GetSecurityFirewallEventsSummaryResponse,
+	GetSecurityFirewallEventsSummaryStatus400,
+	GetSecurityFirewallEventsSummaryStatus401,
+	GetSecurityFirewallEventsSummaryStatus403,
+	GetSecurityFirewallEventsSummaryStatus404,
+	GetSecurityFirewallEventsSummaryStatus408,
+	GetSecurityFirewallEventsSummaryStatus410,
+	GetSecurityFirewallEventsSummaryStatus500,
 	GetSessionCommandLogsResponse,
 	GetSessionCommandLogsStatus400,
 	GetSessionCommandLogsStatus401,
@@ -19257,7 +19265,7 @@ export async function removeBypassIp(
 
 /**
  * @summary Read Firewall Actions by Project
- * @description Retrieve firewall actions for a project Rule names are resolved against the project's *current* active firewall configuration and the team's active rulesets, so a rule that has since been renamed reports its new name and one that has been deleted reports `null`. System rules such as `sys_dos_mitigation` and `ip_blocking` have no configured name and always report `null`.
+ * @description Retrieve firewall actions for a project Rule names are resolved against the project's *current* active firewall configuration and the team's active rulesets, so a rule that has since been renamed reports its new name and one that has been deleted reports `null`. System rules such as `sys_dos_mitigation` and `ip_blocking` have no configured name and always report `null`. Filters (`ip`, `isActive`, `action`, `actionType`, `ruleKind`, `ruleId`, `hosts`) are ANDed across params and ORed within a repeated param. They are applied to the policies before `limit`/`cursor`, so pages only count matching policies. A policy with no matching requests yields no action row, so a page can hold fewer than `limit` actions; only `pagination.next` signals the end. A `cursor` is only valid with the filters it was issued for.
  * @link /v1/security/firewall/events
  */
 export async function getSecurityFirewallEvents(
@@ -19266,10 +19274,19 @@ export async function getSecurityFirewallEvents(
 		config,
 	}: {
 		queryParams?: {
+			sort?: "startTime:desc" | "startTime:asc";
+			limit?: number;
+			cursor?: string;
 			projectId?: string;
 			startTimestamp?: number;
 			endTimestamp?: number;
 			hosts?: string;
+			ip?: Array<string>;
+			isActive?: boolean;
+			action?: Array<"deny" | "challenge" | "log" | "rate_limit" | "bypass">;
+			actionType?: Array<"system-action" | "customer-action">;
+			ruleKind?: "system" | "custom";
+			ruleId?: Array<string>;
 			teamId?: string;
 			slug?: string;
 		};
@@ -19292,10 +19309,19 @@ export async function getSecurityFirewallEvents(
 		null,
 		Record<string, string>,
 		{
+			sort?: "startTime:desc" | "startTime:asc";
+			limit?: number;
+			cursor?: string;
 			projectId?: string;
 			startTimestamp?: number;
 			endTimestamp?: number;
 			hosts?: string;
+			ip?: Array<string>;
+			isActive?: boolean;
+			action?: Array<"deny" | "challenge" | "log" | "rate_limit" | "bypass">;
+			actionType?: Array<"system-action" | "customer-action">;
+			ruleKind?: "system" | "custom";
+			ruleId?: Array<string>;
 			teamId?: string;
 			slug?: string;
 		},
@@ -19303,6 +19329,74 @@ export async function getSecurityFirewallEvents(
 	>({
 		method: "GET",
 		url: `/v1/security/firewall/events`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Read Firewall Actions Summary by Project
+ * @description Aggregate counts over the firewall actions matched by the same filters as `GET /v1/security/firewall/events`, without fetching any rows. Counts are of policies (mitigations), including ones that matched no requests.
+ * @link /v1/security/firewall/events/summary
+ */
+export async function getSecurityFirewallEventsSummary(
+	{
+		queryParams,
+		config,
+	}: {
+		queryParams?: {
+			projectId?: string;
+			startTimestamp?: number;
+			endTimestamp?: number;
+			hosts?: string;
+			ip?: Array<string>;
+			isActive?: boolean;
+			action?: Array<"deny" | "challenge" | "log" | "rate_limit" | "bypass">;
+			actionType?: Array<"system-action" | "customer-action">;
+			ruleKind?: "system" | "custom";
+			ruleId?: Array<string>;
+			teamId?: string;
+			slug?: string;
+		};
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	const data = await request<
+		GetSecurityFirewallEventsSummaryResponse,
+		ErrorWrapper<
+			| GetSecurityFirewallEventsSummaryStatus400
+			| GetSecurityFirewallEventsSummaryStatus401
+			| GetSecurityFirewallEventsSummaryStatus403
+			| GetSecurityFirewallEventsSummaryStatus404
+			| GetSecurityFirewallEventsSummaryStatus408
+			| GetSecurityFirewallEventsSummaryStatus410
+			| GetSecurityFirewallEventsSummaryStatus500
+		>,
+		null,
+		Record<string, string>,
+		{
+			projectId?: string;
+			startTimestamp?: number;
+			endTimestamp?: number;
+			hosts?: string;
+			ip?: Array<string>;
+			isActive?: boolean;
+			action?: Array<"deny" | "challenge" | "log" | "rate_limit" | "bypass">;
+			actionType?: Array<"system-action" | "customer-action">;
+			ruleKind?: "system" | "custom";
+			ruleId?: Array<string>;
+			teamId?: string;
+			slug?: string;
+		},
+		Record<string, string>
+	>({
+		method: "GET",
+		url: `/v1/security/firewall/events/summary`,
 		queryParams,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
@@ -24482,6 +24576,7 @@ export const operationsByPath = {
 	"POST /v1/security/firewall/bypass": addBypassIp,
 	"DELETE /v1/security/firewall/bypass": removeBypassIp,
 	"GET /v1/security/firewall/events": getSecurityFirewallEvents,
+	"GET /v1/security/firewall/events/summary": getSecurityFirewallEventsSummary,
 	"POST /v1/security/firewall/config/generate-rule": generateFirewallRule,
 	"POST /speed-insights/toggle": createSpeedInsightsToggle,
 	"GET /storage/stores/{id}": getStorageStoresById,
@@ -25018,6 +25113,7 @@ export const operationsByTag = {
 		addBypassIp,
 		removeBypassIp,
 		getSecurityFirewallEvents,
+		getSecurityFirewallEventsSummary,
 		generateFirewallRule,
 	},
 	storage: {
@@ -25531,6 +25627,7 @@ export const tagDictionary = {
 			"getActiveAttackStatus",
 			"getBypassIp",
 			"getSecurityFirewallEvents",
+			"getSecurityFirewallEventsSummary",
 		],
 		PUT: ["putFirewallConfig"],
 		PATCH: ["updateFirewallConfig"],
