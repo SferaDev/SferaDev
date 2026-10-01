@@ -10555,6 +10555,11 @@ export type UserEvent = {
 										 */
 										blockHistory?:
 											| {
+													/**
+													 * @description Since October 2026. The abuse agent run whose verdict led to this block. Absent on blocks made before the field existed, even agent-led ones.
+													 * @type string | undefined
+													 */
+													abuseAgentRunId?: string | undefined;
 													action: UserEventPayloadNewOwnerAbuseBlockHistoryActionEnumKey;
 													actor?: string | undefined;
 													caseId?: string | undefined;
