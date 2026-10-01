@@ -754,7 +754,6 @@ export const connectConnectorTypeEnum = {
 	custom: "custom",
 	discord: "discord",
 	github: "github",
-	"google-dpop": "google-dpop",
 	linear: "linear",
 	linq: "linq",
 	"microsoft-entra": "microsoft-entra",
@@ -1159,7 +1158,6 @@ export const connectConnectorCreateResultTypeEnum = {
 	custom: "custom",
 	discord: "discord",
 	github: "github",
-	"google-dpop": "google-dpop",
 	linear: "linear",
 	linq: "linq",
 	"microsoft-entra": "microsoft-entra",
@@ -4748,6 +4746,7 @@ export const userEventPayloadPermissionsEnum = {
 	"read-write:project-flags-non-production": "read-write:project-flags-non-production",
 	"read-write:project-flags-production": "read-write:project-flags-production",
 	"read-write:project-protection-bypass": "read-write:project-protection-bypass",
+	"read-write:project-trusted-sources": "read-write:project-trusted-sources",
 	"read-write:remote-cache": "read-write:remote-cache",
 	"read-write:sandbox": "read-write:sandbox",
 	"read-write:schedule": "read-write:schedule",
@@ -4775,6 +4774,7 @@ export const userEventPayloadPermissionsEnum = {
 	"read:project-env-vars-non-production": "read:project-env-vars-non-production",
 	"read:project-env-vars-production": "read:project-env-vars-production",
 	"read:project-flags": "read:project-flags",
+	"read:project-trusted-sources": "read:project-trusted-sources",
 	"read:remote-cache": "read:remote-cache",
 	"read:sandbox": "read:sandbox",
 	"read:schedule": "read:schedule",
@@ -4830,6 +4830,7 @@ export const userEventPayloadNextPermissionsEnum = {
 	"read-write:project-flags-non-production": "read-write:project-flags-non-production",
 	"read-write:project-flags-production": "read-write:project-flags-production",
 	"read-write:project-protection-bypass": "read-write:project-protection-bypass",
+	"read-write:project-trusted-sources": "read-write:project-trusted-sources",
 	"read-write:remote-cache": "read-write:remote-cache",
 	"read-write:sandbox": "read-write:sandbox",
 	"read-write:schedule": "read-write:schedule",
@@ -4857,6 +4858,7 @@ export const userEventPayloadNextPermissionsEnum = {
 	"read:project-env-vars-non-production": "read:project-env-vars-non-production",
 	"read:project-env-vars-production": "read:project-env-vars-production",
 	"read:project-flags": "read:project-flags",
+	"read:project-trusted-sources": "read:project-trusted-sources",
 	"read:remote-cache": "read:remote-cache",
 	"read:sandbox": "read:sandbox",
 	"read:schedule": "read:schedule",
@@ -4913,6 +4915,7 @@ export const userEventPayloadAfterPermissionsEnum = {
 	"read-write:project-flags-non-production": "read-write:project-flags-non-production",
 	"read-write:project-flags-production": "read-write:project-flags-production",
 	"read-write:project-protection-bypass": "read-write:project-protection-bypass",
+	"read-write:project-trusted-sources": "read-write:project-trusted-sources",
 	"read-write:remote-cache": "read-write:remote-cache",
 	"read-write:sandbox": "read-write:sandbox",
 	"read-write:schedule": "read-write:schedule",
@@ -4940,6 +4943,7 @@ export const userEventPayloadAfterPermissionsEnum = {
 	"read:project-env-vars-non-production": "read:project-env-vars-non-production",
 	"read:project-env-vars-production": "read:project-env-vars-production",
 	"read:project-flags": "read:project-flags",
+	"read:project-trusted-sources": "read:project-trusted-sources",
 	"read:remote-cache": "read:remote-cache",
 	"read:sandbox": "read:sandbox",
 	"read:schedule": "read:schedule",
@@ -4985,6 +4989,7 @@ export const userEventPayloadBeforePermissionsEnum = {
 	"read-write:project-flags-non-production": "read-write:project-flags-non-production",
 	"read-write:project-flags-production": "read-write:project-flags-production",
 	"read-write:project-protection-bypass": "read-write:project-protection-bypass",
+	"read-write:project-trusted-sources": "read-write:project-trusted-sources",
 	"read-write:remote-cache": "read-write:remote-cache",
 	"read-write:sandbox": "read-write:sandbox",
 	"read-write:schedule": "read-write:schedule",
@@ -5012,6 +5017,7 @@ export const userEventPayloadBeforePermissionsEnum = {
 	"read:project-env-vars-non-production": "read:project-env-vars-non-production",
 	"read:project-env-vars-production": "read:project-env-vars-production",
 	"read:project-flags": "read:project-flags",
+	"read:project-trusted-sources": "read:project-trusted-sources",
 	"read:remote-cache": "read:remote-cache",
 	"read:sandbox": "read:sandbox",
 	"read:schedule": "read:schedule",
@@ -6016,7 +6022,15 @@ export const userEventPayloadFactorsOriginEnum = {
 export type UserEventPayloadFactorsOriginEnumKey =
 	(typeof userEventPayloadFactorsOriginEnum)[keyof typeof userEventPayloadFactorsOriginEnum];
 
-export const userEventPayloadNextDefaultEnum = {
+export const userEventPayloadNextOrganizationPermissionsEnum = {
+	OrgAdmin: "OrgAdmin",
+	OrgViewer: "OrgViewer",
+} as const;
+
+export type UserEventPayloadNextOrganizationPermissionsEnumKey =
+	(typeof userEventPayloadNextOrganizationPermissionsEnum)[keyof typeof userEventPayloadNextOrganizationPermissionsEnum];
+
+export const userEventPayloadNextTeamRolesEnum = {
 	BILLING: "BILLING",
 	CONTRIBUTOR: "CONTRIBUTOR",
 	DEVELOPER: "DEVELOPER",
@@ -6027,8 +6041,8 @@ export const userEventPayloadNextDefaultEnum = {
 	VIEWER_FOR_PLUS: "VIEWER_FOR_PLUS",
 } as const;
 
-export type UserEventPayloadNextDefaultEnumKey =
-	(typeof userEventPayloadNextDefaultEnum)[keyof typeof userEventPayloadNextDefaultEnum];
+export type UserEventPayloadNextTeamRolesEnumKey =
+	(typeof userEventPayloadNextTeamRolesEnum)[keyof typeof userEventPayloadNextTeamRolesEnum];
 
 export const userEventPayloadTriggerEnum = {
 	directory_sync_updated: "directory_sync_updated",
@@ -12148,17 +12162,21 @@ export type UserEvent = {
 						directoryId: string;
 						groupName: string;
 						next: {
-							default?: UserEventPayloadNextDefaultEnumKey | undefined;
-							roles: {
-								[key: string]:
-									| "BILLING"
-									| "CONTRIBUTOR"
-									| "DEVELOPER"
-									| "MEMBER"
-									| "OWNER"
-									| "SECURITY"
-									| "VIEWER"
-									| "VIEWER_FOR_PLUS";
+							organizationPermissions: UserEventPayloadNextOrganizationPermissionsEnumKey[];
+							teamRoles: UserEventPayloadNextTeamRolesEnumKey[];
+							teams: {
+								[key: string]: {
+									teamRoles: (
+										| "BILLING"
+										| "CONTRIBUTOR"
+										| "DEVELOPER"
+										| "MEMBER"
+										| "OWNER"
+										| "SECURITY"
+										| "VIEWER"
+										| "VIEWER_FOR_PLUS"
+									)[];
+								};
 							};
 						};
 						organizationId: string;
@@ -44247,11 +44265,64 @@ export type RemoveBypassIpResponse =
 	| RemoveBypassIpStatus410
 	| RemoveBypassIpStatus500;
 
+export const getSecurityFirewallEventsSort = {
+	"startTime:desc": "startTime:desc",
+	"startTime:asc": "startTime:asc",
+} as const;
+
+export type GetSecurityFirewallEventsSortKey =
+	(typeof getSecurityFirewallEventsSort)[keyof typeof getSecurityFirewallEventsSort];
+
+export const getSecurityFirewallEventsActionEnum = {
+	deny: "deny",
+	challenge: "challenge",
+	log: "log",
+	rate_limit: "rate_limit",
+	bypass: "bypass",
+} as const;
+
+export type GetSecurityFirewallEventsActionEnumKey =
+	(typeof getSecurityFirewallEventsActionEnum)[keyof typeof getSecurityFirewallEventsActionEnum];
+
+export const getSecurityFirewallEventsActionTypeEnum = {
+	"system-action": "system-action",
+	"customer-action": "customer-action",
+} as const;
+
+export type GetSecurityFirewallEventsActionTypeEnumKey =
+	(typeof getSecurityFirewallEventsActionTypeEnum)[keyof typeof getSecurityFirewallEventsActionTypeEnum];
+
+export const getSecurityFirewallEventsRuleKind = {
+	system: "system",
+	custom: "custom",
+} as const;
+
+export type GetSecurityFirewallEventsRuleKindKey =
+	(typeof getSecurityFirewallEventsRuleKind)[keyof typeof getSecurityFirewallEventsRuleKind];
+
 export type GetSecurityFirewallEventsQuery = {
+	sort?: GetSecurityFirewallEventsSortKey | undefined;
+	/**
+	 * @minLength 1
+	 * @maxLength 5000
+	 * @type number | undefined
+	 */
+	limit?: number | undefined;
+	cursor?: string | undefined;
 	projectId: string;
 	startTimestamp?: number | undefined;
 	endTimestamp?: number | undefined;
+	/**
+	 * @maxLength 10000
+	 * @type string | undefined
+	 */
 	hosts?: string | undefined;
+	ip?: string[] | undefined;
+	isActive?: boolean | undefined;
+	action?: GetSecurityFirewallEventsActionEnumKey[] | undefined;
+	actionType?: GetSecurityFirewallEventsActionTypeEnumKey[] | undefined;
+	ruleKind?: GetSecurityFirewallEventsRuleKindKey | undefined;
+	ruleId?: string[] | undefined;
 	/**
 	 * @description The Team identifier to perform the request on behalf of.
 	 * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
@@ -44312,6 +44383,109 @@ export type GetSecurityFirewallEventsResponse =
 	| GetSecurityFirewallEventsStatus408
 	| GetSecurityFirewallEventsStatus410
 	| GetSecurityFirewallEventsStatus500;
+
+export const getSecurityFirewallEventsSummaryActionEnum = {
+	deny: "deny",
+	challenge: "challenge",
+	log: "log",
+	rate_limit: "rate_limit",
+	bypass: "bypass",
+} as const;
+
+export type GetSecurityFirewallEventsSummaryActionEnumKey =
+	(typeof getSecurityFirewallEventsSummaryActionEnum)[keyof typeof getSecurityFirewallEventsSummaryActionEnum];
+
+export const getSecurityFirewallEventsSummaryActionTypeEnum = {
+	"system-action": "system-action",
+	"customer-action": "customer-action",
+} as const;
+
+export type GetSecurityFirewallEventsSummaryActionTypeEnumKey =
+	(typeof getSecurityFirewallEventsSummaryActionTypeEnum)[keyof typeof getSecurityFirewallEventsSummaryActionTypeEnum];
+
+export const getSecurityFirewallEventsSummaryRuleKind = {
+	system: "system",
+	custom: "custom",
+} as const;
+
+export type GetSecurityFirewallEventsSummaryRuleKindKey =
+	(typeof getSecurityFirewallEventsSummaryRuleKind)[keyof typeof getSecurityFirewallEventsSummaryRuleKind];
+
+export type GetSecurityFirewallEventsSummaryQuery = {
+	projectId: string;
+	startTimestamp?: number | undefined;
+	endTimestamp?: number | undefined;
+	/**
+	 * @maxLength 10000
+	 * @type string | undefined
+	 */
+	hosts?: string | undefined;
+	ip?: string[] | undefined;
+	isActive?: boolean | undefined;
+	action?: GetSecurityFirewallEventsSummaryActionEnumKey[] | undefined;
+	actionType?: GetSecurityFirewallEventsSummaryActionTypeEnumKey[] | undefined;
+	ruleKind?: GetSecurityFirewallEventsSummaryRuleKindKey | undefined;
+	ruleId?: string[] | undefined;
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @example my-team-url-slug
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type GetSecurityFirewallEventsSummaryStatus200 = unknown;
+
+export type GetSecurityFirewallEventsSummaryStatus400 = unknown;
+
+export type GetSecurityFirewallEventsSummaryStatus401 = unknown;
+
+export type GetSecurityFirewallEventsSummaryStatus403 = unknown;
+
+export type GetSecurityFirewallEventsSummaryStatus404 = unknown;
+
+export type GetSecurityFirewallEventsSummaryStatus408 = unknown;
+
+export type GetSecurityFirewallEventsSummaryStatus410 = unknown;
+
+export type GetSecurityFirewallEventsSummaryStatus500 = unknown;
+
+export type GetSecurityFirewallEventsSummaryOptions = {
+	body?: never | undefined;
+	path?: never | undefined;
+	query: GetSecurityFirewallEventsSummaryQuery;
+	headers?: never | undefined;
+};
+
+export type GetSecurityFirewallEventsSummaryResponses = {
+	"200": GetSecurityFirewallEventsSummaryStatus200;
+	"400": GetSecurityFirewallEventsSummaryStatus400;
+	"401": GetSecurityFirewallEventsSummaryStatus401;
+	"403": GetSecurityFirewallEventsSummaryStatus403;
+	"404": GetSecurityFirewallEventsSummaryStatus404;
+	"408": GetSecurityFirewallEventsSummaryStatus408;
+	"410": GetSecurityFirewallEventsSummaryStatus410;
+	"500": GetSecurityFirewallEventsSummaryStatus500;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetSecurityFirewallEventsSummaryResponse =
+	| GetSecurityFirewallEventsSummaryStatus200
+	| GetSecurityFirewallEventsSummaryStatus400
+	| GetSecurityFirewallEventsSummaryStatus401
+	| GetSecurityFirewallEventsSummaryStatus403
+	| GetSecurityFirewallEventsSummaryStatus404
+	| GetSecurityFirewallEventsSummaryStatus408
+	| GetSecurityFirewallEventsSummaryStatus410
+	| GetSecurityFirewallEventsSummaryStatus500;
 
 export type GenerateFirewallRuleQuery = {
 	projectId?: string | undefined;

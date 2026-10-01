@@ -627,7 +627,6 @@ export const connectConnectorSchema = z
 				"custom",
 				"discord",
 				"github",
-				"google-dpop",
 				"linear",
 				"linq",
 				"microsoft-entra",
@@ -884,7 +883,6 @@ export const connectConnectorCreateResultSchema = z
 				"custom",
 				"discord",
 				"github",
-				"google-dpop",
 				"linear",
 				"linq",
 				"microsoft-entra",
@@ -3622,6 +3620,7 @@ export const userEventSchema = z
 								"read-write:project-flags-non-production",
 								"read-write:project-flags-production",
 								"read-write:project-protection-bypass",
+								"read-write:project-trusted-sources",
 								"read-write:remote-cache",
 								"read-write:sandbox",
 								"read-write:schedule",
@@ -3649,6 +3648,7 @@ export const userEventSchema = z
 								"read:project-env-vars-non-production",
 								"read:project-env-vars-production",
 								"read:project-flags",
+								"read:project-trusted-sources",
 								"read:remote-cache",
 								"read:sandbox",
 								"read:schedule",
@@ -3704,6 +3704,7 @@ export const userEventSchema = z
 								"read-write:project-flags-non-production",
 								"read-write:project-flags-production",
 								"read-write:project-protection-bypass",
+								"read-write:project-trusted-sources",
 								"read-write:remote-cache",
 								"read-write:sandbox",
 								"read-write:schedule",
@@ -3731,6 +3732,7 @@ export const userEventSchema = z
 								"read:project-env-vars-non-production",
 								"read:project-env-vars-production",
 								"read:project-flags",
+								"read:project-trusted-sources",
 								"read:remote-cache",
 								"read:sandbox",
 								"read:schedule",
@@ -3782,6 +3784,7 @@ export const userEventSchema = z
 										"read-write:project-flags-non-production",
 										"read-write:project-flags-production",
 										"read-write:project-protection-bypass",
+										"read-write:project-trusted-sources",
 										"read-write:remote-cache",
 										"read-write:sandbox",
 										"read-write:schedule",
@@ -3809,6 +3812,7 @@ export const userEventSchema = z
 										"read:project-env-vars-non-production",
 										"read:project-env-vars-production",
 										"read:project-flags",
+										"read:project-trusted-sources",
 										"read:remote-cache",
 										"read:sandbox",
 										"read:schedule",
@@ -3873,6 +3877,7 @@ export const userEventSchema = z
 										"read-write:project-flags-non-production",
 										"read-write:project-flags-production",
 										"read-write:project-protection-bypass",
+										"read-write:project-trusted-sources",
 										"read-write:remote-cache",
 										"read-write:sandbox",
 										"read-write:schedule",
@@ -3900,6 +3905,7 @@ export const userEventSchema = z
 										"read:project-env-vars-non-production",
 										"read:project-env-vars-production",
 										"read:project-flags",
+										"read:project-trusted-sources",
 										"read:remote-cache",
 										"read:sandbox",
 										"read:schedule",
@@ -3965,6 +3971,7 @@ export const userEventSchema = z
 								"read-write:project-flags-non-production",
 								"read-write:project-flags-production",
 								"read-write:project-protection-bypass",
+								"read-write:project-trusted-sources",
 								"read-write:remote-cache",
 								"read-write:sandbox",
 								"read-write:schedule",
@@ -3992,6 +3999,7 @@ export const userEventSchema = z
 								"read:project-env-vars-non-production",
 								"read:project-env-vars-production",
 								"read:project-flags",
+								"read:project-trusted-sources",
 								"read:remote-cache",
 								"read:sandbox",
 								"read:schedule",
@@ -8113,8 +8121,9 @@ export const userEventSchema = z
 					directoryId: z.string(),
 					groupName: z.string(),
 					next: z.object({
-						default: z
-							.enum([
+						organizationPermissions: z.array(z.enum(["OrgAdmin", "OrgViewer"])),
+						teamRoles: z.array(
+							z.enum([
 								"BILLING",
 								"CONTRIBUTOR",
 								"DEVELOPER",
@@ -8123,22 +8132,24 @@ export const userEventSchema = z
 								"SECURITY",
 								"VIEWER",
 								"VIEWER_FOR_PLUS",
-							])
-							.optional(),
-						roles: z
-							.object({})
-							.catchall(
-								z.enum([
-									"BILLING",
-									"CONTRIBUTOR",
-									"DEVELOPER",
-									"MEMBER",
-									"OWNER",
-									"SECURITY",
-									"VIEWER",
-									"VIEWER_FOR_PLUS",
-								]),
-							),
+							]),
+						),
+						teams: z.object({}).catchall(
+							z.object({
+								teamRoles: z.array(
+									z.enum([
+										"BILLING",
+										"CONTRIBUTOR",
+										"DEVELOPER",
+										"MEMBER",
+										"OWNER",
+										"SECURITY",
+										"VIEWER",
+										"VIEWER_FOR_PLUS",
+									]),
+								),
+							}),
+						),
 					}),
 					organizationId: z.string(),
 				}),
@@ -31968,13 +31979,45 @@ export const removeBypassIpErrorSchema = z.union([
 	removeBypassIpStatus500Schema,
 ]);
 
+export const getSecurityFirewallEventsQuerySortSchema = z
+	.enum(["startTime:desc", "startTime:asc"])
+	.optional();
+
+export const getSecurityFirewallEventsQueryLimitSchema = z.number().min(1).max(5000).optional();
+
+export const getSecurityFirewallEventsQueryCursorSchema = z.string().optional();
+
 export const getSecurityFirewallEventsQueryProjectIdSchema = z.string();
 
 export const getSecurityFirewallEventsQueryStartTimestampSchema = z.number().optional();
 
 export const getSecurityFirewallEventsQueryEndTimestampSchema = z.number().optional();
 
-export const getSecurityFirewallEventsQueryHostsSchema = z.string().optional();
+export const getSecurityFirewallEventsQueryHostsSchema = z.string().max(10000).optional();
+
+export const getSecurityFirewallEventsQueryIpSchema = z
+	.array(z.string().max(45))
+	.max(100)
+	.optional();
+
+export const getSecurityFirewallEventsQueryIsActiveSchema = z.boolean().optional();
+
+export const getSecurityFirewallEventsQueryActionSchema = z
+	.array(z.enum(["deny", "challenge", "log", "rate_limit", "bypass"]))
+	.max(5)
+	.optional();
+
+export const getSecurityFirewallEventsQueryActionTypeSchema = z
+	.array(z.enum(["system-action", "customer-action"]))
+	.max(2)
+	.optional();
+
+export const getSecurityFirewallEventsQueryRuleKindSchema = z.enum(["system", "custom"]).optional();
+
+export const getSecurityFirewallEventsQueryRuleIdSchema = z
+	.array(z.string().max(128))
+	.max(100)
+	.optional();
 
 export const getSecurityFirewallEventsQueryTeamIdSchema = z
 	.string()
@@ -32014,6 +32057,81 @@ export const getSecurityFirewallEventsErrorSchema = z.union([
 	getSecurityFirewallEventsStatus408Schema,
 	getSecurityFirewallEventsStatus410Schema,
 	getSecurityFirewallEventsStatus500Schema,
+]);
+
+export const getSecurityFirewallEventsSummaryQueryProjectIdSchema = z.string();
+
+export const getSecurityFirewallEventsSummaryQueryStartTimestampSchema = z.number().optional();
+
+export const getSecurityFirewallEventsSummaryQueryEndTimestampSchema = z.number().optional();
+
+export const getSecurityFirewallEventsSummaryQueryHostsSchema = z.string().max(10000).optional();
+
+export const getSecurityFirewallEventsSummaryQueryIpSchema = z
+	.array(z.string().max(45))
+	.max(100)
+	.optional();
+
+export const getSecurityFirewallEventsSummaryQueryIsActiveSchema = z.boolean().optional();
+
+export const getSecurityFirewallEventsSummaryQueryActionSchema = z
+	.array(z.enum(["deny", "challenge", "log", "rate_limit", "bypass"]))
+	.max(5)
+	.optional();
+
+export const getSecurityFirewallEventsSummaryQueryActionTypeSchema = z
+	.array(z.enum(["system-action", "customer-action"]))
+	.max(2)
+	.optional();
+
+export const getSecurityFirewallEventsSummaryQueryRuleKindSchema = z
+	.enum(["system", "custom"])
+	.optional();
+
+export const getSecurityFirewallEventsSummaryQueryRuleIdSchema = z
+	.array(z.string().max(128))
+	.max(100)
+	.optional();
+
+export const getSecurityFirewallEventsSummaryQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe("The Team identifier to perform the request on behalf of.")
+	.meta({ examples: ["team_1a2b3c4d5e6f7g8h9i0j1k2l"] });
+
+export const getSecurityFirewallEventsSummaryQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.")
+	.meta({ examples: ["my-team-url-slug"] });
+
+export const getSecurityFirewallEventsSummaryStatus200Schema = z.unknown();
+
+export const getSecurityFirewallEventsSummaryStatus400Schema = z.unknown();
+
+export const getSecurityFirewallEventsSummaryStatus401Schema = z.unknown();
+
+export const getSecurityFirewallEventsSummaryStatus403Schema = z.unknown();
+
+export const getSecurityFirewallEventsSummaryStatus404Schema = z.unknown();
+
+export const getSecurityFirewallEventsSummaryStatus408Schema = z.unknown();
+
+export const getSecurityFirewallEventsSummaryStatus410Schema = z.unknown();
+
+export const getSecurityFirewallEventsSummaryStatus500Schema = z.unknown();
+
+export const getSecurityFirewallEventsSummaryResponseSchema =
+	getSecurityFirewallEventsSummaryStatus200Schema;
+
+export const getSecurityFirewallEventsSummaryErrorSchema = z.union([
+	getSecurityFirewallEventsSummaryStatus400Schema,
+	getSecurityFirewallEventsSummaryStatus401Schema,
+	getSecurityFirewallEventsSummaryStatus403Schema,
+	getSecurityFirewallEventsSummaryStatus404Schema,
+	getSecurityFirewallEventsSummaryStatus408Schema,
+	getSecurityFirewallEventsSummaryStatus410Schema,
+	getSecurityFirewallEventsSummaryStatus500Schema,
 ]);
 
 export const generateFirewallRuleQueryProjectIdSchema = z.string().optional();
