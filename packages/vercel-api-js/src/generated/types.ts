@@ -16886,6 +16886,14 @@ export const teamBillingPlanEnum = {
 
 export type TeamBillingPlanEnumKey = (typeof teamBillingPlanEnum)[keyof typeof teamBillingPlanEnum];
 
+export const teamDefaultContinuousUsageKindEnum = {
+	metered: "metered",
+	unmetered: "unmetered",
+} as const;
+
+export type TeamDefaultContinuousUsageKindEnumKey =
+	(typeof teamDefaultContinuousUsageKindEnum)[keyof typeof teamDefaultContinuousUsageKindEnum];
+
 export const teamDefaultPassportDeploymentTypeEnum = {
 	all: "all",
 	all_except_custom_domains: "all_except_custom_domains",
@@ -16972,18 +16980,22 @@ export type TeamDeploymentPolicyGitSourcesSourcesProviderEnumKey =
 	(typeof teamDeploymentPolicyGitSourcesSourcesProviderEnum)[keyof typeof teamDeploymentPolicyGitSourcesSourcesProviderEnum];
 
 export const teamDeploymentStorageRolloutCohortEnum = {
+	already_metered: "already_metered",
+	extreme: "extreme",
 	high: "high",
 	low: "low",
 	medium: "medium",
+	medium_plus: "medium_plus",
+	metered_opt_in: "metered_opt_in",
 } as const;
 
 export type TeamDeploymentStorageRolloutCohortEnumKey =
 	(typeof teamDeploymentStorageRolloutCohortEnum)[keyof typeof teamDeploymentStorageRolloutCohortEnum];
 
 export const teamDeploymentStorageRolloutMeterReasonEnum = {
-	high_retention_opt_in: "high_retention_opt_in",
 	low_scheduled: "low_scheduled",
 	medium_scheduled: "medium_scheduled",
+	retention_opt_out: "retention_opt_out",
 } as const;
 
 export type TeamDeploymentStorageRolloutMeterReasonEnumKey =
@@ -17217,6 +17229,11 @@ export type Team = {
 	 */
 	creatorId: string;
 	/**
+	 * @description Default continuous-usage billing kind for projects under this team. Absent means projects stay unmetered.
+	 * @type string | undefined
+	 */
+	defaultContinuousUsageKind?: TeamDefaultContinuousUsageKindEnumKey | undefined;
+	/**
 	 * @description Default deployment protection for this team null indicates protection is disabled
 	 * @type object | undefined
 	 */
@@ -17407,7 +17424,7 @@ export type Team = {
 		  }
 		| undefined;
 	/**
-	 * @description Phase 2 Pro deployment-storage pricing rollout cohort and milestones. Absent when the team is not in a Phase 2 Pro cohort.
+	 * @description Pro deployment-storage pricing rollout cohort and milestones. Absent when the team has not been placed in a rollout cohort yet.
 	 * @type object | undefined
 	 */
 	deploymentStorageRollout?:
@@ -24689,6 +24706,8 @@ export type ListConnectorProjectConnectionsStatus403 = unknown;
 
 export type ListConnectorProjectConnectionsStatus404 = unknown;
 
+export type ListConnectorProjectConnectionsStatus409 = unknown;
+
 export type ListConnectorProjectConnectionsStatus410 = unknown;
 
 export type ListConnectorProjectConnectionsOptions = {
@@ -24704,6 +24723,7 @@ export type ListConnectorProjectConnectionsResponses = {
 	"401": ListConnectorProjectConnectionsStatus401;
 	"403": ListConnectorProjectConnectionsStatus403;
 	"404": ListConnectorProjectConnectionsStatus404;
+	"409": ListConnectorProjectConnectionsStatus409;
 	"410": ListConnectorProjectConnectionsStatus410;
 };
 
@@ -24716,6 +24736,7 @@ export type ListConnectorProjectConnectionsResponse =
 	| ListConnectorProjectConnectionsStatus401
 	| ListConnectorProjectConnectionsStatus403
 	| ListConnectorProjectConnectionsStatus404
+	| ListConnectorProjectConnectionsStatus409
 	| ListConnectorProjectConnectionsStatus410;
 
 export type GetConnectorProjectConnectionPath = {
@@ -24756,6 +24777,8 @@ export type GetConnectorProjectConnectionStatus403 = unknown;
 
 export type GetConnectorProjectConnectionStatus404 = unknown;
 
+export type GetConnectorProjectConnectionStatus409 = unknown;
+
 export type GetConnectorProjectConnectionStatus410 = unknown;
 
 export type GetConnectorProjectConnectionOptions = {
@@ -24771,6 +24794,7 @@ export type GetConnectorProjectConnectionResponses = {
 	"401": GetConnectorProjectConnectionStatus401;
 	"403": GetConnectorProjectConnectionStatus403;
 	"404": GetConnectorProjectConnectionStatus404;
+	"409": GetConnectorProjectConnectionStatus409;
 	"410": GetConnectorProjectConnectionStatus410;
 };
 
@@ -24783,6 +24807,7 @@ export type GetConnectorProjectConnectionResponse =
 	| GetConnectorProjectConnectionStatus401
 	| GetConnectorProjectConnectionStatus403
 	| GetConnectorProjectConnectionStatus404
+	| GetConnectorProjectConnectionStatus409
 	| GetConnectorProjectConnectionStatus410;
 
 export type UpsertConnectorProjectConnectionPath = {
@@ -24823,6 +24848,8 @@ export type UpsertConnectorProjectConnectionStatus403 = unknown;
 
 export type UpsertConnectorProjectConnectionStatus404 = unknown;
 
+export type UpsertConnectorProjectConnectionStatus409 = unknown;
+
 export type UpsertConnectorProjectConnectionStatus410 = unknown;
 
 export type UpsertConnectorProjectConnectionOptions = {
@@ -24838,6 +24865,7 @@ export type UpsertConnectorProjectConnectionResponses = {
 	"401": UpsertConnectorProjectConnectionStatus401;
 	"403": UpsertConnectorProjectConnectionStatus403;
 	"404": UpsertConnectorProjectConnectionStatus404;
+	"409": UpsertConnectorProjectConnectionStatus409;
 	"410": UpsertConnectorProjectConnectionStatus410;
 };
 
@@ -24850,6 +24878,7 @@ export type UpsertConnectorProjectConnectionResponse =
 	| UpsertConnectorProjectConnectionStatus401
 	| UpsertConnectorProjectConnectionStatus403
 	| UpsertConnectorProjectConnectionStatus404
+	| UpsertConnectorProjectConnectionStatus409
 	| UpsertConnectorProjectConnectionStatus410;
 
 export type DeleteConnectorProjectConnectionPath = {
@@ -24890,6 +24919,8 @@ export type DeleteConnectorProjectConnectionStatus403 = unknown;
 
 export type DeleteConnectorProjectConnectionStatus404 = unknown;
 
+export type DeleteConnectorProjectConnectionStatus409 = unknown;
+
 export type DeleteConnectorProjectConnectionStatus410 = unknown;
 
 export type DeleteConnectorProjectConnectionOptions = {
@@ -24905,6 +24936,7 @@ export type DeleteConnectorProjectConnectionResponses = {
 	"401": DeleteConnectorProjectConnectionStatus401;
 	"403": DeleteConnectorProjectConnectionStatus403;
 	"404": DeleteConnectorProjectConnectionStatus404;
+	"409": DeleteConnectorProjectConnectionStatus409;
 	"410": DeleteConnectorProjectConnectionStatus410;
 };
 
@@ -24917,6 +24949,7 @@ export type DeleteConnectorProjectConnectionResponse =
 	| DeleteConnectorProjectConnectionStatus401
 	| DeleteConnectorProjectConnectionStatus403
 	| DeleteConnectorProjectConnectionStatus404
+	| DeleteConnectorProjectConnectionStatus409
 	| DeleteConnectorProjectConnectionStatus410;
 
 export type ListProjectConnectorConnectionsPath = {
@@ -25007,6 +25040,8 @@ export type GetConnectorTokenStatus403 = unknown;
 
 export type GetConnectorTokenStatus404 = unknown;
 
+export type GetConnectorTokenStatus409 = unknown;
+
 export type GetConnectorTokenStatus410 = unknown;
 
 export type GetConnectorTokenStatus422 = unknown;
@@ -25026,6 +25061,7 @@ export type GetConnectorTokenResponses = {
 	"401": GetConnectorTokenStatus401;
 	"403": GetConnectorTokenStatus403;
 	"404": GetConnectorTokenStatus404;
+	"409": GetConnectorTokenStatus409;
 	"410": GetConnectorTokenStatus410;
 	"422": GetConnectorTokenStatus422;
 	"429": GetConnectorTokenStatus429;
@@ -25040,6 +25076,7 @@ export type GetConnectorTokenResponse =
 	| GetConnectorTokenStatus401
 	| GetConnectorTokenStatus403
 	| GetConnectorTokenStatus404
+	| GetConnectorTokenStatus409
 	| GetConnectorTokenStatus410
 	| GetConnectorTokenStatus422
 	| GetConnectorTokenStatus429;
@@ -25058,6 +25095,8 @@ export type CreateConnectorAuthorizationRequestStatus403 = unknown;
 
 export type CreateConnectorAuthorizationRequestStatus404 = unknown;
 
+export type CreateConnectorAuthorizationRequestStatus409 = unknown;
+
 export type CreateConnectorAuthorizationRequestStatus410 = unknown;
 
 export type CreateConnectorAuthorizationRequestStatus422 = unknown;
@@ -25075,6 +25114,7 @@ export type CreateConnectorAuthorizationRequestResponses = {
 	"401": CreateConnectorAuthorizationRequestStatus401;
 	"403": CreateConnectorAuthorizationRequestStatus403;
 	"404": CreateConnectorAuthorizationRequestStatus404;
+	"409": CreateConnectorAuthorizationRequestStatus409;
 	"410": CreateConnectorAuthorizationRequestStatus410;
 	"422": CreateConnectorAuthorizationRequestStatus422;
 };
@@ -25088,6 +25128,7 @@ export type CreateConnectorAuthorizationRequestResponse =
 	| CreateConnectorAuthorizationRequestStatus401
 	| CreateConnectorAuthorizationRequestStatus403
 	| CreateConnectorAuthorizationRequestStatus404
+	| CreateConnectorAuthorizationRequestStatus409
 	| CreateConnectorAuthorizationRequestStatus410
 	| CreateConnectorAuthorizationRequestStatus422;
 
