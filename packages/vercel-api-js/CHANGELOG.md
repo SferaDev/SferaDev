@@ -1,5 +1,12 @@
 # vercel-api-js
 
+## 1.34.2
+
+### Patch Changes
+
+- a2729a1: Removed enums and related type definitions for user event payloads in the generated types and schemas.
+- a2729a1: Simplified the UserEvent type by removing enum usage in fields related to newOwner and its nested properties.
+
 ## 1.34.1
 
 ### Patch Changes
