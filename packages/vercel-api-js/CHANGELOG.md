@@ -1,5 +1,16 @@
 # vercel-api-js
 
+## 1.35.0
+
+### Minor Changes
+
+- 790df57: Added defaultContinuousUsageKind property and enums to the Team type for configuring default continuous-usage billing kind.
+- 790df57: Updated and expanded Team.deploymentStorageRollout.cohort and meterReason enums, and improved documentation for the rollout structure.
+
+### Patch Changes
+
+- 790df57: Added 409 (Conflict) status response types for several connector API methods including creating, retrieving, updating, and deleting connector project connections and tokens.
+
 ## 1.34.4
 
 ### Patch Changes
