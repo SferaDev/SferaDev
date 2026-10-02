@@ -13641,6 +13641,12 @@ export const teamSchema = z
 			.string()
 			.describe("The ID of the user who created the Team.")
 			.meta({ examples: ["R6efeCJQ2HKXywuasPDc0fOWB"] }),
+		defaultContinuousUsageKind: z
+			.enum(["metered", "unmetered"])
+			.optional()
+			.describe(
+				"Default continuous-usage billing kind for projects under this team. Absent means projects stay unmetered.",
+			),
 		defaultDeploymentProtection: z
 			.object({
 				passwordProtection: z
@@ -13848,14 +13854,20 @@ export const teamSchema = z
 			),
 		deploymentStorageRollout: z
 			.object({
-				cohort: z.enum(["high", "low", "medium"]),
+				cohort: z.enum([
+					"already_metered",
+					"extreme",
+					"high",
+					"low",
+					"medium",
+					"medium_plus",
+					"metered_opt_in",
+				]),
 				meteredAt: z
 					.number()
 					.optional()
 					.describe("When team-wide metering was recorded for this rollout."),
-				meterReason: z
-					.enum(["high_retention_opt_in", "low_scheduled", "medium_scheduled"])
-					.optional(),
+				meterReason: z.enum(["low_scheduled", "medium_scheduled", "retention_opt_out"]).optional(),
 				retentionAppliedAt: z
 					.number()
 					.optional()
@@ -13867,7 +13879,7 @@ export const teamSchema = z
 			})
 			.optional()
 			.describe(
-				"Phase 2 Pro deployment-storage pricing rollout cohort and milestones. Absent when the team is not in a Phase 2 Pro cohort.",
+				"Pro deployment-storage pricing rollout cohort and milestones. Absent when the team has not been placed in a rollout cohort yet.",
 			),
 		description: z
 			.string()
@@ -19132,6 +19144,8 @@ export const listConnectorProjectConnectionsStatus403Schema = z.unknown();
 
 export const listConnectorProjectConnectionsStatus404Schema = z.unknown();
 
+export const listConnectorProjectConnectionsStatus409Schema = z.unknown();
+
 export const listConnectorProjectConnectionsStatus410Schema = z.unknown();
 
 export const listConnectorProjectConnectionsResponseSchema =
@@ -19142,6 +19156,7 @@ export const listConnectorProjectConnectionsErrorSchema = z.union([
 	listConnectorProjectConnectionsStatus401Schema,
 	listConnectorProjectConnectionsStatus403Schema,
 	listConnectorProjectConnectionsStatus404Schema,
+	listConnectorProjectConnectionsStatus409Schema,
 	listConnectorProjectConnectionsStatus410Schema,
 ]);
 
@@ -19181,6 +19196,8 @@ export const getConnectorProjectConnectionStatus403Schema = z.unknown();
 
 export const getConnectorProjectConnectionStatus404Schema = z.unknown();
 
+export const getConnectorProjectConnectionStatus409Schema = z.unknown();
+
 export const getConnectorProjectConnectionStatus410Schema = z.unknown();
 
 export const getConnectorProjectConnectionResponseSchema =
@@ -19191,6 +19208,7 @@ export const getConnectorProjectConnectionErrorSchema = z.union([
 	getConnectorProjectConnectionStatus401Schema,
 	getConnectorProjectConnectionStatus403Schema,
 	getConnectorProjectConnectionStatus404Schema,
+	getConnectorProjectConnectionStatus409Schema,
 	getConnectorProjectConnectionStatus410Schema,
 ]);
 
@@ -19230,6 +19248,8 @@ export const upsertConnectorProjectConnectionStatus403Schema = z.unknown();
 
 export const upsertConnectorProjectConnectionStatus404Schema = z.unknown();
 
+export const upsertConnectorProjectConnectionStatus409Schema = z.unknown();
+
 export const upsertConnectorProjectConnectionStatus410Schema = z.unknown();
 
 export const upsertConnectorProjectConnectionResponseSchema =
@@ -19240,6 +19260,7 @@ export const upsertConnectorProjectConnectionErrorSchema = z.union([
 	upsertConnectorProjectConnectionStatus401Schema,
 	upsertConnectorProjectConnectionStatus403Schema,
 	upsertConnectorProjectConnectionStatus404Schema,
+	upsertConnectorProjectConnectionStatus409Schema,
 	upsertConnectorProjectConnectionStatus410Schema,
 ]);
 
@@ -19279,6 +19300,8 @@ export const deleteConnectorProjectConnectionStatus403Schema = z.unknown();
 
 export const deleteConnectorProjectConnectionStatus404Schema = z.unknown();
 
+export const deleteConnectorProjectConnectionStatus409Schema = z.unknown();
+
 export const deleteConnectorProjectConnectionStatus410Schema = z.unknown();
 
 export const deleteConnectorProjectConnectionResponseSchema =
@@ -19289,6 +19312,7 @@ export const deleteConnectorProjectConnectionErrorSchema = z.union([
 	deleteConnectorProjectConnectionStatus401Schema,
 	deleteConnectorProjectConnectionStatus403Schema,
 	deleteConnectorProjectConnectionStatus404Schema,
+	deleteConnectorProjectConnectionStatus409Schema,
 	deleteConnectorProjectConnectionStatus410Schema,
 ]);
 
@@ -19359,6 +19383,8 @@ export const getConnectorTokenStatus403Schema = z.unknown();
 
 export const getConnectorTokenStatus404Schema = z.unknown();
 
+export const getConnectorTokenStatus409Schema = z.unknown();
+
 export const getConnectorTokenStatus410Schema = z.unknown();
 
 export const getConnectorTokenStatus422Schema = z.unknown();
@@ -19372,6 +19398,7 @@ export const getConnectorTokenErrorSchema = z.union([
 	getConnectorTokenStatus401Schema,
 	getConnectorTokenStatus403Schema,
 	getConnectorTokenStatus404Schema,
+	getConnectorTokenStatus409Schema,
 	getConnectorTokenStatus410Schema,
 	getConnectorTokenStatus422Schema,
 	getConnectorTokenStatus429Schema,
@@ -19389,6 +19416,8 @@ export const createConnectorAuthorizationRequestStatus403Schema = z.unknown();
 
 export const createConnectorAuthorizationRequestStatus404Schema = z.unknown();
 
+export const createConnectorAuthorizationRequestStatus409Schema = z.unknown();
+
 export const createConnectorAuthorizationRequestStatus410Schema = z.unknown();
 
 export const createConnectorAuthorizationRequestStatus422Schema = z.unknown();
@@ -19401,6 +19430,7 @@ export const createConnectorAuthorizationRequestErrorSchema = z.union([
 	createConnectorAuthorizationRequestStatus401Schema,
 	createConnectorAuthorizationRequestStatus403Schema,
 	createConnectorAuthorizationRequestStatus404Schema,
+	createConnectorAuthorizationRequestStatus409Schema,
 	createConnectorAuthorizationRequestStatus410Schema,
 	createConnectorAuthorizationRequestStatus422Schema,
 ]);

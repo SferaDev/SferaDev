@@ -251,6 +251,7 @@ import type {
 	CreateConnectorAuthorizationRequestStatus401,
 	CreateConnectorAuthorizationRequestStatus403,
 	CreateConnectorAuthorizationRequestStatus404,
+	CreateConnectorAuthorizationRequestStatus409,
 	CreateConnectorAuthorizationRequestStatus410,
 	CreateConnectorAuthorizationRequestStatus422,
 	CreateConnectorResponse,
@@ -726,6 +727,7 @@ import type {
 	DeleteConnectorProjectConnectionStatus401,
 	DeleteConnectorProjectConnectionStatus403,
 	DeleteConnectorProjectConnectionStatus404,
+	DeleteConnectorProjectConnectionStatus409,
 	DeleteConnectorProjectConnectionStatus410,
 	DeleteConnectorResponse,
 	DeleteConnectorStatus400,
@@ -1197,6 +1199,7 @@ import type {
 	GetConnectorProjectConnectionStatus401,
 	GetConnectorProjectConnectionStatus403,
 	GetConnectorProjectConnectionStatus404,
+	GetConnectorProjectConnectionStatus409,
 	GetConnectorProjectConnectionStatus410,
 	GetConnectorResponse,
 	GetConnectorStatus400,
@@ -1213,6 +1216,7 @@ import type {
 	GetConnectorTokenStatus401,
 	GetConnectorTokenStatus403,
 	GetConnectorTokenStatus404,
+	GetConnectorTokenStatus409,
 	GetConnectorTokenStatus410,
 	GetConnectorTokenStatus422,
 	GetConnectorTokenStatus429,
@@ -2018,6 +2022,7 @@ import type {
 	ListConnectorProjectConnectionsStatus401,
 	ListConnectorProjectConnectionsStatus403,
 	ListConnectorProjectConnectionsStatus404,
+	ListConnectorProjectConnectionsStatus409,
 	ListConnectorProjectConnectionsStatus410,
 	ListConnectorsResponse,
 	ListConnectorsStatus400,
@@ -3104,6 +3109,7 @@ import type {
 	UpsertConnectorProjectConnectionStatus401,
 	UpsertConnectorProjectConnectionStatus403,
 	UpsertConnectorProjectConnectionStatus404,
+	UpsertConnectorProjectConnectionStatus409,
 	UpsertConnectorProjectConnectionStatus410,
 	VerifyProjectDomainResponse,
 	VerifyProjectDomainStatus400,
@@ -6714,6 +6720,7 @@ export async function listConnectorProjectConnections(
 			| ListConnectorProjectConnectionsStatus401
 			| ListConnectorProjectConnectionsStatus403
 			| ListConnectorProjectConnectionsStatus404
+			| ListConnectorProjectConnectionsStatus409
 			| ListConnectorProjectConnectionsStatus410
 		>,
 		null,
@@ -6763,6 +6770,7 @@ export async function getConnectorProjectConnection(
 			| GetConnectorProjectConnectionStatus401
 			| GetConnectorProjectConnectionStatus403
 			| GetConnectorProjectConnectionStatus404
+			| GetConnectorProjectConnectionStatus409
 			| GetConnectorProjectConnectionStatus410
 		>,
 		null,
@@ -6812,6 +6820,7 @@ export async function upsertConnectorProjectConnection(
 			| UpsertConnectorProjectConnectionStatus401
 			| UpsertConnectorProjectConnectionStatus403
 			| UpsertConnectorProjectConnectionStatus404
+			| UpsertConnectorProjectConnectionStatus409
 			| UpsertConnectorProjectConnectionStatus410
 		>,
 		null,
@@ -6861,6 +6870,7 @@ export async function deleteConnectorProjectConnection(
 			| DeleteConnectorProjectConnectionStatus401
 			| DeleteConnectorProjectConnectionStatus403
 			| DeleteConnectorProjectConnectionStatus404
+			| DeleteConnectorProjectConnectionStatus409
 			| DeleteConnectorProjectConnectionStatus410
 		>,
 		null,
@@ -6949,6 +6959,7 @@ export async function getConnectorToken(
 			| GetConnectorTokenStatus401
 			| GetConnectorTokenStatus403
 			| GetConnectorTokenStatus404
+			| GetConnectorTokenStatus409
 			| GetConnectorTokenStatus410
 			| GetConnectorTokenStatus422
 			| GetConnectorTokenStatus429
@@ -6993,6 +7004,7 @@ export async function createConnectorAuthorizationRequest(
 			| CreateConnectorAuthorizationRequestStatus401
 			| CreateConnectorAuthorizationRequestStatus403
 			| CreateConnectorAuthorizationRequestStatus404
+			| CreateConnectorAuthorizationRequestStatus409
 			| CreateConnectorAuthorizationRequestStatus410
 			| CreateConnectorAuthorizationRequestStatus422
 		>,
