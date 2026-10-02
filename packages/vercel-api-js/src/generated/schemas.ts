@@ -6194,6 +6194,12 @@ export const userEventSchema = z
 									blockHistory: z
 										.array(
 											z.object({
+												abuseAgentRunId: z
+													.string()
+													.optional()
+													.describe(
+														"Since October 2026. The abuse agent run whose verdict led to this block. Absent on blocks made before the field existed, even agent-led ones.",
+													),
 												action: z.enum(["blocked", "hard-blocked", "soft-blocked", "unblocked"]),
 												actor: z.string().optional(),
 												caseId: z.string().optional(),
