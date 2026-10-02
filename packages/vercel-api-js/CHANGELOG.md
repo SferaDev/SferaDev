@@ -1,5 +1,11 @@
 # vercel-api-js
 
+## 1.34.1
+
+### Patch Changes
+
+- c44d99a: Added optional 'abuseAgentRunId' field to blockHistory in userEventSchema with documentation.
+
 ## 1.34.0
 
 ### Minor Changes
