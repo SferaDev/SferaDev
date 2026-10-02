@@ -34165,6 +34165,7 @@ export const aggregatePageviewsQueryLimitSchema = z
 
 export const aggregatePageviewsQueryFilterSchema = z
 	.string()
+	.max(2048)
 	.optional()
 	.describe(
 		"OData-compliant filter. Encode the value when sending it in a URL.\n\nAllows filtering on one or multiple dimensions. By default, filters for production environment only.\n\nSupported dimensions: country, deviceType, environment, requestPath, referrerHostname, osName, browserName, route, utmSource, utmMedium, utmCampaign, utmContent, utmTerm.\n\nJSON dimensions filtered by key: flags/<name>, for example flags/beta_banner eq 'true'. Wrap keys containing characters other than letters, digits, and underscores in single quotes, for example flags/'my-flag' eq 'true'.\n\nSupported operations include eq, ne, in, and logical operators and, or, not with parentheses. Functions such as startswith are supported by the OData parser.",
@@ -34255,6 +34256,7 @@ export const aggregateEventsQueryLimitSchema = z
 
 export const aggregateEventsQueryFilterSchema = z
 	.string()
+	.max(2048)
 	.optional()
 	.describe(
 		"OData-compliant filter. Encode the value when sending it in a URL.\n\nAllows filtering on one or multiple dimensions. By default, filters for production environment only.\n\nSupported dimensions: country, deviceType, environment, requestPath, referrerHostname, osName, browserName, route, utmSource, utmMedium, utmCampaign, utmContent, utmTerm, eventName.\n\nJSON dimensions filtered by key: flags/<name>, eventData/<property>, for example eventData/plan eq 'pro'. Wrap keys containing characters other than letters, digits, and underscores in single quotes, for example flags/'my-flag' eq 'true'.\n\nSupported operations include eq, ne, in, and logical operators and, or, not with parentheses. Functions such as startswith are supported by the OData parser.",
@@ -34324,6 +34326,7 @@ export const countPageviewsQueryUntilSchema = z
 
 export const countPageviewsQueryFilterSchema = z
 	.string()
+	.max(2048)
 	.optional()
 	.describe(
 		"OData-compliant filter. Encode the value when sending it in a URL.\n\nAllows filtering on one or multiple dimensions.\n\nSupported dimensions: country, deviceType, environment, requestPath, referrerHostname, osName, browserName, route, utmSource, utmMedium, utmCampaign, utmContent, utmTerm.\n\nJSON dimensions filtered by key: flags/<name>, for example flags/beta_banner eq 'true'. Wrap keys containing characters other than letters, digits, and underscores in single quotes, for example flags/'my-flag' eq 'true'.\n\nSupported operations include eq, ne, in, and logical operators and, or, not with parentheses. Functions such as startswith are supported by the OData parser.",
@@ -34393,6 +34396,7 @@ export const countEventsQueryUntilSchema = z
 
 export const countEventsQueryFilterSchema = z
 	.string()
+	.max(2048)
 	.optional()
 	.describe(
 		"OData-compliant filter. Encode the value when sending it in a URL.\n\nAllows filtering on one or multiple dimensions.\n\nSupported dimensions: country, deviceType, environment, requestPath, referrerHostname, osName, browserName, route, utmSource, utmMedium, utmCampaign, utmContent, utmTerm, eventName.\n\nJSON dimensions filtered by key: flags/<name>, eventData/<property>, for example eventData/plan eq 'pro'. Wrap keys containing characters other than letters, digits, and underscores in single quotes, for example flags/'my-flag' eq 'true'.\n\nSupported operations include eq, ne, in, and logical operators and, or, not with parentheses. Functions such as startswith are supported by the OData parser.",
