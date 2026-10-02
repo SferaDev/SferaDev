@@ -1,5 +1,11 @@
 # vercel-api-js
 
+## 1.34.3
+
+### Patch Changes
+
+- fc76f6d: Add a maximum length of 2048 characters to filter fields in AggregatePageviewsQuery, AggregateEventsQuery, CountPageviewsQuery, and CountEventsQuery parameters.
+
 ## 1.34.2
 
 ### Patch Changes
