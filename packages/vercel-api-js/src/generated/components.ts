@@ -737,6 +737,7 @@ import type {
 	DeleteConnectorStatus422,
 	DeleteConnectorStatus501,
 	DeleteConnectorStatus502,
+	DeleteConnectorStatus504,
 	DeleteDeploymentResponse,
 	DeleteDeploymentStatus400,
 	DeleteDeploymentStatus401,
@@ -1206,6 +1207,7 @@ import type {
 	GetConnectorStatus410,
 	GetConnectorStatus422,
 	GetConnectorStatus501,
+	GetConnectorStatus504,
 	GetConnectorTokenResponse,
 	GetConnectorTokenStatus400,
 	GetConnectorTokenStatus401,
@@ -2026,6 +2028,7 @@ import type {
 	ListConnectorsStatus410,
 	ListConnectorsStatus422,
 	ListConnectorsStatus501,
+	ListConnectorsStatus504,
 	ListContractCommitmentsResponse,
 	ListContractCommitmentsStatus400,
 	ListContractCommitmentsStatus401,
@@ -2472,6 +2475,7 @@ import type {
 	ReplaceConnectorTriggerDestinationsStatus410,
 	ReplaceConnectorTriggerDestinationsStatus422,
 	ReplaceConnectorTriggerDestinationsStatus501,
+	ReplaceConnectorTriggerDestinationsStatus504,
 	ReplaceDomainsByDomainRecordsResponse,
 	ReplaceDomainsByDomainRecordsStatus400,
 	ReplaceDomainsByDomainRecordsStatus401,
@@ -2766,6 +2770,7 @@ import type {
 	UpdateConnectorStatus422,
 	UpdateConnectorStatus501,
 	UpdateConnectorStatus502,
+	UpdateConnectorStatus504,
 	UpdateCustomEnvironmentResponse,
 	UpdateCustomEnvironmentStatus400,
 	UpdateCustomEnvironmentStatus401,
@@ -6410,6 +6415,7 @@ export async function listConnectors(
 			| ListConnectorsStatus410
 			| ListConnectorsStatus422
 			| ListConnectorsStatus501
+			| ListConnectorsStatus504
 		>,
 		null,
 		Record<string, string>,
@@ -6468,6 +6474,7 @@ export async function getConnector(
 			| GetConnectorStatus410
 			| GetConnectorStatus422
 			| GetConnectorStatus501
+			| GetConnectorStatus504
 		>,
 		null,
 		Record<string, string>,
@@ -6517,6 +6524,7 @@ export async function deleteConnector(
 			| DeleteConnectorStatus422
 			| DeleteConnectorStatus501
 			| DeleteConnectorStatus502
+			| DeleteConnectorStatus504
 		>,
 		null,
 		Record<string, string>,
@@ -6612,6 +6620,7 @@ export async function updateConnector(
 			| UpdateConnectorStatus422
 			| UpdateConnectorStatus501
 			| UpdateConnectorStatus502
+			| UpdateConnectorStatus504
 		>,
 		null,
 		Record<string, string>,
@@ -6660,6 +6669,7 @@ export async function replaceConnectorTriggerDestinations(
 			| ReplaceConnectorTriggerDestinationsStatus410
 			| ReplaceConnectorTriggerDestinationsStatus422
 			| ReplaceConnectorTriggerDestinationsStatus501
+			| ReplaceConnectorTriggerDestinationsStatus504
 		>,
 		null,
 		Record<string, string>,

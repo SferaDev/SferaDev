@@ -18785,6 +18785,8 @@ export const listConnectorsStatus422Schema = z.unknown();
 
 export const listConnectorsStatus501Schema = z.unknown();
 
+export const listConnectorsStatus504Schema = z.unknown();
+
 export const listConnectorsResponseSchema = listConnectorsStatus200Schema;
 
 export const listConnectorsErrorSchema = z.union([
@@ -18796,6 +18798,7 @@ export const listConnectorsErrorSchema = z.union([
 	listConnectorsStatus410Schema,
 	listConnectorsStatus422Schema,
 	listConnectorsStatus501Schema,
+	listConnectorsStatus504Schema,
 ]);
 
 export const getConnectorPathConnectorSchema = z
@@ -18838,6 +18841,8 @@ export const getConnectorStatus422Schema = z.unknown();
 
 export const getConnectorStatus501Schema = z.unknown();
 
+export const getConnectorStatus504Schema = z.unknown();
+
 export const getConnectorResponseSchema = getConnectorStatus200Schema;
 
 export const getConnectorErrorSchema = z.union([
@@ -18849,6 +18854,7 @@ export const getConnectorErrorSchema = z.union([
 	getConnectorStatus410Schema,
 	getConnectorStatus422Schema,
 	getConnectorStatus501Schema,
+	getConnectorStatus504Schema,
 ]);
 
 export const deleteConnectorPathConnectorSchema = z
@@ -18893,6 +18899,8 @@ export const deleteConnectorStatus501Schema = z.unknown();
 
 export const deleteConnectorStatus502Schema = z.unknown();
 
+export const deleteConnectorStatus504Schema = z.unknown();
+
 export const deleteConnectorResponseSchema = deleteConnectorStatus204Schema;
 
 export const deleteConnectorErrorSchema = z.union([
@@ -18905,6 +18913,7 @@ export const deleteConnectorErrorSchema = z.union([
 	deleteConnectorStatus422Schema,
 	deleteConnectorStatus501Schema,
 	deleteConnectorStatus502Schema,
+	deleteConnectorStatus504Schema,
 ]);
 
 export const createConnectorQueryTeamIdSchema = z
@@ -19005,6 +19014,8 @@ export const updateConnectorStatus501Schema = z.unknown();
 
 export const updateConnectorStatus502Schema = z.unknown();
 
+export const updateConnectorStatus504Schema = z.unknown();
+
 export const updateConnectorResponseSchema = updateConnectorStatus200Schema;
 
 export const updateConnectorErrorSchema = z.union([
@@ -19017,6 +19028,7 @@ export const updateConnectorErrorSchema = z.union([
 	updateConnectorStatus422Schema,
 	updateConnectorStatus501Schema,
 	updateConnectorStatus502Schema,
+	updateConnectorStatus504Schema,
 ]);
 
 export const replaceConnectorTriggerDestinationsPathConnectorSchema = z
@@ -19059,6 +19071,8 @@ export const replaceConnectorTriggerDestinationsStatus422Schema = z.unknown();
 
 export const replaceConnectorTriggerDestinationsStatus501Schema = z.unknown();
 
+export const replaceConnectorTriggerDestinationsStatus504Schema = z.unknown();
+
 export const replaceConnectorTriggerDestinationsResponseSchema =
 	replaceConnectorTriggerDestinationsStatus200Schema;
 
@@ -19071,6 +19085,7 @@ export const replaceConnectorTriggerDestinationsErrorSchema = z.union([
 	replaceConnectorTriggerDestinationsStatus410Schema,
 	replaceConnectorTriggerDestinationsStatus422Schema,
 	replaceConnectorTriggerDestinationsStatus501Schema,
+	replaceConnectorTriggerDestinationsStatus504Schema,
 ]);
 
 export const listConnectorProjectConnectionsPathConnectorSchema = z

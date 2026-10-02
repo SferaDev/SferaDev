@@ -24209,6 +24209,8 @@ export type ListConnectorsStatus422 = unknown;
 
 export type ListConnectorsStatus501 = unknown;
 
+export type ListConnectorsStatus504 = unknown;
+
 export type ListConnectorsOptions = {
 	body?: never | undefined;
 	path?: never | undefined;
@@ -24226,6 +24228,7 @@ export type ListConnectorsResponses = {
 	"410": ListConnectorsStatus410;
 	"422": ListConnectorsStatus422;
 	"501": ListConnectorsStatus501;
+	"504": ListConnectorsStatus504;
 };
 
 /**
@@ -24240,7 +24243,8 @@ export type ListConnectorsResponse =
 	| ListConnectorsStatus409
 	| ListConnectorsStatus410
 	| ListConnectorsStatus422
-	| ListConnectorsStatus501;
+	| ListConnectorsStatus501
+	| ListConnectorsStatus504;
 
 export type GetConnectorPath = {
 	/**
@@ -24283,6 +24287,8 @@ export type GetConnectorStatus422 = unknown;
 
 export type GetConnectorStatus501 = unknown;
 
+export type GetConnectorStatus504 = unknown;
+
 export type GetConnectorOptions = {
 	body?: never | undefined;
 	path: GetConnectorPath;
@@ -24300,6 +24306,7 @@ export type GetConnectorResponses = {
 	"410": GetConnectorStatus410;
 	"422": GetConnectorStatus422;
 	"501": GetConnectorStatus501;
+	"504": GetConnectorStatus504;
 };
 
 /**
@@ -24314,7 +24321,8 @@ export type GetConnectorResponse =
 	| GetConnectorStatus409
 	| GetConnectorStatus410
 	| GetConnectorStatus422
-	| GetConnectorStatus501;
+	| GetConnectorStatus501
+	| GetConnectorStatus504;
 
 export type DeleteConnectorPath = {
 	/**
@@ -24359,6 +24367,8 @@ export type DeleteConnectorStatus501 = unknown;
 
 export type DeleteConnectorStatus502 = unknown;
 
+export type DeleteConnectorStatus504 = unknown;
+
 export type DeleteConnectorOptions = {
 	body?: never | undefined;
 	path: DeleteConnectorPath;
@@ -24377,6 +24387,7 @@ export type DeleteConnectorResponses = {
 	"422": DeleteConnectorStatus422;
 	"501": DeleteConnectorStatus501;
 	"502": DeleteConnectorStatus502;
+	"504": DeleteConnectorStatus504;
 };
 
 /**
@@ -24392,7 +24403,8 @@ export type DeleteConnectorResponse =
 	| DeleteConnectorStatus410
 	| DeleteConnectorStatus422
 	| DeleteConnectorStatus501
-	| DeleteConnectorStatus502;
+	| DeleteConnectorStatus502
+	| DeleteConnectorStatus504;
 
 export type CreateConnectorQuery = {
 	/**
@@ -24515,6 +24527,8 @@ export type UpdateConnectorStatus501 = unknown;
 
 export type UpdateConnectorStatus502 = unknown;
 
+export type UpdateConnectorStatus504 = unknown;
+
 export type UpdateConnectorOptions = {
 	body?: never | undefined;
 	path: UpdateConnectorPath;
@@ -24533,6 +24547,7 @@ export type UpdateConnectorResponses = {
 	"422": UpdateConnectorStatus422;
 	"501": UpdateConnectorStatus501;
 	"502": UpdateConnectorStatus502;
+	"504": UpdateConnectorStatus504;
 };
 
 /**
@@ -24548,7 +24563,8 @@ export type UpdateConnectorResponse =
 	| UpdateConnectorStatus410
 	| UpdateConnectorStatus422
 	| UpdateConnectorStatus501
-	| UpdateConnectorStatus502;
+	| UpdateConnectorStatus502
+	| UpdateConnectorStatus504;
 
 export type ReplaceConnectorTriggerDestinationsPath = {
 	/**
@@ -24591,6 +24607,8 @@ export type ReplaceConnectorTriggerDestinationsStatus422 = unknown;
 
 export type ReplaceConnectorTriggerDestinationsStatus501 = unknown;
 
+export type ReplaceConnectorTriggerDestinationsStatus504 = unknown;
+
 export type ReplaceConnectorTriggerDestinationsOptions = {
 	body?: never | undefined;
 	path: ReplaceConnectorTriggerDestinationsPath;
@@ -24608,6 +24626,7 @@ export type ReplaceConnectorTriggerDestinationsResponses = {
 	"410": ReplaceConnectorTriggerDestinationsStatus410;
 	"422": ReplaceConnectorTriggerDestinationsStatus422;
 	"501": ReplaceConnectorTriggerDestinationsStatus501;
+	"504": ReplaceConnectorTriggerDestinationsStatus504;
 };
 
 /**
@@ -24622,7 +24641,8 @@ export type ReplaceConnectorTriggerDestinationsResponse =
 	| ReplaceConnectorTriggerDestinationsStatus409
 	| ReplaceConnectorTriggerDestinationsStatus410
 	| ReplaceConnectorTriggerDestinationsStatus422
-	| ReplaceConnectorTriggerDestinationsStatus501;
+	| ReplaceConnectorTriggerDestinationsStatus501
+	| ReplaceConnectorTriggerDestinationsStatus504;
 
 export type ListConnectorProjectConnectionsPath = {
 	/**
