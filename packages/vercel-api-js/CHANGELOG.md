@@ -1,5 +1,11 @@
 # vercel-api-js
 
+## 1.34.4
+
+### Patch Changes
+
+- cce8239: Added support for HTTP 504 Gateway Timeout error types and schemas in several Connector-related API operations.
+
 ## 1.34.3
 
 ### Patch Changes
