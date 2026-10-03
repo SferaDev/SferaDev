@@ -1187,6 +1187,12 @@ export const connectConnectorCreateDataSchema = z
 				.describe(
 					"Default audience used when a token request omits one. An empty string clears the default.",
 				),
+			defaultResource: z
+				.string()
+				.optional()
+				.describe(
+					"Default RFC 8707 resource sent on authorization and token requests when a token request omits one. An empty string clears the default.",
+				),
 			defaultTokenExpiresIn: z
 				.number()
 				.min(60)
@@ -1954,6 +1960,12 @@ export const connectConnectorUpdateDataSchema = z
 				.optional()
 				.describe(
 					"Default audience used when a token request omits one. An empty string clears the default.",
+				),
+			defaultResource: z
+				.string()
+				.optional()
+				.describe(
+					"Default RFC 8707 resource sent on authorization and token requests when a token request omits one. An empty string clears the default.",
 				),
 			defaultTokenExpiresIn: z
 				.number()
