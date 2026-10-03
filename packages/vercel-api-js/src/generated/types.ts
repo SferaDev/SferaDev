@@ -1888,6 +1888,11 @@ export type ConnectConnectorCreateData =
 			 */
 			defaultAudience?: string | undefined;
 			/**
+			 * @description Default RFC 8707 resource sent on authorization and token requests when a token request omits one. An empty string clears the default.
+			 * @type string | undefined
+			 */
+			defaultResource?: string | undefined;
+			/**
 			 * @description Default token lifetime in seconds to use when the token response omits expires_in.
 			 * @minLength 60
 			 * @type number | undefined
@@ -3123,6 +3128,11 @@ export type ConnectConnectorUpdateData =
 			 * @type string | undefined
 			 */
 			defaultAudience?: string | undefined;
+			/**
+			 * @description Default RFC 8707 resource sent on authorization and token requests when a token request omits one. An empty string clears the default.
+			 * @type string | undefined
+			 */
+			defaultResource?: string | undefined;
 			/**
 			 * @description Default token lifetime in seconds to use when the token response omits expires_in.
 			 * @minLength 60
