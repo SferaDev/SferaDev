@@ -1,5 +1,11 @@
 # vercel-api-js
 
+## 1.35.1
+
+### Patch Changes
+
+- d2e23ef: Added optional defaultResource field to ConnectConnectorCreateData and ConnectConnectorUpdateData for specifying a default RFC 8707 resource.
+
 ## 1.35.0
 
 ### Minor Changes
