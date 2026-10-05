@@ -2589,10 +2589,19 @@ export type ConnectCreateConnectorRequest = (unknown | unknown) & {
 	 */
 	triggerType?: string | undefined;
 	/**
-	 * @description Trigger configuration, validated and encrypted by the trigger driver. An empty object applies driver defaults.
+	 * @description Plaintext verification inputs, validated by the trigger driver and encrypted into stored triggerData. An empty object makes no changes.
 	 * @type object | undefined
 	 */
-	triggerData?:
+	triggerVerificationInput?:
+		| {
+				[key: string]: unknown;
+		  }
+		| undefined;
+	/**
+	 * @description Additional registration inputs, validated by the trigger driver. Requires triggers: true. Shared verification credentials are read from triggerData.
+	 * @type object | undefined
+	 */
+	triggerRegistrationInput?:
 		| {
 				[key: string]: unknown;
 		  }
@@ -3742,10 +3751,19 @@ export type ConnectUpdateConnectorRequest = {
 	 */
 	triggers?: boolean | undefined;
 	/**
-	 * @description Trigger configuration, validated and encrypted by the trigger driver. An empty object applies driver defaults.
+	 * @description Plaintext verification inputs, validated by the trigger driver and encrypted into stored triggerData. An empty object makes no changes.
 	 * @type object | undefined
 	 */
-	triggerData?:
+	triggerVerificationInput?:
+		| {
+				[key: string]: unknown;
+		  }
+		| undefined;
+	/**
+	 * @description Additional registration inputs, validated by the trigger driver. Requires triggers: true. Shared verification credentials are read from triggerData.
+	 * @type object | undefined
+	 */
+	triggerRegistrationInput?:
 		| {
 				[key: string]: unknown;
 		  }
@@ -6942,6 +6960,7 @@ export const userEventTypeEnum = {
 	"v0-chat-ai-usage": "v0-chat-ai-usage",
 	"v0-chat-created": "v0-chat-created",
 	"v0-chat-message-sent": "v0-chat-message-sent",
+	"v0-migration-payment-confirmed": "v0-migration-payment-confirmed",
 	"vcr-image-deleted": "vcr-image-deleted",
 	"vcr-image-pushed": "vcr-image-pushed",
 	"vcr-repository-created": "vcr-repository-created",
@@ -7817,6 +7836,10 @@ export type UserEvent = {
 						invoiceId: string;
 						newInvoiceId: string;
 						settlementMethod: UserEventPayloadSettlementMethodEnumKey;
+				  }
+				| {
+						paymentMethodId: string;
+						subscriptionId: string;
 				  }
 				| {
 						brand?: string | undefined;
@@ -14550,6 +14573,7 @@ export const listEventTypeNameEnum = {
 	"v0-chat-ai-usage": "v0-chat-ai-usage",
 	"v0-chat-created": "v0-chat-created",
 	"v0-chat-message-sent": "v0-chat-message-sent",
+	"v0-migration-payment-confirmed": "v0-migration-payment-confirmed",
 	"vcr-image-deleted": "vcr-image-deleted",
 	"vcr-image-pushed": "vcr-image-pushed",
 	"vcr-repository-created": "vcr-repository-created",
@@ -15278,6 +15302,7 @@ export const listEventTypeReplacedByEnum = {
 	"v0-chat-ai-usage": "v0-chat-ai-usage",
 	"v0-chat-created": "v0-chat-created",
 	"v0-chat-message-sent": "v0-chat-message-sent",
+	"v0-migration-payment-confirmed": "v0-migration-payment-confirmed",
 	"vcr-image-deleted": "vcr-image-deleted",
 	"vcr-image-pushed": "vcr-image-pushed",
 	"vcr-repository-created": "vcr-repository-created",
@@ -24550,6 +24575,8 @@ export type UpdateConnectorStatus410 = unknown;
 
 export type UpdateConnectorStatus422 = unknown;
 
+export type UpdateConnectorStatus500 = unknown;
+
 export type UpdateConnectorStatus501 = unknown;
 
 export type UpdateConnectorStatus502 = unknown;
@@ -24572,6 +24599,7 @@ export type UpdateConnectorResponses = {
 	"409": UpdateConnectorStatus409;
 	"410": UpdateConnectorStatus410;
 	"422": UpdateConnectorStatus422;
+	"500": UpdateConnectorStatus500;
 	"501": UpdateConnectorStatus501;
 	"502": UpdateConnectorStatus502;
 	"504": UpdateConnectorStatus504;
@@ -24589,6 +24617,7 @@ export type UpdateConnectorResponse =
 	| UpdateConnectorStatus409
 	| UpdateConnectorStatus410
 	| UpdateConnectorStatus422
+	| UpdateConnectorStatus500
 	| UpdateConnectorStatus501
 	| UpdateConnectorStatus502
 	| UpdateConnectorStatus504;

@@ -2773,6 +2773,7 @@ import type {
 	UpdateConnectorStatus409,
 	UpdateConnectorStatus410,
 	UpdateConnectorStatus422,
+	UpdateConnectorStatus500,
 	UpdateConnectorStatus501,
 	UpdateConnectorStatus502,
 	UpdateConnectorStatus504,
@@ -6624,6 +6625,7 @@ export async function updateConnector(
 			| UpdateConnectorStatus409
 			| UpdateConnectorStatus410
 			| UpdateConnectorStatus422
+			| UpdateConnectorStatus500
 			| UpdateConnectorStatus501
 			| UpdateConnectorStatus502
 			| UpdateConnectorStatus504

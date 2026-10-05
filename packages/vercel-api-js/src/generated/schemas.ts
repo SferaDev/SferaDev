@@ -1583,12 +1583,19 @@ export const connectCreateConnectorRequestSchema = z
 				.describe(
 					"Trigger driver type. Resolved automatically from the known service connection method when not provided. Only set when using the newly decoupled triggers resolution flow.",
 				),
-			triggerData: z
+			triggerVerificationInput: z
 				.object({})
 				.catchall(z.unknown())
 				.optional()
 				.describe(
-					"Trigger configuration, validated and encrypted by the trigger driver. An empty object applies driver defaults.",
+					"Plaintext verification inputs, validated by the trigger driver and encrypted into stored triggerData. An empty object makes no changes.",
+				),
+			triggerRegistrationInput: z
+				.object({})
+				.catchall(z.unknown())
+				.optional()
+				.describe(
+					"Additional registration inputs, validated by the trigger driver. Requires triggers: true. Shared verification credentials are read from triggerData.",
 				),
 			triggerDestination: z
 				.union([
@@ -2274,12 +2281,19 @@ export const connectUpdateConnectorRequestSchema = z
 			.boolean()
 			.optional()
 			.describe("Whether the triggers are enabled for this connector."),
-		triggerData: z
+		triggerVerificationInput: z
 			.object({})
 			.catchall(z.unknown())
 			.optional()
 			.describe(
-				"Trigger configuration, validated and encrypted by the trigger driver. An empty object applies driver defaults.",
+				"Plaintext verification inputs, validated by the trigger driver and encrypted into stored triggerData. An empty object makes no changes.",
+			),
+		triggerRegistrationInput: z
+			.object({})
+			.catchall(z.unknown())
+			.optional()
+			.describe(
+				"Additional registration inputs, validated by the trigger driver. Requires triggers: true. Shared verification credentials are read from triggerData.",
 			),
 		events: z.array(z.string()).optional().describe("Default trigger events for this connector."),
 		data: z.unknown().optional().describe("Provider configuration fields to update."),
@@ -4102,6 +4116,10 @@ export const userEventSchema = z
 						"refunded-paid",
 						"refunded-payment-pending",
 					]),
+				}),
+				z.strictObject({
+					paymentMethodId: z.string(),
+					subscriptionId: z.string(),
 				}),
 				z.strictObject({
 					brand: z.string().optional(),
@@ -10895,6 +10913,7 @@ export const userEventSchema = z
 				"v0-chat-ai-usage",
 				"v0-chat-created",
 				"v0-chat-message-sent",
+				"v0-migration-payment-confirmed",
 				"vcr-image-deleted",
 				"vcr-image-pushed",
 				"vcr-repository-created",
@@ -11706,6 +11725,7 @@ export const listEventTypeSchema = z
 				"v0-chat-ai-usage",
 				"v0-chat-created",
 				"v0-chat-message-sent",
+				"v0-migration-payment-confirmed",
 				"vcr-image-deleted",
 				"vcr-image-pushed",
 				"vcr-repository-created",
@@ -12419,6 +12439,7 @@ export const listEventTypeSchema = z
 					"v0-chat-ai-usage",
 					"v0-chat-created",
 					"v0-chat-message-sent",
+					"v0-migration-payment-confirmed",
 					"vcr-image-deleted",
 					"vcr-image-pushed",
 					"vcr-repository-created",
@@ -19034,6 +19055,8 @@ export const updateConnectorStatus410Schema = z.unknown();
 
 export const updateConnectorStatus422Schema = z.unknown();
 
+export const updateConnectorStatus500Schema = z.unknown();
+
 export const updateConnectorStatus501Schema = z.unknown();
 
 export const updateConnectorStatus502Schema = z.unknown();
@@ -19050,6 +19073,7 @@ export const updateConnectorErrorSchema = z.union([
 	updateConnectorStatus409Schema,
 	updateConnectorStatus410Schema,
 	updateConnectorStatus422Schema,
+	updateConnectorStatus500Schema,
 	updateConnectorStatus501Schema,
 	updateConnectorStatus502Schema,
 	updateConnectorStatus504Schema,
