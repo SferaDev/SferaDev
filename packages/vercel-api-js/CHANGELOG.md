@@ -1,5 +1,14 @@
 # vercel-api-js
 
+## 1.35.2
+
+### Patch Changes
+
+- 98f2834: Rename triggerData to triggerVerificationInput and add triggerRegistrationInput fields to ConnectCreateConnectorRequest and ConnectUpdateConnectorRequest types and schemas.
+- 98f2834: Add new UserEvent payload shape with paymentMethodId and subscriptionId fields.
+- 98f2834: Add support for the v0-migration-payment-confirmed event type in user event schemas and enums.
+- 98f2834: Add UpdateConnectorStatus500 error type and 500 status code handling to updateConnector API.
+
 ## 1.35.1
 
 ### Patch Changes
