@@ -1,5 +1,12 @@
 # vercel-api-js
 
+## 1.36.1
+
+### Patch Changes
+
+- 2078eab: Added new event payload schema with 'avatarDarkMode', 'projectId', and 'projectName' fields for user events.
+- 2078eab: Added support for the 'project-avatar-dark-mode-update' event type in schemas and types.
+
 ## 1.36.0
 
 ### Minor Changes
