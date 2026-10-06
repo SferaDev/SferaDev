@@ -977,6 +977,11 @@ export type ConnectConnector = {
 	 */
 	supportsInstallation: false | true;
 	/**
+	 * @description Whether this managed connector can disconnect from its manager.
+	 * @type boolean | undefined
+	 */
+	supportsManagedEjection?: (false | true) | undefined;
+	/**
 	 * @description Whether Connect can revoke tokens for this connector.
 	 * @type boolean
 	 */
@@ -1380,6 +1385,11 @@ export type ConnectConnectorCreateResult = {
 	 * @type boolean
 	 */
 	supportsInstallation: false | true;
+	/**
+	 * @description Whether this managed connector can disconnect from its manager.
+	 * @type boolean | undefined
+	 */
+	supportsManagedEjection?: (false | true) | undefined;
 	/**
 	 * @description Whether Connect can revoke tokens for this connector.
 	 * @type boolean
@@ -24699,6 +24709,77 @@ export type ReplaceConnectorTriggerDestinationsResponse =
 	| ReplaceConnectorTriggerDestinationsStatus422
 	| ReplaceConnectorTriggerDestinationsStatus501
 	| ReplaceConnectorTriggerDestinationsStatus504;
+
+export type EjectManagedConnectorPath = {
+	/**
+	 * @description Stable connector ID or URL-encoded team-scoped UID.
+	 * @type string
+	 */
+	connector: string;
+};
+
+export type EjectManagedConnectorQuery = {
+	/**
+	 * @example my-team-url-slug
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type EjectManagedConnectorStatus200 = unknown;
+
+export type EjectManagedConnectorStatus400 = unknown;
+
+export type EjectManagedConnectorStatus401 = unknown;
+
+export type EjectManagedConnectorStatus403 = unknown;
+
+export type EjectManagedConnectorStatus404 = unknown;
+
+export type EjectManagedConnectorStatus409 = unknown;
+
+export type EjectManagedConnectorStatus410 = unknown;
+
+export type EjectManagedConnectorStatus422 = unknown;
+
+export type EjectManagedConnectorStatus501 = unknown;
+
+export type EjectManagedConnectorStatus504 = unknown;
+
+export type EjectManagedConnectorOptions = {
+	body?: never | undefined;
+	path: EjectManagedConnectorPath;
+	query?: EjectManagedConnectorQuery | undefined;
+	headers?: never | undefined;
+};
+
+export type EjectManagedConnectorResponses = {
+	"200": EjectManagedConnectorStatus200;
+	"400": EjectManagedConnectorStatus400;
+	"401": EjectManagedConnectorStatus401;
+	"403": EjectManagedConnectorStatus403;
+	"404": EjectManagedConnectorStatus404;
+	"409": EjectManagedConnectorStatus409;
+	"410": EjectManagedConnectorStatus410;
+	"422": EjectManagedConnectorStatus422;
+	"501": EjectManagedConnectorStatus501;
+	"504": EjectManagedConnectorStatus504;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type EjectManagedConnectorResponse =
+	| EjectManagedConnectorStatus200
+	| EjectManagedConnectorStatus400
+	| EjectManagedConnectorStatus401
+	| EjectManagedConnectorStatus403
+	| EjectManagedConnectorStatus404
+	| EjectManagedConnectorStatus409
+	| EjectManagedConnectorStatus410
+	| EjectManagedConnectorStatus422
+	| EjectManagedConnectorStatus501
+	| EjectManagedConnectorStatus504;
 
 export type ListConnectorProjectConnectionsPath = {
 	/**
