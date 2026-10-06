@@ -6684,6 +6684,7 @@ export const userEventTypeEnum = {
 	"project-auto-assign-custom-production-domains-updated":
 		"project-auto-assign-custom-production-domains-updated",
 	"project-automation-bypass": "project-automation-bypass",
+	"project-avatar-dark-mode-update": "project-avatar-dark-mode-update",
 	"project-avatar-update": "project-avatar-update",
 	"project-build-command-updated": "project-build-command-updated",
 	"project-build-logs-and-source-protection-updated":
@@ -10941,6 +10942,11 @@ export type UserEvent = {
 						projectName: string;
 				  }
 				| {
+						avatarDarkMode?: (string | null) | undefined;
+						projectId: string;
+						projectName: string;
+				  }
+				| {
 						enableAffectedProjectsDeployments: false | true;
 						projectId: string;
 						projectName: string;
@@ -14297,6 +14303,7 @@ export const listEventTypeNameEnum = {
 	"project-auto-assign-custom-production-domains-updated":
 		"project-auto-assign-custom-production-domains-updated",
 	"project-automation-bypass": "project-automation-bypass",
+	"project-avatar-dark-mode-update": "project-avatar-dark-mode-update",
 	"project-avatar-update": "project-avatar-update",
 	"project-build-command-updated": "project-build-command-updated",
 	"project-build-logs-and-source-protection-updated":
@@ -15026,6 +15033,7 @@ export const listEventTypeReplacedByEnum = {
 	"project-auto-assign-custom-production-domains-updated":
 		"project-auto-assign-custom-production-domains-updated",
 	"project-automation-bypass": "project-automation-bypass",
+	"project-avatar-dark-mode-update": "project-avatar-dark-mode-update",
 	"project-avatar-update": "project-avatar-update",
 	"project-build-command-updated": "project-build-command-updated",
 	"project-build-logs-and-source-protection-updated":
