@@ -1,5 +1,12 @@
 # vercel-api-js
 
+## 1.36.0
+
+### Minor Changes
+
+- ef28f8b: Added ejectManagedConnector endpoint to disconnect a managed connector from its provider-side manager.
+- ef28f8b: Added supportsManagedEjection property to connector types and schemas to indicate if a managed connector supports ejection.
+
 ## 1.35.2
 
 ### Patch Changes
