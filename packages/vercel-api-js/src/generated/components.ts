@@ -1000,6 +1000,16 @@ import type {
 	EditRouteStatus409,
 	EditRouteStatus410,
 	EditRouteStatus500,
+	EjectManagedConnectorResponse,
+	EjectManagedConnectorStatus400,
+	EjectManagedConnectorStatus401,
+	EjectManagedConnectorStatus403,
+	EjectManagedConnectorStatus404,
+	EjectManagedConnectorStatus409,
+	EjectManagedConnectorStatus410,
+	EjectManagedConnectorStatus422,
+	EjectManagedConnectorStatus501,
+	EjectManagedConnectorStatus504,
 	ExchangeSsoTokenResponse,
 	ExchangeSsoTokenStatus400,
 	ExchangeSsoTokenStatus403,
@@ -6686,6 +6696,55 @@ export async function replaceConnectorTriggerDestinations(
 	>({
 		method: "PATCH",
 		url: `/v1/connect/connectors/${pathParams.connector}/trigger-destinations`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Eject a managed connector
+ * @description Disconnect a managed connector from its provider-side manager.
+ * @link /v1/connect/connectors/{connector}/managed/eject
+ */
+export async function ejectManagedConnector(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { connector: string };
+		queryParams?: { slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.connector) {
+		throw new Error(`Missing required path parameter: connector`);
+	}
+	const data = await request<
+		EjectManagedConnectorResponse,
+		ErrorWrapper<
+			| EjectManagedConnectorStatus400
+			| EjectManagedConnectorStatus401
+			| EjectManagedConnectorStatus403
+			| EjectManagedConnectorStatus404
+			| EjectManagedConnectorStatus409
+			| EjectManagedConnectorStatus410
+			| EjectManagedConnectorStatus422
+			| EjectManagedConnectorStatus501
+			| EjectManagedConnectorStatus504
+		>,
+		null,
+		Record<string, string>,
+		{ slug?: string },
+		{ connector: string }
+	>({
+		method: "POST",
+		url: `/v1/connect/connectors/${pathParams.connector}/managed/eject`,
 		queryParams,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
@@ -24306,6 +24365,7 @@ export const operationsByPath = {
 	"PATCH /v2/connect/connectors/{connector}": updateConnector,
 	"PATCH /v1/connect/connectors/{connector}/trigger-destinations":
 		replaceConnectorTriggerDestinations,
+	"POST /v1/connect/connectors/{connector}/managed/eject": ejectManagedConnector,
 	"GET /v2/connect/connectors/{connector}/projects": listConnectorProjectConnections,
 	"GET /v1/connect/connectors/{connector}/projects/{projectId}": getConnectorProjectConnection,
 	"POST /v1/connect/connectors/{connector}/projects/{projectId}": upsertConnectorProjectConnection,
@@ -24812,6 +24872,7 @@ export const operationsByTag = {
 		createConnector,
 		updateConnector,
 		replaceConnectorTriggerDestinations,
+		ejectManagedConnector,
 		listConnectorProjectConnections,
 		getConnectorProjectConnection,
 		upsertConnectorProjectConnection,
@@ -25326,6 +25387,7 @@ export const tagDictionary = {
 		DELETE: ["deleteConnector", "deleteConnectorProjectConnection"],
 		POST: [
 			"createConnector",
+			"ejectManagedConnector",
 			"upsertConnectorProjectConnection",
 			"getConnectorToken",
 			"createConnectorAuthorizationRequest",

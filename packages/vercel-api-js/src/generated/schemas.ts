@@ -601,6 +601,10 @@ export const connectConnectorSchema = z
 		supportsInstallation: z
 			.union([z.literal(false), z.literal(true)])
 			.describe("Whether the connector supports an installation flow."),
+		supportsManagedEjection: z
+			.union([z.literal(false), z.literal(true)])
+			.optional()
+			.describe("Whether this managed connector can disconnect from its manager."),
 		supportsRevocation: z
 			.union([z.literal(false), z.literal(true)])
 			.describe("Whether Connect can revoke tokens for this connector."),
@@ -857,6 +861,10 @@ export const connectConnectorCreateResultSchema = z
 		supportsInstallation: z
 			.union([z.literal(false), z.literal(true)])
 			.describe("Whether the connector supports an installation flow."),
+		supportsManagedEjection: z
+			.union([z.literal(false), z.literal(true)])
+			.optional()
+			.describe("Whether this managed connector can disconnect from its manager."),
 		supportsRevocation: z
 			.union([z.literal(false), z.literal(true)])
 			.describe("Whether Connect can revoke tokens for this connector."),
@@ -19134,6 +19142,49 @@ export const replaceConnectorTriggerDestinationsErrorSchema = z.union([
 	replaceConnectorTriggerDestinationsStatus422Schema,
 	replaceConnectorTriggerDestinationsStatus501Schema,
 	replaceConnectorTriggerDestinationsStatus504Schema,
+]);
+
+export const ejectManagedConnectorPathConnectorSchema = z
+	.string()
+	.describe("Stable connector ID or URL-encoded team-scoped UID.");
+
+export const ejectManagedConnectorQuerySlugSchema = z
+	.string()
+	.optional()
+	.meta({ examples: ["my-team-url-slug"] });
+
+export const ejectManagedConnectorStatus200Schema = z.unknown();
+
+export const ejectManagedConnectorStatus400Schema = z.unknown();
+
+export const ejectManagedConnectorStatus401Schema = z.unknown();
+
+export const ejectManagedConnectorStatus403Schema = z.unknown();
+
+export const ejectManagedConnectorStatus404Schema = z.unknown();
+
+export const ejectManagedConnectorStatus409Schema = z.unknown();
+
+export const ejectManagedConnectorStatus410Schema = z.unknown();
+
+export const ejectManagedConnectorStatus422Schema = z.unknown();
+
+export const ejectManagedConnectorStatus501Schema = z.unknown();
+
+export const ejectManagedConnectorStatus504Schema = z.unknown();
+
+export const ejectManagedConnectorResponseSchema = ejectManagedConnectorStatus200Schema;
+
+export const ejectManagedConnectorErrorSchema = z.union([
+	ejectManagedConnectorStatus400Schema,
+	ejectManagedConnectorStatus401Schema,
+	ejectManagedConnectorStatus403Schema,
+	ejectManagedConnectorStatus404Schema,
+	ejectManagedConnectorStatus409Schema,
+	ejectManagedConnectorStatus410Schema,
+	ejectManagedConnectorStatus422Schema,
+	ejectManagedConnectorStatus501Schema,
+	ejectManagedConnectorStatus504Schema,
 ]);
 
 export const listConnectorProjectConnectionsPathConnectorSchema = z
