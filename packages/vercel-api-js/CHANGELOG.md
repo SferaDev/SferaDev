@@ -1,5 +1,11 @@
 # vercel-api-js
 
+## 1.38.1
+
+### Patch Changes
+
+- 75ed32a: Removed 401 Unauthorized error types from several team and authentication related endpoints and schemas.
+
 ## 1.38.0
 
 ### Minor Changes
