@@ -15135,6 +15135,8 @@ export async function getProjects(
 	}: {
 		queryParams?: {
 			from?: string;
+			since?: number;
+			until?: number;
 			gitForkProtection?: string;
 			limit?: string;
 			search?: string;
@@ -15170,6 +15172,8 @@ export async function getProjects(
 		Record<string, string>,
 		{
 			from?: string;
+			since?: number;
+			until?: number;
 			gitForkProtection?: string;
 			limit?: string;
 			search?: string;
