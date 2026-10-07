@@ -43727,8 +43727,6 @@ export type GetTeamAccessRequestStatus200 = unknown;
 
 export type GetTeamAccessRequestStatus400 = unknown;
 
-export type GetTeamAccessRequestStatus401 = unknown;
-
 export type GetTeamAccessRequestStatus403 = unknown;
 
 export type GetTeamAccessRequestStatus404 = unknown;
@@ -43745,7 +43743,6 @@ export type GetTeamAccessRequestOptions = {
 export type GetTeamAccessRequestResponses = {
 	"200": GetTeamAccessRequestStatus200;
 	"400": GetTeamAccessRequestStatus400;
-	"401": GetTeamAccessRequestStatus401;
 	"403": GetTeamAccessRequestStatus403;
 	"404": GetTeamAccessRequestStatus404;
 	"410": GetTeamAccessRequestStatus410;
@@ -43757,7 +43754,6 @@ export type GetTeamAccessRequestResponses = {
 export type GetTeamAccessRequestResponse =
 	| GetTeamAccessRequestStatus200
 	| GetTeamAccessRequestStatus400
-	| GetTeamAccessRequestStatus401
 	| GetTeamAccessRequestStatus403
 	| GetTeamAccessRequestStatus404
 	| GetTeamAccessRequestStatus410;
@@ -43774,8 +43770,6 @@ export type JoinTeamPath = {
 export type JoinTeamStatus200 = unknown;
 
 export type JoinTeamStatus400 = unknown;
-
-export type JoinTeamStatus401 = unknown;
 
 export type JoinTeamStatus402 = unknown;
 
@@ -43797,7 +43791,6 @@ export type JoinTeamOptions = {
 export type JoinTeamResponses = {
 	"200": JoinTeamStatus200;
 	"400": JoinTeamStatus400;
-	"401": JoinTeamStatus401;
 	"402": JoinTeamStatus402;
 	"403": JoinTeamStatus403;
 	"404": JoinTeamStatus404;
@@ -43811,7 +43804,6 @@ export type JoinTeamResponses = {
 export type JoinTeamResponse =
 	| JoinTeamStatus200
 	| JoinTeamStatus400
-	| JoinTeamStatus401
 	| JoinTeamStatus402
 	| JoinTeamStatus403
 	| JoinTeamStatus404
@@ -44101,8 +44093,6 @@ export type GetTeamsStatus200 = unknown;
 
 export type GetTeamsStatus400 = unknown;
 
-export type GetTeamsStatus401 = unknown;
-
 export type GetTeamsStatus403 = unknown;
 
 export type GetTeamsStatus410 = unknown;
@@ -44119,7 +44109,6 @@ export type GetTeamsOptions = {
 export type GetTeamsResponses = {
 	"200": GetTeamsStatus200;
 	"400": GetTeamsStatus400;
-	"401": GetTeamsStatus401;
 	"403": GetTeamsStatus403;
 	"410": GetTeamsStatus410;
 	"500": GetTeamsStatus500;
@@ -44131,7 +44120,6 @@ export type GetTeamsResponses = {
 export type GetTeamsResponse =
 	| GetTeamsStatus200
 	| GetTeamsStatus400
-	| GetTeamsStatus401
 	| GetTeamsStatus403
 	| GetTeamsStatus410
 	| GetTeamsStatus500;
@@ -44139,8 +44127,6 @@ export type GetTeamsResponse =
 export type CreateTeamStatus200 = unknown;
 
 export type CreateTeamStatus400 = unknown;
-
-export type CreateTeamStatus401 = unknown;
 
 export type CreateTeamStatus403 = unknown;
 
@@ -44158,7 +44144,6 @@ export type CreateTeamOptions = {
 export type CreateTeamResponses = {
 	"200": CreateTeamStatus200;
 	"400": CreateTeamStatus400;
-	"401": CreateTeamStatus401;
 	"403": CreateTeamStatus403;
 	"404": CreateTeamStatus404;
 	"410": CreateTeamStatus410;
@@ -44170,7 +44155,6 @@ export type CreateTeamResponses = {
 export type CreateTeamResponse =
 	| CreateTeamStatus200
 	| CreateTeamStatus400
-	| CreateTeamStatus401
 	| CreateTeamStatus403
 	| CreateTeamStatus404
 	| CreateTeamStatus410;
@@ -44673,8 +44657,6 @@ export type GetAuthTokenStatus200 = unknown;
 
 export type GetAuthTokenStatus400 = unknown;
 
-export type GetAuthTokenStatus401 = unknown;
-
 export type GetAuthTokenStatus403 = unknown;
 
 export type GetAuthTokenStatus404 = unknown;
@@ -44691,7 +44673,6 @@ export type GetAuthTokenOptions = {
 export type GetAuthTokenResponses = {
 	"200": GetAuthTokenStatus200;
 	"400": GetAuthTokenStatus400;
-	"401": GetAuthTokenStatus401;
 	"403": GetAuthTokenStatus403;
 	"404": GetAuthTokenStatus404;
 	"410": GetAuthTokenStatus410;
@@ -44703,7 +44684,6 @@ export type GetAuthTokenResponses = {
 export type GetAuthTokenResponse =
 	| GetAuthTokenStatus200
 	| GetAuthTokenStatus400
-	| GetAuthTokenStatus401
 	| GetAuthTokenStatus403
 	| GetAuthTokenStatus404
 	| GetAuthTokenStatus410;
@@ -44721,8 +44701,6 @@ export type DeleteAuthTokenStatus200 = unknown;
 
 export type DeleteAuthTokenStatus400 = unknown;
 
-export type DeleteAuthTokenStatus401 = unknown;
-
 export type DeleteAuthTokenStatus403 = unknown;
 
 export type DeleteAuthTokenStatus404 = unknown;
@@ -44739,7 +44717,6 @@ export type DeleteAuthTokenOptions = {
 export type DeleteAuthTokenResponses = {
 	"200": DeleteAuthTokenStatus200;
 	"400": DeleteAuthTokenStatus400;
-	"401": DeleteAuthTokenStatus401;
 	"403": DeleteAuthTokenStatus403;
 	"404": DeleteAuthTokenStatus404;
 	"410": DeleteAuthTokenStatus410;
@@ -44751,7 +44728,6 @@ export type DeleteAuthTokenResponses = {
 export type DeleteAuthTokenResponse =
 	| DeleteAuthTokenStatus200
 	| DeleteAuthTokenStatus400
-	| DeleteAuthTokenStatus401
 	| DeleteAuthTokenStatus403
 	| DeleteAuthTokenStatus404
 	| DeleteAuthTokenStatus410;
@@ -44803,8 +44779,6 @@ export type RequestDeleteStatus202 = unknown;
 
 export type RequestDeleteStatus400 = unknown;
 
-export type RequestDeleteStatus401 = unknown;
-
 export type RequestDeleteStatus402 = unknown;
 
 export type RequestDeleteStatus403 = unknown;
@@ -44821,7 +44795,6 @@ export type RequestDeleteOptions = {
 export type RequestDeleteResponses = {
 	"202": RequestDeleteStatus202;
 	"400": RequestDeleteStatus400;
-	"401": RequestDeleteStatus401;
 	"402": RequestDeleteStatus402;
 	"403": RequestDeleteStatus403;
 	"410": RequestDeleteStatus410;
@@ -44833,7 +44806,6 @@ export type RequestDeleteResponses = {
 export type RequestDeleteResponse =
 	| RequestDeleteStatus202
 	| RequestDeleteStatus400
-	| RequestDeleteStatus401
 	| RequestDeleteStatus402
 	| RequestDeleteStatus403
 	| RequestDeleteStatus410;
