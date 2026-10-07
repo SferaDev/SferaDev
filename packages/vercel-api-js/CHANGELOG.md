@@ -1,5 +1,18 @@
 # vercel-api-js
 
+## 1.38.0
+
+### Minor Changes
+
+- 0ba4d48: Added getDrive API endpoint to retrieve a drive by name or ID.
+- 0ba4d48: Added forkDrive API endpoint to allow forking an existing drive under a new name.
+
+### Patch Changes
+
+- 0ba4d48: Added new Messageboard-related event types and payload variants to user event schemas and types.
+- 0ba4d48: Extended Drive type to include parentDriveId and rootDriveId for drive fork relationships.
+- 0ba4d48: Added v0-migration-subscription-completed event to user event enums and types.
+
 ## 1.37.0
 
 ### Minor Changes
