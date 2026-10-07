@@ -31446,8 +31446,6 @@ export const getTeamAccessRequestStatus200Schema = z.unknown();
 
 export const getTeamAccessRequestStatus400Schema = z.unknown();
 
-export const getTeamAccessRequestStatus401Schema = z.unknown();
-
 export const getTeamAccessRequestStatus403Schema = z.unknown();
 
 export const getTeamAccessRequestStatus404Schema = z.unknown();
@@ -31458,7 +31456,6 @@ export const getTeamAccessRequestResponseSchema = getTeamAccessRequestStatus200S
 
 export const getTeamAccessRequestErrorSchema = z.union([
 	getTeamAccessRequestStatus400Schema,
-	getTeamAccessRequestStatus401Schema,
 	getTeamAccessRequestStatus403Schema,
 	getTeamAccessRequestStatus404Schema,
 	getTeamAccessRequestStatus410Schema,
@@ -31472,8 +31469,6 @@ export const joinTeamPathTeamIdSchema = z
 export const joinTeamStatus200Schema = z.unknown();
 
 export const joinTeamStatus400Schema = z.unknown();
-
-export const joinTeamStatus401Schema = z.unknown();
 
 export const joinTeamStatus402Schema = z.unknown();
 
@@ -31489,7 +31484,6 @@ export const joinTeamResponseSchema = joinTeamStatus200Schema;
 
 export const joinTeamErrorSchema = z.union([
 	joinTeamStatus400Schema,
-	joinTeamStatus401Schema,
 	joinTeamStatus402Schema,
 	joinTeamStatus403Schema,
 	joinTeamStatus404Schema,
@@ -31675,8 +31669,6 @@ export const getTeamsStatus200Schema = z.unknown();
 
 export const getTeamsStatus400Schema = z.unknown();
 
-export const getTeamsStatus401Schema = z.unknown();
-
 export const getTeamsStatus403Schema = z.unknown();
 
 export const getTeamsStatus410Schema = z.unknown();
@@ -31687,7 +31679,6 @@ export const getTeamsResponseSchema = getTeamsStatus200Schema;
 
 export const getTeamsErrorSchema = z.union([
 	getTeamsStatus400Schema,
-	getTeamsStatus401Schema,
 	getTeamsStatus403Schema,
 	getTeamsStatus410Schema,
 	getTeamsStatus500Schema,
@@ -31696,8 +31687,6 @@ export const getTeamsErrorSchema = z.union([
 export const createTeamStatus200Schema = z.unknown();
 
 export const createTeamStatus400Schema = z.unknown();
-
-export const createTeamStatus401Schema = z.unknown();
 
 export const createTeamStatus403Schema = z.unknown();
 
@@ -31709,7 +31698,6 @@ export const createTeamResponseSchema = createTeamStatus200Schema;
 
 export const createTeamErrorSchema = z.union([
 	createTeamStatus400Schema,
-	createTeamStatus401Schema,
 	createTeamStatus403Schema,
 	createTeamStatus404Schema,
 	createTeamStatus410Schema,
@@ -32027,8 +32015,6 @@ export const getAuthTokenStatus200Schema = z.unknown();
 
 export const getAuthTokenStatus400Schema = z.unknown();
 
-export const getAuthTokenStatus401Schema = z.unknown();
-
 export const getAuthTokenStatus403Schema = z.unknown();
 
 export const getAuthTokenStatus404Schema = z.unknown();
@@ -32039,7 +32025,6 @@ export const getAuthTokenResponseSchema = getAuthTokenStatus200Schema;
 
 export const getAuthTokenErrorSchema = z.union([
 	getAuthTokenStatus400Schema,
-	getAuthTokenStatus401Schema,
 	getAuthTokenStatus403Schema,
 	getAuthTokenStatus404Schema,
 	getAuthTokenStatus410Schema,
@@ -32056,8 +32041,6 @@ export const deleteAuthTokenStatus200Schema = z.unknown();
 
 export const deleteAuthTokenStatus400Schema = z.unknown();
 
-export const deleteAuthTokenStatus401Schema = z.unknown();
-
 export const deleteAuthTokenStatus403Schema = z.unknown();
 
 export const deleteAuthTokenStatus404Schema = z.unknown();
@@ -32068,7 +32051,6 @@ export const deleteAuthTokenResponseSchema = deleteAuthTokenStatus200Schema;
 
 export const deleteAuthTokenErrorSchema = z.union([
 	deleteAuthTokenStatus400Schema,
-	deleteAuthTokenStatus401Schema,
 	deleteAuthTokenStatus403Schema,
 	deleteAuthTokenStatus404Schema,
 	deleteAuthTokenStatus410Schema,
@@ -32103,8 +32085,6 @@ export const requestDeleteStatus202Schema = z.unknown();
 
 export const requestDeleteStatus400Schema = z.unknown();
 
-export const requestDeleteStatus401Schema = z.unknown();
-
 export const requestDeleteStatus402Schema = z.unknown();
 
 export const requestDeleteStatus403Schema = z.unknown();
@@ -32115,7 +32095,6 @@ export const requestDeleteResponseSchema = requestDeleteStatus202Schema;
 
 export const requestDeleteErrorSchema = z.union([
 	requestDeleteStatus400Schema,
-	requestDeleteStatus401Schema,
 	requestDeleteStatus402Schema,
 	requestDeleteStatus403Schema,
 	requestDeleteStatus410Schema,

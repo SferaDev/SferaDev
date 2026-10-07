@@ -601,7 +601,6 @@ import type {
 	CreateStorageStoresBlobStatus429,
 	CreateTeamResponse,
 	CreateTeamStatus400,
-	CreateTeamStatus401,
 	CreateTeamStatus403,
 	CreateTeamStatus404,
 	CreateTeamStatus410,
@@ -684,7 +683,6 @@ import type {
 	DeleteAllArtifactsStatus410,
 	DeleteAuthTokenResponse,
 	DeleteAuthTokenStatus400,
-	DeleteAuthTokenStatus401,
 	DeleteAuthTokenStatus403,
 	DeleteAuthTokenStatus404,
 	DeleteAuthTokenStatus410,
@@ -1107,7 +1105,6 @@ import type {
 	GetAllLogDrainsStatus410,
 	GetAuthTokenResponse,
 	GetAuthTokenStatus400,
-	GetAuthTokenStatus401,
 	GetAuthTokenStatus403,
 	GetAuthTokenStatus404,
 	GetAuthTokenStatus410,
@@ -1793,7 +1790,6 @@ import type {
 	GetSupportedTldsStatus500,
 	GetTeamAccessRequestResponse,
 	GetTeamAccessRequestStatus400,
-	GetTeamAccessRequestStatus401,
 	GetTeamAccessRequestStatus403,
 	GetTeamAccessRequestStatus404,
 	GetTeamAccessRequestStatus410,
@@ -1811,7 +1807,6 @@ import type {
 	GetTeamStatus410,
 	GetTeamsResponse,
 	GetTeamsStatus400,
-	GetTeamsStatus401,
 	GetTeamsStatus403,
 	GetTeamsStatus410,
 	GetTeamsStatus500,
@@ -1957,7 +1952,6 @@ import type {
 	IssueCertStatus500,
 	JoinTeamResponse,
 	JoinTeamStatus400,
-	JoinTeamStatus401,
 	JoinTeamStatus402,
 	JoinTeamStatus403,
 	JoinTeamStatus404,
@@ -2534,7 +2528,6 @@ import type {
 	RequestAccessToTeamStatus503,
 	RequestDeleteResponse,
 	RequestDeleteStatus400,
-	RequestDeleteStatus401,
 	RequestDeleteStatus402,
 	RequestDeleteStatus403,
 	RequestDeleteStatus410,
@@ -20045,7 +20038,6 @@ export async function getTeamAccessRequest(
 		GetTeamAccessRequestResponse,
 		ErrorWrapper<
 			| GetTeamAccessRequestStatus400
-			| GetTeamAccessRequestStatus401
 			| GetTeamAccessRequestStatus403
 			| GetTeamAccessRequestStatus404
 			| GetTeamAccessRequestStatus410
@@ -20087,7 +20079,6 @@ export async function joinTeam(
 		JoinTeamResponse,
 		ErrorWrapper<
 			| JoinTeamStatus400
-			| JoinTeamStatus401
 			| JoinTeamStatus402
 			| JoinTeamStatus403
 			| JoinTeamStatus404
@@ -20314,13 +20305,7 @@ export async function getTeams(
 
 	const data = await request<
 		GetTeamsResponse,
-		ErrorWrapper<
-			| GetTeamsStatus400
-			| GetTeamsStatus401
-			| GetTeamsStatus403
-			| GetTeamsStatus410
-			| GetTeamsStatus500
-		>,
+		ErrorWrapper<GetTeamsStatus400 | GetTeamsStatus403 | GetTeamsStatus410 | GetTeamsStatus500>,
 		null,
 		Record<string, string>,
 		{ limit?: number; since?: number; until?: number },
@@ -20349,11 +20334,7 @@ export async function createTeam(
 	const data = await request<
 		CreateTeamResponse,
 		ErrorWrapper<
-			| CreateTeamStatus400
-			| CreateTeamStatus401
-			| CreateTeamStatus403
-			| CreateTeamStatus404
-			| CreateTeamStatus410
+			CreateTeamStatus400 | CreateTeamStatus403 | CreateTeamStatus404 | CreateTeamStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -20754,11 +20735,7 @@ export async function getAuthToken(
 	const data = await request<
 		GetAuthTokenResponse,
 		ErrorWrapper<
-			| GetAuthTokenStatus400
-			| GetAuthTokenStatus401
-			| GetAuthTokenStatus403
-			| GetAuthTokenStatus404
-			| GetAuthTokenStatus410
+			GetAuthTokenStatus400 | GetAuthTokenStatus403 | GetAuthTokenStatus404 | GetAuthTokenStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -20797,7 +20774,6 @@ export async function deleteAuthToken(
 		DeleteAuthTokenResponse,
 		ErrorWrapper<
 			| DeleteAuthTokenStatus400
-			| DeleteAuthTokenStatus401
 			| DeleteAuthTokenStatus403
 			| DeleteAuthTokenStatus404
 			| DeleteAuthTokenStatus410
@@ -20863,7 +20839,6 @@ export async function requestDelete(
 		RequestDeleteResponse,
 		ErrorWrapper<
 			| RequestDeleteStatus400
-			| RequestDeleteStatus401
 			| RequestDeleteStatus402
 			| RequestDeleteStatus403
 			| RequestDeleteStatus410
