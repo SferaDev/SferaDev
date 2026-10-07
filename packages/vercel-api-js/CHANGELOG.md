@@ -1,5 +1,15 @@
 # vercel-api-js
 
+## 1.37.0
+
+### Minor Changes
+
+- 526e389: Added optional since and until query parameters to getProjects API for filtering projects by timestamp.
+
+### Patch Changes
+
+- 526e389: Added limited property to Team schema indicating whether team data is limited or full.
+
 ## 1.36.1
 
 ### Patch Changes
