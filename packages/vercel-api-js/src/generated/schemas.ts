@@ -3028,6 +3028,21 @@ export const userEventSchema = z
 					spaceId: z.string(),
 				}),
 				z.strictObject({
+					boardId: z.string(),
+					fields: z.array(z.string()),
+					operationId: z.string(),
+					spaceId: z.string(),
+				}),
+				z.strictObject({
+					boardId: z.string(),
+					operationId: z.string(),
+					visibility: z.enum(["private", "team"]),
+				}),
+				z.strictObject({
+					operationId: z.string(),
+					schemaId: z.string(),
+				}),
+				z.strictObject({
 					provider: z
 						.enum(["chatgpt", "stripe"])
 						.optional()
@@ -4124,6 +4139,9 @@ export const userEventSchema = z
 						"refunded-paid",
 						"refunded-payment-pending",
 					]),
+				}),
+				z.strictObject({
+					subscriptionId: z.string(),
 				}),
 				z.strictObject({
 					paymentMethodId: z.string(),
@@ -10568,7 +10586,11 @@ export const userEventSchema = z
 				"messageboard-created",
 				"messageboard-private-created",
 				"messageboard-private-space-created",
+				"messageboard-private-space-updated",
+				"messageboard-schema-registered",
 				"messageboard-space-created",
+				"messageboard-space-updated",
+				"messageboard-visibility-updated",
 				"microfrontend-group-added",
 				"microfrontend-group-deleted",
 				"microfrontend-group-updated",
@@ -10928,6 +10950,7 @@ export const userEventSchema = z
 				"v0-chat-created",
 				"v0-chat-message-sent",
 				"v0-migration-payment-confirmed",
+				"v0-migration-subscription-completed",
 				"vcr-image-deleted",
 				"vcr-image-pushed",
 				"vcr-repository-created",
@@ -11381,7 +11404,11 @@ export const listEventTypeSchema = z
 				"messageboard-created",
 				"messageboard-private-created",
 				"messageboard-private-space-created",
+				"messageboard-private-space-updated",
+				"messageboard-schema-registered",
 				"messageboard-space-created",
+				"messageboard-space-updated",
+				"messageboard-visibility-updated",
 				"microfrontend-group-added",
 				"microfrontend-group-deleted",
 				"microfrontend-group-updated",
@@ -11741,6 +11768,7 @@ export const listEventTypeSchema = z
 				"v0-chat-created",
 				"v0-chat-message-sent",
 				"v0-migration-payment-confirmed",
+				"v0-migration-subscription-completed",
 				"vcr-image-deleted",
 				"vcr-image-pushed",
 				"vcr-repository-created",
@@ -12096,7 +12124,11 @@ export const listEventTypeSchema = z
 					"messageboard-created",
 					"messageboard-private-created",
 					"messageboard-private-space-created",
+					"messageboard-private-space-updated",
+					"messageboard-schema-registered",
 					"messageboard-space-created",
+					"messageboard-space-updated",
+					"messageboard-visibility-updated",
 					"microfrontend-group-added",
 					"microfrontend-group-deleted",
 					"microfrontend-group-updated",
@@ -12456,6 +12488,7 @@ export const listEventTypeSchema = z
 					"v0-chat-created",
 					"v0-chat-message-sent",
 					"v0-migration-payment-confirmed",
+					"v0-migration-subscription-completed",
 					"vcr-image-deleted",
 					"vcr-image-pushed",
 					"vcr-repository-created",
@@ -13447,6 +13480,10 @@ export const driveSchema = z
 			.string()
 			.describe("The unique drive name within the project.")
 			.meta({ examples: ["workspace"] }),
+		parentDriveId: z
+			.string()
+			.optional()
+			.describe("The ID of the source drive when this drive is a fork."),
 		projectId: z
 			.string()
 			.describe("The project that owns the drive.")
@@ -13455,6 +13492,10 @@ export const driveSchema = z
 			.string()
 			.describe("The region where the drive is stored.")
 			.meta({ examples: ["iad1"] }),
+		rootDriveId: z
+			.string()
+			.optional()
+			.describe("The ID of the original drive at the root of this fork."),
 		updatedAt: z
 			.number()
 			.describe("The last time the drive was updated, in milliseconds since the epoch.")
@@ -28833,6 +28874,58 @@ export const listDrivesErrorSchema = z.union([
 	listDrivesStatus429Schema,
 ]);
 
+export const getDrivePathNameOrIdSchema = z
+	.string()
+	.max(64)
+	.regex(/^[a-zA-Z0-9_-]+$/)
+	.describe("The drive name or ID.")
+	.meta({ examples: ["workspace"] });
+
+export const getDriveQueryProjectIdSchema = z
+	.string()
+	.optional()
+	.describe(
+		"The project ID or name associated with the drive. Required unless using a Vercel OIDC token scoped to a project.",
+	)
+	.meta({ examples: ["prj_abc123"] });
+
+export const getDriveQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe("The Team identifier to perform the request on behalf of.")
+	.meta({ examples: ["team_1a2b3c4d5e6f7g8h9i0j1k2l"] });
+
+export const getDriveQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.")
+	.meta({ examples: ["my-team-url-slug"] });
+
+export const getDriveStatus200Schema = z.unknown();
+
+export const getDriveStatus400Schema = z.unknown();
+
+export const getDriveStatus401Schema = z.unknown();
+
+export const getDriveStatus403Schema = z.unknown();
+
+export const getDriveStatus404Schema = z.unknown();
+
+export const getDriveStatus410Schema = z.unknown();
+
+export const getDriveStatus429Schema = z.unknown();
+
+export const getDriveResponseSchema = getDriveStatus200Schema;
+
+export const getDriveErrorSchema = z.union([
+	getDriveStatus400Schema,
+	getDriveStatus401Schema,
+	getDriveStatus403Schema,
+	getDriveStatus404Schema,
+	getDriveStatus410Schema,
+	getDriveStatus429Schema,
+]);
+
 export const getOrCreateDrivePathNameSchema = z
 	.string()
 	.max(64)
@@ -28945,6 +29038,67 @@ export const deleteDriveErrorSchema = z.union([
 	deleteDriveStatus409Schema,
 	deleteDriveStatus410Schema,
 	deleteDriveStatus429Schema,
+]);
+
+export const forkDrivePathNameSchema = z
+	.string()
+	.max(64)
+	.regex(/^[a-zA-Z0-9_-]+$/)
+	.describe("Name of the source drive to fork.")
+	.meta({ examples: ["workspace"] });
+
+export const forkDriveQueryProjectIdSchema = z
+	.string()
+	.optional()
+	.describe(
+		"The project ID or name associated with the drive. Required unless using a Vercel OIDC token scoped to a project.",
+	)
+	.meta({ examples: ["prj_abc123"] });
+
+export const forkDriveQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe("The Team identifier to perform the request on behalf of.")
+	.meta({ examples: ["team_1a2b3c4d5e6f7g8h9i0j1k2l"] });
+
+export const forkDriveQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.")
+	.meta({ examples: ["my-team-url-slug"] });
+
+export const forkDriveStatus201Schema = z.unknown();
+
+export const forkDriveStatus400Schema = z.unknown();
+
+export const forkDriveStatus401Schema = z.unknown();
+
+export const forkDriveStatus402Schema = z.unknown();
+
+export const forkDriveStatus403Schema = z.unknown();
+
+export const forkDriveStatus404Schema = z.unknown();
+
+export const forkDriveStatus409Schema = z.unknown();
+
+export const forkDriveStatus410Schema = z.unknown();
+
+export const forkDriveStatus429Schema = z.unknown();
+
+export const forkDriveStatus503Schema = z.unknown();
+
+export const forkDriveResponseSchema = forkDriveStatus201Schema;
+
+export const forkDriveErrorSchema = z.union([
+	forkDriveStatus400Schema,
+	forkDriveStatus401Schema,
+	forkDriveStatus402Schema,
+	forkDriveStatus403Schema,
+	forkDriveStatus404Schema,
+	forkDriveStatus409Schema,
+	forkDriveStatus410Schema,
+	forkDriveStatus429Schema,
+	forkDriveStatus503Schema,
 ]);
 
 export const listSessionSnapshotsQueryProjectSchema = z

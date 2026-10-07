@@ -1035,6 +1035,16 @@ import type {
 	FinalizeInstallationStatus403,
 	FinalizeInstallationStatus404,
 	FinalizeInstallationStatus410,
+	ForkDriveResponse,
+	ForkDriveStatus400,
+	ForkDriveStatus401,
+	ForkDriveStatus402,
+	ForkDriveStatus403,
+	ForkDriveStatus404,
+	ForkDriveStatus409,
+	ForkDriveStatus410,
+	ForkDriveStatus429,
+	ForkDriveStatus503,
 	GenerateFirewallRuleResponse,
 	GenerateFirewallRuleStatus400,
 	GenerateFirewallRuleStatus401,
@@ -1363,6 +1373,13 @@ import type {
 	GetDrainsStatus403,
 	GetDrainsStatus404,
 	GetDrainsStatus410,
+	GetDriveResponse,
+	GetDriveStatus400,
+	GetDriveStatus401,
+	GetDriveStatus403,
+	GetDriveStatus404,
+	GetDriveStatus410,
+	GetDriveStatus429,
 	GetEdgeConfigBackupResponse,
 	GetEdgeConfigBackupStatus400,
 	GetEdgeConfigBackupStatus401,
@@ -17544,6 +17561,52 @@ export async function listDrives(
 }
 
 /**
+ * @summary Get a drive
+ * @description Gets an existing drive by project and name or drive ID. Returns 404 if doesn't exist.
+ * @link /v2/sandboxes/drives/{nameOrId}
+ */
+export async function getDrive(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { nameOrId: string };
+		queryParams?: { projectId?: string; teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.nameOrId) {
+		throw new Error(`Missing required path parameter: nameOrId`);
+	}
+	const data = await request<
+		GetDriveResponse,
+		ErrorWrapper<
+			| GetDriveStatus400
+			| GetDriveStatus401
+			| GetDriveStatus403
+			| GetDriveStatus404
+			| GetDriveStatus410
+			| GetDriveStatus429
+		>,
+		null,
+		Record<string, string>,
+		{ projectId?: string; teamId?: string; slug?: string },
+		{ nameOrId: string }
+	>({
+		method: "GET",
+		url: `/v2/sandboxes/drives/${pathParams.nameOrId}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
  * @summary Get or create a drive
  * @description Gets an existing drive by project and name, or creates it when it does not exist.
  * @link /v2/sandboxes/drives/{name}
@@ -17630,6 +17693,55 @@ export async function deleteDrive(
 	>({
 		method: "DELETE",
 		url: `/v2/sandboxes/drives/${pathParams.name}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Fork a drive
+ * @description Fork the provided drive into a new one with the provided name, inheriting the region and max size.
+ * @link /v2/sandboxes/drives/{name}/fork
+ */
+export async function forkDrive(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { name: string };
+		queryParams?: { projectId?: string; teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.name) {
+		throw new Error(`Missing required path parameter: name`);
+	}
+	const data = await request<
+		ForkDriveResponse,
+		ErrorWrapper<
+			| ForkDriveStatus400
+			| ForkDriveStatus401
+			| ForkDriveStatus402
+			| ForkDriveStatus403
+			| ForkDriveStatus404
+			| ForkDriveStatus409
+			| ForkDriveStatus410
+			| ForkDriveStatus429
+			| ForkDriveStatus503
+		>,
+		null,
+		Record<string, string>,
+		{ projectId?: string; teamId?: string; slug?: string },
+		{ name: string }
+	>({
+		method: "POST",
+		url: `/v2/sandboxes/drives/${pathParams.name}/fork`,
 		queryParams,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
@@ -24623,8 +24735,10 @@ export const operationsByPath = {
 	"GET /v2/sandboxes": listNamedSandboxes,
 	"POST /v2/sandboxes": createSandboxesV2,
 	"GET /v2/sandboxes/drives": listDrives,
+	"GET /v2/sandboxes/drives/{nameOrId}": getDrive,
 	"POST /v2/sandboxes/drives/{name}": getOrCreateDrive,
 	"DELETE /v2/sandboxes/drives/{name}": deleteDrive,
+	"POST /v2/sandboxes/drives/{name}/fork": forkDrive,
 	"GET /v2/sandboxes/snapshots": listSessionSnapshots,
 	"GET /v2/sandboxes/snapshots/{snapshotId}": getSessionSnapshot,
 	"DELETE /v2/sandboxes/snapshots/{snapshotId}": deleteSessionSnapshot,
@@ -25161,8 +25275,10 @@ export const operationsByTag = {
 		listNamedSandboxes,
 		createSandboxesV2,
 		listDrives,
+		getDrive,
 		getOrCreateDrive,
 		deleteDrive,
+		forkDrive,
 		listSessionSnapshots,
 		getSessionSnapshot,
 		deleteSessionSnapshot,
@@ -25674,6 +25790,7 @@ export const tagDictionary = {
 		GET: [
 			"listNamedSandboxes",
 			"listDrives",
+			"getDrive",
 			"listSessionSnapshots",
 			"getSessionSnapshot",
 			"listSessions",
@@ -25686,6 +25803,7 @@ export const tagDictionary = {
 		POST: [
 			"createSandboxesV2",
 			"getOrCreateDrive",
+			"forkDrive",
 			"runSessionCommand",
 			"killSessionCommand",
 			"stopSession",
