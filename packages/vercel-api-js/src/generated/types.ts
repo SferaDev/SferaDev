@@ -4625,6 +4625,14 @@ export const userEventPayloadActionEnum = {
 export type UserEventPayloadActionEnumKey =
 	(typeof userEventPayloadActionEnum)[keyof typeof userEventPayloadActionEnum];
 
+export const userEventPayloadVisibilityEnum = {
+	config: "config",
+	secret: "secret",
+} as const;
+
+export type UserEventPayloadVisibilityEnumKey =
+	(typeof userEventPayloadVisibilityEnum)[keyof typeof userEventPayloadVisibilityEnum];
+
 export const userEventPayloadProviderEnum = {
 	apple: "apple",
 	bitbucket: "bitbucket",
@@ -5285,14 +5293,6 @@ export const userEventPayloadToAccountTypeEnum = {
 
 export type UserEventPayloadToAccountTypeEnumKey =
 	(typeof userEventPayloadToAccountTypeEnum)[keyof typeof userEventPayloadToAccountTypeEnum];
-
-export const userEventPayloadVisibilityEnum = {
-	config: "config",
-	secret: "secret",
-} as const;
-
-export type UserEventPayloadVisibilityEnumKey =
-	(typeof userEventPayloadVisibilityEnum)[keyof typeof userEventPayloadVisibilityEnum];
 
 export const userEventPayloadTargetEnum = {
 	development: "development",
@@ -6602,7 +6602,11 @@ export const userEventTypeEnum = {
 	"messageboard-created": "messageboard-created",
 	"messageboard-private-created": "messageboard-private-created",
 	"messageboard-private-space-created": "messageboard-private-space-created",
+	"messageboard-private-space-updated": "messageboard-private-space-updated",
+	"messageboard-schema-registered": "messageboard-schema-registered",
 	"messageboard-space-created": "messageboard-space-created",
+	"messageboard-space-updated": "messageboard-space-updated",
+	"messageboard-visibility-updated": "messageboard-visibility-updated",
 	"microfrontend-group-added": "microfrontend-group-added",
 	"microfrontend-group-deleted": "microfrontend-group-deleted",
 	"microfrontend-group-updated": "microfrontend-group-updated",
@@ -6972,6 +6976,7 @@ export const userEventTypeEnum = {
 	"v0-chat-created": "v0-chat-created",
 	"v0-chat-message-sent": "v0-chat-message-sent",
 	"v0-migration-payment-confirmed": "v0-migration-payment-confirmed",
+	"v0-migration-subscription-completed": "v0-migration-subscription-completed",
 	"vcr-image-deleted": "vcr-image-deleted",
 	"vcr-image-pushed": "vcr-image-pushed",
 	"vcr-repository-created": "vcr-repository-created",
@@ -7101,6 +7106,21 @@ export type UserEvent = {
 						boardId: string;
 						operationId: string;
 						spaceId: string;
+				  }
+				| {
+						boardId: string;
+						fields: string[];
+						operationId: string;
+						spaceId: string;
+				  }
+				| {
+						boardId: string;
+						operationId: string;
+						visibility: UserEventPayloadVisibilityEnumKey;
+				  }
+				| {
+						operationId: string;
+						schemaId: string;
 				  }
 				| {
 						/**
@@ -7847,6 +7867,9 @@ export type UserEvent = {
 						invoiceId: string;
 						newInvoiceId: string;
 						settlementMethod: UserEventPayloadSettlementMethodEnumKey;
+				  }
+				| {
+						subscriptionId: string;
 				  }
 				| {
 						paymentMethodId: string;
@@ -14221,7 +14244,11 @@ export const listEventTypeNameEnum = {
 	"messageboard-created": "messageboard-created",
 	"messageboard-private-created": "messageboard-private-created",
 	"messageboard-private-space-created": "messageboard-private-space-created",
+	"messageboard-private-space-updated": "messageboard-private-space-updated",
+	"messageboard-schema-registered": "messageboard-schema-registered",
 	"messageboard-space-created": "messageboard-space-created",
+	"messageboard-space-updated": "messageboard-space-updated",
+	"messageboard-visibility-updated": "messageboard-visibility-updated",
 	"microfrontend-group-added": "microfrontend-group-added",
 	"microfrontend-group-deleted": "microfrontend-group-deleted",
 	"microfrontend-group-updated": "microfrontend-group-updated",
@@ -14591,6 +14618,7 @@ export const listEventTypeNameEnum = {
 	"v0-chat-created": "v0-chat-created",
 	"v0-chat-message-sent": "v0-chat-message-sent",
 	"v0-migration-payment-confirmed": "v0-migration-payment-confirmed",
+	"v0-migration-subscription-completed": "v0-migration-subscription-completed",
 	"vcr-image-deleted": "vcr-image-deleted",
 	"vcr-image-pushed": "vcr-image-pushed",
 	"vcr-repository-created": "vcr-repository-created",
@@ -14951,7 +14979,11 @@ export const listEventTypeReplacedByEnum = {
 	"messageboard-created": "messageboard-created",
 	"messageboard-private-created": "messageboard-private-created",
 	"messageboard-private-space-created": "messageboard-private-space-created",
+	"messageboard-private-space-updated": "messageboard-private-space-updated",
+	"messageboard-schema-registered": "messageboard-schema-registered",
 	"messageboard-space-created": "messageboard-space-created",
+	"messageboard-space-updated": "messageboard-space-updated",
+	"messageboard-visibility-updated": "messageboard-visibility-updated",
 	"microfrontend-group-added": "microfrontend-group-added",
 	"microfrontend-group-deleted": "microfrontend-group-deleted",
 	"microfrontend-group-updated": "microfrontend-group-updated",
@@ -15321,6 +15353,7 @@ export const listEventTypeReplacedByEnum = {
 	"v0-chat-created": "v0-chat-created",
 	"v0-chat-message-sent": "v0-chat-message-sent",
 	"v0-migration-payment-confirmed": "v0-migration-payment-confirmed",
+	"v0-migration-subscription-completed": "v0-migration-subscription-completed",
 	"vcr-image-deleted": "vcr-image-deleted",
 	"vcr-image-pushed": "vcr-image-pushed",
 	"vcr-repository-created": "vcr-repository-created",
@@ -16643,6 +16676,11 @@ export type Drive = {
 	 */
 	name: string;
 	/**
+	 * @description The ID of the source drive when this drive is a fork.
+	 * @type string | undefined
+	 */
+	parentDriveId?: string | undefined;
+	/**
 	 * @description The project that owns the drive.
 	 * @example prj_abc123
 	 * @type string
@@ -16654,6 +16692,11 @@ export type Drive = {
 	 * @type string
 	 */
 	region: string;
+	/**
+	 * @description The ID of the original drive at the root of this fork.
+	 * @type string | undefined
+	 */
+	rootDriveId?: string | undefined;
 	/**
 	 * @description The last time the drive was updated, in milliseconds since the epoch.
 	 * @example 1750344501629
@@ -39844,6 +39887,81 @@ export type ListDrivesResponse =
 	| ListDrivesStatus410
 	| ListDrivesStatus429;
 
+export type GetDrivePath = {
+	/**
+	 * @description The drive name or ID.
+	 * @maxLength 64
+	 * @pattern ^[a-zA-Z0-9_-]+$
+	 * @example workspace
+	 * @type string
+	 */
+	nameOrId: string;
+};
+
+export type GetDriveQuery = {
+	/**
+	 * @description The project ID or name associated with the drive. Required unless using a Vercel OIDC token scoped to a project.
+	 * @example prj_abc123
+	 * @type string | undefined
+	 */
+	projectId?: string | undefined;
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @example my-team-url-slug
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type GetDriveStatus200 = unknown;
+
+export type GetDriveStatus400 = unknown;
+
+export type GetDriveStatus401 = unknown;
+
+export type GetDriveStatus403 = unknown;
+
+export type GetDriveStatus404 = unknown;
+
+export type GetDriveStatus410 = unknown;
+
+export type GetDriveStatus429 = unknown;
+
+export type GetDriveOptions = {
+	body?: never | undefined;
+	path: GetDrivePath;
+	query?: GetDriveQuery | undefined;
+	headers?: never | undefined;
+};
+
+export type GetDriveResponses = {
+	"200": GetDriveStatus200;
+	"400": GetDriveStatus400;
+	"401": GetDriveStatus401;
+	"403": GetDriveStatus403;
+	"404": GetDriveStatus404;
+	"410": GetDriveStatus410;
+	"429": GetDriveStatus429;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetDriveResponse =
+	| GetDriveStatus200
+	| GetDriveStatus400
+	| GetDriveStatus401
+	| GetDriveStatus403
+	| GetDriveStatus404
+	| GetDriveStatus410
+	| GetDriveStatus429;
+
 export type GetOrCreateDrivePath = {
 	/**
 	 * @description Name for the drive. Must be unique per project and URL-safe (alphanumeric, hyphens, underscores).
@@ -40003,6 +40121,93 @@ export type DeleteDriveResponse =
 	| DeleteDriveStatus409
 	| DeleteDriveStatus410
 	| DeleteDriveStatus429;
+
+export type ForkDrivePath = {
+	/**
+	 * @description Name of the source drive to fork.
+	 * @maxLength 64
+	 * @pattern ^[a-zA-Z0-9_-]+$
+	 * @example workspace
+	 * @type string
+	 */
+	name: string;
+};
+
+export type ForkDriveQuery = {
+	/**
+	 * @description The project ID or name associated with the drive. Required unless using a Vercel OIDC token scoped to a project.
+	 * @example prj_abc123
+	 * @type string | undefined
+	 */
+	projectId?: string | undefined;
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @example my-team-url-slug
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type ForkDriveStatus201 = unknown;
+
+export type ForkDriveStatus400 = unknown;
+
+export type ForkDriveStatus401 = unknown;
+
+export type ForkDriveStatus402 = unknown;
+
+export type ForkDriveStatus403 = unknown;
+
+export type ForkDriveStatus404 = unknown;
+
+export type ForkDriveStatus409 = unknown;
+
+export type ForkDriveStatus410 = unknown;
+
+export type ForkDriveStatus429 = unknown;
+
+export type ForkDriveStatus503 = unknown;
+
+export type ForkDriveOptions = {
+	body?: never | undefined;
+	path: ForkDrivePath;
+	query?: ForkDriveQuery | undefined;
+	headers?: never | undefined;
+};
+
+export type ForkDriveResponses = {
+	"201": ForkDriveStatus201;
+	"400": ForkDriveStatus400;
+	"401": ForkDriveStatus401;
+	"402": ForkDriveStatus402;
+	"403": ForkDriveStatus403;
+	"404": ForkDriveStatus404;
+	"409": ForkDriveStatus409;
+	"410": ForkDriveStatus410;
+	"429": ForkDriveStatus429;
+	"503": ForkDriveStatus503;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type ForkDriveResponse =
+	| ForkDriveStatus201
+	| ForkDriveStatus400
+	| ForkDriveStatus401
+	| ForkDriveStatus402
+	| ForkDriveStatus403
+	| ForkDriveStatus404
+	| ForkDriveStatus409
+	| ForkDriveStatus410
+	| ForkDriveStatus429
+	| ForkDriveStatus503;
 
 export const listSessionSnapshotsSortOrder = {
 	asc: "asc",
