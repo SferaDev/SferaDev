@@ -13999,6 +13999,11 @@ export const teamSchema = z
 				}),
 			)
 			.optional(),
+		limited: z
+			.literal(false)
+			.describe(
+				"Property indicating that this Team data contains full information. Limited Team data has `limited: true`.",
+			),
 		membership: z
 			.object({
 				accessRequestedAt: z.number().optional(),
@@ -26402,6 +26407,18 @@ export const getProjectsQueryFromSchema = z
 	.string()
 	.optional()
 	.describe("Query only projects updated after the given timestamp or continuation token.");
+
+export const getProjectsQuerySinceSchema = z
+	.number()
+	.optional()
+	.describe("Query only projects updated after this JavaScript timestamp.")
+	.meta({ examples: [1540095775941] });
+
+export const getProjectsQueryUntilSchema = z
+	.number()
+	.optional()
+	.describe("Query only projects updated before this JavaScript timestamp.")
+	.meta({ examples: [1540095775951] });
 
 export const getProjectsQueryGitForkProtectionSchema = z
 	.string()

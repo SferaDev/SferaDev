@@ -17576,6 +17576,11 @@ export type Team = {
 		  }[]
 		| undefined;
 	/**
+	 * @description Property indicating that this Team data contains full information. Limited Team data has `limited: true`.
+	 * @type boolean
+	 */
+	limited: false;
+	/**
 	 * @description The membership of the authenticated User in relation to the Team.
 	 * @type object | undefined
 	 */
@@ -36141,6 +36146,18 @@ export type GetProjectsQuery = {
 	 * @type string | undefined
 	 */
 	from?: string | undefined;
+	/**
+	 * @description Query only projects updated after this JavaScript timestamp.
+	 * @example 1540095775941
+	 * @type number | undefined
+	 */
+	since?: number | undefined;
+	/**
+	 * @description Query only projects updated before this JavaScript timestamp.
+	 * @example 1540095775951
+	 * @type number | undefined
+	 */
+	until?: number | undefined;
 	/**
 	 * @description Specifies whether PRs from Git forks should require a team member\'s authorization before it can be deployed
 	 * @example 1
