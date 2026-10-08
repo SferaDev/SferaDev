@@ -81,9 +81,10 @@ straight past them and leaves the comment behind, still reading as if the hold w
 grep -n "KEEP-BACK" -A5 pnpm-workspace.yaml
 ```
 
-Current holds (2026-09-07 — verify against the file, not this list): **none in the catalog.** The
-only hold in the repo is **`@types/vscode`**, which is not a catalog entry — see the section below;
-it is coupled to `engines.vscode`.
+Current holds (2026-10-08, verify against the file, not this list): **`effect` at 3.x** in the
+catalog (KEEP-BACK: v4 needs a `Context.Tag` to `Context.Service` migration and a major release
+of every client, since they publish `effect: "^3.0.0"` as a peer), and **`@types/vscode`**, which
+is not a catalog entry; see the section below, it is coupled to `engines.vscode`.
 
 **All three long-standing holds were released on 2026-08-28 (#635)**, so the catalog now tracks
 latest for `typescript`, the `@kubb/*` family and `better-auth`. What each release cost, because
@@ -225,3 +226,8 @@ users, so it is a real decision, not a rubber stamp: if the new API surface is n
 holding `@types/vscode` back instead.
 
 Verify with `pnpm --filter vscode-extension-vercel-ai package`, which CI does not run.
+
+*2026-10-08:* main had shipped `@types/vscode` 1.138.0 against `engines.vscode` `^1.137.0` for
+weeks without anyone noticing, because the release only packages the extension when its version
+changes. Symptom: `@types/vscode 1.140.0 greater than engines.vscode ^1.137.0`. Held back to
+1.137.0 rather than raising the minimum VS Code version for users.
