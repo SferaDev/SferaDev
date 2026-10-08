@@ -1,5 +1,12 @@
 # vercel-api-js
 
+## 1.38.2
+
+### Patch Changes
+
+- d9ed0aa: Added optional organizationId field to Team and TeamLimited schemas and types.
+- d9ed0aa: Added support for updateDiff with changedComment and changedGitBranch fields in userEventSchema and UserEvent type.
+
 ## 1.38.1
 
 ### Patch Changes
