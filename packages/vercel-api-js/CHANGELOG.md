@@ -1,5 +1,64 @@
 # vercel-api-js
 
+## 1.38.2
+
+### Patch Changes
+
+- d9ed0aa: Added optional organizationId field to Team and TeamLimited schemas and types.
+- d9ed0aa: Added support for updateDiff with changedComment and changedGitBranch fields in userEventSchema and UserEvent type.
+
+## 1.38.1
+
+### Patch Changes
+
+- 75ed32a: Removed 401 Unauthorized error types from several team and authentication related endpoints and schemas.
+
+## 1.38.0
+
+### Minor Changes
+
+- 0ba4d48: Added getDrive API endpoint to retrieve a drive by name or ID.
+- 0ba4d48: Added forkDrive API endpoint to allow forking an existing drive under a new name.
+
+### Patch Changes
+
+- 0ba4d48: Added new Messageboard-related event types and payload variants to user event schemas and types.
+- 0ba4d48: Extended Drive type to include parentDriveId and rootDriveId for drive fork relationships.
+- 0ba4d48: Added v0-migration-subscription-completed event to user event enums and types.
+
+## 1.37.0
+
+### Minor Changes
+
+- 526e389: Added optional since and until query parameters to getProjects API for filtering projects by timestamp.
+
+### Patch Changes
+
+- 526e389: Added limited property to Team schema indicating whether team data is limited or full.
+
+## 1.36.1
+
+### Patch Changes
+
+- 2078eab: Added new event payload schema with 'avatarDarkMode', 'projectId', and 'projectName' fields for user events.
+- 2078eab: Added support for the 'project-avatar-dark-mode-update' event type in schemas and types.
+
+## 1.36.0
+
+### Minor Changes
+
+- ef28f8b: Added ejectManagedConnector endpoint to disconnect a managed connector from its provider-side manager.
+- ef28f8b: Added supportsManagedEjection property to connector types and schemas to indicate if a managed connector supports ejection.
+
+## 1.35.2
+
+### Patch Changes
+
+- 98f2834: Rename triggerData to triggerVerificationInput and add triggerRegistrationInput fields to ConnectCreateConnectorRequest and ConnectUpdateConnectorRequest types and schemas.
+- 98f2834: Add new UserEvent payload shape with paymentMethodId and subscriptionId fields.
+- 98f2834: Add support for the v0-migration-payment-confirmed event type in user event schemas and enums.
+- 98f2834: Add UpdateConnectorStatus500 error type and 500 status code handling to updateConnector API.
+
 ## 1.35.1
 
 ### Patch Changes

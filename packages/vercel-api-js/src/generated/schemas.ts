@@ -601,6 +601,10 @@ export const connectConnectorSchema = z
 		supportsInstallation: z
 			.union([z.literal(false), z.literal(true)])
 			.describe("Whether the connector supports an installation flow."),
+		supportsManagedEjection: z
+			.union([z.literal(false), z.literal(true)])
+			.optional()
+			.describe("Whether this managed connector can disconnect from its manager."),
 		supportsRevocation: z
 			.union([z.literal(false), z.literal(true)])
 			.describe("Whether Connect can revoke tokens for this connector."),
@@ -857,6 +861,10 @@ export const connectConnectorCreateResultSchema = z
 		supportsInstallation: z
 			.union([z.literal(false), z.literal(true)])
 			.describe("Whether the connector supports an installation flow."),
+		supportsManagedEjection: z
+			.union([z.literal(false), z.literal(true)])
+			.optional()
+			.describe("Whether this managed connector can disconnect from its manager."),
 		supportsRevocation: z
 			.union([z.literal(false), z.literal(true)])
 			.describe("Whether Connect can revoke tokens for this connector."),
@@ -1583,12 +1591,19 @@ export const connectCreateConnectorRequestSchema = z
 				.describe(
 					"Trigger driver type. Resolved automatically from the known service connection method when not provided. Only set when using the newly decoupled triggers resolution flow.",
 				),
-			triggerData: z
+			triggerVerificationInput: z
 				.object({})
 				.catchall(z.unknown())
 				.optional()
 				.describe(
-					"Trigger configuration, validated and encrypted by the trigger driver. An empty object applies driver defaults.",
+					"Plaintext verification inputs, validated by the trigger driver and encrypted into stored triggerData. An empty object makes no changes.",
+				),
+			triggerRegistrationInput: z
+				.object({})
+				.catchall(z.unknown())
+				.optional()
+				.describe(
+					"Additional registration inputs, validated by the trigger driver. Requires triggers: true. Shared verification credentials are read from triggerData.",
 				),
 			triggerDestination: z
 				.union([
@@ -2274,12 +2289,19 @@ export const connectUpdateConnectorRequestSchema = z
 			.boolean()
 			.optional()
 			.describe("Whether the triggers are enabled for this connector."),
-		triggerData: z
+		triggerVerificationInput: z
 			.object({})
 			.catchall(z.unknown())
 			.optional()
 			.describe(
-				"Trigger configuration, validated and encrypted by the trigger driver. An empty object applies driver defaults.",
+				"Plaintext verification inputs, validated by the trigger driver and encrypted into stored triggerData. An empty object makes no changes.",
+			),
+		triggerRegistrationInput: z
+			.object({})
+			.catchall(z.unknown())
+			.optional()
+			.describe(
+				"Additional registration inputs, validated by the trigger driver. Requires triggers: true. Shared verification credentials are read from triggerData.",
 			),
 		events: z.array(z.string()).optional().describe("Default trigger events for this connector."),
 		data: z.unknown().optional().describe("Provider configuration fields to update."),
@@ -3004,6 +3026,21 @@ export const userEventSchema = z
 					boardId: z.string(),
 					operationId: z.string(),
 					spaceId: z.string(),
+				}),
+				z.strictObject({
+					boardId: z.string(),
+					fields: z.array(z.string()),
+					operationId: z.string(),
+					spaceId: z.string(),
+				}),
+				z.strictObject({
+					boardId: z.string(),
+					operationId: z.string(),
+					visibility: z.enum(["private", "team"]),
+				}),
+				z.strictObject({
+					operationId: z.string(),
+					schemaId: z.string(),
 				}),
 				z.strictObject({
 					provider: z
@@ -4102,6 +4139,13 @@ export const userEventSchema = z
 						"refunded-paid",
 						"refunded-payment-pending",
 					]),
+				}),
+				z.strictObject({
+					subscriptionId: z.string(),
+				}),
+				z.strictObject({
+					paymentMethodId: z.string(),
+					subscriptionId: z.string(),
 				}),
 				z.strictObject({
 					brand: z.string().optional(),
@@ -5689,6 +5733,36 @@ export const userEventSchema = z
 					projectName: z.string().optional(),
 					source: z.string().optional(),
 					target: z.union([z.string(), z.array(z.string())]).optional(),
+					updateDiff: z
+						.object({
+							changedComment: z.union([z.literal(false), z.literal(true)]).optional(),
+							changedGitBranch: z.union([z.literal(false), z.literal(true)]).optional(),
+							changedValue: z
+								.union([z.literal(false), z.literal(true)])
+								.describe("Indicates a value was submitted, not whether its plaintext changed."),
+							key: z.string().optional(),
+							newCustomEnvironmentIds: z.array(z.string()).optional(),
+							newKey: z.string().optional(),
+							newTarget: z.array(z.enum(["development", "preview", "production"])).optional(),
+							newType: z.string().optional(),
+							oldCustomEnvironmentIds: z.array(z.string()).optional(),
+							oldTarget: z.array(z.enum(["development", "preview", "production"])).optional(),
+							oldType: z.string().optional(),
+						})
+						.optional(),
+				}),
+				z.strictObject({
+					customEnvironmentSlugs: z.array(z.string()).optional(),
+					edgeConfigId: z.string().nullish(),
+					edgeConfigTokenId: z.string().nullish(),
+					gitBranch: z.string().optional(),
+					id: z.string().optional(),
+					ipAddress: z.string().optional(),
+					key: z.string().optional(),
+					projectId: z.string().optional(),
+					projectName: z.string().optional(),
+					source: z.string().optional(),
+					target: z.union([z.string(), z.array(z.string())]).optional(),
 					deploymentId: z.string(),
 					deploymentUrl: z.string(),
 				}),
@@ -6052,11 +6126,20 @@ export const userEventSchema = z
 						.optional(),
 					updateDiff: z
 						.object({
-							changedValue: z.union([z.literal(false), z.literal(true)]),
-							id: z.string(),
+							changedComment: z.union([z.literal(false), z.literal(true)]).optional(),
+							changedGitBranch: z.union([z.literal(false), z.literal(true)]).optional(),
+							changedValue: z
+								.union([z.literal(false), z.literal(true)])
+								.describe("Indicates a value was submitted, not whether its plaintext changed."),
 							key: z.string().optional(),
 							newCustomEnvironmentIds: z.array(z.string()).optional(),
 							newKey: z.string().optional(),
+							newTarget: z.array(z.enum(["development", "preview", "production"])).optional(),
+							newType: z.string().optional(),
+							oldCustomEnvironmentIds: z.array(z.string()).optional(),
+							oldTarget: z.array(z.enum(["development", "preview", "production"])).optional(),
+							oldType: z.string().optional(),
+							id: z.string(),
 							newProjects: z
 								.array(
 									z.object({
@@ -6065,9 +6148,6 @@ export const userEventSchema = z
 									}),
 								)
 								.optional(),
-							newTarget: z.array(z.enum(["development", "preview", "production"])).optional(),
-							newType: z.string().optional(),
-							oldCustomEnvironmentIds: z.array(z.string()).optional(),
 							oldProjects: z
 								.array(
 									z.object({
@@ -6076,8 +6156,6 @@ export const userEventSchema = z
 									}),
 								)
 								.optional(),
-							oldTarget: z.array(z.enum(["development", "preview", "production"])).optional(),
-							oldType: z.string().optional(),
 						})
 						.optional(),
 				}),
@@ -7339,6 +7417,11 @@ export const userEventSchema = z
 				}),
 				z.strictObject({
 					avatar: z.string().nullish(),
+					projectId: z.string(),
+					projectName: z.string(),
+				}),
+				z.strictObject({
+					avatarDarkMode: z.string().nullish(),
 					projectId: z.string(),
 					projectName: z.string(),
 				}),
@@ -10537,7 +10620,11 @@ export const userEventSchema = z
 				"messageboard-created",
 				"messageboard-private-created",
 				"messageboard-private-space-created",
+				"messageboard-private-space-updated",
+				"messageboard-schema-registered",
 				"messageboard-space-created",
+				"messageboard-space-updated",
+				"messageboard-visibility-updated",
 				"microfrontend-group-added",
 				"microfrontend-group-deleted",
 				"microfrontend-group-updated",
@@ -10618,6 +10705,7 @@ export const userEventSchema = z
 				"project-analytics-enabled",
 				"project-auto-assign-custom-production-domains-updated",
 				"project-automation-bypass",
+				"project-avatar-dark-mode-update",
 				"project-avatar-update",
 				"project-build-command-updated",
 				"project-build-logs-and-source-protection-updated",
@@ -10895,6 +10983,8 @@ export const userEventSchema = z
 				"v0-chat-ai-usage",
 				"v0-chat-created",
 				"v0-chat-message-sent",
+				"v0-migration-payment-confirmed",
+				"v0-migration-subscription-completed",
 				"vcr-image-deleted",
 				"vcr-image-pushed",
 				"vcr-repository-created",
@@ -11348,7 +11438,11 @@ export const listEventTypeSchema = z
 				"messageboard-created",
 				"messageboard-private-created",
 				"messageboard-private-space-created",
+				"messageboard-private-space-updated",
+				"messageboard-schema-registered",
 				"messageboard-space-created",
+				"messageboard-space-updated",
+				"messageboard-visibility-updated",
 				"microfrontend-group-added",
 				"microfrontend-group-deleted",
 				"microfrontend-group-updated",
@@ -11429,6 +11523,7 @@ export const listEventTypeSchema = z
 				"project-analytics-enabled",
 				"project-auto-assign-custom-production-domains-updated",
 				"project-automation-bypass",
+				"project-avatar-dark-mode-update",
 				"project-avatar-update",
 				"project-build-command-updated",
 				"project-build-logs-and-source-protection-updated",
@@ -11706,6 +11801,8 @@ export const listEventTypeSchema = z
 				"v0-chat-ai-usage",
 				"v0-chat-created",
 				"v0-chat-message-sent",
+				"v0-migration-payment-confirmed",
+				"v0-migration-subscription-completed",
 				"vcr-image-deleted",
 				"vcr-image-pushed",
 				"vcr-repository-created",
@@ -12061,7 +12158,11 @@ export const listEventTypeSchema = z
 					"messageboard-created",
 					"messageboard-private-created",
 					"messageboard-private-space-created",
+					"messageboard-private-space-updated",
+					"messageboard-schema-registered",
 					"messageboard-space-created",
+					"messageboard-space-updated",
+					"messageboard-visibility-updated",
 					"microfrontend-group-added",
 					"microfrontend-group-deleted",
 					"microfrontend-group-updated",
@@ -12142,6 +12243,7 @@ export const listEventTypeSchema = z
 					"project-analytics-enabled",
 					"project-auto-assign-custom-production-domains-updated",
 					"project-automation-bypass",
+					"project-avatar-dark-mode-update",
 					"project-avatar-update",
 					"project-build-command-updated",
 					"project-build-logs-and-source-protection-updated",
@@ -12419,6 +12521,8 @@ export const listEventTypeSchema = z
 					"v0-chat-ai-usage",
 					"v0-chat-created",
 					"v0-chat-message-sent",
+					"v0-migration-payment-confirmed",
+					"v0-migration-subscription-completed",
 					"vcr-image-deleted",
 					"vcr-image-pushed",
 					"vcr-repository-created",
@@ -13410,6 +13514,10 @@ export const driveSchema = z
 			.string()
 			.describe("The unique drive name within the project.")
 			.meta({ examples: ["workspace"] }),
+		parentDriveId: z
+			.string()
+			.optional()
+			.describe("The ID of the source drive when this drive is a fork."),
 		projectId: z
 			.string()
 			.describe("The project that owns the drive.")
@@ -13418,6 +13526,10 @@ export const driveSchema = z
 			.string()
 			.describe("The region where the drive is stored.")
 			.meta({ examples: ["iad1"] }),
+		rootDriveId: z
+			.string()
+			.optional()
+			.describe("The ID of the original drive at the root of this fork."),
 		updatedAt: z
 			.number()
 			.describe("The last time the drive was updated, in milliseconds since the epoch.")
@@ -13962,6 +14074,11 @@ export const teamSchema = z
 				}),
 			)
 			.optional(),
+		limited: z
+			.literal(false)
+			.describe(
+				"Property indicating that this Team data contains full information. Limited Team data has `limited: true`.",
+			),
 		membership: z
 			.object({
 				accessRequestedAt: z.number().optional(),
@@ -14010,6 +14127,7 @@ export const teamSchema = z
 						ssoUserId: z.string().optional(),
 					})
 					.optional(),
+				organizationId: z.string().optional(),
 				role: z.enum([
 					"BILLING",
 					"CONTRIBUTOR",
@@ -14450,6 +14568,7 @@ export const teamLimitedSchema = z
 						ssoUserId: z.string().optional(),
 					})
 					.optional(),
+				organizationId: z.string().optional(),
 				role: z.enum([
 					"BILLING",
 					"CONTRIBUTOR",
@@ -19034,6 +19153,8 @@ export const updateConnectorStatus410Schema = z.unknown();
 
 export const updateConnectorStatus422Schema = z.unknown();
 
+export const updateConnectorStatus500Schema = z.unknown();
+
 export const updateConnectorStatus501Schema = z.unknown();
 
 export const updateConnectorStatus502Schema = z.unknown();
@@ -19050,6 +19171,7 @@ export const updateConnectorErrorSchema = z.union([
 	updateConnectorStatus409Schema,
 	updateConnectorStatus410Schema,
 	updateConnectorStatus422Schema,
+	updateConnectorStatus500Schema,
 	updateConnectorStatus501Schema,
 	updateConnectorStatus502Schema,
 	updateConnectorStatus504Schema,
@@ -19110,6 +19232,49 @@ export const replaceConnectorTriggerDestinationsErrorSchema = z.union([
 	replaceConnectorTriggerDestinationsStatus422Schema,
 	replaceConnectorTriggerDestinationsStatus501Schema,
 	replaceConnectorTriggerDestinationsStatus504Schema,
+]);
+
+export const ejectManagedConnectorPathConnectorSchema = z
+	.string()
+	.describe("Stable connector ID or URL-encoded team-scoped UID.");
+
+export const ejectManagedConnectorQuerySlugSchema = z
+	.string()
+	.optional()
+	.meta({ examples: ["my-team-url-slug"] });
+
+export const ejectManagedConnectorStatus200Schema = z.unknown();
+
+export const ejectManagedConnectorStatus400Schema = z.unknown();
+
+export const ejectManagedConnectorStatus401Schema = z.unknown();
+
+export const ejectManagedConnectorStatus403Schema = z.unknown();
+
+export const ejectManagedConnectorStatus404Schema = z.unknown();
+
+export const ejectManagedConnectorStatus409Schema = z.unknown();
+
+export const ejectManagedConnectorStatus410Schema = z.unknown();
+
+export const ejectManagedConnectorStatus422Schema = z.unknown();
+
+export const ejectManagedConnectorStatus501Schema = z.unknown();
+
+export const ejectManagedConnectorStatus504Schema = z.unknown();
+
+export const ejectManagedConnectorResponseSchema = ejectManagedConnectorStatus200Schema;
+
+export const ejectManagedConnectorErrorSchema = z.union([
+	ejectManagedConnectorStatus400Schema,
+	ejectManagedConnectorStatus401Schema,
+	ejectManagedConnectorStatus403Schema,
+	ejectManagedConnectorStatus404Schema,
+	ejectManagedConnectorStatus409Schema,
+	ejectManagedConnectorStatus410Schema,
+	ejectManagedConnectorStatus422Schema,
+	ejectManagedConnectorStatus501Schema,
+	ejectManagedConnectorStatus504Schema,
 ]);
 
 export const listConnectorProjectConnectionsPathConnectorSchema = z
@@ -26320,6 +26485,18 @@ export const getProjectsQueryFromSchema = z
 	.optional()
 	.describe("Query only projects updated after the given timestamp or continuation token.");
 
+export const getProjectsQuerySinceSchema = z
+	.number()
+	.optional()
+	.describe("Query only projects updated after this JavaScript timestamp.")
+	.meta({ examples: [1540095775941] });
+
+export const getProjectsQueryUntilSchema = z
+	.number()
+	.optional()
+	.describe("Query only projects updated before this JavaScript timestamp.")
+	.meta({ examples: [1540095775951] });
+
 export const getProjectsQueryGitForkProtectionSchema = z
 	.string()
 	.optional()
@@ -28733,6 +28910,58 @@ export const listDrivesErrorSchema = z.union([
 	listDrivesStatus429Schema,
 ]);
 
+export const getDrivePathNameOrIdSchema = z
+	.string()
+	.max(64)
+	.regex(/^[a-zA-Z0-9_-]+$/)
+	.describe("The drive name or ID.")
+	.meta({ examples: ["workspace"] });
+
+export const getDriveQueryProjectIdSchema = z
+	.string()
+	.optional()
+	.describe(
+		"The project ID or name associated with the drive. Required unless using a Vercel OIDC token scoped to a project.",
+	)
+	.meta({ examples: ["prj_abc123"] });
+
+export const getDriveQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe("The Team identifier to perform the request on behalf of.")
+	.meta({ examples: ["team_1a2b3c4d5e6f7g8h9i0j1k2l"] });
+
+export const getDriveQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.")
+	.meta({ examples: ["my-team-url-slug"] });
+
+export const getDriveStatus200Schema = z.unknown();
+
+export const getDriveStatus400Schema = z.unknown();
+
+export const getDriveStatus401Schema = z.unknown();
+
+export const getDriveStatus403Schema = z.unknown();
+
+export const getDriveStatus404Schema = z.unknown();
+
+export const getDriveStatus410Schema = z.unknown();
+
+export const getDriveStatus429Schema = z.unknown();
+
+export const getDriveResponseSchema = getDriveStatus200Schema;
+
+export const getDriveErrorSchema = z.union([
+	getDriveStatus400Schema,
+	getDriveStatus401Schema,
+	getDriveStatus403Schema,
+	getDriveStatus404Schema,
+	getDriveStatus410Schema,
+	getDriveStatus429Schema,
+]);
+
 export const getOrCreateDrivePathNameSchema = z
 	.string()
 	.max(64)
@@ -28845,6 +29074,67 @@ export const deleteDriveErrorSchema = z.union([
 	deleteDriveStatus409Schema,
 	deleteDriveStatus410Schema,
 	deleteDriveStatus429Schema,
+]);
+
+export const forkDrivePathNameSchema = z
+	.string()
+	.max(64)
+	.regex(/^[a-zA-Z0-9_-]+$/)
+	.describe("Name of the source drive to fork.")
+	.meta({ examples: ["workspace"] });
+
+export const forkDriveQueryProjectIdSchema = z
+	.string()
+	.optional()
+	.describe(
+		"The project ID or name associated with the drive. Required unless using a Vercel OIDC token scoped to a project.",
+	)
+	.meta({ examples: ["prj_abc123"] });
+
+export const forkDriveQueryTeamIdSchema = z
+	.string()
+	.optional()
+	.describe("The Team identifier to perform the request on behalf of.")
+	.meta({ examples: ["team_1a2b3c4d5e6f7g8h9i0j1k2l"] });
+
+export const forkDriveQuerySlugSchema = z
+	.string()
+	.optional()
+	.describe("The Team slug to perform the request on behalf of.")
+	.meta({ examples: ["my-team-url-slug"] });
+
+export const forkDriveStatus201Schema = z.unknown();
+
+export const forkDriveStatus400Schema = z.unknown();
+
+export const forkDriveStatus401Schema = z.unknown();
+
+export const forkDriveStatus402Schema = z.unknown();
+
+export const forkDriveStatus403Schema = z.unknown();
+
+export const forkDriveStatus404Schema = z.unknown();
+
+export const forkDriveStatus409Schema = z.unknown();
+
+export const forkDriveStatus410Schema = z.unknown();
+
+export const forkDriveStatus429Schema = z.unknown();
+
+export const forkDriveStatus503Schema = z.unknown();
+
+export const forkDriveResponseSchema = forkDriveStatus201Schema;
+
+export const forkDriveErrorSchema = z.union([
+	forkDriveStatus400Schema,
+	forkDriveStatus401Schema,
+	forkDriveStatus402Schema,
+	forkDriveStatus403Schema,
+	forkDriveStatus404Schema,
+	forkDriveStatus409Schema,
+	forkDriveStatus410Schema,
+	forkDriveStatus429Schema,
+	forkDriveStatus503Schema,
 ]);
 
 export const listSessionSnapshotsQueryProjectSchema = z
@@ -31192,8 +31482,6 @@ export const getTeamAccessRequestStatus200Schema = z.unknown();
 
 export const getTeamAccessRequestStatus400Schema = z.unknown();
 
-export const getTeamAccessRequestStatus401Schema = z.unknown();
-
 export const getTeamAccessRequestStatus403Schema = z.unknown();
 
 export const getTeamAccessRequestStatus404Schema = z.unknown();
@@ -31204,7 +31492,6 @@ export const getTeamAccessRequestResponseSchema = getTeamAccessRequestStatus200S
 
 export const getTeamAccessRequestErrorSchema = z.union([
 	getTeamAccessRequestStatus400Schema,
-	getTeamAccessRequestStatus401Schema,
 	getTeamAccessRequestStatus403Schema,
 	getTeamAccessRequestStatus404Schema,
 	getTeamAccessRequestStatus410Schema,
@@ -31218,8 +31505,6 @@ export const joinTeamPathTeamIdSchema = z
 export const joinTeamStatus200Schema = z.unknown();
 
 export const joinTeamStatus400Schema = z.unknown();
-
-export const joinTeamStatus401Schema = z.unknown();
 
 export const joinTeamStatus402Schema = z.unknown();
 
@@ -31235,7 +31520,6 @@ export const joinTeamResponseSchema = joinTeamStatus200Schema;
 
 export const joinTeamErrorSchema = z.union([
 	joinTeamStatus400Schema,
-	joinTeamStatus401Schema,
 	joinTeamStatus402Schema,
 	joinTeamStatus403Schema,
 	joinTeamStatus404Schema,
@@ -31421,8 +31705,6 @@ export const getTeamsStatus200Schema = z.unknown();
 
 export const getTeamsStatus400Schema = z.unknown();
 
-export const getTeamsStatus401Schema = z.unknown();
-
 export const getTeamsStatus403Schema = z.unknown();
 
 export const getTeamsStatus410Schema = z.unknown();
@@ -31433,7 +31715,6 @@ export const getTeamsResponseSchema = getTeamsStatus200Schema;
 
 export const getTeamsErrorSchema = z.union([
 	getTeamsStatus400Schema,
-	getTeamsStatus401Schema,
 	getTeamsStatus403Schema,
 	getTeamsStatus410Schema,
 	getTeamsStatus500Schema,
@@ -31442,8 +31723,6 @@ export const getTeamsErrorSchema = z.union([
 export const createTeamStatus200Schema = z.unknown();
 
 export const createTeamStatus400Schema = z.unknown();
-
-export const createTeamStatus401Schema = z.unknown();
 
 export const createTeamStatus403Schema = z.unknown();
 
@@ -31455,7 +31734,6 @@ export const createTeamResponseSchema = createTeamStatus200Schema;
 
 export const createTeamErrorSchema = z.union([
 	createTeamStatus400Schema,
-	createTeamStatus401Schema,
 	createTeamStatus403Schema,
 	createTeamStatus404Schema,
 	createTeamStatus410Schema,
@@ -31773,8 +32051,6 @@ export const getAuthTokenStatus200Schema = z.unknown();
 
 export const getAuthTokenStatus400Schema = z.unknown();
 
-export const getAuthTokenStatus401Schema = z.unknown();
-
 export const getAuthTokenStatus403Schema = z.unknown();
 
 export const getAuthTokenStatus404Schema = z.unknown();
@@ -31785,7 +32061,6 @@ export const getAuthTokenResponseSchema = getAuthTokenStatus200Schema;
 
 export const getAuthTokenErrorSchema = z.union([
 	getAuthTokenStatus400Schema,
-	getAuthTokenStatus401Schema,
 	getAuthTokenStatus403Schema,
 	getAuthTokenStatus404Schema,
 	getAuthTokenStatus410Schema,
@@ -31802,8 +32077,6 @@ export const deleteAuthTokenStatus200Schema = z.unknown();
 
 export const deleteAuthTokenStatus400Schema = z.unknown();
 
-export const deleteAuthTokenStatus401Schema = z.unknown();
-
 export const deleteAuthTokenStatus403Schema = z.unknown();
 
 export const deleteAuthTokenStatus404Schema = z.unknown();
@@ -31814,7 +32087,6 @@ export const deleteAuthTokenResponseSchema = deleteAuthTokenStatus200Schema;
 
 export const deleteAuthTokenErrorSchema = z.union([
 	deleteAuthTokenStatus400Schema,
-	deleteAuthTokenStatus401Schema,
 	deleteAuthTokenStatus403Schema,
 	deleteAuthTokenStatus404Schema,
 	deleteAuthTokenStatus410Schema,
@@ -31849,8 +32121,6 @@ export const requestDeleteStatus202Schema = z.unknown();
 
 export const requestDeleteStatus400Schema = z.unknown();
 
-export const requestDeleteStatus401Schema = z.unknown();
-
 export const requestDeleteStatus402Schema = z.unknown();
 
 export const requestDeleteStatus403Schema = z.unknown();
@@ -31861,7 +32131,6 @@ export const requestDeleteResponseSchema = requestDeleteStatus202Schema;
 
 export const requestDeleteErrorSchema = z.union([
 	requestDeleteStatus400Schema,
-	requestDeleteStatus401Schema,
 	requestDeleteStatus402Schema,
 	requestDeleteStatus403Schema,
 	requestDeleteStatus410Schema,

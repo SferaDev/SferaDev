@@ -977,6 +977,11 @@ export type ConnectConnector = {
 	 */
 	supportsInstallation: false | true;
 	/**
+	 * @description Whether this managed connector can disconnect from its manager.
+	 * @type boolean | undefined
+	 */
+	supportsManagedEjection?: (false | true) | undefined;
+	/**
 	 * @description Whether Connect can revoke tokens for this connector.
 	 * @type boolean
 	 */
@@ -1380,6 +1385,11 @@ export type ConnectConnectorCreateResult = {
 	 * @type boolean
 	 */
 	supportsInstallation: false | true;
+	/**
+	 * @description Whether this managed connector can disconnect from its manager.
+	 * @type boolean | undefined
+	 */
+	supportsManagedEjection?: (false | true) | undefined;
 	/**
 	 * @description Whether Connect can revoke tokens for this connector.
 	 * @type boolean
@@ -2589,10 +2599,19 @@ export type ConnectCreateConnectorRequest = (unknown | unknown) & {
 	 */
 	triggerType?: string | undefined;
 	/**
-	 * @description Trigger configuration, validated and encrypted by the trigger driver. An empty object applies driver defaults.
+	 * @description Plaintext verification inputs, validated by the trigger driver and encrypted into stored triggerData. An empty object makes no changes.
 	 * @type object | undefined
 	 */
-	triggerData?:
+	triggerVerificationInput?:
+		| {
+				[key: string]: unknown;
+		  }
+		| undefined;
+	/**
+	 * @description Additional registration inputs, validated by the trigger driver. Requires triggers: true. Shared verification credentials are read from triggerData.
+	 * @type object | undefined
+	 */
+	triggerRegistrationInput?:
 		| {
 				[key: string]: unknown;
 		  }
@@ -3742,10 +3761,19 @@ export type ConnectUpdateConnectorRequest = {
 	 */
 	triggers?: boolean | undefined;
 	/**
-	 * @description Trigger configuration, validated and encrypted by the trigger driver. An empty object applies driver defaults.
+	 * @description Plaintext verification inputs, validated by the trigger driver and encrypted into stored triggerData. An empty object makes no changes.
 	 * @type object | undefined
 	 */
-	triggerData?:
+	triggerVerificationInput?:
+		| {
+				[key: string]: unknown;
+		  }
+		| undefined;
+	/**
+	 * @description Additional registration inputs, validated by the trigger driver. Requires triggers: true. Shared verification credentials are read from triggerData.
+	 * @type object | undefined
+	 */
+	triggerRegistrationInput?:
 		| {
 				[key: string]: unknown;
 		  }
@@ -4597,6 +4625,14 @@ export const userEventPayloadActionEnum = {
 export type UserEventPayloadActionEnumKey =
 	(typeof userEventPayloadActionEnum)[keyof typeof userEventPayloadActionEnum];
 
+export const userEventPayloadVisibilityEnum = {
+	config: "config",
+	secret: "secret",
+} as const;
+
+export type UserEventPayloadVisibilityEnumKey =
+	(typeof userEventPayloadVisibilityEnum)[keyof typeof userEventPayloadVisibilityEnum];
+
 export const userEventPayloadProviderEnum = {
 	apple: "apple",
 	bitbucket: "bitbucket",
@@ -5258,13 +5294,23 @@ export const userEventPayloadToAccountTypeEnum = {
 export type UserEventPayloadToAccountTypeEnumKey =
 	(typeof userEventPayloadToAccountTypeEnum)[keyof typeof userEventPayloadToAccountTypeEnum];
 
-export const userEventPayloadVisibilityEnum = {
-	config: "config",
-	secret: "secret",
+export const userEventPayloadUpdateDiffNewTargetEnum = {
+	development: "development",
+	preview: "preview",
+	production: "production",
 } as const;
 
-export type UserEventPayloadVisibilityEnumKey =
-	(typeof userEventPayloadVisibilityEnum)[keyof typeof userEventPayloadVisibilityEnum];
+export type UserEventPayloadUpdateDiffNewTargetEnumKey =
+	(typeof userEventPayloadUpdateDiffNewTargetEnum)[keyof typeof userEventPayloadUpdateDiffNewTargetEnum];
+
+export const userEventPayloadUpdateDiffOldTargetEnum = {
+	development: "development",
+	preview: "preview",
+	production: "production",
+} as const;
+
+export type UserEventPayloadUpdateDiffOldTargetEnumKey =
+	(typeof userEventPayloadUpdateDiffOldTargetEnum)[keyof typeof userEventPayloadUpdateDiffOldTargetEnum];
 
 export const userEventPayloadTargetEnum = {
 	development: "development",
@@ -5323,24 +5369,6 @@ export const userEventPayloadOldEnvVarTypeEnum = {
 
 export type UserEventPayloadOldEnvVarTypeEnumKey =
 	(typeof userEventPayloadOldEnvVarTypeEnum)[keyof typeof userEventPayloadOldEnvVarTypeEnum];
-
-export const userEventPayloadUpdateDiffNewTargetEnum = {
-	development: "development",
-	preview: "preview",
-	production: "production",
-} as const;
-
-export type UserEventPayloadUpdateDiffNewTargetEnumKey =
-	(typeof userEventPayloadUpdateDiffNewTargetEnum)[keyof typeof userEventPayloadUpdateDiffNewTargetEnum];
-
-export const userEventPayloadUpdateDiffOldTargetEnum = {
-	development: "development",
-	preview: "preview",
-	production: "production",
-} as const;
-
-export type UserEventPayloadUpdateDiffOldTargetEnumKey =
-	(typeof userEventPayloadUpdateDiffOldTargetEnum)[keyof typeof userEventPayloadUpdateDiffOldTargetEnum];
 
 export const actionEnum = {
 	challenge: "challenge",
@@ -6574,7 +6602,11 @@ export const userEventTypeEnum = {
 	"messageboard-created": "messageboard-created",
 	"messageboard-private-created": "messageboard-private-created",
 	"messageboard-private-space-created": "messageboard-private-space-created",
+	"messageboard-private-space-updated": "messageboard-private-space-updated",
+	"messageboard-schema-registered": "messageboard-schema-registered",
 	"messageboard-space-created": "messageboard-space-created",
+	"messageboard-space-updated": "messageboard-space-updated",
+	"messageboard-visibility-updated": "messageboard-visibility-updated",
 	"microfrontend-group-added": "microfrontend-group-added",
 	"microfrontend-group-deleted": "microfrontend-group-deleted",
 	"microfrontend-group-updated": "microfrontend-group-updated",
@@ -6656,6 +6688,7 @@ export const userEventTypeEnum = {
 	"project-auto-assign-custom-production-domains-updated":
 		"project-auto-assign-custom-production-domains-updated",
 	"project-automation-bypass": "project-automation-bypass",
+	"project-avatar-dark-mode-update": "project-avatar-dark-mode-update",
 	"project-avatar-update": "project-avatar-update",
 	"project-build-command-updated": "project-build-command-updated",
 	"project-build-logs-and-source-protection-updated":
@@ -6942,6 +6975,8 @@ export const userEventTypeEnum = {
 	"v0-chat-ai-usage": "v0-chat-ai-usage",
 	"v0-chat-created": "v0-chat-created",
 	"v0-chat-message-sent": "v0-chat-message-sent",
+	"v0-migration-payment-confirmed": "v0-migration-payment-confirmed",
+	"v0-migration-subscription-completed": "v0-migration-subscription-completed",
 	"vcr-image-deleted": "vcr-image-deleted",
 	"vcr-image-pushed": "vcr-image-pushed",
 	"vcr-repository-created": "vcr-repository-created",
@@ -7071,6 +7106,21 @@ export type UserEvent = {
 						boardId: string;
 						operationId: string;
 						spaceId: string;
+				  }
+				| {
+						boardId: string;
+						fields: string[];
+						operationId: string;
+						spaceId: string;
+				  }
+				| {
+						boardId: string;
+						operationId: string;
+						visibility: UserEventPayloadVisibilityEnumKey;
+				  }
+				| {
+						operationId: string;
+						schemaId: string;
 				  }
 				| {
 						/**
@@ -7817,6 +7867,13 @@ export type UserEvent = {
 						invoiceId: string;
 						newInvoiceId: string;
 						settlementMethod: UserEventPayloadSettlementMethodEnumKey;
+				  }
+				| {
+						subscriptionId: string;
+				  }
+				| {
+						paymentMethodId: string;
+						subscriptionId: string;
 				  }
 				| {
 						brand?: string | undefined;
@@ -9372,6 +9429,38 @@ export type UserEvent = {
 						projectName?: string | undefined;
 						source?: string | undefined;
 						target?: (string | string[]) | undefined;
+						updateDiff?:
+							| {
+									changedComment?: (false | true) | undefined;
+									changedGitBranch?: (false | true) | undefined;
+									/**
+									 * @description Indicates a value was submitted, not whether its plaintext changed.
+									 * @type boolean
+									 */
+									changedValue: false | true;
+									key?: string | undefined;
+									newCustomEnvironmentIds?: string[] | undefined;
+									newKey?: string | undefined;
+									newTarget?: UserEventPayloadUpdateDiffNewTargetEnumKey[] | undefined;
+									newType?: string | undefined;
+									oldCustomEnvironmentIds?: string[] | undefined;
+									oldTarget?: UserEventPayloadUpdateDiffOldTargetEnumKey[] | undefined;
+									oldType?: string | undefined;
+							  }
+							| undefined;
+				  }
+				| {
+						customEnvironmentSlugs?: string[] | undefined;
+						edgeConfigId?: (string | null) | undefined;
+						edgeConfigTokenId?: (string | null) | undefined;
+						gitBranch?: string | undefined;
+						id?: string | undefined;
+						ipAddress?: string | undefined;
+						key?: string | undefined;
+						projectId?: string | undefined;
+						projectName?: string | undefined;
+						source?: string | undefined;
+						target?: (string | string[]) | undefined;
 						deploymentId: string;
 						deploymentUrl: string;
 				  }
@@ -9787,28 +9876,34 @@ export type UserEvent = {
 							| undefined;
 						updateDiff?:
 							| {
+									changedComment?: (false | true) | undefined;
+									changedGitBranch?: (false | true) | undefined;
+									/**
+									 * @description Indicates a value was submitted, not whether its plaintext changed.
+									 * @type boolean
+									 */
 									changedValue: false | true;
-									id: string;
 									key?: string | undefined;
 									newCustomEnvironmentIds?: string[] | undefined;
 									newKey?: string | undefined;
+									newTarget?: UserEventPayloadUpdateDiffNewTargetEnumKey[] | undefined;
+									newType?: string | undefined;
+									oldCustomEnvironmentIds?: string[] | undefined;
+									oldTarget?: UserEventPayloadUpdateDiffOldTargetEnumKey[] | undefined;
+									oldType?: string | undefined;
+									id: string;
 									newProjects?:
 										| {
 												projectId: string;
 												projectName?: string | undefined;
 										  }[]
 										| undefined;
-									newTarget?: UserEventPayloadUpdateDiffNewTargetEnumKey[] | undefined;
-									newType?: string | undefined;
-									oldCustomEnvironmentIds?: string[] | undefined;
 									oldProjects?:
 										| {
 												projectId: string;
 												projectName?: string | undefined;
 										  }[]
 										| undefined;
-									oldTarget?: UserEventPayloadUpdateDiffOldTargetEnumKey[] | undefined;
-									oldType?: string | undefined;
 							  }
 							| undefined;
 				  }
@@ -10904,6 +10999,11 @@ export type UserEvent = {
 				  }
 				| {
 						avatar?: (string | null) | undefined;
+						projectId: string;
+						projectName: string;
+				  }
+				| {
+						avatarDarkMode?: (string | null) | undefined;
 						projectId: string;
 						projectName: string;
 				  }
@@ -14182,7 +14282,11 @@ export const listEventTypeNameEnum = {
 	"messageboard-created": "messageboard-created",
 	"messageboard-private-created": "messageboard-private-created",
 	"messageboard-private-space-created": "messageboard-private-space-created",
+	"messageboard-private-space-updated": "messageboard-private-space-updated",
+	"messageboard-schema-registered": "messageboard-schema-registered",
 	"messageboard-space-created": "messageboard-space-created",
+	"messageboard-space-updated": "messageboard-space-updated",
+	"messageboard-visibility-updated": "messageboard-visibility-updated",
 	"microfrontend-group-added": "microfrontend-group-added",
 	"microfrontend-group-deleted": "microfrontend-group-deleted",
 	"microfrontend-group-updated": "microfrontend-group-updated",
@@ -14264,6 +14368,7 @@ export const listEventTypeNameEnum = {
 	"project-auto-assign-custom-production-domains-updated":
 		"project-auto-assign-custom-production-domains-updated",
 	"project-automation-bypass": "project-automation-bypass",
+	"project-avatar-dark-mode-update": "project-avatar-dark-mode-update",
 	"project-avatar-update": "project-avatar-update",
 	"project-build-command-updated": "project-build-command-updated",
 	"project-build-logs-and-source-protection-updated":
@@ -14550,6 +14655,8 @@ export const listEventTypeNameEnum = {
 	"v0-chat-ai-usage": "v0-chat-ai-usage",
 	"v0-chat-created": "v0-chat-created",
 	"v0-chat-message-sent": "v0-chat-message-sent",
+	"v0-migration-payment-confirmed": "v0-migration-payment-confirmed",
+	"v0-migration-subscription-completed": "v0-migration-subscription-completed",
 	"vcr-image-deleted": "vcr-image-deleted",
 	"vcr-image-pushed": "vcr-image-pushed",
 	"vcr-repository-created": "vcr-repository-created",
@@ -14910,7 +15017,11 @@ export const listEventTypeReplacedByEnum = {
 	"messageboard-created": "messageboard-created",
 	"messageboard-private-created": "messageboard-private-created",
 	"messageboard-private-space-created": "messageboard-private-space-created",
+	"messageboard-private-space-updated": "messageboard-private-space-updated",
+	"messageboard-schema-registered": "messageboard-schema-registered",
 	"messageboard-space-created": "messageboard-space-created",
+	"messageboard-space-updated": "messageboard-space-updated",
+	"messageboard-visibility-updated": "messageboard-visibility-updated",
 	"microfrontend-group-added": "microfrontend-group-added",
 	"microfrontend-group-deleted": "microfrontend-group-deleted",
 	"microfrontend-group-updated": "microfrontend-group-updated",
@@ -14992,6 +15103,7 @@ export const listEventTypeReplacedByEnum = {
 	"project-auto-assign-custom-production-domains-updated":
 		"project-auto-assign-custom-production-domains-updated",
 	"project-automation-bypass": "project-automation-bypass",
+	"project-avatar-dark-mode-update": "project-avatar-dark-mode-update",
 	"project-avatar-update": "project-avatar-update",
 	"project-build-command-updated": "project-build-command-updated",
 	"project-build-logs-and-source-protection-updated":
@@ -15278,6 +15390,8 @@ export const listEventTypeReplacedByEnum = {
 	"v0-chat-ai-usage": "v0-chat-ai-usage",
 	"v0-chat-created": "v0-chat-created",
 	"v0-chat-message-sent": "v0-chat-message-sent",
+	"v0-migration-payment-confirmed": "v0-migration-payment-confirmed",
+	"v0-migration-subscription-completed": "v0-migration-subscription-completed",
 	"vcr-image-deleted": "vcr-image-deleted",
 	"vcr-image-pushed": "vcr-image-pushed",
 	"vcr-repository-created": "vcr-repository-created",
@@ -16600,6 +16714,11 @@ export type Drive = {
 	 */
 	name: string;
 	/**
+	 * @description The ID of the source drive when this drive is a fork.
+	 * @type string | undefined
+	 */
+	parentDriveId?: string | undefined;
+	/**
 	 * @description The project that owns the drive.
 	 * @example prj_abc123
 	 * @type string
@@ -16611,6 +16730,11 @@ export type Drive = {
 	 * @type string
 	 */
 	region: string;
+	/**
+	 * @description The ID of the original drive at the root of this fork.
+	 * @type string | undefined
+	 */
+	rootDriveId?: string | undefined;
 	/**
 	 * @description The last time the drive was updated, in milliseconds since the epoch.
 	 * @example 1750344501629
@@ -17533,6 +17657,11 @@ export type Team = {
 		  }[]
 		| undefined;
 	/**
+	 * @description Property indicating that this Team data contains full information. Limited Team data has `limited: true`.
+	 * @type boolean
+	 */
+	limited: false;
+	/**
 	 * @description The membership of the authenticated User in relation to the Team.
 	 * @type object | undefined
 	 */
@@ -17562,6 +17691,7 @@ export type Team = {
 							ssoUserId?: string | undefined;
 					  }
 					| undefined;
+				organizationId?: string | undefined;
 				role: TeamMembershipRoleEnumKey;
 				teamId?: string | undefined;
 				teamPermissions?: TeamMembershipTeamPermissionsEnumKey[] | undefined;
@@ -18085,6 +18215,7 @@ export type TeamLimited = {
 							ssoUserId?: string | undefined;
 					  }
 					| undefined;
+				organizationId?: string | undefined;
 				role: TeamLimitedMembershipRoleEnumKey;
 				teamId?: string | undefined;
 				teamPermissions?: TeamLimitedMembershipTeamPermissionsEnumKey[] | undefined;
@@ -24550,6 +24681,8 @@ export type UpdateConnectorStatus410 = unknown;
 
 export type UpdateConnectorStatus422 = unknown;
 
+export type UpdateConnectorStatus500 = unknown;
+
 export type UpdateConnectorStatus501 = unknown;
 
 export type UpdateConnectorStatus502 = unknown;
@@ -24572,6 +24705,7 @@ export type UpdateConnectorResponses = {
 	"409": UpdateConnectorStatus409;
 	"410": UpdateConnectorStatus410;
 	"422": UpdateConnectorStatus422;
+	"500": UpdateConnectorStatus500;
 	"501": UpdateConnectorStatus501;
 	"502": UpdateConnectorStatus502;
 	"504": UpdateConnectorStatus504;
@@ -24589,6 +24723,7 @@ export type UpdateConnectorResponse =
 	| UpdateConnectorStatus409
 	| UpdateConnectorStatus410
 	| UpdateConnectorStatus422
+	| UpdateConnectorStatus500
 	| UpdateConnectorStatus501
 	| UpdateConnectorStatus502
 	| UpdateConnectorStatus504;
@@ -24670,6 +24805,77 @@ export type ReplaceConnectorTriggerDestinationsResponse =
 	| ReplaceConnectorTriggerDestinationsStatus422
 	| ReplaceConnectorTriggerDestinationsStatus501
 	| ReplaceConnectorTriggerDestinationsStatus504;
+
+export type EjectManagedConnectorPath = {
+	/**
+	 * @description Stable connector ID or URL-encoded team-scoped UID.
+	 * @type string
+	 */
+	connector: string;
+};
+
+export type EjectManagedConnectorQuery = {
+	/**
+	 * @example my-team-url-slug
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type EjectManagedConnectorStatus200 = unknown;
+
+export type EjectManagedConnectorStatus400 = unknown;
+
+export type EjectManagedConnectorStatus401 = unknown;
+
+export type EjectManagedConnectorStatus403 = unknown;
+
+export type EjectManagedConnectorStatus404 = unknown;
+
+export type EjectManagedConnectorStatus409 = unknown;
+
+export type EjectManagedConnectorStatus410 = unknown;
+
+export type EjectManagedConnectorStatus422 = unknown;
+
+export type EjectManagedConnectorStatus501 = unknown;
+
+export type EjectManagedConnectorStatus504 = unknown;
+
+export type EjectManagedConnectorOptions = {
+	body?: never | undefined;
+	path: EjectManagedConnectorPath;
+	query?: EjectManagedConnectorQuery | undefined;
+	headers?: never | undefined;
+};
+
+export type EjectManagedConnectorResponses = {
+	"200": EjectManagedConnectorStatus200;
+	"400": EjectManagedConnectorStatus400;
+	"401": EjectManagedConnectorStatus401;
+	"403": EjectManagedConnectorStatus403;
+	"404": EjectManagedConnectorStatus404;
+	"409": EjectManagedConnectorStatus409;
+	"410": EjectManagedConnectorStatus410;
+	"422": EjectManagedConnectorStatus422;
+	"501": EjectManagedConnectorStatus501;
+	"504": EjectManagedConnectorStatus504;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type EjectManagedConnectorResponse =
+	| EjectManagedConnectorStatus200
+	| EjectManagedConnectorStatus400
+	| EjectManagedConnectorStatus401
+	| EjectManagedConnectorStatus403
+	| EjectManagedConnectorStatus404
+	| EjectManagedConnectorStatus409
+	| EjectManagedConnectorStatus410
+	| EjectManagedConnectorStatus422
+	| EjectManagedConnectorStatus501
+	| EjectManagedConnectorStatus504;
 
 export type ListConnectorProjectConnectionsPath = {
 	/**
@@ -36024,6 +36230,18 @@ export type GetProjectsQuery = {
 	 */
 	from?: string | undefined;
 	/**
+	 * @description Query only projects updated after this JavaScript timestamp.
+	 * @example 1540095775941
+	 * @type number | undefined
+	 */
+	since?: number | undefined;
+	/**
+	 * @description Query only projects updated before this JavaScript timestamp.
+	 * @example 1540095775951
+	 * @type number | undefined
+	 */
+	until?: number | undefined;
+	/**
 	 * @description Specifies whether PRs from Git forks should require a team member\'s authorization before it can be deployed
 	 * @example 1
 	 * @type string | undefined
@@ -39709,6 +39927,81 @@ export type ListDrivesResponse =
 	| ListDrivesStatus410
 	| ListDrivesStatus429;
 
+export type GetDrivePath = {
+	/**
+	 * @description The drive name or ID.
+	 * @maxLength 64
+	 * @pattern ^[a-zA-Z0-9_-]+$
+	 * @example workspace
+	 * @type string
+	 */
+	nameOrId: string;
+};
+
+export type GetDriveQuery = {
+	/**
+	 * @description The project ID or name associated with the drive. Required unless using a Vercel OIDC token scoped to a project.
+	 * @example prj_abc123
+	 * @type string | undefined
+	 */
+	projectId?: string | undefined;
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @example my-team-url-slug
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type GetDriveStatus200 = unknown;
+
+export type GetDriveStatus400 = unknown;
+
+export type GetDriveStatus401 = unknown;
+
+export type GetDriveStatus403 = unknown;
+
+export type GetDriveStatus404 = unknown;
+
+export type GetDriveStatus410 = unknown;
+
+export type GetDriveStatus429 = unknown;
+
+export type GetDriveOptions = {
+	body?: never | undefined;
+	path: GetDrivePath;
+	query?: GetDriveQuery | undefined;
+	headers?: never | undefined;
+};
+
+export type GetDriveResponses = {
+	"200": GetDriveStatus200;
+	"400": GetDriveStatus400;
+	"401": GetDriveStatus401;
+	"403": GetDriveStatus403;
+	"404": GetDriveStatus404;
+	"410": GetDriveStatus410;
+	"429": GetDriveStatus429;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type GetDriveResponse =
+	| GetDriveStatus200
+	| GetDriveStatus400
+	| GetDriveStatus401
+	| GetDriveStatus403
+	| GetDriveStatus404
+	| GetDriveStatus410
+	| GetDriveStatus429;
+
 export type GetOrCreateDrivePath = {
 	/**
 	 * @description Name for the drive. Must be unique per project and URL-safe (alphanumeric, hyphens, underscores).
@@ -39868,6 +40161,93 @@ export type DeleteDriveResponse =
 	| DeleteDriveStatus409
 	| DeleteDriveStatus410
 	| DeleteDriveStatus429;
+
+export type ForkDrivePath = {
+	/**
+	 * @description Name of the source drive to fork.
+	 * @maxLength 64
+	 * @pattern ^[a-zA-Z0-9_-]+$
+	 * @example workspace
+	 * @type string
+	 */
+	name: string;
+};
+
+export type ForkDriveQuery = {
+	/**
+	 * @description The project ID or name associated with the drive. Required unless using a Vercel OIDC token scoped to a project.
+	 * @example prj_abc123
+	 * @type string | undefined
+	 */
+	projectId?: string | undefined;
+	/**
+	 * @description The Team identifier to perform the request on behalf of.
+	 * @example team_1a2b3c4d5e6f7g8h9i0j1k2l
+	 * @type string | undefined
+	 */
+	teamId?: string | undefined;
+	/**
+	 * @description The Team slug to perform the request on behalf of.
+	 * @example my-team-url-slug
+	 * @type string | undefined
+	 */
+	slug?: string | undefined;
+};
+
+export type ForkDriveStatus201 = unknown;
+
+export type ForkDriveStatus400 = unknown;
+
+export type ForkDriveStatus401 = unknown;
+
+export type ForkDriveStatus402 = unknown;
+
+export type ForkDriveStatus403 = unknown;
+
+export type ForkDriveStatus404 = unknown;
+
+export type ForkDriveStatus409 = unknown;
+
+export type ForkDriveStatus410 = unknown;
+
+export type ForkDriveStatus429 = unknown;
+
+export type ForkDriveStatus503 = unknown;
+
+export type ForkDriveOptions = {
+	body?: never | undefined;
+	path: ForkDrivePath;
+	query?: ForkDriveQuery | undefined;
+	headers?: never | undefined;
+};
+
+export type ForkDriveResponses = {
+	"201": ForkDriveStatus201;
+	"400": ForkDriveStatus400;
+	"401": ForkDriveStatus401;
+	"402": ForkDriveStatus402;
+	"403": ForkDriveStatus403;
+	"404": ForkDriveStatus404;
+	"409": ForkDriveStatus409;
+	"410": ForkDriveStatus410;
+	"429": ForkDriveStatus429;
+	"503": ForkDriveStatus503;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type ForkDriveResponse =
+	| ForkDriveStatus201
+	| ForkDriveStatus400
+	| ForkDriveStatus401
+	| ForkDriveStatus402
+	| ForkDriveStatus403
+	| ForkDriveStatus404
+	| ForkDriveStatus409
+	| ForkDriveStatus410
+	| ForkDriveStatus429
+	| ForkDriveStatus503;
 
 export const listSessionSnapshotsSortOrder = {
 	asc: "asc",
@@ -43387,8 +43767,6 @@ export type GetTeamAccessRequestStatus200 = unknown;
 
 export type GetTeamAccessRequestStatus400 = unknown;
 
-export type GetTeamAccessRequestStatus401 = unknown;
-
 export type GetTeamAccessRequestStatus403 = unknown;
 
 export type GetTeamAccessRequestStatus404 = unknown;
@@ -43405,7 +43783,6 @@ export type GetTeamAccessRequestOptions = {
 export type GetTeamAccessRequestResponses = {
 	"200": GetTeamAccessRequestStatus200;
 	"400": GetTeamAccessRequestStatus400;
-	"401": GetTeamAccessRequestStatus401;
 	"403": GetTeamAccessRequestStatus403;
 	"404": GetTeamAccessRequestStatus404;
 	"410": GetTeamAccessRequestStatus410;
@@ -43417,7 +43794,6 @@ export type GetTeamAccessRequestResponses = {
 export type GetTeamAccessRequestResponse =
 	| GetTeamAccessRequestStatus200
 	| GetTeamAccessRequestStatus400
-	| GetTeamAccessRequestStatus401
 	| GetTeamAccessRequestStatus403
 	| GetTeamAccessRequestStatus404
 	| GetTeamAccessRequestStatus410;
@@ -43434,8 +43810,6 @@ export type JoinTeamPath = {
 export type JoinTeamStatus200 = unknown;
 
 export type JoinTeamStatus400 = unknown;
-
-export type JoinTeamStatus401 = unknown;
 
 export type JoinTeamStatus402 = unknown;
 
@@ -43457,7 +43831,6 @@ export type JoinTeamOptions = {
 export type JoinTeamResponses = {
 	"200": JoinTeamStatus200;
 	"400": JoinTeamStatus400;
-	"401": JoinTeamStatus401;
 	"402": JoinTeamStatus402;
 	"403": JoinTeamStatus403;
 	"404": JoinTeamStatus404;
@@ -43471,7 +43844,6 @@ export type JoinTeamResponses = {
 export type JoinTeamResponse =
 	| JoinTeamStatus200
 	| JoinTeamStatus400
-	| JoinTeamStatus401
 	| JoinTeamStatus402
 	| JoinTeamStatus403
 	| JoinTeamStatus404
@@ -43761,8 +44133,6 @@ export type GetTeamsStatus200 = unknown;
 
 export type GetTeamsStatus400 = unknown;
 
-export type GetTeamsStatus401 = unknown;
-
 export type GetTeamsStatus403 = unknown;
 
 export type GetTeamsStatus410 = unknown;
@@ -43779,7 +44149,6 @@ export type GetTeamsOptions = {
 export type GetTeamsResponses = {
 	"200": GetTeamsStatus200;
 	"400": GetTeamsStatus400;
-	"401": GetTeamsStatus401;
 	"403": GetTeamsStatus403;
 	"410": GetTeamsStatus410;
 	"500": GetTeamsStatus500;
@@ -43791,7 +44160,6 @@ export type GetTeamsResponses = {
 export type GetTeamsResponse =
 	| GetTeamsStatus200
 	| GetTeamsStatus400
-	| GetTeamsStatus401
 	| GetTeamsStatus403
 	| GetTeamsStatus410
 	| GetTeamsStatus500;
@@ -43799,8 +44167,6 @@ export type GetTeamsResponse =
 export type CreateTeamStatus200 = unknown;
 
 export type CreateTeamStatus400 = unknown;
-
-export type CreateTeamStatus401 = unknown;
 
 export type CreateTeamStatus403 = unknown;
 
@@ -43818,7 +44184,6 @@ export type CreateTeamOptions = {
 export type CreateTeamResponses = {
 	"200": CreateTeamStatus200;
 	"400": CreateTeamStatus400;
-	"401": CreateTeamStatus401;
 	"403": CreateTeamStatus403;
 	"404": CreateTeamStatus404;
 	"410": CreateTeamStatus410;
@@ -43830,7 +44195,6 @@ export type CreateTeamResponses = {
 export type CreateTeamResponse =
 	| CreateTeamStatus200
 	| CreateTeamStatus400
-	| CreateTeamStatus401
 	| CreateTeamStatus403
 	| CreateTeamStatus404
 	| CreateTeamStatus410;
@@ -44333,8 +44697,6 @@ export type GetAuthTokenStatus200 = unknown;
 
 export type GetAuthTokenStatus400 = unknown;
 
-export type GetAuthTokenStatus401 = unknown;
-
 export type GetAuthTokenStatus403 = unknown;
 
 export type GetAuthTokenStatus404 = unknown;
@@ -44351,7 +44713,6 @@ export type GetAuthTokenOptions = {
 export type GetAuthTokenResponses = {
 	"200": GetAuthTokenStatus200;
 	"400": GetAuthTokenStatus400;
-	"401": GetAuthTokenStatus401;
 	"403": GetAuthTokenStatus403;
 	"404": GetAuthTokenStatus404;
 	"410": GetAuthTokenStatus410;
@@ -44363,7 +44724,6 @@ export type GetAuthTokenResponses = {
 export type GetAuthTokenResponse =
 	| GetAuthTokenStatus200
 	| GetAuthTokenStatus400
-	| GetAuthTokenStatus401
 	| GetAuthTokenStatus403
 	| GetAuthTokenStatus404
 	| GetAuthTokenStatus410;
@@ -44381,8 +44741,6 @@ export type DeleteAuthTokenStatus200 = unknown;
 
 export type DeleteAuthTokenStatus400 = unknown;
 
-export type DeleteAuthTokenStatus401 = unknown;
-
 export type DeleteAuthTokenStatus403 = unknown;
 
 export type DeleteAuthTokenStatus404 = unknown;
@@ -44399,7 +44757,6 @@ export type DeleteAuthTokenOptions = {
 export type DeleteAuthTokenResponses = {
 	"200": DeleteAuthTokenStatus200;
 	"400": DeleteAuthTokenStatus400;
-	"401": DeleteAuthTokenStatus401;
 	"403": DeleteAuthTokenStatus403;
 	"404": DeleteAuthTokenStatus404;
 	"410": DeleteAuthTokenStatus410;
@@ -44411,7 +44768,6 @@ export type DeleteAuthTokenResponses = {
 export type DeleteAuthTokenResponse =
 	| DeleteAuthTokenStatus200
 	| DeleteAuthTokenStatus400
-	| DeleteAuthTokenStatus401
 	| DeleteAuthTokenStatus403
 	| DeleteAuthTokenStatus404
 	| DeleteAuthTokenStatus410;
@@ -44463,8 +44819,6 @@ export type RequestDeleteStatus202 = unknown;
 
 export type RequestDeleteStatus400 = unknown;
 
-export type RequestDeleteStatus401 = unknown;
-
 export type RequestDeleteStatus402 = unknown;
 
 export type RequestDeleteStatus403 = unknown;
@@ -44481,7 +44835,6 @@ export type RequestDeleteOptions = {
 export type RequestDeleteResponses = {
 	"202": RequestDeleteStatus202;
 	"400": RequestDeleteStatus400;
-	"401": RequestDeleteStatus401;
 	"402": RequestDeleteStatus402;
 	"403": RequestDeleteStatus403;
 	"410": RequestDeleteStatus410;
@@ -44493,7 +44846,6 @@ export type RequestDeleteResponses = {
 export type RequestDeleteResponse =
 	| RequestDeleteStatus202
 	| RequestDeleteStatus400
-	| RequestDeleteStatus401
 	| RequestDeleteStatus402
 	| RequestDeleteStatus403
 	| RequestDeleteStatus410;

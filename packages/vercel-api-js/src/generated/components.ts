@@ -601,7 +601,6 @@ import type {
 	CreateStorageStoresBlobStatus429,
 	CreateTeamResponse,
 	CreateTeamStatus400,
-	CreateTeamStatus401,
 	CreateTeamStatus403,
 	CreateTeamStatus404,
 	CreateTeamStatus410,
@@ -684,7 +683,6 @@ import type {
 	DeleteAllArtifactsStatus410,
 	DeleteAuthTokenResponse,
 	DeleteAuthTokenStatus400,
-	DeleteAuthTokenStatus401,
 	DeleteAuthTokenStatus403,
 	DeleteAuthTokenStatus404,
 	DeleteAuthTokenStatus410,
@@ -1000,6 +998,16 @@ import type {
 	EditRouteStatus409,
 	EditRouteStatus410,
 	EditRouteStatus500,
+	EjectManagedConnectorResponse,
+	EjectManagedConnectorStatus400,
+	EjectManagedConnectorStatus401,
+	EjectManagedConnectorStatus403,
+	EjectManagedConnectorStatus404,
+	EjectManagedConnectorStatus409,
+	EjectManagedConnectorStatus410,
+	EjectManagedConnectorStatus422,
+	EjectManagedConnectorStatus501,
+	EjectManagedConnectorStatus504,
 	ExchangeSsoTokenResponse,
 	ExchangeSsoTokenStatus400,
 	ExchangeSsoTokenStatus403,
@@ -1025,6 +1033,16 @@ import type {
 	FinalizeInstallationStatus403,
 	FinalizeInstallationStatus404,
 	FinalizeInstallationStatus410,
+	ForkDriveResponse,
+	ForkDriveStatus400,
+	ForkDriveStatus401,
+	ForkDriveStatus402,
+	ForkDriveStatus403,
+	ForkDriveStatus404,
+	ForkDriveStatus409,
+	ForkDriveStatus410,
+	ForkDriveStatus429,
+	ForkDriveStatus503,
 	GenerateFirewallRuleResponse,
 	GenerateFirewallRuleStatus400,
 	GenerateFirewallRuleStatus401,
@@ -1087,7 +1105,6 @@ import type {
 	GetAllLogDrainsStatus410,
 	GetAuthTokenResponse,
 	GetAuthTokenStatus400,
-	GetAuthTokenStatus401,
 	GetAuthTokenStatus403,
 	GetAuthTokenStatus404,
 	GetAuthTokenStatus410,
@@ -1353,6 +1370,13 @@ import type {
 	GetDrainsStatus403,
 	GetDrainsStatus404,
 	GetDrainsStatus410,
+	GetDriveResponse,
+	GetDriveStatus400,
+	GetDriveStatus401,
+	GetDriveStatus403,
+	GetDriveStatus404,
+	GetDriveStatus410,
+	GetDriveStatus429,
 	GetEdgeConfigBackupResponse,
 	GetEdgeConfigBackupStatus400,
 	GetEdgeConfigBackupStatus401,
@@ -1766,7 +1790,6 @@ import type {
 	GetSupportedTldsStatus500,
 	GetTeamAccessRequestResponse,
 	GetTeamAccessRequestStatus400,
-	GetTeamAccessRequestStatus401,
 	GetTeamAccessRequestStatus403,
 	GetTeamAccessRequestStatus404,
 	GetTeamAccessRequestStatus410,
@@ -1784,7 +1807,6 @@ import type {
 	GetTeamStatus410,
 	GetTeamsResponse,
 	GetTeamsStatus400,
-	GetTeamsStatus401,
 	GetTeamsStatus403,
 	GetTeamsStatus410,
 	GetTeamsStatus500,
@@ -1930,7 +1952,6 @@ import type {
 	IssueCertStatus500,
 	JoinTeamResponse,
 	JoinTeamStatus400,
-	JoinTeamStatus401,
 	JoinTeamStatus402,
 	JoinTeamStatus403,
 	JoinTeamStatus404,
@@ -2507,7 +2528,6 @@ import type {
 	RequestAccessToTeamStatus503,
 	RequestDeleteResponse,
 	RequestDeleteStatus400,
-	RequestDeleteStatus401,
 	RequestDeleteStatus402,
 	RequestDeleteStatus403,
 	RequestDeleteStatus410,
@@ -2773,6 +2793,7 @@ import type {
 	UpdateConnectorStatus409,
 	UpdateConnectorStatus410,
 	UpdateConnectorStatus422,
+	UpdateConnectorStatus500,
 	UpdateConnectorStatus501,
 	UpdateConnectorStatus502,
 	UpdateConnectorStatus504,
@@ -6624,6 +6645,7 @@ export async function updateConnector(
 			| UpdateConnectorStatus409
 			| UpdateConnectorStatus410
 			| UpdateConnectorStatus422
+			| UpdateConnectorStatus500
 			| UpdateConnectorStatus501
 			| UpdateConnectorStatus502
 			| UpdateConnectorStatus504
@@ -6684,6 +6706,55 @@ export async function replaceConnectorTriggerDestinations(
 	>({
 		method: "PATCH",
 		url: `/v1/connect/connectors/${pathParams.connector}/trigger-destinations`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Eject a managed connector
+ * @description Disconnect a managed connector from its provider-side manager.
+ * @link /v1/connect/connectors/{connector}/managed/eject
+ */
+export async function ejectManagedConnector(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { connector: string };
+		queryParams?: { slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.connector) {
+		throw new Error(`Missing required path parameter: connector`);
+	}
+	const data = await request<
+		EjectManagedConnectorResponse,
+		ErrorWrapper<
+			| EjectManagedConnectorStatus400
+			| EjectManagedConnectorStatus401
+			| EjectManagedConnectorStatus403
+			| EjectManagedConnectorStatus404
+			| EjectManagedConnectorStatus409
+			| EjectManagedConnectorStatus410
+			| EjectManagedConnectorStatus422
+			| EjectManagedConnectorStatus501
+			| EjectManagedConnectorStatus504
+		>,
+		null,
+		Record<string, string>,
+		{ slug?: string },
+		{ connector: string }
+	>({
+		method: "POST",
+		url: `/v1/connect/connectors/${pathParams.connector}/managed/eject`,
 		queryParams,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
@@ -15074,6 +15145,8 @@ export async function getProjects(
 	}: {
 		queryParams?: {
 			from?: string;
+			since?: number;
+			until?: number;
 			gitForkProtection?: string;
 			limit?: string;
 			search?: string;
@@ -15109,6 +15182,8 @@ export async function getProjects(
 		Record<string, string>,
 		{
 			from?: string;
+			since?: number;
+			until?: number;
 			gitForkProtection?: string;
 			limit?: string;
 			search?: string;
@@ -17479,6 +17554,52 @@ export async function listDrives(
 }
 
 /**
+ * @summary Get a drive
+ * @description Gets an existing drive by project and name or drive ID. Returns 404 if doesn't exist.
+ * @link /v2/sandboxes/drives/{nameOrId}
+ */
+export async function getDrive(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { nameOrId: string };
+		queryParams?: { projectId?: string; teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.nameOrId) {
+		throw new Error(`Missing required path parameter: nameOrId`);
+	}
+	const data = await request<
+		GetDriveResponse,
+		ErrorWrapper<
+			| GetDriveStatus400
+			| GetDriveStatus401
+			| GetDriveStatus403
+			| GetDriveStatus404
+			| GetDriveStatus410
+			| GetDriveStatus429
+		>,
+		null,
+		Record<string, string>,
+		{ projectId?: string; teamId?: string; slug?: string },
+		{ nameOrId: string }
+	>({
+		method: "GET",
+		url: `/v2/sandboxes/drives/${pathParams.nameOrId}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
  * @summary Get or create a drive
  * @description Gets an existing drive by project and name, or creates it when it does not exist.
  * @link /v2/sandboxes/drives/{name}
@@ -17565,6 +17686,55 @@ export async function deleteDrive(
 	>({
 		method: "DELETE",
 		url: `/v2/sandboxes/drives/${pathParams.name}`,
+		queryParams,
+		...requestConfig,
+		headers: { ...requestConfig.headers },
+	});
+
+	return data;
+}
+
+/**
+ * @summary Fork a drive
+ * @description Fork the provided drive into a new one with the provided name, inheriting the region and max size.
+ * @link /v2/sandboxes/drives/{name}/fork
+ */
+export async function forkDrive(
+	{
+		pathParams,
+		queryParams,
+		config,
+	}: {
+		pathParams: { name: string };
+		queryParams?: { projectId?: string; teamId?: string; slug?: string };
+		config?: Partial<FetcherConfig> & { client?: typeof defaultClient };
+	} = {} as any,
+) {
+	const { client: request = defaultClient, ...requestConfig } = config ?? {};
+
+	if (!pathParams.name) {
+		throw new Error(`Missing required path parameter: name`);
+	}
+	const data = await request<
+		ForkDriveResponse,
+		ErrorWrapper<
+			| ForkDriveStatus400
+			| ForkDriveStatus401
+			| ForkDriveStatus402
+			| ForkDriveStatus403
+			| ForkDriveStatus404
+			| ForkDriveStatus409
+			| ForkDriveStatus410
+			| ForkDriveStatus429
+			| ForkDriveStatus503
+		>,
+		null,
+		Record<string, string>,
+		{ projectId?: string; teamId?: string; slug?: string },
+		{ name: string }
+	>({
+		method: "POST",
+		url: `/v2/sandboxes/drives/${pathParams.name}/fork`,
 		queryParams,
 		...requestConfig,
 		headers: { ...requestConfig.headers },
@@ -19868,7 +20038,6 @@ export async function getTeamAccessRequest(
 		GetTeamAccessRequestResponse,
 		ErrorWrapper<
 			| GetTeamAccessRequestStatus400
-			| GetTeamAccessRequestStatus401
 			| GetTeamAccessRequestStatus403
 			| GetTeamAccessRequestStatus404
 			| GetTeamAccessRequestStatus410
@@ -19910,7 +20079,6 @@ export async function joinTeam(
 		JoinTeamResponse,
 		ErrorWrapper<
 			| JoinTeamStatus400
-			| JoinTeamStatus401
 			| JoinTeamStatus402
 			| JoinTeamStatus403
 			| JoinTeamStatus404
@@ -20137,13 +20305,7 @@ export async function getTeams(
 
 	const data = await request<
 		GetTeamsResponse,
-		ErrorWrapper<
-			| GetTeamsStatus400
-			| GetTeamsStatus401
-			| GetTeamsStatus403
-			| GetTeamsStatus410
-			| GetTeamsStatus500
-		>,
+		ErrorWrapper<GetTeamsStatus400 | GetTeamsStatus403 | GetTeamsStatus410 | GetTeamsStatus500>,
 		null,
 		Record<string, string>,
 		{ limit?: number; since?: number; until?: number },
@@ -20172,11 +20334,7 @@ export async function createTeam(
 	const data = await request<
 		CreateTeamResponse,
 		ErrorWrapper<
-			| CreateTeamStatus400
-			| CreateTeamStatus401
-			| CreateTeamStatus403
-			| CreateTeamStatus404
-			| CreateTeamStatus410
+			CreateTeamStatus400 | CreateTeamStatus403 | CreateTeamStatus404 | CreateTeamStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -20577,11 +20735,7 @@ export async function getAuthToken(
 	const data = await request<
 		GetAuthTokenResponse,
 		ErrorWrapper<
-			| GetAuthTokenStatus400
-			| GetAuthTokenStatus401
-			| GetAuthTokenStatus403
-			| GetAuthTokenStatus404
-			| GetAuthTokenStatus410
+			GetAuthTokenStatus400 | GetAuthTokenStatus403 | GetAuthTokenStatus404 | GetAuthTokenStatus410
 		>,
 		null,
 		Record<string, string>,
@@ -20620,7 +20774,6 @@ export async function deleteAuthToken(
 		DeleteAuthTokenResponse,
 		ErrorWrapper<
 			| DeleteAuthTokenStatus400
-			| DeleteAuthTokenStatus401
 			| DeleteAuthTokenStatus403
 			| DeleteAuthTokenStatus404
 			| DeleteAuthTokenStatus410
@@ -20686,7 +20839,6 @@ export async function requestDelete(
 		RequestDeleteResponse,
 		ErrorWrapper<
 			| RequestDeleteStatus400
-			| RequestDeleteStatus401
 			| RequestDeleteStatus402
 			| RequestDeleteStatus403
 			| RequestDeleteStatus410
@@ -24304,6 +24456,7 @@ export const operationsByPath = {
 	"PATCH /v2/connect/connectors/{connector}": updateConnector,
 	"PATCH /v1/connect/connectors/{connector}/trigger-destinations":
 		replaceConnectorTriggerDestinations,
+	"POST /v1/connect/connectors/{connector}/managed/eject": ejectManagedConnector,
 	"GET /v2/connect/connectors/{connector}/projects": listConnectorProjectConnections,
 	"GET /v1/connect/connectors/{connector}/projects/{projectId}": getConnectorProjectConnection,
 	"POST /v1/connect/connectors/{connector}/projects/{projectId}": upsertConnectorProjectConnection,
@@ -24557,8 +24710,10 @@ export const operationsByPath = {
 	"GET /v2/sandboxes": listNamedSandboxes,
 	"POST /v2/sandboxes": createSandboxesV2,
 	"GET /v2/sandboxes/drives": listDrives,
+	"GET /v2/sandboxes/drives/{nameOrId}": getDrive,
 	"POST /v2/sandboxes/drives/{name}": getOrCreateDrive,
 	"DELETE /v2/sandboxes/drives/{name}": deleteDrive,
+	"POST /v2/sandboxes/drives/{name}/fork": forkDrive,
 	"GET /v2/sandboxes/snapshots": listSessionSnapshots,
 	"GET /v2/sandboxes/snapshots/{snapshotId}": getSessionSnapshot,
 	"DELETE /v2/sandboxes/snapshots/{snapshotId}": deleteSessionSnapshot,
@@ -24810,6 +24965,7 @@ export const operationsByTag = {
 		createConnector,
 		updateConnector,
 		replaceConnectorTriggerDestinations,
+		ejectManagedConnector,
 		listConnectorProjectConnections,
 		getConnectorProjectConnection,
 		upsertConnectorProjectConnection,
@@ -25094,8 +25250,10 @@ export const operationsByTag = {
 		listNamedSandboxes,
 		createSandboxesV2,
 		listDrives,
+		getDrive,
 		getOrCreateDrive,
 		deleteDrive,
+		forkDrive,
 		listSessionSnapshots,
 		getSessionSnapshot,
 		deleteSessionSnapshot,
@@ -25324,6 +25482,7 @@ export const tagDictionary = {
 		DELETE: ["deleteConnector", "deleteConnectorProjectConnection"],
 		POST: [
 			"createConnector",
+			"ejectManagedConnector",
 			"upsertConnectorProjectConnection",
 			"getConnectorToken",
 			"createConnectorAuthorizationRequest",
@@ -25606,6 +25765,7 @@ export const tagDictionary = {
 		GET: [
 			"listNamedSandboxes",
 			"listDrives",
+			"getDrive",
 			"listSessionSnapshots",
 			"getSessionSnapshot",
 			"listSessions",
@@ -25618,6 +25778,7 @@ export const tagDictionary = {
 		POST: [
 			"createSandboxesV2",
 			"getOrCreateDrive",
+			"forkDrive",
 			"runSessionCommand",
 			"killSessionCommand",
 			"stopSession",
