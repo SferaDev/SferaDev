@@ -5294,6 +5294,24 @@ export const userEventPayloadToAccountTypeEnum = {
 export type UserEventPayloadToAccountTypeEnumKey =
 	(typeof userEventPayloadToAccountTypeEnum)[keyof typeof userEventPayloadToAccountTypeEnum];
 
+export const userEventPayloadUpdateDiffNewTargetEnum = {
+	development: "development",
+	preview: "preview",
+	production: "production",
+} as const;
+
+export type UserEventPayloadUpdateDiffNewTargetEnumKey =
+	(typeof userEventPayloadUpdateDiffNewTargetEnum)[keyof typeof userEventPayloadUpdateDiffNewTargetEnum];
+
+export const userEventPayloadUpdateDiffOldTargetEnum = {
+	development: "development",
+	preview: "preview",
+	production: "production",
+} as const;
+
+export type UserEventPayloadUpdateDiffOldTargetEnumKey =
+	(typeof userEventPayloadUpdateDiffOldTargetEnum)[keyof typeof userEventPayloadUpdateDiffOldTargetEnum];
+
 export const userEventPayloadTargetEnum = {
 	development: "development",
 	preview: "preview",
@@ -5351,24 +5369,6 @@ export const userEventPayloadOldEnvVarTypeEnum = {
 
 export type UserEventPayloadOldEnvVarTypeEnumKey =
 	(typeof userEventPayloadOldEnvVarTypeEnum)[keyof typeof userEventPayloadOldEnvVarTypeEnum];
-
-export const userEventPayloadUpdateDiffNewTargetEnum = {
-	development: "development",
-	preview: "preview",
-	production: "production",
-} as const;
-
-export type UserEventPayloadUpdateDiffNewTargetEnumKey =
-	(typeof userEventPayloadUpdateDiffNewTargetEnum)[keyof typeof userEventPayloadUpdateDiffNewTargetEnum];
-
-export const userEventPayloadUpdateDiffOldTargetEnum = {
-	development: "development",
-	preview: "preview",
-	production: "production",
-} as const;
-
-export type UserEventPayloadUpdateDiffOldTargetEnumKey =
-	(typeof userEventPayloadUpdateDiffOldTargetEnum)[keyof typeof userEventPayloadUpdateDiffOldTargetEnum];
 
 export const actionEnum = {
 	challenge: "challenge",
@@ -9429,6 +9429,38 @@ export type UserEvent = {
 						projectName?: string | undefined;
 						source?: string | undefined;
 						target?: (string | string[]) | undefined;
+						updateDiff?:
+							| {
+									changedComment?: (false | true) | undefined;
+									changedGitBranch?: (false | true) | undefined;
+									/**
+									 * @description Indicates a value was submitted, not whether its plaintext changed.
+									 * @type boolean
+									 */
+									changedValue: false | true;
+									key?: string | undefined;
+									newCustomEnvironmentIds?: string[] | undefined;
+									newKey?: string | undefined;
+									newTarget?: UserEventPayloadUpdateDiffNewTargetEnumKey[] | undefined;
+									newType?: string | undefined;
+									oldCustomEnvironmentIds?: string[] | undefined;
+									oldTarget?: UserEventPayloadUpdateDiffOldTargetEnumKey[] | undefined;
+									oldType?: string | undefined;
+							  }
+							| undefined;
+				  }
+				| {
+						customEnvironmentSlugs?: string[] | undefined;
+						edgeConfigId?: (string | null) | undefined;
+						edgeConfigTokenId?: (string | null) | undefined;
+						gitBranch?: string | undefined;
+						id?: string | undefined;
+						ipAddress?: string | undefined;
+						key?: string | undefined;
+						projectId?: string | undefined;
+						projectName?: string | undefined;
+						source?: string | undefined;
+						target?: (string | string[]) | undefined;
 						deploymentId: string;
 						deploymentUrl: string;
 				  }
@@ -9844,28 +9876,34 @@ export type UserEvent = {
 							| undefined;
 						updateDiff?:
 							| {
+									changedComment?: (false | true) | undefined;
+									changedGitBranch?: (false | true) | undefined;
+									/**
+									 * @description Indicates a value was submitted, not whether its plaintext changed.
+									 * @type boolean
+									 */
 									changedValue: false | true;
-									id: string;
 									key?: string | undefined;
 									newCustomEnvironmentIds?: string[] | undefined;
 									newKey?: string | undefined;
+									newTarget?: UserEventPayloadUpdateDiffNewTargetEnumKey[] | undefined;
+									newType?: string | undefined;
+									oldCustomEnvironmentIds?: string[] | undefined;
+									oldTarget?: UserEventPayloadUpdateDiffOldTargetEnumKey[] | undefined;
+									oldType?: string | undefined;
+									id: string;
 									newProjects?:
 										| {
 												projectId: string;
 												projectName?: string | undefined;
 										  }[]
 										| undefined;
-									newTarget?: UserEventPayloadUpdateDiffNewTargetEnumKey[] | undefined;
-									newType?: string | undefined;
-									oldCustomEnvironmentIds?: string[] | undefined;
 									oldProjects?:
 										| {
 												projectId: string;
 												projectName?: string | undefined;
 										  }[]
 										| undefined;
-									oldTarget?: UserEventPayloadUpdateDiffOldTargetEnumKey[] | undefined;
-									oldType?: string | undefined;
 							  }
 							| undefined;
 				  }
@@ -17653,6 +17691,7 @@ export type Team = {
 							ssoUserId?: string | undefined;
 					  }
 					| undefined;
+				organizationId?: string | undefined;
 				role: TeamMembershipRoleEnumKey;
 				teamId?: string | undefined;
 				teamPermissions?: TeamMembershipTeamPermissionsEnumKey[] | undefined;
@@ -18176,6 +18215,7 @@ export type TeamLimited = {
 							ssoUserId?: string | undefined;
 					  }
 					| undefined;
+				organizationId?: string | undefined;
 				role: TeamLimitedMembershipRoleEnumKey;
 				teamId?: string | undefined;
 				teamPermissions?: TeamLimitedMembershipTeamPermissionsEnumKey[] | undefined;

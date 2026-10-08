@@ -5733,6 +5733,36 @@ export const userEventSchema = z
 					projectName: z.string().optional(),
 					source: z.string().optional(),
 					target: z.union([z.string(), z.array(z.string())]).optional(),
+					updateDiff: z
+						.object({
+							changedComment: z.union([z.literal(false), z.literal(true)]).optional(),
+							changedGitBranch: z.union([z.literal(false), z.literal(true)]).optional(),
+							changedValue: z
+								.union([z.literal(false), z.literal(true)])
+								.describe("Indicates a value was submitted, not whether its plaintext changed."),
+							key: z.string().optional(),
+							newCustomEnvironmentIds: z.array(z.string()).optional(),
+							newKey: z.string().optional(),
+							newTarget: z.array(z.enum(["development", "preview", "production"])).optional(),
+							newType: z.string().optional(),
+							oldCustomEnvironmentIds: z.array(z.string()).optional(),
+							oldTarget: z.array(z.enum(["development", "preview", "production"])).optional(),
+							oldType: z.string().optional(),
+						})
+						.optional(),
+				}),
+				z.strictObject({
+					customEnvironmentSlugs: z.array(z.string()).optional(),
+					edgeConfigId: z.string().nullish(),
+					edgeConfigTokenId: z.string().nullish(),
+					gitBranch: z.string().optional(),
+					id: z.string().optional(),
+					ipAddress: z.string().optional(),
+					key: z.string().optional(),
+					projectId: z.string().optional(),
+					projectName: z.string().optional(),
+					source: z.string().optional(),
+					target: z.union([z.string(), z.array(z.string())]).optional(),
 					deploymentId: z.string(),
 					deploymentUrl: z.string(),
 				}),
@@ -6096,11 +6126,20 @@ export const userEventSchema = z
 						.optional(),
 					updateDiff: z
 						.object({
-							changedValue: z.union([z.literal(false), z.literal(true)]),
-							id: z.string(),
+							changedComment: z.union([z.literal(false), z.literal(true)]).optional(),
+							changedGitBranch: z.union([z.literal(false), z.literal(true)]).optional(),
+							changedValue: z
+								.union([z.literal(false), z.literal(true)])
+								.describe("Indicates a value was submitted, not whether its plaintext changed."),
 							key: z.string().optional(),
 							newCustomEnvironmentIds: z.array(z.string()).optional(),
 							newKey: z.string().optional(),
+							newTarget: z.array(z.enum(["development", "preview", "production"])).optional(),
+							newType: z.string().optional(),
+							oldCustomEnvironmentIds: z.array(z.string()).optional(),
+							oldTarget: z.array(z.enum(["development", "preview", "production"])).optional(),
+							oldType: z.string().optional(),
+							id: z.string(),
 							newProjects: z
 								.array(
 									z.object({
@@ -6109,9 +6148,6 @@ export const userEventSchema = z
 									}),
 								)
 								.optional(),
-							newTarget: z.array(z.enum(["development", "preview", "production"])).optional(),
-							newType: z.string().optional(),
-							oldCustomEnvironmentIds: z.array(z.string()).optional(),
 							oldProjects: z
 								.array(
 									z.object({
@@ -6120,8 +6156,6 @@ export const userEventSchema = z
 									}),
 								)
 								.optional(),
-							oldTarget: z.array(z.enum(["development", "preview", "production"])).optional(),
-							oldType: z.string().optional(),
 						})
 						.optional(),
 				}),
@@ -14093,6 +14127,7 @@ export const teamSchema = z
 						ssoUserId: z.string().optional(),
 					})
 					.optional(),
+				organizationId: z.string().optional(),
 				role: z.enum([
 					"BILLING",
 					"CONTRIBUTOR",
@@ -14533,6 +14568,7 @@ export const teamLimitedSchema = z
 						ssoUserId: z.string().optional(),
 					})
 					.optional(),
+				organizationId: z.string().optional(),
 				role: z.enum([
 					"BILLING",
 					"CONTRIBUTOR",
