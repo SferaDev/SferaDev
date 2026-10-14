@@ -45,8 +45,9 @@ Agents usually get a superuser connection string. [PgBeam](https://pgbeam.com) g
 | [`cloudflare-api-js`](https://www.npmjs.com/package/cloudflare-api-js) | Type-safe Cloudflare API client | ![npm downloads](https://img.shields.io/npm/dm/cloudflare-api-js?style=flat-square&label=) |
 | [`nuki-api-js`](https://www.npmjs.com/package/nuki-api-js) | Type-safe Nuki API client | ![npm downloads](https://img.shields.io/npm/dm/nuki-api-js?style=flat-square&label=) |
 | [`rollup-plugin-import-cdn`](https://www.npmjs.com/package/rollup-plugin-import-cdn) | Rollup plugin that resolves bare imports to CDN URLs | ![npm downloads](https://img.shields.io/npm/dm/rollup-plugin-import-cdn?style=flat-square&label=) |
-
-The API clients come from one generator in [sferarc/openapi](https://github.com/sferarc/openapi). [ai-gateway-proxy](https://github.com/sferarc/ai-gateway-proxy) and [vscode-ai-gateway](https://github.com/sferarc/vscode-ai-gateway) put the Vercel AI Gateway behind an OpenAI-compatible endpoint and into VS Code chat.
+| [`ai-gateway-proxy`](https://www.npmjs.com/package/ai-gateway-proxy) | OpenAI-compatible proxy for the Vercel AI Gateway | ![npm downloads](https://img.shields.io/npm/dm/ai-gateway-proxy?style=flat-square&label=) |
+| [`vscode-ai-gateway`](https://github.com/sferarc/vscode-ai-gateway) | VS Code extension that brings Vercel AI Gateway models to chat | |
+| [`openapi`](https://github.com/sferarc/openapi) | The generator behind the type-safe API clients above | |
 
 I send fixes upstream to [Keycloak](https://github.com/keycloak/keycloak) and [Better Auth](https://github.com/better-auth/better-auth), and was a core maintainer of the Paranoid Android custom ROM.
 
