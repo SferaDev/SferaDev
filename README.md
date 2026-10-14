@@ -1,14 +1,27 @@
-# Hi, I'm Alexis
+# Alexis Rico
 
-Principal Software Engineer at [Xata](https://xata.io), working on serverless Postgres. On my own time I build [PgBeam](https://pgbeam.com): Postgres access that AI agents can be trusted with.
+Principal Software Engineer at [Xata](https://xata.io). I also build [PgBeam](https://pgbeam.com) and maintain open source.
 
-I write TypeScript and Go, mostly APIs, SDKs and the tooling around databases.
+**45+ npm packages · 330K+ monthly downloads · 20 open source repos · TypeScript and Go**
 
-## PgBeam
+---
 
-Agents usually get a superuser connection string. PgBeam gives them a scoped one instead: read-only access, table allowlists, PII masking and a full audit trail, all enforced in the wire protocol rather than in the prompt.
+## Day to day: Xata
 
-Everything a user touches is open source, under [sferarc](https://github.com/sferarc):
+Principal Software Engineer at [Xata](https://xata.io), the serverless Postgres platform.
+
+- Lead TypeScript technical decisions and design cross-team features with the backend team.
+- Build the platform's authentication and authorization: sessions, role-based access control and fine-grained API key permissions.
+- Build the platform's AI features, from agents that work on a database to the tooling that lets them reach it safely.
+- Built an edge query endpoint on Cloudflare that caches and routes global requests to cut latency.
+
+Earlier at Xata: main developer of the TypeScript SDK, the in-browser playground, Xata Workers and the CLI.
+
+---
+
+## Side project: PgBeam
+
+Agents usually get a superuser connection string. [PgBeam](https://pgbeam.com) gives them a scoped one instead: read-only access, table allowlists, PII masking and a full audit trail, all enforced in the wire protocol rather than in the prompt.
 
 | Piece | Where |
 | --- | --- |
@@ -18,7 +31,9 @@ Everything a user touches is open source, under [sferarc](https://github.com/sfe
 | For agents | [pgbeam-agent](https://github.com/sferarc/pgbeam-agent): installable skills and plugin |
 | Go libraries | [pgscram](https://github.com/sferarc/pgscram), [auditchain](https://github.com/sferarc/auditchain), [promptscan](https://github.com/sferarc/promptscan), [schemadigest](https://github.com/sferarc/schemadigest) |
 
-## Open source I maintain
+---
+
+## Open source
 
 | Package | What it does | Downloads |
 | --- | --- | --- |
@@ -29,8 +44,8 @@ Everything a user touches is open source, under [sferarc](https://github.com/sfe
 
 The Vercel, Keycloak, Zoom, Netlify and LiteLLM clients come from one generator in [sferarc/openapi](https://github.com/sferarc/openapi). [ai-gateway-proxy](https://github.com/sferarc/ai-gateway-proxy) and [vscode-ai-gateway](https://github.com/sferarc/vscode-ai-gateway) put the Vercel AI Gateway behind an OpenAI-compatible endpoint and into VS Code chat.
 
-I also send fixes upstream to the projects I depend on, lately [Keycloak](https://github.com/keycloak/keycloak) and [Better Auth](https://github.com/better-auth/better-auth).
+I send fixes upstream to [Keycloak](https://github.com/keycloak/keycloak) and [Better Auth](https://github.com/better-auth/better-auth), and was a core maintainer of the Paranoid Android custom ROM.
 
-## Elsewhere
+---
 
 [sferadev.com](https://sferadev.com) · [npm](https://www.npmjs.com/~sferadev) · [sferarc](https://github.com/sferarc)
