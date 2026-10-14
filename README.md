@@ -2,7 +2,7 @@
 
 Principal Software Engineer at [Xata](https://xata.io). I also build [PgBeam](https://pgbeam.com) and maintain open source.
 
-**45+ npm packages · 330K+ monthly downloads · 20 open source repos · TypeScript and Go**
+**18 npm packages · 25K+ monthly downloads · 20 open source repos · TypeScript and Go**
 
 ---
 
@@ -36,12 +36,17 @@ Agents usually get a superuser connection string. [PgBeam](https://pgbeam.com) g
 
 | Package | What it does | Downloads |
 | --- | --- | --- |
-| [`@xata.io/api`](https://www.npmjs.com/package/@xata.io/api) | Client for the Xata API | ![npm downloads](https://img.shields.io/npm/dm/@xata.io/api?style=flat-square&label=) |
-| [`@xata.io/pgroll`](https://www.npmjs.com/package/@xata.io/pgroll) | TypeScript definitions and validation for pgroll migrations | ![npm downloads](https://img.shields.io/npm/dm/@xata.io/pgroll?style=flat-square&label=) |
 | [`vercel-api-js`](https://www.npmjs.com/package/vercel-api-js) | Type-safe Vercel API client, regenerated daily from the spec | ![npm downloads](https://img.shields.io/npm/dm/vercel-api-js?style=flat-square&label=) |
+| [`v0-api`](https://www.npmjs.com/package/v0-api) | Type-safe client for the Vercel v0 API | ![npm downloads](https://img.shields.io/npm/dm/v0-api?style=flat-square&label=) |
 | [`keycloak-api`](https://www.npmjs.com/package/keycloak-api) | Type-safe Keycloak API client | ![npm downloads](https://img.shields.io/npm/dm/keycloak-api?style=flat-square&label=) |
+| [`zoom-api-js`](https://www.npmjs.com/package/zoom-api-js) | Type-safe Zoom API client | ![npm downloads](https://img.shields.io/npm/dm/zoom-api-js?style=flat-square&label=) |
+| [`netlify-api`](https://www.npmjs.com/package/netlify-api) | Type-safe Netlify API client | ![npm downloads](https://img.shields.io/npm/dm/netlify-api?style=flat-square&label=) |
+| [`litellm-api`](https://www.npmjs.com/package/litellm-api) | Type-safe LiteLLM API client | ![npm downloads](https://img.shields.io/npm/dm/litellm-api?style=flat-square&label=) |
+| [`cloudflare-api-js`](https://www.npmjs.com/package/cloudflare-api-js) | Type-safe Cloudflare API client | ![npm downloads](https://img.shields.io/npm/dm/cloudflare-api-js?style=flat-square&label=) |
+| [`nuki-api-js`](https://www.npmjs.com/package/nuki-api-js) | Type-safe Nuki API client | ![npm downloads](https://img.shields.io/npm/dm/nuki-api-js?style=flat-square&label=) |
+| [`rollup-plugin-import-cdn`](https://www.npmjs.com/package/rollup-plugin-import-cdn) | Rollup plugin that resolves bare imports to CDN URLs | ![npm downloads](https://img.shields.io/npm/dm/rollup-plugin-import-cdn?style=flat-square&label=) |
 
-The Vercel, Keycloak, Zoom, Netlify and LiteLLM clients come from one generator in [sferarc/openapi](https://github.com/sferarc/openapi). [ai-gateway-proxy](https://github.com/sferarc/ai-gateway-proxy) and [vscode-ai-gateway](https://github.com/sferarc/vscode-ai-gateway) put the Vercel AI Gateway behind an OpenAI-compatible endpoint and into VS Code chat.
+The API clients come from one generator in [sferarc/openapi](https://github.com/sferarc/openapi). [ai-gateway-proxy](https://github.com/sferarc/ai-gateway-proxy) and [vscode-ai-gateway](https://github.com/sferarc/vscode-ai-gateway) put the Vercel AI Gateway behind an OpenAI-compatible endpoint and into VS Code chat.
 
 I send fixes upstream to [Keycloak](https://github.com/keycloak/keycloak) and [Better Auth](https://github.com/better-auth/better-auth), and was a core maintainer of the Paranoid Android custom ROM.
 
