@@ -13,9 +13,8 @@ Principal Software Engineer at [Xata](https://xata.io), the serverless Postgres 
 - Lead TypeScript technical decisions and design cross-team features with the backend team.
 - Build the platform's authentication and authorization: sessions, role-based access control and fine-grained API key permissions.
 - Build the platform's AI features, from agents that work on a database to the tooling that lets them reach it safely.
-- Built an edge query endpoint on Cloudflare that caches and routes global requests to cut latency.
 
-Earlier at Xata: main developer of the TypeScript SDK, the in-browser playground, Xata Workers and the CLI.
+Earlier at Xata: main developer of the TypeScript SDK, the in-browser playground, Xata Workers and the CLI, and built an edge query endpoint on Cloudflare that caches and routes global requests to cut latency.
 
 ---
 
