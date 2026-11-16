@@ -1,6 +1,6 @@
 # Alexis Rico
 
-Principal Software Engineer on the Managed Postgres team at [ClickHouse](https://clickhouse.com). I also build [PgBeam](https://pgbeam.com) and maintain open source.
+Senior Software Engineer on the Managed Postgres team at [ClickHouse](https://clickhouse.com). I also build [PgBeam](https://pgbeam.com) and maintain open source.
 
 **18 npm packages · 25K+ monthly downloads · 20 open source repos · TypeScript and Go**
 
@@ -8,7 +8,7 @@ Principal Software Engineer on the Managed Postgres team at [ClickHouse](https:/
 
 ## Day to day: ClickHouse
 
-Principal Software Engineer on the Managed Postgres team at [ClickHouse](https://clickhouse.com), which acquired Xata in October 2026. I work on ClickHouse's Postgres service.
+Senior Software Engineer on the Managed Postgres team at [ClickHouse](https://clickhouse.com), which acquired Xata in October 2026. I work on ClickHouse's Postgres service.
 
 At Xata, the serverless Postgres platform (2022 to 2026):
 
