@@ -1,20 +1,21 @@
 # Alexis Rico
 
-Principal Software Engineer at [Xata](https://xata.io). I also build [PgBeam](https://pgbeam.com) and maintain open source.
+Principal Software Engineer on the Managed Postgres team at [ClickHouse](https://clickhouse.com). I also build [PgBeam](https://pgbeam.com) and maintain open source.
 
 **18 npm packages · 25K+ monthly downloads · 20 open source repos · TypeScript and Go**
 
 ---
 
-## Day to day: Xata
+## Day to day: ClickHouse
 
-Principal Software Engineer at [Xata](https://xata.io), the serverless Postgres platform.
+Principal Software Engineer on the Managed Postgres team at [ClickHouse](https://clickhouse.com), which acquired Xata in October 2026. I work on ClickHouse's Postgres service.
 
-- Lead TypeScript technical decisions and design cross-team features with the backend team.
-- Build the platform's authentication and authorization: sessions, role-based access control and fine-grained API key permissions.
-- Build the platform's AI features, from agents that work on a database to the tooling that lets them reach it safely.
+At Xata, the serverless Postgres platform (2022 to 2026):
 
-Earlier at Xata: main developer of the TypeScript SDK, the in-browser playground, Xata Workers and the CLI, and built an edge query endpoint on Cloudflare that caches and routes global requests to cut latency.
+- Led TypeScript technical decisions and designed cross-team features with the backend team.
+- Built the platform's authentication and authorization: sessions, role-based access control and fine-grained API key permissions.
+- Built the platform's AI features, from agents that work on a database to the tooling that lets them reach it safely.
+- Earlier: main developer of the TypeScript SDK, the in-browser playground, Xata Workers and the CLI, and built an edge query endpoint on Cloudflare that caches and routes global requests to cut latency.
 
 ---
 
